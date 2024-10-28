@@ -249,17 +249,16 @@ public interface Workspace {
     WorkspaceInner innerModel();
 
     /** The entirety of the Workspace definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
+
     /** The Workspace definition stages. */
     interface DefinitionStages {
         /** The first stage of the Workspace definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Workspace definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -278,6 +277,7 @@ public interface Workspace {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Workspace definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -288,28 +288,18 @@ public interface Workspace {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Workspace definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithFriendlyName,
-                DefinitionStages.WithKeyVault,
-                DefinitionStages.WithApplicationInsights,
-                DefinitionStages.WithContainerRegistry,
-                DefinitionStages.WithStorageAccount,
-                DefinitionStages.WithDiscoveryUrl,
-                DefinitionStages.WithEncryption,
-                DefinitionStages.WithHbiWorkspace,
-                DefinitionStages.WithImageBuildCompute,
-                DefinitionStages.WithAllowPublicAccessWhenBehindVnet,
-                DefinitionStages.WithSharedPrivateLinkResources,
-                DefinitionStages.WithServiceManagedResourcesSettings,
-                DefinitionStages.WithPrimaryUserAssignedIdentity,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithSku {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithDescription,
+            DefinitionStages.WithFriendlyName, DefinitionStages.WithKeyVault, DefinitionStages.WithApplicationInsights,
+            DefinitionStages.WithContainerRegistry, DefinitionStages.WithStorageAccount,
+            DefinitionStages.WithDiscoveryUrl, DefinitionStages.WithEncryption, DefinitionStages.WithHbiWorkspace,
+            DefinitionStages.WithImageBuildCompute, DefinitionStages.WithAllowPublicAccessWhenBehindVnet,
+            DefinitionStages.WithSharedPrivateLinkResources, DefinitionStages.WithServiceManagedResourcesSettings,
+            DefinitionStages.WithPrimaryUserAssignedIdentity, DefinitionStages.WithIdentity, DefinitionStages.WithSku {
             /**
              * Executes the create request.
              *
@@ -325,6 +315,7 @@ public interface Workspace {
              */
             Workspace create(Context context);
         }
+
         /** The stage of the Workspace definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -335,6 +326,7 @@ public interface Workspace {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Workspace definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -345,6 +337,7 @@ public interface Workspace {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the Workspace definition allowing to specify friendlyName. */
         interface WithFriendlyName {
             /**
@@ -355,6 +348,7 @@ public interface Workspace {
              */
             WithCreate withFriendlyName(String friendlyName);
         }
+
         /** The stage of the Workspace definition allowing to specify keyVault. */
         interface WithKeyVault {
             /**
@@ -367,6 +361,7 @@ public interface Workspace {
              */
             WithCreate withKeyVault(String keyVault);
         }
+
         /** The stage of the Workspace definition allowing to specify applicationInsights. */
         interface WithApplicationInsights {
             /**
@@ -379,6 +374,7 @@ public interface Workspace {
              */
             WithCreate withApplicationInsights(String applicationInsights);
         }
+
         /** The stage of the Workspace definition allowing to specify containerRegistry. */
         interface WithContainerRegistry {
             /**
@@ -391,6 +387,7 @@ public interface Workspace {
              */
             WithCreate withContainerRegistry(String containerRegistry);
         }
+
         /** The stage of the Workspace definition allowing to specify storageAccount. */
         interface WithStorageAccount {
             /**
@@ -403,6 +400,7 @@ public interface Workspace {
              */
             WithCreate withStorageAccount(String storageAccount);
         }
+
         /** The stage of the Workspace definition allowing to specify discoveryUrl. */
         interface WithDiscoveryUrl {
             /**
@@ -415,6 +413,7 @@ public interface Workspace {
              */
             WithCreate withDiscoveryUrl(String discoveryUrl);
         }
+
         /** The stage of the Workspace definition allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -425,6 +424,7 @@ public interface Workspace {
              */
             WithCreate withEncryption(EncryptionProperty encryption);
         }
+
         /** The stage of the Workspace definition allowing to specify hbiWorkspace. */
         interface WithHbiWorkspace {
             /**
@@ -437,6 +437,7 @@ public interface Workspace {
              */
             WithCreate withHbiWorkspace(Boolean hbiWorkspace);
         }
+
         /** The stage of the Workspace definition allowing to specify imageBuildCompute. */
         interface WithImageBuildCompute {
             /**
@@ -447,6 +448,7 @@ public interface Workspace {
              */
             WithCreate withImageBuildCompute(String imageBuildCompute);
         }
+
         /** The stage of the Workspace definition allowing to specify allowPublicAccessWhenBehindVnet. */
         interface WithAllowPublicAccessWhenBehindVnet {
             /**
@@ -459,6 +461,7 @@ public interface Workspace {
              */
             WithCreate withAllowPublicAccessWhenBehindVnet(Boolean allowPublicAccessWhenBehindVnet);
         }
+
         /** The stage of the Workspace definition allowing to specify sharedPrivateLinkResources. */
         interface WithSharedPrivateLinkResources {
             /**
@@ -470,6 +473,7 @@ public interface Workspace {
              */
             WithCreate withSharedPrivateLinkResources(List<SharedPrivateLinkResource> sharedPrivateLinkResources);
         }
+
         /** The stage of the Workspace definition allowing to specify serviceManagedResourcesSettings. */
         interface WithServiceManagedResourcesSettings {
             /**
@@ -478,9 +482,10 @@ public interface Workspace {
              * @param serviceManagedResourcesSettings The service managed resource settings.
              * @return the next definition stage.
              */
-            WithCreate withServiceManagedResourcesSettings(
-                ServiceManagedResourcesSettings serviceManagedResourcesSettings);
+            WithCreate
+                withServiceManagedResourcesSettings(ServiceManagedResourcesSettings serviceManagedResourcesSettings);
         }
+
         /** The stage of the Workspace definition allowing to specify primaryUserAssignedIdentity. */
         interface WithPrimaryUserAssignedIdentity {
             /**
@@ -493,6 +498,7 @@ public interface Workspace {
              */
             WithCreate withPrimaryUserAssignedIdentity(String primaryUserAssignedIdentity);
         }
+
         /** The stage of the Workspace definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -503,6 +509,7 @@ public interface Workspace {
              */
             WithCreate withIdentity(Identity identity);
         }
+
         /** The stage of the Workspace definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -514,6 +521,7 @@ public interface Workspace {
             WithCreate withSku(Sku sku);
         }
     }
+
     /**
      * Begins update for the Workspace resource.
      *
@@ -522,15 +530,9 @@ public interface Workspace {
     Workspace.Update update();
 
     /** The template for Workspace update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithSku,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithDescription,
-            UpdateStages.WithFriendlyName,
-            UpdateStages.WithImageBuildCompute,
-            UpdateStages.WithServiceManagedResourcesSettings,
-            UpdateStages.WithPrimaryUserAssignedIdentity {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithIdentity,
+        UpdateStages.WithDescription, UpdateStages.WithFriendlyName, UpdateStages.WithImageBuildCompute,
+        UpdateStages.WithServiceManagedResourcesSettings, UpdateStages.WithPrimaryUserAssignedIdentity {
         /**
          * Executes the update request.
          *
@@ -546,6 +548,7 @@ public interface Workspace {
          */
         Workspace apply(Context context);
     }
+
     /** The Workspace update stages. */
     interface UpdateStages {
         /** The stage of the Workspace update allowing to specify tags. */
@@ -558,6 +561,7 @@ public interface Workspace {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the Workspace update allowing to specify sku. */
         interface WithSku {
             /**
@@ -568,6 +572,7 @@ public interface Workspace {
              */
             Update withSku(Sku sku);
         }
+
         /** The stage of the Workspace update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -578,6 +583,7 @@ public interface Workspace {
              */
             Update withIdentity(Identity identity);
         }
+
         /** The stage of the Workspace update allowing to specify description. */
         interface WithDescription {
             /**
@@ -588,6 +594,7 @@ public interface Workspace {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the Workspace update allowing to specify friendlyName. */
         interface WithFriendlyName {
             /**
@@ -598,6 +605,7 @@ public interface Workspace {
              */
             Update withFriendlyName(String friendlyName);
         }
+
         /** The stage of the Workspace update allowing to specify imageBuildCompute. */
         interface WithImageBuildCompute {
             /**
@@ -608,6 +616,7 @@ public interface Workspace {
              */
             Update withImageBuildCompute(String imageBuildCompute);
         }
+
         /** The stage of the Workspace update allowing to specify serviceManagedResourcesSettings. */
         interface WithServiceManagedResourcesSettings {
             /**
@@ -618,6 +627,7 @@ public interface Workspace {
              */
             Update withServiceManagedResourcesSettings(ServiceManagedResourcesSettings serviceManagedResourcesSettings);
         }
+
         /** The stage of the Workspace update allowing to specify primaryUserAssignedIdentity. */
         interface WithPrimaryUserAssignedIdentity {
             /**
@@ -631,6 +641,7 @@ public interface Workspace {
             Update withPrimaryUserAssignedIdentity(String primaryUserAssignedIdentity);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -157,9 +157,8 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleAssignment>> deleteWithResponseAsync(String vaultBaseUrl, String scope,
         String roleAssignmentName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(vaultBaseUrl, scope, roleAssignmentName,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> deleteWithResponseAsync(vaultBaseUrl, scope, roleAssignmentName, context));
     }
 
     /**
@@ -268,9 +267,8 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleAssignment>> createWithResponseAsync(String vaultBaseUrl, String scope,
         String roleAssignmentName, RoleAssignmentCreateParameters parameters) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.create(vaultBaseUrl, scope, roleAssignmentName,
-            this.client.getApiVersion(), parameters, accept, context));
+        return FluxUtil.withContext(
+            context -> createWithResponseAsync(vaultBaseUrl, scope, roleAssignmentName, parameters, context));
     }
 
     /**
@@ -386,9 +384,7 @@ public final class RoleAssignmentsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RoleAssignment>> getWithResponseAsync(String vaultBaseUrl, String scope,
         String roleAssignmentName) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(vaultBaseUrl, scope, roleAssignmentName,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(vaultBaseUrl, scope, roleAssignmentName, context));
     }
 
     /**
@@ -656,9 +652,7 @@ public final class RoleAssignmentsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -677,9 +671,7 @@ public final class RoleAssignmentsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -700,9 +692,7 @@ public final class RoleAssignmentsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
@@ -721,9 +711,7 @@ public final class RoleAssignmentsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

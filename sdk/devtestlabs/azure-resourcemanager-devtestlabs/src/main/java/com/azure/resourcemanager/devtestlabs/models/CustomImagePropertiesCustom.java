@@ -100,10 +100,8 @@ public final class CustomImagePropertiesCustom {
      */
     public void validate() {
         if (osType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property osType in model CustomImagePropertiesCustom"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property osType in model CustomImagePropertiesCustom"));
         }
     }
 

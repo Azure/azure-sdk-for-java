@@ -45,12 +45,14 @@ public final class MetadataSchemasGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         MetadataSchema response = manager.metadataSchemas()
-            .getWithResponse("sotbob", "dopcjwvnh", "ld", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("sotbob", "dopcjwvnh", "ld", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("gx", response.properties().schema());
         Assertions.assertEquals(MetadataAssignmentEntity.DEPLOYMENT,

@@ -84,8 +84,8 @@ public class Gen1EnvironmentCreationProperties {
      * @param storageLimitExceededBehavior the storageLimitExceededBehavior value to set.
      * @return the Gen1EnvironmentCreationProperties object itself.
      */
-    public Gen1EnvironmentCreationProperties withStorageLimitExceededBehavior(
-        StorageLimitExceededBehavior storageLimitExceededBehavior) {
+    public Gen1EnvironmentCreationProperties
+        withStorageLimitExceededBehavior(StorageLimitExceededBehavior storageLimitExceededBehavior) {
         this.storageLimitExceededBehavior = storageLimitExceededBehavior;
         return this;
     }
@@ -107,8 +107,8 @@ public class Gen1EnvironmentCreationProperties {
      * @param partitionKeyProperties the partitionKeyProperties value to set.
      * @return the Gen1EnvironmentCreationProperties object itself.
      */
-    public Gen1EnvironmentCreationProperties withPartitionKeyProperties(
-        List<TimeSeriesIdProperty> partitionKeyProperties) {
+    public Gen1EnvironmentCreationProperties
+        withPartitionKeyProperties(List<TimeSeriesIdProperty> partitionKeyProperties) {
         this.partitionKeyProperties = partitionKeyProperties;
         return this;
     }
@@ -120,10 +120,8 @@ public class Gen1EnvironmentCreationProperties {
      */
     public void validate() {
         if (dataRetentionTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataRetentionTime in model Gen1EnvironmentCreationProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property dataRetentionTime in model Gen1EnvironmentCreationProperties"));
         }
         if (partitionKeyProperties() != null) {
             partitionKeyProperties().forEach(e -> e.validate());

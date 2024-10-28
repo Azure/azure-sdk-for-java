@@ -237,8 +237,8 @@ public interface Exports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing the run history of an export along with {@link Response}.
      */
-    Response<ExportExecutionListResult> getExecutionHistoryWithResponse(
-        String scope, String exportName, Context context);
+    Response<ExportExecutionListResult> getExecutionHistoryWithResponse(String scope, String exportName,
+        Context context);
 
     /**
      * The operation to get the run history of an export for the defined scope and export name.

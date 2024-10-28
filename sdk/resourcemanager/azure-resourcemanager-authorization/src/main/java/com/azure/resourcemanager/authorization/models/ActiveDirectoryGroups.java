@@ -15,12 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point to AD group management API. */
 @Fluent
-public interface ActiveDirectoryGroups
-    extends SupportsListing<ActiveDirectoryGroup>,
-        SupportsListingByFilter<ActiveDirectoryGroup>,
-        SupportsGettingById<ActiveDirectoryGroup>,
-        SupportsGettingByName<ActiveDirectoryGroup>,
-        SupportsCreating<ActiveDirectoryGroup.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        HasManager<AuthorizationManager> {
+public interface ActiveDirectoryGroups extends SupportsListing<ActiveDirectoryGroup>,
+    SupportsListingByFilter<ActiveDirectoryGroup>, SupportsGettingById<ActiveDirectoryGroup>,
+    SupportsGettingByName<ActiveDirectoryGroup>, SupportsCreating<ActiveDirectoryGroup.DefinitionStages.Blank>,
+    SupportsDeletingById, HasManager<AuthorizationManager> {
 }

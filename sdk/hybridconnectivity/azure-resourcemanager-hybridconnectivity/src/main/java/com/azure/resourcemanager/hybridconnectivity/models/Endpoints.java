@@ -95,12 +95,8 @@ public interface Endpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the endpoint access credentials to the resource along with {@link Response}.
      */
-    Response<EndpointAccessResource> listCredentialsWithResponse(
-        String resourceUri,
-        String endpointName,
-        Long expiresin,
-        ListCredentialsRequest listCredentialsRequest,
-        Context context);
+    Response<EndpointAccessResource> listCredentialsWithResponse(String resourceUri, String endpointName,
+        Long expiresin, ListCredentialsRequest listCredentialsRequest, Context context);
 
     /**
      * Gets the endpoint access credentials to the resource.
@@ -127,12 +123,8 @@ public interface Endpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ingress gateway endpoint credentials along with {@link Response}.
      */
-    Response<IngressGatewayResource> listIngressGatewayCredentialsWithResponse(
-        String resourceUri,
-        String endpointName,
-        Long expiresin,
-        ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest,
-        Context context);
+    Response<IngressGatewayResource> listIngressGatewayCredentialsWithResponse(String resourceUri, String endpointName,
+        Long expiresin, ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest, Context context);
 
     /**
      * Gets the ingress gateway endpoint credentials.
@@ -158,8 +150,8 @@ public interface Endpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed Proxy along with {@link Response}.
      */
-    Response<ManagedProxyResource> listManagedProxyDetailsWithResponse(
-        String resourceUri, String endpointName, ManagedProxyRequest managedProxyRequest, Context context);
+    Response<ManagedProxyResource> listManagedProxyDetailsWithResponse(String resourceUri, String endpointName,
+        ManagedProxyRequest managedProxyRequest, Context context);
 
     /**
      * Fetches the managed proxy details.
@@ -172,8 +164,8 @@ public interface Endpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed Proxy.
      */
-    ManagedProxyResource listManagedProxyDetails(
-        String resourceUri, String endpointName, ManagedProxyRequest managedProxyRequest);
+    ManagedProxyResource listManagedProxyDetails(String resourceUri, String endpointName,
+        ManagedProxyRequest managedProxyRequest);
 
     /**
      * Gets the endpoint to the resource.

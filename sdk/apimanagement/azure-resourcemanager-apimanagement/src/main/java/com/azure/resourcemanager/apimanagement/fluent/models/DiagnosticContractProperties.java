@@ -292,10 +292,8 @@ public final class DiagnosticContractProperties {
      */
     public void validate() {
         if (loggerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property loggerId in model DiagnosticContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property loggerId in model DiagnosticContractProperties"));
         }
         if (sampling() != null) {
             sampling().validate();

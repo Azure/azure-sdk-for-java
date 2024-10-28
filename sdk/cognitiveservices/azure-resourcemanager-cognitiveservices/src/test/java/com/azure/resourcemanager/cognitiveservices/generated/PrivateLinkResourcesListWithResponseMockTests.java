@@ -30,40 +30,28 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"groupId\":\"disyirnxz\",\"requiredMembers\":[\"exrxzbujrtrhq\",\"wrevkhgnlnzon\",\"lrpiqywnc\"],\"requiredZoneNames\":[\"szcofizeht\",\"hgbjkvrelje\",\"murvzm\",\"ov\"],\"displayName\":\"nashcxlp\"},\"id\":\"jerbdkelvidizozs\",\"name\":\"bccxjmonfdgn\",\"type\":\"n\"},{\"properties\":{\"groupId\":\"uuwwltv\",\"requiredMembers\":[\"ctzenkeifzzhmkd\",\"svflyhbxcudch\",\"gsrboldforobw\"],\"requiredZoneNames\":[\"izbfhfovvacq\",\"btuodxeszabbel\"],\"displayName\":\"umuaslzkwrrwoycq\"},\"id\":\"cwyhahno\",\"name\":\"drkywuhps\",\"type\":\"fuurutlwexx\"},{\"properties\":{\"groupId\":\"lniexz\",\"requiredMembers\":[\"pgepqtybbwwpgda\",\"chzyvlixqnrk\"],\"requiredZoneNames\":[\"jibnxmysu\",\"swqrntvlwijp\",\"ttexoqqpwcyyufmh\",\"uncuw\"],\"displayName\":\"spkcdqzh\"},\"id\":\"ctddun\",\"name\":\"ndy\",\"type\":\"pchrqbn\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"groupId\":\"disyirnxz\",\"requiredMembers\":[\"exrxzbujrtrhq\",\"wrevkhgnlnzon\",\"lrpiqywnc\"],\"requiredZoneNames\":[\"szcofizeht\",\"hgbjkvrelje\",\"murvzm\",\"ov\"],\"displayName\":\"nashcxlp\"},\"id\":\"jerbdkelvidizozs\",\"name\":\"bccxjmonfdgn\",\"type\":\"n\"},{\"properties\":{\"groupId\":\"uuwwltv\",\"requiredMembers\":[\"ctzenkeifzzhmkd\",\"svflyhbxcudch\",\"gsrboldforobw\"],\"requiredZoneNames\":[\"izbfhfovvacq\",\"btuodxeszabbel\"],\"displayName\":\"umuaslzkwrrwoycq\"},\"id\":\"cwyhahno\",\"name\":\"drkywuhps\",\"type\":\"fuurutlwexx\"},{\"properties\":{\"groupId\":\"lniexz\",\"requiredMembers\":[\"pgepqtybbwwpgda\",\"chzyvlixqnrk\"],\"requiredZoneNames\":[\"jibnxmysu\",\"swqrntvlwijp\",\"ttexoqqpwcyyufmh\",\"uncuw\"],\"displayName\":\"spkcdqzh\"},\"id\":\"ctddun\",\"name\":\"ndy\",\"type\":\"pchrqbn\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CognitiveServicesManager manager =
-            CognitiveServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CognitiveServicesManager manager = CognitiveServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrivateLinkResourceListResult response =
-            manager
-                .privateLinkResources()
-                .listWithResponse("dlcgqlsismjqfr", "dgamquhiosrsj", com.azure.core.util.Context.NONE)
-                .getValue();
+        PrivateLinkResourceListResult response = manager.privateLinkResources()
+            .listWithResponse("dlcgqlsismjqfr", "dgamquhiosrsj", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("szcofizeht", response.value().get(0).properties().requiredZoneNames().get(0));
     }

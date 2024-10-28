@@ -34,50 +34,35 @@ public final class SignalRReplicasCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"sku\":{\"name\":\"xltbsjuscvsf\",\"tier\":\"Premium\",\"size\":\"tmgxuupbezqcc\",\"family\":\"rtceukdqkkyihzt\",\"capacity\":277174049},\"properties\":{\"provisioningState\":\"Succeeded\",\"regionEndpointEnabled\":\"gwldo\",\"resourceStopped\":\"hillce\"},\"location\":\"ehuwaoa\",\"tags\":{\"lizst\":\"icq\"},\"id\":\"csjvhrwef\",\"name\":\"kwqejpmvsseh\",\"type\":\"epwamcxtcz\"}";
+        String responseStr
+            = "{\"sku\":{\"name\":\"xltbsjuscvsf\",\"tier\":\"Premium\",\"size\":\"tmgxuupbezqcc\",\"family\":\"rtceukdqkkyihzt\",\"capacity\":277174049},\"properties\":{\"provisioningState\":\"Succeeded\",\"regionEndpointEnabled\":\"gwldo\",\"resourceStopped\":\"hillce\"},\"location\":\"ehuwaoa\",\"tags\":{\"lizst\":\"icq\"},\"id\":\"csjvhrwef\",\"name\":\"kwqejpmvsseh\",\"type\":\"epwamcxtcz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SignalRManager manager =
-            SignalRManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SignalRManager manager = SignalRManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Replica response =
-            manager
-                .signalRReplicas()
-                .define("xkyctwwgzwx")
-                .withRegion("idbz")
-                .withExistingSignalR("kiexhajlfnthiq", "yuttdiygbpvnwswm")
-                .withTags(mapOf("nkbw", "qtfbovn", "ccxnafbwqroohtuo", "tnjuhpsprkzyaupi"))
-                .withSku(
-                    new ResourceSku()
-                        .withName("mecvogygzyvneeza")
-                        .withTier(SignalRSkuTier.FREE)
-                        .withCapacity(1220341853))
-                .withRegionEndpointEnabled("hnqoewdo")
-                .withResourceStopped("yetesy")
-                .create();
+        Replica response = manager.signalRReplicas()
+            .define("xkyctwwgzwx")
+            .withRegion("idbz")
+            .withExistingSignalR("kiexhajlfnthiq", "yuttdiygbpvnwswm")
+            .withTags(mapOf("nkbw", "qtfbovn", "ccxnafbwqroohtuo", "tnjuhpsprkzyaupi"))
+            .withSku(
+                new ResourceSku().withName("mecvogygzyvneeza").withTier(SignalRSkuTier.FREE).withCapacity(1220341853))
+            .withRegionEndpointEnabled("hnqoewdo")
+            .withResourceStopped("yetesy")
+            .create();
 
         Assertions.assertEquals("ehuwaoa", response.location());
         Assertions.assertEquals("icq", response.tags().get("lizst"));

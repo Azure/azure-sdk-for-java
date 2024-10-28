@@ -12,8 +12,8 @@ public final class NameAvailabilityImpl implements NameAvailability {
 
     private final com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager;
 
-    NameAvailabilityImpl(
-        NameAvailabilityInner innerObject, com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
+    NameAvailabilityImpl(NameAvailabilityInner innerObject,
+        com.azure.resourcemanager.postgresql.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

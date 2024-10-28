@@ -100,10 +100,8 @@ public final class TransferAllDetails {
      */
     public void validate() {
         if (dataAccountType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataAccountType in model TransferAllDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property dataAccountType in model TransferAllDetails"));
         }
     }
 

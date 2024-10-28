@@ -33,8 +33,8 @@ public interface ResourceProvidersClient {
      *     tier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SapSizingRecommendationResultInner> sapSizingRecommendationsWithResponse(
-        String location, SapSizingRecommendationRequest sapSizingRecommendation, Context context);
+    Response<SapSizingRecommendationResultInner> sapSizingRecommendationsWithResponse(String location,
+        SapSizingRecommendationRequest sapSizingRecommendation, Context context);
 
     /**
      * Get SAP sizing recommendations by providing input SAPS for application tier and memory required for database
@@ -62,8 +62,8 @@ public interface ResourceProvidersClient {
      * @return a list of SAP supported SKUs for ASCS, Application and Database tier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SapSupportedResourceSkusResultInner> sapSupportedSkuWithResponse(
-        String location, SapSupportedSkusRequest sapSupportedSku, Context context);
+    Response<SapSupportedResourceSkusResultInner> sapSupportedSkuWithResponse(String location,
+        SapSupportedSkusRequest sapSupportedSku, Context context);
 
     /**
      * Get a list of SAP supported SKUs for ASCS, Application and Database tier.
@@ -89,8 +89,8 @@ public interface ResourceProvidersClient {
      * @return the SAP Disk Configuration Layout prod/non-prod SAP System along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SapDiskConfigurationsResultInner> sapDiskConfigurationsWithResponse(
-        String location, SapDiskConfigurationsRequest sapDiskConfigurations, Context context);
+    Response<SapDiskConfigurationsResultInner> sapDiskConfigurationsWithResponse(String location,
+        SapDiskConfigurationsRequest sapDiskConfigurations, Context context);
 
     /**
      * Get the SAP Disk Configuration Layout prod/non-prod SAP System.
@@ -116,8 +116,8 @@ public interface ResourceProvidersClient {
      * @return the recommended SAP Availability Zone Pair Details for your region along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SapAvailabilityZoneDetailsResultInner> sapAvailabilityZoneDetailsWithResponse(
-        String location, SapAvailabilityZoneDetailsRequest sapAvailabilityZoneDetails, Context context);
+    Response<SapAvailabilityZoneDetailsResultInner> sapAvailabilityZoneDetailsWithResponse(String location,
+        SapAvailabilityZoneDetailsRequest sapAvailabilityZoneDetails, Context context);
 
     /**
      * Get the recommended SAP Availability Zone Pair Details for your region.

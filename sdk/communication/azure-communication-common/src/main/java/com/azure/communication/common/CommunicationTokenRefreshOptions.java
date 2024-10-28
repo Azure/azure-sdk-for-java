@@ -47,7 +47,8 @@ public final class CommunicationTokenRefreshOptions {
      *             {@link #setInitialToken(String)}
      */
     @Deprecated
-    public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher, boolean refreshProactively, String initialToken) {
+    public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher, boolean refreshProactively,
+        String initialToken) {
         Objects.requireNonNull(tokenRefresher, "'tokenRefresher' cannot be null.");
         this.asyncTokenRefresher = tokenRefresher;
         this.tokenRefresher = null;

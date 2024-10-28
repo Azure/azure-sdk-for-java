@@ -104,20 +104,16 @@ public final class CertificateInformation {
      */
     public void validate() {
         if (expiry() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property expiry in model CertificateInformation"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property expiry in model CertificateInformation"));
         }
         if (thumbprint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property thumbprint in model CertificateInformation"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property thumbprint in model CertificateInformation"));
         }
         if (subject() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property subject in model CertificateInformation"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property subject in model CertificateInformation"));
         }
     }
 

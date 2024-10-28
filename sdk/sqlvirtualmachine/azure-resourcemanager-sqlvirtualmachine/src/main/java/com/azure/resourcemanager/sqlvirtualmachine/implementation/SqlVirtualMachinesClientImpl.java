@@ -55,8 +55,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @param client the instance of the service client containing this operation class.
      */
     SqlVirtualMachinesClientImpl(SqlVirtualMachineManagementClientImpl client) {
-        this.service =
-            RestProxy.create(SqlVirtualMachinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SqlVirtualMachinesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,160 +67,118 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
     @Host("{$host}")
     @ServiceInterface(name = "SqlVirtualMachineMan")
     public interface SqlVirtualMachinesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/sqlVirtualMachines")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachineGroups/{sqlVirtualMachineGroupName}/sqlVirtualMachines")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlVirtualMachineListResult>> listBySqlVmGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SqlVirtualMachineListResult>> listBySqlVmGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sqlVirtualMachineGroupName") String sqlVirtualMachineGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlVirtualMachineListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SqlVirtualMachineListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlVirtualMachineInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SqlVirtualMachineInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("sqlVirtualMachineName") String sqlVirtualMachineName, @QueryParam("$expand") String expand,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sqlVirtualMachineName") String sqlVirtualMachineName,
-            @QueryParam("$expand") String expand,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SqlVirtualMachineInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sqlVirtualMachineName") String sqlVirtualMachineName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SqlVirtualMachineInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sqlVirtualMachineName") String sqlVirtualMachineName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SqlVirtualMachineUpdate parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SqlVirtualMachineListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/startAssessment")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> startAssessment(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sqlVirtualMachineName") String sqlVirtualMachineName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SqlVirtualMachineUpdate parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/redeploy")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlVirtualMachineListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/startAssessment")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> startAssessment(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> redeploy(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sqlVirtualMachineName") String sqlVirtualMachineName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/redeploy")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> redeploy(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("sqlVirtualMachineName") String sqlVirtualMachineName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SqlVirtualMachineListResult>> listBySqlVmGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SqlVirtualMachineListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SqlVirtualMachineListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -236,52 +194,29 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlVirtualMachineInner>> listBySqlVmGroupSinglePageAsync(
-        String resourceGroupName, String sqlVirtualMachineGroupName) {
+    private Mono<PagedResponse<SqlVirtualMachineInner>> listBySqlVmGroupSinglePageAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlVirtualMachineGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sqlVirtualMachineGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlVirtualMachineGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySqlVmGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            sqlVirtualMachineGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<SqlVirtualMachineInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listBySqlVmGroup(this.client.getEndpoint(), resourceGroupName,
+            sqlVirtualMachineGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<SqlVirtualMachineInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -299,50 +234,31 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlVirtualMachineInner>> listBySqlVmGroupSinglePageAsync(
-        String resourceGroupName, String sqlVirtualMachineGroupName, Context context) {
+    private Mono<PagedResponse<SqlVirtualMachineInner>> listBySqlVmGroupSinglePageAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (sqlVirtualMachineGroupName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sqlVirtualMachineGroupName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sqlVirtualMachineGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySqlVmGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                sqlVirtualMachineGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listBySqlVmGroup(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -358,10 +274,9 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SqlVirtualMachineInner> listBySqlVmGroupAsync(
-        String resourceGroupName, String sqlVirtualMachineGroupName) {
-        return new PagedFlux<>(
-            () -> listBySqlVmGroupSinglePageAsync(resourceGroupName, sqlVirtualMachineGroupName),
+    private PagedFlux<SqlVirtualMachineInner> listBySqlVmGroupAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName) {
+        return new PagedFlux<>(() -> listBySqlVmGroupSinglePageAsync(resourceGroupName, sqlVirtualMachineGroupName),
             nextLink -> listBySqlVmGroupNextSinglePageAsync(nextLink));
     }
 
@@ -379,8 +294,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SqlVirtualMachineInner> listBySqlVmGroupAsync(
-        String resourceGroupName, String sqlVirtualMachineGroupName, Context context) {
+    private PagedFlux<SqlVirtualMachineInner> listBySqlVmGroupAsync(String resourceGroupName,
+        String sqlVirtualMachineGroupName, Context context) {
         return new PagedFlux<>(
             () -> listBySqlVmGroupSinglePageAsync(resourceGroupName, sqlVirtualMachineGroupName, context),
             nextLink -> listBySqlVmGroupNextSinglePageAsync(nextLink, context));
@@ -399,8 +314,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlVirtualMachineInner> listBySqlVmGroup(
-        String resourceGroupName, String sqlVirtualMachineGroupName) {
+    public PagedIterable<SqlVirtualMachineInner> listBySqlVmGroup(String resourceGroupName,
+        String sqlVirtualMachineGroupName) {
         return new PagedIterable<>(listBySqlVmGroupAsync(resourceGroupName, sqlVirtualMachineGroupName));
     }
 
@@ -418,8 +333,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlVirtualMachineInner> listBySqlVmGroup(
-        String resourceGroupName, String sqlVirtualMachineGroupName, Context context) {
+    public PagedIterable<SqlVirtualMachineInner> listBySqlVmGroup(String resourceGroupName,
+        String sqlVirtualMachineGroupName, Context context) {
         return new PagedIterable<>(listBySqlVmGroupAsync(resourceGroupName, sqlVirtualMachineGroupName, context));
     }
 
@@ -434,37 +349,19 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlVirtualMachineInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<SqlVirtualMachineInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<SqlVirtualMachineInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -481,35 +378,20 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlVirtualMachineInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -535,8 +417,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlVirtualMachineInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -578,13 +460,11 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a SQL virtual machine along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlVirtualMachineInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineName, String expand) {
+    private Mono<Response<SqlVirtualMachineInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -595,25 +475,14 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
                 .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            sqlVirtualMachineName,
-                            expand,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                sqlVirtualMachineName, expand, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -631,13 +500,11 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a SQL virtual machine along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlVirtualMachineInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineName, String expand, Context context) {
+    private Mono<Response<SqlVirtualMachineInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -648,23 +515,13 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
                 .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                sqlVirtualMachineName,
-                expand,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineName, expand,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -679,8 +536,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a SQL virtual machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlVirtualMachineInner> getByResourceGroupAsync(
-        String resourceGroupName, String sqlVirtualMachineName) {
+    private Mono<SqlVirtualMachineInner> getByResourceGroupAsync(String resourceGroupName,
+        String sqlVirtualMachineName) {
         final String expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, sqlVirtualMachineName, expand)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -700,8 +557,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a SQL virtual machine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlVirtualMachineInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String sqlVirtualMachineName, String expand, Context context) {
+    public Response<SqlVirtualMachineInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String sqlVirtualMachineName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, sqlVirtualMachineName, expand, context).block();
     }
 
@@ -736,13 +593,11 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a SQL virtual machine along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVirtualMachineInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -753,10 +608,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
                 .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -766,17 +619,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            sqlVirtualMachineName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineName,
+                    this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -794,13 +638,11 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a SQL virtual machine along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVirtualMachineInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -811,10 +653,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
                 .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -823,16 +663,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                sqlVirtualMachineName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -850,16 +682,11 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, sqlVirtualMachineName, parameters);
-        return this
-            .client
-            .<SqlVirtualMachineInner, SqlVirtualMachineInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SqlVirtualMachineInner.class,
-                SqlVirtualMachineInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, sqlVirtualMachineName, parameters);
+        return this.client.<SqlVirtualMachineInner, SqlVirtualMachineInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SqlVirtualMachineInner.class, SqlVirtualMachineInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -879,16 +706,10 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
     private PollerFlux<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, sqlVirtualMachineName, parameters, context);
-        return this
-            .client
-            .<SqlVirtualMachineInner, SqlVirtualMachineInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SqlVirtualMachineInner.class,
-                SqlVirtualMachineInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, sqlVirtualMachineName, parameters, context);
+        return this.client.<SqlVirtualMachineInner, SqlVirtualMachineInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SqlVirtualMachineInner.class, SqlVirtualMachineInner.class, context);
     }
 
     /**
@@ -904,8 +725,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link SyncPoller} for polling of a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginCreateOrUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters) {
+    public SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner>
+        beginCreateOrUpdate(String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, sqlVirtualMachineName, parameters).getSyncPoller();
     }
 
@@ -925,8 +746,7 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginCreateOrUpdate(
         String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, sqlVirtualMachineName, parameters, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, sqlVirtualMachineName, parameters, context)
             .getSyncPoller();
     }
 
@@ -943,10 +763,9 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a SQL virtual machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlVirtualMachineInner> createOrUpdateAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, sqlVirtualMachineName, parameters)
-            .last()
+    private Mono<SqlVirtualMachineInner> createOrUpdateAsync(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVirtualMachineInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, sqlVirtualMachineName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -964,10 +783,9 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a SQL virtual machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlVirtualMachineInner> createOrUpdateAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, sqlVirtualMachineName, parameters, context)
-            .last()
+    private Mono<SqlVirtualMachineInner> createOrUpdateAsync(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVirtualMachineInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, sqlVirtualMachineName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -984,8 +802,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlVirtualMachineInner createOrUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters) {
+    public SqlVirtualMachineInner createOrUpdate(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVirtualMachineInner parameters) {
         return createOrUpdateAsync(resourceGroupName, sqlVirtualMachineName, parameters).block();
     }
 
@@ -1003,8 +821,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlVirtualMachineInner createOrUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters, Context context) {
+    public SqlVirtualMachineInner createOrUpdate(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVirtualMachineInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, sqlVirtualMachineName, parameters, context).block();
     }
 
@@ -1020,13 +838,11 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1037,24 +853,13 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
                 .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            sqlVirtualMachineName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1071,13 +876,11 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1088,22 +891,13 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
                 .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                sqlVirtualMachineName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1118,13 +912,11 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String sqlVirtualMachineName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        String sqlVirtualMachineName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, sqlVirtualMachineName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1140,14 +932,13 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String sqlVirtualMachineName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String sqlVirtualMachineName,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, sqlVirtualMachineName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, sqlVirtualMachineName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1179,8 +970,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String sqlVirtualMachineName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sqlVirtualMachineName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, sqlVirtualMachineName, context).getSyncPoller();
     }
 
@@ -1197,8 +988,7 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String sqlVirtualMachineName) {
-        return beginDeleteAsync(resourceGroupName, sqlVirtualMachineName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, sqlVirtualMachineName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1216,8 +1006,7 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String sqlVirtualMachineName, Context context) {
-        return beginDeleteAsync(resourceGroupName, sqlVirtualMachineName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, sqlVirtualMachineName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1265,13 +1054,11 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a SQL virtual machine along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1282,10 +1069,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
                 .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1294,18 +1079,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            sqlVirtualMachineName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1323,13 +1098,11 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a SQL virtual machine along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1340,10 +1113,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
                 .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1352,16 +1123,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                sqlVirtualMachineName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -1377,18 +1140,13 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link PollerFlux} for polling of a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginUpdateAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, sqlVirtualMachineName, parameters);
-        return this
-            .client
-            .<SqlVirtualMachineInner, SqlVirtualMachineInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SqlVirtualMachineInner.class,
-                SqlVirtualMachineInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner>
+        beginUpdateAsync(String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, sqlVirtualMachineName, parameters);
+        return this.client.<SqlVirtualMachineInner, SqlVirtualMachineInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SqlVirtualMachineInner.class, SqlVirtualMachineInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -1408,16 +1166,10 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
     private PollerFlux<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginUpdateAsync(
         String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, sqlVirtualMachineName, parameters, context);
-        return this
-            .client
-            .<SqlVirtualMachineInner, SqlVirtualMachineInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SqlVirtualMachineInner.class,
-                SqlVirtualMachineInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, sqlVirtualMachineName, parameters, context);
+        return this.client.<SqlVirtualMachineInner, SqlVirtualMachineInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SqlVirtualMachineInner.class, SqlVirtualMachineInner.class, context);
     }
 
     /**
@@ -1433,8 +1185,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link SyncPoller} for polling of a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters) {
+    public SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginUpdate(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters) {
         return this.beginUpdateAsync(resourceGroupName, sqlVirtualMachineName, parameters).getSyncPoller();
     }
 
@@ -1452,8 +1204,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link SyncPoller} for polling of a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters, Context context) {
+    public SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginUpdate(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, sqlVirtualMachineName, parameters, context).getSyncPoller();
     }
 
@@ -1470,10 +1222,9 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a SQL virtual machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlVirtualMachineInner> updateAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, sqlVirtualMachineName, parameters)
-            .last()
+    private Mono<SqlVirtualMachineInner> updateAsync(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVirtualMachineUpdate parameters) {
+        return beginUpdateAsync(resourceGroupName, sqlVirtualMachineName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1491,10 +1242,9 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a SQL virtual machine on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlVirtualMachineInner> updateAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, sqlVirtualMachineName, parameters, context)
-            .last()
+    private Mono<SqlVirtualMachineInner> updateAsync(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVirtualMachineUpdate parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, sqlVirtualMachineName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1511,8 +1261,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlVirtualMachineInner update(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters) {
+    public SqlVirtualMachineInner update(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVirtualMachineUpdate parameters) {
         return updateAsync(resourceGroupName, sqlVirtualMachineName, parameters).block();
     }
 
@@ -1530,8 +1280,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlVirtualMachineInner update(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters, Context context) {
+    public SqlVirtualMachineInner update(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVirtualMachineUpdate parameters, Context context) {
         return updateAsync(resourceGroupName, sqlVirtualMachineName, parameters, context).block();
     }
 
@@ -1549,42 +1299,23 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlVirtualMachineInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<SqlVirtualMachineInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<SqlVirtualMachineInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1601,43 +1332,27 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlVirtualMachineInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<SqlVirtualMachineInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1652,8 +1367,7 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlVirtualMachineInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -1670,8 +1384,7 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlVirtualMachineInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -1718,13 +1431,11 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startAssessmentWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineName) {
+    private Mono<Response<Flux<ByteBuffer>>> startAssessmentWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1735,24 +1446,13 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
                 .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .startAssessment(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            sqlVirtualMachineName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.startAssessment(this.client.getEndpoint(), resourceGroupName,
+                sqlVirtualMachineName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1769,13 +1469,11 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startAssessmentWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> startAssessmentWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1786,22 +1484,13 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
                 .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .startAssessment(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                sqlVirtualMachineName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.startAssessment(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1816,14 +1505,12 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAssessmentAsync(
-        String resourceGroupName, String sqlVirtualMachineName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startAssessmentWithResponseAsync(resourceGroupName, sqlVirtualMachineName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginStartAssessmentAsync(String resourceGroupName,
+        String sqlVirtualMachineName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = startAssessmentWithResponseAsync(resourceGroupName, sqlVirtualMachineName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1839,14 +1526,13 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginStartAssessmentAsync(
-        String resourceGroupName, String sqlVirtualMachineName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStartAssessmentAsync(String resourceGroupName,
+        String sqlVirtualMachineName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            startAssessmentWithResponseAsync(resourceGroupName, sqlVirtualMachineName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = startAssessmentWithResponseAsync(resourceGroupName, sqlVirtualMachineName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1861,8 +1547,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartAssessment(
-        String resourceGroupName, String sqlVirtualMachineName) {
+    public SyncPoller<PollResult<Void>, Void> beginStartAssessment(String resourceGroupName,
+        String sqlVirtualMachineName) {
         return this.beginStartAssessmentAsync(resourceGroupName, sqlVirtualMachineName).getSyncPoller();
     }
 
@@ -1879,8 +1565,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginStartAssessment(
-        String resourceGroupName, String sqlVirtualMachineName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginStartAssessment(String resourceGroupName,
+        String sqlVirtualMachineName, Context context) {
         return this.beginStartAssessmentAsync(resourceGroupName, sqlVirtualMachineName, context).getSyncPoller();
     }
 
@@ -1897,8 +1583,7 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAssessmentAsync(String resourceGroupName, String sqlVirtualMachineName) {
-        return beginStartAssessmentAsync(resourceGroupName, sqlVirtualMachineName)
-            .last()
+        return beginStartAssessmentAsync(resourceGroupName, sqlVirtualMachineName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1916,8 +1601,7 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAssessmentAsync(String resourceGroupName, String sqlVirtualMachineName, Context context) {
-        return beginStartAssessmentAsync(resourceGroupName, sqlVirtualMachineName, context)
-            .last()
+        return beginStartAssessmentAsync(resourceGroupName, sqlVirtualMachineName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1964,13 +1648,11 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> redeployWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineName) {
+    private Mono<Response<Flux<ByteBuffer>>> redeployWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1981,24 +1663,13 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
                 .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .redeploy(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            sqlVirtualMachineName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.redeploy(this.client.getEndpoint(), resourceGroupName,
+                sqlVirtualMachineName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2015,13 +1686,11 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> redeployWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> redeployWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2032,22 +1701,13 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
                 .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .redeploy(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                sqlVirtualMachineName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.redeploy(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -2062,13 +1722,11 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRedeployAsync(
-        String resourceGroupName, String sqlVirtualMachineName) {
+    private PollerFlux<PollResult<Void>, Void> beginRedeployAsync(String resourceGroupName,
+        String sqlVirtualMachineName) {
         Mono<Response<Flux<ByteBuffer>>> mono = redeployWithResponseAsync(resourceGroupName, sqlVirtualMachineName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -2084,14 +1742,13 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginRedeployAsync(
-        String resourceGroupName, String sqlVirtualMachineName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRedeployAsync(String resourceGroupName,
+        String sqlVirtualMachineName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            redeployWithResponseAsync(resourceGroupName, sqlVirtualMachineName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = redeployWithResponseAsync(resourceGroupName, sqlVirtualMachineName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -2123,8 +1780,8 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginRedeploy(
-        String resourceGroupName, String sqlVirtualMachineName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginRedeploy(String resourceGroupName, String sqlVirtualMachineName,
+        Context context) {
         return this.beginRedeployAsync(resourceGroupName, sqlVirtualMachineName, context).getSyncPoller();
     }
 
@@ -2141,8 +1798,7 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> redeployAsync(String resourceGroupName, String sqlVirtualMachineName) {
-        return beginRedeployAsync(resourceGroupName, sqlVirtualMachineName)
-            .last()
+        return beginRedeployAsync(resourceGroupName, sqlVirtualMachineName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2160,8 +1816,7 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> redeployAsync(String resourceGroupName, String sqlVirtualMachineName, Context context) {
-        return beginRedeployAsync(resourceGroupName, sqlVirtualMachineName, context)
-            .last()
+        return beginRedeployAsync(resourceGroupName, sqlVirtualMachineName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2212,23 +1867,14 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listBySqlVmGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SqlVirtualMachineInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SqlVirtualMachineInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2244,30 +1890,20 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a list of SQL virtual machines along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlVirtualMachineInner>> listBySqlVmGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SqlVirtualMachineInner>> listBySqlVmGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySqlVmGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySqlVmGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2286,23 +1922,13 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SqlVirtualMachineInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SqlVirtualMachineInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2323,24 +1949,14 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2359,24 +1975,15 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SqlVirtualMachineInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SqlVirtualMachineInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2392,29 +1999,19 @@ public final class SqlVirtualMachinesClientImpl implements SqlVirtualMachinesCli
      * @return a list of SQL virtual machines along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlVirtualMachineInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SqlVirtualMachineInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

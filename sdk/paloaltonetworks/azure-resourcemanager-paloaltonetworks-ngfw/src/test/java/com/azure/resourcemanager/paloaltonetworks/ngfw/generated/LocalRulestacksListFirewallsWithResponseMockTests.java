@@ -43,12 +43,14 @@ public final class LocalRulestacksListFirewallsWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ListFirewallsResponse response = manager.localRulestacks()
-            .listFirewallsWithResponse("iw", "wxlboncqbazqicq", com.azure.core.util.Context.NONE).getValue();
+            .listFirewallsWithResponse("iw", "wxlboncqbazqicq", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("ygtvxbyjanepub", response.value().get(0));
         Assertions.assertEquals("detv", response.nextLink());

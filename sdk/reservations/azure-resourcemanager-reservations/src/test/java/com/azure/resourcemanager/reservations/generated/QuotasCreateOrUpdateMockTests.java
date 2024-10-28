@@ -33,48 +33,34 @@ public final class QuotasCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"limit\":800106977,\"currentValue\":457679085,\"unit\":\"y\",\"name\":{\"value\":\"yavluwmncstt\",\"localizedValue\":\"fybvpoek\"},\"resourceType\":\"lowPriority\",\"quotaPeriod\":\"gbdhuzqgnjdg\",\"properties\":\"datanscliqhzvhxnk\"},\"id\":\"mtk\",\"name\":\"bo\",\"type\":\"ppnvdxz\"}";
+        String responseStr
+            = "{\"properties\":{\"limit\":800106977,\"currentValue\":457679085,\"unit\":\"y\",\"name\":{\"value\":\"yavluwmncstt\",\"localizedValue\":\"fybvpoek\"},\"resourceType\":\"lowPriority\",\"quotaPeriod\":\"gbdhuzqgnjdg\",\"properties\":\"datanscliqhzvhxnk\"},\"id\":\"mtk\",\"name\":\"bo\",\"type\":\"ppnvdxz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ReservationsManager manager =
-            ReservationsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ReservationsManager manager = ReservationsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CurrentQuotaLimitBase response =
-            manager
-                .quotas()
-                .define("irclnpk")
-                .withExistingLocation("gzuriglaecxndt", "cokpv", "mlqtmldgxob")
-                .withProperties(
-                    new QuotaProperties()
-                        .withLimit(1931804941)
-                        .withUnit("ykhyawfvjlboxqvk")
-                        .withName(new ResourceName().withValue("xhom"))
-                        .withResourceType(ResourceType.DEDICATED)
-                        .withProperties("dataa"))
-                .create();
+        CurrentQuotaLimitBase response = manager.quotas()
+            .define("irclnpk")
+            .withExistingLocation("gzuriglaecxndt", "cokpv", "mlqtmldgxob")
+            .withProperties(new QuotaProperties().withLimit(1931804941)
+                .withUnit("ykhyawfvjlboxqvk")
+                .withName(new ResourceName().withValue("xhom"))
+                .withResourceType(ResourceType.DEDICATED)
+                .withProperties("dataa"))
+            .create();
 
         Assertions.assertEquals(800106977, response.properties().limit());
         Assertions.assertEquals("y", response.properties().unit());

@@ -159,16 +159,20 @@ public final class NotificationHubResourceImpl
     }
 
     public NotificationHubResource create() {
-        this.innerObject
-            = serviceManager.serviceClient().getNotificationHubs().createOrUpdateWithResponse(resourceGroupName,
-                namespaceName, notificationHubName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .createOrUpdateWithResponse(resourceGroupName, namespaceName, notificationHubName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public NotificationHubResource create(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getNotificationHubs().createOrUpdateWithResponse(resourceGroupName,
-                namespaceName, notificationHubName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .createOrUpdateWithResponse(resourceGroupName, namespaceName, notificationHubName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -185,14 +189,16 @@ public final class NotificationHubResourceImpl
     }
 
     public NotificationHubResource apply() {
-        this.innerObject = serviceManager.serviceClient().getNotificationHubs()
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
             .updateWithResponse(resourceGroupName, namespaceName, notificationHubName, updateParameters, Context.NONE)
             .getValue();
         return this;
     }
 
     public NotificationHubResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNotificationHubs()
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
             .updateWithResponse(resourceGroupName, namespaceName, notificationHubName, updateParameters, context)
             .getValue();
         return this;
@@ -208,20 +214,24 @@ public final class NotificationHubResourceImpl
     }
 
     public NotificationHubResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getNotificationHubs()
-            .getWithResponse(resourceGroupName, namespaceName, notificationHubName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .getWithResponse(resourceGroupName, namespaceName, notificationHubName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NotificationHubResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNotificationHubs()
-            .getWithResponse(resourceGroupName, namespaceName, notificationHubName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationHubs()
+            .getWithResponse(resourceGroupName, namespaceName, notificationHubName, context)
+            .getValue();
         return this;
     }
 
     public Response<DebugSendResponse> debugSendWithResponse(Context context) {
-        return serviceManager.notificationHubs().debugSendWithResponse(resourceGroupName, namespaceName,
-            notificationHubName, context);
+        return serviceManager.notificationHubs()
+            .debugSendWithResponse(resourceGroupName, namespaceName, notificationHubName, context);
     }
 
     public DebugSendResponse debugSend() {
@@ -229,13 +239,13 @@ public final class NotificationHubResourceImpl
     }
 
     public Response<PnsCredentialsResource> getPnsCredentialsWithResponse(Context context) {
-        return serviceManager.notificationHubs().getPnsCredentialsWithResponse(resourceGroupName, namespaceName,
-            notificationHubName, context);
+        return serviceManager.notificationHubs()
+            .getPnsCredentialsWithResponse(resourceGroupName, namespaceName, notificationHubName, context);
     }
 
     public PnsCredentialsResource getPnsCredentials() {
-        return serviceManager.notificationHubs().getPnsCredentials(resourceGroupName, namespaceName,
-            notificationHubName);
+        return serviceManager.notificationHubs()
+            .getPnsCredentials(resourceGroupName, namespaceName, notificationHubName);
     }
 
     public NotificationHubResourceImpl withRegion(Region location) {

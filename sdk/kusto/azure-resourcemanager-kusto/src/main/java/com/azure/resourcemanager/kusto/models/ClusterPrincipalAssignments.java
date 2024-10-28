@@ -22,11 +22,8 @@ public interface ClusterPrincipalAssignments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response}.
      */
-    Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName,
-        Context context);
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName, Context context);
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
@@ -39,9 +36,7 @@ public interface ClusterPrincipalAssignments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request.
      */
-    CheckNameResult checkNameAvailability(
-        String resourceGroupName,
-        String clusterName,
+    CheckNameResult checkNameAvailability(String resourceGroupName, String clusterName,
         ClusterPrincipalAssignmentCheckNameRequest principalAssignmentName);
 
     /**
@@ -56,8 +51,8 @@ public interface ClusterPrincipalAssignments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kusto cluster principalAssignment along with {@link Response}.
      */
-    Response<ClusterPrincipalAssignment> getWithResponse(
-        String resourceGroupName, String clusterName, String principalAssignmentName, Context context);
+    Response<ClusterPrincipalAssignment> getWithResponse(String resourceGroupName, String clusterName,
+        String principalAssignmentName, Context context);
 
     /**
      * Gets a Kusto cluster principalAssignment.

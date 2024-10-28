@@ -110,11 +110,12 @@ public class EventProcessorClient {
      */
     EventProcessorClient(EventHubClientBuilder eventHubClientBuilder,
         Supplier<PartitionProcessor> partitionProcessorFactory, CheckpointStore checkpointStore,
-        Consumer<ErrorContext> processError, Tracer tracer, Meter meter, EventProcessorClientOptions processorClientOptions) {
+        Consumer<ErrorContext> processError, Tracer tracer, Meter meter,
+        EventProcessorClientOptions processorClientOptions) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
-        this.processorClientOptions = Objects.requireNonNull(processorClientOptions,
-            "processorClientOptions cannot be null.");
+        this.processorClientOptions
+            = Objects.requireNonNull(processorClientOptions, "processorClientOptions cannot be null.");
 
         Objects.requireNonNull(processorClientOptions.getConsumerGroup(), "'consumerGroup' cannot be null.");
         Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null.");
@@ -132,8 +133,8 @@ public class EventProcessorClient {
         this.consumerGroup = processorClientOptions.getConsumerGroup().toLowerCase(Locale.ROOT);
         this.loadBalancerUpdateInterval = processorClientOptions.getLoadBalancerUpdateInterval();
 
-        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(
-            tracer, meter, fullyQualifiedNamespace, eventHubName, consumerGroup, true);
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
+            fullyQualifiedNamespace, eventHubName, consumerGroup, true);
 
         Objects.requireNonNull(checkpointStore, "checkpointStore cannot be null");
         this.checkpointStore = InstrumentedCheckpointStore.create(checkpointStore, instrumentation);
@@ -141,11 +142,10 @@ public class EventProcessorClient {
         this.partitionPumpManager = new PartitionPumpManager(this.checkpointStore, partitionProcessorFactory,
             eventHubClientBuilder, instrumentation, processorClientOptions);
 
-        this.partitionBasedLoadBalancer =
-            new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
-                this.fullyQualifiedNamespace, this.eventHubName, this.consumerGroup, this.identifier,
-                processorClientOptions.getPartitionOwnershipExpirationInterval().getSeconds(), this.partitionPumpManager,
-                processError, processorClientOptions.getLoadBalancingStrategy());
+        this.partitionBasedLoadBalancer = new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
+            this.fullyQualifiedNamespace, this.eventHubName, this.consumerGroup, this.identifier,
+            processorClientOptions.getPartitionOwnershipExpirationInterval().getSeconds(), this.partitionPumpManager,
+            processError, processorClientOptions.getLoadBalancingStrategy());
     }
 
     /**
@@ -245,11 +245,12 @@ public class EventProcessorClient {
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         scheduler.set(executor);
         // Add a bit of jitter to initialDelay to minimize contention if multiple EventProcessors start at the same time
-        Double jitterInMillis =
-            ThreadLocalRandom.current().nextDouble() * TimeUnit.SECONDS.toMillis(BASE_JITTER_IN_SECONDS);
+        Double jitterInMillis
+            = ThreadLocalRandom.current().nextDouble() * TimeUnit.SECONDS.toMillis(BASE_JITTER_IN_SECONDS);
 
-        runner.set(scheduler.get().scheduleWithFixedDelay(partitionBasedLoadBalancer::loadBalance,
-            jitterInMillis.longValue(), loadBalancerUpdateInterval.toMillis(), TimeUnit.MILLISECONDS));
+        runner.set(scheduler.get()
+            .scheduleWithFixedDelay(partitionBasedLoadBalancer::loadBalance, jitterInMillis.longValue(),
+                loadBalancerUpdateInterval.toMillis(), TimeUnit.MILLISECONDS));
     }
 
     /**
@@ -326,17 +327,15 @@ public class EventProcessorClient {
         runner.get().cancel(true);
 
         Mono<Boolean> awaitScheduler = Mono.fromRunnable(() -> shutdownWithAwait(scheduler.get(), timeout.toMillis()));
-        Flux<PartitionOwnership> clearOwnership =
-            checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup)
+        Flux<PartitionOwnership> clearOwnership
+            = checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup)
                 .filter(ownership -> identifier.equals(ownership.getOwnerId()))
                 .map(ownership -> ownership.setOwnerId(""))
                 .collect(Collectors.toList())
                 .flatMapMany(p -> checkpointStore.claimOwnership(p).onErrorResume(ex -> Mono.empty()));
 
-        Mono.when(awaitScheduler,
-                partitionPumpManager.stopAllPartitionPumps().onErrorResume(ex -> Mono.empty()),
-                clearOwnership.onErrorResume(ex -> Mono.empty()))
-            .block(timeout);
+        Mono.when(awaitScheduler, partitionPumpManager.stopAllPartitionPumps().onErrorResume(ex -> Mono.empty()),
+            clearOwnership.onErrorResume(ex -> Mono.empty())).block(timeout);
     }
 
     /**

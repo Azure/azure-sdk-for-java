@@ -76,9 +76,8 @@ public final class GuestAgentList {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model GuestAgentList"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model GuestAgentList"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -28,8 +28,8 @@ public class SamplePartitionProcessor implements IEventProcessor {
     private final AtomicBoolean isStopped = new AtomicBoolean();
     private EventPerfTest<EventHubsPerfStressOptions> perfInstance;
 
-    public SamplePartitionProcessor() {}
-
+    public SamplePartitionProcessor() {
+    }
 
     public SamplePartitionProcessor(EventPerfTest<EventHubsPerfStressOptions> perfInstance) {
         this.perfInstance = perfInstance;

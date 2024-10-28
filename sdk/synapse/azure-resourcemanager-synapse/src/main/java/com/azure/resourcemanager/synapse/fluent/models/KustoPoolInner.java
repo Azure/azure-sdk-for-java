@@ -261,9 +261,8 @@ public final class KustoPoolInner extends Resource {
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model KustoPoolInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sku in model KustoPoolInner"));
         } else {
             sku().validate();
         }

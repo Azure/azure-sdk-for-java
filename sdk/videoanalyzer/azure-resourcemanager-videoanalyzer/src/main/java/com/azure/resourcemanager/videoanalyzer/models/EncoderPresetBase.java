@@ -21,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("EncoderPresetBase")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.EncoderSystemPreset", value = EncoderSystemPreset.class),
-    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.EncoderCustomPreset", value = EncoderCustomPreset.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.EncoderCustomPreset", value = EncoderCustomPreset.class) })
 @Immutable
 public class EncoderPresetBase {
     /**

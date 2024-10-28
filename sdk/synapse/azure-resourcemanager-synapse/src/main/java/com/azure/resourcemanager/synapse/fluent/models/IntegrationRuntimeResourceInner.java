@@ -52,10 +52,8 @@ public final class IntegrationRuntimeResourceInner extends EntityResource {
     public void validate() {
         super.validate();
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model IntegrationRuntimeResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model IntegrationRuntimeResourceInner"));
         } else {
             properties().validate();
         }

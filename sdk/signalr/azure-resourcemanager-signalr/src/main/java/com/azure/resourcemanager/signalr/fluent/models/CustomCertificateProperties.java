@@ -116,16 +116,12 @@ public final class CustomCertificateProperties {
      */
     public void validate() {
         if (keyVaultBaseUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultBaseUri in model CustomCertificateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyVaultBaseUri in model CustomCertificateProperties"));
         }
         if (keyVaultSecretName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultSecretName in model CustomCertificateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyVaultSecretName in model CustomCertificateProperties"));
         }
     }
 

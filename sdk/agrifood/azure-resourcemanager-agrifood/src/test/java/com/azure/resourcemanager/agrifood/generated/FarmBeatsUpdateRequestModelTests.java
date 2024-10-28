@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Test;
 public final class FarmBeatsUpdateRequestModelTests {
     @Test
     public void testDeserialize() {
-        FarmBeatsUpdateRequestModel model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"ysh\",\"identity\":{\"principalId\":\"afbljjgpbtoqcjmk\",\"tenantId\":\"a\",\"type\":\"SystemAssigned\"},\"properties\":{\"sensorIntegration\":{\"enabled\":\"qajzyulpkudjkr\",\"provisioningState\":\"Creating\"},\"publicNetworkAccess\":\"Hybrid\"},\"tags\":{\"xzlocxscp\":\"pgzgq\",\"j\":\"ierhhbcsglummaj\",\"jionpimexgstxgc\":\"odxobnbdxkqpxok\"}}")
-                .toObject(FarmBeatsUpdateRequestModel.class);
+        FarmBeatsUpdateRequestModel model = BinaryData.fromString(
+            "{\"location\":\"ysh\",\"identity\":{\"principalId\":\"afbljjgpbtoqcjmk\",\"tenantId\":\"a\",\"type\":\"SystemAssigned\"},\"properties\":{\"sensorIntegration\":{\"enabled\":\"qajzyulpkudjkr\",\"provisioningState\":\"Creating\"},\"publicNetworkAccess\":\"Hybrid\"},\"tags\":{\"xzlocxscp\":\"pgzgq\",\"j\":\"ierhhbcsglummaj\",\"jionpimexgstxgc\":\"odxobnbdxkqpxok\"}}")
+            .toObject(FarmBeatsUpdateRequestModel.class);
         Assertions.assertEquals("ysh", model.location());
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals("qajzyulpkudjkr", model.properties().sensorIntegration().enabled());
@@ -33,15 +31,12 @@ public final class FarmBeatsUpdateRequestModelTests {
 
     @Test
     public void testSerialize() {
-        FarmBeatsUpdateRequestModel model =
-            new FarmBeatsUpdateRequestModel()
-                .withLocation("ysh")
-                .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-                .withProperties(
-                    new FarmBeatsUpdateProperties()
-                        .withSensorIntegration(new SensorIntegration().withEnabled("qajzyulpkudjkr"))
-                        .withPublicNetworkAccess(PublicNetworkAccess.HYBRID))
-                .withTags(mapOf("xzlocxscp", "pgzgq", "j", "ierhhbcsglummaj", "jionpimexgstxgc", "odxobnbdxkqpxok"));
+        FarmBeatsUpdateRequestModel model = new FarmBeatsUpdateRequestModel().withLocation("ysh")
+            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withProperties(new FarmBeatsUpdateProperties()
+                .withSensorIntegration(new SensorIntegration().withEnabled("qajzyulpkudjkr"))
+                .withPublicNetworkAccess(PublicNetworkAccess.HYBRID))
+            .withTags(mapOf("xzlocxscp", "pgzgq", "j", "ierhhbcsglummaj", "jionpimexgstxgc", "odxobnbdxkqpxok"));
         model = BinaryData.fromObject(model).toObject(FarmBeatsUpdateRequestModel.class);
         Assertions.assertEquals("ysh", model.location());
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());

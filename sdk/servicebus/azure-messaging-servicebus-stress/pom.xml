@@ -33,6 +33,8 @@
 
     <!-- Skip missing Javadocs in stress tests. -->
     <doclintMissingInclusion>-</doclintMissingInclusion>
+
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

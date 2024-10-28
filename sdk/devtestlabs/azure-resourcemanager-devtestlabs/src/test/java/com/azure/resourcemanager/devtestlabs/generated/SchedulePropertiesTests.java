@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SchedulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleProperties model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"Disabled\",\"taskType\":\"jzkdeslpvlopwi\",\"weeklyRecurrence\":{\"weekdays\":[\"xpkd\",\"zb\"],\"time\":\"uebbaumnyqup\"},\"dailyRecurrence\":{\"time\":\"ojnabckhsmtxpsie\"},\"hourlyRecurrence\":{\"minute\":1146165631},\"timeZoneId\":\"pesapskrdqmhjj\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":692373611,\"webhookUrl\":\"yzxuutkncw\",\"emailRecipient\":\"wsvlxotogtwrupqs\",\"notificationLocale\":\"nmic\"},\"createdDate\":\"2021-01-26T07:44:08Z\",\"targetResourceId\":\"eoveilovnotyf\",\"provisioningState\":\"cnjbkcnxdhbt\",\"uniqueIdentifier\":\"phywpnvj\"}")
-                .toObject(ScheduleProperties.class);
+        ScheduleProperties model = BinaryData.fromString(
+            "{\"status\":\"Disabled\",\"taskType\":\"jzkdeslpvlopwi\",\"weeklyRecurrence\":{\"weekdays\":[\"xpkd\",\"zb\"],\"time\":\"uebbaumnyqup\"},\"dailyRecurrence\":{\"time\":\"ojnabckhsmtxpsie\"},\"hourlyRecurrence\":{\"minute\":1146165631},\"timeZoneId\":\"pesapskrdqmhjj\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":692373611,\"webhookUrl\":\"yzxuutkncw\",\"emailRecipient\":\"wsvlxotogtwrupqs\",\"notificationLocale\":\"nmic\"},\"createdDate\":\"2021-01-26T07:44:08Z\",\"targetResourceId\":\"eoveilovnotyf\",\"provisioningState\":\"cnjbkcnxdhbt\",\"uniqueIdentifier\":\"phywpnvj\"}")
+            .toObject(ScheduleProperties.class);
         Assertions.assertEquals(EnableStatus.DISABLED, model.status());
         Assertions.assertEquals("jzkdeslpvlopwi", model.taskType());
         Assertions.assertEquals("xpkd", model.weeklyRecurrence().weekdays().get(0));
@@ -39,23 +37,18 @@ public final class SchedulePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleProperties model =
-            new ScheduleProperties()
-                .withStatus(EnableStatus.DISABLED)
-                .withTaskType("jzkdeslpvlopwi")
-                .withWeeklyRecurrence(
-                    new WeekDetails().withWeekdays(Arrays.asList("xpkd", "zb")).withTime("uebbaumnyqup"))
-                .withDailyRecurrence(new DayDetails().withTime("ojnabckhsmtxpsie"))
-                .withHourlyRecurrence(new HourDetails().withMinute(1146165631))
-                .withTimeZoneId("pesapskrdqmhjj")
-                .withNotificationSettings(
-                    new NotificationSettings()
-                        .withStatus(EnableStatus.DISABLED)
-                        .withTimeInMinutes(692373611)
-                        .withWebhookUrl("yzxuutkncw")
-                        .withEmailRecipient("wsvlxotogtwrupqs")
-                        .withNotificationLocale("nmic"))
-                .withTargetResourceId("eoveilovnotyf");
+        ScheduleProperties model = new ScheduleProperties().withStatus(EnableStatus.DISABLED)
+            .withTaskType("jzkdeslpvlopwi")
+            .withWeeklyRecurrence(new WeekDetails().withWeekdays(Arrays.asList("xpkd", "zb")).withTime("uebbaumnyqup"))
+            .withDailyRecurrence(new DayDetails().withTime("ojnabckhsmtxpsie"))
+            .withHourlyRecurrence(new HourDetails().withMinute(1146165631))
+            .withTimeZoneId("pesapskrdqmhjj")
+            .withNotificationSettings(new NotificationSettings().withStatus(EnableStatus.DISABLED)
+                .withTimeInMinutes(692373611)
+                .withWebhookUrl("yzxuutkncw")
+                .withEmailRecipient("wsvlxotogtwrupqs")
+                .withNotificationLocale("nmic"))
+            .withTargetResourceId("eoveilovnotyf");
         model = BinaryData.fromObject(model).toObject(ScheduleProperties.class);
         Assertions.assertEquals(EnableStatus.DISABLED, model.status());
         Assertions.assertEquals("jzkdeslpvlopwi", model.taskType());

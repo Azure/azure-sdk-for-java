@@ -89,6 +89,9 @@ public final class RoleAssignment implements JsonSerializable<RoleAssignment> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class GenerateDetailedCostReportTimePeriodTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenerateDetailedCostReportTimePeriod model =
-            BinaryData
-                .fromString("{\"start\":\"refajpjorwkqnyh\",\"end\":\"b\"}")
+        GenerateDetailedCostReportTimePeriod model
+            = BinaryData.fromString("{\"start\":\"refajpjorwkqnyh\",\"end\":\"b\"}")
                 .toObject(GenerateDetailedCostReportTimePeriod.class);
         Assertions.assertEquals("refajpjorwkqnyh", model.start());
         Assertions.assertEquals("b", model.end());
@@ -21,8 +20,8 @@ public final class GenerateDetailedCostReportTimePeriodTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenerateDetailedCostReportTimePeriod model =
-            new GenerateDetailedCostReportTimePeriod().withStart("refajpjorwkqnyh").withEnd("b");
+        GenerateDetailedCostReportTimePeriod model
+            = new GenerateDetailedCostReportTimePeriod().withStart("refajpjorwkqnyh").withEnd("b");
         model = BinaryData.fromObject(model).toObject(GenerateDetailedCostReportTimePeriod.class);
         Assertions.assertEquals("refajpjorwkqnyh", model.start());
         Assertions.assertEquals("b", model.end());

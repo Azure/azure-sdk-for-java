@@ -29,8 +29,8 @@ public interface IntegrationRuntimeCredentialsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> syncWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<Void> syncWithResponse(String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        Context context);
 
     /**
      * Sync integration runtime credentials

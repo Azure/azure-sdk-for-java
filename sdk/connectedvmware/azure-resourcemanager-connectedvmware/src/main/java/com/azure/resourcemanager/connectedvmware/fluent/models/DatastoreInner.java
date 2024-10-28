@@ -263,9 +263,8 @@ public final class DatastoreInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model DatastoreInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model DatastoreInner"));
         } else {
             innerProperties().validate();
         }

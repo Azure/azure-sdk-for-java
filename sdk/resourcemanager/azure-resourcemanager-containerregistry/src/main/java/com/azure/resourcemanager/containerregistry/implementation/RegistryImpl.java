@@ -53,8 +53,7 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     private RegistryUpdateParameters updateParameters;
     private WebhooksImpl webhooks;
 
-    protected RegistryImpl(
-        String name, RegistryInner innerObject, ContainerRegistryManager manager) {
+    protected RegistryImpl(String name, RegistryInner innerObject, ContainerRegistryManager manager) {
         super(name, innerObject, manager);
 
         this.webhooks = new WebhooksImpl(this, "Webhook");
@@ -62,7 +61,9 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 
     @Override
     protected Mono<RegistryInner> getInnerAsync() {
-        return this.manager().serviceClient().getRegistries()
+        return this.manager()
+            .serviceClient()
+            .getRegistries()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -76,15 +77,13 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     public Mono<Registry> createResourceAsync() {
         final RegistryImpl self = this;
         if (isInCreateMode()) {
-            return manager()
-                .serviceClient()
+            return manager().serviceClient()
                 .getRegistries()
                 .createAsync(self.resourceGroupName(), self.name(), self.innerModel())
                 .map(innerToFluentMap(this));
         } else {
             updateParameters.withTags(innerModel().tags());
-            return manager()
-                .serviceClient()
+            return manager().serviceClient()
                 .getRegistries()
                 .updateAsync(self.resourceGroupName(), self.name(), self.updateParameters)
                 .map(innerToFluentMap(this));
@@ -176,16 +175,14 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 
     @Override
     public RegistryCredentials regenerateCredential(AccessKeyType accessKeyType) {
-        return this
-            .manager()
+        return this.manager()
             .containerRegistries()
             .regenerateCredential(this.resourceGroupName(), this.name(), accessKeyType);
     }
 
     @Override
     public Mono<RegistryCredentials> regenerateCredentialAsync(AccessKeyType accessKeyType) {
-        return this
-            .manager()
+        return this.manager()
             .containerRegistries()
             .regenerateCredentialAsync(this.resourceGroupName(), this.name(), accessKeyType);
     }
@@ -227,19 +224,21 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 
     @Override
     public boolean isZoneRedundancyEnabled() {
-        return !Objects.isNull(this.innerModel().zoneRedundancy()) && ZoneRedundancy.ENABLED.equals(this.innerModel().zoneRedundancy());
+        return !Objects.isNull(this.innerModel().zoneRedundancy())
+            && ZoneRedundancy.ENABLED.equals(this.innerModel().zoneRedundancy());
     }
 
     @Override
     public List<String> dedicatedDataEndpointsHostNames() {
         return this.innerModel().dataEndpointHostNames() == null
-            ? Collections.emptyList() : Collections.unmodifiableList(this.innerModel().dataEndpointHostNames());
+            ? Collections.emptyList()
+            : Collections.unmodifiableList(this.innerModel().dataEndpointHostNames());
     }
 
     @Override
     public RegistryTaskRun.DefinitionStages.BlankFromRegistry scheduleRun() {
-        return new RegistryTaskRunImpl(this.manager(), new RunInner())
-            .withExistingRegistry(this.resourceGroupName(), this.name());
+        return new RegistryTaskRunImpl(this.manager(), new RunInner()).withExistingRegistry(this.resourceGroupName(),
+            this.name());
     }
 
     @Override
@@ -249,8 +248,7 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 
     @Override
     public Mono<SourceUploadDefinition> getBuildSourceUploadUrlAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getRegistries()
             .getBuildSourceUploadUrlAsync(this.resourceGroupName(), this.name())
@@ -318,9 +316,15 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     @Override
     public RegistryImpl withAccessFromIpAddressRange(String ipAddressCidr) {
         ensureNetworkRuleSet();
-        if (this.innerModel().networkRuleSet().ipRules()
-            .stream().noneMatch(ipRule -> Objects.equals(ipRule.ipAddressOrRange(), ipAddressCidr))) {
-            this.innerModel().networkRuleSet().ipRules().add(new IpRule().withAction(Action.ALLOW).withIpAddressOrRange(ipAddressCidr));
+        if (this.innerModel()
+            .networkRuleSet()
+            .ipRules()
+            .stream()
+            .noneMatch(ipRule -> Objects.equals(ipRule.ipAddressOrRange(), ipAddressCidr))) {
+            this.innerModel()
+                .networkRuleSet()
+                .ipRules()
+                .add(new IpRule().withAction(Action.ALLOW).withIpAddressOrRange(ipAddressCidr));
         }
         if (!isInCreateMode()) {
             updateParameters.networkRuleSet().withIpRules(this.innerModel().networkRuleSet().ipRules());
@@ -334,7 +338,10 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
             return this;
         }
         ensureNetworkRuleSet();
-        this.innerModel().networkRuleSet().ipRules().removeIf(ipRule -> Objects.equals(ipRule.ipAddressOrRange(), ipAddressCidr));
+        this.innerModel()
+            .networkRuleSet()
+            .ipRules()
+            .removeIf(ipRule -> Objects.equals(ipRule.ipAddressOrRange(), ipAddressCidr));
         if (!isInCreateMode()) {
             updateParameters.networkRuleSet().withIpRules(this.innerModel().networkRuleSet().ipRules());
         }
@@ -398,7 +405,9 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 
     @Override
     public PagedFlux<PrivateEndpointConnection> listPrivateEndpointConnectionsAsync() {
-        return PagedConverter.mapPage(this.manager().serviceClient().getPrivateEndpointConnections()
+        return PagedConverter.mapPage(this.manager()
+            .serviceClient()
+            .getPrivateEndpointConnections()
             .listAsync(this.resourceGroupName(), this.name()), PrivateEndpointConnectionImpl::new);
     }
 
@@ -409,12 +418,12 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 
     @Override
     public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
-        return this.manager().serviceClient().getPrivateEndpointConnections()
+        return this.manager()
+            .serviceClient()
+            .getPrivateEndpointConnections()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
                 new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState()
-                        .withStatus(
-                            ConnectionStatus.APPROVED)))
+                    new PrivateLinkServiceConnectionState().withStatus(ConnectionStatus.APPROVED)))
             .then();
     }
 
@@ -425,12 +434,12 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 
     @Override
     public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
-        return this.manager().serviceClient().getPrivateEndpointConnections()
+        return this.manager()
+            .serviceClient()
+            .getPrivateEndpointConnections()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
                 new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState()
-                        .withStatus(
-                            ConnectionStatus.REJECTED)))
+                    new PrivateLinkServiceConnectionState().withStatus(ConnectionStatus.REJECTED)))
             .then();
     }
 
@@ -454,7 +463,9 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 
     @Override
     public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
-        return this.manager().serviceClient().getRegistries()
+        return this.manager()
+            .serviceClient()
+            .getRegistries()
             .listPrivateLinkResourcesAsync(this.resourceGroupName(), this.name())
             .mapPage(PrivateLinkResourceImpl::new);
     }
@@ -494,27 +505,25 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
         private final PrivateEndpointConnectionInner innerModel;
 
         private final PrivateEndpoint privateEndpoint;
-        private final com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
-            privateLinkServiceConnectionState;
+        private final com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
         private final PrivateEndpointConnectionProvisioningState provisioningState;
 
         private PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerModel) {
             this.innerModel = innerModel;
 
-            this.privateEndpoint = innerModel.privateEndpoint() == null
-                ? null
-                : new PrivateEndpoint(innerModel.privateEndpoint().id());
+            this.privateEndpoint
+                = innerModel.privateEndpoint() == null ? null : new PrivateEndpoint(innerModel.privateEndpoint().id());
             this.privateLinkServiceConnectionState = innerModel.privateLinkServiceConnectionState() == null
                 ? null
                 : new com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState(
-                innerModel.privateLinkServiceConnectionState().status() == null
-                    ? null
-                    : com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus
-                    .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
-                innerModel.privateLinkServiceConnectionState().description(),
-                innerModel.privateLinkServiceConnectionState().actionsRequired() == null
-                    ? ActionsRequired.NONE.toString()
-                    : innerModel.privateLinkServiceConnectionState().actionsRequired().toString());
+                    innerModel.privateLinkServiceConnectionState().status() == null
+                        ? null
+                        : com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus
+                            .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
+                    innerModel.privateLinkServiceConnectionState().description(),
+                    innerModel.privateLinkServiceConnectionState().actionsRequired() == null
+                        ? ActionsRequired.NONE.toString()
+                        : innerModel.privateLinkServiceConnectionState().actionsRequired().toString());
             this.provisioningState = innerModel.provisioningState() == null
                 ? null
                 : PrivateEndpointConnectionProvisioningState.fromString(innerModel.provisioningState().toString());

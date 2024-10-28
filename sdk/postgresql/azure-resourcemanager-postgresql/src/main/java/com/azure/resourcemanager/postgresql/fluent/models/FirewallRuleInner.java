@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Represents a server firewall rule. */
 @Fluent
 public final class FirewallRuleInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallRuleInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FirewallRuleInner.class);
 
     /*
      * The properties of a firewall rule.
@@ -83,10 +84,8 @@ public final class FirewallRuleInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model FirewallRuleInner"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model FirewallRuleInner"));
         } else {
             innerProperties().validate();
         }

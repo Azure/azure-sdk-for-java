@@ -10,11 +10,9 @@ import com.azure.resourcemanager.apimanagement.models.TenantSettingsCollection;
 public final class TenantSettingsCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TenantSettingsCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"settings\":{\"w\":\"bsfsgsae\",\"mrjctryldsxeb\":\"dfmhljqlxs\",\"hefr\":\"hsxrznmgsdaluyc\",\"uerbgpxebjl\":\"hs\"}},\"id\":\"dcaytujraxd\",\"name\":\"pryj\",\"type\":\"gtnse\"},{\"properties\":{\"settings\":{\"s\":\"ly\"}},\"id\":\"vyljurkeposehqq\",\"name\":\"lmpctwj\",\"type\":\"dsdlzmk\"},{\"properties\":{\"settings\":{\"teehk\":\"xx\"}},\"id\":\"owgomvvhxowp\",\"name\":\"bap\",\"type\":\"pxraqaw\"},{\"properties\":{\"settings\":{\"eylqlocvvujexayg\":\"p\",\"zpaslavxjfiuo\":\"xrkgjn\",\"jopackyhydv\":\"pieidzlvssqy\",\"izwgsoriobijeiyd\":\"kmfngpmillxgjs\"}},\"id\":\"euynh\",\"name\":\"okayrg\",\"type\":\"ybriop\"}],\"nextLink\":\"eoftnorwai\"}")
-                .toObject(TenantSettingsCollection.class);
+        TenantSettingsCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"settings\":{\"w\":\"bsfsgsae\",\"mrjctryldsxeb\":\"dfmhljqlxs\",\"hefr\":\"hsxrznmgsdaluyc\",\"uerbgpxebjl\":\"hs\"}},\"id\":\"dcaytujraxd\",\"name\":\"pryj\",\"type\":\"gtnse\"},{\"properties\":{\"settings\":{\"s\":\"ly\"}},\"id\":\"vyljurkeposehqq\",\"name\":\"lmpctwj\",\"type\":\"dsdlzmk\"},{\"properties\":{\"settings\":{\"teehk\":\"xx\"}},\"id\":\"owgomvvhxowp\",\"name\":\"bap\",\"type\":\"pxraqaw\"},{\"properties\":{\"settings\":{\"eylqlocvvujexayg\":\"p\",\"zpaslavxjfiuo\":\"xrkgjn\",\"jopackyhydv\":\"pieidzlvssqy\",\"izwgsoriobijeiyd\":\"kmfngpmillxgjs\"}},\"id\":\"euynh\",\"name\":\"okayrg\",\"type\":\"ybriop\"}],\"nextLink\":\"eoftnorwai\"}")
+            .toObject(TenantSettingsCollection.class);
     }
 
     @org.junit.jupiter.api.Test

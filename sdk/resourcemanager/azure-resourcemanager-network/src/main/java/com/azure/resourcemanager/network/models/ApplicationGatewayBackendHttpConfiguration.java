@@ -14,10 +14,8 @@ import java.util.Map;
 /** A client-side representation of an application gateway's backend HTTP configuration. */
 @Fluent()
 public interface ApplicationGatewayBackendHttpConfiguration
-    extends HasInnerModel<ApplicationGatewayBackendHttpSettings>,
-        ChildResource<ApplicationGateway>,
-        HasProtocol<ApplicationGatewayProtocol>,
-        HasPort {
+    extends HasInnerModel<ApplicationGatewayBackendHttpSettings>, ChildResource<ApplicationGateway>,
+    HasProtocol<ApplicationGatewayProtocol>, HasPort {
     /** @return authentication certificates associated with this backend HTTPS configuration */
     Map<String, ApplicationGatewayAuthenticationCertificate> authenticationCertificates();
 
@@ -284,17 +282,9 @@ public interface ApplicationGatewayBackendHttpConfiguration
          * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
          *     definition
          */
-        interface WithAttach<ReturnT>
-            extends Attachable.InDefinition<ReturnT>,
-                WithPort<ReturnT>,
-                WithAffinity<ReturnT>,
-                WithProtocol<ReturnT>,
-                WithRequestTimeout<ReturnT>,
-                WithProbe<ReturnT>,
-                WithHostHeader<ReturnT>,
-                WithConnectionDraining<ReturnT>,
-                WithCookieName<ReturnT>,
-                WithPath<ReturnT> {
+        interface WithAttach<ReturnT> extends Attachable.InDefinition<ReturnT>, WithPort<ReturnT>,
+            WithAffinity<ReturnT>, WithProtocol<ReturnT>, WithRequestTimeout<ReturnT>, WithProbe<ReturnT>,
+            WithHostHeader<ReturnT>, WithConnectionDraining<ReturnT>, WithCookieName<ReturnT>, WithPath<ReturnT> {
         }
     }
 
@@ -304,10 +294,8 @@ public interface ApplicationGatewayBackendHttpConfiguration
      * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface Definition<ReturnT>
-        extends DefinitionStages.Blank<ReturnT>,
-            DefinitionStages.WithAttach<ReturnT>,
-            DefinitionStages.WithAttachAndAuthCert<ReturnT> {
+    interface Definition<ReturnT> extends DefinitionStages.Blank<ReturnT>, DefinitionStages.WithAttach<ReturnT>,
+        DefinitionStages.WithAttachAndAuthCert<ReturnT> {
     }
 
     /** Grouping of application gateway backend HTTPS configuration update stages. */
@@ -528,18 +516,10 @@ public interface ApplicationGatewayBackendHttpConfiguration
      * The entirety of an application gateway backend HTTPS configuration update as part of an application gateway
      * update.
      */
-    interface Update
-        extends Settable<ApplicationGateway.Update>,
-            UpdateStages.WithPort,
-            UpdateStages.WithAffinity,
-            UpdateStages.WithProtocol,
-            UpdateStages.WithRequestTimeout,
-            UpdateStages.WithProbe,
-            UpdateStages.WithHostHeader,
-            UpdateStages.WithConnectionDraining,
-            UpdateStages.WithCookieName,
-            UpdateStages.WithPath,
-            UpdateStages.WithAuthenticationCertificate {
+    interface Update extends Settable<ApplicationGateway.Update>, UpdateStages.WithPort, UpdateStages.WithAffinity,
+        UpdateStages.WithProtocol, UpdateStages.WithRequestTimeout, UpdateStages.WithProbe, UpdateStages.WithHostHeader,
+        UpdateStages.WithConnectionDraining, UpdateStages.WithCookieName, UpdateStages.WithPath,
+        UpdateStages.WithAuthenticationCertificate {
     }
 
     /**
@@ -576,16 +556,9 @@ public interface ApplicationGatewayBackendHttpConfiguration
          *     definition
          */
         interface WithAttach<ReturnT>
-            extends Attachable.InUpdate<ReturnT>,
-                WithPort<ReturnT>,
-                WithAffinity<ReturnT>,
-                WithProtocol<ReturnT>,
-                WithRequestTimeout<ReturnT>,
-                WithHostHeader<ReturnT>,
-                WithConnectionDraining<ReturnT>,
-                WithCookieName<ReturnT>,
-                WithPath<ReturnT>,
-                WithAuthenticationCertificate<ReturnT> {
+            extends Attachable.InUpdate<ReturnT>, WithPort<ReturnT>, WithAffinity<ReturnT>, WithProtocol<ReturnT>,
+            WithRequestTimeout<ReturnT>, WithHostHeader<ReturnT>, WithConnectionDraining<ReturnT>,
+            WithCookieName<ReturnT>, WithPath<ReturnT>, WithAuthenticationCertificate<ReturnT> {
         }
 
         /**
@@ -804,9 +777,7 @@ public interface ApplicationGatewayBackendHttpConfiguration
      *
      * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
      */
-    interface UpdateDefinition<ReturnT>
-        extends UpdateDefinitionStages.Blank<ReturnT>,
-            UpdateDefinitionStages.WithAttach<ReturnT>,
-            UpdateDefinitionStages.WithAttachAndAuthCert<ReturnT> {
+    interface UpdateDefinition<ReturnT> extends UpdateDefinitionStages.Blank<ReturnT>,
+        UpdateDefinitionStages.WithAttach<ReturnT>, UpdateDefinitionStages.WithAttachAndAuthCert<ReturnT> {
     }
 }

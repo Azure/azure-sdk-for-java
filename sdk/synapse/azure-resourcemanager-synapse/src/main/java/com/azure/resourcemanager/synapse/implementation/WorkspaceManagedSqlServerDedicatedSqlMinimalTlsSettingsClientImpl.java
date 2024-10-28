@@ -56,12 +56,8 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      * @param client the instance of the service client containing this operation class.
      */
     WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsService.class,
+            client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -73,64 +69,46 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/dedicatedSQLminimalTlsSettings/{dedicatedSQLminimalTlsSettingsName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/dedicatedSQLminimalTlsSettings/{dedicatedSQLminimalTlsSettingsName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("dedicatedSQLminimalTlsSettingsName")
-                DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("dedicatedSQLminimalTlsSettingsName") DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
             @BodyParam("application/json") DedicatedSQLminimalTlsSettingsInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/dedicatedSQLminimalTlsSettings/{dedicatedSQLminimalTlsSettingsName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/dedicatedSQLminimalTlsSettings/{dedicatedSQLminimalTlsSettingsName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DedicatedSQLminimalTlsSettingsInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<DedicatedSQLminimalTlsSettingsInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("dedicatedSQLminimalTlsSettingsName") String dedicatedSQLminimalTlsSettingsName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/dedicatedSQLminimalTlsSettings")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/dedicatedSQLminimalTlsSettings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DedicatedSQLminimalTlsSettingsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DedicatedSQLminimalTlsSettingsListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DedicatedSQLminimalTlsSettingsListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -149,22 +127,16 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
         DedicatedSQLminimalTlsSettingsInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -174,10 +146,8 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (dedicatedSQLminimalTlsSettingsName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter dedicatedSQLminimalTlsSettingsName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter dedicatedSQLminimalTlsSettingsName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -188,18 +158,8 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            dedicatedSQLminimalTlsSettingsName,
-                            parameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -220,23 +180,16 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
-        DedicatedSQLminimalTlsSettingsInner parameters,
-        Context context) {
+        DedicatedSQLminimalTlsSettingsInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -246,10 +199,8 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (dedicatedSQLminimalTlsSettingsName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter dedicatedSQLminimalTlsSettingsName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter dedicatedSQLminimalTlsSettingsName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -259,17 +210,8 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                dedicatedSQLminimalTlsSettingsName,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, dedicatedSQLminimalTlsSettingsName, parameters, accept, context);
     }
 
     /**
@@ -288,21 +230,14 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DedicatedSQLminimalTlsSettingsInner>, DedicatedSQLminimalTlsSettingsInner>
-        beginUpdateAsync(
-            String resourceGroupName,
-            String workspaceName,
+        beginUpdateAsync(String resourceGroupName, String workspaceName,
             DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
             DedicatedSQLminimalTlsSettingsInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters);
-        return this
-            .client
-            .<DedicatedSQLminimalTlsSettingsInner, DedicatedSQLminimalTlsSettingsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DedicatedSQLminimalTlsSettingsInner.class,
-                DedicatedSQLminimalTlsSettingsInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters);
+        return this.client.<DedicatedSQLminimalTlsSettingsInner, DedicatedSQLminimalTlsSettingsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DedicatedSQLminimalTlsSettingsInner.class,
+            DedicatedSQLminimalTlsSettingsInner.class, this.client.getContext());
     }
 
     /**
@@ -322,24 +257,15 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DedicatedSQLminimalTlsSettingsInner>, DedicatedSQLminimalTlsSettingsInner>
-        beginUpdateAsync(
-            String resourceGroupName,
-            String workspaceName,
+        beginUpdateAsync(String resourceGroupName, String workspaceName,
             DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
-            DedicatedSQLminimalTlsSettingsInner parameters,
-            Context context) {
+            DedicatedSQLminimalTlsSettingsInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters, context);
-        return this
-            .client
-            .<DedicatedSQLminimalTlsSettingsInner, DedicatedSQLminimalTlsSettingsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DedicatedSQLminimalTlsSettingsInner.class,
-                DedicatedSQLminimalTlsSettingsInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, workspaceName,
+            dedicatedSQLminimalTlsSettingsName, parameters, context);
+        return this.client.<DedicatedSQLminimalTlsSettingsInner, DedicatedSQLminimalTlsSettingsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DedicatedSQLminimalTlsSettingsInner.class,
+            DedicatedSQLminimalTlsSettingsInner.class, context);
     }
 
     /**
@@ -358,12 +284,10 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedSQLminimalTlsSettingsInner>, DedicatedSQLminimalTlsSettingsInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
+        String resourceGroupName, String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
         DedicatedSQLminimalTlsSettingsInner parameters) {
-        return this
-            .beginUpdateAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters)
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters)
             .getSyncPoller();
     }
 
@@ -384,11 +308,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DedicatedSQLminimalTlsSettingsInner>, DedicatedSQLminimalTlsSettingsInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
+        String resourceGroupName, String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
-        DedicatedSQLminimalTlsSettingsInner parameters,
-        Context context) {
+        DedicatedSQLminimalTlsSettingsInner parameters, Context context) {
         return this
             .beginUpdateAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters, context)
             .getSyncPoller();
@@ -409,13 +331,10 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      * @return dedicated Sql Minimal Tls Settings Info on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DedicatedSQLminimalTlsSettingsInner> updateAsync(
-        String resourceGroupName,
-        String workspaceName,
+    private Mono<DedicatedSQLminimalTlsSettingsInner> updateAsync(String resourceGroupName, String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
         DedicatedSQLminimalTlsSettingsInner parameters) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters)
-            .last()
+        return beginUpdateAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -435,16 +354,11 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      * @return dedicated Sql Minimal Tls Settings Info on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DedicatedSQLminimalTlsSettingsInner> updateAsync(
-        String resourceGroupName,
-        String workspaceName,
+    private Mono<DedicatedSQLminimalTlsSettingsInner> updateAsync(String resourceGroupName, String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
-        DedicatedSQLminimalTlsSettingsInner parameters,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        DedicatedSQLminimalTlsSettingsInner parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -462,9 +376,7 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      * @return dedicated Sql Minimal Tls Settings Info.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedSQLminimalTlsSettingsInner update(
-        String resourceGroupName,
-        String workspaceName,
+    public DedicatedSQLminimalTlsSettingsInner update(String resourceGroupName, String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
         DedicatedSQLminimalTlsSettingsInner parameters) {
         return updateAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters).block();
@@ -486,12 +398,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      * @return dedicated Sql Minimal Tls Settings Info.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedSQLminimalTlsSettingsInner update(
-        String resourceGroupName,
-        String workspaceName,
+    public DedicatedSQLminimalTlsSettingsInner update(String resourceGroupName, String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
-        DedicatedSQLminimalTlsSettingsInner parameters,
-        Context context) {
+        DedicatedSQLminimalTlsSettingsInner parameters, Context context) {
         return updateAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, parameters, context)
             .block();
     }
@@ -511,19 +420,15 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DedicatedSQLminimalTlsSettingsInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName) {
+    private Mono<Response<DedicatedSQLminimalTlsSettingsInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String dedicatedSQLminimalTlsSettingsName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -533,26 +438,14 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (dedicatedSQLminimalTlsSettingsName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter dedicatedSQLminimalTlsSettingsName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter dedicatedSQLminimalTlsSettingsName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            dedicatedSQLminimalTlsSettingsName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -572,19 +465,15 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DedicatedSQLminimalTlsSettingsInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName, Context context) {
+    private Mono<Response<DedicatedSQLminimalTlsSettingsInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String dedicatedSQLminimalTlsSettingsName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -594,24 +483,14 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (dedicatedSQLminimalTlsSettingsName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter dedicatedSQLminimalTlsSettingsName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter dedicatedSQLminimalTlsSettingsName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                dedicatedSQLminimalTlsSettingsName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, dedicatedSQLminimalTlsSettingsName, accept, context);
     }
 
     /**
@@ -628,8 +507,8 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      * @return workspace managed sql server's minimal tls settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DedicatedSQLminimalTlsSettingsInner> getAsync(
-        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName) {
+    private Mono<DedicatedSQLminimalTlsSettingsInner> getAsync(String resourceGroupName, String workspaceName,
+        String dedicatedSQLminimalTlsSettingsName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -649,8 +528,8 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      * @return workspace managed sql server's minimal tls settings along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DedicatedSQLminimalTlsSettingsInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName, Context context) {
+    public Response<DedicatedSQLminimalTlsSettingsInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String dedicatedSQLminimalTlsSettingsName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, context)
             .block();
     }
@@ -669,8 +548,8 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      * @return workspace managed sql server's minimal tls settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedSQLminimalTlsSettingsInner get(
-        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName) {
+    public DedicatedSQLminimalTlsSettingsInner get(String resourceGroupName, String workspaceName,
+        String dedicatedSQLminimalTlsSettingsName) {
         return getWithResponse(resourceGroupName, workspaceName, dedicatedSQLminimalTlsSettingsName, Context.NONE)
             .getValue();
     }
@@ -689,19 +568,15 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DedicatedSQLminimalTlsSettingsInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<PagedResponse<DedicatedSQLminimalTlsSettingsInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -713,26 +588,10 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            accept,
-                            context))
-            .<PagedResponse<DedicatedSQLminimalTlsSettingsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, accept, context))
+            .<PagedResponse<DedicatedSQLminimalTlsSettingsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -751,19 +610,15 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DedicatedSQLminimalTlsSettingsInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<PagedResponse<DedicatedSQLminimalTlsSettingsInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -776,23 +631,10 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -809,8 +651,8 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedSQLminimalTlsSettingsInner> listAsync(String resourceGroupName, String workspaceName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -827,10 +669,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      * @return a list of the server's dedicated sql minimal tls settings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DedicatedSQLminimalTlsSettingsInner> listAsync(
-        String resourceGroupName, String workspaceName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, context),
+    private PagedFlux<DedicatedSQLminimalTlsSettingsInner> listAsync(String resourceGroupName, String workspaceName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -867,8 +708,8 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DedicatedSQLminimalTlsSettingsInner> list(
-        String resourceGroupName, String workspaceName, Context context) {
+    public PagedIterable<DedicatedSQLminimalTlsSettingsInner> list(String resourceGroupName, String workspaceName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, context));
     }
 
@@ -889,23 +730,13 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DedicatedSQLminimalTlsSettingsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DedicatedSQLminimalTlsSettingsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -922,29 +753,19 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DedicatedSQLminimalTlsSettingsInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DedicatedSQLminimalTlsSettingsInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

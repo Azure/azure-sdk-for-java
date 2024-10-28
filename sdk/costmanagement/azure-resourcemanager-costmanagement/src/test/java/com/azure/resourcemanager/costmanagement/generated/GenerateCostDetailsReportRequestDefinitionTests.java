@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GenerateCostDetailsReportRequestDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenerateCostDetailsReportRequestDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"metric\":\"AmortizedCost\",\"timePeriod\":{\"start\":\"bminrfdwoyuhhzi\",\"end\":\"iefozbhdmsml\"},\"billingPeriod\":\"qhoftrmaequiah\",\"invoiceId\":\"cslfaoqzpiyylha\"}")
-                .toObject(GenerateCostDetailsReportRequestDefinition.class);
+        GenerateCostDetailsReportRequestDefinition model = BinaryData.fromString(
+            "{\"metric\":\"AmortizedCost\",\"timePeriod\":{\"start\":\"bminrfdwoyuhhzi\",\"end\":\"iefozbhdmsml\"},\"billingPeriod\":\"qhoftrmaequiah\",\"invoiceId\":\"cslfaoqzpiyylha\"}")
+            .toObject(GenerateCostDetailsReportRequestDefinition.class);
         Assertions.assertEquals(CostDetailsMetricType.AMORTIZED_COST, model.metric());
         Assertions.assertEquals("bminrfdwoyuhhzi", model.timePeriod().start());
         Assertions.assertEquals("iefozbhdmsml", model.timePeriod().end());
@@ -27,9 +25,8 @@ public final class GenerateCostDetailsReportRequestDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenerateCostDetailsReportRequestDefinition model =
-            new GenerateCostDetailsReportRequestDefinition()
-                .withMetric(CostDetailsMetricType.AMORTIZED_COST)
+        GenerateCostDetailsReportRequestDefinition model
+            = new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.AMORTIZED_COST)
                 .withTimePeriod(new CostDetailsTimePeriod().withStart("bminrfdwoyuhhzi").withEnd("iefozbhdmsml"))
                 .withBillingPeriod("qhoftrmaequiah")
                 .withInvoiceId("cslfaoqzpiyylha");

@@ -59,20 +59,21 @@ public final class ManageNetworkInterface {
 
             System.out.println("Creating a virtual network ...");
 
-            Network network = azureResourceManager.networks().define(vnetName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withAddressSpace("172.16.0.0/16")
-                    .defineSubnet("Front-end")
-                    .withAddressPrefix("172.16.1.0/24")
-                    .attach()
-                    .defineSubnet("Mid-tier")
-                    .withAddressPrefix("172.16.2.0/24")
-                    .attach()
-                    .defineSubnet("Back-end")
-                    .withAddressPrefix("172.16.3.0/24")
-                    .attach()
-                    .create();
+            Network network = azureResourceManager.networks()
+                .define(vnetName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withAddressSpace("172.16.0.0/16")
+                .defineSubnet("Front-end")
+                .withAddressPrefix("172.16.1.0/24")
+                .attach()
+                .defineSubnet("Mid-tier")
+                .withAddressPrefix("172.16.2.0/24")
+                .attach()
+                .defineSubnet("Back-end")
+                .withAddressPrefix("172.16.3.0/24")
+                .attach()
+                .create();
 
             System.out.println("Created a virtual network: " + network.id());
             Utils.print(network);
@@ -80,44 +81,46 @@ public final class ManageNetworkInterface {
             System.out.println("Creating multiple network interfaces");
             System.out.println("Creating network interface 1");
 
-            NetworkInterface networkInterface1 = azureResourceManager.networkInterfaces().define(networkInterfaceName1)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withExistingPrimaryNetwork(network)
-                    .withSubnet("Front-end")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withNewPrimaryPublicIPAddress(publicIPAddressLeafDNS1)
-                    .withIPForwarding()
-                    .create();
+            NetworkInterface networkInterface1 = azureResourceManager.networkInterfaces()
+                .define(networkInterfaceName1)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("Front-end")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(publicIPAddressLeafDNS1)
+                .withIPForwarding()
+                .create();
 
             System.out.println("Created network interface 1");
             Utils.print(networkInterface1);
             System.out.println("Creating network interface 2");
 
-            NetworkInterface networkInterface2 = azureResourceManager.networkInterfaces().define(networkInterfaceName2)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withExistingPrimaryNetwork(network)
-                    .withSubnet("Mid-tier")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .create();
+            NetworkInterface networkInterface2 = azureResourceManager.networkInterfaces()
+                .define(networkInterfaceName2)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("Mid-tier")
+                .withPrimaryPrivateIPAddressDynamic()
+                .create();
 
             System.out.println("Created network interface 2");
             Utils.print(networkInterface2);
 
             System.out.println("Creating network interface 3");
 
-            NetworkInterface networkInterface3 = azureResourceManager.networkInterfaces().define(networkInterfaceName3)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withExistingPrimaryNetwork(network)
-                    .withSubnet("Back-end")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .create();
+            NetworkInterface networkInterface3 = azureResourceManager.networkInterfaces()
+                .define(networkInterfaceName3)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("Back-end")
+                .withPrimaryPrivateIPAddressDynamic()
+                .create();
 
             System.out.println("Created network interface 3");
             Utils.print(networkInterface3);
-
 
             //=============================================================
             // Create a virtual machine with multiple network interfaces
@@ -126,46 +129,42 @@ public final class ManageNetworkInterface {
 
             Date t1 = new Date();
 
-            VirtualMachine vm = azureResourceManager.virtualMachines().define(vmName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withExistingPrimaryNetworkInterface(networkInterface1)
-                    .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                    .withAdminUsername(userName)
-                    .withAdminPassword(password)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D8a_v4"))
-                    .withExistingSecondaryNetworkInterface(networkInterface2)
-                    .withExistingSecondaryNetworkInterface(networkInterface3)
-                    .create();
+            VirtualMachine vm = azureResourceManager.virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withExistingPrimaryNetworkInterface(networkInterface1)
+                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+                .withAdminUsername(userName)
+                .withAdminPassword(password)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D8a_v4"))
+                .withExistingSecondaryNetworkInterface(networkInterface2)
+                .withExistingSecondaryNetworkInterface(networkInterface3)
+                .create();
 
             Date t2 = new Date();
-            System.out.println("Created VM: (took "
-                    + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + vm.id());
+            System.out.println("Created VM: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + vm.id());
             // Print virtual machine details
             Utils.print(vm);
-
 
             // ===========================================================
             // Configure a network interface
             System.out.println("Updating the first network interface");
-            networkInterface1.update()
-                    .withNewPrimaryPublicIPAddress(publicIPAddressLeafDNS2)
-                    .apply();
+            networkInterface1.update().withNewPrimaryPublicIPAddress(publicIPAddressLeafDNS2).apply();
 
             System.out.println("Updated the first network interface");
             Utils.print(networkInterface1);
             System.out.println();
 
-
             //============================================================
             // List network interfaces
 
             System.out.println("Walking through network inter4faces in resource group: " + rgName);
-            PagedIterable<NetworkInterface> networkInterfaces = azureResourceManager.networkInterfaces().listByResourceGroup(rgName);
+            PagedIterable<NetworkInterface> networkInterfaces
+                = azureResourceManager.networkInterfaces().listByResourceGroup(rgName);
             for (NetworkInterface networkinterface : networkInterfaces) {
                 Utils.print(networkinterface);
             }
-
 
             //============================================================
             // Delete a network interface
@@ -215,8 +214,7 @@ public final class ManageNetworkInterface {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

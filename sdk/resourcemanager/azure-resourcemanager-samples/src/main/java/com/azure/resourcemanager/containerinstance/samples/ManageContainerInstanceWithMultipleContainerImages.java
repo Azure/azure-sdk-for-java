@@ -42,24 +42,25 @@ public class ManageContainerInstanceWithMultipleContainerImages {
             //=============================================================
             // Create a container group with two container instances
 
-            ContainerGroup containerGroup = azureResourceManager.containerGroups().define(aciName)
+            ContainerGroup containerGroup = azureResourceManager.containerGroups()
+                .define(aciName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(rgName)
                 .withLinux()
                 .withPublicImageRegistryOnly()
                 .withoutVolume()
                 .defineContainerInstance(aciName + "-1")
-                    .withImage(containerImageName1)
-                    .withExternalTcpPort(80)
-                    .withCpuCoreCount(.5)
-                    .withMemorySizeInGB(0.8)
-                    .attach()
+                .withImage(containerImageName1)
+                .withExternalTcpPort(80)
+                .withCpuCoreCount(.5)
+                .withMemorySizeInGB(0.8)
+                .attach()
                 .defineContainerInstance(aciName + "-2")
-                    .withImage(containerImageName2)
-                    .withoutPorts()
-                    .withCpuCoreCount(.5)
-                    .withMemorySizeInGB(0.8)
-                    .attach()
+                .withImage(containerImageName2)
+                .withoutPorts()
+                .withCpuCoreCount(.5)
+                .withMemorySizeInGB(0.8)
+                .attach()
                 .withRestartPolicy(ContainerGroupRestartPolicy.NEVER)
                 .withDnsPrefix(aciName)
                 .create();
@@ -118,8 +119,7 @@ public class ManageContainerInstanceWithMultipleContainerImages {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

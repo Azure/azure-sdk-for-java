@@ -24,11 +24,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AKS", value = AksComputeSecrets.class),
     @JsonSubTypes.Type(name = "VirtualMachine", value = VirtualMachineSecrets.class),
-    @JsonSubTypes.Type(name = "Databricks", value = DatabricksComputeSecrets.class)
-})
+    @JsonSubTypes.Type(name = "Databricks", value = DatabricksComputeSecrets.class) })
 @Immutable
 public class ComputeSecretsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeSecretsInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ComputeSecretsInner.class);
 
     /**
      * Validates the instance.

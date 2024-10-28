@@ -17,8 +17,7 @@ public final class CertificateListDescriptionImpl implements CertificateListDesc
 
     private final com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager;
 
-    CertificateListDescriptionImpl(
-        CertificateListDescriptionInner innerObject,
+    CertificateListDescriptionImpl(CertificateListDescriptionInner innerObject,
         com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class CertificateListDescriptionImpl implements CertificateListDesc
     public List<CertificateResponse> value() {
         List<CertificateResponseInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new CertificateResponseImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new CertificateResponseImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

@@ -37,67 +37,46 @@ public final class WorkbooksCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"displayName\":\"idwcwvmzegjon\",\"serializedData\":\"hj\",\"version\":\"wgdnqzbr\",\"timeModified\":\"2021-08-15T23:23:18Z\",\"category\":\"pzhz\",\"tags\":[\"sjcitdigsxc\",\"gljplkeuachtomfl\",\"ytswfp\"],\"userId\":\"dgycxnmskwhqjjy\",\"sourceId\":\"urlpshh\",\"storageUri\":\"pedwqsl\",\"description\":\"hmpqvw\",\"revision\":\"kondcb\"},\"identity\":{\"principalId\":\"bd9b94d6-adfb-48d8-884e-5ea84f22fba7\",\"tenantId\":\"72979ca0-d855-4a50-a0de-b5bf7f41f514\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"so\":{\"principalId\":\"ecf304a5-7886-45df-902d-aa58c642305c\",\"clientId\":\"a7d53d43-a74e-4002-bf4e-8dc3fa473e6f\"}}},\"kind\":\"shared\",\"etag\":\"leaesi\",\"location\":\"uqtljqobbpih\",\"tags\":{\"bmpxdlvykfrexc\":\"ecybmrqbrj\",\"qwjksghudgz\":\"s\",\"ggsvoujkxibdaf\":\"xog\",\"xfbvfb\":\"rkmdyom\"},\"id\":\"dy\",\"name\":\"rhpw\",\"type\":\"gddeimaw\"}";
+        String responseStr
+            = "{\"properties\":{\"displayName\":\"idwcwvmzegjon\",\"serializedData\":\"hj\",\"version\":\"wgdnqzbr\",\"timeModified\":\"2021-08-15T23:23:18Z\",\"category\":\"pzhz\",\"tags\":[\"sjcitdigsxc\",\"gljplkeuachtomfl\",\"ytswfp\"],\"userId\":\"dgycxnmskwhqjjy\",\"sourceId\":\"urlpshh\",\"storageUri\":\"pedwqsl\",\"description\":\"hmpqvw\",\"revision\":\"kondcb\"},\"identity\":{\"principalId\":\"bd9b94d6-adfb-48d8-884e-5ea84f22fba7\",\"tenantId\":\"72979ca0-d855-4a50-a0de-b5bf7f41f514\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"so\":{\"principalId\":\"ecf304a5-7886-45df-902d-aa58c642305c\",\"clientId\":\"a7d53d43-a74e-4002-bf4e-8dc3fa473e6f\"}}},\"kind\":\"shared\",\"etag\":\"leaesi\",\"location\":\"uqtljqobbpih\",\"tags\":{\"bmpxdlvykfrexc\":\"ecybmrqbrj\",\"qwjksghudgz\":\"s\",\"ggsvoujkxibdaf\":\"xog\",\"xfbvfb\":\"rkmdyom\"},\"id\":\"dy\",\"name\":\"rhpw\",\"type\":\"gddeimaw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApplicationInsightsManager manager =
-            ApplicationInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Workbook response =
-            manager
-                .workbooks()
-                .define("ukoveofi")
-                .withRegion("dulajvlejchcs")
-                .withExistingResourceGroup("ztlvtmvagbwidqlv")
-                .withTags(mapOf("cnzqtpjhmqr", "knmzlanrupdwvnp", "hlaiwd", "v", "hzdtxetlgydlh", "xsmlz"))
-                .withIdentity(
-                    new WorkbookResourceIdentity()
-                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "ynuchlgmltxd",
-                                new UserAssignedIdentity(),
-                                "ozusgz",
-                                new UserAssignedIdentity(),
-                                "snnjzfpafolpym",
-                                new UserAssignedIdentity(),
-                                "xqzragp",
-                                new UserAssignedIdentity())))
-                .withKind(WorkbookSharedTypeKind.SHARED)
-                .withEtag("t")
-                .withDisplayName("vjfn")
-                .withSerializedData("jmvl")
-                .withVersion("z")
-                .withCategory("lkujrllfojui")
-                .withTagsPropertiesTags(Arrays.asList("uuyjucejikz", "eovvtzej", "tjklntikyjuzk"))
-                .withSourceId("htgv")
-                .withStorageUri("pcrrk")
-                .withDescription("awjmjsmw")
-                .withSourceIdParameter("gjekglklby")
-                .create();
+        Workbook response = manager.workbooks()
+            .define("ukoveofi")
+            .withRegion("dulajvlejchcs")
+            .withExistingResourceGroup("ztlvtmvagbwidqlv")
+            .withTags(mapOf("cnzqtpjhmqr", "knmzlanrupdwvnp", "hlaiwd", "v", "hzdtxetlgydlh", "xsmlz"))
+            .withIdentity(new WorkbookResourceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("ynuchlgmltxd", new UserAssignedIdentity(), "ozusgz", new UserAssignedIdentity(),
+                        "snnjzfpafolpym", new UserAssignedIdentity(), "xqzragp", new UserAssignedIdentity())))
+            .withKind(WorkbookSharedTypeKind.SHARED)
+            .withEtag("t")
+            .withDisplayName("vjfn")
+            .withSerializedData("jmvl")
+            .withVersion("z")
+            .withCategory("lkujrllfojui")
+            .withTagsPropertiesTags(Arrays.asList("uuyjucejikz", "eovvtzej", "tjklntikyjuzk"))
+            .withSourceId("htgv")
+            .withStorageUri("pcrrk")
+            .withDescription("awjmjsmw")
+            .withSourceIdParameter("gjekglklby")
+            .create();
 
         Assertions.assertEquals("uqtljqobbpih", response.location());
         Assertions.assertEquals("ecybmrqbrj", response.tags().get("bmpxdlvykfrexc"));

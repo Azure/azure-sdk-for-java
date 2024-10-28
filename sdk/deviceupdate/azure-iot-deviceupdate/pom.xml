@@ -33,6 +33,7 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

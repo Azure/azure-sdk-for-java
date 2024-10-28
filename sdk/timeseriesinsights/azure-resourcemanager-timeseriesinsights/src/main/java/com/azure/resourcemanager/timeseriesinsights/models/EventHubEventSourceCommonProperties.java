@@ -168,28 +168,20 @@ public class EventHubEventSourceCommonProperties extends AzureEventSourcePropert
     public void validate() {
         super.validate();
         if (serviceBusNamespace() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serviceBusNamespace in model EventHubEventSourceCommonProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property serviceBusNamespace in model EventHubEventSourceCommonProperties"));
         }
         if (eventHubName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property eventHubName in model EventHubEventSourceCommonProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property eventHubName in model EventHubEventSourceCommonProperties"));
         }
         if (consumerGroupName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property consumerGroupName in model EventHubEventSourceCommonProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property consumerGroupName in model EventHubEventSourceCommonProperties"));
         }
         if (keyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyName in model EventHubEventSourceCommonProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyName in model EventHubEventSourceCommonProperties"));
         }
     }
 

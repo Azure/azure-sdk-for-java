@@ -9,10 +9,8 @@ import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationProvid
 import com.azure.resourcemanager.apimanagement.models.AuthorizationProviderContract;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationProviderOAuth2Settings;
 
-public final class AuthorizationProviderContractImpl
-    implements AuthorizationProviderContract,
-        AuthorizationProviderContract.Definition,
-        AuthorizationProviderContract.Update {
+public final class AuthorizationProviderContractImpl implements AuthorizationProviderContract,
+    AuthorizationProviderContract.Definition, AuthorizationProviderContract.Update {
     private AuthorizationProviderContractInner innerObject;
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
@@ -70,34 +68,25 @@ public final class AuthorizationProviderContractImpl
     }
 
     public AuthorizationProviderContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationProviders()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    authorizationProviderId,
-                    this.innerModel(),
-                    createIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationProviders()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, authorizationProviderId, this.innerModel(),
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthorizationProviderContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationProviders()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, authorizationProviderId, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationProviders()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, authorizationProviderId, this.innerModel(),
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
-    AuthorizationProviderContractImpl(
-        String name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    AuthorizationProviderContractImpl(String name,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = new AuthorizationProviderContractInner();
         this.serviceManager = serviceManager;
         this.authorizationProviderId = name;
@@ -110,34 +99,24 @@ public final class AuthorizationProviderContractImpl
     }
 
     public AuthorizationProviderContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationProviders()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    authorizationProviderId,
-                    this.innerModel(),
-                    updateIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationProviders()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, authorizationProviderId, this.innerModel(),
+                updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthorizationProviderContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationProviders()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, authorizationProviderId, this.innerModel(), updateIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationProviders()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, authorizationProviderId, this.innerModel(),
+                updateIfMatch, context)
+            .getValue();
         return this;
     }
 
-    AuthorizationProviderContractImpl(
-        AuthorizationProviderContractInner innerObject,
+    AuthorizationProviderContractImpl(AuthorizationProviderContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -147,22 +126,18 @@ public final class AuthorizationProviderContractImpl
     }
 
     public AuthorizationProviderContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationProviders()
-                .getWithResponse(resourceGroupName, serviceName, authorizationProviderId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationProviders()
+            .getWithResponse(resourceGroupName, serviceName, authorizationProviderId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthorizationProviderContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationProviders()
-                .getWithResponse(resourceGroupName, serviceName, authorizationProviderId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationProviders()
+            .getWithResponse(resourceGroupName, serviceName, authorizationProviderId, context)
+            .getValue();
         return this;
     }
 

@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SharedPrivateLinkResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SharedPrivateLinkResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"groupId\":\"zejjoqk\",\"privateLinkResourceId\":\"gfhsxttaugzxn\",\"provisioningState\":\"Failed\",\"requestMessage\":\"pxdtnkdmkq\",\"status\":\"Rejected\"}")
-                .toObject(SharedPrivateLinkResourceProperties.class);
+        SharedPrivateLinkResourceProperties model = BinaryData.fromString(
+            "{\"groupId\":\"zejjoqk\",\"privateLinkResourceId\":\"gfhsxttaugzxn\",\"provisioningState\":\"Failed\",\"requestMessage\":\"pxdtnkdmkq\",\"status\":\"Rejected\"}")
+            .toObject(SharedPrivateLinkResourceProperties.class);
         Assertions.assertEquals("zejjoqk", model.groupId());
         Assertions.assertEquals("gfhsxttaugzxn", model.privateLinkResourceId());
         Assertions.assertEquals("pxdtnkdmkq", model.requestMessage());
@@ -23,11 +21,9 @@ public final class SharedPrivateLinkResourcePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SharedPrivateLinkResourceProperties model =
-            new SharedPrivateLinkResourceProperties()
-                .withGroupId("zejjoqk")
-                .withPrivateLinkResourceId("gfhsxttaugzxn")
-                .withRequestMessage("pxdtnkdmkq");
+        SharedPrivateLinkResourceProperties model = new SharedPrivateLinkResourceProperties().withGroupId("zejjoqk")
+            .withPrivateLinkResourceId("gfhsxttaugzxn")
+            .withRequestMessage("pxdtnkdmkq");
         model = BinaryData.fromObject(model).toObject(SharedPrivateLinkResourceProperties.class);
         Assertions.assertEquals("zejjoqk", model.groupId());
         Assertions.assertEquals("gfhsxttaugzxn", model.privateLinkResourceId());

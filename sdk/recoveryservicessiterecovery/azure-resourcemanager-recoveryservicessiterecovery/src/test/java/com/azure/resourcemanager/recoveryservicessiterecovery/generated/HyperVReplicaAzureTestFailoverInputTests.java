@@ -22,9 +22,11 @@ public final class HyperVReplicaAzureTestFailoverInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaAzureTestFailoverInput model = new HyperVReplicaAzureTestFailoverInput()
-            .withPrimaryKekCertificatePfx("nsjulugdybnh").withSecondaryKekCertificatePfx("lelfjhkeizcpih")
-            .withRecoveryPointId("miw").withOsUpgradeVersion("kpty");
+        HyperVReplicaAzureTestFailoverInput model
+            = new HyperVReplicaAzureTestFailoverInput().withPrimaryKekCertificatePfx("nsjulugdybnh")
+                .withSecondaryKekCertificatePfx("lelfjhkeizcpih")
+                .withRecoveryPointId("miw")
+                .withOsUpgradeVersion("kpty");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureTestFailoverInput.class);
         Assertions.assertEquals("nsjulugdybnh", model.primaryKekCertificatePfx());
         Assertions.assertEquals("lelfjhkeizcpih", model.secondaryKekCertificatePfx());

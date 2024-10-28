@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlVirtualMachineUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlVirtualMachineUpdate model =
-            BinaryData.fromString("{\"tags\":{\"e\":\"aos\"}}").toObject(SqlVirtualMachineUpdate.class);
+        SqlVirtualMachineUpdate model
+            = BinaryData.fromString("{\"tags\":{\"e\":\"aos\"}}").toObject(SqlVirtualMachineUpdate.class);
         Assertions.assertEquals("aos", model.tags().get("e"));
     }
 

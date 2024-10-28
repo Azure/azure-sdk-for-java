@@ -29,8 +29,8 @@ public interface WorkspaceManagedIdentitySqlControlSettingsClient {
      * @return managed Identity Sql Control Settings along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedIdentitySqlControlSettingsModelInner> getWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<ManagedIdentitySqlControlSettingsModelInner> getWithResponse(String resourceGroupName,
+        String workspaceName, Context context);
 
     /**
      * Get Managed Identity Sql Control Settings.
@@ -58,9 +58,7 @@ public interface WorkspaceManagedIdentitySqlControlSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String workspaceName,
+        beginCreateOrUpdate(String resourceGroupName, String workspaceName,
             ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings);
 
     /**
@@ -77,11 +75,8 @@ public interface WorkspaceManagedIdentitySqlControlSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String workspaceName,
-            ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings,
-            Context context);
+        beginCreateOrUpdate(String resourceGroupName, String workspaceName,
+            ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings, Context context);
 
     /**
      * Create or update Managed Identity Sql Control Settings.
@@ -95,9 +90,7 @@ public interface WorkspaceManagedIdentitySqlControlSettingsClient {
      * @return managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedIdentitySqlControlSettingsModelInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
+    ManagedIdentitySqlControlSettingsModelInner createOrUpdate(String resourceGroupName, String workspaceName,
         ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings);
 
     /**
@@ -113,9 +106,6 @@ public interface WorkspaceManagedIdentitySqlControlSettingsClient {
      * @return managed Identity Sql Control Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedIdentitySqlControlSettingsModelInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings,
-        Context context);
+    ManagedIdentitySqlControlSettingsModelInner createOrUpdate(String resourceGroupName, String workspaceName,
+        ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings, Context context);
 }

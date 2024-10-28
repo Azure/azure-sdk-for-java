@@ -39,7 +39,8 @@ class FileModelFetcher implements ModelFetcher {
     }
 
     @Override
-    public Mono<FetchModelResult> fetchModelAsync(String dtmi, URI repositoryUri, boolean tryFromExpanded, Context context) {
+    public Mono<FetchModelResult> fetchModelAsync(String dtmi, URI repositoryUri, boolean tryFromExpanded,
+        Context context) {
         return Mono.defer(() -> {
             Queue<String> work = new LinkedList<>();
 
@@ -62,10 +63,9 @@ class FileModelFetcher implements ModelFetcher {
 
                 if (Files.exists(path)) {
                     try {
-                        return Mono.just(
-                            new FetchModelResult()
-                                .setDefinition(new String(Files.readAllBytes(path), StandardCharsets.UTF_8))
-                                .setPath(tryContentPath));
+                        return Mono.just(new FetchModelResult()
+                            .setDefinition(new String(Files.readAllBytes(path), StandardCharsets.UTF_8))
+                            .setPath(tryContentPath));
                     } catch (IOException e) {
                         return Mono.error(new AzureException(e));
                     }
@@ -90,10 +90,9 @@ class FileModelFetcher implements ModelFetcher {
 
             if (Files.exists(path)) {
                 try {
-                    return Mono.just(
-                        new FetchMetadataResult()
-                            .setDefinition(new String(Files.readAllBytes(path), StandardCharsets.UTF_8))
-                            .setPath(tryContentPath));
+                    return Mono.just(new FetchMetadataResult()
+                        .setDefinition(new String(Files.readAllBytes(path), StandardCharsets.UTF_8))
+                        .setPath(tryContentPath));
                 } catch (IOException e) {
                     logger.error(String.format(StatusStrings.ERROR_FETCHING_METADATA_CONTENT + " Error: %s.",
                         path.toString(), e.getMessage()));
@@ -108,13 +107,12 @@ class FileModelFetcher implements ModelFetcher {
         }
     }
 
-    private String getModelPath(String dtmi, URI repositoryUri, boolean expanded) throws URISyntaxException, MalformedURLException {
-        return DtmiConventions.getModelUri(dtmi, repositoryUri, expanded)
-            .getPath();
+    private String getModelPath(String dtmi, URI repositoryUri, boolean expanded)
+        throws URISyntaxException, MalformedURLException {
+        return DtmiConventions.getModelUri(dtmi, repositoryUri, expanded).getPath();
     }
 
-    private String getMetadataPath(URI repositoryUri) throws URISyntaxException, MalformedURLException  {
-        return DtmiConventions.getMetadataUri(repositoryUri)
-            .getPath();
+    private String getMetadataPath(URI repositoryUri) throws URISyntaxException, MalformedURLException {
+        return DtmiConventions.getMetadataUri(repositoryUri).getPath();
     }
 }

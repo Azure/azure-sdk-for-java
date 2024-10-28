@@ -21,8 +21,7 @@ public class NetworkAnalyticsManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        networkAnalyticsManager = NetworkAnalyticsManager
-            .configure()
+        networkAnalyticsManager = NetworkAnalyticsManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
     }

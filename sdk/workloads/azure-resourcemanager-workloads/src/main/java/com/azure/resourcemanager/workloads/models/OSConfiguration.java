@@ -18,8 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("OSConfiguration")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Windows", value = WindowsConfiguration.class),
-    @JsonSubTypes.Type(name = "Linux", value = LinuxConfiguration.class)
-})
+    @JsonSubTypes.Type(name = "Linux", value = LinuxConfiguration.class) })
 @Immutable
 public class OSConfiguration {
     /** Creates an instance of OSConfiguration class. */

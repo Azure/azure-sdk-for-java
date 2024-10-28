@@ -44,12 +44,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @param client the instance of the service client containing this operation class.
      */
     ProactiveDetectionConfigurationsClientImpl(ApplicationInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ProactiveDetectionConfigurationsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ProactiveDetectionConfigurationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,51 +56,35 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationInsightsM")
     public interface ProactiveDetectionConfigurationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/ProactiveDetectionConfigs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/ProactiveDetectionConfigs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/ProactiveDetectionConfigs/{ConfigurationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/ProactiveDetectionConfigs/{ConfigurationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("ConfigurationId") String configurationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceName") String resourceName, @PathParam("ConfigurationId") String configurationId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/ProactiveDetectionConfigs/{ConfigurationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/ProactiveDetectionConfigs/{ConfigurationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("ConfigurationId") String configurationId,
-            @BodyParam("application/json")
-                ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceName") String resourceName, @PathParam("ConfigurationId") String configurationId,
+            @BodyParam("application/json") ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -122,20 +102,16 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
     private Mono<Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>>>
         listWithResponseAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -143,17 +119,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -173,20 +140,16 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
     private Mono<Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>>>
         listWithResponseAsync(String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -194,15 +157,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, accept, context);
     }
 
     /**
@@ -217,8 +173,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> listAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>>
+        listAsync(String resourceGroupName, String resourceName) {
         return listWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -235,8 +191,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> listWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
+    public Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>>
+        listWithResponse(String resourceGroupName, String resourceName, Context context) {
         return listWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
@@ -251,8 +207,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @return a list of ProactiveDetection configurations of an Application Insights component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<ApplicationInsightsComponentProactiveDetectionConfigurationInner> list(
-        String resourceGroupName, String resourceName) {
+    public List<ApplicationInsightsComponentProactiveDetectionConfigurationInner> list(String resourceGroupName,
+        String resourceName) {
         return listWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
@@ -270,23 +226,19 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String configurationId) {
+    private Mono<Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>>
+        getWithResponseAsync(String resourceGroupName, String resourceName, String configurationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -298,18 +250,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            configurationId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, configurationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -328,23 +270,19 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String configurationId, Context context) {
+    private Mono<Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>>
+        getWithResponseAsync(String resourceGroupName, String resourceName, String configurationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -356,16 +294,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                configurationId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, configurationId, accept, context);
     }
 
     /**
@@ -381,8 +311,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @return the ProactiveDetection configuration for this configuration id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInsightsComponentProactiveDetectionConfigurationInner> getAsync(
-        String resourceGroupName, String resourceName, String configurationId) {
+    private Mono<ApplicationInsightsComponentProactiveDetectionConfigurationInner> getAsync(String resourceGroupName,
+        String resourceName, String configurationId) {
         return getWithResponseAsync(resourceGroupName, resourceName, configurationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -401,8 +331,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @return the ProactiveDetection configuration for this configuration id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner> getWithResponse(
-        String resourceGroupName, String resourceName, String configurationId, Context context) {
+    public Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>
+        getWithResponse(String resourceGroupName, String resourceName, String configurationId, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, configurationId, context).block();
     }
 
@@ -419,8 +349,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @return the ProactiveDetection configuration for this configuration id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInsightsComponentProactiveDetectionConfigurationInner get(
-        String resourceGroupName, String resourceName, String configurationId) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationInner get(String resourceGroupName,
+        String resourceName, String configurationId) {
         return getWithResponse(resourceGroupName, resourceName, configurationId, Context.NONE).getValue();
     }
 
@@ -441,25 +371,19 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String configurationId,
+        String resourceGroupName, String resourceName, String configurationId,
         ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -469,29 +393,17 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
                 .error(new IllegalArgumentException("Parameter configurationId is required and cannot be null."));
         }
         if (proactiveDetectionProperties == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter proactiveDetectionProperties is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter proactiveDetectionProperties is required and cannot be null."));
         } else {
             proactiveDetectionProperties.validate();
         }
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            configurationId,
-                            proactiveDetectionProperties,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, configurationId, proactiveDetectionProperties, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -513,26 +425,20 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String configurationId,
+        String resourceGroupName, String resourceName, String configurationId,
         ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -542,27 +448,16 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
                 .error(new IllegalArgumentException("Parameter configurationId is required and cannot be null."));
         }
         if (proactiveDetectionProperties == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter proactiveDetectionProperties is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter proactiveDetectionProperties is required and cannot be null."));
         } else {
             proactiveDetectionProperties.validate();
         }
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                configurationId,
-                proactiveDetectionProperties,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, configurationId, proactiveDetectionProperties, accept, context);
     }
 
     /**
@@ -580,10 +475,8 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @return properties that define a ProactiveDetection configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInsightsComponentProactiveDetectionConfigurationInner> updateAsync(
-        String resourceGroupName,
-        String resourceName,
-        String configurationId,
+    private Mono<ApplicationInsightsComponentProactiveDetectionConfigurationInner> updateAsync(String resourceGroupName,
+        String resourceName, String configurationId,
         ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties) {
         return updateWithResponseAsync(resourceGroupName, resourceName, configurationId, proactiveDetectionProperties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -606,14 +499,11 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String configurationId,
+        String resourceGroupName, String resourceName, String configurationId,
         ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties,
         Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, resourceName, configurationId, proactiveDetectionProperties, context)
-            .block();
+        return updateWithResponseAsync(resourceGroupName, resourceName, configurationId, proactiveDetectionProperties,
+            context).block();
     }
 
     /**
@@ -631,13 +521,10 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
      * @return properties that define a ProactiveDetection configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInsightsComponentProactiveDetectionConfigurationInner update(
-        String resourceGroupName,
-        String resourceName,
-        String configurationId,
+    public ApplicationInsightsComponentProactiveDetectionConfigurationInner update(String resourceGroupName,
+        String resourceName, String configurationId,
         ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties) {
-        return updateWithResponse(
-                resourceGroupName, resourceName, configurationId, proactiveDetectionProperties, Context.NONE)
-            .getValue();
+        return updateWithResponse(resourceGroupName, resourceName, configurationId, proactiveDetectionProperties,
+            Context.NONE).getValue();
     }
 }

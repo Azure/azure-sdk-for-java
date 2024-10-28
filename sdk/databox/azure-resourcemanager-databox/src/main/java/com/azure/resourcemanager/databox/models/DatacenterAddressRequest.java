@@ -77,16 +77,12 @@ public final class DatacenterAddressRequest {
      */
     public void validate() {
         if (storageLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageLocation in model DatacenterAddressRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageLocation in model DatacenterAddressRequest"));
         }
         if (skuName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property skuName in model DatacenterAddressRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property skuName in model DatacenterAddressRequest"));
         }
     }
 

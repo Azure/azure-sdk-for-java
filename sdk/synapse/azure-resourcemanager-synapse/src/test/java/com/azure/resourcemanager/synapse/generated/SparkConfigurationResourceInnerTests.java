@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SparkConfigurationResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SparkConfigurationResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"qzeqyjleziunjxdf\",\"configs\":{\"mlbnseq\":\"ntkwcegy\",\"m\":\"cjjvpilguooqja\",\"hrtdtpdelq\":\"itgueiookjbs\",\"vcjkgd\":\"cslmotoebnfxo\"},\"annotations\":[\"zft\",\"ejwabmdujtmvco\",\"excmjurbuhhl\",\"yqltqsro\"],\"notes\":\"uwkffdjktsysid\",\"createdBy\":\"c\",\"created\":\"2021-11-11T21:46:56Z\",\"configMergeRule\":{\"ogsf\":\"fuijtkbus\"}},\"etag\":\"ayiansharujtji\",\"id\":\"xfz\",\"name\":\"j\",\"type\":\"ttvwkpqh\"}")
-                .toObject(SparkConfigurationResourceInner.class);
+        SparkConfigurationResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"qzeqyjleziunjxdf\",\"configs\":{\"mlbnseq\":\"ntkwcegy\",\"m\":\"cjjvpilguooqja\",\"hrtdtpdelq\":\"itgueiookjbs\",\"vcjkgd\":\"cslmotoebnfxo\"},\"annotations\":[\"zft\",\"ejwabmdujtmvco\",\"excmjurbuhhl\",\"yqltqsro\"],\"notes\":\"uwkffdjktsysid\",\"createdBy\":\"c\",\"created\":\"2021-11-11T21:46:56Z\",\"configMergeRule\":{\"ogsf\":\"fuijtkbus\"}},\"etag\":\"ayiansharujtji\",\"id\":\"xfz\",\"name\":\"j\",\"type\":\"ttvwkpqh\"}")
+            .toObject(SparkConfigurationResourceInner.class);
         Assertions.assertEquals("qzeqyjleziunjxdf", model.description());
         Assertions.assertEquals("ntkwcegy", model.configs().get("mlbnseq"));
         Assertions.assertEquals("zft", model.annotations().get(0));
@@ -31,19 +29,10 @@ public final class SparkConfigurationResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SparkConfigurationResourceInner model =
-            new SparkConfigurationResourceInner()
-                .withDescription("qzeqyjleziunjxdf")
-                .withConfigs(
-                    mapOf(
-                        "mlbnseq",
-                        "ntkwcegy",
-                        "m",
-                        "cjjvpilguooqja",
-                        "hrtdtpdelq",
-                        "itgueiookjbs",
-                        "vcjkgd",
-                        "cslmotoebnfxo"))
+        SparkConfigurationResourceInner model
+            = new SparkConfigurationResourceInner().withDescription("qzeqyjleziunjxdf")
+                .withConfigs(mapOf("mlbnseq", "ntkwcegy", "m", "cjjvpilguooqja", "hrtdtpdelq", "itgueiookjbs", "vcjkgd",
+                    "cslmotoebnfxo"))
                 .withAnnotations(Arrays.asList("zft", "ejwabmdujtmvco", "excmjurbuhhl", "yqltqsro"))
                 .withNotes("uwkffdjktsysid")
                 .withCreatedBy("c")

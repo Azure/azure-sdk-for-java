@@ -136,11 +136,8 @@ public interface NotificationChannel {
     NotificationChannelInner innerModel();
 
     /** The entirety of the NotificationChannel definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /** The NotificationChannel definition stages. */
@@ -185,12 +182,8 @@ public interface NotificationChannel {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithWebhookUrl,
-                DefinitionStages.WithEmailRecipient,
-                DefinitionStages.WithNotificationLocale,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithEvents {
+            extends DefinitionStages.WithTags, DefinitionStages.WithWebhookUrl, DefinitionStages.WithEmailRecipient,
+            DefinitionStages.WithNotificationLocale, DefinitionStages.WithDescription, DefinitionStages.WithEvents {
             /**
              * Executes the create request.
              *

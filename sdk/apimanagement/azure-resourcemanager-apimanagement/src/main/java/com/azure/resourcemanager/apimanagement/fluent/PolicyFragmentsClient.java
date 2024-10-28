@@ -39,14 +39,8 @@ public interface PolicyFragmentsClient {
      * @return all policy fragments along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyFragmentCollectionInner> listByServiceWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        String orderby,
-        Integer top,
-        Integer skip,
-        Context context);
+    Response<PolicyFragmentCollectionInner> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        String filter, String orderby, Integer top, Integer skip, Context context);
 
     /**
      * Gets all policy fragments.
@@ -74,8 +68,8 @@ public interface PolicyFragmentsClient {
      * @return the entity state (Etag) version of a policy fragment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyFragmentsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String id, Context context);
+    PolicyFragmentsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String id, Context context);
 
     /**
      * Gets the entity state (Etag) version of a policy fragment.
@@ -104,8 +98,8 @@ public interface PolicyFragmentsClient {
      * @return a policy fragment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyFragmentsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String id, PolicyFragmentContentFormat format, Context context);
+    PolicyFragmentsGetResponse getWithResponse(String resourceGroupName, String serviceName, String id,
+        PolicyFragmentContentFormat format, Context context);
 
     /**
      * Gets a policy fragment.
@@ -153,11 +147,7 @@ public interface PolicyFragmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PolicyFragmentContractInner>, PolicyFragmentContractInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String id,
-        PolicyFragmentContractInner parameters,
-        String ifMatch,
+        String resourceGroupName, String serviceName, String id, PolicyFragmentContractInner parameters, String ifMatch,
         Context context);
 
     /**
@@ -173,8 +163,8 @@ public interface PolicyFragmentsClient {
      * @return policy fragment contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyFragmentContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String id, PolicyFragmentContractInner parameters);
+    PolicyFragmentContractInner createOrUpdate(String resourceGroupName, String serviceName, String id,
+        PolicyFragmentContractInner parameters);
 
     /**
      * Creates or updates a policy fragment.
@@ -191,13 +181,8 @@ public interface PolicyFragmentsClient {
      * @return policy fragment contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyFragmentContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String id,
-        PolicyFragmentContractInner parameters,
-        String ifMatch,
-        Context context);
+    PolicyFragmentContractInner createOrUpdate(String resourceGroupName, String serviceName, String id,
+        PolicyFragmentContractInner parameters, String ifMatch, Context context);
 
     /**
      * Deletes a policy fragment.
@@ -214,8 +199,8 @@ public interface PolicyFragmentsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String id, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String id, String ifMatch,
+        Context context);
 
     /**
      * Deletes a policy fragment.
@@ -247,8 +232,8 @@ public interface PolicyFragmentsClient {
      * @return a collection of resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceCollectionInner> listReferencesWithResponse(
-        String resourceGroupName, String serviceName, String id, Integer top, Integer skip, Context context);
+    Response<ResourceCollectionInner> listReferencesWithResponse(String resourceGroupName, String serviceName,
+        String id, Integer top, Integer skip, Context context);
 
     /**
      * Lists policy resources that reference the policy fragment.

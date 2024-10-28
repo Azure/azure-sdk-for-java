@@ -127,9 +127,8 @@ public class PortCondition {
      */
     public void validate() {
         if (layer4Protocol() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property layer4Protocol in model PortCondition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property layer4Protocol in model PortCondition"));
         }
     }
 

@@ -24,13 +24,9 @@ public interface KustoPoolDatabasePrincipalAssignments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response}.
      */
-    Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String resourceGroupName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName,
-        Context context);
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(String workspaceName, String kustoPoolName,
+        String databaseName, String resourceGroupName,
+        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName, Context context);
 
     /**
      * Checks that the database principal assignment is valid and is not already in use.
@@ -45,12 +41,8 @@ public interface KustoPoolDatabasePrincipalAssignments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request.
      */
-    CheckNameResult checkNameAvailability(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String resourceGroupName,
-        DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName);
+    CheckNameResult checkNameAvailability(String workspaceName, String kustoPoolName, String databaseName,
+        String resourceGroupName, DatabasePrincipalAssignmentCheckNameRequest principalAssignmentName);
 
     /**
      * Lists all Kusto pool database principalAssignments.
@@ -65,8 +57,8 @@ public interface KustoPoolDatabasePrincipalAssignments {
      * @return the list Kusto database principal assignments operation response as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<DatabasePrincipalAssignment> list(
-        String workspaceName, String kustoPoolName, String databaseName, String resourceGroupName);
+    PagedIterable<DatabasePrincipalAssignment> list(String workspaceName, String kustoPoolName, String databaseName,
+        String resourceGroupName);
 
     /**
      * Lists all Kusto pool database principalAssignments.
@@ -82,8 +74,8 @@ public interface KustoPoolDatabasePrincipalAssignments {
      * @return the list Kusto database principal assignments operation response as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<DatabasePrincipalAssignment> list(
-        String workspaceName, String kustoPoolName, String databaseName, String resourceGroupName, Context context);
+    PagedIterable<DatabasePrincipalAssignment> list(String workspaceName, String kustoPoolName, String databaseName,
+        String resourceGroupName, Context context);
 
     /**
      * Gets a Kusto pool database principalAssignment.
@@ -99,13 +91,8 @@ public interface KustoPoolDatabasePrincipalAssignments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kusto pool database principalAssignment along with {@link Response}.
      */
-    Response<DatabasePrincipalAssignment> getWithResponse(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        Context context);
+    Response<DatabasePrincipalAssignment> getWithResponse(String workspaceName, String kustoPoolName,
+        String databaseName, String principalAssignmentName, String resourceGroupName, Context context);
 
     /**
      * Gets a Kusto pool database principalAssignment.
@@ -120,12 +107,8 @@ public interface KustoPoolDatabasePrincipalAssignments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Kusto pool database principalAssignment.
      */
-    DatabasePrincipalAssignment get(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String principalAssignmentName,
-        String resourceGroupName);
+    DatabasePrincipalAssignment get(String workspaceName, String kustoPoolName, String databaseName,
+        String principalAssignmentName, String resourceGroupName);
 
     /**
      * Deletes a Kusto pool principalAssignment.
@@ -139,11 +122,7 @@ public interface KustoPoolDatabasePrincipalAssignments {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String principalAssignmentName,
+    void delete(String workspaceName, String kustoPoolName, String databaseName, String principalAssignmentName,
         String resourceGroupName);
 
     /**
@@ -159,13 +138,8 @@ public interface KustoPoolDatabasePrincipalAssignments {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String principalAssignmentName,
-        String resourceGroupName,
-        Context context);
+    void delete(String workspaceName, String kustoPoolName, String databaseName, String principalAssignmentName,
+        String resourceGroupName, Context context);
 
     /**
      * Gets a Kusto pool database principalAssignment.

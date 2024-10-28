@@ -17,15 +17,12 @@ public class GetSecretTest extends SecretsTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(secretAsyncClient.setSecret(SECRET_NAME, SECRET_NAME))
-            .then();
+        return super.globalSetupAsync().then(secretAsyncClient.setSecret(SECRET_NAME, SECRET_NAME)).then();
     }
 
     @Override
     public Mono<Void> globalCleanupAsync() {
-        return deleteAndPurgeSecretsAsync(SECRET_NAME)
-            .then(super.globalCleanupAsync());
+        return deleteAndPurgeSecretsAsync(SECRET_NAME).then(super.globalCleanupAsync());
     }
 
     @Override

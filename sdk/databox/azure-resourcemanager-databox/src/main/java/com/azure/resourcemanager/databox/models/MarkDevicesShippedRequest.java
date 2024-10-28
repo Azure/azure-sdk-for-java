@@ -48,10 +48,8 @@ public final class MarkDevicesShippedRequest {
      */
     public void validate() {
         if (deliverToDcPackageDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deliverToDcPackageDetails in model MarkDevicesShippedRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property deliverToDcPackageDetails in model MarkDevicesShippedRequest"));
         } else {
             deliverToDcPackageDetails().validate();
         }

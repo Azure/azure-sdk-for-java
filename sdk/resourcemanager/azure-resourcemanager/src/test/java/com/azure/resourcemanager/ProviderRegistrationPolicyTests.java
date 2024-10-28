@@ -32,21 +32,10 @@ public class ProviderRegistrationPolicyTests extends ResourceManagerTestProxyTes
     private String rgName;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -82,16 +71,14 @@ public class ProviderRegistrationPolicyTests extends ResourceManagerTestProxyTes
         }
         Assertions.assertEquals("Unregistered", provider.registrationState());
 
-        Registry registry =
-            azureResourceManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withTag("tag1", "value1")
-                .create();
+        Registry registry = azureResourceManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withTag("tag1", "value1")
+            .create();
 
         // above should success even when namespace "Microsoft.ContainerRegistry" not registered
         Assertions.assertNotNull(registry);

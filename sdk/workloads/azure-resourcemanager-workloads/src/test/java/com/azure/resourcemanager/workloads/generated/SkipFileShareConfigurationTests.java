@@ -10,8 +10,8 @@ import com.azure.resourcemanager.workloads.models.SkipFileShareConfiguration;
 public final class SkipFileShareConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkipFileShareConfiguration model =
-            BinaryData.fromString("{\"configurationType\":\"Skip\"}").toObject(SkipFileShareConfiguration.class);
+        SkipFileShareConfiguration model
+            = BinaryData.fromString("{\"configurationType\":\"Skip\"}").toObject(SkipFileShareConfiguration.class);
     }
 
     @org.junit.jupiter.api.Test

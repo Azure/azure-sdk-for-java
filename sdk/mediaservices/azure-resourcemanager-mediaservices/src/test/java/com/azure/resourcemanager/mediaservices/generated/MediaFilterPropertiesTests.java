@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MediaFilterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MediaFilterProperties model =
-            BinaryData
-                .fromString(
-                    "{\"presentationTimeRange\":{\"startTimestamp\":6283812381833889592,\"endTimestamp\":6505103417183468045,\"presentationWindowDuration\":2130961958634360268,\"liveBackoffDuration\":2427093929580813013,\"timescale\":6031739459541658820,\"forceEndTimestamp\":false},\"firstQuality\":{\"bitrate\":1139572680},\"tracks\":[{\"trackSelections\":[]},{\"trackSelections\":[]}]}")
-                .toObject(MediaFilterProperties.class);
+        MediaFilterProperties model = BinaryData.fromString(
+            "{\"presentationTimeRange\":{\"startTimestamp\":6283812381833889592,\"endTimestamp\":6505103417183468045,\"presentationWindowDuration\":2130961958634360268,\"liveBackoffDuration\":2427093929580813013,\"timescale\":6031739459541658820,\"forceEndTimestamp\":false},\"firstQuality\":{\"bitrate\":1139572680},\"tracks\":[{\"trackSelections\":[]},{\"trackSelections\":[]}]}")
+            .toObject(MediaFilterProperties.class);
         Assertions.assertEquals(6283812381833889592L, model.presentationTimeRange().startTimestamp());
         Assertions.assertEquals(6505103417183468045L, model.presentationTimeRange().endTimestamp());
         Assertions.assertEquals(2130961958634360268L, model.presentationTimeRange().presentationWindowDuration());
@@ -31,22 +29,16 @@ public final class MediaFilterPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MediaFilterProperties model =
-            new MediaFilterProperties()
-                .withPresentationTimeRange(
-                    new PresentationTimeRange()
-                        .withStartTimestamp(6283812381833889592L)
-                        .withEndTimestamp(6505103417183468045L)
-                        .withPresentationWindowDuration(2130961958634360268L)
-                        .withLiveBackoffDuration(2427093929580813013L)
-                        .withTimescale(6031739459541658820L)
-                        .withForceEndTimestamp(false))
-                .withFirstQuality(new FirstQuality().withBitrate(1139572680))
-                .withTracks(
-                    Arrays
-                        .asList(
-                            new FilterTrackSelection().withTrackSelections(Arrays.asList()),
-                            new FilterTrackSelection().withTrackSelections(Arrays.asList())));
+        MediaFilterProperties model = new MediaFilterProperties()
+            .withPresentationTimeRange(new PresentationTimeRange().withStartTimestamp(6283812381833889592L)
+                .withEndTimestamp(6505103417183468045L)
+                .withPresentationWindowDuration(2130961958634360268L)
+                .withLiveBackoffDuration(2427093929580813013L)
+                .withTimescale(6031739459541658820L)
+                .withForceEndTimestamp(false))
+            .withFirstQuality(new FirstQuality().withBitrate(1139572680))
+            .withTracks(Arrays.asList(new FilterTrackSelection().withTrackSelections(Arrays.asList()),
+                new FilterTrackSelection().withTrackSelections(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(MediaFilterProperties.class);
         Assertions.assertEquals(6283812381833889592L, model.presentationTimeRange().startTimestamp());
         Assertions.assertEquals(6505103417183468045L, model.presentationTimeRange().endTimestamp());

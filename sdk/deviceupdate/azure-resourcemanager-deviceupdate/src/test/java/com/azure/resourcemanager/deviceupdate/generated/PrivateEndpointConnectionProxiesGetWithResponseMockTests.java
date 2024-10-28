@@ -45,12 +45,14 @@ public final class PrivateEndpointConnectionProxiesGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        DeviceUpdateManager manager = DeviceUpdateManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        DeviceUpdateManager manager = DeviceUpdateManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnectionProxy response = manager.privateEndpointConnectionProxies()
-            .getWithResponse("thjoxoism", "ksbpimlqoljx", "cgxxlxs", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("thjoxoism", "ksbpimlqoljx", "cgxxlxs", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("lyoupfgfbkju", response.remotePrivateEndpoint().id());
         Assertions.assertEquals("yhgk", response.remotePrivateEndpoint().location());
@@ -70,12 +72,24 @@ public final class PrivateEndpointConnectionProxiesGetWithResponseMockTests {
         Assertions.assertEquals("xk",
             response.remotePrivateEndpoint().privateLinkServiceConnections().get(0).requestMessage());
         Assertions.assertEquals("vbalxlllc", response.remotePrivateEndpoint().privateLinkServiceProxies().get(0).id());
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, response.remotePrivateEndpoint()
-            .privateLinkServiceProxies().get(0).remotePrivateLinkServiceConnectionState().status());
-        Assertions.assertEquals("zevwrdnhfukuv", response.remotePrivateEndpoint().privateLinkServiceProxies().get(0)
-            .remotePrivateLinkServiceConnectionState().description());
-        Assertions.assertEquals("cswsmystul", response.remotePrivateEndpoint().privateLinkServiceProxies().get(0)
-            .remotePrivateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+            response.remotePrivateEndpoint()
+                .privateLinkServiceProxies()
+                .get(0)
+                .remotePrivateLinkServiceConnectionState()
+                .status());
+        Assertions.assertEquals("zevwrdnhfukuv",
+            response.remotePrivateEndpoint()
+                .privateLinkServiceProxies()
+                .get(0)
+                .remotePrivateLinkServiceConnectionState()
+                .description());
+        Assertions.assertEquals("cswsmystul",
+            response.remotePrivateEndpoint()
+                .privateLinkServiceProxies()
+                .get(0)
+                .remotePrivateLinkServiceConnectionState()
+                .actionsRequired());
         Assertions.assertEquals("jvlpjxxkzbr", response.status());
     }
 }

@@ -25,7 +25,8 @@ public final class DiagnosticStoragePropertiesTests {
     public void testSerialize() throws Exception {
         DiagnosticStorageProperties model
             = new DiagnosticStorageProperties().withAuthenticationType(AuthenticationType.KEY_BASED)
-                .withConnectionString("sflnrosfqp").withResourceId("eeh");
+                .withConnectionString("sflnrosfqp")
+                .withResourceId("eeh");
         model = BinaryData.fromObject(model).toObject(DiagnosticStorageProperties.class);
         Assertions.assertEquals(AuthenticationType.KEY_BASED, model.authenticationType());
         Assertions.assertEquals("sflnrosfqp", model.connectionString());

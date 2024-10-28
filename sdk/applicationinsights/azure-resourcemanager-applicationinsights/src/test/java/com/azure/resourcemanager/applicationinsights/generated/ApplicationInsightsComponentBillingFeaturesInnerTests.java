@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationInsightsComponentBillingFeaturesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentBillingFeaturesInner model =
-            BinaryData
-                .fromString(
-                    "{\"DataVolumeCap\":{\"Cap\":80.98324,\"ResetTime\":1887671612,\"WarningThreshold\":565226786,\"StopSendNotificationWhenHitThreshold\":true,\"StopSendNotificationWhenHitCap\":false,\"MaxHistoryCap\":2.1371305},\"CurrentBillingFeatures\":[\"mjqulngsn\",\"nbybkzgcwrwcl\",\"xwrljdouskcqvkoc\",\"cjdkwtnhxbnjbi\"]}")
-                .toObject(ApplicationInsightsComponentBillingFeaturesInner.class);
+        ApplicationInsightsComponentBillingFeaturesInner model = BinaryData.fromString(
+            "{\"DataVolumeCap\":{\"Cap\":80.98324,\"ResetTime\":1887671612,\"WarningThreshold\":565226786,\"StopSendNotificationWhenHitThreshold\":true,\"StopSendNotificationWhenHitCap\":false,\"MaxHistoryCap\":2.1371305},\"CurrentBillingFeatures\":[\"mjqulngsn\",\"nbybkzgcwrwcl\",\"xwrljdouskcqvkoc\",\"cjdkwtnhxbnjbi\"]}")
+            .toObject(ApplicationInsightsComponentBillingFeaturesInner.class);
         Assertions.assertEquals(80.98324F, model.dataVolumeCap().cap());
         Assertions.assertEquals(565226786, model.dataVolumeCap().warningThreshold());
         Assertions.assertEquals(true, model.dataVolumeCap().stopSendNotificationWhenHitThreshold());
@@ -27,16 +25,13 @@ public final class ApplicationInsightsComponentBillingFeaturesInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationInsightsComponentBillingFeaturesInner model =
-            new ApplicationInsightsComponentBillingFeaturesInner()
-                .withDataVolumeCap(
-                    new ApplicationInsightsComponentDataVolumeCap()
-                        .withCap(80.98324F)
-                        .withWarningThreshold(565226786)
-                        .withStopSendNotificationWhenHitThreshold(true)
-                        .withStopSendNotificationWhenHitCap(false))
-                .withCurrentBillingFeatures(
-                    Arrays.asList("mjqulngsn", "nbybkzgcwrwcl", "xwrljdouskcqvkoc", "cjdkwtnhxbnjbi"));
+        ApplicationInsightsComponentBillingFeaturesInner model = new ApplicationInsightsComponentBillingFeaturesInner()
+            .withDataVolumeCap(new ApplicationInsightsComponentDataVolumeCap().withCap(80.98324F)
+                .withWarningThreshold(565226786)
+                .withStopSendNotificationWhenHitThreshold(true)
+                .withStopSendNotificationWhenHitCap(false))
+            .withCurrentBillingFeatures(
+                Arrays.asList("mjqulngsn", "nbybkzgcwrwcl", "xwrljdouskcqvkoc", "cjdkwtnhxbnjbi"));
         model = BinaryData.fromObject(model).toObject(ApplicationInsightsComponentBillingFeaturesInner.class);
         Assertions.assertEquals(80.98324F, model.dataVolumeCap().cap());
         Assertions.assertEquals(565226786, model.dataVolumeCap().warningThreshold());

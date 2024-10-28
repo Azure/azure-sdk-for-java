@@ -69,19 +69,20 @@ public final class QueryMetricsAndActivityLogs {
 
             System.out.println("Creating a Storage Account");
 
-            StorageAccount storageAccount = azureResourceManager.storageAccounts().define(storageAccountName)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withBlobStorageAccountKind()
-                    .withAccessTier(AccessTier.COOL)
-                    .create();
+            StorageAccount storageAccount = azureResourceManager.storageAccounts()
+                .define(storageAccountName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withBlobStorageAccountKind()
+                .withAccessTier(AccessTier.COOL)
+                .create();
 
             System.out.println("Created a Storage Account:");
             Utils.print(storageAccount);
 
             List<StorageAccountKey> storageAccountKeys = storageAccount.getKeys();
-            final String storageConnectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s",
-                    storageAccount.name(),
+            final String storageConnectionString
+                = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s", storageAccount.name(),
                     storageAccountKeys.get(0).value());
 
             // Add some blob transaction events
@@ -89,17 +90,18 @@ public final class QueryMetricsAndActivityLogs {
 
             OffsetDateTime recordDateTime = OffsetDateTime.now();
             // get metric definitions for storage account.
-            for (MetricDefinition metricDefinition : azureResourceManager.metricDefinitions().listByResource(storageAccount.id())) {
+            for (MetricDefinition metricDefinition : azureResourceManager.metricDefinitions()
+                .listByResource(storageAccount.id())) {
                 // find metric definition for Transactions
                 if (metricDefinition.name().localizedValue().equalsIgnoreCase("transactions")) {
                     // get metric records
                     MetricCollection metricCollection = metricDefinition.defineQuery()
-                            .startingFrom(recordDateTime.minusDays(7))
-                            .endsBefore(recordDateTime)
-                            .withAggregation("Average")
-                            .withInterval(Duration.ofMinutes(5))
-                            .withOdataFilter("apiName eq 'PutBlob' and responseType eq 'Success' and geoType eq 'Primary'")
-                            .execute();
+                        .startingFrom(recordDateTime.minusDays(7))
+                        .endsBefore(recordDateTime)
+                        .withAggregation("Average")
+                        .withInterval(Duration.ofMinutes(5))
+                        .withOdataFilter("apiName eq 'PutBlob' and responseType eq 'Success' and geoType eq 'Primary'")
+                        .execute();
 
                     System.out.println("Metrics for '" + storageAccount.id() + "':");
                     System.out.println("Namespacse: " + metricCollection.namespace());
@@ -115,16 +117,14 @@ public final class QueryMetricsAndActivityLogs {
                         for (TimeSeriesElement timeElement : metric.timeseries()) {
                             System.out.println("\t\tMetadata: ");
                             for (MetadataValueInner metadata : timeElement.metadatavalues()) {
-                                System.out.println("\t\t\t" + metadata.name().localizedValue() + ": " + metadata.value());
+                                System.out
+                                    .println("\t\t\t" + metadata.name().localizedValue() + ": " + metadata.value());
                             }
                             System.out.println("\t\tData: ");
                             for (MetricValue data : timeElement.data()) {
-                                System.out.println("\t\t\t" + data.timestamp()
-                                        + " : (Min) " + data.minimum()
-                                        + " : (Max) " + data.maximum()
-                                        + " : (Avg) " + data.average()
-                                        + " : (Total) " + data.total()
-                                        + " : (Count) " + data.count());
+                                System.out.println("\t\t\t" + data.timestamp() + " : (Min) " + data.minimum()
+                                    + " : (Max) " + data.maximum() + " : (Avg) " + data.average() + " : (Total) "
+                                    + data.total() + " : (Count) " + data.count());
                             }
                         }
                     }
@@ -133,12 +133,13 @@ public final class QueryMetricsAndActivityLogs {
             }
 
             // get activity logs for the same period.
-            PagedIterable<EventData> logs = azureResourceManager.activityLogs().defineQuery()
-                    .startingFrom(recordDateTime.minusDays(7))
-                    .endsBefore(recordDateTime)
-                    .withAllPropertiesInResponse()
-                    .filterByResource(storageAccount.id())
-                    .execute();
+            PagedIterable<EventData> logs = azureResourceManager.activityLogs()
+                .defineQuery()
+                .startingFrom(recordDateTime.minusDays(7))
+                .endsBefore(recordDateTime)
+                .withAllPropertiesInResponse()
+                .filterByResource(storageAccount.id())
+                .execute();
 
             System.out.println("Activity logs for the Storage Account:");
 
@@ -178,8 +179,7 @@ public final class QueryMetricsAndActivityLogs {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
@@ -197,7 +197,8 @@ public final class QueryMetricsAndActivityLogs {
     private static void addBlobTransactions(String storageConnectionString, HttpClient httpClient) throws IOException {
         // Get the script to upload
         //
-        try (InputStream scriptFileAsStream = QueryMetricsAndActivityLogs.class.getResourceAsStream("/install_apache.sh")) {
+        try (InputStream scriptFileAsStream
+            = QueryMetricsAndActivityLogs.class.getResourceAsStream("/install_apache.sh")) {
 
             // Get the size of the stream
             //
@@ -207,37 +208,31 @@ public final class QueryMetricsAndActivityLogs {
 
             // Upload the script file as block blob
             //
-            BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
-                .connectionString(storageConnectionString)
-                .containerName("scripts")
-                .httpClient(httpClient)
-                .buildClient();
+            BlobContainerClient blobContainerClient
+                = new BlobContainerClientBuilder().connectionString(storageConnectionString)
+                    .containerName("scripts")
+                    .httpClient(httpClient)
+                    .buildClient();
 
             blobContainerClient.create();
 
             // Get the service properties.
-            BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-                .connectionString(storageConnectionString)
-                .httpClient(httpClient)
-                .buildClient();
+            BlobServiceClient blobServiceClient
+                = new BlobServiceClientBuilder().connectionString(storageConnectionString)
+                    .httpClient(httpClient)
+                    .buildClient();
             BlobServiceProperties serviceProps = blobServiceClient.getProperties();
 
             // configure Storage logging and metrics
-            BlobAnalyticsLogging logProps = new BlobAnalyticsLogging()
-                .setRead(true)
+            BlobAnalyticsLogging logProps = new BlobAnalyticsLogging().setRead(true)
                 .setWrite(true)
-                .setRetentionPolicy(new BlobRetentionPolicy()
-                    .setEnabled(true)
-                    .setDays(2))
+                .setRetentionPolicy(new BlobRetentionPolicy().setEnabled(true).setDays(2))
                 .setVersion("1.0");
             serviceProps.setLogging(logProps);
 
-            BlobMetrics metricProps = new BlobMetrics()
-                .setEnabled(true)
+            BlobMetrics metricProps = new BlobMetrics().setEnabled(true)
                 .setIncludeApis(true)
-                .setRetentionPolicy(new BlobRetentionPolicy()
-                    .setEnabled(true)
-                    .setDays(2))
+                .setRetentionPolicy(new BlobRetentionPolicy().setEnabled(true).setDays(2))
                 .setVersion("1.0");
             serviceProps.setHourMetrics(metricProps);
             serviceProps.setMinuteMetrics(metricProps);

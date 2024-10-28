@@ -156,25 +156,21 @@ public final class InternalNetworkImpl implements InternalNetwork, InternalNetwo
     }
 
     public InternalNetwork create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternalNetworks()
-                .create(resourceGroupName, l3IsolationDomainName, internalNetworkName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getInternalNetworks()
+            .create(resourceGroupName, l3IsolationDomainName, internalNetworkName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public InternalNetwork create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternalNetworks()
-                .create(resourceGroupName, l3IsolationDomainName, internalNetworkName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getInternalNetworks()
+            .create(resourceGroupName, l3IsolationDomainName, internalNetworkName, this.innerModel(), context);
         return this;
     }
 
-    InternalNetworkImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    InternalNetworkImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new InternalNetworkInner();
         this.serviceManager = serviceManager;
         this.internalNetworkName = name;
@@ -186,25 +182,20 @@ public final class InternalNetworkImpl implements InternalNetwork, InternalNetwo
     }
 
     public InternalNetwork apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternalNetworks()
-                .update(resourceGroupName, l3IsolationDomainName, internalNetworkName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getInternalNetworks()
+            .update(resourceGroupName, l3IsolationDomainName, internalNetworkName, updateBody, Context.NONE);
         return this;
     }
 
     public InternalNetwork apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternalNetworks()
-                .update(resourceGroupName, l3IsolationDomainName, internalNetworkName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getInternalNetworks()
+            .update(resourceGroupName, l3IsolationDomainName, internalNetworkName, updateBody, context);
         return this;
     }
 
-    InternalNetworkImpl(
-        InternalNetworkInner innerObject,
+    InternalNetworkImpl(InternalNetworkInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -214,65 +205,55 @@ public final class InternalNetworkImpl implements InternalNetwork, InternalNetwo
     }
 
     public InternalNetwork refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternalNetworks()
-                .getWithResponse(resourceGroupName, l3IsolationDomainName, internalNetworkName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInternalNetworks()
+            .getWithResponse(resourceGroupName, l3IsolationDomainName, internalNetworkName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public InternalNetwork refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getInternalNetworks()
-                .getWithResponse(resourceGroupName, l3IsolationDomainName, internalNetworkName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInternalNetworks()
+            .getWithResponse(resourceGroupName, l3IsolationDomainName, internalNetworkName, context)
+            .getValue();
         return this;
     }
 
     public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body) {
-        return serviceManager
-            .internalNetworks()
+        return serviceManager.internalNetworks()
             .updateAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body);
     }
 
-    public CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        UpdateAdministrativeState body, Context context) {
-        return serviceManager
-            .internalNetworks()
+    public CommonPostActionResponseForStateUpdate updateAdministrativeState(UpdateAdministrativeState body,
+        Context context) {
+        return serviceManager.internalNetworks()
             .updateAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body, context);
     }
 
     public CommonPostActionResponseForStateUpdate updateBgpAdministrativeState(UpdateAdministrativeState body) {
-        return serviceManager
-            .internalNetworks()
+        return serviceManager.internalNetworks()
             .updateBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body);
     }
 
-    public CommonPostActionResponseForStateUpdate updateBgpAdministrativeState(
-        UpdateAdministrativeState body, Context context) {
-        return serviceManager
-            .internalNetworks()
+    public CommonPostActionResponseForStateUpdate updateBgpAdministrativeState(UpdateAdministrativeState body,
+        Context context) {
+        return serviceManager.internalNetworks()
             .updateBgpAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName, body, context);
     }
 
-    public CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
-        UpdateAdministrativeState body) {
-        return serviceManager
-            .internalNetworks()
-            .updateStaticRouteBfdAdministrativeState(
-                resourceGroupName, l3IsolationDomainName, internalNetworkName, body);
+    public CommonPostActionResponseForStateUpdate
+        updateStaticRouteBfdAdministrativeState(UpdateAdministrativeState body) {
+        return serviceManager.internalNetworks()
+            .updateStaticRouteBfdAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName,
+                body);
     }
 
-    public CommonPostActionResponseForStateUpdate updateStaticRouteBfdAdministrativeState(
-        UpdateAdministrativeState body, Context context) {
-        return serviceManager
-            .internalNetworks()
-            .updateStaticRouteBfdAdministrativeState(
-                resourceGroupName, l3IsolationDomainName, internalNetworkName, body, context);
+    public CommonPostActionResponseForStateUpdate
+        updateStaticRouteBfdAdministrativeState(UpdateAdministrativeState body, Context context) {
+        return serviceManager.internalNetworks()
+            .updateStaticRouteBfdAdministrativeState(resourceGroupName, l3IsolationDomainName, internalNetworkName,
+                body, context);
     }
 
     public InternalNetworkImpl withVlanId(int vlanId) {
@@ -285,8 +266,8 @@ public final class InternalNetworkImpl implements InternalNetwork, InternalNetwo
         return this;
     }
 
-    public InternalNetworkImpl withStaticRouteConfiguration(
-        InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration) {
+    public InternalNetworkImpl
+        withStaticRouteConfiguration(InternalNetworkPropertiesStaticRouteConfiguration staticRouteConfiguration) {
         this.innerModel().withStaticRouteConfiguration(staticRouteConfiguration);
         return this;
     }

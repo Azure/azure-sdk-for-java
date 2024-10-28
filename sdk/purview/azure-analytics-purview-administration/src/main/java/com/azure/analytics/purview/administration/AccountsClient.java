@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewAccountClient type. */
 @ServiceClient(builder = AccountsClientBuilder.class)
 public final class AccountsClient {
-    @Generated private final AccountsImpl serviceClient;
+    @Generated
+    private final AccountsImpl serviceClient;
 
     /**
      * Initializes an instance of AccountsClient class.
@@ -211,8 +212,8 @@ public final class AccountsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateAccountPropertiesWithResponse(
-            BinaryData accountUpdateParameters, RequestOptions requestOptions) {
+    public Response<BinaryData> updateAccountPropertiesWithResponse(BinaryData accountUpdateParameters,
+        RequestOptions requestOptions) {
         return this.serviceClient.updateAccountPropertiesWithResponse(accountUpdateParameters, requestOptions);
     }
 

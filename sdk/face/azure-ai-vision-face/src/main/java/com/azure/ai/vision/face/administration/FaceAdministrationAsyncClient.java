@@ -22,14 +22,13 @@ public final class FaceAdministrationAsyncClient {
     private final String endpoint;
     private final FaceServiceVersion serviceVersion;
 
-    FaceAdministrationAsyncClient(HttpPipeline pipeline, SerializerAdapter serializerAdapter,
-                                  String endpoint, FaceServiceVersion serviceVersion) {
+    FaceAdministrationAsyncClient(HttpPipeline pipeline, SerializerAdapter serializerAdapter, String endpoint,
+        FaceServiceVersion serviceVersion) {
         this.pipeline = pipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
     }
-
 
     /**
      * Creates a new instance of LargeFaceListAsyncClient.
@@ -40,9 +39,8 @@ public final class FaceAdministrationAsyncClient {
     public LargeFaceListAsyncClient getLargeFaceListAsyncClient(String largeFaceListId) {
         Objects.requireNonNull(largeFaceListId, "'largeFaceListId' cannot be null.");
 
-        FaceAdministrationClientImpl client
-                = new FaceAdministrationClientImpl(this.pipeline, this.serializerAdapter,
-                this.endpoint, largeFaceListId, null, serviceVersion);
+        FaceAdministrationClientImpl client = new FaceAdministrationClientImpl(this.pipeline, this.serializerAdapter,
+            this.endpoint, largeFaceListId, null, serviceVersion);
         return new LargeFaceListAsyncClient(client.getLargeFaceLists());
     }
 
@@ -55,9 +53,8 @@ public final class FaceAdministrationAsyncClient {
     public LargePersonGroupAsyncClient getLargePersonGroupAsyncClient(String largePersonGroupId) {
         Objects.requireNonNull(largePersonGroupId, "'largePersonGroupId' cannot be null.");
 
-        FaceAdministrationClientImpl client
-                = new FaceAdministrationClientImpl(this.pipeline, this.serializerAdapter,
-                this.endpoint, null, largePersonGroupId, serviceVersion);
+        FaceAdministrationClientImpl client = new FaceAdministrationClientImpl(this.pipeline, this.serializerAdapter,
+            this.endpoint, null, largePersonGroupId, serviceVersion);
         return new LargePersonGroupAsyncClient(client.getLargePersonGroups());
     }
 }

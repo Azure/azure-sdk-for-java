@@ -29,8 +29,8 @@ public interface GenerateReservationDetailsReportsClient {
      * @return the {@link SyncPoller} for polling of the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingAccountId(
-        String billingAccountId, String startDate, String endDate);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingAccountId(String billingAccountId,
+        String startDate, String endDate);
 
     /**
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
@@ -47,8 +47,8 @@ public interface GenerateReservationDetailsReportsClient {
      * @return the {@link SyncPoller} for polling of the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingAccountId(
-        String billingAccountId, String startDate, String endDate, Context context);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingAccountId(String billingAccountId,
+        String startDate, String endDate, Context context);
 
     /**
      * Generates the reservations details report for provided date range asynchronously based on enrollment id. The
@@ -99,8 +99,8 @@ public interface GenerateReservationDetailsReportsClient {
      * @return the {@link SyncPoller} for polling of the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingProfileId(String billingAccountId,
+        String billingProfileId, String startDate, String endDate);
 
     /**
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
@@ -119,8 +119,8 @@ public interface GenerateReservationDetailsReportsClient {
      * @return the {@link SyncPoller} for polling of the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate, Context context);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginByBillingProfileId(String billingAccountId,
+        String billingProfileId, String startDate, String endDate, Context context);
 
     /**
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
@@ -138,8 +138,8 @@ public interface GenerateReservationDetailsReportsClient {
      * @return the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusInner byBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate);
+    OperationStatusInner byBillingProfileId(String billingAccountId, String billingProfileId, String startDate,
+        String endDate);
 
     /**
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
@@ -158,6 +158,6 @@ public interface GenerateReservationDetailsReportsClient {
      * @return the status of the long running operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusInner byBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate, Context context);
+    OperationStatusInner byBillingProfileId(String billingAccountId, String billingProfileId, String startDate,
+        String endDate, Context context);
 }

@@ -28,8 +28,8 @@ public interface DraOperationStatusClient {
      * @return defines the operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationStatusInner> getWithResponse(
-        String resourceGroupName, String fabricName, String fabricAgentName, String operationId, Context context);
+    Response<OperationStatusInner> getWithResponse(String resourceGroupName, String fabricName, String fabricAgentName,
+        String operationId, Context context);
 
     /**
      * Gets the fabric agent (Dra) operation status.

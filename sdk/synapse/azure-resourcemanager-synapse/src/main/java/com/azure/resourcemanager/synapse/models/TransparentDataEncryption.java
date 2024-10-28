@@ -77,11 +77,13 @@ public interface TransparentDataEncryption {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The TransparentDataEncryption definition stages. */
     interface DefinitionStages {
         /** The first stage of the TransparentDataEncryption definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the TransparentDataEncryption definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -94,6 +96,7 @@ public interface TransparentDataEncryption {
              */
             WithCreate withExistingSqlPool(String resourceGroupName, String workspaceName, String sqlPoolName);
         }
+
         /**
          * The stage of the TransparentDataEncryption definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -114,6 +117,7 @@ public interface TransparentDataEncryption {
              */
             TransparentDataEncryption create(Context context);
         }
+
         /** The stage of the TransparentDataEncryption definition allowing to specify status. */
         interface WithStatus {
             /**
@@ -125,6 +129,7 @@ public interface TransparentDataEncryption {
             WithCreate withStatus(TransparentDataEncryptionStatus status);
         }
     }
+
     /**
      * Begins update for the TransparentDataEncryption resource.
      *
@@ -149,6 +154,7 @@ public interface TransparentDataEncryption {
          */
         TransparentDataEncryption apply(Context context);
     }
+
     /** The TransparentDataEncryption update stages. */
     interface UpdateStages {
         /** The stage of the TransparentDataEncryption update allowing to specify status. */
@@ -162,6 +168,7 @@ public interface TransparentDataEncryption {
             Update withStatus(TransparentDataEncryptionStatus status);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

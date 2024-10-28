@@ -33,8 +33,8 @@ public interface TestLines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a TestLine list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<TestLine> listByCommunicationsGateway(
-        String resourceGroupName, String communicationsGatewayName, Context context);
+    PagedIterable<TestLine> listByCommunicationsGateway(String resourceGroupName, String communicationsGatewayName,
+        Context context);
 
     /**
      * Get a TestLine.
@@ -48,8 +48,8 @@ public interface TestLines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a TestLine along with {@link Response}.
      */
-    Response<TestLine> getWithResponse(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, Context context);
+    Response<TestLine> getWithResponse(String resourceGroupName, String communicationsGatewayName, String testLineName,
+        Context context);
 
     /**
      * Get a TestLine.

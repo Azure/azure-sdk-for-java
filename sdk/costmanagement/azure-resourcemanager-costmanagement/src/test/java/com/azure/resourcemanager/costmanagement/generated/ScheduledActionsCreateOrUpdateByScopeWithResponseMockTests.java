@@ -37,65 +37,49 @@ public final class ScheduledActionsCreateOrUpdateByScopeWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"displayName\":\"spofapvuhry\",\"fileDestination\":{\"fileFormats\":[]},\"notification\":{\"to\":[],\"language\":\"frzgbzjed\",\"message\":\"tkvnlvxbcuiiznkt\",\"regionalFormat\":\"ansnvp\",\"subject\":\"ibmikostbzb\"},\"notificationEmail\":\"wbuqn\",\"schedule\":{\"frequency\":\"Weekly\",\"hourOfDay\":1310458507,\"daysOfWeek\":[],\"weeksOfMonth\":[],\"dayOfMonth\":84562084,\"startDate\":\"2021-03-25T15:46:05Z\",\"endDate\":\"2021-02-19T19:23:40Z\"},\"scope\":\"rpfbcunezz\",\"status\":\"Disabled\",\"viewId\":\"zelfwyfwl\"},\"eTag\":\"jwetnpsihcla\",\"kind\":\"Email\",\"id\":\"ylptrsqqwztcm\",\"name\":\"qkc\",\"type\":\"cxwaxfewz\"}";
+        String responseStr
+            = "{\"properties\":{\"displayName\":\"spofapvuhry\",\"fileDestination\":{\"fileFormats\":[]},\"notification\":{\"to\":[],\"language\":\"frzgbzjed\",\"message\":\"tkvnlvxbcuiiznkt\",\"regionalFormat\":\"ansnvp\",\"subject\":\"ibmikostbzb\"},\"notificationEmail\":\"wbuqn\",\"schedule\":{\"frequency\":\"Weekly\",\"hourOfDay\":1310458507,\"daysOfWeek\":[],\"weeksOfMonth\":[],\"dayOfMonth\":84562084,\"startDate\":\"2021-03-25T15:46:05Z\",\"endDate\":\"2021-02-19T19:23:40Z\"},\"scope\":\"rpfbcunezz\",\"status\":\"Disabled\",\"viewId\":\"zelfwyfwl\"},\"eTag\":\"jwetnpsihcla\",\"kind\":\"Email\",\"id\":\"ylptrsqqwztcm\",\"name\":\"qkc\",\"type\":\"cxwaxfewz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ScheduledAction response =
-            manager
-                .scheduledActions()
-                .define("vsqltnzoibgsxg")
-                .withExistingScope("nh")
-                .withKind(ScheduledActionKind.INSIGHT_ALERT)
-                .withDisplayName("fyq")
-                .withFileDestination(new FileDestination().withFileFormats(Arrays.asList()))
-                .withNotification(
-                    new NotificationProperties()
-                        .withTo(Arrays.asList())
-                        .withLanguage("qoxwd")
-                        .withMessage("dbxiqx")
-                        .withRegionalFormat("iqbi")
-                        .withSubject("htmwwinh"))
-                .withNotificationEmail("f")
-                .withSchedule(
-                    new ScheduleProperties()
-                        .withFrequency(ScheduleFrequency.MONTHLY)
-                        .withHourOfDay(1581636189)
-                        .withDaysOfWeek(Arrays.asList())
-                        .withWeeksOfMonth(Arrays.asList())
-                        .withDayOfMonth(712044714)
-                        .withStartDate(OffsetDateTime.parse("2021-05-06T06:02:30Z"))
-                        .withEndDate(OffsetDateTime.parse("2021-10-15T03:51:19Z")))
-                .withScope("mbnkb")
-                .withStatus(ScheduledActionStatus.EXPIRED)
-                .withViewId("qvxkd")
-                .withIfMatch("zgakgacyrcmj")
-                .create();
+        ScheduledAction response = manager.scheduledActions()
+            .define("vsqltnzoibgsxg")
+            .withExistingScope("nh")
+            .withKind(ScheduledActionKind.INSIGHT_ALERT)
+            .withDisplayName("fyq")
+            .withFileDestination(new FileDestination().withFileFormats(Arrays.asList()))
+            .withNotification(new NotificationProperties().withTo(Arrays.asList())
+                .withLanguage("qoxwd")
+                .withMessage("dbxiqx")
+                .withRegionalFormat("iqbi")
+                .withSubject("htmwwinh"))
+            .withNotificationEmail("f")
+            .withSchedule(new ScheduleProperties().withFrequency(ScheduleFrequency.MONTHLY)
+                .withHourOfDay(1581636189)
+                .withDaysOfWeek(Arrays.asList())
+                .withWeeksOfMonth(Arrays.asList())
+                .withDayOfMonth(712044714)
+                .withStartDate(OffsetDateTime.parse("2021-05-06T06:02:30Z"))
+                .withEndDate(OffsetDateTime.parse("2021-10-15T03:51:19Z")))
+            .withScope("mbnkb")
+            .withStatus(ScheduledActionStatus.EXPIRED)
+            .withViewId("qvxkd")
+            .withIfMatch("zgakgacyrcmj")
+            .create();
 
         Assertions.assertEquals(ScheduledActionKind.EMAIL, response.kind());
         Assertions.assertEquals("spofapvuhry", response.displayName());

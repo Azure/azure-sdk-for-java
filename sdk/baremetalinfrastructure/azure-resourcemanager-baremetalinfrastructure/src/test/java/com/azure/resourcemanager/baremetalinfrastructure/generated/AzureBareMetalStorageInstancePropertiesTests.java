@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureBareMetalStorageInstancePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureBareMetalStorageInstanceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"azureBareMetalStorageInstanceUniqueIdentifier\":\"c\",\"storageProperties\":{\"provisioningState\":\"Deleting\",\"offeringType\":\"hhbcsglummajtjao\",\"storageType\":\"obnbdxkqpxokaj\",\"generation\":\"npime\",\"hardwareType\":\"stxgc\",\"workloadType\":\"dg\",\"storageBillingProperties\":{\"billingMode\":\"jrmvdjwzrlo\",\"azureBareMetalStorageInstanceSize\":\"clwhijcoejctbz\"}}}")
-                .toObject(AzureBareMetalStorageInstanceProperties.class);
+        AzureBareMetalStorageInstanceProperties model = BinaryData.fromString(
+            "{\"azureBareMetalStorageInstanceUniqueIdentifier\":\"c\",\"storageProperties\":{\"provisioningState\":\"Deleting\",\"offeringType\":\"hhbcsglummajtjao\",\"storageType\":\"obnbdxkqpxokaj\",\"generation\":\"npime\",\"hardwareType\":\"stxgc\",\"workloadType\":\"dg\",\"storageBillingProperties\":{\"billingMode\":\"jrmvdjwzrlo\",\"azureBareMetalStorageInstanceSize\":\"clwhijcoejctbz\"}}}")
+            .toObject(AzureBareMetalStorageInstanceProperties.class);
         Assertions.assertEquals("c", model.azureBareMetalStorageInstanceUniqueIdentifier());
         Assertions.assertEquals(ProvisioningState.DELETING, model.storageProperties().provisioningState());
         Assertions.assertEquals("hhbcsglummajtjao", model.storageProperties().offeringType());
@@ -27,29 +25,22 @@ public final class AzureBareMetalStorageInstancePropertiesTests {
         Assertions.assertEquals("stxgc", model.storageProperties().hardwareType());
         Assertions.assertEquals("dg", model.storageProperties().workloadType());
         Assertions.assertEquals("jrmvdjwzrlo", model.storageProperties().storageBillingProperties().billingMode());
-        Assertions
-            .assertEquals(
-                "clwhijcoejctbz",
-                model.storageProperties().storageBillingProperties().azureBareMetalStorageInstanceSize());
+        Assertions.assertEquals("clwhijcoejctbz",
+            model.storageProperties().storageBillingProperties().azureBareMetalStorageInstanceSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBareMetalStorageInstanceProperties model =
-            new AzureBareMetalStorageInstanceProperties()
-                .withAzureBareMetalStorageInstanceUniqueIdentifier("c")
-                .withStorageProperties(
-                    new StorageProperties()
-                        .withProvisioningState(ProvisioningState.DELETING)
-                        .withOfferingType("hhbcsglummajtjao")
-                        .withStorageType("obnbdxkqpxokaj")
-                        .withGeneration("npime")
-                        .withHardwareType("stxgc")
-                        .withWorkloadType("dg")
-                        .withStorageBillingProperties(
-                            new StorageBillingProperties()
-                                .withBillingMode("jrmvdjwzrlo")
-                                .withAzureBareMetalStorageInstanceSize("clwhijcoejctbz")));
+        AzureBareMetalStorageInstanceProperties model
+            = new AzureBareMetalStorageInstanceProperties().withAzureBareMetalStorageInstanceUniqueIdentifier("c")
+                .withStorageProperties(new StorageProperties().withProvisioningState(ProvisioningState.DELETING)
+                    .withOfferingType("hhbcsglummajtjao")
+                    .withStorageType("obnbdxkqpxokaj")
+                    .withGeneration("npime")
+                    .withHardwareType("stxgc")
+                    .withWorkloadType("dg")
+                    .withStorageBillingProperties(new StorageBillingProperties().withBillingMode("jrmvdjwzrlo")
+                        .withAzureBareMetalStorageInstanceSize("clwhijcoejctbz")));
         model = BinaryData.fromObject(model).toObject(AzureBareMetalStorageInstanceProperties.class);
         Assertions.assertEquals("c", model.azureBareMetalStorageInstanceUniqueIdentifier());
         Assertions.assertEquals(ProvisioningState.DELETING, model.storageProperties().provisioningState());
@@ -59,9 +50,7 @@ public final class AzureBareMetalStorageInstancePropertiesTests {
         Assertions.assertEquals("stxgc", model.storageProperties().hardwareType());
         Assertions.assertEquals("dg", model.storageProperties().workloadType());
         Assertions.assertEquals("jrmvdjwzrlo", model.storageProperties().storageBillingProperties().billingMode());
-        Assertions
-            .assertEquals(
-                "clwhijcoejctbz",
-                model.storageProperties().storageBillingProperties().azureBareMetalStorageInstanceSize());
+        Assertions.assertEquals("clwhijcoejctbz",
+            model.storageProperties().storageBillingProperties().azureBareMetalStorageInstanceSize());
     }
 }

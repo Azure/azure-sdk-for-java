@@ -21,8 +21,7 @@ public final class CreationSupportedsImpl implements CreationSupporteds {
 
     private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    public CreationSupportedsImpl(
-        CreationSupportedsClient innerClient,
+    public CreationSupportedsImpl(CreationSupportedsClient innerClient,
         com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -34,19 +33,16 @@ public final class CreationSupportedsImpl implements CreationSupporteds {
     }
 
     public PagedIterable<CreateResourceSupportedResponse> list(String datadogOrganizationId, Context context) {
-        PagedIterable<CreateResourceSupportedResponseInner> inner =
-            this.serviceClient().list(datadogOrganizationId, context);
+        PagedIterable<CreateResourceSupportedResponseInner> inner
+            = this.serviceClient().list(datadogOrganizationId, context);
         return Utils.mapPage(inner, inner1 -> new CreateResourceSupportedResponseImpl(inner1, this.manager()));
     }
 
     public Response<CreateResourceSupportedResponse> getWithResponse(String datadogOrganizationId, Context context) {
-        Response<CreateResourceSupportedResponseInner> inner =
-            this.serviceClient().getWithResponse(datadogOrganizationId, context);
+        Response<CreateResourceSupportedResponseInner> inner
+            = this.serviceClient().getWithResponse(datadogOrganizationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CreateResourceSupportedResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

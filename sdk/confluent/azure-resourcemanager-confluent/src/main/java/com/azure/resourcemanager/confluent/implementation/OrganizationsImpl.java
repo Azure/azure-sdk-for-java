@@ -134,8 +134,8 @@ public final class OrganizationsImpl implements Organizations {
 
     public PagedIterable<SCClusterRecord> listClusters(String resourceGroupName, String organizationName,
         String environmentId, Integer pageSize, String pageToken, Context context) {
-        PagedIterable<SCClusterRecordInner> inner = this.serviceClient().listClusters(resourceGroupName,
-            organizationName, environmentId, pageSize, pageToken, context);
+        PagedIterable<SCClusterRecordInner> inner = this.serviceClient()
+            .listClusters(resourceGroupName, organizationName, environmentId, pageSize, pageToken, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new SCClusterRecordImpl(inner1, this.manager()));
     }
 
@@ -149,8 +149,9 @@ public final class OrganizationsImpl implements Organizations {
 
     public PagedIterable<SchemaRegistryClusterRecord> listSchemaRegistryClusters(String resourceGroupName,
         String organizationName, String environmentId, Integer pageSize, String pageToken, Context context) {
-        PagedIterable<SchemaRegistryClusterRecordInner> inner = this.serviceClient().listSchemaRegistryClusters(
-            resourceGroupName, organizationName, environmentId, pageSize, pageToken, context);
+        PagedIterable<SchemaRegistryClusterRecordInner> inner = this.serviceClient()
+            .listSchemaRegistryClusters(resourceGroupName, organizationName, environmentId, pageSize, pageToken,
+                context);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new SchemaRegistryClusterRecordImpl(inner1, this.manager()));
     }
@@ -180,8 +181,8 @@ public final class OrganizationsImpl implements Organizations {
 
     public Response<ApiKeyRecord> createApiKeyWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, CreateApiKeyModel body, Context context) {
-        Response<ApiKeyRecordInner> inner = this.serviceClient().createApiKeyWithResponse(resourceGroupName,
-            organizationName, environmentId, clusterId, body, context);
+        Response<ApiKeyRecordInner> inner = this.serviceClient()
+            .createApiKeyWithResponse(resourceGroupName, organizationName, environmentId, clusterId, body, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApiKeyRecordImpl(inner.getValue(), this.manager()));
@@ -203,8 +204,8 @@ public final class OrganizationsImpl implements Organizations {
 
     public Response<Void> deleteClusterApiKeyWithResponse(String resourceGroupName, String organizationName,
         String apiKeyId, Context context) {
-        return this.serviceClient().deleteClusterApiKeyWithResponse(resourceGroupName, organizationName, apiKeyId,
-            context);
+        return this.serviceClient()
+            .deleteClusterApiKeyWithResponse(resourceGroupName, organizationName, apiKeyId, context);
     }
 
     public void deleteClusterApiKey(String resourceGroupName, String organizationName, String apiKeyId) {
@@ -234,9 +235,9 @@ public final class OrganizationsImpl implements Organizations {
 
     public Response<SchemaRegistryClusterRecord> getSchemaRegistryClusterByIdWithResponse(String resourceGroupName,
         String organizationName, String environmentId, String clusterId, Context context) {
-        Response<SchemaRegistryClusterRecordInner> inner
-            = this.serviceClient().getSchemaRegistryClusterByIdWithResponse(resourceGroupName, organizationName,
-                environmentId, clusterId, context);
+        Response<SchemaRegistryClusterRecordInner> inner = this.serviceClient()
+            .getSchemaRegistryClusterByIdWithResponse(resourceGroupName, organizationName, environmentId, clusterId,
+                context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SchemaRegistryClusterRecordImpl(inner.getValue(), this.manager()));
@@ -247,8 +248,8 @@ public final class OrganizationsImpl implements Organizations {
 
     public SchemaRegistryClusterRecord getSchemaRegistryClusterById(String resourceGroupName, String organizationName,
         String environmentId, String clusterId) {
-        SchemaRegistryClusterRecordInner inner = this.serviceClient().getSchemaRegistryClusterById(resourceGroupName,
-            organizationName, environmentId, clusterId);
+        SchemaRegistryClusterRecordInner inner = this.serviceClient()
+            .getSchemaRegistryClusterById(resourceGroupName, organizationName, environmentId, clusterId);
         if (inner != null) {
             return new SchemaRegistryClusterRecordImpl(inner, this.manager());
         } else {
@@ -258,8 +259,8 @@ public final class OrganizationsImpl implements Organizations {
 
     public Response<SCClusterRecord> getClusterByIdWithResponse(String resourceGroupName, String organizationName,
         String environmentId, String clusterId, Context context) {
-        Response<SCClusterRecordInner> inner = this.serviceClient().getClusterByIdWithResponse(resourceGroupName,
-            organizationName, environmentId, clusterId, context);
+        Response<SCClusterRecordInner> inner = this.serviceClient()
+            .getClusterByIdWithResponse(resourceGroupName, organizationName, environmentId, clusterId, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SCClusterRecordImpl(inner.getValue(), this.manager()));

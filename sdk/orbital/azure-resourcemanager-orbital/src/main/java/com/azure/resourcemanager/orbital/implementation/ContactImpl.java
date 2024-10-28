@@ -129,20 +129,16 @@ public final class ContactImpl implements Contact, Contact.Definition {
     }
 
     public Contact create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContacts()
-                .create(resourceGroupName, spacecraftName, contactName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getContacts()
+            .create(resourceGroupName, spacecraftName, contactName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Contact create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContacts()
-                .create(resourceGroupName, spacecraftName, contactName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getContacts()
+            .create(resourceGroupName, spacecraftName, contactName, this.innerModel(), context);
         return this;
     }
 
@@ -153,22 +149,18 @@ public final class ContactImpl implements Contact, Contact.Definition {
     }
 
     public Contact refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContacts()
-                .getWithResponse(resourceGroupName, spacecraftName, contactName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContacts()
+            .getWithResponse(resourceGroupName, spacecraftName, contactName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Contact refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContacts()
-                .getWithResponse(resourceGroupName, spacecraftName, contactName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContacts()
+            .getWithResponse(resourceGroupName, spacecraftName, contactName, context)
+            .getValue();
         return this;
     }
 

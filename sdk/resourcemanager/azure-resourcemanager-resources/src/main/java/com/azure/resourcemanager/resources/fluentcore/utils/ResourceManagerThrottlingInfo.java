@@ -21,15 +21,11 @@ import java.util.regex.Pattern;
 public class ResourceManagerThrottlingInfo {
     // refer https://docs.microsoft.com/azure/azure-resource-manager/management/request-limits-and-throttling
     private static final List<String> COMMON_RATE_LIMIT_HEADERS = Arrays.asList(
-        "x-ms-ratelimit-remaining-subscription-reads",
-        "x-ms-ratelimit-remaining-subscription-writes",
-        "x-ms-ratelimit-remaining-tenant-reads",
-        "x-ms-ratelimit-remaining-tenant-writes",
+        "x-ms-ratelimit-remaining-subscription-reads", "x-ms-ratelimit-remaining-subscription-writes",
+        "x-ms-ratelimit-remaining-tenant-reads", "x-ms-ratelimit-remaining-tenant-writes",
         "x-ms-ratelimit-remaining-subscription-resource-requests",
         "x-ms-ratelimit-remaining-subscription-resource-entities-read",
-        "x-ms-ratelimit-remaining-tenant-resource-requests",
-        "x-ms-ratelimit-remaining-tenant-resource-entities-read"
-    );
+        "x-ms-ratelimit-remaining-tenant-resource-requests", "x-ms-ratelimit-remaining-tenant-resource-entities-read");
 
     // refer https://docs.microsoft.com/azure/virtual-machines/troubleshooting/troubleshooting-throttling-errors
     private static final String RESOURCE_RATE_LIMIT_HEADER = "x-ms-ratelimit-remaining-resource";
@@ -54,8 +50,8 @@ public class ResourceManagerThrottlingInfo {
         if (resourceRateLimit != null) {
             Matcher matcher = RESOURCE_RATE_LIMIT_HEADER_PATTERN.matcher(resourceRateLimit);
             while (matcher.find()) {
-                commonRateLimits.put(
-                    String.format("%s-%s", RESOURCE_RATE_LIMIT_HEADER, matcher.group(1)), matcher.group(2));
+                commonRateLimits.put(String.format("%s-%s", RESOURCE_RATE_LIMIT_HEADER, matcher.group(1)),
+                    matcher.group(2));
             }
         }
     }
@@ -80,7 +76,8 @@ public class ResourceManagerThrottlingInfo {
                 if (!result.isPresent() || result.get() > limit) {
                     result = Optional.of(limit);
                 }
-            } catch (NumberFormatException e) { }
+            } catch (NumberFormatException e) {
+            }
         }
         return result;
     }

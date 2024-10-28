@@ -174,8 +174,8 @@ public final class SapCentralServerInstanceInner extends Resource {
      * @param enqueueReplicationServerProperties the enqueueReplicationServerProperties value to set.
      * @return the SapCentralServerInstanceInner object itself.
      */
-    public SapCentralServerInstanceInner withEnqueueReplicationServerProperties(
-        EnqueueReplicationServerProperties enqueueReplicationServerProperties) {
+    public SapCentralServerInstanceInner
+        withEnqueueReplicationServerProperties(EnqueueReplicationServerProperties enqueueReplicationServerProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SapCentralServerProperties();
         }

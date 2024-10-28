@@ -26,18 +26,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedIntegrationRuntimeTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIntegrationRuntimeTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"computeProperties\":{\"location\":\"hqsycljselp\",\"nodeSize\":\"bafvafhlbylcc\",\"numberOfNodes\":1015294496,\"maxParallelExecutionsPerNode\":1495868863,\"dataFlowProperties\":{\"computeType\":\"ComputeOptimized\",\"coreCount\":1737850278,\"timeToLive\":1616798113,\"cleanup\":false,\"\":{\"airrhvhfnracw\":\"dataltdb\"}},\"vNetProperties\":{\"vNetId\":\"igtuu\",\"subnet\":\"ouhdawsigrb\",\"publicIPs\":[\"sjybvitv\",\"kjyaznumtg\",\"m\"],\"subnetId\":\"dchozfnkfexl\",\"\":{\"naqln\":\"dataoakizvoai\",\"phvxz\":\"datawiguyxlyk\"}},\"\":{\"vkcqhr\":\"datahmpejtlkexaonw\",\"ubyqj\":\"datahxknlccrmmkyupi\",\"em\":\"datakakfqfr\"}},\"ssisProperties\":{\"catalogInfo\":{\"catalogServerEndpoint\":\"udxjascowv\",\"catalogAdminUserName\":\"jkpdxphlkksnm\",\"catalogPricingTier\":\"Premium\",\"\":{\"zuqnwsithuqo\":\"datajd\"}},\"licenseType\":\"BasePrice\",\"customSetupScriptProperties\":{\"blobContainerUri\":\"uqwqulsutrjbhxyk\"},\"dataProxyProperties\":{\"path\":\"vqqugdrftbcv\"},\"edition\":\"Enterprise\",\"expressCustomSetupProperties\":[{\"type\":\"CustomSetupBase\"},{\"type\":\"CustomSetupBase\"},{\"type\":\"CustomSetupBase\"},{\"type\":\"CustomSetupBase\"}],\"\":{\"reagkhyxvrqt\":\"dataowtljvfw\",\"s\":\"databczsulmdgglmepjp\",\"fpgylkve\":\"dataykgsangpszng\",\"edmzrgjfoknub\":\"datajujcngoad\"}}}")
-                .toObject(ManagedIntegrationRuntimeTypeProperties.class);
+        ManagedIntegrationRuntimeTypeProperties model = BinaryData.fromString(
+            "{\"computeProperties\":{\"location\":\"hqsycljselp\",\"nodeSize\":\"bafvafhlbylcc\",\"numberOfNodes\":1015294496,\"maxParallelExecutionsPerNode\":1495868863,\"dataFlowProperties\":{\"computeType\":\"ComputeOptimized\",\"coreCount\":1737850278,\"timeToLive\":1616798113,\"cleanup\":false,\"\":{\"airrhvhfnracw\":\"dataltdb\"}},\"vNetProperties\":{\"vNetId\":\"igtuu\",\"subnet\":\"ouhdawsigrb\",\"publicIPs\":[\"sjybvitv\",\"kjyaznumtg\",\"m\"],\"subnetId\":\"dchozfnkfexl\",\"\":{\"naqln\":\"dataoakizvoai\",\"phvxz\":\"datawiguyxlyk\"}},\"\":{\"vkcqhr\":\"datahmpejtlkexaonw\",\"ubyqj\":\"datahxknlccrmmkyupi\",\"em\":\"datakakfqfr\"}},\"ssisProperties\":{\"catalogInfo\":{\"catalogServerEndpoint\":\"udxjascowv\",\"catalogAdminUserName\":\"jkpdxphlkksnm\",\"catalogPricingTier\":\"Premium\",\"\":{\"zuqnwsithuqo\":\"datajd\"}},\"licenseType\":\"BasePrice\",\"customSetupScriptProperties\":{\"blobContainerUri\":\"uqwqulsutrjbhxyk\"},\"dataProxyProperties\":{\"path\":\"vqqugdrftbcv\"},\"edition\":\"Enterprise\",\"expressCustomSetupProperties\":[{\"type\":\"CustomSetupBase\"},{\"type\":\"CustomSetupBase\"},{\"type\":\"CustomSetupBase\"},{\"type\":\"CustomSetupBase\"}],\"\":{\"reagkhyxvrqt\":\"dataowtljvfw\",\"s\":\"databczsulmdgglmepjp\",\"fpgylkve\":\"dataykgsangpszng\",\"edmzrgjfoknub\":\"datajujcngoad\"}}}")
+            .toObject(ManagedIntegrationRuntimeTypeProperties.class);
         Assertions.assertEquals("hqsycljselp", model.computeProperties().location());
         Assertions.assertEquals("bafvafhlbylcc", model.computeProperties().nodeSize());
         Assertions.assertEquals(1015294496, model.computeProperties().numberOfNodes());
         Assertions.assertEquals(1495868863, model.computeProperties().maxParallelExecutionsPerNode());
-        Assertions
-            .assertEquals(
-                DataFlowComputeType.COMPUTE_OPTIMIZED, model.computeProperties().dataFlowProperties().computeType());
+        Assertions.assertEquals(DataFlowComputeType.COMPUTE_OPTIMIZED,
+            model.computeProperties().dataFlowProperties().computeType());
         Assertions.assertEquals(1737850278, model.computeProperties().dataFlowProperties().coreCount());
         Assertions.assertEquals(1616798113, model.computeProperties().dataFlowProperties().timeToLive());
         Assertions.assertEquals(false, model.computeProperties().dataFlowProperties().cleanup());
@@ -47,72 +44,55 @@ public final class ManagedIntegrationRuntimeTypePropertiesTests {
         Assertions.assertEquals("dchozfnkfexl", model.computeProperties().vNetProperties().subnetId());
         Assertions.assertEquals("udxjascowv", model.ssisProperties().catalogInfo().catalogServerEndpoint());
         Assertions.assertEquals("jkpdxphlkksnm", model.ssisProperties().catalogInfo().catalogAdminUsername());
-        Assertions
-            .assertEquals(
-                IntegrationRuntimeSsisCatalogPricingTier.PREMIUM,
-                model.ssisProperties().catalogInfo().catalogPricingTier());
+        Assertions.assertEquals(IntegrationRuntimeSsisCatalogPricingTier.PREMIUM,
+            model.ssisProperties().catalogInfo().catalogPricingTier());
         Assertions.assertEquals(IntegrationRuntimeLicenseType.BASE_PRICE, model.ssisProperties().licenseType());
-        Assertions
-            .assertEquals("uqwqulsutrjbhxyk", model.ssisProperties().customSetupScriptProperties().blobContainerUri());
+        Assertions.assertEquals("uqwqulsutrjbhxyk",
+            model.ssisProperties().customSetupScriptProperties().blobContainerUri());
         Assertions.assertEquals("vqqugdrftbcv", model.ssisProperties().dataProxyProperties().path());
         Assertions.assertEquals(IntegrationRuntimeEdition.ENTERPRISE, model.ssisProperties().edition());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIntegrationRuntimeTypeProperties model =
-            new ManagedIntegrationRuntimeTypeProperties()
-                .withComputeProperties(
-                    new IntegrationRuntimeComputeProperties()
-                        .withLocation("hqsycljselp")
-                        .withNodeSize("bafvafhlbylcc")
-                        .withNumberOfNodes(1015294496)
-                        .withMaxParallelExecutionsPerNode(1495868863)
-                        .withDataFlowProperties(
-                            new IntegrationRuntimeDataFlowProperties()
-                                .withComputeType(DataFlowComputeType.COMPUTE_OPTIMIZED)
-                                .withCoreCount(1737850278)
-                                .withTimeToLive(1616798113)
-                                .withCleanup(false)
-                                .withAdditionalProperties(mapOf()))
-                        .withVNetProperties(
-                            new IntegrationRuntimeVNetProperties()
-                                .withVNetId("igtuu")
-                                .withSubnet("ouhdawsigrb")
-                                .withPublicIPs(Arrays.asList("sjybvitv", "kjyaznumtg", "m"))
-                                .withSubnetId("dchozfnkfexl")
-                                .withAdditionalProperties(mapOf()))
+        ManagedIntegrationRuntimeTypeProperties model
+            = new ManagedIntegrationRuntimeTypeProperties()
+                .withComputeProperties(new IntegrationRuntimeComputeProperties().withLocation("hqsycljselp")
+                    .withNodeSize("bafvafhlbylcc")
+                    .withNumberOfNodes(1015294496)
+                    .withMaxParallelExecutionsPerNode(1495868863)
+                    .withDataFlowProperties(new IntegrationRuntimeDataFlowProperties()
+                        .withComputeType(DataFlowComputeType.COMPUTE_OPTIMIZED)
+                        .withCoreCount(1737850278)
+                        .withTimeToLive(1616798113)
+                        .withCleanup(false)
                         .withAdditionalProperties(mapOf()))
-                .withSsisProperties(
-                    new IntegrationRuntimeSsisProperties()
-                        .withCatalogInfo(
-                            new IntegrationRuntimeSsisCatalogInfo()
-                                .withCatalogServerEndpoint("udxjascowv")
-                                .withCatalogAdminUsername("jkpdxphlkksnm")
-                                .withCatalogPricingTier(IntegrationRuntimeSsisCatalogPricingTier.PREMIUM)
-                                .withAdditionalProperties(mapOf()))
-                        .withLicenseType(IntegrationRuntimeLicenseType.BASE_PRICE)
-                        .withCustomSetupScriptProperties(
-                            new IntegrationRuntimeCustomSetupScriptProperties()
-                                .withBlobContainerUri("uqwqulsutrjbhxyk"))
-                        .withDataProxyProperties(new IntegrationRuntimeDataProxyProperties().withPath("vqqugdrftbcv"))
-                        .withEdition(IntegrationRuntimeEdition.ENTERPRISE)
-                        .withExpressCustomSetupProperties(
-                            Arrays
-                                .asList(
-                                    new CustomSetupBase(),
-                                    new CustomSetupBase(),
-                                    new CustomSetupBase(),
-                                    new CustomSetupBase()))
-                        .withAdditionalProperties(mapOf()));
+                    .withVNetProperties(new IntegrationRuntimeVNetProperties().withVNetId("igtuu")
+                        .withSubnet("ouhdawsigrb")
+                        .withPublicIPs(Arrays.asList("sjybvitv", "kjyaznumtg", "m"))
+                        .withSubnetId("dchozfnkfexl")
+                        .withAdditionalProperties(mapOf()))
+                    .withAdditionalProperties(mapOf()))
+                .withSsisProperties(new IntegrationRuntimeSsisProperties()
+                    .withCatalogInfo(new IntegrationRuntimeSsisCatalogInfo().withCatalogServerEndpoint("udxjascowv")
+                        .withCatalogAdminUsername("jkpdxphlkksnm")
+                        .withCatalogPricingTier(IntegrationRuntimeSsisCatalogPricingTier.PREMIUM)
+                        .withAdditionalProperties(mapOf()))
+                    .withLicenseType(IntegrationRuntimeLicenseType.BASE_PRICE)
+                    .withCustomSetupScriptProperties(
+                        new IntegrationRuntimeCustomSetupScriptProperties().withBlobContainerUri("uqwqulsutrjbhxyk"))
+                    .withDataProxyProperties(new IntegrationRuntimeDataProxyProperties().withPath("vqqugdrftbcv"))
+                    .withEdition(IntegrationRuntimeEdition.ENTERPRISE)
+                    .withExpressCustomSetupProperties(Arrays.asList(new CustomSetupBase(), new CustomSetupBase(),
+                        new CustomSetupBase(), new CustomSetupBase()))
+                    .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(ManagedIntegrationRuntimeTypeProperties.class);
         Assertions.assertEquals("hqsycljselp", model.computeProperties().location());
         Assertions.assertEquals("bafvafhlbylcc", model.computeProperties().nodeSize());
         Assertions.assertEquals(1015294496, model.computeProperties().numberOfNodes());
         Assertions.assertEquals(1495868863, model.computeProperties().maxParallelExecutionsPerNode());
-        Assertions
-            .assertEquals(
-                DataFlowComputeType.COMPUTE_OPTIMIZED, model.computeProperties().dataFlowProperties().computeType());
+        Assertions.assertEquals(DataFlowComputeType.COMPUTE_OPTIMIZED,
+            model.computeProperties().dataFlowProperties().computeType());
         Assertions.assertEquals(1737850278, model.computeProperties().dataFlowProperties().coreCount());
         Assertions.assertEquals(1616798113, model.computeProperties().dataFlowProperties().timeToLive());
         Assertions.assertEquals(false, model.computeProperties().dataFlowProperties().cleanup());
@@ -122,13 +102,11 @@ public final class ManagedIntegrationRuntimeTypePropertiesTests {
         Assertions.assertEquals("dchozfnkfexl", model.computeProperties().vNetProperties().subnetId());
         Assertions.assertEquals("udxjascowv", model.ssisProperties().catalogInfo().catalogServerEndpoint());
         Assertions.assertEquals("jkpdxphlkksnm", model.ssisProperties().catalogInfo().catalogAdminUsername());
-        Assertions
-            .assertEquals(
-                IntegrationRuntimeSsisCatalogPricingTier.PREMIUM,
-                model.ssisProperties().catalogInfo().catalogPricingTier());
+        Assertions.assertEquals(IntegrationRuntimeSsisCatalogPricingTier.PREMIUM,
+            model.ssisProperties().catalogInfo().catalogPricingTier());
         Assertions.assertEquals(IntegrationRuntimeLicenseType.BASE_PRICE, model.ssisProperties().licenseType());
-        Assertions
-            .assertEquals("uqwqulsutrjbhxyk", model.ssisProperties().customSetupScriptProperties().blobContainerUri());
+        Assertions.assertEquals("uqwqulsutrjbhxyk",
+            model.ssisProperties().customSetupScriptProperties().blobContainerUri());
         Assertions.assertEquals("vqqugdrftbcv", model.ssisProperties().dataProxyProperties().path());
         Assertions.assertEquals(IntegrationRuntimeEdition.ENTERPRISE, model.ssisProperties().edition());
     }

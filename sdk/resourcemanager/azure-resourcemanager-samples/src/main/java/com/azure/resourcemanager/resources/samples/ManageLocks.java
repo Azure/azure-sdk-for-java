@@ -51,20 +51,14 @@ public final class ManageLocks {
         final Region region = Region.US_WEST;
 
         ResourceGroup resourceGroup;
-        ManagementLock lockGroup = null,
-            lockVM = null,
-            lockStorage = null,
-            lockDiskRO = null,
-            lockDiskDel = null,
+        ManagementLock lockGroup = null, lockVM = null, lockStorage = null, lockDiskRO = null, lockDiskDel = null,
             lockSubnet = null;
 
         try {
             //=============================================================
             // Create a shared resource group for all the resources so they can all be deleted together
             //
-            resourceGroup = azureResourceManager.resourceGroups().define(rgName)
-                .withRegion(region)
-                .create();
+            resourceGroup = azureResourceManager.resourceGroups().define(rgName).withRegion(region).create();
             System.out.println("Created a new resource group - " + resourceGroup.id());
 
             //============================================================
@@ -72,20 +66,23 @@ public final class ManageLocks {
             //
 
             // Define a network to apply a lock to
-            Creatable<Network> netDefinition = azureResourceManager.networks().define(netName)
+            Creatable<Network> netDefinition = azureResourceManager.networks()
+                .define(netName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28");
 
             // Define a managed disk for testing locks on that
-            Creatable<Disk> diskDefinition = azureResourceManager.disks().define(diskName)
+            Creatable<Disk> diskDefinition = azureResourceManager.disks()
+                .define(diskName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withData()
                 .withSizeInGB(100);
 
             // Define a VM to apply a lock to
-            Creatable<VirtualMachine> vmDefinition = azureResourceManager.virtualMachines().define(vmName)
+            Creatable<VirtualMachine> vmDefinition = azureResourceManager.virtualMachines()
+                .define(vmName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withNewPrimaryNetwork(netDefinition)
@@ -98,16 +95,15 @@ public final class ManageLocks {
                 .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"));
 
             // Define a storage account to apply a lock to
-            Creatable<StorageAccount> storageDefinition = azureResourceManager.storageAccounts().define(storageName)
+            Creatable<StorageAccount> storageDefinition = azureResourceManager.storageAccounts()
+                .define(storageName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup);
 
             // Create resources in parallel to save time
             System.out.println("Creating the needed resources...");
-            Flux.merge(
-                storageDefinition.createAsync().subscribeOn(Schedulers.parallel()),
-                vmDefinition.createAsync().subscribeOn(Schedulers.parallel()))
-                .blockLast();
+            Flux.merge(storageDefinition.createAsync().subscribeOn(Schedulers.parallel()),
+                vmDefinition.createAsync().subscribeOn(Schedulers.parallel())).blockLast();
             System.out.println("Resources created.");
 
             VirtualMachine vm = (VirtualMachine) vmDefinition;
@@ -124,13 +120,15 @@ public final class ManageLocks {
             System.out.println("Creating locks sequentially...");
 
             // Apply a ReadOnly lock to the disk
-            lockDiskRO = azureResourceManager.managementLocks().define("diskLockRO")
+            lockDiskRO = azureResourceManager.managementLocks()
+                .define("diskLockRO")
                 .withLockedResource(disk)
                 .withLevel(LockLevel.READ_ONLY)
                 .create();
 
             // Apply a lock preventing the disk from being deleted
-            lockDiskDel = azureResourceManager.managementLocks().define("diskLockDel")
+            lockDiskDel = azureResourceManager.managementLocks()
+                .define("diskLockDel")
                 .withLockedResource(disk)
                 .withLevel(LockLevel.CAN_NOT_DELETE)
                 .create();
@@ -139,32 +137,33 @@ public final class ManageLocks {
             System.out.println("Creating locks in parallel...");
 
             // Define a subnet lock
-            Creatable<ManagementLock> lockSubnetDef = azureResourceManager.managementLocks().define("subnetLock")
+            Creatable<ManagementLock> lockSubnetDef = azureResourceManager.managementLocks()
+                .define("subnetLock")
                 .withLockedResource(subnet.innerModel().id())
                 .withLevel(LockLevel.READ_ONLY);
 
             // Define a VM lock
-            Creatable<ManagementLock> lockVMDef = azureResourceManager.managementLocks().define("vmlock")
+            Creatable<ManagementLock> lockVMDef = azureResourceManager.managementLocks()
+                .define("vmlock")
                 .withLockedResource(vm)
                 .withLevel(LockLevel.READ_ONLY)
                 .withNotes("vm readonly lock");
 
             // Define a resource group lock
-            Creatable<ManagementLock> lockGroupDef = azureResourceManager.managementLocks().define("rglock")
+            Creatable<ManagementLock> lockGroupDef = azureResourceManager.managementLocks()
+                .define("rglock")
                 .withLockedResource(resourceGroup.id())
                 .withLevel(LockLevel.CAN_NOT_DELETE);
 
             // Define a storage lock
-            Creatable<ManagementLock> lockStorageDef = azureResourceManager.managementLocks().define("stLock")
+            Creatable<ManagementLock> lockStorageDef = azureResourceManager.managementLocks()
+                .define("stLock")
                 .withLockedResource(storage)
                 .withLevel(LockLevel.CAN_NOT_DELETE);
 
             @SuppressWarnings("unchecked")
-            CreatedResources<ManagementLock> created = azureResourceManager.managementLocks().create(
-                lockVMDef,
-                lockGroupDef,
-                lockStorageDef,
-                lockSubnetDef);
+            CreatedResources<ManagementLock> created
+                = azureResourceManager.managementLocks().create(lockVMDef, lockGroupDef, lockStorageDef, lockSubnetDef);
 
             lockVM = created.get(lockVMDef.key());
             lockStorage = created.get(lockStorageDef.key());
@@ -181,7 +180,9 @@ public final class ManageLocks {
             int lockCount = Utils.getSize(azureResourceManager.managementLocks().listForResource(vm.id()));
             System.out.println("Number of locks applied to the virtual machine: " + lockCount);
             lockCount = Utils.getSize(azureResourceManager.managementLocks().listByResourceGroup(resourceGroup.name()));
-            System.out.println("Number of locks applied to the resource group (includes locks on resources in the group): " + lockCount);
+            System.out
+                .println("Number of locks applied to the resource group (includes locks on resources in the group): "
+                    + lockCount);
             lockCount = Utils.getSize(azureResourceManager.managementLocks().listForResource(storage.id()));
             System.out.println("Number of locks applied to the storage account: " + lockCount);
             lockCount = Utils.getSize(azureResourceManager.managementLocks().listForResource(disk.id()));
@@ -221,13 +222,9 @@ public final class ManageLocks {
 
             try {
                 // Clean up (remember to unlock resources before deleting the resource group)
-                azureResourceManager.managementLocks().deleteByIds(
-                    lockGroup.id(),
-                    lockVM.id(),
-                    lockDiskRO.id(),
-                    lockDiskDel.id(),
-                    lockStorage.id(),
-                    lockSubnet.id());
+                azureResourceManager.managementLocks()
+                    .deleteByIds(lockGroup.id(), lockVM.id(), lockDiskRO.id(), lockDiskDel.id(), lockStorage.id(),
+                        lockSubnet.id());
                 System.out.println("Deleting Resource Group: " + rgName);
                 azureResourceManager.resourceGroups().beginDeleteByName(rgName);
             } catch (NullPointerException npe) {
@@ -254,8 +251,7 @@ public final class ManageLocks {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

@@ -112,10 +112,8 @@ public final class DataMaskingPolicyProperties {
      */
     public void validate() {
         if (dataMaskingState() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataMaskingState in model DataMaskingPolicyProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property dataMaskingState in model DataMaskingPolicyProperties"));
         }
     }
 

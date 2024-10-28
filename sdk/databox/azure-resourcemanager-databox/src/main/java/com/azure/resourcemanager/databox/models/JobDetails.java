@@ -23,8 +23,7 @@ import java.util.List;
     @JsonSubTypes.Type(name = "DataBoxCustomerDisk", value = DataBoxCustomerDiskJobDetails.class),
     @JsonSubTypes.Type(name = "DataBoxDisk", value = DataBoxDiskJobDetails.class),
     @JsonSubTypes.Type(name = "DataBoxHeavy", value = DataBoxHeavyJobDetails.class),
-    @JsonSubTypes.Type(name = "DataBox", value = DataBoxJobDetails.class)
-})
+    @JsonSubTypes.Type(name = "DataBox", value = DataBoxJobDetails.class) })
 @Fluent
 public class JobDetails {
     /*
@@ -416,9 +415,8 @@ public class JobDetails {
             jobStages().forEach(e -> e.validate());
         }
         if (contactDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property contactDetails in model JobDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property contactDetails in model JobDetails"));
         } else {
             contactDetails().validate();
         }

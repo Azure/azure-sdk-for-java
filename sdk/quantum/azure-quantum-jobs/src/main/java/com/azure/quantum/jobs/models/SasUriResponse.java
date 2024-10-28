@@ -45,9 +45,7 @@ public final class SasUriResponse implements JsonSerializable<SasUriResponse> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeStringField("sasUri", sasUri)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeStringField("sasUri", sasUri).writeEndObject();
     }
 
     /**

@@ -21,7 +21,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewWorkflowClient type. */
 @ServiceClient(builder = WorkflowTaskClientBuilder.class, isAsync = true)
 public final class WorkflowTaskAsyncClient {
-    @Generated private final WorkflowTasksOperationsImpl serviceClient;
+    @Generated
+    private final WorkflowTasksOperationsImpl serviceClient;
 
     /**
      * Initializes an instance of WorkflowTaskAsyncClient class.
@@ -112,8 +113,8 @@ public final class WorkflowTaskAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> reassignWithResponse(
-            String taskId, BinaryData reassignCommand, RequestOptions requestOptions) {
+    public Mono<Response<Void>> reassignWithResponse(String taskId, BinaryData reassignCommand,
+        RequestOptions requestOptions) {
         return this.serviceClient.reassignWithResponseAsync(taskId, reassignCommand, requestOptions);
     }
 }

@@ -51,8 +51,8 @@ public interface AuthorizationServersClient {
      * @return paged OAuth2 Authorization Servers list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AuthorizationServerContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<AuthorizationServerContractInner> listByService(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the authorizationServer specified by its identifier.
@@ -67,8 +67,8 @@ public interface AuthorizationServersClient {
      * @return the entity state (Etag) version of the authorizationServer specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationServersGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String authsid, Context context);
+    AuthorizationServersGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String authsid, Context context);
 
     /**
      * Gets the entity state (Etag) version of the authorizationServer specified by its identifier.
@@ -96,8 +96,8 @@ public interface AuthorizationServersClient {
      * @return the details of the authorization server specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationServersGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String authsid, Context context);
+    AuthorizationServersGetResponse getWithResponse(String resourceGroupName, String serviceName, String authsid,
+        Context context);
 
     /**
      * Gets the details of the authorization server specified by its identifier.
@@ -128,13 +128,8 @@ public interface AuthorizationServersClient {
      * @return external OAuth authorization server settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationServersCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authsid,
-        AuthorizationServerContractInner parameters,
-        String ifMatch,
-        Context context);
+    AuthorizationServersCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String authsid, AuthorizationServerContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates new authorization server or updates an existing authorization server.
@@ -149,8 +144,8 @@ public interface AuthorizationServersClient {
      * @return external OAuth authorization server settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationServerContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String authsid, AuthorizationServerContractInner parameters);
+    AuthorizationServerContractInner createOrUpdate(String resourceGroupName, String serviceName, String authsid,
+        AuthorizationServerContractInner parameters);
 
     /**
      * Updates the details of the authorization server specified by its identifier.
@@ -168,13 +163,8 @@ public interface AuthorizationServersClient {
      * @return external OAuth authorization server settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationServersUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authsid,
-        String ifMatch,
-        AuthorizationServerUpdateContract parameters,
-        Context context);
+    AuthorizationServersUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String authsid,
+        String ifMatch, AuthorizationServerUpdateContract parameters, Context context);
 
     /**
      * Updates the details of the authorization server specified by its identifier.
@@ -191,12 +181,8 @@ public interface AuthorizationServersClient {
      * @return external OAuth authorization server settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationServerContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String authsid,
-        String ifMatch,
-        AuthorizationServerUpdateContract parameters);
+    AuthorizationServerContractInner update(String resourceGroupName, String serviceName, String authsid,
+        String ifMatch, AuthorizationServerUpdateContract parameters);
 
     /**
      * Deletes specific authorization server instance.
@@ -213,8 +199,8 @@ public interface AuthorizationServersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String authsid, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String authsid, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific authorization server instance.
@@ -244,8 +230,8 @@ public interface AuthorizationServersClient {
      * @return the client secret details of the authorization server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationServersListSecretsResponse listSecretsWithResponse(
-        String resourceGroupName, String serviceName, String authsid, Context context);
+    AuthorizationServersListSecretsResponse listSecretsWithResponse(String resourceGroupName, String serviceName,
+        String authsid, Context context);
 
     /**
      * Gets the client secret details of the authorization server.

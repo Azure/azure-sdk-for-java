@@ -45,6 +45,6 @@ public interface ResourceChangesClient {
      * @return the list of detected changes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ChangeInner> list(
-        String resourceId, OffsetDateTime startTime, OffsetDateTime endTime, String skipToken, Context context);
+    PagedIterable<ChangeInner> list(String resourceId, OffsetDateTime startTime, OffsetDateTime endTime,
+        String skipToken, Context context);
 }

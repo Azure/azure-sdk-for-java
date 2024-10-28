@@ -100,9 +100,8 @@ public final class JitApproverDefinition {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model JitApproverDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model JitApproverDefinition"));
         }
     }
 

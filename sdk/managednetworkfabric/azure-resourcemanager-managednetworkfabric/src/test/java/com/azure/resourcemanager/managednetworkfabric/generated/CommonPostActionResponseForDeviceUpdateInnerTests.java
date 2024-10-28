@@ -12,21 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class CommonPostActionResponseForDeviceUpdateInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommonPostActionResponseForDeviceUpdateInner model =
-            BinaryData
-                .fromString(
-                    "{\"configurationState\":\"Provisioned\",\"successfulDevices\":[\"gfnzh\",\"tmjtsghp\"],\"failedDevices\":[\"cp\",\"arpzeqacdldtzm\",\"ypefcpczshnuqnda\",\"zupfkhuytuszxhm\"]}")
-                .toObject(CommonPostActionResponseForDeviceUpdateInner.class);
+        CommonPostActionResponseForDeviceUpdateInner model = BinaryData.fromString(
+            "{\"configurationState\":\"Provisioned\",\"successfulDevices\":[\"gfnzh\",\"tmjtsghp\"],\"failedDevices\":[\"cp\",\"arpzeqacdldtzm\",\"ypefcpczshnuqnda\",\"zupfkhuytuszxhm\"]}")
+            .toObject(CommonPostActionResponseForDeviceUpdateInner.class);
         Assertions.assertEquals("gfnzh", model.successfulDevices().get(0));
         Assertions.assertEquals("cp", model.failedDevices().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommonPostActionResponseForDeviceUpdateInner model =
-            new CommonPostActionResponseForDeviceUpdateInner()
-                .withSuccessfulDevices(Arrays.asList("gfnzh", "tmjtsghp"))
-                .withFailedDevices(Arrays.asList("cp", "arpzeqacdldtzm", "ypefcpczshnuqnda", "zupfkhuytuszxhm"));
+        CommonPostActionResponseForDeviceUpdateInner model = new CommonPostActionResponseForDeviceUpdateInner()
+            .withSuccessfulDevices(Arrays.asList("gfnzh", "tmjtsghp"))
+            .withFailedDevices(Arrays.asList("cp", "arpzeqacdldtzm", "ypefcpczshnuqnda", "zupfkhuytuszxhm"));
         model = BinaryData.fromObject(model).toObject(CommonPostActionResponseForDeviceUpdateInner.class);
         Assertions.assertEquals("gfnzh", model.successfulDevices().get(0));
         Assertions.assertEquals("cp", model.failedDevices().get(0));

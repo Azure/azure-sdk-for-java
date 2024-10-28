@@ -149,16 +149,12 @@ public final class SchemaContractProperties {
      */
     public void validate() {
         if (contentType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property contentType in model SchemaContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property contentType in model SchemaContractProperties"));
         }
         if (innerDocument() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerDocument in model SchemaContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerDocument in model SchemaContractProperties"));
         } else {
             innerDocument().validate();
         }

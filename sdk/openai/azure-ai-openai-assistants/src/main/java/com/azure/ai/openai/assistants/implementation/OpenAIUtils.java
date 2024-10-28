@@ -40,7 +40,7 @@ public final class OpenAIUtils {
      * Add the version query parameter to the request options if the service is not Azure OpenAI service.
      */
     public static void addAzureVersionToRequestOptions(String endpoint, RequestOptions requestOptions,
-                                                          AssistantsServiceVersion serviceVersion) {
+        AssistantsServiceVersion serviceVersion) {
         if (useAzureOpenAIService(endpoint)) {
             requestOptions.addQueryParam("api-version", serviceVersion.getVersion());
         }

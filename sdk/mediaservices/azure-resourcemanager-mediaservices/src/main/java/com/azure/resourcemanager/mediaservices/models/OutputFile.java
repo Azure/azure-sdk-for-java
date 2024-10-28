@@ -58,9 +58,8 @@ public final class OutputFile {
      */
     public void validate() {
         if (labels() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property labels in model OutputFile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property labels in model OutputFile"));
         }
     }
 

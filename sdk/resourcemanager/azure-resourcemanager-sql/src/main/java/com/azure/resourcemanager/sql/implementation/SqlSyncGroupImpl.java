@@ -44,8 +44,8 @@ public class SqlSyncGroupImpl
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses DNS alias operations
      */
-    SqlSyncGroupImpl(
-        String name, SqlDatabaseImpl parent, SyncGroupInner innerObject, SqlServerManager sqlServerManager) {
+    SqlSyncGroupImpl(String name, SqlDatabaseImpl parent, SyncGroupInner innerObject,
+        SqlServerManager sqlServerManager) {
         super(name, parent, innerObject);
 
         Objects.requireNonNull(parent);
@@ -66,13 +66,8 @@ public class SqlSyncGroupImpl
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses DNS alias operations
      */
-    SqlSyncGroupImpl(
-        String resourceGroupName,
-        String sqlServerName,
-        String sqlDatabaseName,
-        String name,
-        SyncGroupInner innerObject,
-        SqlServerManager sqlServerManager) {
+    SqlSyncGroupImpl(String resourceGroupName, String sqlServerName, String sqlDatabaseName, String name,
+        SyncGroupInner innerObject, SqlServerManager sqlServerManager) {
         super(name, null, innerObject);
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;
@@ -165,108 +160,79 @@ public class SqlSyncGroupImpl
 
     @Override
     public void refreshHubSchema() {
-        this
-            .sqlServerManager
-            .serviceClient()
+        this.sqlServerManager.serviceClient()
             .getSyncGroups()
             .refreshHubSchema(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
     @Override
     public Mono<Void> refreshHubSchemaAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getSyncGroups()
             .refreshHubSchemaAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
     @Override
     public PagedIterable<SqlSyncFullSchemaProperty> listHubSchemas() {
-        return PagedConverter.mapPage(this
-            .sqlServerManager
-            .serviceClient()
-            .getSyncGroups()
-            .listHubSchemas(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name()),
+        return PagedConverter.mapPage(
+            this.sqlServerManager.serviceClient()
+                .getSyncGroups()
+                .listHubSchemas(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name()),
             inner -> new SqlSyncFullSchemaPropertyImpl(inner));
     }
 
     @Override
     public PagedFlux<SqlSyncFullSchemaProperty> listHubSchemasAsync() {
-        return PagedConverter.mapPage(this
-            .sqlServerManager
-            .serviceClient()
-            .getSyncGroups()
-            .listHubSchemasAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name()),
+        return PagedConverter.mapPage(
+            this.sqlServerManager.serviceClient()
+                .getSyncGroups()
+                .listHubSchemasAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name()),
             syncFullSchemaPropertiesInner -> new SqlSyncFullSchemaPropertyImpl(syncFullSchemaPropertiesInner));
     }
 
     @Override
     public PagedIterable<SqlSyncGroupLogProperty> listLogs(String startTime, String endTime, String type) {
-        return PagedConverter.mapPage(this
-            .sqlServerManager
-            .serviceClient()
+        return PagedConverter.mapPage(this.sqlServerManager.serviceClient()
             .getSyncGroups()
-            .listLogs(
-                this.resourceGroupName,
-                this.sqlServerName,
-                this.sqlDatabaseName,
-                this.name(),
-                startTime,
-                endTime,
+            .listLogs(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name(), startTime, endTime,
                 SyncGroupsType.fromString(type)),
             inner -> new SqlSyncGroupLogPropertyImpl(inner));
     }
 
     @Override
     public PagedFlux<SqlSyncGroupLogProperty> listLogsAsync(String startTime, String endTime, String type) {
-        return PagedConverter.mapPage(this
-            .sqlServerManager
-            .serviceClient()
-            .getSyncGroups()
-            .listLogsAsync(
-                this.resourceGroupName,
-                this.sqlServerName,
-                this.sqlDatabaseName,
-                this.name(),
-                startTime,
-                endTime,
-                SyncGroupsType.fromString(type)),
+        return PagedConverter.mapPage(
+            this.sqlServerManager.serviceClient()
+                .getSyncGroups()
+                .listLogsAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name(), startTime,
+                    endTime, SyncGroupsType.fromString(type)),
             syncGroupLogPropertiesInner -> new SqlSyncGroupLogPropertyImpl(syncGroupLogPropertiesInner));
     }
 
     @Override
     public void triggerSynchronization() {
-        this
-            .sqlServerManager
-            .serviceClient()
+        this.sqlServerManager.serviceClient()
             .getSyncGroups()
             .triggerSync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
     @Override
     public Mono<Void> triggerSynchronizationAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getSyncGroups()
             .triggerSyncAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
     @Override
     public void cancelSynchronization() {
-        this
-            .sqlServerManager
-            .serviceClient()
+        this.sqlServerManager.serviceClient()
             .getSyncGroups()
             .cancelSync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
     @Override
     public Mono<Void> cancelSynchronizationAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getSyncGroups()
             .cancelSyncAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
@@ -343,17 +309,14 @@ public class SqlSyncGroupImpl
     @Override
     public Mono<SqlSyncGroup> createResourceAsync() {
         final SqlSyncGroupImpl self = this;
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getSyncGroups()
-            .createOrUpdateAsync(
-                this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name(), this.innerModel())
-            .map(
-                syncGroupInner -> {
-                    self.setInner(syncGroupInner);
-                    return self;
-                });
+            .createOrUpdateAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name(),
+                this.innerModel())
+            .map(syncGroupInner -> {
+                self.setInner(syncGroupInner);
+                return self;
+            });
     }
 
     @Override
@@ -363,27 +326,21 @@ public class SqlSyncGroupImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getSyncGroups()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
     @Override
     protected Mono<SyncGroupInner> getInnerAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getSyncGroups()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }
 
     @Override
     public void delete() {
-        this
-            .sqlServerManager
-            .serviceClient()
+        this.sqlServerManager.serviceClient()
             .getSyncGroups()
             .delete(this.resourceGroupName, this.sqlServerName, this.sqlDatabaseName, this.name());
     }

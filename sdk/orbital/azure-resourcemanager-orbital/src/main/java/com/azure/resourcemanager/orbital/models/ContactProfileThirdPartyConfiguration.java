@@ -79,17 +79,12 @@ public final class ContactProfileThirdPartyConfiguration {
      */
     public void validate() {
         if (providerName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property providerName in model ContactProfileThirdPartyConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property providerName in model ContactProfileThirdPartyConfiguration"));
         }
         if (missionConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property missionConfiguration in model"
-                            + " ContactProfileThirdPartyConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property missionConfiguration in model" + " ContactProfileThirdPartyConfiguration"));
         }
     }
 

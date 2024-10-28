@@ -143,8 +143,8 @@ public final class ConnectivityCheckRequest {
      * @param protocolConfiguration the protocolConfiguration value to set.
      * @return the ConnectivityCheckRequest object itself.
      */
-    public ConnectivityCheckRequest withProtocolConfiguration(
-        ConnectivityCheckRequestProtocolConfiguration protocolConfiguration) {
+    public ConnectivityCheckRequest
+        withProtocolConfiguration(ConnectivityCheckRequestProtocolConfiguration protocolConfiguration) {
         this.protocolConfiguration = protocolConfiguration;
         return this;
     }
@@ -156,17 +156,14 @@ public final class ConnectivityCheckRequest {
      */
     public void validate() {
         if (source() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property source in model ConnectivityCheckRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property source in model ConnectivityCheckRequest"));
         } else {
             source().validate();
         }
         if (destination() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destination in model ConnectivityCheckRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property destination in model ConnectivityCheckRequest"));
         } else {
             destination().validate();
         }

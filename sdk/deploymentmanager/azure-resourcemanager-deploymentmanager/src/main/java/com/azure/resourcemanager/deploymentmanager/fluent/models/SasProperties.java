@@ -51,9 +51,8 @@ public final class SasProperties {
      */
     public void validate() {
         if (sasUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sasUri in model SasProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sasUri in model SasProperties"));
         }
     }
 

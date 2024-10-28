@@ -40,8 +40,8 @@ public interface PrivateLinkResourcesClient {
      *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateLinkResourceInner> listByConfigurationStore(
-        String resourceGroupName, String configStoreName, Context context);
+    PagedIterable<PrivateLinkResourceInner> listByConfigurationStore(String resourceGroupName, String configStoreName,
+        Context context);
 
     /**
      * Gets a private link resource that need to be created for a configuration store.
@@ -56,8 +56,8 @@ public interface PrivateLinkResourcesClient {
      * @return a private link resource that need to be created for a configuration store along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName, String configStoreName, String groupName, Context context);
+    Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String configStoreName,
+        String groupName, Context context);
 
     /**
      * Gets a private link resource that need to be created for a configuration store.

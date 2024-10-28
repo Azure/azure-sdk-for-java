@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateParentGroupInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateParentGroupInfo model =
-            BinaryData
-                .fromString("{\"id\":\"c\",\"name\":\"ierhhbcsglummaj\",\"displayName\":\"aodxo\"}")
+        CreateParentGroupInfo model
+            = BinaryData.fromString("{\"id\":\"c\",\"name\":\"ierhhbcsglummaj\",\"displayName\":\"aodxo\"}")
                 .toObject(CreateParentGroupInfo.class);
         Assertions.assertEquals("c", model.id());
     }

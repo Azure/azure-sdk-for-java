@@ -24,11 +24,8 @@ public interface WorkspaceManagedSqlServerEncryptionProtectors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace managed sql server's encryption protector along with {@link Response}.
      */
-    Response<EncryptionProtector> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        EncryptionProtectorName encryptionProtectorName,
-        Context context);
+    Response<EncryptionProtector> getWithResponse(String resourceGroupName, String workspaceName,
+        EncryptionProtectorName encryptionProtectorName, Context context);
 
     /**
      * Get workspace server's encryption protector.
@@ -43,8 +40,8 @@ public interface WorkspaceManagedSqlServerEncryptionProtectors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace managed sql server's encryption protector.
      */
-    EncryptionProtector get(
-        String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName);
+    EncryptionProtector get(String resourceGroupName, String workspaceName,
+        EncryptionProtectorName encryptionProtectorName);
 
     /**
      * Get list of encryption protectors for the server.
@@ -104,10 +101,7 @@ public interface WorkspaceManagedSqlServerEncryptionProtectors {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void revalidate(
-        String resourceGroupName,
-        String workspaceName,
-        EncryptionProtectorName encryptionProtectorName,
+    void revalidate(String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName,
         Context context);
 
     /**

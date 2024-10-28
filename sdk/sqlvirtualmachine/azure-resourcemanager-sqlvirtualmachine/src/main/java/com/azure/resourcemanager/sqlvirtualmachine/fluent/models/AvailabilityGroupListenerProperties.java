@@ -106,8 +106,8 @@ public final class AvailabilityGroupListenerProperties {
      * @param loadBalancerConfigurations the loadBalancerConfigurations value to set.
      * @return the AvailabilityGroupListenerProperties object itself.
      */
-    public AvailabilityGroupListenerProperties withLoadBalancerConfigurations(
-        List<LoadBalancerConfiguration> loadBalancerConfigurations) {
+    public AvailabilityGroupListenerProperties
+        withLoadBalancerConfigurations(List<LoadBalancerConfiguration> loadBalancerConfigurations) {
         this.loadBalancerConfigurations = loadBalancerConfigurations;
         return this;
     }
@@ -127,8 +127,8 @@ public final class AvailabilityGroupListenerProperties {
      * @param multiSubnetIpConfigurations the multiSubnetIpConfigurations value to set.
      * @return the AvailabilityGroupListenerProperties object itself.
      */
-    public AvailabilityGroupListenerProperties withMultiSubnetIpConfigurations(
-        List<MultiSubnetIpConfiguration> multiSubnetIpConfigurations) {
+    public AvailabilityGroupListenerProperties
+        withMultiSubnetIpConfigurations(List<MultiSubnetIpConfiguration> multiSubnetIpConfigurations) {
         this.multiSubnetIpConfigurations = multiSubnetIpConfigurations;
         return this;
     }
@@ -150,8 +150,8 @@ public final class AvailabilityGroupListenerProperties {
      * @param createDefaultAvailabilityGroupIfNotExist the createDefaultAvailabilityGroupIfNotExist value to set.
      * @return the AvailabilityGroupListenerProperties object itself.
      */
-    public AvailabilityGroupListenerProperties withCreateDefaultAvailabilityGroupIfNotExist(
-        Boolean createDefaultAvailabilityGroupIfNotExist) {
+    public AvailabilityGroupListenerProperties
+        withCreateDefaultAvailabilityGroupIfNotExist(Boolean createDefaultAvailabilityGroupIfNotExist) {
         this.createDefaultAvailabilityGroupIfNotExist = createDefaultAvailabilityGroupIfNotExist;
         return this;
     }
@@ -191,8 +191,8 @@ public final class AvailabilityGroupListenerProperties {
      * @param availabilityGroupConfiguration the availabilityGroupConfiguration value to set.
      * @return the AvailabilityGroupListenerProperties object itself.
      */
-    public AvailabilityGroupListenerProperties withAvailabilityGroupConfiguration(
-        AgConfiguration availabilityGroupConfiguration) {
+    public AvailabilityGroupListenerProperties
+        withAvailabilityGroupConfiguration(AgConfiguration availabilityGroupConfiguration) {
         this.availabilityGroupConfiguration = availabilityGroupConfiguration;
         return this;
     }

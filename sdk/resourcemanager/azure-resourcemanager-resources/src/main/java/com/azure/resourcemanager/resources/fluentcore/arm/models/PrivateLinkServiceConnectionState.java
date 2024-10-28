@@ -17,8 +17,8 @@ public final class PrivateLinkServiceConnectionState {
      * @param description the description of the connection.
      * @param actionsRequired the required action for the connection.
      */
-    public PrivateLinkServiceConnectionState(PrivateEndpointServiceConnectionStatus status,
-                                             String description, String actionsRequired) {
+    public PrivateLinkServiceConnectionState(PrivateEndpointServiceConnectionStatus status, String description,
+        String actionsRequired) {
         this.status = status;
         this.description = description;
         this.actionsRequired = actionsRequired;

@@ -21,8 +21,7 @@ import java.time.OffsetDateTime;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ServiceBus", value = ServiceBus.class),
     @JsonSubTypes.Type(name = "EventHub", value = EventHub.class),
-    @JsonSubTypes.Type(name = "EventGrid", value = EventGrid.class)
-})
+    @JsonSubTypes.Type(name = "EventGrid", value = EventGrid.class) })
 @Fluent
 public class DigitalTwinsEndpointResourceProperties {
     /*

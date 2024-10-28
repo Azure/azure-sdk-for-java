@@ -44,12 +44,14 @@ public final class ConfigurationGroupSchemasGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ConfigurationGroupSchema response = manager.configurationGroupSchemas()
-            .getWithResponse("htmwwinh", "hfqpofv", "bcblemb", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("htmwwinh", "hfqpofv", "bcblemb", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("urageg", response.location());
         Assertions.assertEquals("cjfelisdjubgg", response.tags().get("qigkx"));

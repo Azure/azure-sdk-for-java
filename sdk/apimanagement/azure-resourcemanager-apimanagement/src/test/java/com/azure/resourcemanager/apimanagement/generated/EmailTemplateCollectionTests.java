@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EmailTemplateCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EmailTemplateCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"subject\":\"fqvz\",\"body\":\"jmspugzfeuzjlj\",\"title\":\"hfkyez\",\"description\":\"gj\",\"isDefault\":true,\"parameters\":[{\"name\":\"doccnxshanzb\",\"title\":\"adh\",\"description\":\"tecaa\"},{\"name\":\"dohzniucbdaombwi\",\"title\":\"jdllwktle\",\"description\":\"wavvqxuajgcqwuly\"}]},\"id\":\"kgfcfdruws\",\"name\":\"kxx\",\"type\":\"clhuulriqbyokv\"}],\"count\":4867561707466627827,\"nextLink\":\"x\"}")
-                .toObject(EmailTemplateCollection.class);
+        EmailTemplateCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"subject\":\"fqvz\",\"body\":\"jmspugzfeuzjlj\",\"title\":\"hfkyez\",\"description\":\"gj\",\"isDefault\":true,\"parameters\":[{\"name\":\"doccnxshanzb\",\"title\":\"adh\",\"description\":\"tecaa\"},{\"name\":\"dohzniucbdaombwi\",\"title\":\"jdllwktle\",\"description\":\"wavvqxuajgcqwuly\"}]},\"id\":\"kgfcfdruws\",\"name\":\"kxx\",\"type\":\"clhuulriqbyokv\"}],\"count\":4867561707466627827,\"nextLink\":\"x\"}")
+            .toObject(EmailTemplateCollection.class);
         Assertions.assertEquals("fqvz", model.value().get(0).subject());
         Assertions.assertEquals("jmspugzfeuzjlj", model.value().get(0).body());
         Assertions.assertEquals("hfkyez", model.value().get(0).title());
@@ -32,27 +30,19 @@ public final class EmailTemplateCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EmailTemplateCollection model =
-            new EmailTemplateCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new EmailTemplateContractInner()
-                                .withSubject("fqvz")
-                                .withBody("jmspugzfeuzjlj")
-                                .withTitle("hfkyez")
-                                .withDescription("gj")
-                                .withParameters(
-                                    Arrays
-                                        .asList(
-                                            new EmailTemplateParametersContractProperties()
-                                                .withName("doccnxshanzb")
-                                                .withTitle("adh")
-                                                .withDescription("tecaa"),
-                                            new EmailTemplateParametersContractProperties()
-                                                .withName("dohzniucbdaombwi")
-                                                .withTitle("jdllwktle")
-                                                .withDescription("wavvqxuajgcqwuly")))))
+        EmailTemplateCollection model
+            = new EmailTemplateCollection()
+                .withValue(Arrays.asList(new EmailTemplateContractInner().withSubject("fqvz")
+                    .withBody("jmspugzfeuzjlj")
+                    .withTitle("hfkyez")
+                    .withDescription("gj")
+                    .withParameters(Arrays.asList(
+                        new EmailTemplateParametersContractProperties().withName("doccnxshanzb")
+                            .withTitle("adh")
+                            .withDescription("tecaa"),
+                        new EmailTemplateParametersContractProperties().withName("dohzniucbdaombwi")
+                            .withTitle("jdllwktle")
+                            .withDescription("wavvqxuajgcqwuly")))))
                 .withCount(4867561707466627827L)
                 .withNextLink("x");
         model = BinaryData.fromObject(model).toObject(EmailTemplateCollection.class);

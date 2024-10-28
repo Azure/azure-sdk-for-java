@@ -35,8 +35,7 @@ public final class HttpRetryOptions {
         Objects.requireNonNull(baseDelay, "'baseDelay' cannot be null.");
         Objects.requireNonNull(maxDelay, "'maxDelay' cannot be null.");
         if (maxRetries < 0) {
-            LOGGER.atVerbose()
-                .log("Max retries cannot be less than 0. Using 3 retries as the maximum.");
+            LOGGER.atVerbose().log("Max retries cannot be less than 0. Using 3 retries as the maximum.");
             maxRetries = 3;
         }
         this.baseDelay = baseDelay;
@@ -55,8 +54,7 @@ public final class HttpRetryOptions {
     public HttpRetryOptions(int maxRetries, Duration fixedDelay) {
         Objects.requireNonNull(fixedDelay, "'fixedDelay' cannot be null.");
         if (maxRetries < 0) {
-            LOGGER.atVerbose()
-                .log("Max retries cannot be less than 0. Using 3 retries as the maximum.");
+            LOGGER.atVerbose().log("Max retries cannot be less than 0. Using 3 retries as the maximum.");
             maxRetries = 3;
         }
         this.maxRetries = maxRetries;

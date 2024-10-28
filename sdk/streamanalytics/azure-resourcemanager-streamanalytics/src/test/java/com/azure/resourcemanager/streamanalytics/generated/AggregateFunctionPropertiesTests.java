@@ -30,7 +30,8 @@ public final class AggregateFunctionPropertiesTests {
                 new FunctionInput().withDataType("sldnkwwtppjflcxo").withIsConfigurationParameter(true),
                 new FunctionInput().withDataType("onz").withIsConfigurationParameter(true),
                 new FunctionInput().withDataType("kvmkqzeqq").withIsConfigurationParameter(false)))
-            .withOutput(new FunctionOutput().withDataType("zxmhhvhgu")).withBinding(new FunctionBinding());
+            .withOutput(new FunctionOutput().withDataType("zxmhhvhgu"))
+            .withBinding(new FunctionBinding());
         model = BinaryData.fromObject(model).toObject(AggregateFunctionProperties.class);
         Assertions.assertEquals("wiwubm", model.inputs().get(0).dataType());
         Assertions.assertEquals(true, model.inputs().get(0).isConfigurationParameter());

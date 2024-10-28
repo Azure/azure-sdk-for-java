@@ -144,8 +144,8 @@ public final class CommonEncryptionCenc {
      * @param clearKeyEncryptionConfiguration the clearKeyEncryptionConfiguration value to set.
      * @return the CommonEncryptionCenc object itself.
      */
-    public CommonEncryptionCenc withClearKeyEncryptionConfiguration(
-        ClearKeyEncryptionConfiguration clearKeyEncryptionConfiguration) {
+    public CommonEncryptionCenc
+        withClearKeyEncryptionConfiguration(ClearKeyEncryptionConfiguration clearKeyEncryptionConfiguration) {
         this.clearKeyEncryptionConfiguration = clearKeyEncryptionConfiguration;
         return this;
     }

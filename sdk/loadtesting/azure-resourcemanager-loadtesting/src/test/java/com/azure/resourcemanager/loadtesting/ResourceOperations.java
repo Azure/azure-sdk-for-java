@@ -21,8 +21,7 @@ public class ResourceOperations {
     }
 
     public void create(LoadTestManager manager) {
-        LoadTestResource resource = manager
-            .loadTests()
+        LoadTestResource resource = manager.loadTests()
             .define(loadTestResourceName)
             .withRegion(location)
             .withExistingResourceGroup(resourceGroupName)
@@ -40,8 +39,7 @@ public class ResourceOperations {
     public void update(LoadTestManager manager) {
         LoadTestResource resourcePreUpdate = getResource(manager);
 
-        LoadTestResource resourcePostUpdate = resourcePreUpdate
-            .update()
+        LoadTestResource resourcePostUpdate = resourcePreUpdate.update()
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
             .apply();
 
@@ -55,9 +53,7 @@ public class ResourceOperations {
     }
 
     private LoadTestResource getResource(LoadTestManager manager) {
-        LoadTestResource resource = manager
-            .loadTests()
-            .getByResourceGroup(resourceGroupName, loadTestResourceName);
+        LoadTestResource resource = manager.loadTests().getByResourceGroup(resourceGroupName, loadTestResourceName);
         return resource;
     }
 
@@ -73,8 +69,6 @@ public class ResourceOperations {
     }
 
     public void delete(LoadTestManager manager) {
-        manager
-            .loadTests()
-            .deleteByResourceGroup(resourceGroupName, loadTestResourceName);
+        manager.loadTests().deleteByResourceGroup(resourceGroupName, loadTestResourceName);
     }
 }

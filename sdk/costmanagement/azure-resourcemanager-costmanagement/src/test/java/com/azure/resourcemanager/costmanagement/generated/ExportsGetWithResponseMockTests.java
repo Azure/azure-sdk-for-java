@@ -35,40 +35,28 @@ public final class ExportsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"schedule\":{\"status\":\"Inactive\",\"recurrence\":\"Annually\"},\"format\":\"Csv\",\"deliveryInfo\":{},\"definition\":{\"type\":\"AmortizedCost\",\"timeframe\":\"WeekToDate\"},\"runHistory\":{\"value\":[]},\"partitionData\":true,\"nextRunTimeEstimate\":\"2021-03-23T12:57:57Z\"},\"eTag\":\"httz\",\"id\":\"efedxihchrphkm\",\"name\":\"rjdqnsdfzp\",\"type\":\"gtgkylkdghr\"}";
+        String responseStr
+            = "{\"properties\":{\"schedule\":{\"status\":\"Inactive\",\"recurrence\":\"Annually\"},\"format\":\"Csv\",\"deliveryInfo\":{},\"definition\":{\"type\":\"AmortizedCost\",\"timeframe\":\"WeekToDate\"},\"runHistory\":{\"value\":[]},\"partitionData\":true,\"nextRunTimeEstimate\":\"2021-03-23T12:57:57Z\"},\"eTag\":\"httz\",\"id\":\"efedxihchrphkm\",\"name\":\"rjdqnsdfzp\",\"type\":\"gtgkylkdghr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Export response =
-            manager
-                .exports()
-                .getWithResponse("cdisd", "sfjbjsvg", "rwhryvycytd", com.azure.core.util.Context.NONE)
-                .getValue();
+        Export response = manager.exports()
+            .getWithResponse("cdisd", "sfjbjsvg", "rwhryvycytd", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("httz", response.etag());
         Assertions.assertEquals(StatusType.INACTIVE, response.schedule().status());

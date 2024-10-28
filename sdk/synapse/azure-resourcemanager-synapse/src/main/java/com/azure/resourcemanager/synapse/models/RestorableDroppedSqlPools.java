@@ -23,8 +23,8 @@ public interface RestorableDroppedSqlPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deleted sql pool that can be restored along with {@link Response}.
      */
-    Response<RestorableDroppedSqlPool> getWithResponse(
-        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId, Context context);
+    Response<RestorableDroppedSqlPool> getWithResponse(String resourceGroupName, String workspaceName,
+        String restorableDroppedSqlPoolId, Context context);
 
     /**
      * Gets a deleted sql pool that can be restored.
@@ -63,6 +63,6 @@ public interface RestorableDroppedSqlPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of deleted Sql pools that can be restored as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RestorableDroppedSqlPool> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<RestorableDroppedSqlPool> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 }

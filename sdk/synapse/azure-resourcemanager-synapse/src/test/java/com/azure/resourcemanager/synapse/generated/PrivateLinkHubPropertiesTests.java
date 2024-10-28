@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkHubPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkHubProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"xhqyudxorrqnb\",\"privateEndpointConnections\":[{\"id\":\"vyifqrvkdvjsl\",\"properties\":{\"provisioningState\":\"d\"}},{\"id\":\"atkpnp\",\"properties\":{\"provisioningState\":\"bczw\"}}]}")
-                .toObject(PrivateLinkHubProperties.class);
+        PrivateLinkHubProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"xhqyudxorrqnb\",\"privateEndpointConnections\":[{\"id\":\"vyifqrvkdvjsl\",\"properties\":{\"provisioningState\":\"d\"}},{\"id\":\"atkpnp\",\"properties\":{\"provisioningState\":\"bczw\"}}]}")
+            .toObject(PrivateLinkHubProperties.class);
         Assertions.assertEquals("xhqyudxorrqnb", model.provisioningState());
     }
 

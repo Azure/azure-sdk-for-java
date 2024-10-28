@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("HDInsight")
 @Fluent
 public final class HDInsight extends Compute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsight.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(HDInsight.class);
 
     /*
      * The properties property.

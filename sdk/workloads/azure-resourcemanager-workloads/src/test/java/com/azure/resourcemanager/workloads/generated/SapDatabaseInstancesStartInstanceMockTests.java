@@ -30,39 +30,27 @@ public final class SapDatabaseInstancesStartInstanceMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"lpmjerb\",\"name\":\"elvidizozsdbccx\",\"status\":\"monfdgnwncypuuww\",\"percentComplete\":0.8582592,\"startTime\":\"2021-11-20T18:00Z\",\"endTime\":\"2021-02-10T14:17:27Z\",\"operations\":[{\"id\":\"nkeifz\",\"name\":\"mkdasv\",\"status\":\"lyhb\",\"percentComplete\":95.53096,\"startTime\":\"2021-01-15T10:18:43Z\",\"endTime\":\"2021-12-10T05:26:35Z\",\"operations\":[]},{\"id\":\"oldforobw\",\"name\":\"vizbfhfo\",\"status\":\"vacqpbtuodxesz\",\"percentComplete\":87.85364,\"startTime\":\"2021-07-01T15:33:02Z\",\"endTime\":\"2021-08-31T22:37:44Z\",\"operations\":[]},{\"id\":\"slzkwrrwoycqu\",\"name\":\"yhahnomdrkyw\",\"status\":\"hpsvfu\",\"percentComplete\":58.89424,\"startTime\":\"2021-08-15T09:05:35Z\",\"endTime\":\"2021-11-04T07:23:46Z\",\"operations\":[]},{\"id\":\"alniexzsrzp\",\"name\":\"pqtybb\",\"status\":\"wpgdak\",\"percentComplete\":27.999931,\"startTime\":\"2021-03-31T06:49:58Z\",\"endTime\":\"2021-04-07T03:58:53Z\",\"operations\":[]}]}";
+        String responseStr
+            = "{\"id\":\"lpmjerb\",\"name\":\"elvidizozsdbccx\",\"status\":\"monfdgnwncypuuww\",\"percentComplete\":0.8582592,\"startTime\":\"2021-11-20T18:00Z\",\"endTime\":\"2021-02-10T14:17:27Z\",\"operations\":[{\"id\":\"nkeifz\",\"name\":\"mkdasv\",\"status\":\"lyhb\",\"percentComplete\":95.53096,\"startTime\":\"2021-01-15T10:18:43Z\",\"endTime\":\"2021-12-10T05:26:35Z\",\"operations\":[]},{\"id\":\"oldforobw\",\"name\":\"vizbfhfo\",\"status\":\"vacqpbtuodxesz\",\"percentComplete\":87.85364,\"startTime\":\"2021-07-01T15:33:02Z\",\"endTime\":\"2021-08-31T22:37:44Z\",\"operations\":[]},{\"id\":\"slzkwrrwoycqu\",\"name\":\"yhahnomdrkyw\",\"status\":\"hpsvfu\",\"percentComplete\":58.89424,\"startTime\":\"2021-08-15T09:05:35Z\",\"endTime\":\"2021-11-04T07:23:46Z\",\"operations\":[]},{\"id\":\"alniexzsrzp\",\"name\":\"pqtybb\",\"status\":\"wpgdak\",\"percentComplete\":27.999931,\"startTime\":\"2021-03-31T06:49:58Z\",\"endTime\":\"2021-04-07T03:58:53Z\",\"operations\":[]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        WorkloadsManager manager =
-            WorkloadsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        WorkloadsManager manager = WorkloadsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationStatusResult response =
-            manager
-                .sapDatabaseInstances()
-                .startInstance("k", "reljeamur", "zmlovuanash", com.azure.core.util.Context.NONE);
+        OperationStatusResult response = manager.sapDatabaseInstances()
+            .startInstance("k", "reljeamur", "zmlovuanash", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("lpmjerb", response.id());
         Assertions.assertEquals("elvidizozsdbccx", response.name());

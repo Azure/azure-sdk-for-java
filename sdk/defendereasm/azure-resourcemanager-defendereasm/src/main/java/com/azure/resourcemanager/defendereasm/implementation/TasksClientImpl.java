@@ -50,20 +50,14 @@ public final class TasksClientImpl implements TasksClient {
     @Host("{$host}")
     @ServiceInterface(name = "EasmMgmtClientTasks")
     public interface TasksService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Easm/workspaces/{workspaceName}/tasks/{taskId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Easm/workspaces/{workspaceName}/tasks/{taskId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TaskResourceInner>> getByWorkspace(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("taskId") String taskId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TaskResourceInner>> getByWorkspace(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("workspaceName") String workspaceName,
+            @PathParam("taskId") String taskId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -78,23 +72,19 @@ public final class TasksClientImpl implements TasksClient {
      * @return task details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TaskResourceInner>> getByWorkspaceWithResponseAsync(
-        String resourceGroupName, String workspaceName, String taskId) {
+    private Mono<Response<TaskResourceInner>> getByWorkspaceWithResponseAsync(String resourceGroupName,
+        String workspaceName, String taskId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -104,18 +94,8 @@ public final class TasksClientImpl implements TasksClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByWorkspace(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            workspaceName,
-                            taskId,
-                            accept,
-                            context))
+            .withContext(context -> service.getByWorkspace(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), workspaceName, taskId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -132,23 +112,19 @@ public final class TasksClientImpl implements TasksClient {
      * @return task details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TaskResourceInner>> getByWorkspaceWithResponseAsync(
-        String resourceGroupName, String workspaceName, String taskId, Context context) {
+    private Mono<Response<TaskResourceInner>> getByWorkspaceWithResponseAsync(String resourceGroupName,
+        String workspaceName, String taskId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -158,16 +134,8 @@ public final class TasksClientImpl implements TasksClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByWorkspace(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                workspaceName,
-                taskId,
-                accept,
-                context);
+        return service.getByWorkspace(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), workspaceName, taskId, accept, context);
     }
 
     /**
@@ -200,8 +168,8 @@ public final class TasksClientImpl implements TasksClient {
      * @return task details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TaskResourceInner> getByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, String taskId, Context context) {
+    public Response<TaskResourceInner> getByWorkspaceWithResponse(String resourceGroupName, String workspaceName,
+        String taskId, Context context) {
         return getByWorkspaceWithResponseAsync(resourceGroupName, workspaceName, taskId, context).block();
     }
 

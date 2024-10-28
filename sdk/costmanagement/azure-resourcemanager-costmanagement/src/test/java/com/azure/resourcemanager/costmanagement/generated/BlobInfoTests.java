@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class BlobInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BlobInfo model =
-            BinaryData
-                .fromString("{\"blobLink\":\"cvnhltiugc\",\"byteCount\":7613800840499782864}")
-                .toObject(BlobInfo.class);
+        BlobInfo model = BinaryData.fromString("{\"blobLink\":\"cvnhltiugc\",\"byteCount\":7613800840499782864}")
+            .toObject(BlobInfo.class);
         Assertions.assertEquals("cvnhltiugc", model.blobLink());
         Assertions.assertEquals(7613800840499782864L, model.byteCount());
     }

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.models.SkuDescriptionList;
 public final class SkuDescriptionListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuDescriptionList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"resourceType\":\"zlwhhmemhooclu\",\"name\":\"pqmem\",\"size\":\"jk\",\"locations\":[\"kyujxsglhsrrr\",\"ejylmbkzu\"],\"locationInfo\":[],\"restrictions\":[\"datafihotj\"]},{\"resourceType\":\"lpxuzzjgnrefq\",\"name\":\"qotoihiqakydiwfb\",\"size\":\"wpzdqtvhcspo\",\"locations\":[\"axsipietgb\",\"bjfu\",\"bmoichd\",\"pnfpubntnbat\"],\"locationInfo\":[],\"restrictions\":[\"dataowsaaelcattcjuh\",\"datalrvkmjc\"]}]}")
-                .toObject(SkuDescriptionList.class);
+        SkuDescriptionList model = BinaryData.fromString(
+            "{\"value\":[{\"resourceType\":\"zlwhhmemhooclu\",\"name\":\"pqmem\",\"size\":\"jk\",\"locations\":[\"kyujxsglhsrrr\",\"ejylmbkzu\"],\"locationInfo\":[],\"restrictions\":[\"datafihotj\"]},{\"resourceType\":\"lpxuzzjgnrefq\",\"name\":\"qotoihiqakydiwfb\",\"size\":\"wpzdqtvhcspo\",\"locations\":[\"axsipietgb\",\"bjfu\",\"bmoichd\",\"pnfpubntnbat\"],\"locationInfo\":[],\"restrictions\":[\"dataowsaaelcattcjuh\",\"datalrvkmjc\"]}]}")
+            .toObject(SkuDescriptionList.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -20,8 +20,8 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return check SKU availability result list along with {@link Response}.
      */
-    Response<SkuAvailabilityListResult> checkSkuAvailabilityWithResponse(
-        String location, CheckSkuAvailabilityParameter parameters, Context context);
+    Response<SkuAvailabilityListResult> checkSkuAvailabilityWithResponse(String location,
+        CheckSkuAvailabilityParameter parameters, Context context);
 
     /**
      * Check available SKUs.
@@ -45,8 +45,8 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain availability along with {@link Response}.
      */
-    Response<DomainAvailability> checkDomainAvailabilityWithResponse(
-        CheckDomainAvailabilityParameter parameters, Context context);
+    Response<DomainAvailability> checkDomainAvailabilityWithResponse(CheckDomainAvailabilityParameter parameters,
+        Context context);
 
     /**
      * Check whether a domain is available.

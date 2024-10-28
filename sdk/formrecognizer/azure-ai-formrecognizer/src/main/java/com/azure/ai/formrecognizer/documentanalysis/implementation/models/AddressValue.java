@@ -374,6 +374,9 @@ public final class AddressValue implements JsonSerializable<AddressValue> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

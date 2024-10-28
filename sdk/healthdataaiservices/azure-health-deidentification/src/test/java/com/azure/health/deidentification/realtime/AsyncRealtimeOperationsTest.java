@@ -58,7 +58,8 @@ class AsyncRealtimeOperationsTest extends BatchOperationTestBase {
         assertNull(asyncResult.getTaggerResult().getEtag());
         assertNull(asyncResult.getTaggerResult().getPath());
         assertFalse(asyncResult.getTaggerResult().getEntities().isEmpty());
-        assertTrue(asyncResult.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.DOCTOR) || asyncResult.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.PATIENT));
+        assertTrue(asyncResult.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.DOCTOR)
+            || asyncResult.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.PATIENT));
         assertEquals("John Smith", asyncResult.getTaggerResult().getEntities().get(0).getText());
         assertEquals(18, asyncResult.getTaggerResult().getEntities().get(0).getOffset().getUtf8());
         assertEquals(10, asyncResult.getTaggerResult().getEntities().get(0).getLength().getUtf8());

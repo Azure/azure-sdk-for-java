@@ -35,34 +35,24 @@ public final class WorkflowsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"githubWorkflowProfile\":{\"repositoryOwner\":\"matuok\",\"repositoryName\":\"fu\",\"branchName\":\"aodsfcpkv\",\"dockerfile\":\"dpuozmyz\",\"dockerBuildContext\":\"agfuaxbezyiu\",\"namespace\":\"twhrdxwzywqsm\",\"aksResourceId\":\"exim\",\"prURL\":\"yocf\",\"pullNumber\":1075133602,\"prStatus\":\"submitted\",\"authStatus\":\"NotFound\"},\"artifactGenerationProperties\":{\"generationLanguage\":\"gradle\",\"languageVersion\":\"i\",\"builderVersion\":\"xhqyudxorrqnb\",\"port\":\"czvyifq\",\"appName\":\"kdvjsll\",\"dockerfileOutputDirectory\":\"vvdfwatkpnpul\",\"manifestOutputDirectory\":\"xbczwtruwiqz\",\"dockerfileGenerationMode\":\"enabled\",\"manifestGenerationMode\":\"disabled\",\"manifestType\":\"kube\",\"imageName\":\"yokacspkw\",\"namespace\":\"zdobpxjmflbvvnch\",\"imageTag\":\"cciw\"}},\"location\":\"juqk\",\"tags\":{\"oskg\":\"ajiwkuo\"},\"id\":\"sauuimj\",\"name\":\"vxieduugidyj\",\"type\":\"rfbyaosvexcso\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"githubWorkflowProfile\":{\"repositoryOwner\":\"matuok\",\"repositoryName\":\"fu\",\"branchName\":\"aodsfcpkv\",\"dockerfile\":\"dpuozmyz\",\"dockerBuildContext\":\"agfuaxbezyiu\",\"namespace\":\"twhrdxwzywqsm\",\"aksResourceId\":\"exim\",\"prURL\":\"yocf\",\"pullNumber\":1075133602,\"prStatus\":\"submitted\",\"authStatus\":\"NotFound\"},\"artifactGenerationProperties\":{\"generationLanguage\":\"gradle\",\"languageVersion\":\"i\",\"builderVersion\":\"xhqyudxorrqnb\",\"port\":\"czvyifq\",\"appName\":\"kdvjsll\",\"dockerfileOutputDirectory\":\"vvdfwatkpnpul\",\"manifestOutputDirectory\":\"xbczwtruwiqz\",\"dockerfileGenerationMode\":\"enabled\",\"manifestGenerationMode\":\"disabled\",\"manifestType\":\"kube\",\"imageName\":\"yokacspkw\",\"namespace\":\"zdobpxjmflbvvnch\",\"imageTag\":\"cciw\"}},\"location\":\"juqk\",\"tags\":{\"oskg\":\"ajiwkuo\"},\"id\":\"sauuimj\",\"name\":\"vxieduugidyj\",\"type\":\"rfbyaosvexcso\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevHubManager manager =
-            DevHubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevHubManager manager = DevHubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Workflow> response = manager.workflows().list(com.azure.core.util.Context.NONE);
 
@@ -82,14 +72,13 @@ public final class WorkflowsListMockTests {
         Assertions.assertEquals("kdvjsll", response.iterator().next().appName());
         Assertions.assertEquals("vvdfwatkpnpul", response.iterator().next().dockerfileOutputDirectory());
         Assertions.assertEquals("xbczwtruwiqz", response.iterator().next().manifestOutputDirectory());
-        Assertions
-            .assertEquals(DockerfileGenerationMode.ENABLED, response.iterator().next().dockerfileGenerationMode());
+        Assertions.assertEquals(DockerfileGenerationMode.ENABLED,
+            response.iterator().next().dockerfileGenerationMode());
         Assertions.assertEquals(ManifestGenerationMode.DISABLED, response.iterator().next().manifestGenerationMode());
         Assertions.assertEquals(GenerationManifestType.KUBE, response.iterator().next().manifestType());
         Assertions.assertEquals("yokacspkw", response.iterator().next().imageName());
-        Assertions
-            .assertEquals(
-                "zdobpxjmflbvvnch", response.iterator().next().namespaceArtifactGenerationPropertiesNamespace());
+        Assertions.assertEquals("zdobpxjmflbvvnch",
+            response.iterator().next().namespaceArtifactGenerationPropertiesNamespace());
         Assertions.assertEquals("cciw", response.iterator().next().imageTag());
     }
 }

@@ -13,19 +13,18 @@ public final class ChatThreadPropertiesConverter {
     /**
      * Maps from {com.azure.communication.chat.implementation.models.ChatThreadProperties} to {@link ChatThreadProperties}.
      */
-    public static ChatThreadProperties convert(com.azure.communication.chat.implementation.models.ChatThreadProperties obj) {
+    public static ChatThreadProperties
+        convert(com.azure.communication.chat.implementation.models.ChatThreadProperties obj) {
         if (obj == null) {
             return null;
         }
 
-        ChatThreadProperties chatThreadProperties = new ChatThreadProperties()
-            .setId(obj.getId())
-            .setTopic(obj.getTopic())
-            .setCreatedOn(obj.getCreatedOn());
+        ChatThreadProperties chatThreadProperties
+            = new ChatThreadProperties().setId(obj.getId()).setTopic(obj.getTopic()).setCreatedOn(obj.getCreatedOn());
 
         if (obj.getCreatedByCommunicationIdentifier() != null) {
-            chatThreadProperties.setCreatedBy(
-                CommunicationIdentifierConverter.convert(obj.getCreatedByCommunicationIdentifier()));
+            chatThreadProperties
+                .setCreatedBy(CommunicationIdentifierConverter.convert(obj.getCreatedByCommunicationIdentifier()));
         }
 
         return chatThreadProperties;

@@ -169,14 +169,11 @@ public final class QueryDataset {
             configuration().validate();
         }
         if (aggregation() != null) {
-            aggregation()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            aggregation().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (grouping() != null) {
             grouping().forEach(e -> e.validate());

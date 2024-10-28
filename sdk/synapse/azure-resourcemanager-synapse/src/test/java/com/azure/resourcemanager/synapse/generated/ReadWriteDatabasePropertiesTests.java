@@ -12,20 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ReadWriteDatabasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReadWriteDatabaseProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Moving\",\"softDeletePeriod\":\"PT155H28M34S\",\"hotCachePeriod\":\"PT125H27S\",\"statistics\":{\"size\":51.67798},\"isFollowed\":false}")
-                .toObject(ReadWriteDatabaseProperties.class);
+        ReadWriteDatabaseProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Moving\",\"softDeletePeriod\":\"PT155H28M34S\",\"hotCachePeriod\":\"PT125H27S\",\"statistics\":{\"size\":51.67798},\"isFollowed\":false}")
+            .toObject(ReadWriteDatabaseProperties.class);
         Assertions.assertEquals(Duration.parse("PT155H28M34S"), model.softDeletePeriod());
         Assertions.assertEquals(Duration.parse("PT125H27S"), model.hotCachePeriod());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReadWriteDatabaseProperties model =
-            new ReadWriteDatabaseProperties()
-                .withSoftDeletePeriod(Duration.parse("PT155H28M34S"))
+        ReadWriteDatabaseProperties model
+            = new ReadWriteDatabaseProperties().withSoftDeletePeriod(Duration.parse("PT155H28M34S"))
                 .withHotCachePeriod(Duration.parse("PT125H27S"));
         model = BinaryData.fromObject(model).toObject(ReadWriteDatabaseProperties.class);
         Assertions.assertEquals(Duration.parse("PT155H28M34S"), model.softDeletePeriod());

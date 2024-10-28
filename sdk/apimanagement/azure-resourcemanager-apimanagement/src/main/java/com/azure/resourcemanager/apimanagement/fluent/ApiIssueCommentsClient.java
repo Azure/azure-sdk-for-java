@@ -29,8 +29,8 @@ public interface ApiIssueCommentsClient {
      * @return paged Issue Comment list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IssueCommentContractInner> listByService(
-        String resourceGroupName, String serviceName, String apiId, String issueId);
+    PagedIterable<IssueCommentContractInner> listByService(String resourceGroupName, String serviceName, String apiId,
+        String issueId);
 
     /**
      * Lists all comments for the Issue associated with the specified API.
@@ -52,15 +52,8 @@ public interface ApiIssueCommentsClient {
      * @return paged Issue Comment list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IssueCommentContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<IssueCommentContractInner> listByService(String resourceGroupName, String serviceName, String apiId,
+        String issueId, String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the issue Comment for an API specified by its identifier.
@@ -77,8 +70,8 @@ public interface ApiIssueCommentsClient {
      * @return the entity state (Etag) version of the issue Comment for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiIssueCommentsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, Context context);
+    ApiIssueCommentsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String issueId, String commentId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the issue Comment for an API specified by its identifier.
@@ -110,8 +103,8 @@ public interface ApiIssueCommentsClient {
      * @return the details of the issue Comment for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiIssueCommentsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, Context context);
+    ApiIssueCommentsGetResponse getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String issueId, String commentId, Context context);
 
     /**
      * Gets the details of the issue Comment for an API specified by its identifier.
@@ -127,8 +120,8 @@ public interface ApiIssueCommentsClient {
      * @return the details of the issue Comment for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IssueCommentContractInner get(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String commentId);
+    IssueCommentContractInner get(String resourceGroupName, String serviceName, String apiId, String issueId,
+        String commentId);
 
     /**
      * Creates a new Comment for the Issue in an API or updates an existing one.
@@ -147,14 +140,8 @@ public interface ApiIssueCommentsClient {
      * @return issue Comment Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiIssueCommentsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String commentId,
-        IssueCommentContractInner parameters,
-        String ifMatch,
+    ApiIssueCommentsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String issueId, String commentId, IssueCommentContractInner parameters, String ifMatch,
         Context context);
 
     /**
@@ -172,13 +159,8 @@ public interface ApiIssueCommentsClient {
      * @return issue Comment Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IssueCommentContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String commentId,
-        IssueCommentContractInner parameters);
+    IssueCommentContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId, String issueId,
+        String commentId, IssueCommentContractInner parameters);
 
     /**
      * Deletes the specified comment from an Issue.
@@ -197,14 +179,8 @@ public interface ApiIssueCommentsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String commentId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String issueId,
+        String commentId, String ifMatch, Context context);
 
     /**
      * Deletes the specified comment from an Issue.
@@ -221,6 +197,6 @@ public interface ApiIssueCommentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, String ifMatch);
+    void delete(String resourceGroupName, String serviceName, String apiId, String issueId, String commentId,
+        String ifMatch);
 }

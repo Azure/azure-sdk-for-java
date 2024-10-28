@@ -62,47 +62,33 @@ public final class CertificateResponseImpl
 
     private String updateIfMatch;
 
-    public CertificateResponseImpl withExistingProvisioningService(
-        String resourceGroupName, String provisioningServiceName) {
+    public CertificateResponseImpl withExistingProvisioningService(String resourceGroupName,
+        String provisioningServiceName) {
         this.resourceGroupName = resourceGroupName;
         this.provisioningServiceName = provisioningServiceName;
         return this;
     }
 
     public CertificateResponse create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDpsCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    provisioningServiceName,
-                    certificateName,
-                    this.innerModel(),
-                    createIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDpsCertificates()
+            .createOrUpdateWithResponse(resourceGroupName, provisioningServiceName, certificateName, this.innerModel(),
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CertificateResponse create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDpsCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    provisioningServiceName,
-                    certificateName,
-                    this.innerModel(),
-                    createIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDpsCertificates()
+            .createOrUpdateWithResponse(resourceGroupName, provisioningServiceName, certificateName, this.innerModel(),
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
-    CertificateResponseImpl(
-        String name, com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
+    CertificateResponseImpl(String name,
+        com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = new CertificateResponseInner();
         this.serviceManager = serviceManager;
         this.certificateName = name;
@@ -115,39 +101,24 @@ public final class CertificateResponseImpl
     }
 
     public CertificateResponse apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDpsCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    provisioningServiceName,
-                    certificateName,
-                    this.innerModel(),
-                    updateIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDpsCertificates()
+            .createOrUpdateWithResponse(resourceGroupName, provisioningServiceName, certificateName, this.innerModel(),
+                updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CertificateResponse apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDpsCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    provisioningServiceName,
-                    certificateName,
-                    this.innerModel(),
-                    updateIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDpsCertificates()
+            .createOrUpdateWithResponse(resourceGroupName, provisioningServiceName, certificateName, this.innerModel(),
+                updateIfMatch, context)
+            .getValue();
         return this;
     }
 
-    CertificateResponseImpl(
-        CertificateResponseInner innerObject,
+    CertificateResponseImpl(CertificateResponseInner innerObject,
         com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -158,24 +129,19 @@ public final class CertificateResponseImpl
 
     public CertificateResponse refresh() {
         String localIfMatch = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDpsCertificates()
-                .getWithResponse(
-                    certificateName, resourceGroupName, provisioningServiceName, localIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDpsCertificates()
+            .getWithResponse(certificateName, resourceGroupName, provisioningServiceName, localIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CertificateResponse refresh(Context context) {
         String localIfMatch = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDpsCertificates()
-                .getWithResponse(certificateName, resourceGroupName, provisioningServiceName, localIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDpsCertificates()
+            .getWithResponse(certificateName, resourceGroupName, provisioningServiceName, localIfMatch, context)
+            .getValue();
         return this;
     }
 

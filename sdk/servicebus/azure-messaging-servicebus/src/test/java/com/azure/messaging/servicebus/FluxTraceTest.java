@@ -23,7 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FluxTraceTest {
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
-    private final ServiceBusReceivedMessage receivedMessage = new ServiceBusReceivedMessage(BinaryData.fromString("Some Data"));
+    private final ServiceBusReceivedMessage receivedMessage
+        = new ServiceBusReceivedMessage(BinaryData.fromString("Some Data"));
     private final ServiceBusMessageContext message = new ServiceBusMessageContext(receivedMessage);
     private final TestPublisher<ServiceBusMessageContext> messagesPublisher = TestPublisher.create();
 
@@ -31,31 +32,30 @@ public class FluxTraceTest {
     @EnumSource(ReceiverKind.class)
     public void testProcessSpans(ReceiverKind receiverKind) {
         TestTracer tracer = new TestTracer();
-        ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, null, "fqdn", "entityPath", null, receiverKind);
+        ServiceBusReceiverInstrumentation instrumentation
+            = new ServiceBusReceiverInstrumentation(tracer, null, "fqdn", "entityPath", null, receiverKind);
         FluxTrace fluxTrace = new FluxTrace(messagesPublisher.flux(), instrumentation);
 
-        StepVerifier.create(fluxTrace)
-            .then(() -> messagesPublisher.next(message))
-            .assertNext(m -> {
-                switch (receiverKind) {
-                    case SYNC_RECEIVER:
-                        assertEquals(0, tracer.getStartedSpans().size());
-                        break;
-                    default:
-                        assertEquals(1, tracer.getStartedSpans().size());
-                        assertEquals("ServiceBus.process", tracer.getStartedSpans().get(0));
-                        break;
-                }
-            })
-            .thenCancel()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(fluxTrace).then(() -> messagesPublisher.next(message)).assertNext(m -> {
+            switch (receiverKind) {
+                case SYNC_RECEIVER:
+                    assertEquals(0, tracer.getStartedSpans().size());
+                    break;
+
+                default:
+                    assertEquals(1, tracer.getStartedSpans().size());
+                    assertEquals("ServiceBus.process", tracer.getStartedSpans().get(0));
+                    break;
+            }
+        }).thenCancel().verify(DEFAULT_TIMEOUT);
     }
 
     @ParameterizedTest
     @EnumSource(ReceiverKind.class)
     public void nullMessage(ReceiverKind receiverKind) {
         TestTracer tracer = new TestTracer();
-        ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(tracer, null, "fqdn", "entityPath", null, receiverKind);
+        ServiceBusReceiverInstrumentation instrumentation
+            = new ServiceBusReceiverInstrumentation(tracer, null, "fqdn", "entityPath", null, receiverKind);
         FluxTrace fluxTrace = new FluxTrace(messagesPublisher.flux(), instrumentation);
 
         StepVerifier.create(fluxTrace)
@@ -67,6 +67,7 @@ public class FluxTraceTest {
 
     private static class TestTracer implements Tracer {
         private final List<String> startedSpans = new ArrayList<>();
+
         @Override
         public Context start(String methodName, StartSpanOptions options, Context context) {
             startedSpans.add(methodName);

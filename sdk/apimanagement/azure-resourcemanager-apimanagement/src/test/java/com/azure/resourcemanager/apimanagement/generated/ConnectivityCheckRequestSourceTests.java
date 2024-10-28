@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ConnectivityCheckRequestSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectivityCheckRequestSource model =
-            BinaryData
-                .fromString("{\"region\":\"vlzladl\",\"instance\":4535857798546619776}")
+        ConnectivityCheckRequestSource model
+            = BinaryData.fromString("{\"region\":\"vlzladl\",\"instance\":4535857798546619776}")
                 .toObject(ConnectivityCheckRequestSource.class);
         Assertions.assertEquals("vlzladl", model.region());
         Assertions.assertEquals(4535857798546619776L, model.instance());
@@ -21,8 +20,8 @@ public final class ConnectivityCheckRequestSourceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectivityCheckRequestSource model =
-            new ConnectivityCheckRequestSource().withRegion("vlzladl").withInstance(4535857798546619776L);
+        ConnectivityCheckRequestSource model
+            = new ConnectivityCheckRequestSource().withRegion("vlzladl").withInstance(4535857798546619776L);
         model = BinaryData.fromObject(model).toObject(ConnectivityCheckRequestSource.class);
         Assertions.assertEquals("vlzladl", model.region());
         Assertions.assertEquals(4535857798546619776L, model.instance());

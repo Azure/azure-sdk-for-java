@@ -39,12 +39,6 @@ public interface ApiWikisOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the wikis for an API specified by its identifier as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WikiContract> list(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<WikiContract> list(String resourceGroupName, String serviceName, String apiId, String filter,
+        Integer top, Integer skip, Context context);
 }

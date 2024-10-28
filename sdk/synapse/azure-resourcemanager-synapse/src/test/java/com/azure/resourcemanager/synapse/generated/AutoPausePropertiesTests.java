@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoPausePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoPauseProperties model =
-            BinaryData
-                .fromString("{\"delayInMinutes\":1622856853,\"enabled\":false}")
-                .toObject(AutoPauseProperties.class);
+        AutoPauseProperties model = BinaryData.fromString("{\"delayInMinutes\":1622856853,\"enabled\":false}")
+            .toObject(AutoPauseProperties.class);
         Assertions.assertEquals(1622856853, model.delayInMinutes());
         Assertions.assertEquals(false, model.enabled());
     }

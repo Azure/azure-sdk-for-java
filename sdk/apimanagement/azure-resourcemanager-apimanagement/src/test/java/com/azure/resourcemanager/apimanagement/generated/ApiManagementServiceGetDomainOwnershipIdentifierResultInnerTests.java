@@ -10,17 +10,16 @@ import com.azure.resourcemanager.apimanagement.fluent.models.ApiManagementServic
 public final class ApiManagementServiceGetDomainOwnershipIdentifierResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiManagementServiceGetDomainOwnershipIdentifierResultInner model =
-            BinaryData
-                .fromString("{\"domainOwnershipIdentifier\":\"bea\"}")
+        ApiManagementServiceGetDomainOwnershipIdentifierResultInner model
+            = BinaryData.fromString("{\"domainOwnershipIdentifier\":\"bea\"}")
                 .toObject(ApiManagementServiceGetDomainOwnershipIdentifierResultInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiManagementServiceGetDomainOwnershipIdentifierResultInner model =
-            new ApiManagementServiceGetDomainOwnershipIdentifierResultInner();
-        model =
-            BinaryData.fromObject(model).toObject(ApiManagementServiceGetDomainOwnershipIdentifierResultInner.class);
+        ApiManagementServiceGetDomainOwnershipIdentifierResultInner model
+            = new ApiManagementServiceGetDomainOwnershipIdentifierResultInner();
+        model
+            = BinaryData.fromObject(model).toObject(ApiManagementServiceGetDomainOwnershipIdentifierResultInner.class);
     }
 }

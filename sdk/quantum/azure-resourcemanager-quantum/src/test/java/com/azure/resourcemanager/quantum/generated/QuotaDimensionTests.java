@@ -26,9 +26,14 @@ public final class QuotaDimensionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaDimension model = new QuotaDimension().withId("hzdxssadbzm").withScope("dfznudaodv")
-            .withPeriod("bncblylpstdbhhx").withQuota(95.43601F).withName("zucerscdntnev").withDescription("wjmy")
-            .withUnit("dsslswt").withUnitPlural("eriofzpyqs");
+        QuotaDimension model = new QuotaDimension().withId("hzdxssadbzm")
+            .withScope("dfznudaodv")
+            .withPeriod("bncblylpstdbhhx")
+            .withQuota(95.43601F)
+            .withName("zucerscdntnev")
+            .withDescription("wjmy")
+            .withUnit("dsslswt")
+            .withUnitPlural("eriofzpyqs");
         model = BinaryData.fromObject(model).toObject(QuotaDimension.class);
         Assertions.assertEquals("hzdxssadbzm", model.id());
         Assertions.assertEquals("dfznudaodv", model.scope());

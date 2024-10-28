@@ -45,13 +45,16 @@ public final class DevicesCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Device response = manager.devices().define("vtbvkayh")
+        Device response = manager.devices()
+            .define("vtbvkayh")
             .withExistingDeviceGroup("whbotzingamv", "phoszqz", "dphqamv", "kfwynw")
-            .withProperties(new DeviceProperties().withDeviceId("vyqia")).create();
+            .withProperties(new DeviceProperties().withDeviceId("vyqia"))
+            .create();
 
         Assertions.assertEquals("lvez", response.properties().deviceId());
     }

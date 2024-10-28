@@ -16,7 +16,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /** A builder for creating a new instance of the BatchAIImpl type. */
-@ServiceClientBuilder(serviceClients = {BatchAIImpl.class})
+@ServiceClientBuilder(serviceClients = { BatchAIImpl.class })
 public final class BatchAIBuilder {
     /*
      * The subscriptionID for the Azure user.
@@ -130,16 +130,15 @@ public final class BatchAIBuilder {
             this.defaultPollInterval = Duration.ofSeconds(30);
         }
         if (pipeline == null) {
-            this.pipeline =
-                new HttpPipelineBuilder()
-                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+            this.pipeline
+                = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                     .build();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
         }
-        BatchAIImpl client =
-            new BatchAIImpl(pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+        BatchAIImpl client
+            = new BatchAIImpl(pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
         return client;
     }
 }

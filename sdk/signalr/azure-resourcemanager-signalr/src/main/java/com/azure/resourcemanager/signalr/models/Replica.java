@@ -113,11 +113,8 @@ public interface Replica {
     ReplicaInner innerModel();
 
     /** The entirety of the Replica definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /** The Replica definition stages. */
@@ -161,11 +158,8 @@ public interface Replica {
          * The stage of the Replica definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithRegionEndpointEnabled,
-                DefinitionStages.WithResourceStopped {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku,
+            DefinitionStages.WithRegionEndpointEnabled, DefinitionStages.WithResourceStopped {
             /**
              * Executes the create request.
              *
@@ -241,11 +235,8 @@ public interface Replica {
     Replica.Update update();
 
     /** The template for Replica update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithSku,
-            UpdateStages.WithRegionEndpointEnabled,
-            UpdateStages.WithResourceStopped {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithRegionEndpointEnabled,
+        UpdateStages.WithResourceStopped {
         /**
          * Executes the update request.
          *

@@ -29,8 +29,8 @@ public interface AuthorizationsClient {
      * @return paged Authorization list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AuthorizationContractInner> listByAuthorizationProvider(
-        String resourceGroupName, String serviceName, String authorizationProviderId);
+    PagedIterable<AuthorizationContractInner> listByAuthorizationProvider(String resourceGroupName, String serviceName,
+        String authorizationProviderId);
 
     /**
      * Lists a collection of authorization providers defined within a authorization provider.
@@ -51,14 +51,8 @@ public interface AuthorizationsClient {
      * @return paged Authorization list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AuthorizationContractInner> listByAuthorizationProvider(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<AuthorizationContractInner> listByAuthorizationProvider(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the details of the authorization specified by its identifier.
@@ -74,12 +68,8 @@ public interface AuthorizationsClient {
      * @return the details of the authorization specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationsGetResponse getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        Context context);
+    AuthorizationsGetResponse getWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, Context context);
 
     /**
      * Gets the details of the authorization specified by its identifier.
@@ -94,8 +84,8 @@ public interface AuthorizationsClient {
      * @return the details of the authorization specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationContractInner get(
-        String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId);
+    AuthorizationContractInner get(String resourceGroupName, String serviceName, String authorizationProviderId,
+        String authorizationId);
 
     /**
      * Creates or updates authorization.
@@ -113,13 +103,8 @@ public interface AuthorizationsClient {
      * @return authorization contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationContractInner parameters,
-        String ifMatch,
+    AuthorizationsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, AuthorizationContractInner parameters, String ifMatch,
         Context context);
 
     /**
@@ -136,12 +121,8 @@ public interface AuthorizationsClient {
      * @return authorization contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationContractInner parameters);
+    AuthorizationContractInner createOrUpdate(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, AuthorizationContractInner parameters);
 
     /**
      * Deletes specific Authorization from the Authorization provider.
@@ -159,13 +140,8 @@ public interface AuthorizationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String authorizationProviderId,
+        String authorizationId, String ifMatch, Context context);
 
     /**
      * Deletes specific Authorization from the Authorization provider.
@@ -181,11 +157,7 @@ public interface AuthorizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
+    void delete(String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId,
         String ifMatch);
 
     /**
@@ -203,13 +175,9 @@ public interface AuthorizationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationsConfirmConsentCodeResponse confirmConsentCodeWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationConfirmConsentCodeRequestContract parameters,
-        Context context);
+    AuthorizationsConfirmConsentCodeResponse confirmConsentCodeWithResponse(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId,
+        AuthorizationConfirmConsentCodeRequestContract parameters, Context context);
 
     /**
      * Confirm valid consent code to suppress Authorizations anti-phishing page.
@@ -224,10 +192,6 @@ public interface AuthorizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void confirmConsentCode(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationConfirmConsentCodeRequestContract parameters);
+    void confirmConsentCode(String resourceGroupName, String serviceName, String authorizationProviderId,
+        String authorizationId, AuthorizationConfirmConsentCodeRequestContract parameters);
 }

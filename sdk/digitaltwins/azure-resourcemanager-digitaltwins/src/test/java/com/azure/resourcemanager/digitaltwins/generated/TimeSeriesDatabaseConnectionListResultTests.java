@@ -14,30 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class TimeSeriesDatabaseConnectionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TimeSeriesDatabaseConnectionListResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"lpbuxwgipwhonowk\",\"value\":[{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Suspending\"},\"id\":\"xzbinjeputt\",\"name\":\"rywn\",\"type\":\"zoqftiyqzrnkcqvy\"},{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Failed\"},\"id\":\"sicohoqqnwvlry\",\"name\":\"vwhheunmmqhgyx\",\"type\":\"konocu\"},{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Failed\"},\"id\":\"xuconu\",\"name\":\"szfkbe\",\"type\":\"pewr\"},{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Failed\"},\"id\":\"jektcxsenh\",\"name\":\"lrsf\",\"type\":\"rzpwvlqdqgbiq\"}]}")
-                .toObject(TimeSeriesDatabaseConnectionListResult.class);
+        TimeSeriesDatabaseConnectionListResult model = BinaryData.fromString(
+            "{\"nextLink\":\"lpbuxwgipwhonowk\",\"value\":[{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Suspending\"},\"id\":\"xzbinjeputt\",\"name\":\"rywn\",\"type\":\"zoqftiyqzrnkcqvy\"},{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Failed\"},\"id\":\"sicohoqqnwvlry\",\"name\":\"vwhheunmmqhgyx\",\"type\":\"konocu\"},{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Failed\"},\"id\":\"xuconu\",\"name\":\"szfkbe\",\"type\":\"pewr\"},{\"properties\":{\"connectionType\":\"TimeSeriesDatabaseConnectionProperties\",\"provisioningState\":\"Failed\"},\"id\":\"jektcxsenh\",\"name\":\"lrsf\",\"type\":\"rzpwvlqdqgbiq\"}]}")
+            .toObject(TimeSeriesDatabaseConnectionListResult.class);
         Assertions.assertEquals("lpbuxwgipwhonowk", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TimeSeriesDatabaseConnectionListResult model =
-            new TimeSeriesDatabaseConnectionListResult()
-                .withNextLink("lpbuxwgipwhonowk")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new TimeSeriesDatabaseConnectionInner()
-                                .withProperties(new TimeSeriesDatabaseConnectionProperties()),
-                            new TimeSeriesDatabaseConnectionInner()
-                                .withProperties(new TimeSeriesDatabaseConnectionProperties()),
-                            new TimeSeriesDatabaseConnectionInner()
-                                .withProperties(new TimeSeriesDatabaseConnectionProperties()),
-                            new TimeSeriesDatabaseConnectionInner()
-                                .withProperties(new TimeSeriesDatabaseConnectionProperties())));
+        TimeSeriesDatabaseConnectionListResult model = new TimeSeriesDatabaseConnectionListResult()
+            .withNextLink("lpbuxwgipwhonowk")
+            .withValue(Arrays.asList(
+                new TimeSeriesDatabaseConnectionInner().withProperties(new TimeSeriesDatabaseConnectionProperties()),
+                new TimeSeriesDatabaseConnectionInner().withProperties(new TimeSeriesDatabaseConnectionProperties()),
+                new TimeSeriesDatabaseConnectionInner().withProperties(new TimeSeriesDatabaseConnectionProperties()),
+                new TimeSeriesDatabaseConnectionInner().withProperties(new TimeSeriesDatabaseConnectionProperties())));
         model = BinaryData.fromObject(model).toObject(TimeSeriesDatabaseConnectionListResult.class);
         Assertions.assertEquals("lpbuxwgipwhonowk", model.nextLink());
     }

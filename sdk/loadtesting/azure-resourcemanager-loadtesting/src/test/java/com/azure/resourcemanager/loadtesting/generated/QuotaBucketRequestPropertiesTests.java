@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Test;
 public final class QuotaBucketRequestPropertiesTests {
     @Test
     public void testDeserialize() throws Exception {
-        QuotaBucketRequestProperties model =
-            BinaryData
-                .fromString(
-                    "{\"currentUsage\":1708707643,\"currentQuota\":1146923499,\"newQuota\":409698731,\"dimensions\":{\"subscriptionId\":\"vwmf\",\"location\":\"t\"}}")
-                .toObject(QuotaBucketRequestProperties.class);
+        QuotaBucketRequestProperties model = BinaryData.fromString(
+            "{\"currentUsage\":1708707643,\"currentQuota\":1146923499,\"newQuota\":409698731,\"dimensions\":{\"subscriptionId\":\"vwmf\",\"location\":\"t\"}}")
+            .toObject(QuotaBucketRequestProperties.class);
         Assertions.assertEquals(1708707643, model.currentUsage());
         Assertions.assertEquals(1146923499, model.currentQuota());
         Assertions.assertEquals(409698731, model.newQuota());
@@ -27,13 +25,10 @@ public final class QuotaBucketRequestPropertiesTests {
 
     @Test
     public void testSerialize() throws Exception {
-        QuotaBucketRequestProperties model =
-            new QuotaBucketRequestProperties()
-                .withCurrentUsage(1708707643)
-                .withCurrentQuota(1146923499)
-                .withNewQuota(409698731)
-                .withDimensions(
-                    new QuotaBucketRequestPropertiesDimensions().withSubscriptionId("vwmf").withLocation("t"));
+        QuotaBucketRequestProperties model = new QuotaBucketRequestProperties().withCurrentUsage(1708707643)
+            .withCurrentQuota(1146923499)
+            .withNewQuota(409698731)
+            .withDimensions(new QuotaBucketRequestPropertiesDimensions().withSubscriptionId("vwmf").withLocation("t"));
         model = BinaryData.fromObject(model).toObject(QuotaBucketRequestProperties.class);
         Assertions.assertEquals(1708707643, model.currentUsage());
         Assertions.assertEquals(1146923499, model.currentQuota());

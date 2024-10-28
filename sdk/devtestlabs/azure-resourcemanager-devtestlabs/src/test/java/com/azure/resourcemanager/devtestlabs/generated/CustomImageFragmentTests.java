@@ -13,10 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomImageFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomImageFragment model =
-            BinaryData
-                .fromString("{\"tags\":{\"b\":\"kqnyh\",\"jivfxzsjabib\":\"j\"}}")
-                .toObject(CustomImageFragment.class);
+        CustomImageFragment model = BinaryData.fromString("{\"tags\":{\"b\":\"kqnyh\",\"jivfxzsjabib\":\"j\"}}")
+            .toObject(CustomImageFragment.class);
         Assertions.assertEquals("kqnyh", model.tags().get("b"));
     }
 

@@ -39,23 +39,27 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EventHubClientBuilderTest {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
-    private static final String ENDPOINT_SUFFIX = Configuration.getGlobalConfiguration()
-        .get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
+    private static final String ENDPOINT_SUFFIX
+        = Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
     private static final String DEFAULT_DOMAIN_NAME = ENDPOINT_SUFFIX.substring(1) + "/";
     private static final String EVENT_HUB_NAME = "eventHubName";
     private static final String SHARED_ACCESS_KEY_NAME = "dummySasKeyName";
     private static final String SHARED_ACCESS_KEY = "dummySasKey";
-    private static final String ENDPOINT = getURI(ClientConstants.ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
+    private static final String ENDPOINT
+        = getURI(ClientConstants.ENDPOINT_FORMAT, NAMESPACE_NAME, DEFAULT_DOMAIN_NAME).toString();
     private static final TokenCredential TOKEN_CREDENTIAL = new BasicAuthenticationCredential("foo", "bar");
 
     private static final String PROXY_HOST = "127.0.0.1";
     private static final String PROXY_PORT = "3128";
 
-    private static final String CONNECTION_STRING_NAMESPACE_FORMAT = "Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s";
-    private static final String CONNECTION_STRING_WITH_ENTITY_FORMAT = "Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s";
+    private static final String CONNECTION_STRING_NAMESPACE_FORMAT
+        = "Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s";
+    private static final String CONNECTION_STRING_WITH_ENTITY_FORMAT
+        = "Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s";
     private static final String CORRECT_CONNECTION_STRING = String.format(CONNECTION_STRING_WITH_ENTITY_FORMAT,
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, EVENT_HUB_NAME);
-    private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
+    private static final Proxy PROXY_ADDRESS
+        = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
     public static final String JAVA_NET_USE_SYSTEM_PROXIES = "java.net.useSystemProxies";
 
     @Mock
@@ -95,12 +99,10 @@ public class EventHubClientBuilderTest {
     @Test
     public void customNoneProxyConfigurationBuilder() {
         // Arrange
-        final ProxyOptions proxyConfig = new ProxyOptions(ProxyAuthenticationType.NONE, PROXY_ADDRESS,
-            null, null);
+        final ProxyOptions proxyConfig = new ProxyOptions(ProxyAuthenticationType.NONE, PROXY_ADDRESS, null, null);
 
         // Act
-        final EventHubClientBuilder builder = new EventHubClientBuilder()
-            .connectionString(CORRECT_CONNECTION_STRING)
+        final EventHubClientBuilder builder = new EventHubClientBuilder().connectionString(CORRECT_CONNECTION_STRING)
             .proxyOptions(proxyConfig)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS);
 
@@ -112,13 +114,11 @@ public class EventHubClientBuilderTest {
     public void throwsWithProxyWhenTransportTypeNotChanged() {
         assertThrows(IllegalArgumentException.class, () -> {
             // Arrange
-            final ProxyOptions proxyConfig = new ProxyOptions(ProxyAuthenticationType.BASIC, PROXY_ADDRESS,
-                null, null);
+            final ProxyOptions proxyConfig = new ProxyOptions(ProxyAuthenticationType.BASIC, PROXY_ADDRESS, null, null);
 
             // Act
-            final EventHubClientBuilder builder = new EventHubClientBuilder()
-                .connectionString(CORRECT_CONNECTION_STRING)
-                .proxyOptions(proxyConfig);
+            final EventHubClientBuilder builder
+                = new EventHubClientBuilder().connectionString(CORRECT_CONNECTION_STRING).proxyOptions(proxyConfig);
 
             // Assert
             assertNotNull(builder.buildAsyncClient());
@@ -128,17 +128,16 @@ public class EventHubClientBuilderTest {
     @Test
     public void testConnectionStringWithSas() {
 
-        String connectionStringWithNoEntityPath = String.format("Endpoint=sb://eh-name%s/;"
-            + "SharedAccessSignature=SharedAccessSignature test-value", ENDPOINT_SUFFIX);
-        String connectionStringWithEntityPath = String.format("Endpoint=sb://eh-name%s/;"
-            + "SharedAccessSignature=SharedAccessSignature test-value;EntityPath=eh-name", ENDPOINT_SUFFIX);
+        String connectionStringWithNoEntityPath = String.format(
+            "Endpoint=sb://eh-name%s/;" + "SharedAccessSignature=SharedAccessSignature test-value", ENDPOINT_SUFFIX);
+        String connectionStringWithEntityPath = String.format(
+            "Endpoint=sb://eh-name%s/;" + "SharedAccessSignature=SharedAccessSignature test-value;EntityPath=eh-name",
+            ENDPOINT_SUFFIX);
 
-        assertNotNull(new EventHubClientBuilder()
-            .connectionString(connectionStringWithNoEntityPath, "eh-name"));
-        assertNotNull(new EventHubClientBuilder()
-            .connectionString(connectionStringWithEntityPath));
-        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
-            .connectionString(connectionStringWithEntityPath, "eh-name-mismatch"));
+        assertNotNull(new EventHubClientBuilder().connectionString(connectionStringWithNoEntityPath, "eh-name"));
+        assertNotNull(new EventHubClientBuilder().connectionString(connectionStringWithEntityPath));
+        assertThrows(IllegalArgumentException.class,
+            () -> new EventHubClientBuilder().connectionString(connectionStringWithEntityPath, "eh-name-mismatch"));
     }
 
     @MethodSource("getProxyConfigurations")
@@ -149,12 +148,12 @@ public class EventHubClientBuilderTest {
         configuration = configuration.put(JAVA_NET_USE_SYSTEM_PROXIES, "true");
 
         // Client creation should not fail with incorrect proxy configurations
-        EventHubConsumerAsyncClient asyncClient = new EventHubClientBuilder()
-            .connectionString(CORRECT_CONNECTION_STRING)
-            .configuration(configuration)
-            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .buildAsyncConsumerClient();
+        EventHubConsumerAsyncClient asyncClient
+            = new EventHubClientBuilder().connectionString(CORRECT_CONNECTION_STRING)
+                .configuration(configuration)
+                .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+                .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+                .buildAsyncConsumerClient();
     }
 
     @Test
@@ -164,24 +163,21 @@ public class EventHubClientBuilderTest {
         String sharedAccessKey = "SharedAccessKey test-value";
         String eventHubName = "test-event-hub-name";
 
-        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder()
-            .credential(null, eventHubName,
+        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder().credential(null, eventHubName,
+            new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+
+        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder().credential(fullyQualifiedNamespace,
+            null, new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+
+        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder().credential("", eventHubName,
+            new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
+
+        assertThrows(IllegalArgumentException.class,
+            () -> new EventHubClientBuilder().credential(fullyQualifiedNamespace, "",
                 new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
 
-        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder()
-            .credential(fullyQualifiedNamespace, null,
-                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
-
-        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
-            .credential("", eventHubName,
-                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
-
-        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
-            .credential(fullyQualifiedNamespace, "",
-                new AzureNamedKeyCredential(sharedAccessKeyName, sharedAccessKey)));
-
-        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder()
-            .credential(fullyQualifiedNamespace, eventHubName, (AzureNamedKeyCredential) null));
+        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder().credential(fullyQualifiedNamespace,
+            eventHubName, (AzureNamedKeyCredential) null));
 
     }
 
@@ -191,37 +187,34 @@ public class EventHubClientBuilderTest {
         String sharedAccessSignature = "SharedAccessSignature test-value";
         String eventHubName = "test-event-hub-name";
 
-        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder()
-            .credential(null, eventHubName, new AzureSasCredential(sharedAccessSignature)));
+        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder().credential(null, eventHubName,
+            new AzureSasCredential(sharedAccessSignature)));
 
-        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder()
-            .credential(fullyQualifiedNamespace, null, new AzureSasCredential(sharedAccessSignature)));
+        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder().credential(fullyQualifiedNamespace,
+            null, new AzureSasCredential(sharedAccessSignature)));
 
-        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
-            .credential("", eventHubName, new AzureSasCredential(sharedAccessSignature)));
+        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder().credential("", eventHubName,
+            new AzureSasCredential(sharedAccessSignature)));
 
         assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
             .credential(fullyQualifiedNamespace, "", new AzureSasCredential(sharedAccessSignature)));
 
-        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder()
-            .credential(fullyQualifiedNamespace, eventHubName, (AzureSasCredential) null));
+        assertThrows(NullPointerException.class, () -> new EventHubClientBuilder().credential(fullyQualifiedNamespace,
+            eventHubName, (AzureSasCredential) null));
 
     }
 
     @Test
     public void testCreatesClientWithTokenCredential() {
-        EventHubClient eventHubClient = new EventHubClientBuilder()
-            .credential(TOKEN_CREDENTIAL)
+        EventHubClient eventHubClient = new EventHubClientBuilder().credential(TOKEN_CREDENTIAL)
             .fullyQualifiedNamespace(NAMESPACE_NAME)
             .eventHubName(EVENT_HUB_NAME)
             .buildClient();
-        EventHubProducerClient eventHubProducerClient = new EventHubClientBuilder()
-            .credential(TOKEN_CREDENTIAL)
+        EventHubProducerClient eventHubProducerClient = new EventHubClientBuilder().credential(TOKEN_CREDENTIAL)
             .fullyQualifiedNamespace(NAMESPACE_NAME)
             .eventHubName(EVENT_HUB_NAME)
             .buildProducerClient();
-        EventHubConsumerClient eventHubConsumerClient = new EventHubClientBuilder()
-            .credential(TOKEN_CREDENTIAL)
+        EventHubConsumerClient eventHubConsumerClient = new EventHubClientBuilder().credential(TOKEN_CREDENTIAL)
             .fullyQualifiedNamespace(NAMESPACE_NAME)
             .eventHubName(EVENT_HUB_NAME)
             .consumerGroup("foo")
@@ -241,36 +234,34 @@ public class EventHubClientBuilderTest {
 
     @Test
     public void testThrowsIfAttemptsToCreateClientWithTokenCredentialWithoutFullyQualifiedName() {
-        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
-            .credential(TOKEN_CREDENTIAL)
-            .eventHubName(EVENT_HUB_NAME)
-            .buildClient());
-        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
-            .credential(TOKEN_CREDENTIAL)
-            .eventHubName(EVENT_HUB_NAME)
-            .buildProducerClient());
-        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
-            .credential(TOKEN_CREDENTIAL)
-            .eventHubName(EVENT_HUB_NAME)
-            .consumerGroup("foo")
-            .buildConsumerClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> new EventHubClientBuilder().credential(TOKEN_CREDENTIAL).eventHubName(EVENT_HUB_NAME).buildClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> new EventHubClientBuilder().credential(TOKEN_CREDENTIAL)
+                .eventHubName(EVENT_HUB_NAME)
+                .buildProducerClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> new EventHubClientBuilder().credential(TOKEN_CREDENTIAL)
+                .eventHubName(EVENT_HUB_NAME)
+                .consumerGroup("foo")
+                .buildConsumerClient());
     }
 
     @Test
     public void testThrowsIfAttemptsToCreateClientWithTokenCredentialWithoutEventHubName() {
-        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
-            .credential(TOKEN_CREDENTIAL)
-            .fullyQualifiedNamespace(NAMESPACE_NAME)
-            .buildClient());
-        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
-            .credential(TOKEN_CREDENTIAL)
-            .fullyQualifiedNamespace(NAMESPACE_NAME)
-            .buildProducerClient());
-        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
-            .credential(TOKEN_CREDENTIAL)
-            .fullyQualifiedNamespace(NAMESPACE_NAME)
-            .consumerGroup("foo")
-            .buildConsumerClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> new EventHubClientBuilder().credential(TOKEN_CREDENTIAL)
+                .fullyQualifiedNamespace(NAMESPACE_NAME)
+                .buildClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> new EventHubClientBuilder().credential(TOKEN_CREDENTIAL)
+                .fullyQualifiedNamespace(NAMESPACE_NAME)
+                .buildProducerClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> new EventHubClientBuilder().credential(TOKEN_CREDENTIAL)
+                .fullyQualifiedNamespace(NAMESPACE_NAME)
+                .consumerGroup("foo")
+                .buildConsumerClient());
     }
 
     /**
@@ -279,20 +270,19 @@ public class EventHubClientBuilderTest {
     @Test
     public void namespaceConnectionStringAndName() {
         // Arrange
-        final String namespaceConnectionString = String.format(CONNECTION_STRING_NAMESPACE_FORMAT,
-            ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY);
+        final String namespaceConnectionString
+            = String.format(CONNECTION_STRING_NAMESPACE_FORMAT, ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY);
         final String fullyQualifiedDomainName = NAMESPACE_NAME + ENDPOINT_SUFFIX;
 
         // Act
-        final EventHubProducerAsyncClient client = new EventHubClientBuilder()
-            .connectionString(namespaceConnectionString)
-            .eventHubName(EVENT_HUB_NAME)
-            .buildAsyncProducerClient();
+        final EventHubProducerAsyncClient client
+            = new EventHubClientBuilder().connectionString(namespaceConnectionString)
+                .eventHubName(EVENT_HUB_NAME)
+                .buildAsyncProducerClient();
 
         // Assert
         assertTrue(fullyQualifiedDomainName.equalsIgnoreCase(client.getFullyQualifiedNamespace()),
-            String.format("Expected: %s. Actual: %s%n", fullyQualifiedDomainName,
-                client.getFullyQualifiedNamespace()));
+            String.format("Expected: %s. Actual: %s%n", fullyQualifiedDomainName, client.getFullyQualifiedNamespace()));
 
         assertEquals(EVENT_HUB_NAME, client.getEventHubName());
     }
@@ -307,12 +297,10 @@ public class EventHubClientBuilderTest {
             ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
-            .connectionString(namespaceConnectionString)
-            .buildAsyncProducerClient());
-        assertThrows(IllegalArgumentException.class, () -> new EventHubClientBuilder()
-            .connectionString(namespaceConnectionString)
-            .buildAsyncConsumerClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> new EventHubClientBuilder().connectionString(namespaceConnectionString).buildAsyncProducerClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> new EventHubClientBuilder().connectionString(namespaceConnectionString).buildAsyncConsumerClient());
     }
 
     @Test
@@ -320,9 +308,8 @@ public class EventHubClientBuilderTest {
         // Arrange
         final String fqdn = "test.foo.com";
         final String eventHubName = "my-event-hub";
-        final EventHubClientBuilder builder = new EventHubClientBuilder()
-            .retryOptions(new AmqpRetryOptions())
-            .scheduler(scheduler);
+        final EventHubClientBuilder builder
+            = new EventHubClientBuilder().retryOptions(new AmqpRetryOptions()).scheduler(scheduler);
 
         // Act
         builder.credential(fqdn, eventHubName, tokenCredential);
@@ -345,12 +332,10 @@ public class EventHubClientBuilderTest {
         final String customHostname = "my.local.endpoint";
         final int customPort = 4542;
         final String customEndpoint = "sb://" + customHostname + ":" + customPort;
-        final EventHubClientBuilder builder = new EventHubClientBuilder()
-            .retryOptions(new AmqpRetryOptions())
-            .scheduler(scheduler);
+        final EventHubClientBuilder builder
+            = new EventHubClientBuilder().retryOptions(new AmqpRetryOptions()).scheduler(scheduler);
         // Act
-        builder.credential(fqdn, eventHubName, tokenCredential)
-            .customEndpointAddress(customEndpoint);
+        builder.credential(fqdn, eventHubName, tokenCredential).customEndpointAddress(customEndpoint);
 
         final ConnectionOptions actual = builder.getConnectionOptions();
 
@@ -360,7 +345,6 @@ public class EventHubClientBuilderTest {
         assertEquals(customPort, actual.getPort());
         assertEquals(AmqpTransportType.AMQP, actual.getTransportType());
     }
-
 
     public static Stream<Arguments> getsCorrectEndpointConnectionString() {
         final String fqdn = "test.foo.com";
@@ -372,13 +356,11 @@ public class EventHubClientBuilderTest {
         final String hostname = "test.local";
         final int port = 13454;
         final String customEndpoint = "sb://" + hostname + ":" + port;
-        final String entityConnectionString = String.format(CONNECTION_STRING_WITH_ENTITY_FORMAT,
-             customEndpoint, "shared-value-name-key", "shared-value-name", eventHubName);
+        final String entityConnectionString = String.format(CONNECTION_STRING_WITH_ENTITY_FORMAT, customEndpoint,
+            "shared-value-name-key", "shared-value-name", eventHubName);
 
-        return Stream.of(
-            Arguments.of(connectionString, fqdn, ConnectionHandler.AMQPS_PORT),
-            Arguments.of(entityConnectionString, hostname, port)
-        );
+        return Stream.of(Arguments.of(connectionString, fqdn, ConnectionHandler.AMQPS_PORT),
+            Arguments.of(entityConnectionString, hostname, port));
     }
 
     @MethodSource
@@ -386,9 +368,8 @@ public class EventHubClientBuilderTest {
     public void getsCorrectEndpointConnectionString(String connectionString, String expectedHostname,
         int expectedPort) {
         // Arrange
-        final EventHubClientBuilder builder = new EventHubClientBuilder()
-            .retryOptions(new AmqpRetryOptions())
-            .scheduler(scheduler);
+        final EventHubClientBuilder builder
+            = new EventHubClientBuilder().retryOptions(new AmqpRetryOptions()).scheduler(scheduler);
 
         // Act
         builder.connectionString(connectionString);
@@ -401,26 +382,19 @@ public class EventHubClientBuilderTest {
     }
 
     private static Stream<Arguments> getProxyConfigurations() {
-        return Stream.of(
-            Arguments.of("http://localhost:8080"),
-            Arguments.of("localhost:8080"),
-            Arguments.of("localhost_8080"),
-            Arguments.of("http://example.com:8080"),
-            Arguments.of("http://sub.example.com:8080"),
-            Arguments.of(":8080"),
-            Arguments.of("http://localhost"),
-            Arguments.of("sub.example.com:8080"),
-            Arguments.of("https://username:password@sub.example.com:8080"),
-            Arguments.of("https://username:password@sub.example.com")
-        );
+        return Stream.of(Arguments.of("http://localhost:8080"), Arguments.of("localhost:8080"),
+            Arguments.of("localhost_8080"), Arguments.of("http://example.com:8080"),
+            Arguments.of("http://sub.example.com:8080"), Arguments.of(":8080"), Arguments.of("http://localhost"),
+            Arguments.of("sub.example.com:8080"), Arguments.of("https://username:password@sub.example.com:8080"),
+            Arguments.of("https://username:password@sub.example.com"));
     }
 
     private static URI getURI(String endpointFormat, String namespace, String domainName) {
         try {
             return new URI(String.format(Locale.US, endpointFormat, namespace, domainName));
         } catch (URISyntaxException exception) {
-            throw new IllegalArgumentException(String.format(Locale.US,
-                "Invalid namespace name: %s", namespace), exception);
+            throw new IllegalArgumentException(String.format(Locale.US, "Invalid namespace name: %s", namespace),
+                exception);
         }
     }
 }

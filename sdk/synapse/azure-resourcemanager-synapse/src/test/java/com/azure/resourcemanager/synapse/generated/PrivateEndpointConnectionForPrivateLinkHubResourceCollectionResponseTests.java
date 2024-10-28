@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"yvshxmz\",\"type\":\"bzoggigrx\",\"id\":\"ur\",\"properties\":{\"provisioningState\":\"nspydptkoenkoukn\"}}],\"nextLink\":\"dwtiukbldngkp\"}")
-                .toObject(PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse.class);
+        PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"yvshxmz\",\"type\":\"bzoggigrx\",\"id\":\"ur\",\"properties\":{\"provisioningState\":\"nspydptkoenkoukn\"}}],\"nextLink\":\"dwtiukbldngkp\"}")
+            .toObject(PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse.class);
         Assertions.assertEquals("ur", model.value().get(0).id());
         Assertions.assertEquals("yvshxmz", model.value().get(0).name());
         Assertions.assertEquals("bzoggigrx", model.value().get(0).type());
@@ -27,21 +25,15 @@ public final class PrivateEndpointConnectionForPrivateLinkHubResourceCollectionR
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse model =
-            new PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PrivateEndpointConnectionForPrivateLinkHubInner()
-                                .withId("ur")
-                                .withProperties(new PrivateEndpointConnectionProperties())
-                                .withName("yvshxmz")
-                                .withType("bzoggigrx")))
+        PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse model
+            = new PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse()
+                .withValue(Arrays.asList(new PrivateEndpointConnectionForPrivateLinkHubInner().withId("ur")
+                    .withProperties(new PrivateEndpointConnectionProperties())
+                    .withName("yvshxmz")
+                    .withType("bzoggigrx")))
                 .withNextLink("dwtiukbldngkp");
-        model =
-            BinaryData
-                .fromObject(model)
-                .toObject(PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse.class);
+        model = BinaryData.fromObject(model)
+            .toObject(PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse.class);
         Assertions.assertEquals("ur", model.value().get(0).id());
         Assertions.assertEquals("yvshxmz", model.value().get(0).name());
         Assertions.assertEquals("bzoggigrx", model.value().get(0).type());

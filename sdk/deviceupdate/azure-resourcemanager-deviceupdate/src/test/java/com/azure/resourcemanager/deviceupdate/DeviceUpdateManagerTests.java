@@ -39,23 +39,19 @@ public class DeviceUpdateManagerTests extends TestProxyTestBase {
         resourceManager = ResourceManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile).withDefaultSubscription();
-
-        deviceUpdateManager = DeviceUpdateManager
-            .configure()
+      
+        deviceUpdateManager = DeviceUpdateManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
-        
+
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
         testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -82,7 +78,8 @@ public class DeviceUpdateManagerTests extends TestProxyTestBase {
             account.refresh();
             Assertions.assertEquals(account.name(), accountName);
             Assertions.assertEquals(account.name(), deviceUpdateManager.accounts().getById(account.id()).name());
-            Assertions.assertTrue(deviceUpdateManager.accounts().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertTrue(
+                deviceUpdateManager.accounts().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
         } finally {
             if (account != null) {
                 deviceUpdateManager.accounts().delete(resourceGroupName, account.name(), Context.NONE);

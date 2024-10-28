@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The ModelPythonSection model. */
 @Fluent
 public class ModelPythonSection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModelPythonSection.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ModelPythonSection.class);
 
     /*
      * The python interpreter path to use if an environment build is not

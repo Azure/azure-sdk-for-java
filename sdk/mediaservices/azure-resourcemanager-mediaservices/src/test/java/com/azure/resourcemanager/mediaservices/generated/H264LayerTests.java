@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class H264LayerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        H264Layer model =
-            BinaryData
-                .fromString(
-                    "{\"profile\":\"High444\",\"level\":\"pglydz\",\"bufferWindow\":\"PT209H34M52S\",\"crf\":25.056833,\"referenceFrames\":377292249,\"entropyMode\":\"Cabac\",\"bitrate\":1251506139,\"maxBitrate\":1014603209,\"bFrames\":1266268287,\"frameRate\":\"t\",\"slices\":584463560,\"adaptiveBFrame\":false,\"width\":\"dmovzvfva\",\"height\":\"zqadf\",\"label\":\"z\"}")
-                .toObject(H264Layer.class);
+        H264Layer model = BinaryData.fromString(
+            "{\"profile\":\"High444\",\"level\":\"pglydz\",\"bufferWindow\":\"PT209H34M52S\",\"crf\":25.056833,\"referenceFrames\":377292249,\"entropyMode\":\"Cabac\",\"bitrate\":1251506139,\"maxBitrate\":1014603209,\"bFrames\":1266268287,\"frameRate\":\"t\",\"slices\":584463560,\"adaptiveBFrame\":false,\"width\":\"dmovzvfva\",\"height\":\"zqadf\",\"label\":\"z\"}")
+            .toObject(H264Layer.class);
         Assertions.assertEquals("dmovzvfva", model.width());
         Assertions.assertEquals("zqadf", model.height());
         Assertions.assertEquals("z", model.label());
@@ -38,23 +36,21 @@ public final class H264LayerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        H264Layer model =
-            new H264Layer()
-                .withWidth("dmovzvfva")
-                .withHeight("zqadf")
-                .withLabel("z")
-                .withBitrate(1251506139)
-                .withMaxBitrate(1014603209)
-                .withBFrames(1266268287)
-                .withFrameRate("t")
-                .withSlices(584463560)
-                .withAdaptiveBFrame(false)
-                .withProfile(H264VideoProfile.HIGH444)
-                .withLevel("pglydz")
-                .withBufferWindow(Duration.parse("PT209H34M52S"))
-                .withCrf(25.056833F)
-                .withReferenceFrames(377292249)
-                .withEntropyMode(EntropyMode.CABAC);
+        H264Layer model = new H264Layer().withWidth("dmovzvfva")
+            .withHeight("zqadf")
+            .withLabel("z")
+            .withBitrate(1251506139)
+            .withMaxBitrate(1014603209)
+            .withBFrames(1266268287)
+            .withFrameRate("t")
+            .withSlices(584463560)
+            .withAdaptiveBFrame(false)
+            .withProfile(H264VideoProfile.HIGH444)
+            .withLevel("pglydz")
+            .withBufferWindow(Duration.parse("PT209H34M52S"))
+            .withCrf(25.056833F)
+            .withReferenceFrames(377292249)
+            .withEntropyMode(EntropyMode.CABAC);
         model = BinaryData.fromObject(model).toObject(H264Layer.class);
         Assertions.assertEquals("dmovzvfva", model.width());
         Assertions.assertEquals("zqadf", model.height());
