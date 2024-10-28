@@ -47,15 +47,19 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure().withHttpClient(httpClient)
+        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrivateEndpointConnection response = manager.privateEndpointConnections().define("rey")
-            .withExistingServerGroupsv2("imfnjhfjx", "mszkkfo").withPrivateEndpoint(new PrivateEndpoint())
+        PrivateEndpointConnection response = manager.privateEndpointConnections()
+            .define("rey")
+            .withExistingServerGroupsv2("imfnjhfjx", "mszkkfo")
+            .withPrivateEndpoint(new PrivateEndpoint())
             .withPrivateLinkServiceConnectionState(
                 new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
-                    .withDescription("xwczelpcire").withActionsRequired("feaenwab"))
+                    .withDescription("xwczelpcire")
+                    .withActionsRequired("feaenwab"))
             .create();
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,

@@ -21,8 +21,8 @@ public final class TracksImpl implements Tracks {
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public TracksImpl(
-        TracksClient innerClient, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
+    public TracksImpl(TracksClient innerClient,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -32,22 +32,19 @@ public final class TracksImpl implements Tracks {
         return Utils.mapPage(inner, inner1 -> new AssetTrackImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AssetTrack> list(
-        String resourceGroupName, String accountName, String assetName, Context context) {
-        PagedIterable<AssetTrackInner> inner =
-            this.serviceClient().list(resourceGroupName, accountName, assetName, context);
+    public PagedIterable<AssetTrack> list(String resourceGroupName, String accountName, String assetName,
+        Context context) {
+        PagedIterable<AssetTrackInner> inner
+            = this.serviceClient().list(resourceGroupName, accountName, assetName, context);
         return Utils.mapPage(inner, inner1 -> new AssetTrackImpl(inner1, this.manager()));
     }
 
-    public Response<AssetTrack> getWithResponse(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
-        Response<AssetTrackInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, accountName, assetName, trackName, context);
+    public Response<AssetTrack> getWithResponse(String resourceGroupName, String accountName, String assetName,
+        String trackName, Context context) {
+        Response<AssetTrackInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, accountName, assetName, trackName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AssetTrackImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -67,8 +64,8 @@ public final class TracksImpl implements Tracks {
         this.serviceClient().delete(resourceGroupName, accountName, assetName, trackName);
     }
 
-    public void delete(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
+    public void delete(String resourceGroupName, String accountName, String assetName, String trackName,
+        Context context) {
         this.serviceClient().delete(resourceGroupName, accountName, assetName, trackName, context);
     }
 
@@ -76,40 +73,31 @@ public final class TracksImpl implements Tracks {
         this.serviceClient().updateTrackData(resourceGroupName, accountName, assetName, trackName);
     }
 
-    public void updateTrackData(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
+    public void updateTrackData(String resourceGroupName, String accountName, String assetName, String trackName,
+        Context context) {
         this.serviceClient().updateTrackData(resourceGroupName, accountName, assetName, trackName, context);
     }
 
     public AssetTrack getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
         String assetName = Utils.getValueFromIdByName(id, "assets");
         if (assetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'assets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'assets'.", id)));
         }
         String trackName = Utils.getValueFromIdByName(id, "tracks");
         if (trackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'tracks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tracks'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, assetName, trackName, Context.NONE).getValue();
     }
@@ -117,32 +105,23 @@ public final class TracksImpl implements Tracks {
     public Response<AssetTrack> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
         String assetName = Utils.getValueFromIdByName(id, "assets");
         if (assetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'assets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'assets'.", id)));
         }
         String trackName = Utils.getValueFromIdByName(id, "tracks");
         if (trackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'tracks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tracks'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, assetName, trackName, context);
     }
@@ -150,32 +129,23 @@ public final class TracksImpl implements Tracks {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
         String assetName = Utils.getValueFromIdByName(id, "assets");
         if (assetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'assets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'assets'.", id)));
         }
         String trackName = Utils.getValueFromIdByName(id, "tracks");
         if (trackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'tracks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tracks'.", id)));
         }
         this.delete(resourceGroupName, accountName, assetName, trackName, Context.NONE);
     }
@@ -183,32 +153,23 @@ public final class TracksImpl implements Tracks {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
         String assetName = Utils.getValueFromIdByName(id, "assets");
         if (assetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'assets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'assets'.", id)));
         }
         String trackName = Utils.getValueFromIdByName(id, "tracks");
         if (trackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'tracks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tracks'.", id)));
         }
         this.delete(resourceGroupName, accountName, assetName, trackName, context);
     }

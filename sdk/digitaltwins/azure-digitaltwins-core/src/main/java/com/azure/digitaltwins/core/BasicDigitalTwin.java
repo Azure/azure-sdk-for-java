@@ -193,7 +193,7 @@ public final class BasicDigitalTwin implements JsonSerializable<BasicDigitalTwin
 
     private static void handleMetadata(Map<String, Object> metadata, Consumer<OffsetDateTime> lastUpdatedOnConsumer,
         Consumer<BasicDigitalTwinMetadata> metadataConsumer) throws IOException {
-        String lastUpdatedOnString  = (String) metadata.remove(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME);
+        String lastUpdatedOnString = (String) metadata.remove(DigitalTwinsJsonPropertyNames.METADATA_LAST_UPDATE_TIME);
         lastUpdatedOnConsumer.accept((lastUpdatedOnString == null) ? null : OffsetDateTime.parse(lastUpdatedOnString));
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

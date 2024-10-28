@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databox.fluent.models.ValidationResponseInner;
 public final class ValidationResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidationResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"status\":\"AllValidToProceed\",\"individualResponseDetails\":[{\"validationType\":\"ValidationInputResponse\"}]}}")
-                .toObject(ValidationResponseInner.class);
+        ValidationResponseInner model = BinaryData.fromString(
+            "{\"properties\":{\"status\":\"AllValidToProceed\",\"individualResponseDetails\":[{\"validationType\":\"ValidationInputResponse\"}]}}")
+            .toObject(ValidationResponseInner.class);
     }
 
     @org.junit.jupiter.api.Test

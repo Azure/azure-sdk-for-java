@@ -17,8 +17,8 @@ import java.util.stream.Stream;
  * interfaces.
  */
 @Immutable
-public final class AnalyzeHealthcareEntitiesPagedIterable extends ContinuablePagedIterable<String,
-    AnalyzeHealthcareEntitiesResultCollection, PagedResponse<AnalyzeHealthcareEntitiesResultCollection>> {
+public final class AnalyzeHealthcareEntitiesPagedIterable extends
+    ContinuablePagedIterable<String, AnalyzeHealthcareEntitiesResultCollection, PagedResponse<AnalyzeHealthcareEntitiesResultCollection>> {
 
     /**
      * Creates instance given {@code AnalyzeHealthcareEntitiesPagedIterable}.

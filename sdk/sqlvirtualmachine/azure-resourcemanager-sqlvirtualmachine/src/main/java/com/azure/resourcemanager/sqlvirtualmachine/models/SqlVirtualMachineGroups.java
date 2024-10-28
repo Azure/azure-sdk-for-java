@@ -22,8 +22,8 @@ public interface SqlVirtualMachineGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a SQL virtual machine group along with {@link Response}.
      */
-    Response<SqlVirtualMachineGroup> getByResourceGroupWithResponse(
-        String resourceGroupName, String sqlVirtualMachineGroupName, Context context);
+    Response<SqlVirtualMachineGroup> getByResourceGroupWithResponse(String resourceGroupName,
+        String sqlVirtualMachineGroupName, Context context);
 
     /**
      * Gets a SQL virtual machine group.

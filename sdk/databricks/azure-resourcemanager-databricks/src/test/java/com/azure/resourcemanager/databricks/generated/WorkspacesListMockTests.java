@@ -33,34 +33,24 @@ public final class WorkspacesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"managedResourceGroupId\":\"hzceuojgjrwjue\",\"parameters\":{},\"provisioningState\":\"Creating\",\"uiDefinitionUri\":\"qwgxhniskx\",\"authorizations\":[],\"createdBy\":{\"oid\":\"f51bdbd7-d603-44f1-bea7-3f978c6ff421\",\"puid\":\"gklwn\",\"applicationId\":\"89dee801-3f6e-423d-b143-1dfffa9cc2d4\"},\"updatedBy\":{\"oid\":\"b7013ef0-34ea-4e55-a7b7-e6531b3d6b19\",\"puid\":\"auwhvylwzbtdhx\",\"applicationId\":\"7dc283ad-32a6-40a3-a975-8b0a6ec69c1f\"},\"createdDateTime\":\"2021-01-21T23:49:51Z\",\"workspaceId\":\"mpowuwpr\",\"workspaceUrl\":\"lve\",\"storageAccountIdentity\":{\"principalId\":\"e28f7b89-5f44-4624-93ec-252384aaa981\",\"tenantId\":\"2c33366e-0625-4f1a-af5c-fa910e67f661\",\"type\":\"j\"},\"managedDiskIdentity\":{\"principalId\":\"8a5e180e-1ad9-4a42-aa85-c55ef8c0c157\",\"tenantId\":\"9e042c7e-8a91-4ef5-b395-26c85c41888b\",\"type\":\"obbc\"},\"diskEncryptionSetId\":\"s\",\"encryption\":{},\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\",\"requiredNsgRules\":\"AllRules\"},\"sku\":{\"name\":\"pbewtghfgblcgwx\",\"tier\":\"lvqhjkbegibtnmx\"},\"location\":\"bwwaloa\",\"tags\":{\"gwyzm\":\"gwrtzju\",\"mtsavjcbpwxqp\":\"txon\",\"yvxqtayriwwroy\":\"rknftguvriuhprwm\"},\"id\":\"bexrmcq\",\"name\":\"bycnojvkn\",\"type\":\"e\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"managedResourceGroupId\":\"hzceuojgjrwjue\",\"parameters\":{},\"provisioningState\":\"Creating\",\"uiDefinitionUri\":\"qwgxhniskx\",\"authorizations\":[],\"createdBy\":{\"oid\":\"f51bdbd7-d603-44f1-bea7-3f978c6ff421\",\"puid\":\"gklwn\",\"applicationId\":\"89dee801-3f6e-423d-b143-1dfffa9cc2d4\"},\"updatedBy\":{\"oid\":\"b7013ef0-34ea-4e55-a7b7-e6531b3d6b19\",\"puid\":\"auwhvylwzbtdhx\",\"applicationId\":\"7dc283ad-32a6-40a3-a975-8b0a6ec69c1f\"},\"createdDateTime\":\"2021-01-21T23:49:51Z\",\"workspaceId\":\"mpowuwpr\",\"workspaceUrl\":\"lve\",\"storageAccountIdentity\":{\"principalId\":\"e28f7b89-5f44-4624-93ec-252384aaa981\",\"tenantId\":\"2c33366e-0625-4f1a-af5c-fa910e67f661\",\"type\":\"j\"},\"managedDiskIdentity\":{\"principalId\":\"8a5e180e-1ad9-4a42-aa85-c55ef8c0c157\",\"tenantId\":\"9e042c7e-8a91-4ef5-b395-26c85c41888b\",\"type\":\"obbc\"},\"diskEncryptionSetId\":\"s\",\"encryption\":{},\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\",\"requiredNsgRules\":\"AllRules\"},\"sku\":{\"name\":\"pbewtghfgblcgwx\",\"tier\":\"lvqhjkbegibtnmx\"},\"location\":\"bwwaloa\",\"tags\":{\"gwyzm\":\"gwrtzju\",\"mtsavjcbpwxqp\":\"txon\",\"yvxqtayriwwroy\":\"rknftguvriuhprwm\"},\"id\":\"bexrmcq\",\"name\":\"bycnojvkn\",\"type\":\"e\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureDatabricksManager manager =
-            AzureDatabricksManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureDatabricksManager manager = AzureDatabricksManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Workspace> response = manager.workspaces().list(com.azure.core.util.Context.NONE);
 

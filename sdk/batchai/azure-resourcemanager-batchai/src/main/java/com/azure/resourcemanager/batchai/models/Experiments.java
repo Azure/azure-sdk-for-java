@@ -36,8 +36,8 @@ public interface Experiments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Experiments within the specified Workspace.
      */
-    PagedIterable<Experiment> listByWorkspace(
-        String resourceGroupName, String workspaceName, Integer maxResults, Context context);
+    PagedIterable<Experiment> listByWorkspace(String resourceGroupName, String workspaceName, Integer maxResults,
+        Context context);
 
     /**
      * Creates an Experiment.
@@ -128,6 +128,6 @@ public interface Experiments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about an Experiment.
      */
-    Response<Experiment> getWithResponse(
-        String resourceGroupName, String workspaceName, String experimentName, Context context);
+    Response<Experiment> getWithResponse(String resourceGroupName, String workspaceName, String experimentName,
+        Context context);
 }

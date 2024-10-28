@@ -37,8 +37,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
 
-        SendMessageResult result = messagesClient.send(new TextNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, "Hello!"));
+        SendMessageResult result
+            = messagesClient.send(new TextNotificationContent(CHANNEL_REGISTRATION_ID, recipients, "Hello!"));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -52,8 +52,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
 
-        SendMessageResult result = messagesClient.send(new ImageNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, "https://wallpapercave.com/wp/wp2163723.jpg"));
+        SendMessageResult result = messagesClient.send(new ImageNotificationContent(CHANNEL_REGISTRATION_ID, recipients,
+            "https://wallpapercave.com/wp/wp2163723.jpg"));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -65,8 +65,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         messagesClient = buildNotificationMessagesClient(httpClient);
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
-        ImageNotificationContent imageMessage = new ImageNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, "https://wallpapercave.com/wp/wp2163723.jpg");
+        ImageNotificationContent imageMessage = new ImageNotificationContent(CHANNEL_REGISTRATION_ID, recipients,
+            "https://wallpapercave.com/wp/wp2163723.jpg");
         imageMessage.setCaption("wow!");
 
         SendMessageResult result = messagesClient.send(imageMessage);
@@ -82,8 +82,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
 
-        SendMessageResult result = messagesClient.send(new VideoNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, "https://sample-videos.com/video321/mp4/480/big_buck_bunny_480p_1mb.mp4"));
+        SendMessageResult result = messagesClient.send(new VideoNotificationContent(CHANNEL_REGISTRATION_ID, recipients,
+            "https://sample-videos.com/video321/mp4/480/big_buck_bunny_480p_1mb.mp4"));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -96,8 +96,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         List<String> recipients = new ArrayList<>();
         recipients.add(RECIPIENT_IDENTIFIER);
 
-        SendMessageResult result = messagesClient.send(new AudioNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, "https://sample-videos.com/audio/mp3/wave.mp3"));
+        SendMessageResult result = messagesClient.send(new AudioNotificationContent(CHANNEL_REGISTRATION_ID, recipients,
+            "https://sample-videos.com/audio/mp3/wave.mp3"));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -135,12 +135,11 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         //Update template parameter binding
         List<WhatsAppMessageTemplateBindingsComponent> components = new ArrayList<>();
         components.add(new WhatsAppMessageTemplateBindingsComponent("Days"));
-        MessageTemplateBindings bindings = new WhatsAppMessageTemplateBindings()
-            .setBody(components);
+        MessageTemplateBindings bindings = new WhatsAppMessageTemplateBindings().setBody(components);
         template.setBindings(bindings);
 
-        SendMessageResult result = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, template));
+        SendMessageResult result
+            = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID, recipients, template));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -158,7 +157,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
         //Add template parameter type with value in a list
         List<MessageTemplateValue> messageTemplateValues = new ArrayList<>();
-        messageTemplateValues.add(new MessageTemplateVideo("HeaderVideo", "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"));
+        messageTemplateValues.add(new MessageTemplateVideo("HeaderVideo",
+            "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"));
         messageTemplateValues.add(new MessageTemplateText("VenueInfoInBody", "Starbucks"));
         messageTemplateValues.add(new MessageTemplateText("TimeInfoInBody", "Today 2-4PM"));
 
@@ -171,16 +171,14 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         templateBodyBindings.add(new WhatsAppMessageTemplateBindingsComponent("VenueInfoInBody"));
         templateBodyBindings.add(new WhatsAppMessageTemplateBindingsComponent("TimeInfoInBody"));
 
-        MessageTemplateBindings templateBindings = new WhatsAppMessageTemplateBindings()
-            .setHeaderProperty(templateHeaderBindings) // Set the parameter binding for template header
-            .setBody(templateBodyBindings); // Set the parameter binding for template body
+        MessageTemplateBindings templateBindings
+            = new WhatsAppMessageTemplateBindings().setHeaderProperty(templateHeaderBindings) // Set the parameter binding for template header
+                .setBody(templateBodyBindings); // Set the parameter binding for template body
 
-        template
-            .setBindings(templateBindings)
-            .setValues(messageTemplateValues);
+        template.setBindings(templateBindings).setValues(messageTemplateValues);
 
-        SendMessageResult result = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, template));
+        SendMessageResult result
+            = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID, recipients, template));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -205,19 +203,20 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
         // Add parameter binding for template buttons in a list
         List<WhatsAppMessageTemplateBindingsButton> templateButtonBindings = new ArrayList<>();
-        templateButtonBindings.add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "Yes"));
-        templateButtonBindings.add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "No"));
+        templateButtonBindings
+            .add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "Yes"));
+        templateButtonBindings
+            .add(new WhatsAppMessageTemplateBindingsButton(WhatsAppMessageButtonSubType.QUICK_REPLY, "No"));
 
-        MessageTemplateBindings templateBindings = new WhatsAppMessageTemplateBindings()
-            .setBody(templateBodyBindings) // Set the parameter binding for template body
+        MessageTemplateBindings templateBindings = new WhatsAppMessageTemplateBindings().setBody(templateBodyBindings) // Set the parameter binding for template body
             .setButtons(templateButtonBindings); // Set the parameter binding for template buttons
 
-        MessageTemplate messageTemplate = new MessageTemplate("sample_issue_resolution", "en_US")
-            .setBindings(templateBindings)
-            .setValues(messageTemplateValues);
+        MessageTemplate messageTemplate
+            = new MessageTemplate("sample_issue_resolution", "en_US").setBindings(templateBindings)
+                .setValues(messageTemplateValues);
 
-        SendMessageResult result = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, messageTemplate));
+        SendMessageResult result = messagesClient
+            .send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID, recipients, messageTemplate));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());
@@ -235,7 +234,8 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
 
         //Add template parameter type with value in a list
         List<MessageTemplateValue> messageTemplateValues = new ArrayList<>();
-        messageTemplateValues.add(new MessageTemplateDocument("HeaderDoc", "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"));
+        messageTemplateValues.add(new MessageTemplateDocument("HeaderDoc",
+            "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"));
         messageTemplateValues.add(new MessageTemplateText("SourceInfoInBody", "RDU"));
         messageTemplateValues.add(new MessageTemplateText("DestinationInfoInBody", "LAX"));
         messageTemplateValues.add(new MessageTemplateText("TimeInfoInBody", "June 4th, 2024 @ 2PM"));
@@ -250,16 +250,14 @@ public class NotificationMessagesClientTest extends CommunicationMessagesTestBas
         templateBodyBindings.add(new WhatsAppMessageTemplateBindingsComponent("DestinationInfoInBody"));
         templateBodyBindings.add(new WhatsAppMessageTemplateBindingsComponent("TimeInfoInBody"));
 
-        MessageTemplateBindings templateBindings = new WhatsAppMessageTemplateBindings()
-            .setHeaderProperty(templateHeaderBindings) // Set the parameter binding for template header
-            .setBody(templateBodyBindings); // Set the parameter binding for template body
+        MessageTemplateBindings templateBindings
+            = new WhatsAppMessageTemplateBindings().setHeaderProperty(templateHeaderBindings) // Set the parameter binding for template header
+                .setBody(templateBodyBindings); // Set the parameter binding for template body
 
-        template
-            .setBindings(templateBindings)
-            .setValues(messageTemplateValues);
+        template.setBindings(templateBindings).setValues(messageTemplateValues);
 
-        SendMessageResult result = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID,
-            recipients, template));
+        SendMessageResult result
+            = messagesClient.send(new TemplateNotificationContent(CHANNEL_REGISTRATION_ID, recipients, template));
 
         assertEquals(1, result.getReceipts().size());
         assertNotNull(result.getReceipts().get(0).getMessageId());

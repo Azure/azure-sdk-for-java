@@ -46,7 +46,8 @@ public final class DedicatedHsmsListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure().withHttpClient(httpClient)
+        HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
@@ -63,8 +64,14 @@ public final class DedicatedHsmsListMockTests {
             response.iterator().next().properties().networkProfile().networkInterfaces().get(0).privateIpAddress());
         Assertions.assertEquals("sjcswsmystuluqyp",
             response.iterator().next().properties().managementNetworkProfile().subnet().id());
-        Assertions.assertEquals("pqbmfpjbab", response.iterator().next().properties().managementNetworkProfile()
-            .networkInterfaces().get(0).privateIpAddress());
+        Assertions.assertEquals("pqbmfpjbab",
+            response.iterator()
+                .next()
+                .properties()
+                .managementNetworkProfile()
+                .networkInterfaces()
+                .get(0)
+                .privateIpAddress());
         Assertions.assertEquals("geivsiykzkdncj", response.iterator().next().properties().stampId());
     }
 }

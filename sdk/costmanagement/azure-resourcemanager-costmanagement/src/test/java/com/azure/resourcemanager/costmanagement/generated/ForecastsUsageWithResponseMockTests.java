@@ -41,58 +41,39 @@ public final class ForecastsUsageWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"nextLink\":\"dnbzydvfvfcjn\",\"columns\":[],\"rows\":[[\"datavhmgorffukis\",\"datavwmzhwplefaxvxil\"],[\"datatg\"],[\"datanzeyqxtjj\"],[\"dataqlqhycavodg\",\"dataxdbeesmieknl\"]]},\"sku\":\"riaa\",\"eTag\":\"uagydwqfbylyrf\",\"location\":\"iagtc\",\"tags\":{\"mozuxylfsb\":\"cqwogfnzjvusfzl\",\"tgkbugrjqctojc\":\"kadpysown\",\"cuplcplcwkhih\":\"isofieypefojyqd\",\"cjhfgmvecactxmw\":\"hlhzdsqtzbsrgno\"},\"id\":\"teyowclu\",\"name\":\"ovekqvgqouwi\",\"type\":\"zmpjwyiv\"}";
+        String responseStr
+            = "{\"properties\":{\"nextLink\":\"dnbzydvfvfcjn\",\"columns\":[],\"rows\":[[\"datavhmgorffukis\",\"datavwmzhwplefaxvxil\"],[\"datatg\"],[\"datanzeyqxtjj\"],[\"dataqlqhycavodg\",\"dataxdbeesmieknl\"]]},\"sku\":\"riaa\",\"eTag\":\"uagydwqfbylyrf\",\"location\":\"iagtc\",\"tags\":{\"mozuxylfsb\":\"cqwogfnzjvusfzl\",\"tgkbugrjqctojc\":\"kadpysown\",\"cuplcplcwkhih\":\"isofieypefojyqd\",\"cjhfgmvecactxmw\":\"hlhzdsqtzbsrgno\"},\"id\":\"teyowclu\",\"name\":\"ovekqvgqouwi\",\"type\":\"zmpjwyiv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ForecastResult response =
-            manager
-                .forecasts()
-                .usageWithResponse(
-                    "aspavehhr",
-                    new ForecastDefinition()
-                        .withType(ForecastType.AMORTIZED_COST)
-                        .withTimeframe(ForecastTimeframe.CUSTOM)
-                        .withTimePeriod(
-                            new ForecastTimePeriod()
-                                .withFrom(OffsetDateTime.parse("2021-10-10T05:55:50Z"))
-                                .withTo(OffsetDateTime.parse("2021-12-01T01:47:09Z")))
-                        .withDataset(
-                            new ForecastDataset()
-                                .withGranularity(GranularityType.DAILY)
-                                .withConfiguration(new ForecastDatasetConfiguration().withColumns(Arrays.asList()))
-                                .withAggregation(mapOf())
-                                .withFilter(new ForecastFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
-                        .withIncludeActualCost(true)
-                        .withIncludeFreshPartialCost(true),
-                    "dyuib",
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        ForecastResult response = manager.forecasts()
+            .usageWithResponse("aspavehhr",
+                new ForecastDefinition().withType(ForecastType.AMORTIZED_COST)
+                    .withTimeframe(ForecastTimeframe.CUSTOM)
+                    .withTimePeriod(new ForecastTimePeriod().withFrom(OffsetDateTime.parse("2021-10-10T05:55:50Z"))
+                        .withTo(OffsetDateTime.parse("2021-12-01T01:47:09Z")))
+                    .withDataset(new ForecastDataset().withGranularity(GranularityType.DAILY)
+                        .withConfiguration(new ForecastDatasetConfiguration().withColumns(Arrays.asList()))
+                        .withAggregation(mapOf())
+                        .withFilter(new ForecastFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
+                    .withIncludeActualCost(true)
+                    .withIncludeFreshPartialCost(true),
+                "dyuib", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("iagtc", response.location());
         Assertions.assertEquals("cqwogfnzjvusfzl", response.tags().get("mozuxylfsb"));

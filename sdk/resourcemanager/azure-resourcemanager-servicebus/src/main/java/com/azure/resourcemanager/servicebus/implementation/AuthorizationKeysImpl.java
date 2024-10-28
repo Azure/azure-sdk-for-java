@@ -10,9 +10,7 @@ import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 /**
  * Implementation for AuthorizationKeys.
  */
-class AuthorizationKeysImpl
-        extends WrapperImpl<AccessKeysInner>
-        implements AuthorizationKeys {
+class AuthorizationKeysImpl extends WrapperImpl<AccessKeysInner> implements AuthorizationKeys {
 
     AuthorizationKeysImpl(AccessKeysInner inner) {
         super(inner);

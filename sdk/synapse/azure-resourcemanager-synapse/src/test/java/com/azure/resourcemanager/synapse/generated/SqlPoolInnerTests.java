@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlPoolInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlPoolInner model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"tier\":\"hgyxzkonoc\",\"name\":\"oklyaxuconuq\",\"capacity\":1340074682},\"properties\":{\"maxSizeBytes\":3139982845212693168,\"collation\":\"ewrmjmwvvjektc\",\"sourceDatabaseId\":\"enhwlrs\",\"recoverableDatabaseId\":\"rzpwvlqdqgbiq\",\"provisioningState\":\"ihkaetcktvfc\",\"status\":\"fsnkymuctq\",\"restorePointInTime\":\"2021-09-28T09:51:37Z\",\"createMode\":\"PointInTimeRestore\",\"creationDate\":\"2021-08-08T18:22:37Z\",\"storageAccountType\":\"GRS\",\"sourceDatabaseDeletionDate\":\"2021-06-01T09:38:07Z\"},\"location\":\"rfuwutt\",\"tags\":{\"nljky\":\"vjrbirphxepcyvah\",\"ljyoxgvcltb\":\"xjvuujqgidokg\",\"bijhtxfvgxbf\":\"sncghkjeszz\",\"ec\":\"mxnehmp\"},\"id\":\"godebfqkkrbmpu\",\"name\":\"gr\",\"type\":\"wflzlfbxzpuzy\"}")
-                .toObject(SqlPoolInner.class);
+        SqlPoolInner model = BinaryData.fromString(
+            "{\"sku\":{\"tier\":\"hgyxzkonoc\",\"name\":\"oklyaxuconuq\",\"capacity\":1340074682},\"properties\":{\"maxSizeBytes\":3139982845212693168,\"collation\":\"ewrmjmwvvjektc\",\"sourceDatabaseId\":\"enhwlrs\",\"recoverableDatabaseId\":\"rzpwvlqdqgbiq\",\"provisioningState\":\"ihkaetcktvfc\",\"status\":\"fsnkymuctq\",\"restorePointInTime\":\"2021-09-28T09:51:37Z\",\"createMode\":\"PointInTimeRestore\",\"creationDate\":\"2021-08-08T18:22:37Z\",\"storageAccountType\":\"GRS\",\"sourceDatabaseDeletionDate\":\"2021-06-01T09:38:07Z\"},\"location\":\"rfuwutt\",\"tags\":{\"nljky\":\"vjrbirphxepcyvah\",\"ljyoxgvcltb\":\"xjvuujqgidokg\",\"bijhtxfvgxbf\":\"sncghkjeszz\",\"ec\":\"mxnehmp\"},\"id\":\"godebfqkkrbmpu\",\"name\":\"gr\",\"type\":\"wflzlfbxzpuzy\"}")
+            .toObject(SqlPoolInner.class);
         Assertions.assertEquals("rfuwutt", model.location());
         Assertions.assertEquals("vjrbirphxepcyvah", model.tags().get("nljky"));
         Assertions.assertEquals("hgyxzkonoc", model.sku().tier());
@@ -40,29 +38,19 @@ public final class SqlPoolInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlPoolInner model =
-            new SqlPoolInner()
-                .withLocation("rfuwutt")
-                .withTags(
-                    mapOf(
-                        "nljky",
-                        "vjrbirphxepcyvah",
-                        "ljyoxgvcltb",
-                        "xjvuujqgidokg",
-                        "bijhtxfvgxbf",
-                        "sncghkjeszz",
-                        "ec",
-                        "mxnehmp"))
-                .withSku(new Sku().withTier("hgyxzkonoc").withName("oklyaxuconuq").withCapacity(1340074682))
-                .withMaxSizeBytes(3139982845212693168L)
-                .withCollation("ewrmjmwvvjektc")
-                .withSourceDatabaseId("enhwlrs")
-                .withRecoverableDatabaseId("rzpwvlqdqgbiq")
-                .withProvisioningState("ihkaetcktvfc")
-                .withRestorePointInTime(OffsetDateTime.parse("2021-09-28T09:51:37Z"))
-                .withCreateMode(CreateMode.POINT_IN_TIME_RESTORE)
-                .withStorageAccountType(StorageAccountType.GRS)
-                .withSourceDatabaseDeletionDate(OffsetDateTime.parse("2021-06-01T09:38:07Z"));
+        SqlPoolInner model = new SqlPoolInner().withLocation("rfuwutt")
+            .withTags(mapOf("nljky", "vjrbirphxepcyvah", "ljyoxgvcltb", "xjvuujqgidokg", "bijhtxfvgxbf", "sncghkjeszz",
+                "ec", "mxnehmp"))
+            .withSku(new Sku().withTier("hgyxzkonoc").withName("oklyaxuconuq").withCapacity(1340074682))
+            .withMaxSizeBytes(3139982845212693168L)
+            .withCollation("ewrmjmwvvjektc")
+            .withSourceDatabaseId("enhwlrs")
+            .withRecoverableDatabaseId("rzpwvlqdqgbiq")
+            .withProvisioningState("ihkaetcktvfc")
+            .withRestorePointInTime(OffsetDateTime.parse("2021-09-28T09:51:37Z"))
+            .withCreateMode(CreateMode.POINT_IN_TIME_RESTORE)
+            .withStorageAccountType(StorageAccountType.GRS)
+            .withSourceDatabaseDeletionDate(OffsetDateTime.parse("2021-06-01T09:38:07Z"));
         model = BinaryData.fromObject(model).toObject(SqlPoolInner.class);
         Assertions.assertEquals("rfuwutt", model.location());
         Assertions.assertEquals("vjrbirphxepcyvah", model.tags().get("nljky"));

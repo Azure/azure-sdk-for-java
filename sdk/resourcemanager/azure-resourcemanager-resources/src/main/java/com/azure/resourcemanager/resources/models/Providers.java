@@ -12,9 +12,7 @@ import reactor.core.publisher.Mono;
  * Entry point to providers management API.
  */
 @Fluent
-public interface Providers extends
-        SupportsListing<Provider>,
-        SupportsGettingByName<Provider> {
+public interface Providers extends SupportsListing<Provider>, SupportsGettingByName<Provider> {
     /**
      * Unregisters provider from a subscription.
      *

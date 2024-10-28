@@ -26,8 +26,8 @@ public interface GraphQLApiResolverPolicies {
      * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<PolicyContract> listByResolver(
-        String resourceGroupName, String serviceName, String apiId, String resolverId);
+    PagedIterable<PolicyContract> listByResolver(String resourceGroupName, String serviceName, String apiId,
+        String resolverId);
 
     /**
      * Get the list of policy configuration at the GraphQL API Resolver level.
@@ -45,8 +45,8 @@ public interface GraphQLApiResolverPolicies {
      * @return the list of policy configuration at the GraphQL API Resolver level as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<PolicyContract> listByResolver(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, Context context);
+    PagedIterable<PolicyContract> listByResolver(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
@@ -64,13 +64,8 @@ public interface GraphQLApiResolverPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
      */
-    GraphQLApiResolverPoliciesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        Context context);
+    GraphQLApiResolverPoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName,
+        String serviceName, String apiId, String resolverId, PolicyIdName policyId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
@@ -86,8 +81,8 @@ public interface GraphQLApiResolverPolicies {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void getEntityTag(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, PolicyIdName policyId);
+    void getEntityTag(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId);
 
     /**
      * Get the policy configuration at the GraphQL API Resolver level.
@@ -106,14 +101,8 @@ public interface GraphQLApiResolverPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy configuration at the GraphQL API Resolver level.
      */
-    Response<PolicyContract> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
-        Context context);
+    Response<PolicyContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, PolicyIdName policyId, PolicyExportFormat format, Context context);
 
     /**
      * Get the policy configuration at the GraphQL API Resolver level.
@@ -130,8 +119,8 @@ public interface GraphQLApiResolverPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy configuration at the GraphQL API Resolver level.
      */
-    PolicyContract get(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, PolicyIdName policyId);
+    PolicyContract get(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId);
 
     /**
      * Creates or updates policy configuration for the GraphQL API Resolver level.
@@ -151,15 +140,8 @@ public interface GraphQLApiResolverPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy Contract details.
      */
-    Response<PolicyContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch,
-        Context context);
+    Response<PolicyContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, PolicyIdName policyId, PolicyContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or updates policy configuration for the GraphQL API Resolver level.
@@ -177,13 +159,8 @@ public interface GraphQLApiResolverPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy Contract details.
      */
-    PolicyContract createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters);
+    PolicyContract createOrUpdate(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId, PolicyContractInner parameters);
 
     /**
      * Deletes the policy configuration at the GraphQL Api Resolver.
@@ -203,14 +180,8 @@ public interface GraphQLApiResolverPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId, String ifMatch, Context context);
 
     /**
      * Deletes the policy configuration at the GraphQL Api Resolver.
@@ -228,11 +199,6 @@ public interface GraphQLApiResolverPolicies {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
+    void delete(String resourceGroupName, String serviceName, String apiId, String resolverId, PolicyIdName policyId,
         String ifMatch);
 }

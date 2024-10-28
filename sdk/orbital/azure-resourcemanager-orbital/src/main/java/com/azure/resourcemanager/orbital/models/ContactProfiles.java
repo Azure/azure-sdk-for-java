@@ -21,8 +21,8 @@ public interface ContactProfiles {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified contact Profile in a specified resource group along with {@link Response}.
      */
-    Response<ContactProfile> getByResourceGroupWithResponse(
-        String resourceGroupName, String contactProfileName, Context context);
+    Response<ContactProfile> getByResourceGroupWithResponse(String resourceGroupName, String contactProfileName,
+        Context context);
 
     /**
      * Gets the specified contact Profile in a specified resource group.

@@ -111,9 +111,8 @@ public final class AccountEncryption {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model AccountEncryption"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model AccountEncryption"));
         }
         if (keyVaultProperties() != null) {
             keyVaultProperties().validate();

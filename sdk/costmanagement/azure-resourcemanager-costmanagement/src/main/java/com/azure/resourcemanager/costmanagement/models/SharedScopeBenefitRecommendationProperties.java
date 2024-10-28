@@ -47,8 +47,8 @@ public final class SharedScopeBenefitRecommendationProperties extends BenefitRec
 
     /** {@inheritDoc} */
     @Override
-    public SharedScopeBenefitRecommendationProperties withRecommendationDetails(
-        AllSavingsBenefitDetails recommendationDetails) {
+    public SharedScopeBenefitRecommendationProperties
+        withRecommendationDetails(AllSavingsBenefitDetails recommendationDetails) {
         super.withRecommendationDetails(recommendationDetails);
         return this;
     }

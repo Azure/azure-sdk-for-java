@@ -21,7 +21,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class)
 public final class ScansClient {
-    @Generated private final ScansImpl serviceClient;
+    @Generated
+    private final ScansImpl serviceClient;
 
     /**
      * Initializes an instance of ScansClient class.
@@ -158,8 +159,8 @@ public final class ScansClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String dataSourceName, String scanName, BinaryData body,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateWithResponse(dataSourceName, scanName, body, requestOptions);
     }
 
@@ -305,8 +306,8 @@ public final class ScansClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Response<BinaryData> deleteWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponse(dataSourceName, scanName, requestOptions);
     }
 

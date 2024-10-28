@@ -44,8 +44,8 @@ public final class ApiVersionsImpl implements ApiVersions {
 
     public Response<ApiVersion> getWithResponse(String resourceGroupName, String serviceName, String workspaceName,
         String apiName, String versionName, Context context) {
-        ApiVersionsGetResponse inner = this.serviceClient().getWithResponse(resourceGroupName, serviceName,
-            workspaceName, apiName, versionName, context);
+        ApiVersionsGetResponse inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, serviceName, workspaceName, apiName, versionName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApiVersionImpl(inner.getValue(), this.manager()));
@@ -67,8 +67,8 @@ public final class ApiVersionsImpl implements ApiVersions {
 
     public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String workspaceName,
         String apiName, String versionName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, workspaceName, apiName,
-            versionName, context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, serviceName, workspaceName, apiName, versionName, context);
     }
 
     public void delete(String resourceGroupName, String serviceName, String workspaceName, String apiName,
@@ -78,8 +78,8 @@ public final class ApiVersionsImpl implements ApiVersions {
 
     public Response<Void> headWithResponse(String resourceGroupName, String serviceName, String workspaceName,
         String apiName, String versionName, Context context) {
-        return this.serviceClient().headWithResponse(resourceGroupName, serviceName, workspaceName, apiName,
-            versionName, context);
+        return this.serviceClient()
+            .headWithResponse(resourceGroupName, serviceName, workspaceName, apiName, versionName, context);
     }
 
     public void head(String resourceGroupName, String serviceName, String workspaceName, String apiName,

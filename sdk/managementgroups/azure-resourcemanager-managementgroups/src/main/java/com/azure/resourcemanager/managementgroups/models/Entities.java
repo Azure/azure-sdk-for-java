@@ -57,15 +57,6 @@ public interface Entities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to view entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EntityInfo> list(
-        String skiptoken,
-        Integer skip,
-        Integer top,
-        String select,
-        EntitySearchType search,
-        String filter,
-        EntityViewParameterType view,
-        String groupName,
-        String cacheControl,
-        Context context);
+    PagedIterable<EntityInfo> list(String skiptoken, Integer skip, Integer top, String select, EntitySearchType search,
+        String filter, EntityViewParameterType view, String groupName, String cacheControl, Context context);
 }

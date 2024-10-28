@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Test;
 public final class FarmBeatsInnerTests {
     @Test
     public void testDeserialize() {
-        FarmBeatsInner model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"principalId\":\"akeqs\",\"tenantId\":\"yb\",\"type\":\"SystemAssigned\"},\"properties\":{\"instanceUri\":\"qytbciq\",\"provisioningState\":\"Updating\",\"sensorIntegration\":{\"enabled\":\"mmnkzsmodmgl\",\"provisioningState\":\"Deleting\"},\"publicNetworkAccess\":\"Hybrid\",\"privateEndpointConnections\":{\"id\":\"utduqktapspwgcu\",\"name\":\"rtumkdosvq\",\"type\":\"hbmdgbbjfdd\"}},\"location\":\"mbmbexppbh\",\"tags\":{\"algbquxigjyjg\":\"rolfpfp\",\"lnerkujysvleju\":\"jaoyfhrtx\"},\"id\":\"fqawrlyxw\",\"name\":\"kcprbnw\",\"type\":\"xgjvtbv\"}")
-                .toObject(FarmBeatsInner.class);
+        FarmBeatsInner model = BinaryData.fromString(
+            "{\"identity\":{\"principalId\":\"akeqs\",\"tenantId\":\"yb\",\"type\":\"SystemAssigned\"},\"properties\":{\"instanceUri\":\"qytbciq\",\"provisioningState\":\"Updating\",\"sensorIntegration\":{\"enabled\":\"mmnkzsmodmgl\",\"provisioningState\":\"Deleting\"},\"publicNetworkAccess\":\"Hybrid\",\"privateEndpointConnections\":{\"id\":\"utduqktapspwgcu\",\"name\":\"rtumkdosvq\",\"type\":\"hbmdgbbjfdd\"}},\"location\":\"mbmbexppbh\",\"tags\":{\"algbquxigjyjg\":\"rolfpfp\",\"lnerkujysvleju\":\"jaoyfhrtx\"},\"id\":\"fqawrlyxw\",\"name\":\"kcprbnw\",\"type\":\"xgjvtbv\"}")
+            .toObject(FarmBeatsInner.class);
         Assertions.assertEquals("mbmbexppbh", model.location());
         Assertions.assertEquals("rolfpfp", model.tags().get("algbquxigjyjg"));
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
@@ -32,13 +30,11 @@ public final class FarmBeatsInnerTests {
 
     @Test
     public void testSerialize() {
-        FarmBeatsInner model =
-            new FarmBeatsInner()
-                .withLocation("mbmbexppbh")
-                .withTags(mapOf("algbquxigjyjg", "rolfpfp", "lnerkujysvleju", "jaoyfhrtx"))
-                .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-                .withSensorIntegration(new SensorIntegration().withEnabled("mmnkzsmodmgl"))
-                .withPublicNetworkAccess(PublicNetworkAccess.HYBRID);
+        FarmBeatsInner model = new FarmBeatsInner().withLocation("mbmbexppbh")
+            .withTags(mapOf("algbquxigjyjg", "rolfpfp", "lnerkujysvleju", "jaoyfhrtx"))
+            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withSensorIntegration(new SensorIntegration().withEnabled("mmnkzsmodmgl"))
+            .withPublicNetworkAccess(PublicNetworkAccess.HYBRID);
         model = BinaryData.fromObject(model).toObject(FarmBeatsInner.class);
         Assertions.assertEquals("mbmbexppbh", model.location());
         Assertions.assertEquals("rolfpfp", model.tags().get("algbquxigjyjg"));

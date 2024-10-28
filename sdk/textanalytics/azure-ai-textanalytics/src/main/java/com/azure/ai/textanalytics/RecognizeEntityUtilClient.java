@@ -105,8 +105,8 @@ class RecognizeEntityUtilClient {
      *
      * @return A mono {@link Response} that contains {@link RecognizeEntitiesResultCollection}.
      */
-    Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatch(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+    Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatch(Iterable<TextDocumentInput> documents,
+        TextAnalyticsRequestOptions options) {
         try {
             return withContext(context -> getRecognizedEntitiesResponse(documents, options, context));
         } catch (RuntimeException ex) {
@@ -136,37 +136,32 @@ class RecognizeEntityUtilClient {
         final boolean finalIncludeStatistics = options.isIncludeStatistics();
 
         if (service != null) {
-            return service.analyzeTextWithResponseAsync(
-                new AnalyzeTextEntityRecognitionInput()
-                    .setParameters(
-                        new EntitiesTaskParameters()
-                            .setStringIndexType(finalStringIndexType)
+            return service
+                .analyzeTextWithResponseAsync(
+                    new AnalyzeTextEntityRecognitionInput()
+                        .setParameters(new EntitiesTaskParameters().setStringIndexType(finalStringIndexType)
                             .setModelVersion(finalModelVersion)
                             .setLoggingOptOut(finalLoggingOptOut))
-                    .setAnalysisInput(new MultiLanguageAnalysisInput()
-                        .setDocuments(toMultiLanguageInput(documents))),
-                finalIncludeStatistics,
-                finalContext)
-                .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
-                    getDocumentCount(documents)))
-                .doOnSuccess(response -> LOGGER.info("Recognized entities for a batch of documents- {}",
-                    response.getValue()))
+                        .setAnalysisInput(
+                            new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
+                    finalIncludeStatistics, finalContext)
+                .doOnSubscribe(
+                    ignoredValue -> LOGGER.info("A batch of documents with count - {}", getDocumentCount(documents)))
+                .doOnSuccess(
+                    response -> LOGGER.info("Recognized entities for a batch of documents- {}", response.getValue()))
                 .doOnError(error -> LOGGER.warning("Failed to recognize entities - {}", error))
                 .map(Utility::toRecognizeEntitiesResultCollectionResponseLanguageApi)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
-        return legacyService.entitiesRecognitionGeneralWithResponseAsync(
-            new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            finalModelVersion,
-            finalIncludeStatistics,
-            finalLoggingOptOut,
-            finalStringIndexType,
-            finalContext)
-            .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
-                getDocumentCount(documents)))
-            .doOnSuccess(response -> LOGGER.info("Recognized entities for a batch of documents- {}",
-                response.getValue()))
+        return legacyService
+            .entitiesRecognitionGeneralWithResponseAsync(
+                new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)), finalModelVersion,
+                finalIncludeStatistics, finalLoggingOptOut, finalStringIndexType, finalContext)
+            .doOnSubscribe(
+                ignoredValue -> LOGGER.info("A batch of documents with count - {}", getDocumentCount(documents)))
+            .doOnSuccess(
+                response -> LOGGER.info("Recognized entities for a batch of documents- {}", response.getValue()))
             .doOnError(error -> LOGGER.warning("Failed to recognize entities - {}", error))
             .map(Utility::toRecognizeEntitiesResultCollectionResponseLegacyApi)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
@@ -182,8 +177,8 @@ class RecognizeEntityUtilClient {
      *
      * @return A {@link Response} that contains {@link RecognizeEntitiesResultCollection}.
      */
-    Response<RecognizeEntitiesResultCollection> getRecognizedEntitiesResponseSync(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+    Response<RecognizeEntitiesResultCollection> getRecognizedEntitiesResponseSync(Iterable<TextDocumentInput> documents,
+        TextAnalyticsRequestOptions options, Context context) {
         throwIfCallingNotAvailableFeatureInOptions(options);
         inputDocumentsValidation(documents);
         options = options == null ? new TextAnalyticsRequestOptions() : options;
@@ -196,23 +191,16 @@ class RecognizeEntityUtilClient {
             return (service != null)
                 ? toRecognizeEntitiesResultCollectionResponseLanguageApi(service.analyzeTextWithResponse(
                     new AnalyzeTextEntityRecognitionInput()
-                        .setParameters(
-                            new EntitiesTaskParameters()
-                                .setStringIndexType(finalStringIndexType)
-                                .setModelVersion(finalModelVersion)
-                                .setLoggingOptOut(finalLoggingOptOut))
-                        .setAnalysisInput(new MultiLanguageAnalysisInput()
-                            .setDocuments(toMultiLanguageInput(documents))),
-                    finalIncludeStatistics,
-                    finalContext))
+                        .setParameters(new EntitiesTaskParameters().setStringIndexType(finalStringIndexType)
+                            .setModelVersion(finalModelVersion)
+                            .setLoggingOptOut(finalLoggingOptOut))
+                        .setAnalysisInput(
+                            new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
+                    finalIncludeStatistics, finalContext))
                 : toRecognizeEntitiesResultCollectionResponseLegacyApi(
                     legacyService.entitiesRecognitionGeneralWithResponseSync(
-                        new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                        finalModelVersion,
-                        finalIncludeStatistics,
-                        finalLoggingOptOut,
-                        finalStringIndexType,
-                        finalContext));
+                        new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)), finalModelVersion,
+                        finalIncludeStatistics, finalLoggingOptOut, finalStringIndexType, finalContext));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
@@ -221,8 +209,8 @@ class RecognizeEntityUtilClient {
     private void throwIfCallingNotAvailableFeatureInOptions(TextAnalyticsRequestOptions options) {
         if (options != null && options.isServiceLogsDisabled()) {
             throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
-                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
+                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs", serviceVersion,
+                    TextAnalyticsServiceVersion.V3_1));
         }
     }
 }

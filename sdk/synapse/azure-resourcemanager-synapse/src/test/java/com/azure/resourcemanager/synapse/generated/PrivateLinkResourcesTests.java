@@ -12,17 +12,15 @@ import java.util.Arrays;
 public final class PrivateLinkResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkResources model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"uipldqq\",\"requiredMembers\":[],\"requiredZoneNames\":[],\"provisioningState\":\"Canceled\"},\"id\":\"lblhtjq\",\"name\":\"qyv\",\"type\":\"eh\"}]}")
-                .toObject(PrivateLinkResources.class);
+        PrivateLinkResources model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"groupId\":\"uipldqq\",\"requiredMembers\":[],\"requiredZoneNames\":[],\"provisioningState\":\"Canceled\"},\"id\":\"lblhtjq\",\"name\":\"qyv\",\"type\":\"eh\"}]}")
+            .toObject(PrivateLinkResources.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkResources model =
-            new PrivateLinkResources().withValue(Arrays.asList(new KustoPoolPrivateLinkResourcesInner()));
+        PrivateLinkResources model
+            = new PrivateLinkResources().withValue(Arrays.asList(new KustoPoolPrivateLinkResourcesInner()));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResources.class);
     }
 }

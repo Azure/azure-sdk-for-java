@@ -106,8 +106,8 @@ public interface ComponentsClient {
      * @return an Application Insights component definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ApplicationInsightsComponentInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Returns an Application Insights component.
@@ -136,11 +136,8 @@ public interface ComponentsClient {
      * @return an Application Insights component definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ApplicationInsightsComponentInner insightProperties,
-        Context context);
+    Response<ApplicationInsightsComponentInner> createOrUpdateWithResponse(String resourceGroupName,
+        String resourceName, ApplicationInsightsComponentInner insightProperties, Context context);
 
     /**
      * Creates (or updates) an Application Insights component. Note: You cannot specify a different value for
@@ -155,8 +152,8 @@ public interface ComponentsClient {
      * @return an Application Insights component definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentInner createOrUpdate(
-        String resourceGroupName, String resourceName, ApplicationInsightsComponentInner insightProperties);
+    ApplicationInsightsComponentInner createOrUpdate(String resourceGroupName, String resourceName,
+        ApplicationInsightsComponentInner insightProperties);
 
     /**
      * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
@@ -171,8 +168,8 @@ public interface ComponentsClient {
      * @return an Application Insights component definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentInner> updateTagsWithResponse(
-        String resourceGroupName, String resourceName, TagsResource componentTags, Context context);
+    Response<ApplicationInsightsComponentInner> updateTagsWithResponse(String resourceGroupName, String resourceName,
+        TagsResource componentTags, Context context);
 
     /**
      * Updates an existing component's tags. To update other fields use the CreateOrUpdate method.
@@ -186,8 +183,8 @@ public interface ComponentsClient {
      * @return an Application Insights component definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentInner updateTags(
-        String resourceGroupName, String resourceName, TagsResource componentTags);
+    ApplicationInsightsComponentInner updateTags(String resourceGroupName, String resourceName,
+        TagsResource componentTags);
 
     /**
      * Purges data in an Application Insights component by a set of user-defined filters.
@@ -210,8 +207,8 @@ public interface ComponentsClient {
      * @return response containing operationId for a specific purge action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ComponentPurgeResponseInner> purgeWithResponse(
-        String resourceGroupName, String resourceName, ComponentPurgeBody body, Context context);
+    Response<ComponentPurgeResponseInner> purgeWithResponse(String resourceGroupName, String resourceName,
+        ComponentPurgeBody body, Context context);
 
     /**
      * Purges data in an Application Insights component by a set of user-defined filters.
@@ -248,8 +245,8 @@ public interface ComponentsClient {
      * @return status for an ongoing purge operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ComponentPurgeStatusResponseInner> getPurgeStatusWithResponse(
-        String resourceGroupName, String resourceName, String purgeId, Context context);
+    Response<ComponentPurgeStatusResponseInner> getPurgeStatusWithResponse(String resourceGroupName,
+        String resourceName, String purgeId, Context context);
 
     /**
      * Get status for an ongoing purge operation.

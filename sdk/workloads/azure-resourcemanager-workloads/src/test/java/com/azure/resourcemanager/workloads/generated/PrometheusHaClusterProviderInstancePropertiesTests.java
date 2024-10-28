@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PrometheusHaClusterProviderInstancePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrometheusHaClusterProviderInstanceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"providerType\":\"PrometheusHaCluster\",\"prometheusUrl\":\"x\",\"hostname\":\"czheyd\",\"sid\":\"dshmkxmaehvbbx\",\"clusterName\":\"iplt\",\"sslPreference\":\"ServerCertificate\",\"sslCertificateUri\":\"baxk\"}")
-                .toObject(PrometheusHaClusterProviderInstanceProperties.class);
+        PrometheusHaClusterProviderInstanceProperties model = BinaryData.fromString(
+            "{\"providerType\":\"PrometheusHaCluster\",\"prometheusUrl\":\"x\",\"hostname\":\"czheyd\",\"sid\":\"dshmkxmaehvbbx\",\"clusterName\":\"iplt\",\"sslPreference\":\"ServerCertificate\",\"sslCertificateUri\":\"baxk\"}")
+            .toObject(PrometheusHaClusterProviderInstanceProperties.class);
         Assertions.assertEquals("x", model.prometheusUrl());
         Assertions.assertEquals("czheyd", model.hostname());
         Assertions.assertEquals("dshmkxmaehvbbx", model.sid());
@@ -27,9 +25,8 @@ public final class PrometheusHaClusterProviderInstancePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrometheusHaClusterProviderInstanceProperties model =
-            new PrometheusHaClusterProviderInstanceProperties()
-                .withPrometheusUrl("x")
+        PrometheusHaClusterProviderInstanceProperties model
+            = new PrometheusHaClusterProviderInstanceProperties().withPrometheusUrl("x")
                 .withHostname("czheyd")
                 .withSid("dshmkxmaehvbbx")
                 .withClusterName("iplt")

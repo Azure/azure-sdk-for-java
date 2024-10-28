@@ -12,11 +12,10 @@ import org.junit.jupiter.api.Assertions;
 public final class EndPointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EndPoint model =
-            BinaryData
-                .fromString(
-                    "{\"ipAddress\":\"f\",\"endPointName\":\"y\",\"port\":\"osvexcsonpclhoc\",\"protocol\":\"UDP\"}")
-                .toObject(EndPoint.class);
+        EndPoint model = BinaryData
+            .fromString(
+                "{\"ipAddress\":\"f\",\"endPointName\":\"y\",\"port\":\"osvexcsonpclhoc\",\"protocol\":\"UDP\"}")
+            .toObject(EndPoint.class);
         Assertions.assertEquals("f", model.ipAddress());
         Assertions.assertEquals("y", model.endPointName());
         Assertions.assertEquals("osvexcsonpclhoc", model.port());
@@ -25,12 +24,10 @@ public final class EndPointTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndPoint model =
-            new EndPoint()
-                .withIpAddress("f")
-                .withEndPointName("y")
-                .withPort("osvexcsonpclhoc")
-                .withProtocol(Protocol.UDP);
+        EndPoint model = new EndPoint().withIpAddress("f")
+            .withEndPointName("y")
+            .withPort("osvexcsonpclhoc")
+            .withProtocol(Protocol.UDP);
         model = BinaryData.fromObject(model).toObject(EndPoint.class);
         Assertions.assertEquals("f", model.ipAddress());
         Assertions.assertEquals("y", model.endPointName());

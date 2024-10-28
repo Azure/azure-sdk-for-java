@@ -76,7 +76,8 @@ public final class ServiceBusQueueBasic {
 
             System.out.println("Creating second queue " + queue2Name + " in namespace " + namespaceName + "...");
 
-            Queue secondQueue = serviceBusNamespace.queues().define(queue2Name)
+            Queue secondQueue = serviceBusNamespace.queues()
+                .define(queue2Name)
                 .withExpiredMessageMovedToDeadLetterQueue()
                 .withSizeInMB(2048)
                 .withMessageLockDurationInSeconds(20)
@@ -100,10 +101,7 @@ public final class ServiceBusQueueBasic {
             // Update namespace
             System.out.println("Updating sku of namespace " + serviceBusNamespace.name() + "...");
 
-            serviceBusNamespace = serviceBusNamespace
-                .update()
-                .withSku(NamespaceSku.STANDARD)
-                .apply();
+            serviceBusNamespace = serviceBusNamespace.update().withSku(NamespaceSku.STANDARD).apply();
             System.out.println("Updated sku of namespace " + serviceBusNamespace.name());
 
             //=============================================================
@@ -111,7 +109,8 @@ public final class ServiceBusQueueBasic {
 
             System.out.println("List of namespaces in resource group " + rgName + "...");
 
-            for (ServiceBusNamespace serviceBusNamespace1 : azureResourceManager.serviceBusNamespaces().listByResourceGroup(rgName)) {
+            for (ServiceBusNamespace serviceBusNamespace1 : azureResourceManager.serviceBusNamespaces()
+                .listByResourceGroup(rgName)) {
                 Utils.print(serviceBusNamespace1);
             }
 
@@ -128,10 +127,12 @@ public final class ServiceBusQueueBasic {
             //=============================================================
             // Get connection string for default authorization rule of namespace
 
-            PagedIterable<NamespaceAuthorizationRule> namespaceAuthorizationRules = serviceBusNamespace.authorizationRules().list();
-            System.out.println("Number of authorization rule for namespace :" + Utils.getSize(namespaceAuthorizationRules));
+            PagedIterable<NamespaceAuthorizationRule> namespaceAuthorizationRules
+                = serviceBusNamespace.authorizationRules().list();
+            System.out
+                .println("Number of authorization rule for namespace :" + Utils.getSize(namespaceAuthorizationRules));
 
-            for (NamespaceAuthorizationRule namespaceAuthorizationRule: namespaceAuthorizationRules) {
+            for (NamespaceAuthorizationRule namespaceAuthorizationRule : namespaceAuthorizationRules) {
                 Utils.print(namespaceAuthorizationRule);
             }
 
@@ -145,11 +146,11 @@ public final class ServiceBusQueueBasic {
 
             //=============================================================
             // Send a message to queue.
-            ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-                .connectionString(keys.primaryConnectionString())
-                .sender()
-                .queueName(queue1Name)
-                .buildClient();
+            ServiceBusSenderClient sender
+                = new ServiceBusClientBuilder().connectionString(keys.primaryConnectionString())
+                    .sender()
+                    .queueName(queue1Name)
+                    .buildClient();
             sender.sendMessage(new ServiceBusMessage("Hello World").setSessionId("23424"));
             sender.close();
 
@@ -190,8 +191,7 @@ public final class ServiceBusQueueBasic {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

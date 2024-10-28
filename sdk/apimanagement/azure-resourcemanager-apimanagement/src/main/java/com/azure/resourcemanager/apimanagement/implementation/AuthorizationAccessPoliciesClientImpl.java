@@ -49,10 +49,8 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      * @param client the instance of the service client containing this operation class.
      */
     AuthorizationAccessPoliciesClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    AuthorizationAccessPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AuthorizationAccessPoliciesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,88 +61,63 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientA")
     public interface AuthorizationAccessPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations/{authorizationId}/accessPolicies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations/{authorizationId}/accessPolicies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AuthorizationAccessPolicyCollection>> listByAuthorization(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
+        Mono<Response<AuthorizationAccessPolicyCollection>> listByAuthorization(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
             @PathParam("authorizationProviderId") String authorizationProviderId,
-            @PathParam("authorizationId") String authorizationId,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("authorizationId") String authorizationId, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations/{authorizationId}/accessPolicies/{authorizationAccessPolicyId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations/{authorizationId}/accessPolicies/{authorizationAccessPolicyId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<AuthorizationAccessPoliciesGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
+        Mono<AuthorizationAccessPoliciesGetResponse> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
             @PathParam("authorizationProviderId") String authorizationProviderId,
             @PathParam("authorizationId") String authorizationId,
             @PathParam("authorizationAccessPolicyId") String authorizationAccessPolicyId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations/{authorizationId}/accessPolicies/{authorizationAccessPolicyId}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations/{authorizationId}/accessPolicies/{authorizationAccessPolicyId}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<AuthorizationAccessPoliciesCreateOrUpdateResponse> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
+        Mono<AuthorizationAccessPoliciesCreateOrUpdateResponse> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
             @PathParam("authorizationProviderId") String authorizationProviderId,
             @PathParam("authorizationId") String authorizationId,
             @PathParam("authorizationAccessPolicyId") String authorizationAccessPolicyId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") AuthorizationAccessPolicyContractInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations/{authorizationId}/accessPolicies/{authorizationAccessPolicyId}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/authorizationProviders/{authorizationProviderId}/authorizations/{authorizationId}/accessPolicies/{authorizationAccessPolicyId}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
             @PathParam("authorizationProviderId") String authorizationProviderId,
             @PathParam("authorizationId") String authorizationId,
             @PathParam("authorizationAccessPolicyId") String authorizationAccessPolicyId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AuthorizationAccessPolicyCollection>> listByAuthorizationNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -168,18 +141,11 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationAccessPolicyContractInner>> listByAuthorizationSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String filter,
-        Integer top,
-        Integer skip) {
+        String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId,
+        String filter, Integer top, Integer skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -189,47 +155,24 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (authorizationProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
         }
         if (authorizationId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAuthorization(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            authorizationProviderId,
-                            authorizationId,
-                            filter,
-                            top,
-                            skip,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<AuthorizationAccessPolicyContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByAuthorization(this.client.getEndpoint(), resourceGroupName,
+                serviceName, authorizationProviderId, authorizationId, filter, top, skip, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<AuthorizationAccessPolicyContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -255,19 +198,11 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationAccessPolicyContractInner>> listByAuthorizationSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
+        String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId,
+        String filter, Integer top, Integer skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -277,45 +212,25 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (authorizationProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
         }
         if (authorizationId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAuthorization(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                filter,
-                top,
-                skip,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByAuthorization(this.client.getEndpoint(), resourceGroupName, serviceName, authorizationProviderId,
+                authorizationId, filter, top, skip, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -337,18 +252,11 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      * @return paged Authorization Access Policy list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AuthorizationAccessPolicyContractInner> listByAuthorizationAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String filter,
-        Integer top,
+    private PagedFlux<AuthorizationAccessPolicyContractInner> listByAuthorizationAsync(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId, String filter, Integer top,
         Integer skip) {
-        return new PagedFlux<>(
-            () ->
-                listByAuthorizationSinglePageAsync(
-                    resourceGroupName, serviceName, authorizationProviderId, authorizationId, filter, top, skip),
+        return new PagedFlux<>(() -> listByAuthorizationSinglePageAsync(resourceGroupName, serviceName,
+            authorizationProviderId, authorizationId, filter, top, skip),
             nextLink -> listByAuthorizationNextSinglePageAsync(nextLink));
     }
 
@@ -365,15 +273,13 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      * @return paged Authorization Access Policy list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AuthorizationAccessPolicyContractInner> listByAuthorizationAsync(
-        String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId) {
+    private PagedFlux<AuthorizationAccessPolicyContractInner> listByAuthorizationAsync(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
-        return new PagedFlux<>(
-            () ->
-                listByAuthorizationSinglePageAsync(
-                    resourceGroupName, serviceName, authorizationProviderId, authorizationId, filter, top, skip),
+        return new PagedFlux<>(() -> listByAuthorizationSinglePageAsync(resourceGroupName, serviceName,
+            authorizationProviderId, authorizationId, filter, top, skip),
             nextLink -> listByAuthorizationNextSinglePageAsync(nextLink));
     }
 
@@ -397,26 +303,12 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      * @return paged Authorization Access Policy list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AuthorizationAccessPolicyContractInner> listByAuthorizationAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
+    private PagedFlux<AuthorizationAccessPolicyContractInner> listByAuthorizationAsync(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId, String filter, Integer top,
+        Integer skip, Context context) {
         return new PagedFlux<>(
-            () ->
-                listByAuthorizationSinglePageAsync(
-                    resourceGroupName,
-                    serviceName,
-                    authorizationProviderId,
-                    authorizationId,
-                    filter,
-                    top,
-                    skip,
-                    context),
+            () -> listByAuthorizationSinglePageAsync(resourceGroupName, serviceName, authorizationProviderId,
+                authorizationId, filter, top, skip, context),
             nextLink -> listByAuthorizationNextSinglePageAsync(nextLink, context));
     }
 
@@ -433,14 +325,13 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      * @return paged Authorization Access Policy list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AuthorizationAccessPolicyContractInner> listByAuthorization(
-        String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId) {
+    public PagedIterable<AuthorizationAccessPolicyContractInner> listByAuthorization(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
-        return new PagedIterable<>(
-            listByAuthorizationAsync(
-                resourceGroupName, serviceName, authorizationProviderId, authorizationId, filter, top, skip));
+        return new PagedIterable<>(listByAuthorizationAsync(resourceGroupName, serviceName, authorizationProviderId,
+            authorizationId, filter, top, skip));
     }
 
     /**
@@ -463,18 +354,11 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      * @return paged Authorization Access Policy list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AuthorizationAccessPolicyContractInner> listByAuthorization(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
-        return new PagedIterable<>(
-            listByAuthorizationAsync(
-                resourceGroupName, serviceName, authorizationProviderId, authorizationId, filter, top, skip, context));
+    public PagedIterable<AuthorizationAccessPolicyContractInner> listByAuthorization(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId, String filter, Integer top,
+        Integer skip, Context context) {
+        return new PagedIterable<>(listByAuthorizationAsync(resourceGroupName, serviceName, authorizationProviderId,
+            authorizationId, filter, top, skip, context));
     }
 
     /**
@@ -492,17 +376,12 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationAccessPoliciesGetResponse> getWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
+    private Mono<AuthorizationAccessPoliciesGetResponse> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId,
         String authorizationAccessPolicyId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -512,42 +391,26 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (authorizationProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
         }
         if (authorizationId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationId is required and cannot be null."));
         }
         if (authorizationAccessPolicyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter authorizationAccessPolicyId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationAccessPolicyId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            authorizationProviderId,
-                            authorizationId,
-                            authorizationAccessPolicyId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serviceName,
+                authorizationProviderId, authorizationId, authorizationAccessPolicyId, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -567,18 +430,12 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationAccessPoliciesGetResponse> getWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
+    private Mono<AuthorizationAccessPoliciesGetResponse> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -588,40 +445,26 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (authorizationProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
         }
         if (authorizationId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationId is required and cannot be null."));
         }
         if (authorizationAccessPolicyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter authorizationAccessPolicyId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationAccessPolicyId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                authorizationAccessPolicyId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serviceName, authorizationProviderId,
+            authorizationId, authorizationAccessPolicyId, this.client.getApiVersion(), this.client.getSubscriptionId(),
+            accept, context);
     }
 
     /**
@@ -639,15 +482,10 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationAccessPolicyContractInner> getAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId) {
-        return getWithResponseAsync(
-                resourceGroupName, serviceName, authorizationProviderId, authorizationId, authorizationAccessPolicyId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<AuthorizationAccessPolicyContractInner> getAsync(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId) {
+        return getWithResponseAsync(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+            authorizationAccessPolicyId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -665,21 +503,10 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      * @return the details of the authorization access policy specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationAccessPoliciesGetResponse getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                authorizationAccessPolicyId,
-                context)
-            .block();
+    public AuthorizationAccessPoliciesGetResponse getWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId, Context context) {
+        return getWithResponseAsync(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+            authorizationAccessPolicyId, context).block();
     }
 
     /**
@@ -696,20 +523,10 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      * @return the details of the authorization access policy specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationAccessPolicyContractInner get(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId) {
-        return getWithResponse(
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                authorizationAccessPolicyId,
-                Context.NONE)
-            .getValue();
+    public AuthorizationAccessPolicyContractInner get(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId) {
+        return getWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+            authorizationAccessPolicyId, Context.NONE).getValue();
     }
 
     /**
@@ -729,18 +546,11 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationAccessPoliciesCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        AuthorizationAccessPolicyContractInner parameters,
-        String ifMatch) {
+        String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId,
+        String authorizationAccessPolicyId, AuthorizationAccessPolicyContractInner parameters, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -750,25 +560,20 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (authorizationProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
         }
         if (authorizationId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationId is required and cannot be null."));
         }
         if (authorizationAccessPolicyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter authorizationAccessPolicyId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationAccessPolicyId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -777,22 +582,9 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            authorizationProviderId,
-                            authorizationId,
-                            authorizationAccessPolicyId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName,
+                authorizationProviderId, authorizationId, authorizationAccessPolicyId, ifMatch,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -814,19 +606,12 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationAccessPoliciesCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        AuthorizationAccessPolicyContractInner parameters,
-        String ifMatch,
+        String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId,
+        String authorizationAccessPolicyId, AuthorizationAccessPolicyContractInner parameters, String ifMatch,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -836,25 +621,20 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (authorizationProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
         }
         if (authorizationId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationId is required and cannot be null."));
         }
         if (authorizationAccessPolicyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter authorizationAccessPolicyId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationAccessPolicyId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -863,20 +643,9 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                authorizationAccessPolicyId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName,
+            authorizationProviderId, authorizationId, authorizationAccessPolicyId, ifMatch, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -894,23 +663,12 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      * @return authorization access policy contract on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AuthorizationAccessPolicyContractInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
+    private Mono<AuthorizationAccessPolicyContractInner> createOrUpdateAsync(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId,
         AuthorizationAccessPolicyContractInner parameters) {
         final String ifMatch = null;
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                authorizationAccessPolicyId,
-                parameters,
-                ifMatch)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+            authorizationAccessPolicyId, parameters, ifMatch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -930,25 +688,11 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      * @return authorization access policy contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationAccessPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        AuthorizationAccessPolicyContractInner parameters,
-        String ifMatch,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                authorizationAccessPolicyId,
-                parameters,
-                ifMatch,
-                context)
-            .block();
+    public AuthorizationAccessPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId,
+        AuthorizationAccessPolicyContractInner parameters, String ifMatch, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+            authorizationAccessPolicyId, parameters, ifMatch, context).block();
     }
 
     /**
@@ -966,24 +710,12 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      * @return authorization access policy contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AuthorizationAccessPolicyContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
+    public AuthorizationAccessPolicyContractInner createOrUpdate(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId,
         AuthorizationAccessPolicyContractInner parameters) {
         final String ifMatch = null;
-        return createOrUpdateWithResponse(
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                authorizationAccessPolicyId,
-                parameters,
-                ifMatch,
-                Context.NONE)
-            .getValue();
+        return createOrUpdateWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+            authorizationAccessPolicyId, parameters, ifMatch, Context.NONE).getValue();
     }
 
     /**
@@ -1002,18 +734,11 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        String ifMatch) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1023,46 +748,29 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (authorizationProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
         }
         if (authorizationId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationId is required and cannot be null."));
         }
         if (authorizationAccessPolicyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter authorizationAccessPolicyId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationAccessPolicyId is required and cannot be null."));
         }
         if (ifMatch == null) {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            authorizationProviderId,
-                            authorizationId,
-                            authorizationAccessPolicyId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serviceName,
+                authorizationProviderId, authorizationId, authorizationAccessPolicyId, ifMatch,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1083,19 +791,12 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        String ifMatch,
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId, String ifMatch,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1105,44 +806,29 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (authorizationProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationProviderId is required and cannot be null."));
         }
         if (authorizationId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter authorizationId is required and cannot be null."));
         }
         if (authorizationAccessPolicyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter authorizationAccessPolicyId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter authorizationAccessPolicyId is required and cannot be null."));
         }
         if (ifMatch == null) {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                authorizationAccessPolicyId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, authorizationProviderId,
+            authorizationId, authorizationAccessPolicyId, ifMatch, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1161,21 +847,10 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        String ifMatch) {
-        return deleteWithResponseAsync(
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                authorizationAccessPolicyId,
-                ifMatch)
-            .flatMap(ignored -> Mono.empty());
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String authorizationProviderId,
+        String authorizationId, String authorizationAccessPolicyId, String ifMatch) {
+        return deleteWithResponseAsync(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+            authorizationAccessPolicyId, ifMatch).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1195,23 +870,11 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        String ifMatch,
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId, String ifMatch,
         Context context) {
-        return deleteWithResponseAsync(
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                authorizationAccessPolicyId,
-                ifMatch,
-                context)
-            .block();
+        return deleteWithResponseAsync(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+            authorizationAccessPolicyId, ifMatch, context).block();
     }
 
     /**
@@ -1229,21 +892,10 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        String ifMatch) {
-        deleteWithResponse(
-            resourceGroupName,
-            serviceName,
-            authorizationProviderId,
-            authorizationId,
-            authorizationAccessPolicyId,
-            ifMatch,
-            Context.NONE);
+    public void delete(String resourceGroupName, String serviceName, String authorizationProviderId,
+        String authorizationId, String authorizationAccessPolicyId, String ifMatch) {
+        deleteWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+            authorizationAccessPolicyId, ifMatch, Context.NONE);
     }
 
     /**
@@ -1258,30 +910,21 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AuthorizationAccessPolicyContractInner>> listByAuthorizationNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<AuthorizationAccessPolicyContractInner>>
+        listByAuthorizationNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByAuthorizationNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AuthorizationAccessPolicyContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AuthorizationAccessPolicyContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1298,29 +941,19 @@ public final class AuthorizationAccessPoliciesClientImpl implements Authorizatio
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AuthorizationAccessPolicyContractInner>> listByAuthorizationNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AuthorizationAccessPolicyContractInner>>
+        listByAuthorizationNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByAuthorizationNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByAuthorizationNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

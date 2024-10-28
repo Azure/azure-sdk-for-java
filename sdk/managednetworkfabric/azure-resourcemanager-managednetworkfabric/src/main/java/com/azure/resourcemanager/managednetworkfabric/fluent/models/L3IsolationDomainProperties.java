@@ -133,8 +133,8 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
      * @param redistributeConnectedSubnets the redistributeConnectedSubnets value to set.
      * @return the L3IsolationDomainProperties object itself.
      */
-    public L3IsolationDomainProperties withRedistributeConnectedSubnets(
-        RedistributeConnectedSubnets redistributeConnectedSubnets) {
+    public L3IsolationDomainProperties
+        withRedistributeConnectedSubnets(RedistributeConnectedSubnets redistributeConnectedSubnets) {
         this.redistributeConnectedSubnets = redistributeConnectedSubnets;
         return this;
     }
@@ -174,8 +174,8 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
      * @param aggregateRouteConfiguration the aggregateRouteConfiguration value to set.
      * @return the L3IsolationDomainProperties object itself.
      */
-    public L3IsolationDomainProperties withAggregateRouteConfiguration(
-        AggregateRouteConfiguration aggregateRouteConfiguration) {
+    public L3IsolationDomainProperties
+        withAggregateRouteConfiguration(AggregateRouteConfiguration aggregateRouteConfiguration) {
         this.aggregateRouteConfiguration = aggregateRouteConfiguration;
         return this;
     }
@@ -195,8 +195,8 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
      * @param connectedSubnetRoutePolicy the connectedSubnetRoutePolicy value to set.
      * @return the L3IsolationDomainProperties object itself.
      */
-    public L3IsolationDomainProperties withConnectedSubnetRoutePolicy(
-        ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
+    public L3IsolationDomainProperties
+        withConnectedSubnetRoutePolicy(ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
         this.connectedSubnetRoutePolicy = connectedSubnetRoutePolicy;
         return this;
     }
@@ -217,10 +217,8 @@ public final class L3IsolationDomainProperties extends AnnotationResource {
     public void validate() {
         super.validate();
         if (networkFabricId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkFabricId in model L3IsolationDomainProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkFabricId in model L3IsolationDomainProperties"));
         }
         if (aggregateRouteConfiguration() != null) {
             aggregateRouteConfiguration().validate();

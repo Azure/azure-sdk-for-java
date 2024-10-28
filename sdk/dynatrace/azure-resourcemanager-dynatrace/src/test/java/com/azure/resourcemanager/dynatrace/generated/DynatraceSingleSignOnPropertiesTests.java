@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DynatraceSingleSignOnPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DynatraceSingleSignOnProperties model =
-            BinaryData
-                .fromString(
-                    "{\"singleSignOnState\":\"Enable\",\"enterpriseAppId\":\"zb\",\"singleSignOnUrl\":\"cnpqxuhivyqniwby\",\"aadDomains\":[\"xvd\"],\"provisioningState\":\"Accepted\"}")
-                .toObject(DynatraceSingleSignOnProperties.class);
+        DynatraceSingleSignOnProperties model = BinaryData.fromString(
+            "{\"singleSignOnState\":\"Enable\",\"enterpriseAppId\":\"zb\",\"singleSignOnUrl\":\"cnpqxuhivyqniwby\",\"aadDomains\":[\"xvd\"],\"provisioningState\":\"Accepted\"}")
+            .toObject(DynatraceSingleSignOnProperties.class);
         Assertions.assertEquals(SingleSignOnStates.ENABLE, model.singleSignOnState());
         Assertions.assertEquals("zb", model.enterpriseAppId());
         Assertions.assertEquals("cnpqxuhivyqniwby", model.singleSignOnUrl());
@@ -26,9 +24,8 @@ public final class DynatraceSingleSignOnPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynatraceSingleSignOnProperties model =
-            new DynatraceSingleSignOnProperties()
-                .withSingleSignOnState(SingleSignOnStates.ENABLE)
+        DynatraceSingleSignOnProperties model
+            = new DynatraceSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.ENABLE)
                 .withEnterpriseAppId("zb")
                 .withSingleSignOnUrl("cnpqxuhivyqniwby")
                 .withAadDomains(Arrays.asList("xvd"));

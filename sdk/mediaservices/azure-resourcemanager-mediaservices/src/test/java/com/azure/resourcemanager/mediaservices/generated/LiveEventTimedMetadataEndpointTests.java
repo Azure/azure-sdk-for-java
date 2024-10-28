@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventTimedMetadataEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventTimedMetadataEndpoint model =
-            BinaryData.fromString("{\"url\":\"nzgmwznmabik\"}").toObject(LiveEventTimedMetadataEndpoint.class);
+        LiveEventTimedMetadataEndpoint model
+            = BinaryData.fromString("{\"url\":\"nzgmwznmabik\"}").toObject(LiveEventTimedMetadataEndpoint.class);
         Assertions.assertEquals("nzgmwznmabik", model.url());
     }
 

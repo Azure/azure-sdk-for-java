@@ -33,7 +33,8 @@ public abstract class ResultWithEventHandling<TEventResult> {
      * @param callConnectionId the call connection id
      * @param operationContext the operation context
      */
-    public void setEventProcessor(CallAutomationEventProcessor eventProcessor, String callConnectionId, String operationContext) {
+    public void setEventProcessor(CallAutomationEventProcessor eventProcessor, String callConnectionId,
+        String operationContext) {
         this.eventProcessor = eventProcessor;
         this.callConnectionId = callConnectionId;
         this.operationContextFromRequest = operationContext;

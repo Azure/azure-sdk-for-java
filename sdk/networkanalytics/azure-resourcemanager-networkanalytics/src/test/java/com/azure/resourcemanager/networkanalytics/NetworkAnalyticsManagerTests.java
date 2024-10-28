@@ -27,9 +27,8 @@ public class NetworkAnalyticsManagerTests extends TestProxyTestBase {
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
-
-        networkAnalyticsManager = NetworkAnalyticsManager
-            .configure()
+      
+        networkAnalyticsManager = NetworkAnalyticsManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);

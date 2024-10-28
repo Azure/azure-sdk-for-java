@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableRpOperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableRpOperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"display\":{\"description\":\"z\",\"resource\":\"chgejspodm\",\"provider\":\"lzydehojwyahux\",\"operation\":\"pmqnja\"},\"isDataAction\":\"ixjsprozvcputeg\",\"name\":\"wmfdatscmdvpjhul\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[],\"logSpecifications\":[]}},\"origin\":\"zkrwfn\"}")
-                .toObject(AvailableRpOperationInner.class);
+        AvailableRpOperationInner model = BinaryData.fromString(
+            "{\"display\":{\"description\":\"z\",\"resource\":\"chgejspodm\",\"provider\":\"lzydehojwyahux\",\"operation\":\"pmqnja\"},\"isDataAction\":\"ixjsprozvcputeg\",\"name\":\"wmfdatscmdvpjhul\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[],\"logSpecifications\":[]}},\"origin\":\"zkrwfn\"}")
+            .toObject(AvailableRpOperationInner.class);
         Assertions.assertEquals("z", model.display().description());
         Assertions.assertEquals("chgejspodm", model.display().resource());
         Assertions.assertEquals("lzydehojwyahux", model.display().provider());
@@ -30,21 +28,16 @@ public final class AvailableRpOperationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableRpOperationInner model =
-            new AvailableRpOperationInner()
-                .withDisplay(
-                    new AvailableRpOperationDisplayInfo()
-                        .withDescription("z")
-                        .withResource("chgejspodm")
-                        .withProvider("lzydehojwyahux")
-                        .withOperation("pmqnja"))
-                .withIsDataAction("ixjsprozvcputeg")
-                .withName("wmfdatscmdvpjhul")
-                .withOrigin("zkrwfn")
-                .withServiceSpecification(
-                    new OperationMetaServiceSpecification()
-                        .withMetricSpecifications(Arrays.asList())
-                        .withLogSpecifications(Arrays.asList()));
+        AvailableRpOperationInner model = new AvailableRpOperationInner()
+            .withDisplay(new AvailableRpOperationDisplayInfo().withDescription("z")
+                .withResource("chgejspodm")
+                .withProvider("lzydehojwyahux")
+                .withOperation("pmqnja"))
+            .withIsDataAction("ixjsprozvcputeg")
+            .withName("wmfdatscmdvpjhul")
+            .withOrigin("zkrwfn")
+            .withServiceSpecification(new OperationMetaServiceSpecification().withMetricSpecifications(Arrays.asList())
+                .withLogSpecifications(Arrays.asList()));
         model = BinaryData.fromObject(model).toObject(AvailableRpOperationInner.class);
         Assertions.assertEquals("z", model.display().description());
         Assertions.assertEquals("chgejspodm", model.display().resource());

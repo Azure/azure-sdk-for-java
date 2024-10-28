@@ -19,8 +19,7 @@ public final class ManagedIdentitySqlControlSettingsModelProperties {
      * Grant sql control to managed identity
      */
     @JsonProperty(value = "grantSqlControlToManagedIdentity")
-    private ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity
-        grantSqlControlToManagedIdentity;
+    private ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity grantSqlControlToManagedIdentity;
 
     /** Creates an instance of ManagedIdentitySqlControlSettingsModelProperties class. */
     public ManagedIdentitySqlControlSettingsModelProperties() {
@@ -43,8 +42,7 @@ public final class ManagedIdentitySqlControlSettingsModelProperties {
      * @return the ManagedIdentitySqlControlSettingsModelProperties object itself.
      */
     public ManagedIdentitySqlControlSettingsModelProperties withGrantSqlControlToManagedIdentity(
-        ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity
-            grantSqlControlToManagedIdentity) {
+        ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity grantSqlControlToManagedIdentity) {
         this.grantSqlControlToManagedIdentity = grantSqlControlToManagedIdentity;
         return this;
     }

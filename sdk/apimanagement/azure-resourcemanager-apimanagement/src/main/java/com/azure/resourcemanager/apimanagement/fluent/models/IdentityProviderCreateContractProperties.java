@@ -156,16 +156,12 @@ public final class IdentityProviderCreateContractProperties extends IdentityProv
     public void validate() {
         super.validate();
         if (clientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientId in model IdentityProviderCreateContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property clientId in model IdentityProviderCreateContractProperties"));
         }
         if (clientSecret() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientSecret in model IdentityProviderCreateContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property clientSecret in model IdentityProviderCreateContractProperties"));
         }
     }
 

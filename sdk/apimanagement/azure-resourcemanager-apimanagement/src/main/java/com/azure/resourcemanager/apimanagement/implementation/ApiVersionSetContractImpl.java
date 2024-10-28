@@ -79,29 +79,25 @@ public final class ApiVersionSetContractImpl
     }
 
     public ApiVersionSetContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiVersionSets()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, versionSetId, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiVersionSets()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, versionSetId, this.innerModel(), createIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApiVersionSetContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiVersionSets()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, versionSetId, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiVersionSets()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, versionSetId, this.innerModel(), createIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
-    ApiVersionSetContractImpl(
-        String name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    ApiVersionSetContractImpl(String name,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = new ApiVersionSetContractInner();
         this.serviceManager = serviceManager;
         this.versionSetId = name;
@@ -115,29 +111,23 @@ public final class ApiVersionSetContractImpl
     }
 
     public ApiVersionSetContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiVersionSets()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, versionSetId, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiVersionSets()
+            .updateWithResponse(resourceGroupName, serviceName, versionSetId, updateIfMatch, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApiVersionSetContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiVersionSets()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, versionSetId, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiVersionSets()
+            .updateWithResponse(resourceGroupName, serviceName, versionSetId, updateIfMatch, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    ApiVersionSetContractImpl(
-        ApiVersionSetContractInner innerObject,
+    ApiVersionSetContractImpl(ApiVersionSetContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -147,22 +137,18 @@ public final class ApiVersionSetContractImpl
     }
 
     public ApiVersionSetContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiVersionSets()
-                .getWithResponse(resourceGroupName, serviceName, versionSetId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiVersionSets()
+            .getWithResponse(resourceGroupName, serviceName, versionSetId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApiVersionSetContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiVersionSets()
-                .getWithResponse(resourceGroupName, serviceName, versionSetId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiVersionSets()
+            .getWithResponse(resourceGroupName, serviceName, versionSetId, context)
+            .getValue();
         return this;
     }
 

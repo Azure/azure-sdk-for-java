@@ -261,8 +261,8 @@ public final class WorkspaceInner extends Resource {
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the WorkspaceInner object itself.
      */
-    public WorkspaceInner withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public WorkspaceInner
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WorkspaceProperties();
         }
@@ -326,8 +326,8 @@ public final class WorkspaceInner extends Resource {
      * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set.
      * @return the WorkspaceInner object itself.
      */
-    public WorkspaceInner withManagedVirtualNetworkSettings(
-        ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+    public WorkspaceInner
+        withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WorkspaceProperties();
         }
@@ -350,8 +350,8 @@ public final class WorkspaceInner extends Resource {
      * @param workspaceRepositoryConfiguration the workspaceRepositoryConfiguration value to set.
      * @return the WorkspaceInner object itself.
      */
-    public WorkspaceInner withWorkspaceRepositoryConfiguration(
-        WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
+    public WorkspaceInner
+        withWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WorkspaceProperties();
         }

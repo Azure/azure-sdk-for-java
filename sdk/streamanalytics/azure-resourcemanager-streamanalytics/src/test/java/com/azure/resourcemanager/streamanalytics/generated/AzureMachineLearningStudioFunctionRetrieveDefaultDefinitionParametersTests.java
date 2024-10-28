@@ -23,7 +23,8 @@ public final class AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionPa
     public void testSerialize() throws Exception {
         AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters model
             = new AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters()
-                .withExecuteEndpoint("uoujmkcjhwqy").withUdfType(UdfType.SCALAR);
+                .withExecuteEndpoint("uoujmkcjhwqy")
+                .withUdfType(UdfType.SCALAR);
         model = BinaryData.fromObject(model)
             .toObject(AzureMachineLearningStudioFunctionRetrieveDefaultDefinitionParameters.class);
         Assertions.assertEquals("uoujmkcjhwqy", model.executeEndpoint());

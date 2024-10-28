@@ -73,8 +73,8 @@ public class PublishTelemetryTests extends PublishTelemetryTestBase {
 
         client.createModels(new ArrayList<>(Arrays.asList(wifiModelPayload, roomWithWifiModelPayload)));
 
-        String roomWithWifiTwinPayload = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId,
-            TestAssetDefaults.WIFI_COMPONENT_NAME);
+        String roomWithWifiTwinPayload
+            = TestAssetsHelper.getRoomWithWifiTwinPayload(roomWithWifiModelId, TestAssetDefaults.WIFI_COMPONENT_NAME);
 
         client.createOrReplaceDigitalTwin(roomWithWifiTwinId, roomWithWifiTwinPayload, String.class);
     }

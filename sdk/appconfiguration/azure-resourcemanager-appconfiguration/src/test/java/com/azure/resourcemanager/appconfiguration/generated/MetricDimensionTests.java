@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricDimensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricDimension model =
-            BinaryData
-                .fromString("{\"name\":\"ectehf\",\"displayName\":\"scjeypv\",\"internalName\":\"zrkgqhcjrefovg\"}")
-                .toObject(MetricDimension.class);
+        MetricDimension model = BinaryData
+            .fromString("{\"name\":\"ectehf\",\"displayName\":\"scjeypv\",\"internalName\":\"zrkgqhcjrefovg\"}")
+            .toObject(MetricDimension.class);
         Assertions.assertEquals("ectehf", model.name());
         Assertions.assertEquals("scjeypv", model.displayName());
         Assertions.assertEquals("zrkgqhcjrefovg", model.internalName());
@@ -22,8 +21,8 @@ public final class MetricDimensionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricDimension model =
-            new MetricDimension().withName("ectehf").withDisplayName("scjeypv").withInternalName("zrkgqhcjrefovg");
+        MetricDimension model
+            = new MetricDimension().withName("ectehf").withDisplayName("scjeypv").withInternalName("zrkgqhcjrefovg");
         model = BinaryData.fromObject(model).toObject(MetricDimension.class);
         Assertions.assertEquals("ectehf", model.name());
         Assertions.assertEquals("scjeypv", model.displayName());

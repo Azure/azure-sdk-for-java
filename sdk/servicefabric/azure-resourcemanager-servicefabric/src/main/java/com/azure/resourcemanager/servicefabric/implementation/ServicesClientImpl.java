@@ -838,7 +838,8 @@ public final class ServicesClientImpl implements ServicesClient {
     private Mono<ServiceResourceInner> updateAsync(String resourceGroupName, String clusterName, String applicationName,
         String serviceName, ServiceResourceUpdate parameters, Context context) {
         return beginUpdateAsync(resourceGroupName, clusterName, applicationName, serviceName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

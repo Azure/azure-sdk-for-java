@@ -21,8 +21,8 @@ public interface OutboundNetworkDependenciesEndpoints {
      * @return the network endpoints of all outbound dependencies of a ApiManagement service along with {@link
      *     Response}.
      */
-    Response<OutboundEnvironmentEndpointList> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<OutboundEnvironmentEndpointList> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets the network endpoints of all outbound dependencies of a ApiManagement service.

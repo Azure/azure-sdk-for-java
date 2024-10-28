@@ -42,9 +42,7 @@ public final class CommunicationErrorResponse implements JsonSerializable<Commun
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeJsonField("error", error)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeJsonField("error", error).writeEndObject();
     }
 
     /**

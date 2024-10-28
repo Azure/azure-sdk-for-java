@@ -145,10 +145,8 @@ public final class NeighborGroupInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model NeighborGroupInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model NeighborGroupInner"));
         } else {
             innerProperties().validate();
         }

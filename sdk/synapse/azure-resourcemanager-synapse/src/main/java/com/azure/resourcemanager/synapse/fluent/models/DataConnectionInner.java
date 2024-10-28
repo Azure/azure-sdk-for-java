@@ -25,8 +25,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "EventHub", value = EventHubDataConnection.class),
     @JsonSubTypes.Type(name = "IotHub", value = IotHubDataConnection.class),
-    @JsonSubTypes.Type(name = "EventGrid", value = EventGridDataConnection.class)
-})
+    @JsonSubTypes.Type(name = "EventGrid", value = EventGridDataConnection.class) })
 @Fluent
 public class DataConnectionInner extends ProxyResource {
     /*

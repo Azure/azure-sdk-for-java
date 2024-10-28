@@ -72,8 +72,8 @@ public final class TransferConfiguration {
      * @param transferFilterDetails the transferFilterDetails value to set.
      * @return the TransferConfiguration object itself.
      */
-    public TransferConfiguration withTransferFilterDetails(
-        TransferConfigurationTransferFilterDetails transferFilterDetails) {
+    public TransferConfiguration
+        withTransferFilterDetails(TransferConfigurationTransferFilterDetails transferFilterDetails) {
         this.transferFilterDetails = transferFilterDetails;
         return this;
     }
@@ -107,10 +107,8 @@ public final class TransferConfiguration {
      */
     public void validate() {
         if (transferConfigurationType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property transferConfigurationType in model TransferConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property transferConfigurationType in model TransferConfiguration"));
         }
         if (transferFilterDetails() != null) {
             transferFilterDetails().validate();

@@ -13,20 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SapLandscapeMonitorListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapLandscapeMonitorListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"topMetricsThresholds\":[]},\"id\":\"ibahwflus\",\"name\":\"dtmhrkwofyyvoqa\",\"type\":\"piexpbtgiw\"}],\"nextLink\":\"oenwashr\"}")
-                .toObject(SapLandscapeMonitorListResultInner.class);
+        SapLandscapeMonitorListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"topMetricsThresholds\":[]},\"id\":\"ibahwflus\",\"name\":\"dtmhrkwofyyvoqa\",\"type\":\"piexpbtgiw\"}],\"nextLink\":\"oenwashr\"}")
+            .toObject(SapLandscapeMonitorListResultInner.class);
         Assertions.assertEquals("oenwashr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapLandscapeMonitorListResultInner model =
-            new SapLandscapeMonitorListResultInner()
-                .withValue(Arrays.asList(new SapLandscapeMonitorInner().withTopMetricsThresholds(Arrays.asList())))
-                .withNextLink("oenwashr");
+        SapLandscapeMonitorListResultInner model = new SapLandscapeMonitorListResultInner()
+            .withValue(Arrays.asList(new SapLandscapeMonitorInner().withTopMetricsThresholds(Arrays.asList())))
+            .withNextLink("oenwashr");
         model = BinaryData.fromObject(model).toObject(SapLandscapeMonitorListResultInner.class);
         Assertions.assertEquals("oenwashr", model.nextLink());
     }

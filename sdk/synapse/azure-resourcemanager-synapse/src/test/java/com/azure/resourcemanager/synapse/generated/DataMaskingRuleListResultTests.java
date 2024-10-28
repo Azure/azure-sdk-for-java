@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DataMaskingRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataMaskingRuleListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"id\":\"hvbbxuripltfnh\",\"aliasName\":\"axkgx\",\"ruleState\":\"Disabled\",\"schemaName\":\"ckpyklyhplu\",\"tableName\":\"dpvruud\",\"columnName\":\"gzibthostgktstv\",\"maskingFunction\":\"Number\",\"numberFrom\":\"clzedqbcvh\",\"numberTo\":\"h\",\"prefixSize\":\"odqkdlwwqfb\",\"suffixSize\":\"lkxt\",\"replacementString\":\"jfsmlmbtxhwgfwsr\"},\"location\":\"wcoezbrhub\",\"kind\":\"hud\",\"id\":\"goo\",\"name\":\"kkqfqjbvle\",\"type\":\"rfmluiqtq\"},{\"properties\":{\"id\":\"vyvnqqyb\",\"aliasName\":\"yeua\",\"ruleState\":\"Disabled\",\"schemaName\":\"qabqgzslesjcb\",\"tableName\":\"ernntiewdjcvbquw\",\"columnName\":\"behwagohb\",\"maskingFunction\":\"SSN\",\"numberFrom\":\"kmr\",\"numberTo\":\"mvvhmxtdrjfuta\",\"prefixSize\":\"ebjvewzcjzn\",\"suffixSize\":\"cpmguaadraufact\",\"replacementString\":\"hzovaj\"},\"location\":\"iuxxpshneekulfg\",\"kind\":\"qubkw\",\"id\":\"lenrd\",\"name\":\"utujba\",\"type\":\"pjuohminyfl\"},{\"properties\":{\"id\":\"wmd\",\"aliasName\":\"wpklvxw\",\"ruleState\":\"Disabled\",\"schemaName\":\"dxpgpqchiszepnnb\",\"tableName\":\"crxgibb\",\"columnName\":\"axconfozauo\",\"maskingFunction\":\"Text\",\"numberFrom\":\"kokwbqplhlvnu\",\"numberTo\":\"pzlrphw\",\"prefixSize\":\"oldweyuqdu\",\"suffixSize\":\"mnnrwr\",\"replacementString\":\"ork\"},\"location\":\"lywjhh\",\"kind\":\"nhxmsi\",\"id\":\"fomiloxgg\",\"name\":\"ufiqndieuzaof\",\"type\":\"chvcyyysfgdo\"}]}")
-                .toObject(DataMaskingRuleListResult.class);
+        DataMaskingRuleListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"id\":\"hvbbxuripltfnh\",\"aliasName\":\"axkgx\",\"ruleState\":\"Disabled\",\"schemaName\":\"ckpyklyhplu\",\"tableName\":\"dpvruud\",\"columnName\":\"gzibthostgktstv\",\"maskingFunction\":\"Number\",\"numberFrom\":\"clzedqbcvh\",\"numberTo\":\"h\",\"prefixSize\":\"odqkdlwwqfb\",\"suffixSize\":\"lkxt\",\"replacementString\":\"jfsmlmbtxhwgfwsr\"},\"location\":\"wcoezbrhub\",\"kind\":\"hud\",\"id\":\"goo\",\"name\":\"kkqfqjbvle\",\"type\":\"rfmluiqtq\"},{\"properties\":{\"id\":\"vyvnqqyb\",\"aliasName\":\"yeua\",\"ruleState\":\"Disabled\",\"schemaName\":\"qabqgzslesjcb\",\"tableName\":\"ernntiewdjcvbquw\",\"columnName\":\"behwagohb\",\"maskingFunction\":\"SSN\",\"numberFrom\":\"kmr\",\"numberTo\":\"mvvhmxtdrjfuta\",\"prefixSize\":\"ebjvewzcjzn\",\"suffixSize\":\"cpmguaadraufact\",\"replacementString\":\"hzovaj\"},\"location\":\"iuxxpshneekulfg\",\"kind\":\"qubkw\",\"id\":\"lenrd\",\"name\":\"utujba\",\"type\":\"pjuohminyfl\"},{\"properties\":{\"id\":\"wmd\",\"aliasName\":\"wpklvxw\",\"ruleState\":\"Disabled\",\"schemaName\":\"dxpgpqchiszepnnb\",\"tableName\":\"crxgibb\",\"columnName\":\"axconfozauo\",\"maskingFunction\":\"Text\",\"numberFrom\":\"kokwbqplhlvnu\",\"numberTo\":\"pzlrphw\",\"prefixSize\":\"oldweyuqdu\",\"suffixSize\":\"mnnrwr\",\"replacementString\":\"ork\"},\"location\":\"lywjhh\",\"kind\":\"nhxmsi\",\"id\":\"fomiloxgg\",\"name\":\"ufiqndieuzaof\",\"type\":\"chvcyyysfgdo\"}]}")
+            .toObject(DataMaskingRuleListResult.class);
         Assertions.assertEquals("axkgx", model.value().get(0).aliasName());
         Assertions.assertEquals(DataMaskingRuleState.DISABLED, model.value().get(0).ruleState());
         Assertions.assertEquals("ckpyklyhplu", model.value().get(0).schemaName());
@@ -35,47 +33,40 @@ public final class DataMaskingRuleListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataMaskingRuleListResult model =
-            new DataMaskingRuleListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DataMaskingRuleInner()
-                                .withAliasName("axkgx")
-                                .withRuleState(DataMaskingRuleState.DISABLED)
-                                .withSchemaName("ckpyklyhplu")
-                                .withTableName("dpvruud")
-                                .withColumnName("gzibthostgktstv")
-                                .withMaskingFunction(DataMaskingFunction.NUMBER)
-                                .withNumberFrom("clzedqbcvh")
-                                .withNumberTo("h")
-                                .withPrefixSize("odqkdlwwqfb")
-                                .withSuffixSize("lkxt")
-                                .withReplacementString("jfsmlmbtxhwgfwsr"),
-                            new DataMaskingRuleInner()
-                                .withAliasName("yeua")
-                                .withRuleState(DataMaskingRuleState.DISABLED)
-                                .withSchemaName("qabqgzslesjcb")
-                                .withTableName("ernntiewdjcvbquw")
-                                .withColumnName("behwagohb")
-                                .withMaskingFunction(DataMaskingFunction.SSN)
-                                .withNumberFrom("kmr")
-                                .withNumberTo("mvvhmxtdrjfuta")
-                                .withPrefixSize("ebjvewzcjzn")
-                                .withSuffixSize("cpmguaadraufact")
-                                .withReplacementString("hzovaj"),
-                            new DataMaskingRuleInner()
-                                .withAliasName("wpklvxw")
-                                .withRuleState(DataMaskingRuleState.DISABLED)
-                                .withSchemaName("dxpgpqchiszepnnb")
-                                .withTableName("crxgibb")
-                                .withColumnName("axconfozauo")
-                                .withMaskingFunction(DataMaskingFunction.TEXT)
-                                .withNumberFrom("kokwbqplhlvnu")
-                                .withNumberTo("pzlrphw")
-                                .withPrefixSize("oldweyuqdu")
-                                .withSuffixSize("mnnrwr")
-                                .withReplacementString("ork")));
+        DataMaskingRuleListResult model = new DataMaskingRuleListResult().withValue(Arrays.asList(
+            new DataMaskingRuleInner().withAliasName("axkgx")
+                .withRuleState(DataMaskingRuleState.DISABLED)
+                .withSchemaName("ckpyklyhplu")
+                .withTableName("dpvruud")
+                .withColumnName("gzibthostgktstv")
+                .withMaskingFunction(DataMaskingFunction.NUMBER)
+                .withNumberFrom("clzedqbcvh")
+                .withNumberTo("h")
+                .withPrefixSize("odqkdlwwqfb")
+                .withSuffixSize("lkxt")
+                .withReplacementString("jfsmlmbtxhwgfwsr"),
+            new DataMaskingRuleInner().withAliasName("yeua")
+                .withRuleState(DataMaskingRuleState.DISABLED)
+                .withSchemaName("qabqgzslesjcb")
+                .withTableName("ernntiewdjcvbquw")
+                .withColumnName("behwagohb")
+                .withMaskingFunction(DataMaskingFunction.SSN)
+                .withNumberFrom("kmr")
+                .withNumberTo("mvvhmxtdrjfuta")
+                .withPrefixSize("ebjvewzcjzn")
+                .withSuffixSize("cpmguaadraufact")
+                .withReplacementString("hzovaj"),
+            new DataMaskingRuleInner().withAliasName("wpklvxw")
+                .withRuleState(DataMaskingRuleState.DISABLED)
+                .withSchemaName("dxpgpqchiszepnnb")
+                .withTableName("crxgibb")
+                .withColumnName("axconfozauo")
+                .withMaskingFunction(DataMaskingFunction.TEXT)
+                .withNumberFrom("kokwbqplhlvnu")
+                .withNumberTo("pzlrphw")
+                .withPrefixSize("oldweyuqdu")
+                .withSuffixSize("mnnrwr")
+                .withReplacementString("ork")));
         model = BinaryData.fromObject(model).toObject(DataMaskingRuleListResult.class);
         Assertions.assertEquals("axkgx", model.value().get(0).aliasName());
         Assertions.assertEquals(DataMaskingRuleState.DISABLED, model.value().get(0).ruleState());

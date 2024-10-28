@@ -17,14 +17,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for Activity Log Alert management API. */
 @Fluent
-public interface ActivityLogAlerts
-    extends SupportsCreating<ActivityLogAlert.DefinitionStages.Blank>,
-        SupportsListing<ActivityLogAlert>,
-        SupportsListingByResourceGroup<ActivityLogAlert>,
-        SupportsGettingById<ActivityLogAlert>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<ActivityLogAlert>,
-        SupportsBatchDeletion,
-        HasManager<MonitorManager> {
+public interface ActivityLogAlerts extends SupportsCreating<ActivityLogAlert.DefinitionStages.Blank>,
+    SupportsListing<ActivityLogAlert>, SupportsListingByResourceGroup<ActivityLogAlert>,
+    SupportsGettingById<ActivityLogAlert>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<ActivityLogAlert>, SupportsBatchDeletion, HasManager<MonitorManager> {
 }

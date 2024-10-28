@@ -15,9 +15,8 @@ import reactor.core.publisher.Mono;
 /**
  * The implementation of {@link Features}.
  */
-public final class FeaturesImpl
-        extends ReadableWrappersImpl<Feature, FeatureImpl, FeatureResultInner>
-        implements Features {
+public final class FeaturesImpl extends ReadableWrappersImpl<Feature, FeatureImpl, FeatureResultInner>
+    implements Features {
     private final FeaturesClient client;
 
     public FeaturesImpl(final FeaturesClient client) {

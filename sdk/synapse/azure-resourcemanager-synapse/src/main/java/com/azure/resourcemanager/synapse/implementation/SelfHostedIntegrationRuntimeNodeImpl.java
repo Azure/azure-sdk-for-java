@@ -17,8 +17,7 @@ public final class SelfHostedIntegrationRuntimeNodeImpl implements SelfHostedInt
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    SelfHostedIntegrationRuntimeNodeImpl(
-        SelfHostedIntegrationRuntimeNodeInner innerObject,
+    SelfHostedIntegrationRuntimeNodeImpl(SelfHostedIntegrationRuntimeNodeInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

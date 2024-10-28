@@ -11,16 +11,15 @@ import com.azure.resourcemanager.synapse.models.LinkedIntegrationRuntimeType;
 public final class SelfHostedIntegrationRuntimeTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SelfHostedIntegrationRuntimeTypeProperties model =
-            BinaryData
-                .fromString("{\"linkedInfo\":{\"authorizationType\":\"LinkedIntegrationRuntimeType\"}}")
+        SelfHostedIntegrationRuntimeTypeProperties model
+            = BinaryData.fromString("{\"linkedInfo\":{\"authorizationType\":\"LinkedIntegrationRuntimeType\"}}")
                 .toObject(SelfHostedIntegrationRuntimeTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SelfHostedIntegrationRuntimeTypeProperties model =
-            new SelfHostedIntegrationRuntimeTypeProperties().withLinkedInfo(new LinkedIntegrationRuntimeType());
+        SelfHostedIntegrationRuntimeTypeProperties model
+            = new SelfHostedIntegrationRuntimeTypeProperties().withLinkedInfo(new LinkedIntegrationRuntimeType());
         model = BinaryData.fromObject(model).toObject(SelfHostedIntegrationRuntimeTypeProperties.class);
     }
 }

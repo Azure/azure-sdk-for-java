@@ -55,52 +55,41 @@ public final class AlertsClientImpl implements AlertsClient {
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
     public interface AlertsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.CostManagement/alerts")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AlertsResultInner>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AlertsResultInner>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.CostManagement/alerts/{alertId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AlertInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @PathParam(value = "alertId", encoded = true) String alertId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<AlertInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
+            @PathParam(value = "alertId", encoded = true) String alertId, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/{scope}/providers/Microsoft.CostManagement/alerts/{alertId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AlertInner>> dismiss(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam(value = "scope", encoded = true) String scope,
+        Mono<Response<AlertInner>> dismiss(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam(value = "alertId", encoded = true) String alertId,
-            @BodyParam("application/json") DismissAlertPayload parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") DismissAlertPayload parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.CostManagement/{externalCloudProviderType}/{externalCloudProviderId}/alerts")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AlertsResultInner>> listExternal(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AlertsResultInner>> listExternal(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("externalCloudProviderType") ExternalCloudProviderType externalCloudProviderType,
-            @PathParam("externalCloudProviderId") String externalCloudProviderId,
-            @HeaderParam("Accept") String accept,
+            @PathParam("externalCloudProviderId") String externalCloudProviderId, @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -129,10 +118,8 @@ public final class AlertsClientImpl implements AlertsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertsResultInner>> listWithResponseAsync(String scope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -170,10 +157,8 @@ public final class AlertsClientImpl implements AlertsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertsResultInner>> listWithResponseAsync(String scope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -291,10 +276,8 @@ public final class AlertsClientImpl implements AlertsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertInner>> getWithResponseAsync(String scope, String alertId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -304,10 +287,8 @@ public final class AlertsClientImpl implements AlertsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(this.client.getEndpoint(), this.client.getApiVersion(), scope, alertId, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), scope, alertId,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -338,10 +319,8 @@ public final class AlertsClientImpl implements AlertsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertInner>> getWithResponseAsync(String scope, String alertId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -464,13 +443,11 @@ public final class AlertsClientImpl implements AlertsClient {
      * @return an individual alert along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AlertInner>> dismissWithResponseAsync(
-        String scope, String alertId, DismissAlertPayload parameters) {
+    private Mono<Response<AlertInner>> dismissWithResponseAsync(String scope, String alertId,
+        DismissAlertPayload parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -485,17 +462,8 @@ public final class AlertsClientImpl implements AlertsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .dismiss(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            scope,
-                            alertId,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.dismiss(this.client.getEndpoint(), this.client.getApiVersion(), scope,
+                alertId, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -525,13 +493,11 @@ public final class AlertsClientImpl implements AlertsClient {
      * @return an individual alert along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AlertInner>> dismissWithResponseAsync(
-        String scope, String alertId, DismissAlertPayload parameters, Context context) {
+    private Mono<Response<AlertInner>> dismissWithResponseAsync(String scope, String alertId,
+        DismissAlertPayload parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -546,9 +512,8 @@ public final class AlertsClientImpl implements AlertsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .dismiss(
-                this.client.getEndpoint(), this.client.getApiVersion(), scope, alertId, parameters, accept, context);
+        return service.dismiss(this.client.getEndpoint(), this.client.getApiVersion(), scope, alertId, parameters,
+            accept, context);
     }
 
     /**
@@ -606,8 +571,8 @@ public final class AlertsClientImpl implements AlertsClient {
      * @return an individual alert along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AlertInner> dismissWithResponse(
-        String scope, String alertId, DismissAlertPayload parameters, Context context) {
+    public Response<AlertInner> dismissWithResponse(String scope, String alertId, DismissAlertPayload parameters,
+        Context context) {
         return dismissWithResponseAsync(scope, alertId, parameters, context).block();
     }
 
@@ -657,34 +622,21 @@ public final class AlertsClientImpl implements AlertsClient {
     private Mono<Response<AlertsResultInner>> listExternalWithResponseAsync(
         ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (externalCloudProviderType == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter externalCloudProviderType is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter externalCloudProviderType is required and cannot be null."));
         }
         if (externalCloudProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter externalCloudProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter externalCloudProviderId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listExternal(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            externalCloudProviderType,
-                            externalCloudProviderId,
-                            accept,
-                            context))
+            .withContext(context -> service.listExternal(this.client.getEndpoint(), this.client.getApiVersion(),
+                externalCloudProviderType, externalCloudProviderId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -706,32 +658,21 @@ public final class AlertsClientImpl implements AlertsClient {
     private Mono<Response<AlertsResultInner>> listExternalWithResponseAsync(
         ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (externalCloudProviderType == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter externalCloudProviderType is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter externalCloudProviderType is required and cannot be null."));
         }
         if (externalCloudProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter externalCloudProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter externalCloudProviderId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listExternal(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                externalCloudProviderType,
-                externalCloudProviderId,
-                accept,
-                context);
+        return service.listExternal(this.client.getEndpoint(), this.client.getApiVersion(), externalCloudProviderType,
+            externalCloudProviderId, accept, context);
     }
 
     /**
@@ -748,8 +689,8 @@ public final class AlertsClientImpl implements AlertsClient {
      * @return result of alerts on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AlertsResultInner> listExternalAsync(
-        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId) {
+    private Mono<AlertsResultInner> listExternalAsync(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId) {
         return listExternalWithResponseAsync(externalCloudProviderType, externalCloudProviderId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -769,8 +710,8 @@ public final class AlertsClientImpl implements AlertsClient {
      * @return result of alerts along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AlertsResultInner> listExternalWithResponse(
-        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, Context context) {
+    public Response<AlertsResultInner> listExternalWithResponse(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId, Context context) {
         return listExternalWithResponseAsync(externalCloudProviderType, externalCloudProviderId, context).block();
     }
 
@@ -788,8 +729,8 @@ public final class AlertsClientImpl implements AlertsClient {
      * @return result of alerts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AlertsResultInner listExternal(
-        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId) {
+    public AlertsResultInner listExternal(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId) {
         return listExternalWithResponse(externalCloudProviderType, externalCloudProviderId, Context.NONE).getValue();
     }
 }

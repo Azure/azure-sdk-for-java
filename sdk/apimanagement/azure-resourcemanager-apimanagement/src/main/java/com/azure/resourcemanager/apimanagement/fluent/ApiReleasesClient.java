@@ -53,14 +53,8 @@ public interface ApiReleasesClient {
      * @return paged ApiRelease list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApiReleaseContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<ApiReleaseContractInner> listByService(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Returns the etag of an API release.
@@ -76,8 +70,8 @@ public interface ApiReleasesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiReleasesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, Context context);
+    ApiReleasesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String releaseId, Context context);
 
     /**
      * Returns the etag of an API release.
@@ -107,8 +101,8 @@ public interface ApiReleasesClient {
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiReleasesGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, Context context);
+    ApiReleasesGetResponse getWithResponse(String resourceGroupName, String serviceName, String apiId, String releaseId,
+        Context context);
 
     /**
      * Returns the details of an API release.
@@ -141,14 +135,8 @@ public interface ApiReleasesClient {
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiReleasesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String releaseId,
-        ApiReleaseContractInner parameters,
-        String ifMatch,
-        Context context);
+    ApiReleasesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String releaseId, ApiReleaseContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates a new Release for the API.
@@ -164,11 +152,7 @@ public interface ApiReleasesClient {
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiReleaseContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String releaseId,
+    ApiReleaseContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId, String releaseId,
         ApiReleaseContractInner parameters);
 
     /**
@@ -188,14 +172,8 @@ public interface ApiReleasesClient {
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiReleasesUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String releaseId,
-        String ifMatch,
-        ApiReleaseContractInner parameters,
-        Context context);
+    ApiReleasesUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String releaseId, String ifMatch, ApiReleaseContractInner parameters, Context context);
 
     /**
      * Updates the details of the release of the API specified by its identifier.
@@ -213,13 +191,8 @@ public interface ApiReleasesClient {
      * @return apiRelease details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiReleaseContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String releaseId,
-        String ifMatch,
-        ApiReleaseContractInner parameters);
+    ApiReleaseContractInner update(String resourceGroupName, String serviceName, String apiId, String releaseId,
+        String ifMatch, ApiReleaseContractInner parameters);
 
     /**
      * Deletes the specified release in the API.
@@ -237,8 +210,8 @@ public interface ApiReleasesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String releaseId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String releaseId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified release in the API.

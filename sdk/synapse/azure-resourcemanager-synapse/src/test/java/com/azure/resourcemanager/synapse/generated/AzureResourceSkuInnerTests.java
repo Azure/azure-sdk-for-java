@@ -16,13 +16,11 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureResourceSkuInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureResourceSkuInner model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"pcmsplbyrrueqth\",\"sku\":{\"name\":\"Storage"
-                        + " optimized\",\"capacity\":1745918799,\"size\":\"Extra"
-                        + " small\"},\"capacity\":{\"scaleType\":\"none\",\"minimum\":1035435705,\"maximum\":806995622,\"default\":1214736566}}")
-                .toObject(AzureResourceSkuInner.class);
+        AzureResourceSkuInner model = BinaryData
+            .fromString("{\"resourceType\":\"pcmsplbyrrueqth\",\"sku\":{\"name\":\"Storage"
+                + " optimized\",\"capacity\":1745918799,\"size\":\"Extra"
+                + " small\"},\"capacity\":{\"scaleType\":\"none\",\"minimum\":1035435705,\"maximum\":806995622,\"default\":1214736566}}")
+            .toObject(AzureResourceSkuInner.class);
         Assertions.assertEquals("pcmsplbyrrueqth", model.resourceType());
         Assertions.assertEquals(SkuName.STORAGE_OPTIMIZED, model.sku().name());
         Assertions.assertEquals(1745918799, model.sku().capacity());
@@ -35,20 +33,14 @@ public final class AzureResourceSkuInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureResourceSkuInner model =
-            new AzureResourceSkuInner()
-                .withResourceType("pcmsplbyrrueqth")
-                .withSku(
-                    new AzureSku()
-                        .withName(SkuName.STORAGE_OPTIMIZED)
-                        .withCapacity(1745918799)
-                        .withSize(SkuSize.EXTRA_SMALL))
-                .withCapacity(
-                    new AzureCapacity()
-                        .withScaleType(AzureScaleType.NONE)
-                        .withMinimum(1035435705)
-                        .withMaximum(806995622)
-                        .withDefaultProperty(1214736566));
+        AzureResourceSkuInner model = new AzureResourceSkuInner().withResourceType("pcmsplbyrrueqth")
+            .withSku(new AzureSku().withName(SkuName.STORAGE_OPTIMIZED)
+                .withCapacity(1745918799)
+                .withSize(SkuSize.EXTRA_SMALL))
+            .withCapacity(new AzureCapacity().withScaleType(AzureScaleType.NONE)
+                .withMinimum(1035435705)
+                .withMaximum(806995622)
+                .withDefaultProperty(1214736566));
         model = BinaryData.fromObject(model).toObject(AzureResourceSkuInner.class);
         Assertions.assertEquals("pcmsplbyrrueqth", model.resourceType());
         Assertions.assertEquals(SkuName.STORAGE_OPTIMIZED, model.sku().name());

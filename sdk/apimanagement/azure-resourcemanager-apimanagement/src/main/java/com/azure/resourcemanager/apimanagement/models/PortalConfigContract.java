@@ -113,14 +113,9 @@ public interface PortalConfigContract {
          * The stage of the PortalConfigContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithEnableBasicAuth,
-                DefinitionStages.WithSignin,
-                DefinitionStages.WithSignup,
-                DefinitionStages.WithDelegation,
-                DefinitionStages.WithCors,
-                DefinitionStages.WithCsp,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithEnableBasicAuth, DefinitionStages.WithSignin,
+            DefinitionStages.WithSignup, DefinitionStages.WithDelegation, DefinitionStages.WithCors,
+            DefinitionStages.WithCsp, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -225,14 +220,8 @@ public interface PortalConfigContract {
     PortalConfigContract.Update update();
 
     /** The template for PortalConfigContract update. */
-    interface Update
-        extends UpdateStages.WithEnableBasicAuth,
-            UpdateStages.WithSignin,
-            UpdateStages.WithSignup,
-            UpdateStages.WithDelegation,
-            UpdateStages.WithCors,
-            UpdateStages.WithCsp,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithEnableBasicAuth, UpdateStages.WithSignin, UpdateStages.WithSignup,
+        UpdateStages.WithDelegation, UpdateStages.WithCors, UpdateStages.WithCsp, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

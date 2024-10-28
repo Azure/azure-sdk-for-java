@@ -63,8 +63,8 @@ public class ChatClientTest extends ChatClientTestBase {
     public void canCreateThread(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canCreateThreadSync");
-        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
-            firstThreadMember.getId(), secondThreadMember.getId());
+        CreateChatThreadOptions threadRequest
+            = ChatOptionsProvider.createThreadOptions(firstThreadMember.getId(), secondThreadMember.getId());
 
         // Action & Assert
         CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
@@ -78,8 +78,8 @@ public class ChatClientTest extends ChatClientTestBase {
     public void canCreateThreadWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canCreateThreadWithResponseSync");
-        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
-            firstThreadMember.getId(), secondThreadMember.getId());
+        CreateChatThreadOptions threadRequest
+            = ChatOptionsProvider.createThreadOptions(firstThreadMember.getId(), secondThreadMember.getId());
 
         // Action & Assert
         CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
@@ -106,8 +106,8 @@ public class ChatClientTest extends ChatClientTestBase {
     public void canDeleteChatThread(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canDeleteChatThreadSync");
-        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
-            firstThreadMember.getId(), secondThreadMember.getId());
+        CreateChatThreadOptions threadRequest
+            = ChatOptionsProvider.createThreadOptions(firstThreadMember.getId(), secondThreadMember.getId());
         CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
         ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
 
@@ -120,8 +120,8 @@ public class ChatClientTest extends ChatClientTestBase {
     public void canDeleteChatThreadWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canDeleteChatThreadWithResponseSync");
-        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
-            firstThreadMember.getId(), secondThreadMember.getId());
+        CreateChatThreadOptions threadRequest
+            = ChatOptionsProvider.createThreadOptions(firstThreadMember.getId(), secondThreadMember.getId());
         CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
         ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
 
@@ -134,10 +134,10 @@ public class ChatClientTest extends ChatClientTestBase {
     public void canListChatThreads(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canListChatThreadsSync");
-        CreateChatThreadOptions threadRequest1 = ChatOptionsProvider.createThreadOptions(
-            firstThreadMember.getId(), secondThreadMember.getId());
-        CreateChatThreadOptions threadRequest2 = ChatOptionsProvider.createThreadOptions(
-            firstThreadMember.getId(), secondThreadMember.getId());
+        CreateChatThreadOptions threadRequest1
+            = ChatOptionsProvider.createThreadOptions(firstThreadMember.getId(), secondThreadMember.getId());
+        CreateChatThreadOptions threadRequest2
+            = ChatOptionsProvider.createThreadOptions(firstThreadMember.getId(), secondThreadMember.getId());
         client.createChatThread(threadRequest1);
         client.createChatThread(threadRequest2);
 
@@ -161,10 +161,10 @@ public class ChatClientTest extends ChatClientTestBase {
     public void canListChatThreadsWithMaxPageSize(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canListChatThreadsWithMaxPageSizeSync");
-        CreateChatThreadOptions threadRequest1 = ChatOptionsProvider.createThreadOptions(
-            firstThreadMember.getId(), secondThreadMember.getId());
-        CreateChatThreadOptions threadRequest2 = ChatOptionsProvider.createThreadOptions(
-            firstThreadMember.getId(), secondThreadMember.getId());
+        CreateChatThreadOptions threadRequest1
+            = ChatOptionsProvider.createThreadOptions(firstThreadMember.getId(), secondThreadMember.getId());
+        CreateChatThreadOptions threadRequest2
+            = ChatOptionsProvider.createThreadOptions(firstThreadMember.getId(), secondThreadMember.getId());
         client.createChatThread(threadRequest1);
         client.createChatThread(threadRequest2);
 

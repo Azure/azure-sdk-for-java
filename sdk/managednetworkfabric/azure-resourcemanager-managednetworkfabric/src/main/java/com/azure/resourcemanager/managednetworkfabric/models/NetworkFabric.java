@@ -218,17 +218,11 @@ public interface NetworkFabric {
 
     /** The entirety of the NetworkFabric definition. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithNetworkFabricSku,
-            DefinitionStages.WithNetworkFabricControllerId,
-            DefinitionStages.WithServerCountPerRack,
-            DefinitionStages.WithIpv4Prefix,
-            DefinitionStages.WithFabricAsn,
-            DefinitionStages.WithTerminalServerConfiguration,
-            DefinitionStages.WithManagementNetworkConfiguration,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithResourceGroup,
+        DefinitionStages.WithNetworkFabricSku, DefinitionStages.WithNetworkFabricControllerId,
+        DefinitionStages.WithServerCountPerRack, DefinitionStages.WithIpv4Prefix, DefinitionStages.WithFabricAsn,
+        DefinitionStages.WithTerminalServerConfiguration, DefinitionStages.WithManagementNetworkConfiguration,
+        DefinitionStages.WithCreate {
     }
 
     /** The NetworkFabric definition stages. */
@@ -338,8 +332,8 @@ public interface NetworkFabric {
              *     server.
              * @return the next definition stage.
              */
-            WithManagementNetworkConfiguration withTerminalServerConfiguration(
-                TerminalServerConfiguration terminalServerConfiguration);
+            WithManagementNetworkConfiguration
+                withTerminalServerConfiguration(TerminalServerConfiguration terminalServerConfiguration);
         }
 
         /** The stage of the NetworkFabric definition allowing to specify managementNetworkConfiguration. */
@@ -359,11 +353,8 @@ public interface NetworkFabric {
          * The stage of the NetworkFabric definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithRackCount,
-                DefinitionStages.WithIpv6Prefix,
-                DefinitionStages.WithAnnotation {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithRackCount,
+            DefinitionStages.WithIpv6Prefix, DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
              *
@@ -433,16 +424,10 @@ public interface NetworkFabric {
     NetworkFabric.Update update();
 
     /** The template for NetworkFabric update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithRackCount,
-            UpdateStages.WithServerCountPerRack,
-            UpdateStages.WithIpv4Prefix,
-            UpdateStages.WithIpv6Prefix,
-            UpdateStages.WithFabricAsn,
-            UpdateStages.WithTerminalServerConfiguration,
-            UpdateStages.WithManagementNetworkConfiguration,
-            UpdateStages.WithAnnotation {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithRackCount, UpdateStages.WithServerCountPerRack,
+        UpdateStages.WithIpv4Prefix, UpdateStages.WithIpv6Prefix, UpdateStages.WithFabricAsn,
+        UpdateStages.WithTerminalServerConfiguration, UpdateStages.WithManagementNetworkConfiguration,
+        UpdateStages.WithAnnotation {
         /**
          * Executes the update request.
          *
@@ -707,8 +692,8 @@ public interface NetworkFabric {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(
-        UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateWorkloadManagementBfdConfiguration(UpdateAdministrativeState body,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -737,8 +722,8 @@ public interface NetworkFabric {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(
-        UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateInfraManagementBfdConfiguration(UpdateAdministrativeState body,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.

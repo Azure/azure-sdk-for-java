@@ -48,10 +48,8 @@ public final class ApplicationDeploymentPolicy {
      */
     public void validate() {
         if (deploymentMode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deploymentMode in model ApplicationDeploymentPolicy"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property deploymentMode in model ApplicationDeploymentPolicy"));
         }
     }
 

@@ -3,7 +3,6 @@
 
 package com.azure.identity.broker;
 
-
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
@@ -121,7 +120,8 @@ public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowse
      * {@inheritDoc}
      */
     @Override
-    public InteractiveBrowserBrokerCredentialBuilder browserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
+    public InteractiveBrowserBrokerCredentialBuilder
+        browserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
         super.browserCustomizationOptions(browserCustomizationOptions);
         return this;
     }
@@ -256,7 +256,8 @@ public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowse
      * {@inheritDoc}
      */
     @Override
-    public InteractiveBrowserBrokerCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
+    public InteractiveBrowserBrokerCredentialBuilder
+        additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
         super.additionallyAllowedTenants(additionallyAllowedTenants);
         return this;
     }
@@ -301,7 +302,8 @@ public class InteractiveBrowserBrokerCredentialBuilder extends InteractiveBrowse
      * {@inheritDoc}
      */
     @Override
-    public InteractiveBrowserBrokerCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
+    public InteractiveBrowserBrokerCredentialBuilder
+        tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         super.tokenCachePersistenceOptions(tokenCachePersistenceOptions);
         return this;
     }

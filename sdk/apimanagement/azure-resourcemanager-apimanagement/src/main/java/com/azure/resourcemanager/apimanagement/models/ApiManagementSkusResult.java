@@ -67,9 +67,8 @@ public final class ApiManagementSkusResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ApiManagementSkusResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ApiManagementSkusResult"));
         } else {
             value().forEach(e -> e.validate());
         }

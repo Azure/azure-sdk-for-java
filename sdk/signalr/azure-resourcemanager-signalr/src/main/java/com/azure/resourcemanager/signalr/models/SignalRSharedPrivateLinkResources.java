@@ -47,8 +47,8 @@ public interface SignalRSharedPrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified shared private link resource along with {@link Response}.
      */
-    Response<SharedPrivateLinkResource> getWithResponse(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context);
+    Response<SharedPrivateLinkResource> getWithResponse(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Get the specified shared private link resource.

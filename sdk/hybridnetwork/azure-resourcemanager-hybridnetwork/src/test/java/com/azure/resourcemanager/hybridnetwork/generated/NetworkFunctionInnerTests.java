@@ -39,9 +39,12 @@ public final class NetworkFunctionInnerTests {
             .withTags(mapOf("qajzyulpkudjkr", "btoqcjmkljavbqid", "e", "khbzhfepgzg", "scpai", "zloc"))
             .withProperties(new NetworkFunctionPropertiesFormat()
                 .withNetworkFunctionDefinitionVersionResourceReference(new DeploymentResourceIdReference())
-                .withNfviType(NfviType.AZURE_OPERATOR_NEXUS).withNfviId("irsoodqxhcrmnohj")
-                .withAllowSoftwareUpdate(false).withRoleOverrideValues(Arrays.asList("dsoifiyipj")))
-            .withEtag("qwpgrjbzn").withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withNfviType(NfviType.AZURE_OPERATOR_NEXUS)
+                .withNfviId("irsoodqxhcrmnohj")
+                .withAllowSoftwareUpdate(false)
+                .withRoleOverrideValues(Arrays.asList("dsoifiyipj")))
+            .withEtag("qwpgrjbzn")
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
                 .withUserAssignedIdentities(mapOf("yxqabnmocpcyshur", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(NetworkFunctionInner.class);
         Assertions.assertEquals("fblj", model.location());

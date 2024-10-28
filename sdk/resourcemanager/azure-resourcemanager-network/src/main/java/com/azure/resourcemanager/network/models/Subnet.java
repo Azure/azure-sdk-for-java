@@ -42,7 +42,7 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
      * Gets the address space prefix, in CIDR notation, assigned to this subnet.
      * <p>Use {@link Subnet#addressPrefixes} if this subnet has multiple prefixes.</p>
      *
-     * @return the address space prefix(or one of the prefixes, if this subnet has multiple ones), in CIDR notation, assigned to this subnet
+     * @return the address space prefix, in CIDR notation, assigned to this subnet
      * @see Subnet#addressPrefixes
      */
     String addressPrefix();
@@ -245,14 +245,9 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT>
-            extends Attachable.InDefinition<ParentT>,
-                WithNetworkSecurityGroup<ParentT>,
-                WithRouteTable<ParentT>,
-                WithDelegation<ParentT>,
-                WithServiceEndpoint<ParentT>,
-                WithPrivateEndpointNetworkPolicies<ParentT>,
-                WithPrivateLinkServiceNetworkPolicies<ParentT>,
-                WithNatGateway<ParentT> {
+            extends Attachable.InDefinition<ParentT>, WithNetworkSecurityGroup<ParentT>, WithRouteTable<ParentT>,
+            WithDelegation<ParentT>, WithServiceEndpoint<ParentT>, WithPrivateEndpointNetworkPolicies<ParentT>,
+            WithPrivateLinkServiceNetworkPolicies<ParentT>, WithNatGateway<ParentT> {
         }
     }
 
@@ -261,10 +256,8 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAddressPrefix<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAddressPrefix<ParentT>,
+        DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of subnet update stages. */
@@ -439,15 +432,9 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
 
     /** The entirety of a subnet update as part of a network update. */
     interface Update
-        extends UpdateStages.WithAddressPrefix,
-            UpdateStages.WithNetworkSecurityGroup,
-            UpdateStages.WithRouteTable,
-            UpdateStages.WithDelegation,
-            UpdateStages.WithServiceEndpoint,
-            UpdateStages.WithPrivateEndpointNetworkPolicies,
-            UpdateStages.WithPrivateLinkServiceNetworkPolicies,
-            UpdateStages.WithNatGateway,
-            Settable<Network.Update> {
+        extends UpdateStages.WithAddressPrefix, UpdateStages.WithNetworkSecurityGroup, UpdateStages.WithRouteTable,
+        UpdateStages.WithDelegation, UpdateStages.WithServiceEndpoint, UpdateStages.WithPrivateEndpointNetworkPolicies,
+        UpdateStages.WithPrivateLinkServiceNetworkPolicies, UpdateStages.WithNatGateway, Settable<Network.Update> {
     }
 
     /** Grouping of subnet definition stages applicable as part of a virtual network update. */
@@ -597,14 +584,9 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InUpdate<ParentT>,
-                WithNetworkSecurityGroup<ParentT>,
-                WithRouteTable<ParentT>,
-                WithDelegation<ParentT>,
-                WithServiceEndpoint<ParentT>,
-                WithPrivateEndpointNetworkPolicies<ParentT>,
-                WithNatGateway<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InUpdate<ParentT>, WithNetworkSecurityGroup<ParentT>,
+            WithRouteTable<ParentT>, WithDelegation<ParentT>, WithServiceEndpoint<ParentT>,
+            WithPrivateEndpointNetworkPolicies<ParentT>, WithNatGateway<ParentT> {
         }
     }
 
@@ -614,9 +596,7 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithAddressPrefix<ParentT>,
-            UpdateDefinitionStages.WithNetworkSecurityGroup<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithAddressPrefix<ParentT>,
+        UpdateDefinitionStages.WithNetworkSecurityGroup<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 }

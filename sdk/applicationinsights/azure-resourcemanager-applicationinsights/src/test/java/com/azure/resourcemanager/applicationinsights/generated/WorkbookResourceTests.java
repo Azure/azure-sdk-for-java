@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkbookResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkbookResource model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"principalId\":\"b7deb4ee-efa9-46c9-8c77-7a9290d6e3d7\",\"tenantId\":\"5f85f425-298e-477d-9cf5-2db2e1840718\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"k\":{\"principalId\":\"607bf139-ac9a-4744-b8bd-146929c27749\",\"clientId\":\"8700282f-6aac-4911-bd44-095729a39ac6\"}}},\"kind\":\"shared\",\"etag\":\"jervtia\",\"location\":\"xsdszuempsb\",\"tags\":{\"eyvpnqicvinvkj\":\"z\"},\"id\":\"xdxr\",\"name\":\"uukzclewyhmlw\",\"type\":\"aztz\"}")
-                .toObject(WorkbookResource.class);
+        WorkbookResource model = BinaryData.fromString(
+            "{\"identity\":{\"principalId\":\"b7deb4ee-efa9-46c9-8c77-7a9290d6e3d7\",\"tenantId\":\"5f85f425-298e-477d-9cf5-2db2e1840718\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"k\":{\"principalId\":\"607bf139-ac9a-4744-b8bd-146929c27749\",\"clientId\":\"8700282f-6aac-4911-bd44-095729a39ac6\"}}},\"kind\":\"shared\",\"etag\":\"jervtia\",\"location\":\"xsdszuempsb\",\"tags\":{\"eyvpnqicvinvkj\":\"z\"},\"id\":\"xdxr\",\"name\":\"uukzclewyhmlw\",\"type\":\"aztz\"}")
+            .toObject(WorkbookResource.class);
         Assertions.assertEquals("xsdszuempsb", model.location());
         Assertions.assertEquals("z", model.tags().get("eyvpnqicvinvkj"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
@@ -31,16 +29,12 @@ public final class WorkbookResourceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookResource model =
-            new WorkbookResource()
-                .withLocation("xsdszuempsb")
-                .withTags(mapOf("eyvpnqicvinvkj", "z"))
-                .withIdentity(
-                    new WorkbookResourceIdentity()
-                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("k", new UserAssignedIdentity())))
-                .withKind(WorkbookSharedTypeKind.SHARED)
-                .withEtag("jervtia");
+        WorkbookResource model = new WorkbookResource().withLocation("xsdszuempsb")
+            .withTags(mapOf("eyvpnqicvinvkj", "z"))
+            .withIdentity(new WorkbookResourceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("k", new UserAssignedIdentity())))
+            .withKind(WorkbookSharedTypeKind.SHARED)
+            .withEtag("jervtia");
         model = BinaryData.fromObject(model).toObject(WorkbookResource.class);
         Assertions.assertEquals("xsdszuempsb", model.location());
         Assertions.assertEquals("z", model.tags().get("eyvpnqicvinvkj"));

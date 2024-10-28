@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MyWorkbookPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MyWorkbookProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"phsdyhto\",\"serializedData\":\"fikdowwqu\",\"version\":\"xzxcl\",\"timeModified\":\"thhqzonosggbh\",\"category\":\"ohfwds\",\"tags\":[\"aljutiiswac\"],\"userId\":\"gdkz\",\"sourceId\":\"wkfvhqcrailvp\",\"storageUri\":\"pfuflrw\"}")
-                .toObject(MyWorkbookProperties.class);
+        MyWorkbookProperties model = BinaryData.fromString(
+            "{\"displayName\":\"phsdyhto\",\"serializedData\":\"fikdowwqu\",\"version\":\"xzxcl\",\"timeModified\":\"thhqzonosggbh\",\"category\":\"ohfwds\",\"tags\":[\"aljutiiswac\"],\"userId\":\"gdkz\",\"sourceId\":\"wkfvhqcrailvp\",\"storageUri\":\"pfuflrw\"}")
+            .toObject(MyWorkbookProperties.class);
         Assertions.assertEquals("phsdyhto", model.displayName());
         Assertions.assertEquals("fikdowwqu", model.serializedData());
         Assertions.assertEquals("xzxcl", model.version());
@@ -28,15 +26,13 @@ public final class MyWorkbookPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MyWorkbookProperties model =
-            new MyWorkbookProperties()
-                .withDisplayName("phsdyhto")
-                .withSerializedData("fikdowwqu")
-                .withVersion("xzxcl")
-                .withCategory("ohfwds")
-                .withTags(Arrays.asList("aljutiiswac"))
-                .withSourceId("wkfvhqcrailvp")
-                .withStorageUri("pfuflrw");
+        MyWorkbookProperties model = new MyWorkbookProperties().withDisplayName("phsdyhto")
+            .withSerializedData("fikdowwqu")
+            .withVersion("xzxcl")
+            .withCategory("ohfwds")
+            .withTags(Arrays.asList("aljutiiswac"))
+            .withSourceId("wkfvhqcrailvp")
+            .withStorageUri("pfuflrw");
         model = BinaryData.fromObject(model).toObject(MyWorkbookProperties.class);
         Assertions.assertEquals("phsdyhto", model.displayName());
         Assertions.assertEquals("fikdowwqu", model.serializedData());

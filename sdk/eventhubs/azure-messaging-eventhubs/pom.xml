@@ -26,6 +26,7 @@
       --add-reads com.azure.messaging.eventhubs=com.azure.core.tracing.opentelemetry
       --add-reads com.azure.messaging.eventhubs=com.azure.core.experimental
     </javaModulesSurefireArgLine>
+    <spotless.skip>false</spotless.skip>
   </properties>
   <distributionManagement>
     <site>

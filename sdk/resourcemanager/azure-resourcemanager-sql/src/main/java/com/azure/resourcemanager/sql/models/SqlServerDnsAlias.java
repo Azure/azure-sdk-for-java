@@ -14,13 +14,8 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure SQL Server DNS alias. */
 @Fluent
-public interface SqlServerDnsAlias
-    extends HasId,
-        HasInnerModel<ServerDnsAliasInner>,
-        HasName,
-        HasResourceGroup,
-        Indexable,
-        Refreshable<SqlServerDnsAlias> {
+public interface SqlServerDnsAlias extends HasId, HasInnerModel<ServerDnsAliasInner>, HasName, HasResourceGroup,
+    Indexable, Refreshable<SqlServerDnsAlias> {
     /** @return name of the SQL Server to which this DNS alias belongs */
     String sqlServerName();
 

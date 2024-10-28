@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventGetStatusResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventGetStatusResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"state\":\"Stopped\",\"healthStatus\":\"Poor\",\"healthDescriptions\":[\"osytxitcskfckt\",\"umiekkezzi\",\"hlyfjhdgqgg\"],\"lastUpdatedTime\":\"2021-09-22T21:29:13Z\",\"ingestion\":{\"streamName\":\"ygaeqidbqfatpxl\",\"begin\":\"2021-09-20T22:01:43Z\",\"end\":\"2021-08-27T05:14:18Z\",\"endReason\":\"moadsuvarmy\",\"ingestInterruptions\":[]},\"trackStatus\":[]}]}")
-                .toObject(LiveEventGetStatusResult.class);
+        LiveEventGetStatusResult model = BinaryData.fromString(
+            "{\"value\":[{\"state\":\"Stopped\",\"healthStatus\":\"Poor\",\"healthDescriptions\":[\"osytxitcskfckt\",\"umiekkezzi\",\"hlyfjhdgqgg\"],\"lastUpdatedTime\":\"2021-09-22T21:29:13Z\",\"ingestion\":{\"streamName\":\"ygaeqidbqfatpxl\",\"begin\":\"2021-09-20T22:01:43Z\",\"end\":\"2021-08-27T05:14:18Z\",\"endReason\":\"moadsuvarmy\",\"ingestInterruptions\":[]},\"trackStatus\":[]}]}")
+            .toObject(LiveEventGetStatusResult.class);
         Assertions.assertEquals(LiveEventState.STOPPED, model.value().get(0).state());
         Assertions.assertEquals(LiveEventHealthStatus.POOR, model.value().get(0).healthStatus());
         Assertions.assertEquals("osytxitcskfckt", model.value().get(0).healthDescriptions().get(0));
@@ -34,24 +32,17 @@ public final class LiveEventGetStatusResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveEventGetStatusResult model =
-            new LiveEventGetStatusResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new LiveEventStatusInner()
-                                .withState(LiveEventState.STOPPED)
-                                .withHealthStatus(LiveEventHealthStatus.POOR)
-                                .withHealthDescriptions(Arrays.asList("osytxitcskfckt", "umiekkezzi", "hlyfjhdgqgg"))
-                                .withLastUpdatedTime(OffsetDateTime.parse("2021-09-22T21:29:13Z"))
-                                .withIngestion(
-                                    new LiveEventIngestion()
-                                        .withStreamName("ygaeqidbqfatpxl")
-                                        .withBegin(OffsetDateTime.parse("2021-09-20T22:01:43Z"))
-                                        .withEnd(OffsetDateTime.parse("2021-08-27T05:14:18Z"))
-                                        .withEndReason("moadsuvarmy")
-                                        .withIngestInterruptions(Arrays.asList()))
-                                .withTrackStatus(Arrays.asList())));
+        LiveEventGetStatusResult model = new LiveEventGetStatusResult()
+            .withValue(Arrays.asList(new LiveEventStatusInner().withState(LiveEventState.STOPPED)
+                .withHealthStatus(LiveEventHealthStatus.POOR)
+                .withHealthDescriptions(Arrays.asList("osytxitcskfckt", "umiekkezzi", "hlyfjhdgqgg"))
+                .withLastUpdatedTime(OffsetDateTime.parse("2021-09-22T21:29:13Z"))
+                .withIngestion(new LiveEventIngestion().withStreamName("ygaeqidbqfatpxl")
+                    .withBegin(OffsetDateTime.parse("2021-09-20T22:01:43Z"))
+                    .withEnd(OffsetDateTime.parse("2021-08-27T05:14:18Z"))
+                    .withEndReason("moadsuvarmy")
+                    .withIngestInterruptions(Arrays.asList()))
+                .withTrackStatus(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(LiveEventGetStatusResult.class);
         Assertions.assertEquals(LiveEventState.STOPPED, model.value().get(0).state());
         Assertions.assertEquals(LiveEventHealthStatus.POOR, model.value().get(0).healthStatus());

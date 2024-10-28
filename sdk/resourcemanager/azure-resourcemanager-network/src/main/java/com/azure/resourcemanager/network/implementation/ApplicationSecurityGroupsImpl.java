@@ -10,13 +10,8 @@ import com.azure.resourcemanager.network.models.ApplicationSecurityGroups;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for ApplicationSecurityGroups. */
-public class ApplicationSecurityGroupsImpl
-    extends TopLevelModifiableResourcesImpl<
-        ApplicationSecurityGroup,
-        ApplicationSecurityGroupImpl,
-        ApplicationSecurityGroupInner,
-        ApplicationSecurityGroupsClient,
-        NetworkManager>
+public class ApplicationSecurityGroupsImpl extends
+    TopLevelModifiableResourcesImpl<ApplicationSecurityGroup, ApplicationSecurityGroupImpl, ApplicationSecurityGroupInner, ApplicationSecurityGroupsClient, NetworkManager>
     implements ApplicationSecurityGroups {
 
     public ApplicationSecurityGroupsImpl(final NetworkManager networkManager) {

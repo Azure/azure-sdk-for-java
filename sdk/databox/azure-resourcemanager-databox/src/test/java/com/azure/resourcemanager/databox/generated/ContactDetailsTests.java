@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactDetails model =
-            BinaryData
-                .fromString(
-                    "{\"contactName\":\"kwh\",\"phone\":\"soifiyipjxsqw\",\"phoneExtension\":\"rjb\",\"mobile\":\"orcjxvsnby\",\"emailList\":[\"abnmocpcyshu\",\"zafb\"],\"notificationPreference\":[{\"stageName\":\"DataCopy\",\"sendNotification\":true}]}")
-                .toObject(ContactDetails.class);
+        ContactDetails model = BinaryData.fromString(
+            "{\"contactName\":\"kwh\",\"phone\":\"soifiyipjxsqw\",\"phoneExtension\":\"rjb\",\"mobile\":\"orcjxvsnby\",\"emailList\":[\"abnmocpcyshu\",\"zafb\"],\"notificationPreference\":[{\"stageName\":\"DataCopy\",\"sendNotification\":true}]}")
+            .toObject(ContactDetails.class);
         Assertions.assertEquals("kwh", model.contactName());
         Assertions.assertEquals("soifiyipjxsqw", model.phone());
         Assertions.assertEquals("rjb", model.phoneExtension());
@@ -30,19 +28,14 @@ public final class ContactDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContactDetails model =
-            new ContactDetails()
-                .withContactName("kwh")
-                .withPhone("soifiyipjxsqw")
-                .withPhoneExtension("rjb")
-                .withMobile("orcjxvsnby")
-                .withEmailList(Arrays.asList("abnmocpcyshu", "zafb"))
-                .withNotificationPreference(
-                    Arrays
-                        .asList(
-                            new NotificationPreference()
-                                .withStageName(NotificationStageName.DATA_COPY)
-                                .withSendNotification(true)));
+        ContactDetails model = new ContactDetails().withContactName("kwh")
+            .withPhone("soifiyipjxsqw")
+            .withPhoneExtension("rjb")
+            .withMobile("orcjxvsnby")
+            .withEmailList(Arrays.asList("abnmocpcyshu", "zafb"))
+            .withNotificationPreference(
+                Arrays.asList(new NotificationPreference().withStageName(NotificationStageName.DATA_COPY)
+                    .withSendNotification(true)));
         model = BinaryData.fromObject(model).toObject(ContactDetails.class);
         Assertions.assertEquals("kwh", model.contactName());
         Assertions.assertEquals("soifiyipjxsqw", model.phone());

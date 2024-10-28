@@ -12,8 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Note: that this class extends {@link java.util.LinkedHashMap} is an implementation
  * detail -- no code should ever directly call Map methods.
  */
-public final class InternCache
-    extends ConcurrentHashMap<String,String> // since 2.3
+public final class InternCache extends ConcurrentHashMap<String, String> // since 2.3
 {
     private static final long serialVersionUID = 1L;
 
@@ -35,11 +34,15 @@ public final class InternCache
      */
     private final Object lock = new Object();
 
-    private InternCache() { super(MAX_ENTRIES, 0.8f, 4); }
+    private InternCache() {
+        super(MAX_ENTRIES, 0.8f, 4);
+    }
 
     public String intern(String input) {
         String result = get(input);
-        if (result != null) { return result; }
+        if (result != null) {
+            return result;
+        }
 
         /* 18-Sep-2013, tatu: We used to use LinkedHashMap, which has simple LRU
          *   method. No such functionality exists with CHM; and let's use simplest
@@ -62,4 +65,3 @@ public final class InternCache
         return result;
     }
 }
-

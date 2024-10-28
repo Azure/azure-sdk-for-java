@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationJitAccessPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationJitAccessPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"jitAccessEnabled\":true,\"jitApprovalMode\":\"AutoApprove\",\"jitApprovers\":[{\"id\":\"kufubljo\",\"type\":\"user\",\"displayName\":\"ofjaeqjhqjb\"},{\"id\":\"s\",\"type\":\"group\",\"displayName\":\"jqul\"}],\"maximumJitAccessDuration\":\"sntnbybkzgcw\"}")
-                .toObject(ApplicationJitAccessPolicy.class);
+        ApplicationJitAccessPolicy model = BinaryData.fromString(
+            "{\"jitAccessEnabled\":true,\"jitApprovalMode\":\"AutoApprove\",\"jitApprovers\":[{\"id\":\"kufubljo\",\"type\":\"user\",\"displayName\":\"ofjaeqjhqjb\"},{\"id\":\"s\",\"type\":\"group\",\"displayName\":\"jqul\"}],\"maximumJitAccessDuration\":\"sntnbybkzgcw\"}")
+            .toObject(ApplicationJitAccessPolicy.class);
         Assertions.assertEquals(true, model.jitAccessEnabled());
         Assertions.assertEquals(JitApprovalMode.AUTO_APPROVE, model.jitApprovalMode());
         Assertions.assertEquals("kufubljo", model.jitApprovers().get(0).id());
@@ -30,22 +28,14 @@ public final class ApplicationJitAccessPolicyTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationJitAccessPolicy model =
-            new ApplicationJitAccessPolicy()
-                .withJitAccessEnabled(true)
-                .withJitApprovalMode(JitApprovalMode.AUTO_APPROVE)
-                .withJitApprovers(
-                    Arrays
-                        .asList(
-                            new JitApproverDefinition()
-                                .withId("kufubljo")
-                                .withType(JitApproverType.USER)
-                                .withDisplayName("ofjaeqjhqjb"),
-                            new JitApproverDefinition()
-                                .withId("s")
-                                .withType(JitApproverType.GROUP)
-                                .withDisplayName("jqul")))
-                .withMaximumJitAccessDuration("sntnbybkzgcw");
+        ApplicationJitAccessPolicy model = new ApplicationJitAccessPolicy().withJitAccessEnabled(true)
+            .withJitApprovalMode(JitApprovalMode.AUTO_APPROVE)
+            .withJitApprovers(Arrays.asList(
+                new JitApproverDefinition().withId("kufubljo")
+                    .withType(JitApproverType.USER)
+                    .withDisplayName("ofjaeqjhqjb"),
+                new JitApproverDefinition().withId("s").withType(JitApproverType.GROUP).withDisplayName("jqul")))
+            .withMaximumJitAccessDuration("sntnbybkzgcw");
         model = BinaryData.fromObject(model).toObject(ApplicationJitAccessPolicy.class);
         Assertions.assertEquals(true, model.jitAccessEnabled());
         Assertions.assertEquals(JitApprovalMode.AUTO_APPROVE, model.jitApprovalMode());

@@ -56,19 +56,18 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
             //============================================================================================
             // Create a Resource Group and User Assigned MSI with CONTRIBUTOR access to the resource group
 
-            System.out.println("Creating a Resource Group and User Assigned MSI with CONTRIBUTOR access to the resource group");
+            System.out.println(
+                "Creating a Resource Group and User Assigned MSI with CONTRIBUTOR access to the resource group");
 
-            ResourceGroup resourceGroup1 = azureResourceManager.resourceGroups()
-                    .define(rgName1)
-                    .withRegion(region)
-                    .create();
+            ResourceGroup resourceGroup1
+                = azureResourceManager.resourceGroups().define(rgName1).withRegion(region).create();
 
             Identity identity = azureResourceManager.identities()
-                    .define(identityName)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName2)
-                    .withAccessTo(resourceGroup1.id(), BuiltInRole.CONTRIBUTOR)
-                    .create();
+                .define(identityName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName2)
+                .withAccessTo(resourceGroup1.id(), BuiltInRole.CONTRIBUTOR)
+                .create();
 
             System.out.println("Created Resource Group and User Assigned MSI");
 
@@ -81,7 +80,8 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
 
             // The script to install Java8, Maven3 and Git on a virtual machine using Azure Custom Script Extension
             //
-            final String javaMvnGitInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_jva_mvn_git.sh";
+            final String javaMvnGitInstallScript
+                = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_jva_mvn_git.sh";
             final String invokeScriptCommand = "bash install_jva_mvn_git.sh";
             List<String> fileUris = new ArrayList<>();
             fileUris.add(javaMvnGitInstallScript);
@@ -89,26 +89,26 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
             System.out.println("Creating a Linux VM with MSI associated and install Java8, Maven and Git");
 
             VirtualMachine virtualMachine = azureResourceManager.virtualMachines()
-                    .define(linuxVMName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName2)
-                    .withNewPrimaryNetwork("10.0.0.0/28")
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withNewPrimaryPublicIPAddress(pipName)
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withSsh(sshPublicKey)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .withExistingUserAssignedManagedServiceIdentity(identity)
-                    .defineNewExtension("CustomScriptForLinux")
-                        .withPublisher("Microsoft.OSTCExtensions")
-                        .withType("CustomScriptForLinux")
-                        .withVersion("1.4")
-                        .withMinorVersionAutoUpgrade()
-                        .withPublicSetting("fileUris", fileUris)
-                        .withPublicSetting("commandToExecute", invokeScriptCommand)
-                        .attach()
-                    .create();
+                .define(linuxVMName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName2)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIPAddressDynamic()
+                .withNewPrimaryPublicIPAddress(pipName)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withExistingUserAssignedManagedServiceIdentity(identity)
+                .defineNewExtension("CustomScriptForLinux")
+                .withPublisher("Microsoft.OSTCExtensions")
+                .withType("CustomScriptForLinux")
+                .withVersion("1.4")
+                .withMinorVersionAutoUpgrade()
+                .withPublicSetting("fileUris", fileUris)
+                .withPublicSetting("commandToExecute", invokeScriptCommand)
+                .attach()
+                .create();
 
             System.out.println("Created Linux VM");
 
@@ -117,12 +117,15 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
             //=============================================================
             // Run Java application in the MSI enabled Linux VM which uses MSI credentials to manage Azure resource
 
-            System.out.println("Running a Java application in the MSI enabled VM which creates another virtual machine");
+            System.out
+                .println("Running a Java application in the MSI enabled VM which creates another virtual machine");
 
             List<String> commands = new ArrayList<>();
-            commands.add("git clone https://github.com/Azure-Samples/compute-java-manage-vm-from-vm-with-msi-credentials.git");
+            commands.add(
+                "git clone https://github.com/Azure-Samples/compute-java-manage-vm-from-vm-with-msi-credentials.git");
             commands.add("cd compute-java-manage-vm-from-vm-with-msi-credentials");
-            commands.add(String.format("mvn clean compile exec:java -Dexec.args='%s %s %s false'", azureResourceManager.subscriptionId(), resourceGroup1.name(), identity.clientId()));
+            commands.add(String.format("mvn clean compile exec:java -Dexec.args='%s %s %s false'",
+                azureResourceManager.subscriptionId(), resourceGroup1.name(), identity.clientId()));
 
             RunCommandResult commandResult = runCommandOnVM(azureResourceManager, virtualMachine, commands);
 
@@ -139,7 +142,8 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
 
             System.out.println("Retrieving the virtual machine created from the MSI enabled Linux VM");
 
-            PagedIterable<VirtualMachine> virtualMachines = azureResourceManager.virtualMachines().listByResourceGroup(resourceGroup1.name());
+            PagedIterable<VirtualMachine> virtualMachines
+                = azureResourceManager.virtualMachines().listByResourceGroup(resourceGroup1.name());
             for (VirtualMachine vm : virtualMachines) {
                 Utils.print(vm);
             }
@@ -159,12 +163,12 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
         }
     }
 
-    private static RunCommandResult runCommandOnVM(AzureResourceManager azureResourceManager, VirtualMachine virtualMachine, List<String> commands) {
-        RunCommandInput runParams = new RunCommandInput()
-                .withCommandId("RunShellScript")
-                .withScript(commands);
+    private static RunCommandResult runCommandOnVM(AzureResourceManager azureResourceManager,
+        VirtualMachine virtualMachine, List<String> commands) {
+        RunCommandInput runParams = new RunCommandInput().withCommandId("RunShellScript").withScript(commands);
 
-        return azureResourceManager.virtualMachines().runCommand(virtualMachine.resourceGroupName(), virtualMachine.name(), runParams);
+        return azureResourceManager.virtualMachines()
+            .runCommand(virtualMachine.resourceGroupName(), virtualMachine.name(), runParams);
     }
 
     /**
@@ -181,8 +185,7 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

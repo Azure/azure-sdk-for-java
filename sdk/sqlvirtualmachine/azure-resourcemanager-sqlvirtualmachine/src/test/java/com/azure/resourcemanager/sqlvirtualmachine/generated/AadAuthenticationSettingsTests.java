@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AadAuthenticationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AadAuthenticationSettings model =
-            BinaryData.fromString("{\"clientId\":\"pfhyhl\"}").toObject(AadAuthenticationSettings.class);
+        AadAuthenticationSettings model
+            = BinaryData.fromString("{\"clientId\":\"pfhyhl\"}").toObject(AadAuthenticationSettings.class);
         Assertions.assertEquals("pfhyhl", model.clientId());
     }
 

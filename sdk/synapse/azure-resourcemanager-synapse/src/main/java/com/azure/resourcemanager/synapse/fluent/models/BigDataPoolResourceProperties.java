@@ -316,8 +316,8 @@ public final class BigDataPoolResourceProperties {
      * @param dynamicExecutorAllocation the dynamicExecutorAllocation value to set.
      * @return the BigDataPoolResourceProperties object itself.
      */
-    public BigDataPoolResourceProperties withDynamicExecutorAllocation(
-        DynamicExecutorAllocation dynamicExecutorAllocation) {
+    public BigDataPoolResourceProperties
+        withDynamicExecutorAllocation(DynamicExecutorAllocation dynamicExecutorAllocation) {
         this.dynamicExecutorAllocation = dynamicExecutorAllocation;
         return this;
     }

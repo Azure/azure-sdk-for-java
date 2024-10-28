@@ -38,90 +38,62 @@ public final class MonitoredSubscriptionsCreateorUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"name\":\"ljxywsu\",\"id\":\"yrs\",\"type\":\"sytgadgvraea\",\"properties\":{\"operation\":\"DeleteBegin\",\"monitoredSubscriptionList\":[{\"subscriptionId\":\"rrwlquuijfqkace\",\"status\":\"Active\",\"error\":\"fpubjibwwi\",\"tagRules\":{\"provisioningState\":\"Failed\",\"logRules\":{},\"metricRules\":{},\"automuting\":false}}]}}";
+        String responseStr
+            = "{\"name\":\"ljxywsu\",\"id\":\"yrs\",\"type\":\"sytgadgvraea\",\"properties\":{\"operation\":\"DeleteBegin\",\"monitoredSubscriptionList\":[{\"subscriptionId\":\"rrwlquuijfqkace\",\"status\":\"Active\",\"error\":\"fpubjibwwi\",\"tagRules\":{\"provisioningState\":\"Failed\",\"logRules\":{},\"metricRules\":{},\"automuting\":false}}]}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MicrosoftDatadogManager manager =
-            MicrosoftDatadogManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MicrosoftDatadogManager manager = MicrosoftDatadogManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        MonitoredSubscriptionProperties response =
-            manager
-                .monitoredSubscriptions()
-                .define("tddckcb")
-                .withExistingMonitor("qvmkcxo", "apvhelxprgly")
-                .withProperties(
-                    new SubscriptionList()
-                        .withOperation(Operation.DELETE_BEGIN)
-                        .withMonitoredSubscriptionList(
-                            Arrays
-                                .asList(
-                                    new MonitoredSubscription()
-                                        .withSubscriptionId("rkwofyyvoqa")
-                                        .withStatus(Status.FAILED)
-                                        .withError("xpbtgiwbwo")
-                                        .withTagRules(
-                                            new MonitoringTagRulesProperties()
-                                                .withLogRules(new LogRules())
-                                                .withMetricRules(new MetricRules())
-                                                .withAutomuting(false)),
-                                    new MonitoredSubscription()
-                                        .withSubscriptionId("tkcnqxwb")
-                                        .withStatus(Status.FAILED)
-                                        .withError("lpiujwaa")
-                                        .withTagRules(
-                                            new MonitoringTagRulesProperties()
-                                                .withLogRules(new LogRules())
-                                                .withMetricRules(new MetricRules())
-                                                .withAutomuting(true)),
-                                    new MonitoredSubscription()
-                                        .withSubscriptionId("uqerpqlpqwc")
-                                        .withStatus(Status.DELETING)
-                                        .withError("gbdbutauv")
-                                        .withTagRules(
-                                            new MonitoringTagRulesProperties()
-                                                .withLogRules(new LogRules())
-                                                .withMetricRules(new MetricRules())
-                                                .withAutomuting(false)),
-                                    new MonitoredSubscription()
-                                        .withSubscriptionId("hykojoxafnndlpic")
-                                        .withStatus(Status.IN_PROGRESS)
-                                        .withError("mkcdyhbpkkpwdre")
-                                        .withTagRules(
-                                            new MonitoringTagRulesProperties()
-                                                .withLogRules(new LogRules())
-                                                .withMetricRules(new MetricRules())
-                                                .withAutomuting(true)))))
-                .create();
+        MonitoredSubscriptionProperties response = manager.monitoredSubscriptions()
+            .define("tddckcb")
+            .withExistingMonitor("qvmkcxo", "apvhelxprgly")
+            .withProperties(new SubscriptionList().withOperation(Operation.DELETE_BEGIN)
+                .withMonitoredSubscriptionList(Arrays.asList(
+                    new MonitoredSubscription().withSubscriptionId("rkwofyyvoqa")
+                        .withStatus(Status.FAILED)
+                        .withError("xpbtgiwbwo")
+                        .withTagRules(new MonitoringTagRulesProperties().withLogRules(new LogRules())
+                            .withMetricRules(new MetricRules())
+                            .withAutomuting(false)),
+                    new MonitoredSubscription().withSubscriptionId("tkcnqxwb")
+                        .withStatus(Status.FAILED)
+                        .withError("lpiujwaa")
+                        .withTagRules(new MonitoringTagRulesProperties().withLogRules(new LogRules())
+                            .withMetricRules(new MetricRules())
+                            .withAutomuting(true)),
+                    new MonitoredSubscription().withSubscriptionId("uqerpqlpqwc")
+                        .withStatus(Status.DELETING)
+                        .withError("gbdbutauv")
+                        .withTagRules(new MonitoringTagRulesProperties().withLogRules(new LogRules())
+                            .withMetricRules(new MetricRules())
+                            .withAutomuting(false)),
+                    new MonitoredSubscription().withSubscriptionId("hykojoxafnndlpic")
+                        .withStatus(Status.IN_PROGRESS)
+                        .withError("mkcdyhbpkkpwdre")
+                        .withTagRules(new MonitoringTagRulesProperties().withLogRules(new LogRules())
+                            .withMetricRules(new MetricRules())
+                            .withAutomuting(true)))))
+            .create();
 
         Assertions.assertEquals(Operation.DELETE_BEGIN, response.properties().operation());
-        Assertions
-            .assertEquals("rrwlquuijfqkace", response.properties().monitoredSubscriptionList().get(0).subscriptionId());
+        Assertions.assertEquals("rrwlquuijfqkace",
+            response.properties().monitoredSubscriptionList().get(0).subscriptionId());
         Assertions.assertEquals(Status.ACTIVE, response.properties().monitoredSubscriptionList().get(0).status());
         Assertions.assertEquals("fpubjibwwi", response.properties().monitoredSubscriptionList().get(0).error());
-        Assertions
-            .assertEquals(false, response.properties().monitoredSubscriptionList().get(0).tagRules().automuting());
+        Assertions.assertEquals(false,
+            response.properties().monitoredSubscriptionList().get(0).tagRules().automuting());
     }
 }

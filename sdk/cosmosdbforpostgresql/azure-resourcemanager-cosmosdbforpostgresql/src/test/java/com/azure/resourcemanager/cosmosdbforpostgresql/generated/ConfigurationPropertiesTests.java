@@ -24,8 +24,8 @@ public final class ConfigurationPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationProperties model
-            = new ConfigurationProperties().withRequiresRestart(true).withServerRoleGroupConfigurations(
+        ConfigurationProperties model = new ConfigurationProperties().withRequiresRestart(true)
+            .withServerRoleGroupConfigurations(
                 Arrays.asList(new ServerRoleGroupConfiguration().withRole(ServerRole.COORDINATOR).withValue("c"),
                     new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("pvhez"),
                     new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("yvxyqjp")));

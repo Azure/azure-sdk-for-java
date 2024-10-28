@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SharedPublicIpAddressConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SharedPublicIpAddressConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"inboundNatRules\":[{\"transportProtocol\":\"Tcp\",\"frontendPort\":1513768261,\"backendPort\":930430831},{\"transportProtocol\":\"Tcp\",\"frontendPort\":845097361,\"backendPort\":182360383}]}")
-                .toObject(SharedPublicIpAddressConfiguration.class);
+        SharedPublicIpAddressConfiguration model = BinaryData.fromString(
+            "{\"inboundNatRules\":[{\"transportProtocol\":\"Tcp\",\"frontendPort\":1513768261,\"backendPort\":930430831},{\"transportProtocol\":\"Tcp\",\"frontendPort\":845097361,\"backendPort\":182360383}]}")
+            .toObject(SharedPublicIpAddressConfiguration.class);
         Assertions.assertEquals(TransportProtocol.TCP, model.inboundNatRules().get(0).transportProtocol());
         Assertions.assertEquals(1513768261, model.inboundNatRules().get(0).frontendPort());
         Assertions.assertEquals(930430831, model.inboundNatRules().get(0).backendPort());
@@ -26,19 +24,14 @@ public final class SharedPublicIpAddressConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SharedPublicIpAddressConfiguration model =
-            new SharedPublicIpAddressConfiguration()
-                .withInboundNatRules(
-                    Arrays
-                        .asList(
-                            new InboundNatRule()
-                                .withTransportProtocol(TransportProtocol.TCP)
-                                .withFrontendPort(1513768261)
-                                .withBackendPort(930430831),
-                            new InboundNatRule()
-                                .withTransportProtocol(TransportProtocol.TCP)
-                                .withFrontendPort(845097361)
-                                .withBackendPort(182360383)));
+        SharedPublicIpAddressConfiguration model
+            = new SharedPublicIpAddressConfiguration().withInboundNatRules(Arrays.asList(
+                new InboundNatRule().withTransportProtocol(TransportProtocol.TCP)
+                    .withFrontendPort(1513768261)
+                    .withBackendPort(930430831),
+                new InboundNatRule().withTransportProtocol(TransportProtocol.TCP)
+                    .withFrontendPort(845097361)
+                    .withBackendPort(182360383)));
         model = BinaryData.fromObject(model).toObject(SharedPublicIpAddressConfiguration.class);
         Assertions.assertEquals(TransportProtocol.TCP, model.inboundNatRules().get(0).transportProtocol());
         Assertions.assertEquals(1513768261, model.inboundNatRules().get(0).frontendPort());

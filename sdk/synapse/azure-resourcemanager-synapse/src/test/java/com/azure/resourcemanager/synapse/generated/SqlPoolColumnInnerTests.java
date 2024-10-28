@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlPoolColumnInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlPoolColumnInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"columnType\":\"uniqueidentifier\",\"isComputed\":true},\"id\":\"hftqsxhqxujxukn\",\"name\":\"xdigrjg\",\"type\":\"ufzdmsyq\"}")
-                .toObject(SqlPoolColumnInner.class);
+        SqlPoolColumnInner model = BinaryData.fromString(
+            "{\"properties\":{\"columnType\":\"uniqueidentifier\",\"isComputed\":true},\"id\":\"hftqsxhqxujxukn\",\"name\":\"xdigrjg\",\"type\":\"ufzdmsyq\"}")
+            .toObject(SqlPoolColumnInner.class);
         Assertions.assertEquals(ColumnDataType.UNIQUEIDENTIFIER, model.columnType());
     }
 

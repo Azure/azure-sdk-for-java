@@ -35,8 +35,8 @@ public interface Notifications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Notification list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<NotificationContract> listByService(
-        String resourceGroupName, String serviceName, Integer top, Integer skip, Context context);
+    PagedIterable<NotificationContract> listByService(String resourceGroupName, String serviceName, Integer top,
+        Integer skip, Context context);
 
     /**
      * Gets the details of the Notification specified by its identifier.
@@ -50,8 +50,8 @@ public interface Notifications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the Notification specified by its identifier along with {@link Response}.
      */
-    Response<NotificationContract> getWithResponse(
-        String resourceGroupName, String serviceName, NotificationName notificationName, Context context);
+    Response<NotificationContract> getWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, Context context);
 
     /**
      * Gets the details of the Notification specified by its identifier.
@@ -79,12 +79,8 @@ public interface Notifications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return notification details along with {@link Response}.
      */
-    Response<NotificationContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        NotificationName notificationName,
-        String ifMatch,
-        Context context);
+    Response<NotificationContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String ifMatch, Context context);
 
     /**
      * Create or Update API Management publisher notification.
@@ -97,6 +93,6 @@ public interface Notifications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return notification details.
      */
-    NotificationContract createOrUpdate(
-        String resourceGroupName, String serviceName, NotificationName notificationName);
+    NotificationContract createOrUpdate(String resourceGroupName, String serviceName,
+        NotificationName notificationName);
 }

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.applicationinsights.models.WorkItemConfiguratio
 public final class WorkItemConfigurationsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkItemConfigurationsListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"ConnectorId\":\"a\",\"ConfigDisplayName\":\"qidtqajzyu\",\"IsDefault\":true,\"Id\":\"dj\",\"ConfigProperties\":\"lkhbz\"},{\"ConnectorId\":\"epgzgqexz\",\"ConfigDisplayName\":\"c\",\"IsDefault\":false,\"Id\":\"aierhhb\",\"ConfigProperties\":\"glu\"}]}")
-                .toObject(WorkItemConfigurationsListResult.class);
+        WorkItemConfigurationsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"ConnectorId\":\"a\",\"ConfigDisplayName\":\"qidtqajzyu\",\"IsDefault\":true,\"Id\":\"dj\",\"ConfigProperties\":\"lkhbz\"},{\"ConnectorId\":\"epgzgqexz\",\"ConfigDisplayName\":\"c\",\"IsDefault\":false,\"Id\":\"aierhhb\",\"ConfigProperties\":\"glu\"}]}")
+            .toObject(WorkItemConfigurationsListResult.class);
     }
 
     @org.junit.jupiter.api.Test

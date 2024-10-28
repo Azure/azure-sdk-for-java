@@ -78,22 +78,19 @@ public class ProviderHubManagerTests extends TestProxyTestBase {
             operationsContent = providerHubManager.operations()
                 .createOrUpdate(spaceName,
                     new OperationsPutContent()
-                        .withContents(
-                            Arrays.asList(
-                                new OperationsDefinitionInner()
-                                    .withName(opeartionName)
-                                    .withDisplay(new OperationsDefinitionDisplay()
-                                        .withProvider(spaceName)
-                                        .withResource("Employees")
-                                        .withOperation("Gets/List employee resources")
-                                        .withDescription("Read employees")))));
+                        .withContents(Arrays.asList(new OperationsDefinitionInner().withName(opeartionName)
+                            .withDisplay(new OperationsDefinitionDisplay().withProvider(spaceName)
+                                .withResource("Employees")
+                                .withOperation("Gets/List employee resources")
+                                .withDescription("Read employees")))));
             // @embedmeEnd
-            Assertions.assertTrue(
-                providerHubManager.operations().listByProviderRegistration(spaceName)
-                    .stream().filter(operationsDefinition ->
-                        spaceName.equals(operationsDefinition.display().provider())
-                            && opeartionName.equals(operationsDefinition.name()))
-                    .findAny().isPresent());
+            Assertions.assertTrue(providerHubManager.operations()
+                .listByProviderRegistration(spaceName)
+                .stream()
+                .filter(operationsDefinition -> spaceName.equals(operationsDefinition.display().provider())
+                    && opeartionName.equals(operationsDefinition.name()))
+                .findAny()
+                .isPresent());
         } finally {
             if (operationsContent != null) {
                 providerHubManager.operations().delete(spaceName);

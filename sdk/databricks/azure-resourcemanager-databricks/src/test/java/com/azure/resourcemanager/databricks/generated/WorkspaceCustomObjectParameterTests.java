@@ -10,9 +10,8 @@ import com.azure.resourcemanager.databricks.models.WorkspaceCustomObjectParamete
 public final class WorkspaceCustomObjectParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceCustomObjectParameter model =
-            BinaryData
-                .fromString("{\"type\":\"String\",\"value\":\"datawjfeusnhutjel\"}")
+        WorkspaceCustomObjectParameter model
+            = BinaryData.fromString("{\"type\":\"String\",\"value\":\"datawjfeusnhutjel\"}")
                 .toObject(WorkspaceCustomObjectParameter.class);
     }
 

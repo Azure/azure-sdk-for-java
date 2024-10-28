@@ -76,10 +76,8 @@ public final class DeployConfigurationParameterProperties {
      */
     public void validate() {
         if (branch() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property branch in model DeployConfigurationParameterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property branch in model DeployConfigurationParameterProperties"));
         }
     }
 

@@ -46,7 +46,8 @@ public final class SpringbootsitesListByResourceGroupMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SpringAppDiscoveryManager manager = SpringAppDiscoveryManager.configure().withHttpClient(httpClient)
+        SpringAppDiscoveryManager manager = SpringAppDiscoveryManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 

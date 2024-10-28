@@ -42,8 +42,8 @@ public final class ManagementNetworkConfigurationProperties {
      * @param infrastructureVpnConfiguration the infrastructureVpnConfiguration value to set.
      * @return the ManagementNetworkConfigurationProperties object itself.
      */
-    public ManagementNetworkConfigurationProperties withInfrastructureVpnConfiguration(
-        VpnConfigurationProperties infrastructureVpnConfiguration) {
+    public ManagementNetworkConfigurationProperties
+        withInfrastructureVpnConfiguration(VpnConfigurationProperties infrastructureVpnConfiguration) {
         this.infrastructureVpnConfiguration = infrastructureVpnConfiguration;
         return this;
     }
@@ -63,8 +63,8 @@ public final class ManagementNetworkConfigurationProperties {
      * @param workloadVpnConfiguration the workloadVpnConfiguration value to set.
      * @return the ManagementNetworkConfigurationProperties object itself.
      */
-    public ManagementNetworkConfigurationProperties withWorkloadVpnConfiguration(
-        VpnConfigurationProperties workloadVpnConfiguration) {
+    public ManagementNetworkConfigurationProperties
+        withWorkloadVpnConfiguration(VpnConfigurationProperties workloadVpnConfiguration) {
         this.workloadVpnConfiguration = workloadVpnConfiguration;
         return this;
     }
@@ -76,20 +76,16 @@ public final class ManagementNetworkConfigurationProperties {
      */
     public void validate() {
         if (infrastructureVpnConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property infrastructureVpnConfiguration in model"
-                            + " ManagementNetworkConfigurationProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property infrastructureVpnConfiguration in model"
+                    + " ManagementNetworkConfigurationProperties"));
         } else {
             infrastructureVpnConfiguration().validate();
         }
         if (workloadVpnConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property workloadVpnConfiguration in model"
-                            + " ManagementNetworkConfigurationProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property workloadVpnConfiguration in model"
+                    + " ManagementNetworkConfigurationProperties"));
         } else {
             workloadVpnConfiguration().validate();
         }

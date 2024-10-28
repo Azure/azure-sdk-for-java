@@ -107,13 +107,8 @@ public final class PurviewAccountClientImpl {
      * @param serviceVersion Service version.
      */
     public PurviewAccountClientImpl(String endpoint, PurviewAccountServiceVersion serviceVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                serviceVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -124,8 +119,8 @@ public final class PurviewAccountClientImpl {
      *     https://{accountName}.purview.azure.com/account/.
      * @param serviceVersion Service version.
      */
-    public PurviewAccountClientImpl(
-            HttpPipeline httpPipeline, String endpoint, PurviewAccountServiceVersion serviceVersion) {
+    public PurviewAccountClientImpl(HttpPipeline httpPipeline, String endpoint,
+        PurviewAccountServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -138,11 +133,8 @@ public final class PurviewAccountClientImpl {
      *     https://{accountName}.purview.azure.com/account/.
      * @param serviceVersion Service version.
      */
-    public PurviewAccountClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String endpoint,
-            PurviewAccountServiceVersion serviceVersion) {
+    public PurviewAccountClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        PurviewAccountServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

@@ -31,45 +31,31 @@ public final class PrivateEndpointConnectionsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"rweft\"},\"privateLinkServiceConnectionState\":{\"status\":\"qejpmvssehaepwa\",\"description\":\"xtczhupeuknijd\",\"actionsRequired\":\"yespydjfbocyv\"},\"groupId\":\"ulrtywikdmh\",\"provisioningState\":\"Succeeded\"},\"id\":\"uacdixmxuf\",\"name\":\"sryjqgdkfno\",\"type\":\"oeoq\"}";
+        String responseStr
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"rweft\"},\"privateLinkServiceConnectionState\":{\"status\":\"qejpmvssehaepwa\",\"description\":\"xtczhupeuknijd\",\"actionsRequired\":\"yespydjfbocyv\"},\"groupId\":\"ulrtywikdmh\",\"provisioningState\":\"Succeeded\"},\"id\":\"uacdixmxuf\",\"name\":\"sryjqgdkfno\",\"type\":\"oeoq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        KustoManager manager =
-            KustoManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        KustoManager manager = KustoManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrivateEndpointConnection response =
-            manager
-                .privateEndpointConnections()
-                .define("ecmslclbl")
-                .withExistingCluster("uovmaonurjt", "mghihp")
-                .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionStateProperty()
-                        .withStatus("gctmgxuupbezq")
-                        .withDescription("ydrtc"))
-                .create();
+        PrivateEndpointConnection response = manager.privateEndpointConnections()
+            .define("ecmslclbl")
+            .withExistingCluster("uovmaonurjt", "mghihp")
+            .withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionStateProperty().withStatus("gctmgxuupbezq").withDescription("ydrtc"))
+            .create();
 
         Assertions.assertEquals("qejpmvssehaepwa", response.privateLinkServiceConnectionState().status());
         Assertions.assertEquals("xtczhupeuknijd", response.privateLinkServiceConnectionState().description());

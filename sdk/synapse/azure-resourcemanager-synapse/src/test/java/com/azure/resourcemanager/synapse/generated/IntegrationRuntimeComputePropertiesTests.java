@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeComputePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeComputeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"itpkpztrgdg\",\"nodeSize\":\"coqra\",\"numberOfNodes\":2040757308,\"maxParallelExecutionsPerNode\":601079141,\"dataFlowProperties\":{\"computeType\":\"General\",\"coreCount\":2036171481,\"timeToLive\":151899144,\"cleanup\":false,\"\":{\"yltcoqcuj\":\"datavskbuhzacaq\",\"ztjofqcvovjufyc\":\"datadsxzakuejkmvb\",\"gthortudaw\":\"datajmlbemyejiriux\",\"qerpptcbgqnzm\":\"datapjfe\"}},\"vNetProperties\":{\"vNetId\":\"ilialwcjgc\",\"subnet\":\"bcccgzpra\",\"publicIPs\":[\"yuffatsgf\",\"ipwcxbyu\"],\"subnetId\":\"iqdxyurnpnuh\",\"\":{\"yl\":\"dataccnuhiig\",\"vxva\":\"dataui\",\"lbnb\":\"datavcrk\"}},\"\":{\"syhzlwx\":\"datah\"}}")
-                .toObject(IntegrationRuntimeComputeProperties.class);
+        IntegrationRuntimeComputeProperties model = BinaryData.fromString(
+            "{\"location\":\"itpkpztrgdg\",\"nodeSize\":\"coqra\",\"numberOfNodes\":2040757308,\"maxParallelExecutionsPerNode\":601079141,\"dataFlowProperties\":{\"computeType\":\"General\",\"coreCount\":2036171481,\"timeToLive\":151899144,\"cleanup\":false,\"\":{\"yltcoqcuj\":\"datavskbuhzacaq\",\"ztjofqcvovjufyc\":\"datadsxzakuejkmvb\",\"gthortudaw\":\"datajmlbemyejiriux\",\"qerpptcbgqnzm\":\"datapjfe\"}},\"vNetProperties\":{\"vNetId\":\"ilialwcjgc\",\"subnet\":\"bcccgzpra\",\"publicIPs\":[\"yuffatsgf\",\"ipwcxbyu\"],\"subnetId\":\"iqdxyurnpnuh\",\"\":{\"yl\":\"dataccnuhiig\",\"vxva\":\"dataui\",\"lbnb\":\"datavcrk\"}},\"\":{\"syhzlwx\":\"datah\"}}")
+            .toObject(IntegrationRuntimeComputeProperties.class);
         Assertions.assertEquals("itpkpztrgdg", model.location());
         Assertions.assertEquals("coqra", model.nodeSize());
         Assertions.assertEquals(2040757308, model.numberOfNodes());
@@ -38,26 +36,22 @@ public final class IntegrationRuntimeComputePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeComputeProperties model =
-            new IntegrationRuntimeComputeProperties()
-                .withLocation("itpkpztrgdg")
+        IntegrationRuntimeComputeProperties model
+            = new IntegrationRuntimeComputeProperties().withLocation("itpkpztrgdg")
                 .withNodeSize("coqra")
                 .withNumberOfNodes(2040757308)
                 .withMaxParallelExecutionsPerNode(601079141)
                 .withDataFlowProperties(
-                    new IntegrationRuntimeDataFlowProperties()
-                        .withComputeType(DataFlowComputeType.GENERAL)
+                    new IntegrationRuntimeDataFlowProperties().withComputeType(DataFlowComputeType.GENERAL)
                         .withCoreCount(2036171481)
                         .withTimeToLive(151899144)
                         .withCleanup(false)
                         .withAdditionalProperties(mapOf()))
-                .withVNetProperties(
-                    new IntegrationRuntimeVNetProperties()
-                        .withVNetId("ilialwcjgc")
-                        .withSubnet("bcccgzpra")
-                        .withPublicIPs(Arrays.asList("yuffatsgf", "ipwcxbyu"))
-                        .withSubnetId("iqdxyurnpnuh")
-                        .withAdditionalProperties(mapOf()))
+                .withVNetProperties(new IntegrationRuntimeVNetProperties().withVNetId("ilialwcjgc")
+                    .withSubnet("bcccgzpra")
+                    .withPublicIPs(Arrays.asList("yuffatsgf", "ipwcxbyu"))
+                    .withSubnetId("iqdxyurnpnuh")
+                    .withAdditionalProperties(mapOf()))
                 .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeComputeProperties.class);
         Assertions.assertEquals("itpkpztrgdg", model.location());

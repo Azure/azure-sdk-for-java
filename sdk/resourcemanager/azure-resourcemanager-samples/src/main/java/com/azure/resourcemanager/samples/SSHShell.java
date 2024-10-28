@@ -60,7 +60,7 @@ public final class SSHShell {
      * @throws IOException IO exception thrown
      */
     public static SSHShell open(String host, int port, String userName, String password)
-            throws JSchException, IOException {
+        throws JSchException, IOException {
         return new SSHShell(host, port, userName, password);
     }
 
@@ -154,7 +154,8 @@ public final class SSHShell {
      * @param filePerm file permissions to be set
      * @throws Exception exception thrown
      */
-    public void upload(InputStream from, String fileName, String toPath, boolean isUserHomeBased, String filePerm) throws Exception {
+    public void upload(InputStream from, String fileName, String toPath, boolean isUserHomeBased, String filePerm)
+        throws Exception {
         ChannelSftp channel = (ChannelSftp) this.session.openChannel("sftp");
         channel.connect();
         String absolutePath = isUserHomeBased ? channel.getHome() + "/" + toPath : toPath;
@@ -198,7 +199,8 @@ public final class SSHShell {
      * @throws UnsupportedEncodingException exception thrown
      * @throws JSchException exception thrown
      */
-    public static SshPublicPrivateKey generateSSHKeys(String passPhrase, String comment) throws UnsupportedEncodingException, JSchException {
+    public static SshPublicPrivateKey generateSSHKeys(String passPhrase, String comment)
+        throws UnsupportedEncodingException, JSchException {
         JSch jsch = new JSch();
         KeyPair keyPair = KeyPair.genKeyPair(jsch, KeyPair.RSA);
         ByteArrayOutputStream privateKeyBuff = new ByteArrayOutputStream(2048);

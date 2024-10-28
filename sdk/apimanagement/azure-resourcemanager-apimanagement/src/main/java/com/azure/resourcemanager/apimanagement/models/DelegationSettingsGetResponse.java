@@ -21,12 +21,8 @@ public final class DelegationSettingsGetResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public DelegationSettingsGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        PortalDelegationSettingsInner value,
-        DelegationSettingsGetHeaders headers) {
+    public DelegationSettingsGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        PortalDelegationSettingsInner value, DelegationSettingsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

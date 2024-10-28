@@ -12,11 +12,10 @@ import java.util.Arrays;
 public final class InputDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InputDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[{\"@odata.type\":\"TrackDescriptor\"}]}")
-                .toObject(InputDefinition.class);
+        InputDefinition model = BinaryData
+            .fromString(
+                "{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[{\"@odata.type\":\"TrackDescriptor\"}]}")
+            .toObject(InputDefinition.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -20,7 +20,7 @@ public class App {
      * @throws RuntimeException If not able to load test classes.
      */
     public static void main(String[] args) {
-        final Class<?>[] testClasses = new Class<?>[]{
+        final Class<?>[] testClasses = new Class<?>[] {
             SendEventBatchTest.class,
             ReceiveEventsFromPartitionBatchTest.class,
             ReceiveEventsBatchTest.class,
@@ -32,8 +32,7 @@ public class App {
             EventProcessorTest.class,
             GetPartitionInformationTest.class,
             ReactorReceiveEventsTest.class,
-            EventProcessorJedisTest.class
-        };
+            EventProcessorJedisTest.class };
         PerfStressProgram.run(testClasses, args);
     }
 }

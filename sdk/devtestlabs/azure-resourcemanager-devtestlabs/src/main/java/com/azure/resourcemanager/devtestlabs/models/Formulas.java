@@ -37,14 +37,8 @@ public interface Formulas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Formula> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<Formula> list(String resourceGroupName, String labName, String expand, String filter, Integer top,
+        String orderby, Context context);
 
     /**
      * Get formula.
@@ -59,8 +53,8 @@ public interface Formulas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return formula along with {@link Response}.
      */
-    Response<Formula> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<Formula> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context);
 
     /**
      * Get formula.

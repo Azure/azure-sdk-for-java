@@ -25,33 +25,21 @@ public final class FavoritesImpl implements Favorites {
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    public FavoritesImpl(
-        FavoritesClient innerClient,
+    public FavoritesImpl(FavoritesClient innerClient,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<List<ApplicationInsightsComponentFavorite>> listWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        FavoriteType favoriteType,
-        FavoriteSourceType sourceType,
-        Boolean canFetchContent,
-        List<String> tags,
-        Context context) {
-        Response<List<ApplicationInsightsComponentFavoriteInner>> inner =
-            this
-                .serviceClient()
-                .listWithResponse(
-                    resourceGroupName, resourceName, favoriteType, sourceType, canFetchContent, tags, context);
+    public Response<List<ApplicationInsightsComponentFavorite>> listWithResponse(String resourceGroupName,
+        String resourceName, FavoriteType favoriteType, FavoriteSourceType sourceType, Boolean canFetchContent,
+        List<String> tags, Context context) {
+        Response<List<ApplicationInsightsComponentFavoriteInner>> inner = this.serviceClient()
+            .listWithResponse(resourceGroupName, resourceName, favoriteType, sourceType, canFetchContent, tags,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new ApplicationInsightsComponentFavoriteImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
@@ -61,29 +49,23 @@ public final class FavoritesImpl implements Favorites {
     }
 
     public List<ApplicationInsightsComponentFavorite> list(String resourceGroupName, String resourceName) {
-        List<ApplicationInsightsComponentFavoriteInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName);
+        List<ApplicationInsightsComponentFavoriteInner> inner
+            = this.serviceClient().list(resourceGroupName, resourceName);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ApplicationInsightsComponentFavoriteImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ApplicationInsightsComponentFavoriteImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
     }
 
-    public Response<ApplicationInsightsComponentFavorite> getWithResponse(
-        String resourceGroupName, String resourceName, String favoriteId, Context context) {
-        Response<ApplicationInsightsComponentFavoriteInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, resourceName, favoriteId, context);
+    public Response<ApplicationInsightsComponentFavorite> getWithResponse(String resourceGroupName, String resourceName,
+        String favoriteId, Context context) {
+        Response<ApplicationInsightsComponentFavoriteInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, favoriteId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationInsightsComponentFavoriteImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -91,8 +73,8 @@ public final class FavoritesImpl implements Favorites {
     }
 
     public ApplicationInsightsComponentFavorite get(String resourceGroupName, String resourceName, String favoriteId) {
-        ApplicationInsightsComponentFavoriteInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName, favoriteId);
+        ApplicationInsightsComponentFavoriteInner inner
+            = this.serviceClient().get(resourceGroupName, resourceName, favoriteId);
         if (inner != null) {
             return new ApplicationInsightsComponentFavoriteImpl(inner, this.manager());
         } else {
@@ -100,34 +82,22 @@ public final class FavoritesImpl implements Favorites {
         }
     }
 
-    public Response<ApplicationInsightsComponentFavorite> addWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties,
-        Context context) {
-        Response<ApplicationInsightsComponentFavoriteInner> inner =
-            this
-                .serviceClient()
-                .addWithResponse(resourceGroupName, resourceName, favoriteId, favoriteProperties, context);
+    public Response<ApplicationInsightsComponentFavorite> addWithResponse(String resourceGroupName, String resourceName,
+        String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties, Context context) {
+        Response<ApplicationInsightsComponentFavoriteInner> inner = this.serviceClient()
+            .addWithResponse(resourceGroupName, resourceName, favoriteId, favoriteProperties, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationInsightsComponentFavoriteImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ApplicationInsightsComponentFavorite add(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
+    public ApplicationInsightsComponentFavorite add(String resourceGroupName, String resourceName, String favoriteId,
         ApplicationInsightsComponentFavoriteInner favoriteProperties) {
-        ApplicationInsightsComponentFavoriteInner inner =
-            this.serviceClient().add(resourceGroupName, resourceName, favoriteId, favoriteProperties);
+        ApplicationInsightsComponentFavoriteInner inner
+            = this.serviceClient().add(resourceGroupName, resourceName, favoriteId, favoriteProperties);
         if (inner != null) {
             return new ApplicationInsightsComponentFavoriteImpl(inner, this.manager());
         } else {
@@ -135,34 +105,23 @@ public final class FavoritesImpl implements Favorites {
         }
     }
 
-    public Response<ApplicationInsightsComponentFavorite> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
-        ApplicationInsightsComponentFavoriteInner favoriteProperties,
+    public Response<ApplicationInsightsComponentFavorite> updateWithResponse(String resourceGroupName,
+        String resourceName, String favoriteId, ApplicationInsightsComponentFavoriteInner favoriteProperties,
         Context context) {
-        Response<ApplicationInsightsComponentFavoriteInner> inner =
-            this
-                .serviceClient()
-                .updateWithResponse(resourceGroupName, resourceName, favoriteId, favoriteProperties, context);
+        Response<ApplicationInsightsComponentFavoriteInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, resourceName, favoriteId, favoriteProperties, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationInsightsComponentFavoriteImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ApplicationInsightsComponentFavorite update(
-        String resourceGroupName,
-        String resourceName,
-        String favoriteId,
+    public ApplicationInsightsComponentFavorite update(String resourceGroupName, String resourceName, String favoriteId,
         ApplicationInsightsComponentFavoriteInner favoriteProperties) {
-        ApplicationInsightsComponentFavoriteInner inner =
-            this.serviceClient().update(resourceGroupName, resourceName, favoriteId, favoriteProperties);
+        ApplicationInsightsComponentFavoriteInner inner
+            = this.serviceClient().update(resourceGroupName, resourceName, favoriteId, favoriteProperties);
         if (inner != null) {
             return new ApplicationInsightsComponentFavoriteImpl(inner, this.manager());
         } else {
@@ -170,8 +129,8 @@ public final class FavoritesImpl implements Favorites {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String favoriteId, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String favoriteId,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, favoriteId, context);
     }
 

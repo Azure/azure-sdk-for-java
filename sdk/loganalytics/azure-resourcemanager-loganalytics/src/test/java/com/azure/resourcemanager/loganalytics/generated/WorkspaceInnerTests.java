@@ -22,11 +22,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Updating\",\"customerId\":\"ldvriiiojnalghfk\",\"sku\":{\"name\":\"Standalone\",\"capacityReservationLevel\":100,\"lastSkuUpdate\":\"sowueluqhhahhx\"},\"retentionInDays\":1049422590,\"workspaceCapping\":{\"dailyQuotaGb\":99.72101812973094,\"quotaNextResetTime\":\"jgwwspughftq\",\"dataIngestionStatus\":\"ApproachingQuota\"},\"createdDate\":\"xujxuknd\",\"modifiedDate\":\"igrjguufzdm\",\"publicNetworkAccessForIngestion\":\"Disabled\",\"publicNetworkAccessForQuery\":\"Enabled\",\"forceCmkForQuery\":true,\"privateLinkScopedResources\":[{\"resourceId\":\"otzi\",\"scopeId\":\"amvpphoszqzudph\"},{\"resourceId\":\"mvdk\",\"scopeId\":\"ynwcvtbv\"},{\"resourceId\":\"yhmtnvyqiat\",\"scopeId\":\"wp\"},{\"resourceId\":\"p\",\"scopeId\":\"cjaesgvvs\"}],\"features\":{\"enableDataExport\":false,\"immediatePurgeDataOn30Days\":false,\"enableLogAccessUsingOnlyResourcePermissions\":false,\"clusterResourceId\":\"hwyg\",\"disableLocalAuth\":true,\"\":{\"emdwzrmuhapfc\":\"datakfxu\"}},\"defaultDataCollectionRuleResourceId\":\"psqxq\"},\"identity\":{\"principalId\":\"vuoy\",\"tenantId\":\"ccelve\",\"type\":\"None\",\"userAssignedIdentities\":{\"opgxedkowepb\":{\"principalId\":\"lmfeokerq\",\"clientId\":\"yhko\"},\"ftnkhtj\":{\"principalId\":\"cr\",\"clientId\":\"bwccsnjvcdwxlpqe\"}}},\"systemData\":{\"createdBy\":\"ngwfqatm\",\"createdByType\":\"Application\",\"createdAt\":\"2021-01-16T13:50:23Z\",\"lastModifiedBy\":\"vypgikdg\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-09-09T14:02:20Z\"},\"etag\":\"irryuzhlh\",\"location\":\"joqrvqqaatj\",\"tags\":{\"fiibfggjioolvr\":\"vgoup\"},\"id\":\"x\",\"name\":\"v\",\"type\":\"kkgll\"}")
-                .toObject(WorkspaceInner.class);
+        WorkspaceInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Updating\",\"customerId\":\"ldvriiiojnalghfk\",\"sku\":{\"name\":\"Standalone\",\"capacityReservationLevel\":100,\"lastSkuUpdate\":\"sowueluqhhahhx\"},\"retentionInDays\":1049422590,\"workspaceCapping\":{\"dailyQuotaGb\":99.72101812973094,\"quotaNextResetTime\":\"jgwwspughftq\",\"dataIngestionStatus\":\"ApproachingQuota\"},\"createdDate\":\"xujxuknd\",\"modifiedDate\":\"igrjguufzdm\",\"publicNetworkAccessForIngestion\":\"Disabled\",\"publicNetworkAccessForQuery\":\"Enabled\",\"forceCmkForQuery\":true,\"privateLinkScopedResources\":[{\"resourceId\":\"otzi\",\"scopeId\":\"amvpphoszqzudph\"},{\"resourceId\":\"mvdk\",\"scopeId\":\"ynwcvtbv\"},{\"resourceId\":\"yhmtnvyqiat\",\"scopeId\":\"wp\"},{\"resourceId\":\"p\",\"scopeId\":\"cjaesgvvs\"}],\"features\":{\"enableDataExport\":false,\"immediatePurgeDataOn30Days\":false,\"enableLogAccessUsingOnlyResourcePermissions\":false,\"clusterResourceId\":\"hwyg\",\"disableLocalAuth\":true,\"\":{\"emdwzrmuhapfc\":\"datakfxu\"}},\"defaultDataCollectionRuleResourceId\":\"psqxq\"},\"identity\":{\"principalId\":\"vuoy\",\"tenantId\":\"ccelve\",\"type\":\"None\",\"userAssignedIdentities\":{\"opgxedkowepb\":{\"principalId\":\"lmfeokerq\",\"clientId\":\"yhko\"},\"ftnkhtj\":{\"principalId\":\"cr\",\"clientId\":\"bwccsnjvcdwxlpqe\"}}},\"systemData\":{\"createdBy\":\"ngwfqatm\",\"createdByType\":\"Application\",\"createdAt\":\"2021-01-16T13:50:23Z\",\"lastModifiedBy\":\"vypgikdg\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-09-09T14:02:20Z\"},\"etag\":\"irryuzhlh\",\"location\":\"joqrvqqaatj\",\"tags\":{\"fiibfggjioolvr\":\"vgoup\"},\"id\":\"x\",\"name\":\"v\",\"type\":\"kkgll\"}")
+            .toObject(WorkspaceInner.class);
         Assertions.assertEquals("joqrvqqaatj", model.location());
         Assertions.assertEquals("vgoup", model.tags().get("fiibfggjioolvr"));
         Assertions.assertEquals(IdentityType.NONE, model.identity().type());
@@ -48,35 +46,26 @@ public final class WorkspaceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceInner model =
-            new WorkspaceInner()
-                .withLocation("joqrvqqaatj")
-                .withTags(mapOf("fiibfggjioolvr", "vgoup"))
-                .withIdentity(
-                    new Identity()
-                        .withType(IdentityType.NONE)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "opgxedkowepb", new UserIdentityProperties(), "ftnkhtj", new UserIdentityProperties())))
-                .withEtag("irryuzhlh")
-                .withSku(
-                    new WorkspaceSku()
-                        .withName(WorkspaceSkuNameEnum.STANDALONE)
-                        .withCapacityReservationLevel(CapacityReservationLevel.ONE_ZERO_ZERO))
-                .withRetentionInDays(1049422590)
-                .withWorkspaceCapping(new WorkspaceCapping().withDailyQuotaGb(99.72101812973094D))
-                .withPublicNetworkAccessForIngestion(PublicNetworkAccessType.DISABLED)
-                .withPublicNetworkAccessForQuery(PublicNetworkAccessType.ENABLED)
-                .withForceCmkForQuery(true)
-                .withFeatures(
-                    new WorkspaceFeatures()
-                        .withEnableDataExport(false)
-                        .withImmediatePurgeDataOn30Days(false)
-                        .withEnableLogAccessUsingOnlyResourcePermissions(false)
-                        .withClusterResourceId("hwyg")
-                        .withDisableLocalAuth(true)
-                        .withAdditionalProperties(mapOf()))
-                .withDefaultDataCollectionRuleResourceId("psqxq");
+        WorkspaceInner model = new WorkspaceInner().withLocation("joqrvqqaatj")
+            .withTags(mapOf("fiibfggjioolvr", "vgoup"))
+            .withIdentity(new Identity().withType(IdentityType.NONE)
+                .withUserAssignedIdentities(
+                    mapOf("opgxedkowepb", new UserIdentityProperties(), "ftnkhtj", new UserIdentityProperties())))
+            .withEtag("irryuzhlh")
+            .withSku(new WorkspaceSku().withName(WorkspaceSkuNameEnum.STANDALONE)
+                .withCapacityReservationLevel(CapacityReservationLevel.ONE_ZERO_ZERO))
+            .withRetentionInDays(1049422590)
+            .withWorkspaceCapping(new WorkspaceCapping().withDailyQuotaGb(99.72101812973094D))
+            .withPublicNetworkAccessForIngestion(PublicNetworkAccessType.DISABLED)
+            .withPublicNetworkAccessForQuery(PublicNetworkAccessType.ENABLED)
+            .withForceCmkForQuery(true)
+            .withFeatures(new WorkspaceFeatures().withEnableDataExport(false)
+                .withImmediatePurgeDataOn30Days(false)
+                .withEnableLogAccessUsingOnlyResourcePermissions(false)
+                .withClusterResourceId("hwyg")
+                .withDisableLocalAuth(true)
+                .withAdditionalProperties(mapOf()))
+            .withDefaultDataCollectionRuleResourceId("psqxq");
         model = BinaryData.fromObject(model).toObject(WorkspaceInner.class);
         Assertions.assertEquals("joqrvqqaatj", model.location());
         Assertions.assertEquals("vgoup", model.tags().get("fiibfggjioolvr"));

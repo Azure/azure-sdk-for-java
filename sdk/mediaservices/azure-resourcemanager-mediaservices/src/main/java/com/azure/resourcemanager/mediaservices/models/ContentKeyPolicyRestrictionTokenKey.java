@@ -25,8 +25,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         value = ContentKeyPolicyRsaTokenKey.class),
     @JsonSubTypes.Type(
         name = "#Microsoft.Media.ContentKeyPolicyX509CertificateTokenKey",
-        value = ContentKeyPolicyX509CertificateTokenKey.class)
-})
+        value = ContentKeyPolicyX509CertificateTokenKey.class) })
 @Immutable
 public class ContentKeyPolicyRestrictionTokenKey {
     /** Creates an instance of ContentKeyPolicyRestrictionTokenKey class. */

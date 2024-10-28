@@ -86,14 +86,15 @@ public final class CustomMultiClassificationTask implements JsonSerializable<Cus
      */
     public static CustomMultiClassificationTask fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            CustomMultiClassificationTask deserializedCustomMultiClassificationTask = new CustomMultiClassificationTask();
+            CustomMultiClassificationTask deserializedCustomMultiClassificationTask
+                = new CustomMultiClassificationTask();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("parameters".equals(fieldName)) {
-                    deserializedCustomMultiClassificationTask.parameters =
-                            CustomMultiLabelClassificationTaskParameters.fromJson(reader);
+                    deserializedCustomMultiClassificationTask.parameters
+                        = CustomMultiLabelClassificationTaskParameters.fromJson(reader);
                 } else if ("taskName".equals(fieldName)) {
                     deserializedCustomMultiClassificationTask.taskName = reader.getString();
                 } else {

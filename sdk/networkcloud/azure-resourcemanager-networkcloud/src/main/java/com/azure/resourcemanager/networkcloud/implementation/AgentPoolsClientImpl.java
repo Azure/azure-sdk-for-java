@@ -54,8 +54,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @param client the instance of the service client containing this operation class.
      */
     AgentPoolsClientImpl(NetworkCloudImpl client) {
-        this.service =
-            RestProxy.create(AgentPoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(AgentPoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,91 +66,67 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
     @Host("{$host}")
     @ServiceInterface(name = "NetworkCloudAgentPoo")
     public interface AgentPoolsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgentPoolList>> listByKubernetesCluster(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<AgentPoolList>> listByKubernetesCluster(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("kubernetesClusterName") String kubernetesClusterName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("kubernetesClusterName") String kubernetesClusterName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools/{agentPoolName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools/{agentPoolName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgentPoolInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<AgentPoolInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("kubernetesClusterName") String kubernetesClusterName,
-            @PathParam("agentPoolName") String agentPoolName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("agentPoolName") String agentPoolName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools/{agentPoolName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools/{agentPoolName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("kubernetesClusterName") String kubernetesClusterName,
             @PathParam("agentPoolName") String agentPoolName,
-            @BodyParam("application/json") AgentPoolInner agentPoolParameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") AgentPoolInner agentPoolParameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools/{agentPoolName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools/{agentPoolName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("kubernetesClusterName") String kubernetesClusterName,
-            @PathParam("agentPoolName") String agentPoolName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("agentPoolName") String agentPoolName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools/{agentPoolName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/kubernetesClusters/{kubernetesClusterName}/agentPools/{agentPoolName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("kubernetesClusterName") String kubernetesClusterName,
             @PathParam("agentPoolName") String agentPoolName,
             @BodyParam("application/json") AgentPoolPatchParameters agentPoolUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AgentPoolList>> listByKubernetesClusterNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -167,19 +143,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AgentPoolInner>> listByKubernetesClusterSinglePageAsync(
-        String resourceGroupName, String kubernetesClusterName) {
+    private Mono<PagedResponse<AgentPoolInner>> listByKubernetesClusterSinglePageAsync(String resourceGroupName,
+        String kubernetesClusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -192,25 +164,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByKubernetesCluster(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            kubernetesClusterName,
-                            accept,
-                            context))
-            .<PagedResponse<AgentPoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByKubernetesCluster(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, accept, context))
+            .<PagedResponse<AgentPoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -229,19 +186,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AgentPoolInner>> listByKubernetesClusterSinglePageAsync(
-        String resourceGroupName, String kubernetesClusterName, Context context) {
+    private Mono<PagedResponse<AgentPoolInner>> listByKubernetesClusterSinglePageAsync(String resourceGroupName,
+        String kubernetesClusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -254,23 +207,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByKubernetesCluster(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                kubernetesClusterName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByKubernetesCluster(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -286,10 +226,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return a list of agent pools for the provided Kubernetes cluster as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AgentPoolInner> listByKubernetesClusterAsync(
-        String resourceGroupName, String kubernetesClusterName) {
-        return new PagedFlux<>(
-            () -> listByKubernetesClusterSinglePageAsync(resourceGroupName, kubernetesClusterName),
+    private PagedFlux<AgentPoolInner> listByKubernetesClusterAsync(String resourceGroupName,
+        String kubernetesClusterName) {
+        return new PagedFlux<>(() -> listByKubernetesClusterSinglePageAsync(resourceGroupName, kubernetesClusterName),
             nextLink -> listByKubernetesClusterNextSinglePageAsync(nextLink));
     }
 
@@ -307,8 +246,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return a list of agent pools for the provided Kubernetes cluster as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AgentPoolInner> listByKubernetesClusterAsync(
-        String resourceGroupName, String kubernetesClusterName, Context context) {
+    private PagedFlux<AgentPoolInner> listByKubernetesClusterAsync(String resourceGroupName,
+        String kubernetesClusterName, Context context) {
         return new PagedFlux<>(
             () -> listByKubernetesClusterSinglePageAsync(resourceGroupName, kubernetesClusterName, context),
             nextLink -> listByKubernetesClusterNextSinglePageAsync(nextLink, context));
@@ -328,8 +267,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentPoolInner> listByKubernetesCluster(
-        String resourceGroupName, String kubernetesClusterName) {
+    public PagedIterable<AgentPoolInner> listByKubernetesCluster(String resourceGroupName,
+        String kubernetesClusterName) {
         return new PagedIterable<>(listByKubernetesClusterAsync(resourceGroupName, kubernetesClusterName));
     }
 
@@ -348,8 +287,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AgentPoolInner> listByKubernetesCluster(
-        String resourceGroupName, String kubernetesClusterName, Context context) {
+    public PagedIterable<AgentPoolInner> listByKubernetesCluster(String resourceGroupName, String kubernetesClusterName,
+        Context context) {
         return new PagedIterable<>(listByKubernetesClusterAsync(resourceGroupName, kubernetesClusterName, context));
     }
 
@@ -368,19 +307,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgentPoolInner>> getWithResponseAsync(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName) {
+    private Mono<Response<AgentPoolInner>> getWithResponseAsync(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -394,19 +329,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            kubernetesClusterName,
-                            agentPoolName,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, agentPoolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -426,19 +350,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgentPoolInner>> getWithResponseAsync(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName, Context context) {
+    private Mono<Response<AgentPoolInner>> getWithResponseAsync(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -453,16 +373,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                kubernetesClusterName,
-                agentPoolName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, kubernetesClusterName, agentPoolName, accept, context);
     }
 
     /**
@@ -479,8 +391,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return properties of the provided Kubernetes cluster agent pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AgentPoolInner> getAsync(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName) {
+    private Mono<AgentPoolInner> getAsync(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName) {
         return getWithResponseAsync(resourceGroupName, kubernetesClusterName, agentPoolName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -500,8 +412,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return properties of the provided Kubernetes cluster agent pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AgentPoolInner> getWithResponse(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName, Context context) {
+    public Response<AgentPoolInner> getWithResponse(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName, Context context) {
         return getWithResponseAsync(resourceGroupName, kubernetesClusterName, agentPoolName, context).block();
     }
 
@@ -539,22 +451,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolInner agentPoolParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName, AgentPoolInner agentPoolParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -575,19 +480,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            kubernetesClusterName,
-                            agentPoolName,
-                            agentPoolParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, agentPoolName,
+                agentPoolParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -608,23 +503,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolInner agentPoolParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName, AgentPoolInner agentPoolParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -645,17 +532,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                kubernetesClusterName,
-                agentPoolName,
-                agentPoolParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, agentPoolName,
+            agentPoolParameters, accept, context);
     }
 
     /**
@@ -673,22 +552,12 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the {@link PollerFlux} for polling of agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolInner agentPoolParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolParameters);
-        return this
-            .client
-            .<AgentPoolInner, AgentPoolInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AgentPoolInner.class,
-                AgentPoolInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName, AgentPoolInner agentPoolParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            kubernetesClusterName, agentPoolName, agentPoolParameters);
+        return this.client.<AgentPoolInner, AgentPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AgentPoolInner.class, AgentPoolInner.class, this.client.getContext());
     }
 
     /**
@@ -707,20 +576,13 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the {@link PollerFlux} for polling of agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolInner agentPoolParameters,
-        Context context) {
+    private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName, AgentPoolInner agentPoolParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolParameters, context);
-        return this
-            .client
-            .<AgentPoolInner, AgentPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AgentPoolInner.class, AgentPoolInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName,
+            kubernetesClusterName, agentPoolName, agentPoolParameters, context);
+        return this.client.<AgentPoolInner, AgentPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AgentPoolInner.class, AgentPoolInner.class, context);
     }
 
     /**
@@ -738,11 +600,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolInner agentPoolParameters) {
+    public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName, AgentPoolInner agentPoolParameters) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolParameters)
             .getSyncPoller();
@@ -764,15 +623,11 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolInner agentPoolParameters,
-        Context context) {
+    public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName, AgentPoolInner agentPoolParameters, Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolParameters, context)
+            .beginCreateOrUpdateAsync(resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolParameters,
+                context)
             .getSyncPoller();
     }
 
@@ -791,11 +646,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return agentPool represents the agent pool of Kubernetes cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AgentPoolInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolInner agentPoolParameters) {
+    private Mono<AgentPoolInner> createOrUpdateAsync(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName, AgentPoolInner agentPoolParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -817,16 +669,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return agentPool represents the agent pool of Kubernetes cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AgentPoolInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolInner agentPoolParameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<AgentPoolInner> createOrUpdateAsync(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName, AgentPoolInner agentPoolParameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolParameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -844,10 +690,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentPoolInner createOrUpdate(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
+    public AgentPoolInner createOrUpdate(String resourceGroupName, String kubernetesClusterName, String agentPoolName,
         AgentPoolInner agentPoolParameters) {
         return createOrUpdateAsync(resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolParameters)
             .block();
@@ -869,15 +712,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentPoolInner createOrUpdate(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolInner agentPoolParameters,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolParameters, context)
-            .block();
+    public AgentPoolInner createOrUpdate(String resourceGroupName, String kubernetesClusterName, String agentPoolName,
+        AgentPoolInner agentPoolParameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolParameters,
+            context).block();
     }
 
     /**
@@ -894,19 +732,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -920,19 +754,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter agentPoolName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            kubernetesClusterName,
-                            agentPoolName,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, agentPoolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -951,19 +774,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -978,16 +797,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                kubernetesClusterName,
-                agentPoolName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, kubernetesClusterName, agentPoolName, accept, context);
     }
 
     /**
@@ -1004,14 +815,12 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, kubernetesClusterName, agentPoolName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, kubernetesClusterName, agentPoolName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1029,14 +838,13 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, kubernetesClusterName, agentPoolName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, kubernetesClusterName, agentPoolName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1053,8 +861,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName) {
         return this.beginDeleteAsync(resourceGroupName, kubernetesClusterName, agentPoolName).getSyncPoller();
     }
 
@@ -1073,8 +881,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, kubernetesClusterName, agentPoolName, context).getSyncPoller();
     }
 
@@ -1093,8 +901,7 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String kubernetesClusterName, String agentPoolName) {
-        return beginDeleteAsync(resourceGroupName, kubernetesClusterName, agentPoolName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, kubernetesClusterName, agentPoolName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1113,10 +920,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName, Context context) {
-        return beginDeleteAsync(resourceGroupName, kubernetesClusterName, agentPoolName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String kubernetesClusterName, String agentPoolName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, kubernetesClusterName, agentPoolName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1172,22 +978,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolPatchParameters agentPoolUpdateParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName, AgentPoolPatchParameters agentPoolUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1205,19 +1004,9 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            kubernetesClusterName,
-                            agentPoolName,
-                            agentPoolUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, kubernetesClusterName, agentPoolName,
+                agentPoolUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1239,23 +1028,16 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolPatchParameters agentPoolUpdateParameters,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName, AgentPoolPatchParameters agentPoolUpdateParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1273,17 +1055,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                kubernetesClusterName,
-                agentPoolName,
-                agentPoolUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolUpdateParameters, accept, context);
     }
 
     /**
@@ -1302,21 +1075,12 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the {@link PollerFlux} for polling of agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolPatchParameters agentPoolUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolUpdateParameters);
-        return this
-            .client
-            .<AgentPoolInner, AgentPoolInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AgentPoolInner.class,
-                AgentPoolInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName, AgentPoolPatchParameters agentPoolUpdateParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, kubernetesClusterName,
+            agentPoolName, agentPoolUpdateParameters);
+        return this.client.<AgentPoolInner, AgentPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AgentPoolInner.class, AgentPoolInner.class, this.client.getContext());
     }
 
     /**
@@ -1334,19 +1098,13 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the {@link PollerFlux} for polling of agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName) {
+    private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName) {
         final AgentPoolPatchParameters agentPoolUpdateParameters = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolUpdateParameters);
-        return this
-            .client
-            .<AgentPoolInner, AgentPoolInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AgentPoolInner.class,
-                AgentPoolInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, kubernetesClusterName,
+            agentPoolName, agentPoolUpdateParameters);
+        return this.client.<AgentPoolInner, AgentPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AgentPoolInner.class, AgentPoolInner.class, this.client.getContext());
     }
 
     /**
@@ -1366,20 +1124,14 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the {@link PollerFlux} for polling of agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolPatchParameters agentPoolUpdateParameters,
+    private PollerFlux<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdateAsync(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName, AgentPoolPatchParameters agentPoolUpdateParameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolUpdateParameters, context);
-        return this
-            .client
-            .<AgentPoolInner, AgentPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AgentPoolInner.class, AgentPoolInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, kubernetesClusterName,
+            agentPoolName, agentPoolUpdateParameters, context);
+        return this.client.<AgentPoolInner, AgentPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AgentPoolInner.class, AgentPoolInner.class, context);
     }
 
     /**
@@ -1397,11 +1149,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName) {
+    public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName) {
         final AgentPoolPatchParameters agentPoolUpdateParameters = null;
-        return this
-            .beginUpdateAsync(resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolUpdateParameters)
+        return this.beginUpdateAsync(resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolUpdateParameters)
             .getSyncPoller();
     }
 
@@ -1422,15 +1173,12 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return the {@link SyncPoller} for polling of agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolPatchParameters agentPoolUpdateParameters,
+    public SyncPoller<PollResult<AgentPoolInner>, AgentPoolInner> beginUpdate(String resourceGroupName,
+        String kubernetesClusterName, String agentPoolName, AgentPoolPatchParameters agentPoolUpdateParameters,
         Context context) {
         return this
-            .beginUpdateAsync(
-                resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolUpdateParameters, context)
+            .beginUpdateAsync(resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolUpdateParameters,
+                context)
             .getSyncPoller();
     }
 
@@ -1450,11 +1198,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return agentPool represents the agent pool of Kubernetes cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AgentPoolInner> updateAsync(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolPatchParameters agentPoolUpdateParameters) {
+    private Mono<AgentPoolInner> updateAsync(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName, AgentPoolPatchParameters agentPoolUpdateParameters) {
         return beginUpdateAsync(resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolUpdateParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1475,8 +1220,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return agentPool represents the agent pool of Kubernetes cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AgentPoolInner> updateAsync(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName) {
+    private Mono<AgentPoolInner> updateAsync(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName) {
         final AgentPoolPatchParameters agentPoolUpdateParameters = null;
         return beginUpdateAsync(resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolUpdateParameters)
             .last()
@@ -1500,16 +1245,10 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return agentPool represents the agent pool of Kubernetes cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AgentPoolInner> updateAsync(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolPatchParameters agentPoolUpdateParameters,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolUpdateParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<AgentPoolInner> updateAsync(String resourceGroupName, String kubernetesClusterName,
+        String agentPoolName, AgentPoolPatchParameters agentPoolUpdateParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolUpdateParameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1549,12 +1288,8 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      * @return agentPool represents the agent pool of Kubernetes cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgentPoolInner update(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        String agentPoolName,
-        AgentPoolPatchParameters agentPoolUpdateParameters,
-        Context context) {
+    public AgentPoolInner update(String resourceGroupName, String kubernetesClusterName, String agentPoolName,
+        AgentPoolPatchParameters agentPoolUpdateParameters, Context context) {
         return updateAsync(resourceGroupName, kubernetesClusterName, agentPoolName, agentPoolUpdateParameters, context)
             .block();
     }
@@ -1576,24 +1311,15 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByKubernetesClusterNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AgentPoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AgentPoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1610,29 +1336,19 @@ public final class AgentPoolsClientImpl implements AgentPoolsClient {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AgentPoolInner>> listByKubernetesClusterNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AgentPoolInner>> listByKubernetesClusterNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByKubernetesClusterNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByKubernetesClusterNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The key vault server error. */
+/**
+ * The key vault server error.
+ */
 @Immutable
 public final class CertificateOperationError implements JsonSerializable<CertificateOperationError> {
     /*
@@ -29,12 +31,15 @@ public final class CertificateOperationError implements JsonSerializable<Certifi
      */
     private CertificateOperationError innerError;
 
-    /** Creates an instance of CertificateOperationError class. */
-    public CertificateOperationError() {}
+    /**
+     * Creates an instance of CertificateOperationError class.
+     */
+    public CertificateOperationError() {
+    }
 
     /**
      * Get the code property: The error code.
-     *
+     * 
      * @return the code value.
      */
     public String getCode() {
@@ -43,7 +48,7 @@ public final class CertificateOperationError implements JsonSerializable<Certifi
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -52,13 +57,16 @@ public final class CertificateOperationError implements JsonSerializable<Certifi
 
     /**
      * Get the innerError property: The key vault server error.
-     *
+     * 
      * @return the innerError value.
      */
     public CertificateOperationError getInnerError() {
         return this.innerError;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -67,33 +75,31 @@ public final class CertificateOperationError implements JsonSerializable<Certifi
 
     /**
      * Reads an instance of CertificateOperationError from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateOperationError if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
+     * it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CertificateOperationError.
      */
     public static CertificateOperationError fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateOperationError deserializedCertificateOperationError = new CertificateOperationError();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateOperationError deserializedCertificateOperationError = new CertificateOperationError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("code".equals(fieldName)) {
-                            deserializedCertificateOperationError.code = reader.getString();
-                        } else if ("message".equals(fieldName)) {
-                            deserializedCertificateOperationError.message = reader.getString();
-                        } else if ("innererror".equals(fieldName)) {
-                            deserializedCertificateOperationError.innerError =
-                                    CertificateOperationError.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("code".equals(fieldName)) {
+                    deserializedCertificateOperationError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedCertificateOperationError.message = reader.getString();
+                } else if ("innererror".equals(fieldName)) {
+                    deserializedCertificateOperationError.innerError = CertificateOperationError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateOperationError;
-                });
+            return deserializedCertificateOperationError;
+        });
     }
 }

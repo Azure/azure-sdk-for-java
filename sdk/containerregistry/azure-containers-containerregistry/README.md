@@ -308,7 +308,7 @@ To download a full image, we need to download its manifest and then download ind
 GetManifestResult manifestResult = contentClient.getManifest("latest");
 
 OciImageManifest manifest = manifestResult.getManifest().toObject(OciImageManifest.class);
-System.out.printf("Got manifest:\n%s\n", PRETTY_PRINT.writeValueAsString(manifest));
+System.out.printf("Got manifest:\n%s\n", manifest.toJsonString());
 
 String configFileName = manifest.getConfiguration().getDigest() + ".json";
 contentClient.downloadStream(manifest.getConfiguration().getDigest(), createFileChannel(configFileName));

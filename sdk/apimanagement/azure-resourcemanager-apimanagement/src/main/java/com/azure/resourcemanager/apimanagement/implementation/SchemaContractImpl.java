@@ -73,22 +73,17 @@ public final class SchemaContractImpl implements SchemaContract, SchemaContract.
     }
 
     public SchemaContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiSchemas()
-                .createOrUpdate(
-                    resourceGroupName, serviceName, apiId, schemaId, this.innerModel(), createIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getApiSchemas()
+            .createOrUpdate(resourceGroupName, serviceName, apiId, schemaId, this.innerModel(), createIfMatch,
+                Context.NONE);
         return this;
     }
 
     public SchemaContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiSchemas()
-                .createOrUpdate(
-                    resourceGroupName, serviceName, apiId, schemaId, this.innerModel(), createIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getApiSchemas()
+            .createOrUpdate(resourceGroupName, serviceName, apiId, schemaId, this.innerModel(), createIfMatch, context);
         return this;
     }
 
@@ -105,27 +100,22 @@ public final class SchemaContractImpl implements SchemaContract, SchemaContract.
     }
 
     public SchemaContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiSchemas()
-                .createOrUpdate(
-                    resourceGroupName, serviceName, apiId, schemaId, this.innerModel(), updateIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getApiSchemas()
+            .createOrUpdate(resourceGroupName, serviceName, apiId, schemaId, this.innerModel(), updateIfMatch,
+                Context.NONE);
         return this;
     }
 
     public SchemaContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiSchemas()
-                .createOrUpdate(
-                    resourceGroupName, serviceName, apiId, schemaId, this.innerModel(), updateIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getApiSchemas()
+            .createOrUpdate(resourceGroupName, serviceName, apiId, schemaId, this.innerModel(), updateIfMatch, context);
         return this;
     }
 
-    SchemaContractImpl(
-        SchemaContractInner innerObject, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    SchemaContractImpl(SchemaContractInner innerObject,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -135,22 +125,18 @@ public final class SchemaContractImpl implements SchemaContract, SchemaContract.
     }
 
     public SchemaContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiSchemas()
-                .getWithResponse(resourceGroupName, serviceName, apiId, schemaId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiSchemas()
+            .getWithResponse(resourceGroupName, serviceName, apiId, schemaId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SchemaContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiSchemas()
-                .getWithResponse(resourceGroupName, serviceName, apiId, schemaId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiSchemas()
+            .getWithResponse(resourceGroupName, serviceName, apiId, schemaId, context)
+            .getValue();
         return this;
     }
 

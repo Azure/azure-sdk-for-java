@@ -20,70 +20,47 @@ import org.junit.jupiter.api.Assertions;
 public final class MonitoredSubscriptionPropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonitoredSubscriptionPropertiesInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ou\",\"id\":\"vudwtiukbldng\",\"type\":\"ocipazyxoeg\",\"properties\":{\"operation\":\"AddComplete\",\"monitoredSubscriptionList\":[{\"subscriptionId\":\"ucgygevqz\",\"status\":\"InProgress\",\"error\":\"mrbpizcdrqj\",\"tagRules\":{\"provisioningState\":\"Failed\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":false,\"sendResourceLogs\":false,\"filteringTags\":[{},{}]},\"metricRules\":{\"filteringTags\":[{}]},\"automuting\":false}}]}}")
-                .toObject(MonitoredSubscriptionPropertiesInner.class);
+        MonitoredSubscriptionPropertiesInner model = BinaryData.fromString(
+            "{\"name\":\"ou\",\"id\":\"vudwtiukbldng\",\"type\":\"ocipazyxoeg\",\"properties\":{\"operation\":\"AddComplete\",\"monitoredSubscriptionList\":[{\"subscriptionId\":\"ucgygevqz\",\"status\":\"InProgress\",\"error\":\"mrbpizcdrqj\",\"tagRules\":{\"provisioningState\":\"Failed\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":false,\"sendResourceLogs\":false,\"filteringTags\":[{},{}]},\"metricRules\":{\"filteringTags\":[{}]},\"automuting\":false}}]}}")
+            .toObject(MonitoredSubscriptionPropertiesInner.class);
         Assertions.assertEquals(Operation.ADD_COMPLETE, model.properties().operation());
         Assertions.assertEquals("ucgygevqz", model.properties().monitoredSubscriptionList().get(0).subscriptionId());
         Assertions.assertEquals(Status.IN_PROGRESS, model.properties().monitoredSubscriptionList().get(0).status());
         Assertions.assertEquals("mrbpizcdrqj", model.properties().monitoredSubscriptionList().get(0).error());
-        Assertions
-            .assertEquals(
-                false, model.properties().monitoredSubscriptionList().get(0).tagRules().logRules().sendAadLogs());
-        Assertions
-            .assertEquals(
-                false,
-                model.properties().monitoredSubscriptionList().get(0).tagRules().logRules().sendSubscriptionLogs());
-        Assertions
-            .assertEquals(
-                false, model.properties().monitoredSubscriptionList().get(0).tagRules().logRules().sendResourceLogs());
+        Assertions.assertEquals(false,
+            model.properties().monitoredSubscriptionList().get(0).tagRules().logRules().sendAadLogs());
+        Assertions.assertEquals(false,
+            model.properties().monitoredSubscriptionList().get(0).tagRules().logRules().sendSubscriptionLogs());
+        Assertions.assertEquals(false,
+            model.properties().monitoredSubscriptionList().get(0).tagRules().logRules().sendResourceLogs());
         Assertions.assertEquals(false, model.properties().monitoredSubscriptionList().get(0).tagRules().automuting());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoredSubscriptionPropertiesInner model =
-            new MonitoredSubscriptionPropertiesInner()
-                .withProperties(
-                    new SubscriptionList()
-                        .withOperation(Operation.ADD_COMPLETE)
-                        .withMonitoredSubscriptionList(
-                            Arrays
-                                .asList(
-                                    new MonitoredSubscription()
-                                        .withSubscriptionId("ucgygevqz")
-                                        .withStatus(Status.IN_PROGRESS)
-                                        .withError("mrbpizcdrqj")
-                                        .withTagRules(
-                                            new MonitoringTagRulesProperties()
-                                                .withLogRules(
-                                                    new LogRules()
-                                                        .withSendAadLogs(false)
-                                                        .withSendSubscriptionLogs(false)
-                                                        .withSendResourceLogs(false)
-                                                        .withFilteringTags(
-                                                            Arrays.asList(new FilteringTag(), new FilteringTag())))
-                                                .withMetricRules(
-                                                    new MetricRules()
-                                                        .withFilteringTags(Arrays.asList(new FilteringTag())))
-                                                .withAutomuting(false)))));
+        MonitoredSubscriptionPropertiesInner model = new MonitoredSubscriptionPropertiesInner()
+            .withProperties(new SubscriptionList().withOperation(Operation.ADD_COMPLETE)
+                .withMonitoredSubscriptionList(Arrays.asList(new MonitoredSubscription().withSubscriptionId("ucgygevqz")
+                    .withStatus(Status.IN_PROGRESS)
+                    .withError("mrbpizcdrqj")
+                    .withTagRules(new MonitoringTagRulesProperties()
+                        .withLogRules(new LogRules().withSendAadLogs(false)
+                            .withSendSubscriptionLogs(false)
+                            .withSendResourceLogs(false)
+                            .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag())))
+                        .withMetricRules(new MetricRules().withFilteringTags(Arrays.asList(new FilteringTag())))
+                        .withAutomuting(false)))));
         model = BinaryData.fromObject(model).toObject(MonitoredSubscriptionPropertiesInner.class);
         Assertions.assertEquals(Operation.ADD_COMPLETE, model.properties().operation());
         Assertions.assertEquals("ucgygevqz", model.properties().monitoredSubscriptionList().get(0).subscriptionId());
         Assertions.assertEquals(Status.IN_PROGRESS, model.properties().monitoredSubscriptionList().get(0).status());
         Assertions.assertEquals("mrbpizcdrqj", model.properties().monitoredSubscriptionList().get(0).error());
-        Assertions
-            .assertEquals(
-                false, model.properties().monitoredSubscriptionList().get(0).tagRules().logRules().sendAadLogs());
-        Assertions
-            .assertEquals(
-                false,
-                model.properties().monitoredSubscriptionList().get(0).tagRules().logRules().sendSubscriptionLogs());
-        Assertions
-            .assertEquals(
-                false, model.properties().monitoredSubscriptionList().get(0).tagRules().logRules().sendResourceLogs());
+        Assertions.assertEquals(false,
+            model.properties().monitoredSubscriptionList().get(0).tagRules().logRules().sendAadLogs());
+        Assertions.assertEquals(false,
+            model.properties().monitoredSubscriptionList().get(0).tagRules().logRules().sendSubscriptionLogs());
+        Assertions.assertEquals(false,
+            model.properties().monitoredSubscriptionList().get(0).tagRules().logRules().sendResourceLogs());
         Assertions.assertEquals(false, model.properties().monitoredSubscriptionList().get(0).tagRules().automuting());
     }
 }

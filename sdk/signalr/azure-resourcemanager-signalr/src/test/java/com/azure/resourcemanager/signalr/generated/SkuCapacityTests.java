@@ -10,11 +10,9 @@ import com.azure.resourcemanager.signalr.models.SkuCapacity;
 public final class SkuCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuCapacity model =
-            BinaryData
-                .fromString(
-                    "{\"minimum\":1064188609,\"maximum\":2040452335,\"default\":1034589560,\"allowedValues\":[1771791056],\"scaleType\":\"Manual\"}")
-                .toObject(SkuCapacity.class);
+        SkuCapacity model = BinaryData.fromString(
+            "{\"minimum\":1064188609,\"maximum\":2040452335,\"default\":1034589560,\"allowedValues\":[1771791056],\"scaleType\":\"Manual\"}")
+            .toObject(SkuCapacity.class);
     }
 
     @org.junit.jupiter.api.Test

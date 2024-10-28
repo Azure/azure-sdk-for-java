@@ -118,17 +118,16 @@ public interface LoadTestResource {
     LoadTestResourceInner innerModel();
 
     /** The entirety of the LoadTestResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
+
     /** The LoadTestResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the LoadTestResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the LoadTestResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -147,6 +146,7 @@ public interface LoadTestResource {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the LoadTestResource definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -157,15 +157,13 @@ public interface LoadTestResource {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the LoadTestResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithEncryption {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithDescription, DefinitionStages.WithEncryption {
             /**
              * Executes the create request.
              *
@@ -181,6 +179,7 @@ public interface LoadTestResource {
              */
             LoadTestResource create(Context context);
         }
+
         /** The stage of the LoadTestResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -191,6 +190,7 @@ public interface LoadTestResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the LoadTestResource definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -201,6 +201,7 @@ public interface LoadTestResource {
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
         }
+
         /** The stage of the LoadTestResource definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -211,6 +212,7 @@ public interface LoadTestResource {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the LoadTestResource definition allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -222,6 +224,7 @@ public interface LoadTestResource {
             WithCreate withEncryption(EncryptionProperties encryption);
         }
     }
+
     /**
      * Begins update for the LoadTestResource resource.
      *
@@ -230,11 +233,8 @@ public interface LoadTestResource {
     LoadTestResource.Update update();
 
     /** The template for LoadTestResource update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithDescription,
-            UpdateStages.WithEncryption {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithDescription,
+        UpdateStages.WithEncryption {
         /**
          * Executes the update request.
          *
@@ -250,6 +250,7 @@ public interface LoadTestResource {
          */
         LoadTestResource apply(Context context);
     }
+
     /** The LoadTestResource update stages. */
     interface UpdateStages {
         /** The stage of the LoadTestResource update allowing to specify tags. */
@@ -262,6 +263,7 @@ public interface LoadTestResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the LoadTestResource update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -272,6 +274,7 @@ public interface LoadTestResource {
              */
             Update withIdentity(ManagedServiceIdentity identity);
         }
+
         /** The stage of the LoadTestResource update allowing to specify description. */
         interface WithDescription {
             /**
@@ -282,6 +285,7 @@ public interface LoadTestResource {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the LoadTestResource update allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -293,6 +297,7 @@ public interface LoadTestResource {
             Update withEncryption(EncryptionProperties encryption);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

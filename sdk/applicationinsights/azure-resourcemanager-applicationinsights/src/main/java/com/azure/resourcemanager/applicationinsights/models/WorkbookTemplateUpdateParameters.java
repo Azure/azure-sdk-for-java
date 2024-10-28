@@ -171,8 +171,8 @@ public final class WorkbookTemplateUpdateParameters {
      * @param localized the localized value to set.
      * @return the WorkbookTemplateUpdateParameters object itself.
      */
-    public WorkbookTemplateUpdateParameters withLocalized(
-        Map<String, List<WorkbookTemplateLocalizedGallery>> localized) {
+    public WorkbookTemplateUpdateParameters
+        withLocalized(Map<String, List<WorkbookTemplateLocalizedGallery>> localized) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WorkbookTemplateProperties();
         }

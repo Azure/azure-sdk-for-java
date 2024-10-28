@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SelectVideoTrackByIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SelectVideoTrackById model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.SelectVideoTrackById\",\"trackId\":6108338538781494691}")
-                .toObject(SelectVideoTrackById.class);
+        SelectVideoTrackById model = BinaryData
+            .fromString("{\"@odata.type\":\"#Microsoft.Media.SelectVideoTrackById\",\"trackId\":6108338538781494691}")
+            .toObject(SelectVideoTrackById.class);
         Assertions.assertEquals(6108338538781494691L, model.trackId());
     }
 

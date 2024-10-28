@@ -136,11 +136,13 @@ public interface LiveOutput {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The LiveOutput definition stages. */
     interface DefinitionStages {
         /** The first stage of the LiveOutput definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the LiveOutput definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -153,18 +155,14 @@ public interface LiveOutput {
              */
             WithCreate withExistingLiveEvent(String resourceGroupName, String accountName, String liveEventName);
         }
+
         /**
          * The stage of the LiveOutput definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDescription,
-                DefinitionStages.WithAssetName,
-                DefinitionStages.WithArchiveWindowLength,
-                DefinitionStages.WithRewindWindowLength,
-                DefinitionStages.WithManifestName,
-                DefinitionStages.WithHls,
-                DefinitionStages.WithOutputSnapTime {
+        interface WithCreate extends DefinitionStages.WithDescription, DefinitionStages.WithAssetName,
+            DefinitionStages.WithArchiveWindowLength, DefinitionStages.WithRewindWindowLength,
+            DefinitionStages.WithManifestName, DefinitionStages.WithHls, DefinitionStages.WithOutputSnapTime {
             /**
              * Executes the create request.
              *
@@ -180,6 +178,7 @@ public interface LiveOutput {
              */
             LiveOutput create(Context context);
         }
+
         /** The stage of the LiveOutput definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -190,6 +189,7 @@ public interface LiveOutput {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the LiveOutput definition allowing to specify assetName. */
         interface WithAssetName {
             /**
@@ -200,6 +200,7 @@ public interface LiveOutput {
              */
             WithCreate withAssetName(String assetName);
         }
+
         /** The stage of the LiveOutput definition allowing to specify archiveWindowLength. */
         interface WithArchiveWindowLength {
             /**
@@ -216,6 +217,7 @@ public interface LiveOutput {
              */
             WithCreate withArchiveWindowLength(Duration archiveWindowLength);
         }
+
         /** The stage of the LiveOutput definition allowing to specify rewindWindowLength. */
         interface WithRewindWindowLength {
             /**
@@ -234,6 +236,7 @@ public interface LiveOutput {
              */
             WithCreate withRewindWindowLength(Duration rewindWindowLength);
         }
+
         /** The stage of the LiveOutput definition allowing to specify manifestName. */
         interface WithManifestName {
             /**
@@ -245,6 +248,7 @@ public interface LiveOutput {
              */
             WithCreate withManifestName(String manifestName);
         }
+
         /** The stage of the LiveOutput definition allowing to specify hls. */
         interface WithHls {
             /**
@@ -255,6 +259,7 @@ public interface LiveOutput {
              */
             WithCreate withHls(Hls hls);
         }
+
         /** The stage of the LiveOutput definition allowing to specify outputSnapTime. */
         interface WithOutputSnapTime {
             /**
@@ -268,6 +273,7 @@ public interface LiveOutput {
             WithCreate withOutputSnapTime(Long outputSnapTime);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

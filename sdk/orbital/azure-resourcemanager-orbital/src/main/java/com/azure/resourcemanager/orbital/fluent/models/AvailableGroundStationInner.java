@@ -247,10 +247,8 @@ public final class AvailableGroundStationInner {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model AvailableGroundStationInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model AvailableGroundStationInner"));
         } else {
             innerProperties().validate();
         }

@@ -30,9 +30,8 @@ public class UploadBlobTests extends ServiceTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return
-            BinaryData.fromFlux(generateAsyncStream(options.getSize()))
-                .flatMap(content -> blobAsyncClient.uploadBlob(content))
-                .then();
+        return BinaryData.fromFlux(generateAsyncStream(options.getSize()))
+            .flatMap(content -> blobAsyncClient.uploadBlob(content))
+            .then();
     }
 }

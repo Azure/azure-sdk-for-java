@@ -24,33 +24,28 @@ public final class SapCentralInstancesImpl implements SapCentralInstances {
 
     private final com.azure.resourcemanager.workloads.WorkloadsManager serviceManager;
 
-    public SapCentralInstancesImpl(
-        SapCentralInstancesClient innerClient, com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
+    public SapCentralInstancesImpl(SapCentralInstancesClient innerClient,
+        com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<SapCentralServerInstance> getWithResponse(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName, Context context) {
-        Response<SapCentralServerInstanceInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context);
+    public Response<SapCentralServerInstance> getWithResponse(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName, Context context) {
+        Response<SapCentralServerInstanceInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SapCentralServerInstanceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public SapCentralServerInstance get(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName) {
-        SapCentralServerInstanceInner inner =
-            this.serviceClient().get(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
+    public SapCentralServerInstance get(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName) {
+        SapCentralServerInstanceInner inner
+            = this.serviceClient().get(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
         if (inner != null) {
             return new SapCentralServerInstanceImpl(inner, this.manager());
         } else {
@@ -58,10 +53,10 @@ public final class SapCentralInstancesImpl implements SapCentralInstances {
         }
     }
 
-    public OperationStatusResult delete(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName) {
-        OperationStatusResultInner inner =
-            this.serviceClient().delete(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
+    public OperationStatusResult delete(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -69,10 +64,10 @@ public final class SapCentralInstancesImpl implements SapCentralInstances {
         }
     }
 
-    public OperationStatusResult delete(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName, Context context) {
-        OperationStatusResultInner inner =
-            this.serviceClient().delete(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context);
+    public OperationStatusResult delete(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName, Context context) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -81,61 +76,55 @@ public final class SapCentralInstancesImpl implements SapCentralInstances {
     }
 
     public PagedIterable<SapCentralServerInstance> list(String resourceGroupName, String sapVirtualInstanceName) {
-        PagedIterable<SapCentralServerInstanceInner> inner =
-            this.serviceClient().list(resourceGroupName, sapVirtualInstanceName);
+        PagedIterable<SapCentralServerInstanceInner> inner
+            = this.serviceClient().list(resourceGroupName, sapVirtualInstanceName);
         return Utils.mapPage(inner, inner1 -> new SapCentralServerInstanceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SapCentralServerInstance> list(
-        String resourceGroupName, String sapVirtualInstanceName, Context context) {
-        PagedIterable<SapCentralServerInstanceInner> inner =
-            this.serviceClient().list(resourceGroupName, sapVirtualInstanceName, context);
-        return Utils.mapPage(inner, inner1 -> new SapCentralServerInstanceImpl(inner1, this.manager()));
-    }
-
-    public OperationStatusResult startInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName) {
-        OperationStatusResultInner inner =
-            this.serviceClient().startInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
-        if (inner != null) {
-            return new OperationStatusResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public OperationStatusResult startInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName, Context context) {
-        OperationStatusResultInner inner =
-            this.serviceClient().startInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context);
-        if (inner != null) {
-            return new OperationStatusResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public OperationStatusResult stopInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String centralInstanceName) {
-        OperationStatusResultInner inner =
-            this.serviceClient().stopInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
-        if (inner != null) {
-            return new OperationStatusResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public OperationStatusResult stopInstance(
-        String resourceGroupName,
-        String sapVirtualInstanceName,
-        String centralInstanceName,
-        StopRequest body,
+    public PagedIterable<SapCentralServerInstance> list(String resourceGroupName, String sapVirtualInstanceName,
         Context context) {
-        OperationStatusResultInner inner =
-            this
-                .serviceClient()
-                .stopInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName, body, context);
+        PagedIterable<SapCentralServerInstanceInner> inner
+            = this.serviceClient().list(resourceGroupName, sapVirtualInstanceName, context);
+        return Utils.mapPage(inner, inner1 -> new SapCentralServerInstanceImpl(inner1, this.manager()));
+    }
+
+    public OperationStatusResult startInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName) {
+        OperationStatusResultInner inner
+            = this.serviceClient().startInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult startInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName, Context context) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .startInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName) {
+        OperationStatusResultInner inner
+            = this.serviceClient().stopInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String centralInstanceName, StopRequest body, Context context) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .stopInstance(resourceGroupName, sapVirtualInstanceName, centralInstanceName, body, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -146,61 +135,38 @@ public final class SapCentralInstancesImpl implements SapCentralInstances {
     public SapCentralServerInstance getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String sapVirtualInstanceName = Utils.getValueFromIdByName(id, "sapVirtualInstances");
         if (sapVirtualInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sapVirtualInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sapVirtualInstances'.", id)));
         }
         String centralInstanceName = Utils.getValueFromIdByName(id, "centralInstances");
         if (centralInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'centralInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'centralInstances'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, Context.NONE)
             .getValue();
     }
 
     public Response<SapCentralServerInstance> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String sapVirtualInstanceName = Utils.getValueFromIdByName(id, "sapVirtualInstances");
         if (sapVirtualInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sapVirtualInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sapVirtualInstances'.", id)));
         }
         String centralInstanceName = Utils.getValueFromIdByName(id, "centralInstances");
         if (centralInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'centralInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'centralInstances'.", id)));
         }
         return this.getWithResponse(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context);
     }
@@ -208,29 +174,18 @@ public final class SapCentralInstancesImpl implements SapCentralInstances {
     public OperationStatusResult deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String sapVirtualInstanceName = Utils.getValueFromIdByName(id, "sapVirtualInstances");
         if (sapVirtualInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sapVirtualInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sapVirtualInstances'.", id)));
         }
         String centralInstanceName = Utils.getValueFromIdByName(id, "centralInstances");
         if (centralInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'centralInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'centralInstances'.", id)));
         }
         return this.delete(resourceGroupName, sapVirtualInstanceName, centralInstanceName, Context.NONE);
     }
@@ -238,29 +193,18 @@ public final class SapCentralInstancesImpl implements SapCentralInstances {
     public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String sapVirtualInstanceName = Utils.getValueFromIdByName(id, "sapVirtualInstances");
         if (sapVirtualInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'sapVirtualInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sapVirtualInstances'.", id)));
         }
         String centralInstanceName = Utils.getValueFromIdByName(id, "centralInstances");
         if (centralInstanceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'centralInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'centralInstances'.", id)));
         }
         return this.delete(resourceGroupName, sapVirtualInstanceName, centralInstanceName, context);
     }

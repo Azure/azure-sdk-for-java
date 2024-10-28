@@ -138,10 +138,8 @@ public final class DtlEnvironmentInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model DtlEnvironmentInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model DtlEnvironmentInner"));
         } else {
             innerProperties().validate();
         }

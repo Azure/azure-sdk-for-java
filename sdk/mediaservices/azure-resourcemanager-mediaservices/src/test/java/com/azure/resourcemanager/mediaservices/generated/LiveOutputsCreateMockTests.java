@@ -32,48 +32,36 @@ public final class LiveOutputsCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"qowxwcom\",\"assetName\":\"ikytwvczcswka\",\"archiveWindowLength\":\"PT206H19M22S\",\"rewindWindowLength\":\"PT81H56M32S\",\"manifestName\":\"fdv\",\"hls\":{\"fragmentsPerTsSegment\":133046174},\"outputSnapTime\":506262228039984631,\"created\":\"2021-07-08T00:02:29Z\",\"lastModified\":\"2021-08-22T01:15:59Z\",\"provisioningState\":\"Succeeded\",\"resourceState\":\"Deleting\"},\"id\":\"yank\",\"name\":\"oe\",\"type\":\"swankltytmh\"}";
+        String responseStr
+            = "{\"properties\":{\"description\":\"qowxwcom\",\"assetName\":\"ikytwvczcswka\",\"archiveWindowLength\":\"PT206H19M22S\",\"rewindWindowLength\":\"PT81H56M32S\",\"manifestName\":\"fdv\",\"hls\":{\"fragmentsPerTsSegment\":133046174},\"outputSnapTime\":506262228039984631,\"created\":\"2021-07-08T00:02:29Z\",\"lastModified\":\"2021-08-22T01:15:59Z\",\"provisioningState\":\"Succeeded\",\"resourceState\":\"Deleting\"},\"id\":\"yank\",\"name\":\"oe\",\"type\":\"swankltytmh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        LiveOutput response =
-            manager
-                .liveOutputs()
-                .define("hcecybmrqbr")
-                .withExistingLiveEvent("qejo", "ovyrrleaesinu", "tljqobbpih")
-                .withDescription("mpxdlvy")
-                .withAssetName("frexcrseqw")
-                .withArchiveWindowLength(Duration.parse("PT110H29M37S"))
-                .withRewindWindowLength(Duration.parse("PT48H32M10S"))
-                .withManifestName("udgzhxogjgg")
-                .withHls(new Hls().withFragmentsPerTsSegment(210376116))
-                .withOutputSnapTime(8090537844238536185L)
-                .create();
+        LiveOutput response = manager.liveOutputs()
+            .define("hcecybmrqbr")
+            .withExistingLiveEvent("qejo", "ovyrrleaesinu", "tljqobbpih")
+            .withDescription("mpxdlvy")
+            .withAssetName("frexcrseqw")
+            .withArchiveWindowLength(Duration.parse("PT110H29M37S"))
+            .withRewindWindowLength(Duration.parse("PT48H32M10S"))
+            .withManifestName("udgzhxogjgg")
+            .withHls(new Hls().withFragmentsPerTsSegment(210376116))
+            .withOutputSnapTime(8090537844238536185L)
+            .create();
 
         Assertions.assertEquals("qowxwcom", response.description());
         Assertions.assertEquals("ikytwvczcswka", response.assetName());

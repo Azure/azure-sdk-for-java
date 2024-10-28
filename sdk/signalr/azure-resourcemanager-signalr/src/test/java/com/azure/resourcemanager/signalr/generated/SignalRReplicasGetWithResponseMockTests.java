@@ -31,40 +31,28 @@ public final class SignalRReplicasGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"sku\":{\"name\":\"erctatoyin\",\"tier\":\"Premium\",\"size\":\"rlcyrduc\",\"family\":\"go\",\"capacity\":243797938},\"properties\":{\"provisioningState\":\"Creating\",\"regionEndpointEnabled\":\"cvcrrp\",\"resourceStopped\":\"ttbst\"},\"location\":\"eaqnrmvvfkoxm\",\"tags\":{\"zlpdwwex\":\"ktuidvrm\",\"wvqsgny\":\"mzvlazipbh\",\"patlbijp\":\"uuzivensrpmeyyvp\"},\"id\":\"gsksrfhf\",\"name\":\"olmk\",\"type\":\"bnxwc\"}";
+        String responseStr
+            = "{\"sku\":{\"name\":\"erctatoyin\",\"tier\":\"Premium\",\"size\":\"rlcyrduc\",\"family\":\"go\",\"capacity\":243797938},\"properties\":{\"provisioningState\":\"Creating\",\"regionEndpointEnabled\":\"cvcrrp\",\"resourceStopped\":\"ttbst\"},\"location\":\"eaqnrmvvfkoxm\",\"tags\":{\"zlpdwwex\":\"ktuidvrm\",\"wvqsgny\":\"mzvlazipbh\",\"patlbijp\":\"uuzivensrpmeyyvp\"},\"id\":\"gsksrfhf\",\"name\":\"olmk\",\"type\":\"bnxwc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SignalRManager manager =
-            SignalRManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SignalRManager manager = SignalRManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Replica response =
-            manager
-                .signalRReplicas()
-                .getWithResponse("lexwhcbjp", "bke", "hu", com.azure.core.util.Context.NONE)
-                .getValue();
+        Replica response = manager.signalRReplicas()
+            .getWithResponse("lexwhcbjp", "bke", "hu", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("eaqnrmvvfkoxm", response.location());
         Assertions.assertEquals("ktuidvrm", response.tags().get("zlpdwwex"));

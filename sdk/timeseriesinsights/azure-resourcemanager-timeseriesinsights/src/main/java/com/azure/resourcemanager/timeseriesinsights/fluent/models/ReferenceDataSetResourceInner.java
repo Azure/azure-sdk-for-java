@@ -116,8 +116,8 @@ public final class ReferenceDataSetResourceInner extends Resource {
      * @param dataStringComparisonBehavior the dataStringComparisonBehavior value to set.
      * @return the ReferenceDataSetResourceInner object itself.
      */
-    public ReferenceDataSetResourceInner withDataStringComparisonBehavior(
-        DataStringComparisonBehavior dataStringComparisonBehavior) {
+    public ReferenceDataSetResourceInner
+        withDataStringComparisonBehavior(DataStringComparisonBehavior dataStringComparisonBehavior) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ReferenceDataSetResourceProperties();
         }

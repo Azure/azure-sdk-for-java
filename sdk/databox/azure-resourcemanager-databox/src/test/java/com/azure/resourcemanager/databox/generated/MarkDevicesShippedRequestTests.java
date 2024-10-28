@@ -12,21 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class MarkDevicesShippedRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MarkDevicesShippedRequest model =
-            BinaryData
-                .fromString(
-                    "{\"deliverToDcPackageDetails\":{\"carrierName\":\"gygev\",\"trackingId\":\"ntypmrbpizcdrqj\"}}")
-                .toObject(MarkDevicesShippedRequest.class);
+        MarkDevicesShippedRequest model = BinaryData
+            .fromString(
+                "{\"deliverToDcPackageDetails\":{\"carrierName\":\"gygev\",\"trackingId\":\"ntypmrbpizcdrqj\"}}")
+            .toObject(MarkDevicesShippedRequest.class);
         Assertions.assertEquals("gygev", model.deliverToDcPackageDetails().carrierName());
         Assertions.assertEquals("ntypmrbpizcdrqj", model.deliverToDcPackageDetails().trackingId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MarkDevicesShippedRequest model =
-            new MarkDevicesShippedRequest()
-                .withDeliverToDcPackageDetails(
-                    new PackageCarrierInfo().withCarrierName("gygev").withTrackingId("ntypmrbpizcdrqj"));
+        MarkDevicesShippedRequest model = new MarkDevicesShippedRequest().withDeliverToDcPackageDetails(
+            new PackageCarrierInfo().withCarrierName("gygev").withTrackingId("ntypmrbpizcdrqj"));
         model = BinaryData.fromObject(model).toObject(MarkDevicesShippedRequest.class);
         Assertions.assertEquals("gygev", model.deliverToDcPackageDetails().carrierName());
         Assertions.assertEquals("ntypmrbpizcdrqj", model.deliverToDcPackageDetails().trackingId());

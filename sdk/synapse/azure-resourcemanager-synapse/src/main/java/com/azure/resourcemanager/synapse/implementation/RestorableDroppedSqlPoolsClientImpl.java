@@ -44,10 +44,8 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      * @param client the instance of the service client containing this operation class.
      */
     RestorableDroppedSqlPoolsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    RestorableDroppedSqlPoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(RestorableDroppedSqlPoolsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,36 +56,26 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface RestorableDroppedSqlPoolsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/restorableDroppedSqlPools/{restorableDroppedSqlPoolId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/restorableDroppedSqlPools/{restorableDroppedSqlPoolId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RestorableDroppedSqlPoolInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<RestorableDroppedSqlPoolInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("restorableDroppedSqlPoolId") String restorableDroppedSqlPoolId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/restorableDroppedSqlPools")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/restorableDroppedSqlPools")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RestorableDroppedSqlPoolListResult>> listByWorkspace(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RestorableDroppedSqlPoolListResult>> listByWorkspace(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -104,19 +92,15 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RestorableDroppedSqlPoolInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId) {
+    private Mono<Response<RestorableDroppedSqlPoolInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String restorableDroppedSqlPoolId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -126,26 +110,14 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (restorableDroppedSqlPoolId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter restorableDroppedSqlPoolId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter restorableDroppedSqlPoolId is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            restorableDroppedSqlPoolId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, restorableDroppedSqlPoolId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -164,19 +136,15 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RestorableDroppedSqlPoolInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId, Context context) {
+    private Mono<Response<RestorableDroppedSqlPoolInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String restorableDroppedSqlPoolId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -186,24 +154,14 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (restorableDroppedSqlPoolId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter restorableDroppedSqlPoolId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter restorableDroppedSqlPoolId is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                restorableDroppedSqlPoolId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, restorableDroppedSqlPoolId, accept, context);
     }
 
     /**
@@ -219,8 +177,8 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      * @return a deleted sql pool that can be restored on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RestorableDroppedSqlPoolInner> getAsync(
-        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId) {
+    private Mono<RestorableDroppedSqlPoolInner> getAsync(String resourceGroupName, String workspaceName,
+        String restorableDroppedSqlPoolId) {
         return getWithResponseAsync(resourceGroupName, workspaceName, restorableDroppedSqlPoolId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -239,8 +197,8 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      * @return a deleted sql pool that can be restored along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RestorableDroppedSqlPoolInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId, Context context) {
+    public Response<RestorableDroppedSqlPoolInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String restorableDroppedSqlPoolId, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, restorableDroppedSqlPoolId, context).block();
     }
 
@@ -257,8 +215,8 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      * @return a deleted sql pool that can be restored.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RestorableDroppedSqlPoolInner get(
-        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId) {
+    public RestorableDroppedSqlPoolInner get(String resourceGroupName, String workspaceName,
+        String restorableDroppedSqlPoolId) {
         return getWithResponse(resourceGroupName, workspaceName, restorableDroppedSqlPoolId, Context.NONE).getValue();
     }
 
@@ -274,19 +232,15 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RestorableDroppedSqlPoolInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<PagedResponse<RestorableDroppedSqlPoolInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -298,21 +252,10 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByWorkspace(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            accept,
-                            context))
-            .<PagedResponse<RestorableDroppedSqlPoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context))
+            .<PagedResponse<RestorableDroppedSqlPoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -329,19 +272,15 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RestorableDroppedSqlPoolInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<PagedResponse<RestorableDroppedSqlPoolInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -354,18 +293,10 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByWorkspace(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -379,8 +310,8 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      * @return a list of deleted Sql pools that can be restored as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RestorableDroppedSqlPoolInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName) {
+    private PagedFlux<RestorableDroppedSqlPoolInner> listByWorkspaceAsync(String resourceGroupName,
+        String workspaceName) {
         return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName));
     }
 
@@ -396,8 +327,8 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      * @return a list of deleted Sql pools that can be restored as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RestorableDroppedSqlPoolInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private PagedFlux<RestorableDroppedSqlPoolInner> listByWorkspaceAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context));
     }
 
@@ -412,8 +343,8 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      * @return a list of deleted Sql pools that can be restored as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RestorableDroppedSqlPoolInner> listByWorkspace(
-        String resourceGroupName, String workspaceName) {
+    public PagedIterable<RestorableDroppedSqlPoolInner> listByWorkspace(String resourceGroupName,
+        String workspaceName) {
         return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName));
     }
 
@@ -429,8 +360,8 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      * @return a list of deleted Sql pools that can be restored as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RestorableDroppedSqlPoolInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context) {
+    public PagedIterable<RestorableDroppedSqlPoolInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context) {
         return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName, context));
     }
 }

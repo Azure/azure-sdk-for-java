@@ -54,7 +54,7 @@ public final class DocumentModelCopyAuthorization {
      * @param expiresOn the Date/time when the access token expires.
      */
     public DocumentModelCopyAuthorization(String targetResourceId, String targetResourceRegion, String targetModelId,
-                                          String targetModelLocation, String accessToken, OffsetDateTime expiresOn) {
+        String targetModelLocation, String accessToken, OffsetDateTime expiresOn) {
         this.targetResourceId = targetResourceId;
         this.targetResourceRegion = targetResourceRegion;
         this.targetModelId = targetModelId;

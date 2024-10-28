@@ -34,51 +34,39 @@ public final class VNetPeeringsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"allowVirtualNetworkAccess\":false,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":true,\"useRemoteGateways\":true,\"databricksVirtualNetwork\":{\"id\":\"tbnnha\"},\"databricksAddressSpace\":{\"addressPrefixes\":[]},\"remoteVirtualNetwork\":{\"id\":\"rkvcikhnvpa\"},\"remoteAddressSpace\":{\"addressPrefixes\":[]},\"peeringState\":\"Disconnected\",\"provisioningState\":\"Succeeded\"},\"id\":\"ezikywggxkal\",\"name\":\"atmelwui\",\"type\":\"iccjzkzivgvvcna\"}";
+        String responseStr
+            = "{\"properties\":{\"allowVirtualNetworkAccess\":false,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":true,\"useRemoteGateways\":true,\"databricksVirtualNetwork\":{\"id\":\"tbnnha\"},\"databricksAddressSpace\":{\"addressPrefixes\":[]},\"remoteVirtualNetwork\":{\"id\":\"rkvcikhnvpa\"},\"remoteAddressSpace\":{\"addressPrefixes\":[]},\"peeringState\":\"Disconnected\",\"provisioningState\":\"Succeeded\"},\"id\":\"ezikywggxkal\",\"name\":\"atmelwui\",\"type\":\"iccjzkzivgvvcna\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureDatabricksManager manager =
-            AzureDatabricksManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureDatabricksManager manager = AzureDatabricksManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        VirtualNetworkPeering response =
-            manager
-                .vNetPeerings()
-                .define("ysuiizynkedya")
-                .withExistingWorkspace("yzrpzbchckqqzq", "ox")
-                .withRemoteVirtualNetwork(
-                    new VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork().withId("yynpcdpumnzgmwz"))
-                .withAllowVirtualNetworkAccess(true)
-                .withAllowForwardedTraffic(true)
-                .withAllowGatewayTransit(true)
-                .withUseRemoteGateways(false)
-                .withDatabricksVirtualNetwork(
-                    new VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork().withId("hwit"))
-                .withDatabricksAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList()))
-                .withRemoteAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList()))
-                .create();
+        VirtualNetworkPeering response = manager.vNetPeerings()
+            .define("ysuiizynkedya")
+            .withExistingWorkspace("yzrpzbchckqqzq", "ox")
+            .withRemoteVirtualNetwork(
+                new VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork().withId("yynpcdpumnzgmwz"))
+            .withAllowVirtualNetworkAccess(true)
+            .withAllowForwardedTraffic(true)
+            .withAllowGatewayTransit(true)
+            .withUseRemoteGateways(false)
+            .withDatabricksVirtualNetwork(
+                new VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork().withId("hwit"))
+            .withDatabricksAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList()))
+            .withRemoteAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList()))
+            .create();
 
         Assertions.assertEquals(false, response.allowVirtualNetworkAccess());
         Assertions.assertEquals(true, response.allowForwardedTraffic());

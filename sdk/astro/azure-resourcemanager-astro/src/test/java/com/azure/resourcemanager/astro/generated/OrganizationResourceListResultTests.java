@@ -54,44 +54,78 @@ public final class OrganizationResourceListResultTests {
             model.value().get(0).properties().partnerOrganizationProperties().organizationName());
         Assertions.assertEquals("eg",
             model.value().get(0).properties().partnerOrganizationProperties().workspaceName());
-        Assertions.assertEquals(SingleSignOnStates.ENABLE, model.value().get(0).properties()
-            .partnerOrganizationProperties().singleSignOnProperties().singleSignOnState());
-        Assertions.assertEquals("datscmd", model.value().get(0).properties().partnerOrganizationProperties()
-            .singleSignOnProperties().enterpriseAppId());
-        Assertions.assertEquals("jhulsuuvmkjo", model.value().get(0).properties().partnerOrganizationProperties()
-            .singleSignOnProperties().singleSignOnUrl());
-        Assertions.assertEquals("wfndiodjpsl", model.value().get(0).properties().partnerOrganizationProperties()
-            .singleSignOnProperties().aadDomains().get(0));
+        Assertions.assertEquals(SingleSignOnStates.ENABLE,
+            model.value()
+                .get(0)
+                .properties()
+                .partnerOrganizationProperties()
+                .singleSignOnProperties()
+                .singleSignOnState());
+        Assertions.assertEquals("datscmd",
+            model.value()
+                .get(0)
+                .properties()
+                .partnerOrganizationProperties()
+                .singleSignOnProperties()
+                .enterpriseAppId());
+        Assertions.assertEquals("jhulsuuvmkjo",
+            model.value()
+                .get(0)
+                .properties()
+                .partnerOrganizationProperties()
+                .singleSignOnProperties()
+                .singleSignOnUrl());
+        Assertions.assertEquals("wfndiodjpsl",
+            model.value()
+                .get(0)
+                .properties()
+                .partnerOrganizationProperties()
+                .singleSignOnProperties()
+                .aadDomains()
+                .get(0));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
         Assertions.assertEquals("xgispemvtzfkufu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrganizationResourceListResult model = new OrganizationResourceListResult()
-            .withValue(Arrays.asList(new OrganizationResourceInner().withLocation("qtrgqjbpfzfsinzg")
-                .withTags(mapOf("j", "jrwzox", "fpjkjlxofp", "felluwfzitonpe", "uybbkpodep", "vhpfxxypininmay",
-                    "zxtheotusivyevcc", "oginuvamiheognar"))
-                .withProperties(new LiftrBaseDataOrganizationProperties()
-                    .withMarketplace(new LiftrBaseMarketplaceDetails().withSubscriptionId("git")
-                        .withSubscriptionStatus(MarketplaceSubscriptionStatus.UNSUBSCRIBED)
-                        .withOfferDetails(new LiftrBaseOfferDetails().withPublisherId("hab").withOfferId("fpikxwczb")
-                            .withPlanId("scnpqxuhivy").withPlanName("iwbybrkxvdumjg").withTermUnit("fwvuk")
-                            .withTermId("audccsnhs")))
-                    .withUser(new LiftrBaseUserDetails().withFirstName("cnyejhkryhtnapcz").withLastName("lokjyemkk")
-                        .withEmailAddress("ni").withUpn("oxzjnchgejspod").withPhoneNumber("ilzyd"))
-                    .withPartnerOrganizationProperties(new LiftrBaseDataPartnerOrganizationProperties()
-                        .withOrganizationId("yahux").withWorkspaceId("pmqnja").withOrganizationName("wixjsprozvcp")
-                        .withWorkspaceName("eg")
-                        .withSingleSignOnProperties(new LiftrBaseSingleSignOnProperties()
-                            .withSingleSignOnState(SingleSignOnStates.ENABLE).withEnterpriseAppId("datscmd")
-                            .withSingleSignOnUrl("jhulsuuvmkjo").withAadDomains(Arrays.asList("wfndiodjpsl", "ej")))))
-                .withIdentity(
-                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("acctazakljla", new UserAssignedIdentity(), "ryffdfdosy",
-                            new UserAssignedIdentity(), "paojakhmsbzjh", new UserAssignedIdentity(), "evdphlxaol",
-                            new UserAssignedIdentity())))))
-            .withNextLink("xgispemvtzfkufu");
+        OrganizationResourceListResult model
+            = new OrganizationResourceListResult()
+                .withValue(
+                    Arrays
+                        .asList(new OrganizationResourceInner().withLocation("qtrgqjbpfzfsinzg")
+                            .withTags(mapOf("j", "jrwzox", "fpjkjlxofp", "felluwfzitonpe", "uybbkpodep",
+                                "vhpfxxypininmay", "zxtheotusivyevcc", "oginuvamiheognar"))
+                            .withProperties(new LiftrBaseDataOrganizationProperties()
+                                .withMarketplace(new LiftrBaseMarketplaceDetails().withSubscriptionId("git")
+                                    .withSubscriptionStatus(MarketplaceSubscriptionStatus.UNSUBSCRIBED)
+                                    .withOfferDetails(new LiftrBaseOfferDetails().withPublisherId("hab")
+                                        .withOfferId("fpikxwczb")
+                                        .withPlanId("scnpqxuhivy")
+                                        .withPlanName("iwbybrkxvdumjg")
+                                        .withTermUnit("fwvuk")
+                                        .withTermId("audccsnhs")))
+                                .withUser(new LiftrBaseUserDetails().withFirstName("cnyejhkryhtnapcz")
+                                    .withLastName("lokjyemkk")
+                                    .withEmailAddress("ni")
+                                    .withUpn("oxzjnchgejspod")
+                                    .withPhoneNumber("ilzyd"))
+                                .withPartnerOrganizationProperties(
+                                    new LiftrBaseDataPartnerOrganizationProperties().withOrganizationId("yahux")
+                                        .withWorkspaceId("pmqnja")
+                                        .withOrganizationName("wixjsprozvcp")
+                                        .withWorkspaceName("eg")
+                                        .withSingleSignOnProperties(new LiftrBaseSingleSignOnProperties()
+                                            .withSingleSignOnState(SingleSignOnStates.ENABLE)
+                                            .withEnterpriseAppId("datscmd")
+                                            .withSingleSignOnUrl("jhulsuuvmkjo")
+                                            .withAadDomains(Arrays.asList("wfndiodjpsl", "ej")))))
+                            .withIdentity(
+                                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                                    .withUserAssignedIdentities(mapOf("acctazakljla", new UserAssignedIdentity(),
+                                        "ryffdfdosy", new UserAssignedIdentity(), "paojakhmsbzjh",
+                                        new UserAssignedIdentity(), "evdphlxaol", new UserAssignedIdentity())))))
+                .withNextLink("xgispemvtzfkufu");
         model = BinaryData.fromObject(model).toObject(OrganizationResourceListResult.class);
         Assertions.assertEquals("qtrgqjbpfzfsinzg", model.value().get(0).location());
         Assertions.assertEquals("jrwzox", model.value().get(0).tags().get("j"));
@@ -118,14 +152,35 @@ public final class OrganizationResourceListResultTests {
             model.value().get(0).properties().partnerOrganizationProperties().organizationName());
         Assertions.assertEquals("eg",
             model.value().get(0).properties().partnerOrganizationProperties().workspaceName());
-        Assertions.assertEquals(SingleSignOnStates.ENABLE, model.value().get(0).properties()
-            .partnerOrganizationProperties().singleSignOnProperties().singleSignOnState());
-        Assertions.assertEquals("datscmd", model.value().get(0).properties().partnerOrganizationProperties()
-            .singleSignOnProperties().enterpriseAppId());
-        Assertions.assertEquals("jhulsuuvmkjo", model.value().get(0).properties().partnerOrganizationProperties()
-            .singleSignOnProperties().singleSignOnUrl());
-        Assertions.assertEquals("wfndiodjpsl", model.value().get(0).properties().partnerOrganizationProperties()
-            .singleSignOnProperties().aadDomains().get(0));
+        Assertions.assertEquals(SingleSignOnStates.ENABLE,
+            model.value()
+                .get(0)
+                .properties()
+                .partnerOrganizationProperties()
+                .singleSignOnProperties()
+                .singleSignOnState());
+        Assertions.assertEquals("datscmd",
+            model.value()
+                .get(0)
+                .properties()
+                .partnerOrganizationProperties()
+                .singleSignOnProperties()
+                .enterpriseAppId());
+        Assertions.assertEquals("jhulsuuvmkjo",
+            model.value()
+                .get(0)
+                .properties()
+                .partnerOrganizationProperties()
+                .singleSignOnProperties()
+                .singleSignOnUrl());
+        Assertions.assertEquals("wfndiodjpsl",
+            model.value()
+                .get(0)
+                .properties()
+                .partnerOrganizationProperties()
+                .singleSignOnProperties()
+                .aadDomains()
+                .get(0));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.value().get(0).identity().type());
         Assertions.assertEquals("xgispemvtzfkufu", model.nextLink());
     }

@@ -103,14 +103,12 @@ public final class RestHealthCheck {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model RestHealthCheck"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model RestHealthCheck"));
         }
         if (request() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property request in model RestHealthCheck"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property request in model RestHealthCheck"));
         } else {
             request().validate();
         }

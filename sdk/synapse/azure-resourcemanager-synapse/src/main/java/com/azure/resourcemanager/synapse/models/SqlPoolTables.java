@@ -24,8 +24,8 @@ public interface SqlPoolTables {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tables of a given schema in a SQL pool as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SqlPoolTable> listBySchema(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName);
+    PagedIterable<SqlPoolTable> listBySchema(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName);
 
     /**
      * Gets tables of a given schema in a SQL pool
@@ -43,13 +43,8 @@ public interface SqlPoolTables {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tables of a given schema in a SQL pool as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SqlPoolTable> listBySchema(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String filter,
-        Context context);
+    PagedIterable<SqlPoolTable> listBySchema(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String filter, Context context);
 
     /**
      * Get Sql pool table.
@@ -65,13 +60,8 @@ public interface SqlPoolTables {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sql pool table along with {@link Response}.
      */
-    Response<SqlPoolTable> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        Context context);
+    Response<SqlPoolTable> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, Context context);
 
     /**
      * Get Sql pool table.
@@ -86,6 +76,6 @@ public interface SqlPoolTables {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sql pool table.
      */
-    SqlPoolTable get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName);
+    SqlPoolTable get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName,
+        String tableName);
 }

@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SsisObjectMetadataStatusResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SsisObjectMetadataStatusResponseInner model =
-            BinaryData
-                .fromString("{\"status\":\"rpqaf\",\"name\":\"ug\",\"properties\":\"n\",\"error\":\"yetefyp\"}")
+        SsisObjectMetadataStatusResponseInner model
+            = BinaryData.fromString("{\"status\":\"rpqaf\",\"name\":\"ug\",\"properties\":\"n\",\"error\":\"yetefyp\"}")
                 .toObject(SsisObjectMetadataStatusResponseInner.class);
         Assertions.assertEquals("rpqaf", model.status());
         Assertions.assertEquals("ug", model.name());
@@ -23,12 +22,10 @@ public final class SsisObjectMetadataStatusResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisObjectMetadataStatusResponseInner model =
-            new SsisObjectMetadataStatusResponseInner()
-                .withStatus("rpqaf")
-                .withName("ug")
-                .withProperties("n")
-                .withError("yetefyp");
+        SsisObjectMetadataStatusResponseInner model = new SsisObjectMetadataStatusResponseInner().withStatus("rpqaf")
+            .withName("ug")
+            .withProperties("n")
+            .withError("yetefyp");
         model = BinaryData.fromObject(model).toObject(SsisObjectMetadataStatusResponseInner.class);
         Assertions.assertEquals("rpqaf", model.status());
         Assertions.assertEquals("ug", model.name());

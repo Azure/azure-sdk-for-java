@@ -20,8 +20,7 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface AppServiceCertificateOrder
     extends GroupableResource<AppServiceManager, AppServiceCertificateOrderInner>,
-        Refreshable<AppServiceCertificateOrder>,
-        Updatable<AppServiceCertificateOrder.Update> {
+    Refreshable<AppServiceCertificateOrder>, Updatable<AppServiceCertificateOrder.Update> {
 
     /** @return certificate's distinguished name */
     String distinguishedName();
@@ -110,12 +109,8 @@ public interface AppServiceCertificateOrder
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithHostName,
-            DefinitionStages.WithCertificateSku,
-            DefinitionStages.WithDomainVerificationFromWebApp,
-            DefinitionStages.WithKeyVault,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithHostName, DefinitionStages.WithCertificateSku,
+        DefinitionStages.WithDomainVerificationFromWebApp, DefinitionStages.WithKeyVault, DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the app service certificate order definition stages. */
@@ -231,11 +226,8 @@ public interface AppServiceCertificateOrder
          * An app service certificate order definition with sufficient inputs to create a new app service certificate
          * order in the cloud, but exposing additional optional inputs to specify.
          */
-        interface WithCreate
-            extends Creatable<AppServiceCertificateOrder>,
-                WithValidYears,
-                WithAutoRenew,
-                GroupableResource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<AppServiceCertificateOrder>, WithValidYears, WithAutoRenew,
+            GroupableResource.DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -257,9 +249,7 @@ public interface AppServiceCertificateOrder
      * The template for an app service certificate order update operation, containing all the settings that can be
      * modified.
      */
-    interface Update
-        extends Appliable<AppServiceCertificateOrder>,
-            UpdateStages.WithAutoRenew,
-            GroupableResource.UpdateWithTags<Update> {
+    interface Update extends Appliable<AppServiceCertificateOrder>, UpdateStages.WithAutoRenew,
+        GroupableResource.UpdateWithTags<Update> {
     }
 }

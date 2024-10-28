@@ -181,8 +181,8 @@ public final class LabVirtualMachineCreationParameterProperties {
      * @param bulkCreationParameters the bulkCreationParameters value to set.
      * @return the LabVirtualMachineCreationParameterProperties object itself.
      */
-    public LabVirtualMachineCreationParameterProperties withBulkCreationParameters(
-        BulkCreationParameters bulkCreationParameters) {
+    public LabVirtualMachineCreationParameterProperties
+        withBulkCreationParameters(BulkCreationParameters bulkCreationParameters) {
         this.bulkCreationParameters = bulkCreationParameters;
         return this;
     }
@@ -384,8 +384,8 @@ public final class LabVirtualMachineCreationParameterProperties {
      * @param isAuthenticationWithSshKey the isAuthenticationWithSshKey value to set.
      * @return the LabVirtualMachineCreationParameterProperties object itself.
      */
-    public LabVirtualMachineCreationParameterProperties withIsAuthenticationWithSshKey(
-        Boolean isAuthenticationWithSshKey) {
+    public LabVirtualMachineCreationParameterProperties
+        withIsAuthenticationWithSshKey(Boolean isAuthenticationWithSshKey) {
         this.isAuthenticationWithSshKey = isAuthenticationWithSshKey;
         return this;
     }
@@ -487,8 +487,8 @@ public final class LabVirtualMachineCreationParameterProperties {
      * @param galleryImageReference the galleryImageReference value to set.
      * @return the LabVirtualMachineCreationParameterProperties object itself.
      */
-    public LabVirtualMachineCreationParameterProperties withGalleryImageReference(
-        GalleryImageReference galleryImageReference) {
+    public LabVirtualMachineCreationParameterProperties
+        withGalleryImageReference(GalleryImageReference galleryImageReference) {
         this.galleryImageReference = galleryImageReference;
         return this;
     }
@@ -528,8 +528,8 @@ public final class LabVirtualMachineCreationParameterProperties {
      * @param networkInterface the networkInterface value to set.
      * @return the LabVirtualMachineCreationParameterProperties object itself.
      */
-    public LabVirtualMachineCreationParameterProperties withNetworkInterface(
-        NetworkInterfaceProperties networkInterface) {
+    public LabVirtualMachineCreationParameterProperties
+        withNetworkInterface(NetworkInterfaceProperties networkInterface) {
         this.networkInterface = networkInterface;
         return this;
     }
@@ -629,8 +629,8 @@ public final class LabVirtualMachineCreationParameterProperties {
      * @param dataDiskParameters the dataDiskParameters value to set.
      * @return the LabVirtualMachineCreationParameterProperties object itself.
      */
-    public LabVirtualMachineCreationParameterProperties withDataDiskParameters(
-        List<DataDiskProperties> dataDiskParameters) {
+    public LabVirtualMachineCreationParameterProperties
+        withDataDiskParameters(List<DataDiskProperties> dataDiskParameters) {
         this.dataDiskParameters = dataDiskParameters;
         return this;
     }
@@ -650,8 +650,8 @@ public final class LabVirtualMachineCreationParameterProperties {
      * @param scheduleParameters the scheduleParameters value to set.
      * @return the LabVirtualMachineCreationParameterProperties object itself.
      */
-    public LabVirtualMachineCreationParameterProperties withScheduleParameters(
-        List<ScheduleCreationParameter> scheduleParameters) {
+    public LabVirtualMachineCreationParameterProperties
+        withScheduleParameters(List<ScheduleCreationParameter> scheduleParameters) {
         this.scheduleParameters = scheduleParameters;
         return this;
     }

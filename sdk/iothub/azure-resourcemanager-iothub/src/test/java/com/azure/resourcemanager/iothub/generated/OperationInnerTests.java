@@ -11,11 +11,9 @@ import com.azure.resourcemanager.iothub.models.OperationDisplay;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"nygj\",\"display\":{\"provider\":\"ddeqsrdeupewnwre\",\"resource\":\"jzyflu\",\"operation\":\"rh\",\"description\":\"fcqhsmyurkd\"}}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"nygj\",\"display\":{\"provider\":\"ddeqsrdeupewnwre\",\"resource\":\"jzyflu\",\"operation\":\"rh\",\"description\":\"fcqhsmyurkd\"}}")
+            .toObject(OperationInner.class);
     }
 
     @org.junit.jupiter.api.Test

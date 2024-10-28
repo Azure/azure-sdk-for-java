@@ -80,8 +80,8 @@ public interface QuotasClient {
      * @return check quota availability response object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckQuotaAvailabilityResponseInner> checkAvailabilityWithResponse(
-        String location, String quotaBucketName, QuotaBucketRequest quotaBucketRequest, Context context);
+    Response<CheckQuotaAvailabilityResponseInner> checkAvailabilityWithResponse(String location, String quotaBucketName,
+        QuotaBucketRequest quotaBucketRequest, Context context);
 
     /**
      * Check Quota Availability on quota bucket per region per subscription.
@@ -95,6 +95,6 @@ public interface QuotasClient {
      * @return check quota availability response object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckQuotaAvailabilityResponseInner checkAvailability(
-        String location, String quotaBucketName, QuotaBucketRequest quotaBucketRequest);
+    CheckQuotaAvailabilityResponseInner checkAvailability(String location, String quotaBucketName,
+        QuotaBucketRequest quotaBucketRequest);
 }

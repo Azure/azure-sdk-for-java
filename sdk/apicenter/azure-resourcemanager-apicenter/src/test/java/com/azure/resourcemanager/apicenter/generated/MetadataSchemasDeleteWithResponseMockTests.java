@@ -41,12 +41,13 @@ public final class MetadataSchemasDeleteWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.metadataSchemas().deleteWithResponse("yhrfouyftaakcpw", "yzvqt", "nubexk",
-            com.azure.core.util.Context.NONE);
+        manager.metadataSchemas()
+            .deleteWithResponse("yhrfouyftaakcpw", "yzvqt", "nubexk", com.azure.core.util.Context.NONE);
 
     }
 }

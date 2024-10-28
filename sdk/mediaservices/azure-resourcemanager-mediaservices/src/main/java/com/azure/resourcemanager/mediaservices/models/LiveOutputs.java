@@ -56,8 +56,8 @@ public interface LiveOutputs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a live output along with {@link Response}.
      */
-    Response<LiveOutput> getWithResponse(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context);
+    Response<LiveOutput> getWithResponse(String resourceGroupName, String accountName, String liveEventName,
+        String liveOutputName, Context context);
 
     /**
      * Get Live Output
@@ -104,8 +104,8 @@ public interface LiveOutputs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context);
+    void delete(String resourceGroupName, String accountName, String liveEventName, String liveOutputName,
+        Context context);
 
     /**
      * Get operation status.
@@ -121,8 +121,8 @@ public interface LiveOutputs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Live Output operation status along with {@link Response}.
      */
-    Response<AsyncOperationResult> asyncOperationWithResponse(
-        String resourceGroupName, String accountName, String operationId, Context context);
+    Response<AsyncOperationResult> asyncOperationWithResponse(String resourceGroupName, String accountName,
+        String operationId, Context context);
 
     /**
      * Get operation status.
@@ -155,13 +155,8 @@ public interface LiveOutputs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Live Output operation status along with {@link Response}.
      */
-    Response<LiveOutput> operationLocationWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        String liveOutputName,
-        String operationId,
-        Context context);
+    Response<LiveOutput> operationLocationWithResponse(String resourceGroupName, String accountName,
+        String liveEventName, String liveOutputName, String operationId, Context context);
 
     /**
      * Get operation status.
@@ -178,8 +173,8 @@ public interface LiveOutputs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Live Output operation status.
      */
-    LiveOutput operationLocation(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, String operationId);
+    LiveOutput operationLocation(String resourceGroupName, String accountName, String liveEventName,
+        String liveOutputName, String operationId);
 
     /**
      * Get Live Output

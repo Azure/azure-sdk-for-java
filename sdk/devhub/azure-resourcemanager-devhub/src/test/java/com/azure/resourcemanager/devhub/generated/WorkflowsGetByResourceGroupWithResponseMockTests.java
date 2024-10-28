@@ -34,40 +34,28 @@ public final class WorkflowsGetByResourceGroupWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"githubWorkflowProfile\":{\"repositoryOwner\":\"lyaxuc\",\"repositoryName\":\"uqszfk\",\"branchName\":\"ypewrmjmwvvjekt\",\"dockerfile\":\"senhwlrs\",\"dockerBuildContext\":\"rzpwvlqdqgbiq\",\"namespace\":\"hkaetcktvfc\",\"aksResourceId\":\"nkymuctqhjfbebrj\",\"prURL\":\"erfuwuttt\",\"pullNumber\":2038091366,\"prStatus\":\"submitted\",\"authStatus\":\"NotFound\"},\"artifactGenerationProperties\":{\"generationLanguage\":\"javascript\",\"languageVersion\":\"pcyvahfnljkyqx\",\"builderVersion\":\"uujqgidokgjljyo\",\"port\":\"vcltbgsncgh\",\"appName\":\"esz\",\"dockerfileOutputDirectory\":\"bijhtxfvgxbf\",\"manifestOutputDirectory\":\"xnehmpvec\",\"dockerfileGenerationMode\":\"disabled\",\"manifestGenerationMode\":\"disabled\",\"manifestType\":\"helm\",\"imageName\":\"kk\",\"namespace\":\"mpukgriw\",\"imageTag\":\"zlfbxzpuzycispnq\"}},\"location\":\"hmgkbrpyy\",\"tags\":{\"drgvtqagn\":\"bnuqqkpik\",\"mebf\":\"uynhijg\",\"zmhjrunmp\":\"iarbutrcvpna\"},\"id\":\"ttdbhrbnl\",\"name\":\"nkxmyskpbhenbtk\",\"type\":\"xywnytnrsynlqidy\"}";
+        String responseStr
+            = "{\"properties\":{\"githubWorkflowProfile\":{\"repositoryOwner\":\"lyaxuc\",\"repositoryName\":\"uqszfk\",\"branchName\":\"ypewrmjmwvvjekt\",\"dockerfile\":\"senhwlrs\",\"dockerBuildContext\":\"rzpwvlqdqgbiq\",\"namespace\":\"hkaetcktvfc\",\"aksResourceId\":\"nkymuctqhjfbebrj\",\"prURL\":\"erfuwuttt\",\"pullNumber\":2038091366,\"prStatus\":\"submitted\",\"authStatus\":\"NotFound\"},\"artifactGenerationProperties\":{\"generationLanguage\":\"javascript\",\"languageVersion\":\"pcyvahfnljkyqx\",\"builderVersion\":\"uujqgidokgjljyo\",\"port\":\"vcltbgsncgh\",\"appName\":\"esz\",\"dockerfileOutputDirectory\":\"bijhtxfvgxbf\",\"manifestOutputDirectory\":\"xnehmpvec\",\"dockerfileGenerationMode\":\"disabled\",\"manifestGenerationMode\":\"disabled\",\"manifestType\":\"helm\",\"imageName\":\"kk\",\"namespace\":\"mpukgriw\",\"imageTag\":\"zlfbxzpuzycispnq\"}},\"location\":\"hmgkbrpyy\",\"tags\":{\"drgvtqagn\":\"bnuqqkpik\",\"mebf\":\"uynhijg\",\"zmhjrunmp\":\"iarbutrcvpna\"},\"id\":\"ttdbhrbnl\",\"name\":\"nkxmyskpbhenbtk\",\"type\":\"xywnytnrsynlqidy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevHubManager manager =
-            DevHubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevHubManager manager = DevHubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Workflow response =
-            manager
-                .workflows()
-                .getByResourceGroupWithResponse("yxzk", "noc", com.azure.core.util.Context.NONE)
-                .getValue();
+        Workflow response = manager.workflows()
+            .getByResourceGroupWithResponse("yxzk", "noc", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("hmgkbrpyy", response.location());
         Assertions.assertEquals("bnuqqkpik", response.tags().get("drgvtqagn"));

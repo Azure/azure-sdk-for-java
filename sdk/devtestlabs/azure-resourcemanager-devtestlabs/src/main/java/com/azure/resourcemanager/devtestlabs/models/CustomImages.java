@@ -37,14 +37,8 @@ public interface CustomImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<CustomImage> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<CustomImage> list(String resourceGroupName, String labName, String expand, String filter, Integer top,
+        String orderby, Context context);
 
     /**
      * Get custom image.
@@ -59,8 +53,8 @@ public interface CustomImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return custom image along with {@link Response}.
      */
-    Response<CustomImage> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<CustomImage> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context);
 
     /**
      * Get custom image.

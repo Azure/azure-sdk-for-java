@@ -13,10 +13,7 @@ import java.util.List;
 /**
  * The implementation of {@link Provider}.
  */
-final class ProviderImpl extends
-        IndexableWrapperImpl<ProviderInner>
-        implements
-        Provider {
+final class ProviderImpl extends IndexableWrapperImpl<ProviderInner> implements Provider {
 
     ProviderImpl(ProviderInner provider) {
         super(provider);

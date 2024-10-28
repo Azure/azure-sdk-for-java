@@ -138,18 +138,14 @@ public final class ForecastDataset {
             configuration().validate();
         }
         if (aggregation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property aggregation in model ForecastDataset"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property aggregation in model ForecastDataset"));
         } else {
-            aggregation()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            aggregation().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (filter() != null) {
             filter().validate();

@@ -251,14 +251,12 @@ public final class PipelineTopologyInner extends ProxyResource {
             innerProperties().validate();
         }
         if (kind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property kind in model PipelineTopologyInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property kind in model PipelineTopologyInner"));
         }
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model PipelineTopologyInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sku in model PipelineTopologyInner"));
         } else {
             sku().validate();
         }

@@ -35,8 +35,7 @@ public class PaloAltoNetworksNgfwManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -53,10 +52,7 @@ public class PaloAltoNetworksNgfwManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -84,7 +80,8 @@ public class PaloAltoNetworksNgfwManagerTests extends TestProxyTestBase {
             // @embedmeEnd
             localRulestackResource.refresh();
             Assertions.assertEquals(localRulestackResource.name(), localRulestackName);
-            Assertions.assertEquals(localRulestackResource.name(), paloAltoNetworksNgfwManager.localRulestacks().getById(localRulestackResource.id()).name());
+            Assertions.assertEquals(localRulestackResource.name(),
+                paloAltoNetworksNgfwManager.localRulestacks().getById(localRulestackResource.id()).name());
             Assertions.assertTrue(paloAltoNetworksNgfwManager.localRulestacks().list().stream().findAny().isPresent());
         } finally {
             if (localRulestackResource != null) {

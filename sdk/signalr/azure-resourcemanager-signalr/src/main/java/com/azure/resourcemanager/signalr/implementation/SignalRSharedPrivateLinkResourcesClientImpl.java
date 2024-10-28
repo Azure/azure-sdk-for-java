@@ -54,12 +54,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @param client the instance of the service client containing this operation class.
      */
     SignalRSharedPrivateLinkResourcesClientImpl(SignalRManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    SignalRSharedPrivateLinkResourcesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(SignalRSharedPrivateLinkResourcesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -70,75 +66,53 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
     @Host("{$host}")
     @ServiceInterface(name = "SignalRManagementCli")
     public interface SignalRSharedPrivateLinkResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedPrivateLinkResourceList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SharedPrivateLinkResourceList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SharedPrivateLinkResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SharedPrivateLinkResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("sharedPrivateLinkResourceName") String sharedPrivateLinkResourceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("sharedPrivateLinkResourceName") String sharedPrivateLinkResourceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @BodyParam("application/json") SharedPrivateLinkResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("sharedPrivateLinkResourceName") String sharedPrivateLinkResourceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SharedPrivateLinkResourceList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -153,19 +127,15 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SharedPrivateLinkResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<PagedResponse<SharedPrivateLinkResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -176,26 +146,10 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
-            .<PagedResponse<SharedPrivateLinkResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+            .<PagedResponse<SharedPrivateLinkResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -212,19 +166,15 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SharedPrivateLinkResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<PagedResponse<SharedPrivateLinkResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -236,23 +186,10 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -267,8 +204,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SharedPrivateLinkResourceInner> listAsync(String resourceGroupName, String resourceName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, resourceName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -283,10 +220,9 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return a list of shared private link resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SharedPrivateLinkResourceInner> listAsync(
-        String resourceGroupName, String resourceName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, resourceName, context),
+    private PagedFlux<SharedPrivateLinkResourceInner> listAsync(String resourceGroupName, String resourceName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -317,8 +253,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return a list of shared private link resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SharedPrivateLinkResourceInner> list(
-        String resourceGroupName, String resourceName, Context context) {
+    public PagedIterable<SharedPrivateLinkResourceInner> list(String resourceGroupName, String resourceName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, resourceName, context));
     }
 
@@ -335,25 +271,19 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SharedPrivateLinkResourceInner>> getWithResponseAsync(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName) {
+    private Mono<Response<SharedPrivateLinkResourceInner>> getWithResponseAsync(String sharedPrivateLinkResourceName,
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (sharedPrivateLinkResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -364,18 +294,9 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            sharedPrivateLinkResourceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), sharedPrivateLinkResourceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -393,25 +314,19 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SharedPrivateLinkResourceInner>> getWithResponseAsync(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<SharedPrivateLinkResourceInner>> getWithResponseAsync(String sharedPrivateLinkResourceName,
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (sharedPrivateLinkResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -422,16 +337,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                sharedPrivateLinkResourceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), sharedPrivateLinkResourceName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
     /**
@@ -446,8 +353,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return the specified shared private link resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SharedPrivateLinkResourceInner> getAsync(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName) {
+    private Mono<SharedPrivateLinkResourceInner> getAsync(String sharedPrivateLinkResourceName,
+        String resourceGroupName, String resourceName) {
         return getWithResponseAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -465,8 +372,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return the specified shared private link resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SharedPrivateLinkResourceInner> getWithResponse(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context) {
+    public Response<SharedPrivateLinkResourceInner> getWithResponse(String sharedPrivateLinkResourceName,
+        String resourceGroupName, String resourceName, Context context) {
         return getWithResponseAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context).block();
     }
 
@@ -482,8 +389,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return the specified shared private link resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedPrivateLinkResourceInner get(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName) {
+    public SharedPrivateLinkResourceInner get(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName) {
         return getWithResponse(sharedPrivateLinkResourceName, resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
@@ -501,28 +408,19 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String sharedPrivateLinkResourceName,
-        String resourceGroupName,
-        String resourceName,
-        SharedPrivateLinkResourceInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String sharedPrivateLinkResourceName,
+        String resourceGroupName, String resourceName, SharedPrivateLinkResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (sharedPrivateLinkResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -538,19 +436,9 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            sharedPrivateLinkResourceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), sharedPrivateLinkResourceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName,
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -569,29 +457,19 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String sharedPrivateLinkResourceName,
-        String resourceGroupName,
-        String resourceName,
-        SharedPrivateLinkResourceInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String sharedPrivateLinkResourceName,
+        String resourceGroupName, String resourceName, SharedPrivateLinkResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (sharedPrivateLinkResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -607,17 +485,9 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                sharedPrivateLinkResourceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), sharedPrivateLinkResourceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters,
+            accept, context);
     }
 
     /**
@@ -634,21 +504,13 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner>
-        beginCreateOrUpdateAsync(
-            String sharedPrivateLinkResourceName,
-            String resourceGroupName,
-            String resourceName,
+        beginCreateOrUpdateAsync(String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName,
             SharedPrivateLinkResourceInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters);
-        return this
-            .client
-            .<SharedPrivateLinkResourceInner, SharedPrivateLinkResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SharedPrivateLinkResourceInner.class,
-                SharedPrivateLinkResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(sharedPrivateLinkResourceName,
+            resourceGroupName, resourceName, parameters);
+        return this.client.<SharedPrivateLinkResourceInner, SharedPrivateLinkResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SharedPrivateLinkResourceInner.class, SharedPrivateLinkResourceInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -666,24 +528,14 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner>
-        beginCreateOrUpdateAsync(
-            String sharedPrivateLinkResourceName,
-            String resourceGroupName,
-            String resourceName,
-            SharedPrivateLinkResourceInner parameters,
-            Context context) {
+        beginCreateOrUpdateAsync(String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName,
+            SharedPrivateLinkResourceInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters, context);
-        return this
-            .client
-            .<SharedPrivateLinkResourceInner, SharedPrivateLinkResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SharedPrivateLinkResourceInner.class,
-                SharedPrivateLinkResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(sharedPrivateLinkResourceName,
+            resourceGroupName, resourceName, parameters, context);
+        return this.client.<SharedPrivateLinkResourceInner, SharedPrivateLinkResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SharedPrivateLinkResourceInner.class, SharedPrivateLinkResourceInner.class,
+            context);
     }
 
     /**
@@ -700,12 +552,9 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
-        String sharedPrivateLinkResourceName,
-        String resourceGroupName,
-        String resourceName,
+        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName,
         SharedPrivateLinkResourceInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters)
+        return this.beginCreateOrUpdateAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters)
             .getSyncPoller();
     }
 
@@ -724,14 +573,11 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
-        String sharedPrivateLinkResourceName,
-        String resourceGroupName,
-        String resourceName,
-        SharedPrivateLinkResourceInner parameters,
-        Context context) {
+        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName,
+        SharedPrivateLinkResourceInner parameters, Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters, context)
+            .beginCreateOrUpdateAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters,
+                context)
             .getSyncPoller();
     }
 
@@ -748,11 +594,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return describes a Shared Private Link Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SharedPrivateLinkResourceInner> createOrUpdateAsync(
-        String sharedPrivateLinkResourceName,
-        String resourceGroupName,
-        String resourceName,
-        SharedPrivateLinkResourceInner parameters) {
+    private Mono<SharedPrivateLinkResourceInner> createOrUpdateAsync(String sharedPrivateLinkResourceName,
+        String resourceGroupName, String resourceName, SharedPrivateLinkResourceInner parameters) {
         return beginCreateOrUpdateAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -772,16 +615,10 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return describes a Shared Private Link Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SharedPrivateLinkResourceInner> createOrUpdateAsync(
-        String sharedPrivateLinkResourceName,
-        String resourceGroupName,
-        String resourceName,
-        SharedPrivateLinkResourceInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<SharedPrivateLinkResourceInner> createOrUpdateAsync(String sharedPrivateLinkResourceName,
+        String resourceGroupName, String resourceName, SharedPrivateLinkResourceInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -797,11 +634,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return describes a Shared Private Link Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedPrivateLinkResourceInner createOrUpdate(
-        String sharedPrivateLinkResourceName,
-        String resourceGroupName,
-        String resourceName,
-        SharedPrivateLinkResourceInner parameters) {
+    public SharedPrivateLinkResourceInner createOrUpdate(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName, SharedPrivateLinkResourceInner parameters) {
         return createOrUpdateAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters).block();
     }
 
@@ -819,12 +653,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return describes a Shared Private Link Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SharedPrivateLinkResourceInner createOrUpdate(
-        String sharedPrivateLinkResourceName,
-        String resourceGroupName,
-        String resourceName,
-        SharedPrivateLinkResourceInner parameters,
-        Context context) {
+    public SharedPrivateLinkResourceInner createOrUpdate(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName, SharedPrivateLinkResourceInner parameters, Context context) {
         return createOrUpdateAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters, context)
             .block();
     }
@@ -841,25 +671,19 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String sharedPrivateLinkResourceName,
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (sharedPrivateLinkResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -870,18 +694,9 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            sharedPrivateLinkResourceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), sharedPrivateLinkResourceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -898,25 +713,19 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String sharedPrivateLinkResourceName,
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (sharedPrivateLinkResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter sharedPrivateLinkResourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -927,16 +736,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                sharedPrivateLinkResourceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), sharedPrivateLinkResourceName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
     /**
@@ -951,14 +752,12 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String sharedPrivateLinkResourceName,
+        String resourceGroupName, String resourceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -974,14 +773,13 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String sharedPrivateLinkResourceName,
+        String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -996,8 +794,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String sharedPrivateLinkResourceName,
+        String resourceGroupName, String resourceName) {
         return this.beginDeleteAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName).getSyncPoller();
     }
 
@@ -1014,10 +812,9 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context) {
-        return this
-            .beginDeleteAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String sharedPrivateLinkResourceName,
+        String resourceGroupName, String resourceName, Context context) {
+        return this.beginDeleteAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context)
             .getSyncPoller();
     }
 
@@ -1033,10 +830,9 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName)
-            .last()
+    private Mono<Void> deleteAsync(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName) {
+        return beginDeleteAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1053,10 +849,9 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context)
-            .last()
+    private Mono<Void> deleteAsync(String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName,
+        Context context) {
+        return beginDeleteAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1087,8 +882,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context) {
+    public void delete(String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName,
+        Context context) {
         deleteAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context).block();
     }
 
@@ -1109,23 +904,13 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SharedPrivateLinkResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SharedPrivateLinkResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1142,29 +927,19 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SharedPrivateLinkResourceInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SharedPrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

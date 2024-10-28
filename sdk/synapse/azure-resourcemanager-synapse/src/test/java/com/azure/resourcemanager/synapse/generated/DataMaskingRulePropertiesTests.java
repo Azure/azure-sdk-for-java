@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DataMaskingRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataMaskingRuleProperties model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"dznx\",\"aliasName\":\"dsrhnjiv\",\"ruleState\":\"Disabled\",\"schemaName\":\"tnovqfzgemjdftul\",\"tableName\":\"ltducea\",\"columnName\":\"tmczuomejwcwwqi\",\"maskingFunction\":\"SSN\",\"numberFrom\":\"ssxmojms\",\"numberTo\":\"kjprvk\",\"prefixSize\":\"fz\",\"suffixSize\":\"jyxgtczh\",\"replacementString\":\"dbsdshm\"}")
-                .toObject(DataMaskingRuleProperties.class);
+        DataMaskingRuleProperties model = BinaryData.fromString(
+            "{\"id\":\"dznx\",\"aliasName\":\"dsrhnjiv\",\"ruleState\":\"Disabled\",\"schemaName\":\"tnovqfzgemjdftul\",\"tableName\":\"ltducea\",\"columnName\":\"tmczuomejwcwwqi\",\"maskingFunction\":\"SSN\",\"numberFrom\":\"ssxmojms\",\"numberTo\":\"kjprvk\",\"prefixSize\":\"fz\",\"suffixSize\":\"jyxgtczh\",\"replacementString\":\"dbsdshm\"}")
+            .toObject(DataMaskingRuleProperties.class);
         Assertions.assertEquals("dsrhnjiv", model.aliasName());
         Assertions.assertEquals(DataMaskingRuleState.DISABLED, model.ruleState());
         Assertions.assertEquals("tnovqfzgemjdftul", model.schemaName());
@@ -33,19 +31,17 @@ public final class DataMaskingRulePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataMaskingRuleProperties model =
-            new DataMaskingRuleProperties()
-                .withAliasName("dsrhnjiv")
-                .withRuleState(DataMaskingRuleState.DISABLED)
-                .withSchemaName("tnovqfzgemjdftul")
-                .withTableName("ltducea")
-                .withColumnName("tmczuomejwcwwqi")
-                .withMaskingFunction(DataMaskingFunction.SSN)
-                .withNumberFrom("ssxmojms")
-                .withNumberTo("kjprvk")
-                .withPrefixSize("fz")
-                .withSuffixSize("jyxgtczh")
-                .withReplacementString("dbsdshm");
+        DataMaskingRuleProperties model = new DataMaskingRuleProperties().withAliasName("dsrhnjiv")
+            .withRuleState(DataMaskingRuleState.DISABLED)
+            .withSchemaName("tnovqfzgemjdftul")
+            .withTableName("ltducea")
+            .withColumnName("tmczuomejwcwwqi")
+            .withMaskingFunction(DataMaskingFunction.SSN)
+            .withNumberFrom("ssxmojms")
+            .withNumberTo("kjprvk")
+            .withPrefixSize("fz")
+            .withSuffixSize("jyxgtczh")
+            .withReplacementString("dbsdshm");
         model = BinaryData.fromObject(model).toObject(DataMaskingRuleProperties.class);
         Assertions.assertEquals("dsrhnjiv", model.aliasName());
         Assertions.assertEquals(DataMaskingRuleState.DISABLED, model.ruleState());

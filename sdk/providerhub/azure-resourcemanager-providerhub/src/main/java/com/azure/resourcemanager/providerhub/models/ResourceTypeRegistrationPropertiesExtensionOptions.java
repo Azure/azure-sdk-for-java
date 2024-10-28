@@ -15,8 +15,8 @@ public final class ResourceTypeRegistrationPropertiesExtensionOptions extends Re
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationPropertiesExtensionOptions withResourceCreationBegin(
-        ResourceTypeExtensionOptionsResourceCreationBegin resourceCreationBegin) {
+    public ResourceTypeRegistrationPropertiesExtensionOptions
+        withResourceCreationBegin(ResourceTypeExtensionOptionsResourceCreationBegin resourceCreationBegin) {
         super.withResourceCreationBegin(resourceCreationBegin);
         return this;
     }

@@ -32,41 +32,28 @@ public final class KustoPoolsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"sku\":{\"name\":\"Compute"
-                + " optimized\",\"capacity\":797241887,\"size\":\"Medium\"},\"properties\":{\"state\":\"Stopped\",\"provisioningState\":\"Moving\",\"uri\":\"npiyuxlv\",\"dataIngestionUri\":\"prrv\",\"stateReason\":\"onleqflvtl\",\"optimizedAutoscale\":{\"version\":407535743,\"isEnabled\":false,\"minimum\":1195854621,\"maximum\":1769963402},\"enableStreamingIngest\":false,\"enablePurge\":true,\"languageExtensions\":{\"value\":[]},\"workspaceUID\":\"nttlnrjd\"},\"etag\":\"dbuziciqppoqvg\",\"location\":\"e\",\"tags\":{\"wjnoxuo\":\"w\",\"cjmgvsnvbtqdxfm\":\"tfnressfepgck\"},\"id\":\"ym\",\"name\":\"n\",\"type\":\"jluqllbsupu\"}";
+        String responseStr = "{\"sku\":{\"name\":\"Compute"
+            + " optimized\",\"capacity\":797241887,\"size\":\"Medium\"},\"properties\":{\"state\":\"Stopped\",\"provisioningState\":\"Moving\",\"uri\":\"npiyuxlv\",\"dataIngestionUri\":\"prrv\",\"stateReason\":\"onleqflvtl\",\"optimizedAutoscale\":{\"version\":407535743,\"isEnabled\":false,\"minimum\":1195854621,\"maximum\":1769963402},\"enableStreamingIngest\":false,\"enablePurge\":true,\"languageExtensions\":{\"value\":[]},\"workspaceUID\":\"nttlnrjd\"},\"etag\":\"dbuziciqppoqvg\",\"location\":\"e\",\"tags\":{\"wjnoxuo\":\"w\",\"cjmgvsnvbtqdxfm\":\"tfnressfepgck\"},\"id\":\"ym\",\"name\":\"n\",\"type\":\"jluqllbsupu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        KustoPool response =
-            manager
-                .kustoPools()
-                .getWithResponse("pkvegeatt", "zkgtzqn", "qsttewuvcysjeuf", com.azure.core.util.Context.NONE)
-                .getValue();
+        KustoPool response = manager.kustoPools()
+            .getWithResponse("pkvegeatt", "zkgtzqn", "qsttewuvcysjeuf", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("e", response.location());
         Assertions.assertEquals("w", response.tags().get("wjnoxuo"));

@@ -77,10 +77,8 @@ public final class DatabasePrincipalAssignmentCheckNameRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model DatabasePrincipalAssignmentCheckNameRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model DatabasePrincipalAssignmentCheckNameRequest"));
         }
     }
 

@@ -25,8 +25,8 @@ public interface Quotas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current quota (service limit) and usage of a resource.
      */
-    Response<CurrentQuotaLimitBase> getWithResponse(
-        String subscriptionId, String providerId, String location, String resourceName, Context context);
+    Response<CurrentQuotaLimitBase> getWithResponse(String subscriptionId, String providerId, String location,
+        String resourceName, Context context);
 
     /**
      * Get the current quota (service limit) and usage of a resource. You can use the response from the GET operation to
@@ -73,8 +73,8 @@ public interface Quotas {
      * @return a list of current quotas (service limits) and usage for all resources as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<CurrentQuotaLimitBase> list(
-        String subscriptionId, String providerId, String location, Context context);
+    PagedIterable<CurrentQuotaLimitBase> list(String subscriptionId, String providerId, String location,
+        Context context);
 
     /**
      * Get the current quota (service limit) and usage of a resource. You can use the response from the GET operation to

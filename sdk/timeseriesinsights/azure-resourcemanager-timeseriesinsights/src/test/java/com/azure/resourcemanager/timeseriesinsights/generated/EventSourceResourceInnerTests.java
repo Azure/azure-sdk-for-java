@@ -13,21 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class EventSourceResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventSourceResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"EventSourceResource\",\"location\":\"djwzrlov\",\"tags\":{\"s\":\"whijcoejctbza\",\"ukdkexxppofmxa\":\"sycbkbfk\",\"jpgd\":\"c\",\"j\":\"toc\"},\"id\":\"hvpmoue\",\"name\":\"hd\",\"type\":\"xibqeojnx\"}")
-                .toObject(EventSourceResourceInner.class);
+        EventSourceResourceInner model = BinaryData.fromString(
+            "{\"kind\":\"EventSourceResource\",\"location\":\"djwzrlov\",\"tags\":{\"s\":\"whijcoejctbza\",\"ukdkexxppofmxa\":\"sycbkbfk\",\"jpgd\":\"c\",\"j\":\"toc\"},\"id\":\"hvpmoue\",\"name\":\"hd\",\"type\":\"xibqeojnx\"}")
+            .toObject(EventSourceResourceInner.class);
         Assertions.assertEquals("djwzrlov", model.location());
         Assertions.assertEquals("whijcoejctbza", model.tags().get("s"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventSourceResourceInner model =
-            new EventSourceResourceInner()
-                .withLocation("djwzrlov")
-                .withTags(mapOf("s", "whijcoejctbza", "ukdkexxppofmxa", "sycbkbfk", "jpgd", "c", "j", "toc"));
+        EventSourceResourceInner model = new EventSourceResourceInner().withLocation("djwzrlov")
+            .withTags(mapOf("s", "whijcoejctbza", "ukdkexxppofmxa", "sycbkbfk", "jpgd", "c", "j", "toc"));
         model = BinaryData.fromObject(model).toObject(EventSourceResourceInner.class);
         Assertions.assertEquals("djwzrlov", model.location());
         Assertions.assertEquals("whijcoejctbza", model.tags().get("s"));

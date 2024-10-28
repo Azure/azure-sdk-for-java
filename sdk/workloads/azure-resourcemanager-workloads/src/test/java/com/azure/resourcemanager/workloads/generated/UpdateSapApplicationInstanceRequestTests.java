@@ -13,18 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateSapApplicationInstanceRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateSapApplicationInstanceRequest model =
-            BinaryData
-                .fromString("{\"tags\":{\"i\":\"fwxosowzxcu\",\"ucww\":\"jooxdjebw\",\"bvmeuecivy\":\"vo\"}}")
+        UpdateSapApplicationInstanceRequest model
+            = BinaryData.fromString("{\"tags\":{\"i\":\"fwxosowzxcu\",\"ucww\":\"jooxdjebw\",\"bvmeuecivy\":\"vo\"}}")
                 .toObject(UpdateSapApplicationInstanceRequest.class);
         Assertions.assertEquals("fwxosowzxcu", model.tags().get("i"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateSapApplicationInstanceRequest model =
-            new UpdateSapApplicationInstanceRequest()
-                .withTags(mapOf("i", "fwxosowzxcu", "ucww", "jooxdjebw", "bvmeuecivy", "vo"));
+        UpdateSapApplicationInstanceRequest model = new UpdateSapApplicationInstanceRequest()
+            .withTags(mapOf("i", "fwxosowzxcu", "ucww", "jooxdjebw", "bvmeuecivy", "vo"));
         model = BinaryData.fromObject(model).toObject(UpdateSapApplicationInstanceRequest.class);
         Assertions.assertEquals("fwxosowzxcu", model.tags().get("i"));
     }

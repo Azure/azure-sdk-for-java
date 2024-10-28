@@ -28,12 +28,14 @@ public final class FunctionInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FunctionInner model = new FunctionInner().withId("wnoi").withProperties(new FunctionProperties()
-            .withInputs(
-                Arrays.asList(new FunctionInput().withDataType("pybczmehmtzopb").withIsConfigurationParameter(false),
+        FunctionInner model = new FunctionInner().withId("wnoi")
+            .withProperties(new FunctionProperties()
+                .withInputs(Arrays.asList(
+                    new FunctionInput().withDataType("pybczmehmtzopb").withIsConfigurationParameter(false),
                     new FunctionInput().withDataType("upi").withIsConfigurationParameter(true),
                     new FunctionInput().withDataType("bb").withIsConfigurationParameter(false)))
-            .withOutput(new FunctionOutput().withDataType("oycmsxaobhdxbmt")).withBinding(new FunctionBinding()))
+                .withOutput(new FunctionOutput().withDataType("oycmsxaobhdxbmt"))
+                .withBinding(new FunctionBinding()))
             .withName("qj");
         model = BinaryData.fromObject(model).toObject(FunctionInner.class);
         Assertions.assertEquals("wnoi", model.id());

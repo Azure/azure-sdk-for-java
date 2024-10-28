@@ -22,9 +22,11 @@ public class SpringCloudTest extends AppPlatformTest {
         String serviceName = generateRandomResourceName("springsvc", 15);
         Region region = Region.US_EAST;
 
-        Assertions.assertTrue(appPlatformManager.springServices().checkNameAvailability(serviceName, region).nameAvailable());
+        Assertions
+            .assertTrue(appPlatformManager.springServices().checkNameAvailability(serviceName, region).nameAvailable());
 
-        SpringService service = appPlatformManager.springServices().define(serviceName)
+        SpringService service = appPlatformManager.springServices()
+            .define(serviceName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withSku("B0")
@@ -32,12 +34,10 @@ public class SpringCloudTest extends AppPlatformTest {
             .create();
 
         Assertions.assertEquals("B0", service.sku().name());
-        Assertions.assertEquals(PIGGYMETRICS_CONFIG_URL, service.getServerProperties().configServer().gitProperty().uri());
+        Assertions.assertEquals(PIGGYMETRICS_CONFIG_URL,
+            service.getServerProperties().configServer().gitProperty().uri());
 
-        service.update()
-            .withSku("S0", 2)
-            .withoutGitConfig()
-            .apply();
+        service.update().withSku("S0", 2).withoutGitConfig().apply();
 
         Assertions.assertEquals("S0", service.sku().name());
 
@@ -48,13 +48,16 @@ public class SpringCloudTest extends AppPlatformTest {
             || serverProperties.configServer().gitProperty().uri() == null
             || serverProperties.configServer().gitProperty().uri().isEmpty());
 
-        Assertions.assertEquals(1, appPlatformManager.springServices().list().stream().filter(s -> s.name().equals(serviceName)).count());
+        Assertions.assertEquals(1,
+            appPlatformManager.springServices().list().stream().filter(s -> s.name().equals(serviceName)).count());
 
         appPlatformManager.springServices().deleteById(service.id());
         Assertions.assertEquals(404,
-            appPlatformManager.springServices().getByIdAsync(service.id()).map(o -> 200)
-                .onErrorResume(e ->
-                    Mono.just(e instanceof ManagementException ? ((ManagementException) e).getResponse().getStatusCode() : 400))
+            appPlatformManager.springServices()
+                .getByIdAsync(service.id())
+                .map(o -> 200)
+                .onErrorResume(e -> Mono.just(
+                    e instanceof ManagementException ? ((ManagementException) e).getResponse().getStatusCode() : 400))
                 .block());
     }
 
@@ -64,12 +67,14 @@ public class SpringCloudTest extends AppPlatformTest {
         String appName = "gateway";
         Region region = Region.US_EAST;
 
-        SpringService service = appPlatformManager.springServices().define(serviceName)
+        SpringService service = appPlatformManager.springServices()
+            .define(serviceName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .create();
 
-        SpringApp app = service.apps().define(appName)
+        SpringApp app = service.apps()
+            .define(appName)
             .withDefaultActiveDeployment()
             .withDefaultPublicEndpoint()
             .withHttpsOnly()
@@ -88,13 +93,10 @@ public class SpringCloudTest extends AppPlatformTest {
 
         if (!isPlaybackMode()) {
             allowAllSSL();
-//            Assertions.assertTrue(requestSuccess(app.url()));
+            //            Assertions.assertTrue(requestSuccess(app.url()));
         }
 
-        app.update()
-            .withoutDefaultPublicEndpoint()
-            .withoutHttpsOnly()
-            .apply();
+        app.update().withoutDefaultPublicEndpoint().withoutHttpsOnly().apply();
 
         Assertions.assertFalse(app.isPublic());
         Assertions.assertFalse(app.isHttpsOnly());
@@ -103,10 +105,12 @@ public class SpringCloudTest extends AppPlatformTest {
 
         service.apps().deleteById(app.id());
         Assertions.assertEquals(404,
-            service.apps().getByIdAsync(app.id()).map(o -> 200)
-                .onErrorResume(
-                    e -> Mono.just((e instanceof ManagementException) ? ((ManagementException) e).getResponse().getStatusCode() : 400)
-                ).block());
+            service.apps()
+                .getByIdAsync(app.id())
+                .map(o -> 200)
+                .onErrorResume(e -> Mono.just(
+                    (e instanceof ManagementException) ? ((ManagementException) e).getResponse().getStatusCode() : 400))
+                .block());
     }
 
     @Test
@@ -116,14 +120,16 @@ public class SpringCloudTest extends AppPlatformTest {
         String deploymentName = generateRandomResourceName("dp", 15);
         Region region = Region.US_EAST;
 
-        SpringService service = appPlatformManager.springServices().define(serviceName)
+        SpringService service = appPlatformManager.springServices()
+            .define(serviceName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .create();
 
         // --------------------------------
         // create app with default active deployment
-        SpringApp app = service.apps().define(appName)
+        SpringApp app = service.apps()
+            .define(appName)
             .withDefaultActiveDeployment()
             .withDefaultPublicEndpoint()
             .withHttpsOnly()
@@ -149,9 +155,7 @@ public class SpringCloudTest extends AppPlatformTest {
 
         // --------------------------------
         // set active deployment back to the default one
-        app.update()
-            .withActiveDeployment("default")
-            .apply();
+        app.update().withActiveDeployment("default").apply();
 
         Assertions.assertEquals(1, app.deployments().list().stream().filter(SpringAppDeployment::isActive).count());
         deployment = app.getActiveDeployment();

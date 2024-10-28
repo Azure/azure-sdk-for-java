@@ -70,20 +70,16 @@ public final class TagRuleImpl implements TagRule, TagRule.Definition, TagRule.U
     }
 
     public TagRule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTagRules()
-                .createOrUpdate(resourceGroupName, monitorName, ruleSetName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getTagRules()
+            .createOrUpdate(resourceGroupName, monitorName, ruleSetName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public TagRule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTagRules()
-                .createOrUpdate(resourceGroupName, monitorName, ruleSetName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getTagRules()
+            .createOrUpdate(resourceGroupName, monitorName, ruleSetName, this.innerModel(), context);
         return this;
     }
 
@@ -98,20 +94,16 @@ public final class TagRuleImpl implements TagRule, TagRule.Definition, TagRule.U
     }
 
     public TagRule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTagRules()
-                .createOrUpdate(resourceGroupName, monitorName, ruleSetName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getTagRules()
+            .createOrUpdate(resourceGroupName, monitorName, ruleSetName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public TagRule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTagRules()
-                .createOrUpdate(resourceGroupName, monitorName, ruleSetName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getTagRules()
+            .createOrUpdate(resourceGroupName, monitorName, ruleSetName, this.innerModel(), context);
         return this;
     }
 
@@ -124,22 +116,18 @@ public final class TagRuleImpl implements TagRule, TagRule.Definition, TagRule.U
     }
 
     public TagRule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTagRules()
-                .getWithResponse(resourceGroupName, monitorName, ruleSetName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTagRules()
+            .getWithResponse(resourceGroupName, monitorName, ruleSetName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public TagRule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTagRules()
-                .getWithResponse(resourceGroupName, monitorName, ruleSetName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTagRules()
+            .getWithResponse(resourceGroupName, monitorName, ruleSetName, context)
+            .getValue();
         return this;
     }
 

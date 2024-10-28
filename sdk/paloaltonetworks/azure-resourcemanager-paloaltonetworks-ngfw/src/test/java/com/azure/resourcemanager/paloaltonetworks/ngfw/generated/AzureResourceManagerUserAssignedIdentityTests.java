@@ -20,8 +20,9 @@ public final class AzureResourceManagerUserAssignedIdentityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureResourceManagerUserAssignedIdentity model = new AzureResourceManagerUserAssignedIdentity()
-            .withClientId("odgmaajrmvdjwz").withPrincipalId("ovmclwhijcoejct");
+        AzureResourceManagerUserAssignedIdentity model
+            = new AzureResourceManagerUserAssignedIdentity().withClientId("odgmaajrmvdjwz")
+                .withPrincipalId("ovmclwhijcoejct");
         model = BinaryData.fromObject(model).toObject(AzureResourceManagerUserAssignedIdentity.class);
         Assertions.assertEquals("odgmaajrmvdjwz", model.clientId());
         Assertions.assertEquals("ovmclwhijcoejct", model.principalId());

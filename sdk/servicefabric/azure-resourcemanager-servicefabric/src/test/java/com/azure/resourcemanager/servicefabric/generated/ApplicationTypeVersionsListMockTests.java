@@ -45,12 +45,13 @@ public final class ApplicationTypeVersionsListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ServiceFabricManager manager = ServiceFabricManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ServiceFabricManager manager = ServiceFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ApplicationTypeVersionResource> response = manager.applicationTypeVersions().list("ojgcyzt",
-            "fmznba", "qphchqnrnrpxehuw", com.azure.core.util.Context.NONE);
+        PagedIterable<ApplicationTypeVersionResource> response = manager.applicationTypeVersions()
+            .list("ojgcyzt", "fmznba", "qphchqnrnrpxehuw", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("wcfzqljyxgt", response.iterator().next().location());
         Assertions.assertEquals("eydbsd", response.iterator().next().tags().get("hmkxmaehvbb"));

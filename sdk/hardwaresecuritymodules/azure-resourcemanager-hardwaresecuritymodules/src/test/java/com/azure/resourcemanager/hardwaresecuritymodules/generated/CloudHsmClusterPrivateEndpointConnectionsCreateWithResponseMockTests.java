@@ -48,18 +48,22 @@ public final class CloudHsmClusterPrivateEndpointConnectionsCreateWithResponseMo
             return Mono.just(httpResponse);
         }));
 
-        HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure().withHttpClient(httpClient)
+        HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnection response
-            = manager.cloudHsmClusterPrivateEndpointConnections().define("qhih")
+            = manager.cloudHsmClusterPrivateEndpointConnections()
+                .define("qhih")
                 .withExistingCloudHsmCluster("gxmrhublwp", "esutrgjupauutpw")
                 .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED).withDescription("qntcypsxjvfoimwk")
+                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                        .withDescription("qntcypsxjvfoimwk")
                         .withActionsRequired("ircizjxvy")))
-                .withEtag("slbi").create();
+                .withEtag("slbi")
+                .create();
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             response.properties().privateLinkServiceConnectionState().status());

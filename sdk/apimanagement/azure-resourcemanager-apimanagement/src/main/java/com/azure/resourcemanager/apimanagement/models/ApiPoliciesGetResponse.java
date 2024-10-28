@@ -20,12 +20,8 @@ public final class ApiPoliciesGetResponse extends ResponseBase<ApiPoliciesGetHea
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ApiPoliciesGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        PolicyContractInner value,
-        ApiPoliciesGetHeaders headers) {
+    public ApiPoliciesGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        PolicyContractInner value, ApiPoliciesGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
