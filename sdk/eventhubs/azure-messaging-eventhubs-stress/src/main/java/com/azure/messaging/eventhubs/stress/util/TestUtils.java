@@ -54,11 +54,12 @@ public final class TestUtils {
     }
 
     public static EventHubClientBuilder getBuilder(ScenarioOptions options) {
-        final EventHubClientBuilder builder
-            = new EventHubClientBuilder().connectionString(options.getEventHubsConnectionString())
-                .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(5)))
-                .eventHubName(options.getEventHubsEventHubName())
-                .transportType(options.getAmqpTransportType());
+        final EventHubClientBuilder builder = new EventHubClientBuilder()
+            .connectionString(options.getEventHubsConnectionString())
+            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(5)))
+            .eventHubName(options.getEventHubsEventHubName())
+            .transportType(options.getAmqpTransportType())
+            .consumerGroup(options.getEventHubsConsumerGroup());
 
         if (options.useV2Stack()) {
             Configuration configuration
