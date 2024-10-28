@@ -78,9 +78,7 @@ public class BatchTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroup = testResourceGroup;
         } else {
-            resourceManager.resourceGroups().define(resourceGroup)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroup).withRegion(REGION).create();
         }
     }
 
