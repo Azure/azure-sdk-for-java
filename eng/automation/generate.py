@@ -264,7 +264,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         # compile
         succeeded = compile_arm_package(sdk_root, module)
         if succeeded:
-            breaking, changelog = compare_with_maven_package(
+            breaking, changelog, breaking_change_items = compare_with_maven_package(
                 sdk_root,
                 GROUP_ID,
                 service,
@@ -294,7 +294,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(sdk_folder))), None),
             "language": "Java",
             "result": result,
-            "changelog": {"content": changelog, "hasBreakingChange": breaking},
+            "changelog": {"content": changelog, "hasBreakingChange": breaking, "breakingChangeItems": breaking_change_items},
         }
     else:
         # no info about package, abort with result=failed
