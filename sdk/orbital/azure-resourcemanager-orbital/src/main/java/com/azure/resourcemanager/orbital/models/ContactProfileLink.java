@@ -183,24 +183,20 @@ public final class ContactProfileLink {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ContactProfileLink"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ContactProfileLink"));
         }
         if (polarization() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property polarization in model ContactProfileLink"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property polarization in model ContactProfileLink"));
         }
         if (direction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property direction in model ContactProfileLink"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property direction in model ContactProfileLink"));
         }
         if (channels() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property channels in model ContactProfileLink"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property channels in model ContactProfileLink"));
         } else {
             channels().forEach(e -> e.validate());
         }

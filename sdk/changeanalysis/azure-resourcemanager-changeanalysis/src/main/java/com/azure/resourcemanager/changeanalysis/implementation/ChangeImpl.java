@@ -13,8 +13,8 @@ public final class ChangeImpl implements Change {
 
     private final com.azure.resourcemanager.changeanalysis.AzureChangeAnalysisManager serviceManager;
 
-    ChangeImpl(
-        ChangeInner innerObject, com.azure.resourcemanager.changeanalysis.AzureChangeAnalysisManager serviceManager) {
+    ChangeImpl(ChangeInner innerObject,
+        com.azure.resourcemanager.changeanalysis.AzureChangeAnalysisManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

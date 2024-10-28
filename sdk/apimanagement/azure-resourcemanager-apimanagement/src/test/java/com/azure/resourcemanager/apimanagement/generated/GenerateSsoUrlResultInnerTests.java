@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class GenerateSsoUrlResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenerateSsoUrlResultInner model =
-            BinaryData.fromString("{\"value\":\"dlhzwhcu\"}").toObject(GenerateSsoUrlResultInner.class);
+        GenerateSsoUrlResultInner model
+            = BinaryData.fromString("{\"value\":\"dlhzwhcu\"}").toObject(GenerateSsoUrlResultInner.class);
         Assertions.assertEquals("dlhzwhcu", model.value());
     }
 

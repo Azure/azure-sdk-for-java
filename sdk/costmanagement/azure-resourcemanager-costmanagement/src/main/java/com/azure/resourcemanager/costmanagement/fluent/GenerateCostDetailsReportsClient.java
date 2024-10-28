@@ -35,8 +35,8 @@ public interface GenerateCostDetailsReportsClient {
      * @return the {@link SyncPoller} for polling of the result of the long running operation for cost details Api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner> beginCreateOperation(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters);
+    SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner>
+        beginCreateOperation(String scope, GenerateCostDetailsReportRequestDefinition parameters);
 
     /**
      * This API is the replacement for all previously release Usage Details APIs. Request to generate a cost details
@@ -60,8 +60,8 @@ public interface GenerateCostDetailsReportsClient {
      * @return the {@link SyncPoller} for polling of the result of the long running operation for cost details Api.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner> beginCreateOperation(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters, Context context);
+    SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner>
+        beginCreateOperation(String scope, GenerateCostDetailsReportRequestDefinition parameters, Context context);
 
     /**
      * This API is the replacement for all previously release Usage Details APIs. Request to generate a cost details
@@ -84,8 +84,8 @@ public interface GenerateCostDetailsReportsClient {
      * @return the result of the long running operation for cost details Api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CostDetailsOperationResultsInner createOperation(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters);
+    CostDetailsOperationResultsInner createOperation(String scope,
+        GenerateCostDetailsReportRequestDefinition parameters);
 
     /**
      * This API is the replacement for all previously release Usage Details APIs. Request to generate a cost details
@@ -109,8 +109,8 @@ public interface GenerateCostDetailsReportsClient {
      * @return the result of the long running operation for cost details Api.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CostDetailsOperationResultsInner createOperation(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters, Context context);
+    CostDetailsOperationResultsInner createOperation(String scope,
+        GenerateCostDetailsReportRequestDefinition parameters, Context context);
 
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
@@ -125,8 +125,8 @@ public interface GenerateCostDetailsReportsClient {
      * @return the {@link SyncPoller} for polling of the result of the specified operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner> beginGetOperationResults(
-        String scope, String operationId);
+    SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner>
+        beginGetOperationResults(String scope, String operationId);
 
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response
@@ -142,8 +142,8 @@ public interface GenerateCostDetailsReportsClient {
      * @return the {@link SyncPoller} for polling of the result of the specified operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner> beginGetOperationResults(
-        String scope, String operationId, Context context);
+    SyncPoller<PollResult<CostDetailsOperationResultsInner>, CostDetailsOperationResultsInner>
+        beginGetOperationResults(String scope, String operationId, Context context);
 
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response

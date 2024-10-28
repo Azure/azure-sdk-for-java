@@ -37,14 +37,8 @@ public interface Users {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<User> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<User> list(String resourceGroupName, String labName, String expand, String filter, Integer top,
+        String orderby, Context context);
 
     /**
      * Get user profile.
@@ -59,8 +53,8 @@ public interface Users {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user profile along with {@link Response}.
      */
-    Response<User> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<User> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context);
 
     /**
      * Get user profile.

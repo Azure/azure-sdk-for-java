@@ -31,41 +31,28 @@ public final class VirtualMachinesListApplicableSchedulesWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"labVmsShutdown\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"lpnerxrzutylcur\",\"weeklyRecurrence\":{\"weekdays\":[\"nbxqaeht\"],\"time\":\"jmbnvynf\"},\"dailyRecurrence\":{\"time\":\"eactedcglskakdd\"},\"hourlyRecurrence\":{\"minute\":1624949953},\"timeZoneId\":\"llrqmtlpbyxro\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":1760009428,\"webhookUrl\":\"ffmnoiics\",\"emailRecipient\":\"yhbrjjta\",\"notificationLocale\":\"rdsjrho\"},\"createdDate\":\"2021-12-05T02:21:08Z\",\"targetResourceId\":\"gusxxhdod\",\"provisioningState\":\"wyblv\",\"uniqueIdentifier\":\"d\"},\"location\":\"vsbyidaelqp\",\"tags\":{\"ggdusxu\":\"mkwjfbotl\",\"uxcjkcoqwczsyiq\":\"sui\"},\"id\":\"izfwihvaangqt\",\"name\":\"hjrfdmfdvbbaex\",\"type\":\"jfwtgdfkkaui\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"fmczfedyueps\",\"weeklyRecurrence\":{\"weekdays\":[\"ida\",\"jvyweo\",\"fkumcfjxoky\",\"lsyasv\"],\"time\":\"k\"},\"dailyRecurrence\":{\"time\":\"gjjekrkn\"},\"hourlyRecurrence\":{\"minute\":1460897475},\"timeZoneId\":\"jqy\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":370912095,\"webhookUrl\":\"dtu\",\"emailRecipient\":\"r\",\"notificationLocale\":\"dklotcsubmzo\"},\"createdDate\":\"2021-01-14T01:24:35Z\",\"targetResourceId\":\"obc\",\"provisioningState\":\"xfpwhd\",\"uniqueIdentifier\":\"lbkl\"},\"location\":\"lmnnk\",\"tags\":{\"saqjmkgx\":\"yqshwyqxridtt\",\"uuylztpz\":\"wqu\",\"fvezefk\":\"izevjyk\",\"zcntogffjwajnrtw\":\"kqtwqlepjjzkcasf\"},\"id\":\"vaqkifmxawost\",\"name\":\"zkn\",\"type\":\"rkmjqncfvdscnhe\"}},\"location\":\"vwfnqqwypvn\",\"tags\":{\"od\":\"b\",\"muymvec\":\"ggrssgwjfkain\",\"nkzzohnrddclz\":\"ztscbgmusaictds\"},\"id\":\"qozreh\",\"name\":\"bzq\",\"type\":\"xbnjrqvzyuexoz\"}";
+        String responseStr
+            = "{\"properties\":{\"labVmsShutdown\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"lpnerxrzutylcur\",\"weeklyRecurrence\":{\"weekdays\":[\"nbxqaeht\"],\"time\":\"jmbnvynf\"},\"dailyRecurrence\":{\"time\":\"eactedcglskakdd\"},\"hourlyRecurrence\":{\"minute\":1624949953},\"timeZoneId\":\"llrqmtlpbyxro\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":1760009428,\"webhookUrl\":\"ffmnoiics\",\"emailRecipient\":\"yhbrjjta\",\"notificationLocale\":\"rdsjrho\"},\"createdDate\":\"2021-12-05T02:21:08Z\",\"targetResourceId\":\"gusxxhdod\",\"provisioningState\":\"wyblv\",\"uniqueIdentifier\":\"d\"},\"location\":\"vsbyidaelqp\",\"tags\":{\"ggdusxu\":\"mkwjfbotl\",\"uxcjkcoqwczsyiq\":\"sui\"},\"id\":\"izfwihvaangqt\",\"name\":\"hjrfdmfdvbbaex\",\"type\":\"jfwtgdfkkaui\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"fmczfedyueps\",\"weeklyRecurrence\":{\"weekdays\":[\"ida\",\"jvyweo\",\"fkumcfjxoky\",\"lsyasv\"],\"time\":\"k\"},\"dailyRecurrence\":{\"time\":\"gjjekrkn\"},\"hourlyRecurrence\":{\"minute\":1460897475},\"timeZoneId\":\"jqy\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":370912095,\"webhookUrl\":\"dtu\",\"emailRecipient\":\"r\",\"notificationLocale\":\"dklotcsubmzo\"},\"createdDate\":\"2021-01-14T01:24:35Z\",\"targetResourceId\":\"obc\",\"provisioningState\":\"xfpwhd\",\"uniqueIdentifier\":\"lbkl\"},\"location\":\"lmnnk\",\"tags\":{\"saqjmkgx\":\"yqshwyqxridtt\",\"uuylztpz\":\"wqu\",\"fvezefk\":\"izevjyk\",\"zcntogffjwajnrtw\":\"kqtwqlepjjzkcasf\"},\"id\":\"vaqkifmxawost\",\"name\":\"zkn\",\"type\":\"rkmjqncfvdscnhe\"}},\"location\":\"vwfnqqwypvn\",\"tags\":{\"od\":\"b\",\"muymvec\":\"ggrssgwjfkain\",\"nkzzohnrddclz\":\"ztscbgmusaictds\"},\"id\":\"qozreh\",\"name\":\"bzq\",\"type\":\"xbnjrqvzyuexoz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ApplicableSchedule response =
-            manager
-                .virtualMachines()
-                .listApplicableSchedulesWithResponse(
-                    "yidoxznvg", "dtmuuvd", "wsxmrszb", com.azure.core.util.Context.NONE)
-                .getValue();
+        ApplicableSchedule response = manager.virtualMachines()
+            .listApplicableSchedulesWithResponse("yidoxznvg", "dtmuuvd", "wsxmrszb", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("vwfnqqwypvn", response.location());
         Assertions.assertEquals("b", response.tags().get("od"));

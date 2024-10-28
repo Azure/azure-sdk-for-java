@@ -91,14 +91,16 @@ public final class SapDiscoverySiteImpl
     }
 
     public SapDiscoverySite create() {
-        this.innerObject = serviceManager.serviceClient().getSapDiscoverySites().create(resourceGroupName,
-            sapDiscoverySiteName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapDiscoverySites()
+            .create(resourceGroupName, sapDiscoverySiteName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SapDiscoverySite create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSapDiscoverySites().create(resourceGroupName,
-            sapDiscoverySiteName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapDiscoverySites()
+            .create(resourceGroupName, sapDiscoverySiteName, this.innerModel(), context);
         return this;
     }
 
@@ -115,14 +117,18 @@ public final class SapDiscoverySiteImpl
     }
 
     public SapDiscoverySite apply() {
-        this.innerObject = serviceManager.serviceClient().getSapDiscoverySites()
-            .updateWithResponse(resourceGroupName, sapDiscoverySiteName, updateProperties, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapDiscoverySites()
+            .updateWithResponse(resourceGroupName, sapDiscoverySiteName, updateProperties, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SapDiscoverySite apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSapDiscoverySites()
-            .updateWithResponse(resourceGroupName, sapDiscoverySiteName, updateProperties, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapDiscoverySites()
+            .updateWithResponse(resourceGroupName, sapDiscoverySiteName, updateProperties, context)
+            .getValue();
         return this;
     }
 
@@ -135,14 +141,18 @@ public final class SapDiscoverySiteImpl
     }
 
     public SapDiscoverySite refresh() {
-        this.innerObject = serviceManager.serviceClient().getSapDiscoverySites()
-            .getByResourceGroupWithResponse(resourceGroupName, sapDiscoverySiteName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapDiscoverySites()
+            .getByResourceGroupWithResponse(resourceGroupName, sapDiscoverySiteName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SapDiscoverySite refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getSapDiscoverySites()
-            .getByResourceGroupWithResponse(resourceGroupName, sapDiscoverySiteName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapDiscoverySites()
+            .getByResourceGroupWithResponse(resourceGroupName, sapDiscoverySiteName, context)
+            .getValue();
         return this;
     }
 

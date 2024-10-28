@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RoutingStorageContainerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoutingStorageContainerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"wutttxfvjrbi\",\"connectionString\":\"hxepcyvahfnlj\",\"endpointUri\":\"qxj\",\"authenticationType\":\"keyBased\",\"identity\":{\"userAssignedIdentity\":\"gidokgjljyoxgvcl\"},\"name\":\"bgsncghkjeszzhb\",\"subscriptionId\":\"htxfvgxbfsmxnehm\",\"resourceGroup\":\"ec\",\"containerName\":\"godebfqkkrbmpu\",\"fileNameFormat\":\"riwflzlfb\",\"batchFrequencyInSeconds\":599393599,\"maxChunkSizeInBytes\":1728715445,\"encoding\":\"JSON\"}")
-                .toObject(RoutingStorageContainerProperties.class);
+        RoutingStorageContainerProperties model = BinaryData.fromString(
+            "{\"id\":\"wutttxfvjrbi\",\"connectionString\":\"hxepcyvahfnlj\",\"endpointUri\":\"qxj\",\"authenticationType\":\"keyBased\",\"identity\":{\"userAssignedIdentity\":\"gidokgjljyoxgvcl\"},\"name\":\"bgsncghkjeszzhb\",\"subscriptionId\":\"htxfvgxbfsmxnehm\",\"resourceGroup\":\"ec\",\"containerName\":\"godebfqkkrbmpu\",\"fileNameFormat\":\"riwflzlfb\",\"batchFrequencyInSeconds\":599393599,\"maxChunkSizeInBytes\":1728715445,\"encoding\":\"JSON\"}")
+            .toObject(RoutingStorageContainerProperties.class);
         Assertions.assertEquals("wutttxfvjrbi", model.id());
         Assertions.assertEquals("hxepcyvahfnlj", model.connectionString());
         Assertions.assertEquals("qxj", model.endpointUri());
@@ -36,21 +34,19 @@ public final class RoutingStorageContainerPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutingStorageContainerProperties model =
-            new RoutingStorageContainerProperties()
-                .withId("wutttxfvjrbi")
-                .withConnectionString("hxepcyvahfnlj")
-                .withEndpointUri("qxj")
-                .withAuthenticationType(AuthenticationType.KEY_BASED)
-                .withIdentity(new ManagedIdentity().withUserAssignedIdentity("gidokgjljyoxgvcl"))
-                .withName("bgsncghkjeszzhb")
-                .withSubscriptionId("htxfvgxbfsmxnehm")
-                .withResourceGroup("ec")
-                .withContainerName("godebfqkkrbmpu")
-                .withFileNameFormat("riwflzlfb")
-                .withBatchFrequencyInSeconds(599393599)
-                .withMaxChunkSizeInBytes(1728715445)
-                .withEncoding(RoutingStorageContainerPropertiesEncoding.JSON);
+        RoutingStorageContainerProperties model = new RoutingStorageContainerProperties().withId("wutttxfvjrbi")
+            .withConnectionString("hxepcyvahfnlj")
+            .withEndpointUri("qxj")
+            .withAuthenticationType(AuthenticationType.KEY_BASED)
+            .withIdentity(new ManagedIdentity().withUserAssignedIdentity("gidokgjljyoxgvcl"))
+            .withName("bgsncghkjeszzhb")
+            .withSubscriptionId("htxfvgxbfsmxnehm")
+            .withResourceGroup("ec")
+            .withContainerName("godebfqkkrbmpu")
+            .withFileNameFormat("riwflzlfb")
+            .withBatchFrequencyInSeconds(599393599)
+            .withMaxChunkSizeInBytes(1728715445)
+            .withEncoding(RoutingStorageContainerPropertiesEncoding.JSON);
         model = BinaryData.fromObject(model).toObject(RoutingStorageContainerProperties.class);
         Assertions.assertEquals("wutttxfvjrbi", model.id());
         Assertions.assertEquals("hxepcyvahfnlj", model.connectionString());

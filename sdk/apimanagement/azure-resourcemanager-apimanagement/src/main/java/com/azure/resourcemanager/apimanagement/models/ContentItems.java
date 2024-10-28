@@ -21,8 +21,8 @@ public interface ContentItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged list of content items as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ContentItemContract> listByService(
-        String resourceGroupName, String serviceName, String contentTypeId);
+    PagedIterable<ContentItemContract> listByService(String resourceGroupName, String serviceName,
+        String contentTypeId);
 
     /**
      * Lists developer portal's content items specified by the provided content type.
@@ -36,8 +36,8 @@ public interface ContentItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged list of content items as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ContentItemContract> listByService(
-        String resourceGroupName, String serviceName, String contentTypeId, Context context);
+    PagedIterable<ContentItemContract> listByService(String resourceGroupName, String serviceName, String contentTypeId,
+        Context context);
 
     /**
      * Returns the entity state (ETag) version of the developer portal's content item specified by its identifier.
@@ -52,8 +52,8 @@ public interface ContentItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    ContentItemsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, Context context);
+    ContentItemsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String contentTypeId, String contentItemId, Context context);
 
     /**
      * Returns the entity state (ETag) version of the developer portal's content item specified by its identifier.
@@ -81,8 +81,8 @@ public interface ContentItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return content type contract details.
      */
-    Response<ContentItemContract> getWithResponse(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, Context context);
+    Response<ContentItemContract> getWithResponse(String resourceGroupName, String serviceName, String contentTypeId,
+        String contentItemId, Context context);
 
     /**
      * Returns the developer portal's content item specified by its identifier.
@@ -113,13 +113,8 @@ public interface ContentItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String contentTypeId,
-        String contentItemId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String contentTypeId,
+        String contentItemId, String ifMatch, Context context);
 
     /**
      * Removes the specified developer portal's content item.
@@ -134,8 +129,8 @@ public interface ContentItems {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String serviceName, String contentTypeId, String contentItemId, String ifMatch);
+    void delete(String resourceGroupName, String serviceName, String contentTypeId, String contentItemId,
+        String ifMatch);
 
     /**
      * Returns the developer portal's content item specified by its identifier.

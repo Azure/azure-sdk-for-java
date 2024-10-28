@@ -25,6 +25,7 @@ public interface DnsRecordSets<RecordSetT>
      * @return list of record sets
      */
     PagedIterable<RecordSetT> list(String recordSetNameSuffix);
+
     /**
      * Lists all the record sets, with number of entries in each page limited to given size.
      *
@@ -32,6 +33,7 @@ public interface DnsRecordSets<RecordSetT>
      * @return list of record sets
      */
     PagedIterable<RecordSetT> list(int pageSize);
+
     /**
      * Lists all the record sets with the given suffix, also limits the number of entries per page to the given page
      * size.
@@ -41,6 +43,7 @@ public interface DnsRecordSets<RecordSetT>
      * @return the record sets
      */
     PagedIterable<RecordSetT> list(String recordSetNameSuffix, int pageSize);
+
     /**
      * Lists all the record sets with the given suffix.
      *
@@ -48,6 +51,7 @@ public interface DnsRecordSets<RecordSetT>
      * @return an observable that emits record sets
      */
     PagedFlux<RecordSetT> listAsync(String recordSetNameSuffix);
+
     /**
      * Lists all the record sets, with number of entries in each page limited to given size.
      *
@@ -55,6 +59,7 @@ public interface DnsRecordSets<RecordSetT>
      * @return an observable that emits record sets
      */
     PagedFlux<RecordSetT> listAsync(int pageSize);
+
     /**
      * Lists all the record sets with the given suffix, also limits the number of entries per page to the given page
      * size.

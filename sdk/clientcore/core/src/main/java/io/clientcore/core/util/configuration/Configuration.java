@@ -112,8 +112,8 @@ public class Configuration {
     /*
      * Gets the global configuration shared by all client libraries.
      */
-    private static final Configuration GLOBAL_CONFIGURATION = new Configuration(Collections.emptyMap(),
-        EnvironmentConfiguration.getGlobalConfiguration(), null, null);
+    private static final Configuration GLOBAL_CONFIGURATION
+        = new Configuration(Collections.emptyMap(), EnvironmentConfiguration.getGlobalConfiguration(), null, null);
 
     private static final ClientLogger LOGGER = new ClientLogger(Configuration.class);
 
@@ -150,8 +150,8 @@ public class Configuration {
         String path, Configuration sharedConfiguration) {
         this.configurations = configurations;
         this.isEmpty = configurations.isEmpty();
-        this.environmentConfiguration = Objects.requireNonNull(environmentConfiguration,
-            "'environmentConfiguration' cannot be null");
+        this.environmentConfiguration
+            = Objects.requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");
         this.path = path;
         this.sharedConfiguration = sharedConfiguration;
     }

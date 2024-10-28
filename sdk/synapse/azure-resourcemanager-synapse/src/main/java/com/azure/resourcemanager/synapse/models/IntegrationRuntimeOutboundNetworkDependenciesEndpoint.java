@@ -62,8 +62,8 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesEndpoint {
      * @param endpointDetails the endpointDetails value to set.
      * @return the IntegrationRuntimeOutboundNetworkDependenciesEndpoint object itself.
      */
-    public IntegrationRuntimeOutboundNetworkDependenciesEndpoint withEndpointDetails(
-        List<IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails> endpointDetails) {
+    public IntegrationRuntimeOutboundNetworkDependenciesEndpoint
+        withEndpointDetails(List<IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails> endpointDetails) {
         this.endpointDetails = endpointDetails;
         return this;
     }

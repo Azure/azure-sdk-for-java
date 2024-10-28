@@ -32,52 +32,40 @@ public final class DataMaskingRulesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"id\":\"wly\",\"aliasName\":\"chpqvctsfaeuhww\",\"ruleState\":\"Enabled\",\"schemaName\":\"stvzuzhasupml\",\"tableName\":\"pdpg\",\"columnName\":\"vzqazvbkarkptg\",\"maskingFunction\":\"SSN\",\"numberFrom\":\"ruatsyiysjqhen\",\"numberTo\":\"beqngubabyjde\",\"prefixSize\":\"sc\",\"suffixSize\":\"ydzjemexm\",\"replacementString\":\"kvmuwrxlniwmcp\"},\"location\":\"rdlhvdvmiphbe\",\"kind\":\"qjzmhkdcl\",\"id\":\"croczf\",\"name\":\"unerke\",\"type\":\"uxzshxz\"}";
+        String responseStr
+            = "{\"properties\":{\"id\":\"wly\",\"aliasName\":\"chpqvctsfaeuhww\",\"ruleState\":\"Enabled\",\"schemaName\":\"stvzuzhasupml\",\"tableName\":\"pdpg\",\"columnName\":\"vzqazvbkarkptg\",\"maskingFunction\":\"SSN\",\"numberFrom\":\"ruatsyiysjqhen\",\"numberTo\":\"beqngubabyjde\",\"prefixSize\":\"sc\",\"suffixSize\":\"ydzjemexm\",\"replacementString\":\"kvmuwrxlniwmcp\"},\"location\":\"rdlhvdvmiphbe\",\"kind\":\"qjzmhkdcl\",\"id\":\"croczf\",\"name\":\"unerke\",\"type\":\"uxzshxz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataMaskingRule response =
-            manager
-                .dataMaskingRules()
-                .define("aczmuh")
-                .withExistingSqlPool("abtvkbi", "znhtf", "ficudyhiz")
-                .withAliasName("mmazdnckid")
-                .withRuleState(DataMaskingRuleState.DISABLED)
-                .withSchemaName("glhzqp")
-                .withTableName("zbawkikcdgfh")
-                .withColumnName("ssdpjeyoqxded")
-                .withMaskingFunction(DataMaskingFunction.EMAIL)
-                .withNumberFrom("iwhagxsur")
-                .withNumberTo("qrshzzbgullcxiq")
-                .withPrefixSize("jkoxdupna")
-                .withSuffixSize("lrouigdmfiv")
-                .withReplacementString("terdqqi")
-                .create();
+        DataMaskingRule response = manager.dataMaskingRules()
+            .define("aczmuh")
+            .withExistingSqlPool("abtvkbi", "znhtf", "ficudyhiz")
+            .withAliasName("mmazdnckid")
+            .withRuleState(DataMaskingRuleState.DISABLED)
+            .withSchemaName("glhzqp")
+            .withTableName("zbawkikcdgfh")
+            .withColumnName("ssdpjeyoqxded")
+            .withMaskingFunction(DataMaskingFunction.EMAIL)
+            .withNumberFrom("iwhagxsur")
+            .withNumberTo("qrshzzbgullcxiq")
+            .withPrefixSize("jkoxdupna")
+            .withSuffixSize("lrouigdmfiv")
+            .withReplacementString("terdqqi")
+            .create();
 
         Assertions.assertEquals("chpqvctsfaeuhww", response.aliasName());
         Assertions.assertEquals(DataMaskingRuleState.ENABLED, response.ruleState());

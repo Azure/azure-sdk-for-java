@@ -22,7 +22,8 @@ public final class AccessCreateRoleBindingRequestModelTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AccessCreateRoleBindingRequestModel model = new AccessCreateRoleBindingRequestModel().withPrincipal("i")
-            .withRoleName("byuqerpqlp").withCrnPattern("cciuqgbdbutau");
+            .withRoleName("byuqerpqlp")
+            .withCrnPattern("cciuqgbdbutau");
         model = BinaryData.fromObject(model).toObject(AccessCreateRoleBindingRequestModel.class);
         Assertions.assertEquals("i", model.principal());
         Assertions.assertEquals("byuqerpqlp", model.roleName());

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.workloads.models.EnqueueServerProperties;
 public final class EnqueueServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnqueueServerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"hostname\":\"kexxppof\",\"ipAddress\":\"axcfjpgddtocjjx\",\"port\":1101586984084483374,\"health\":\"Healthy\"}")
-                .toObject(EnqueueServerProperties.class);
+        EnqueueServerProperties model = BinaryData.fromString(
+            "{\"hostname\":\"kexxppof\",\"ipAddress\":\"axcfjpgddtocjjx\",\"port\":1101586984084483374,\"health\":\"Healthy\"}")
+            .toObject(EnqueueServerProperties.class);
     }
 
     @org.junit.jupiter.api.Test

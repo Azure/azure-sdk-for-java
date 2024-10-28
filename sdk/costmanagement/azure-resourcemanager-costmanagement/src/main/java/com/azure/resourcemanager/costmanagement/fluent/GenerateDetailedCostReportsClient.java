@@ -29,8 +29,7 @@ public interface GenerateDetailedCostReportsClient {
      * @return the {@link SyncPoller} for polling of the result of the long running operation for cost detailed report.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<
-            PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
+    SyncPoller<PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
         beginCreateOperation(String scope, GenerateDetailedCostReportDefinition parameters);
 
     /**
@@ -49,8 +48,7 @@ public interface GenerateDetailedCostReportsClient {
      * @return the {@link SyncPoller} for polling of the result of the long running operation for cost detailed report.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<
-            PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
+    SyncPoller<PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
         beginCreateOperation(String scope, GenerateDetailedCostReportDefinition parameters, Context context);
 
     /**
@@ -68,8 +66,8 @@ public interface GenerateDetailedCostReportsClient {
      * @return the result of the long running operation for cost detailed report.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GenerateDetailedCostReportOperationResultInner createOperation(
-        String scope, GenerateDetailedCostReportDefinition parameters);
+    GenerateDetailedCostReportOperationResultInner createOperation(String scope,
+        GenerateDetailedCostReportDefinition parameters);
 
     /**
      * Generates the detailed cost report for provided date range, billing period(only enterprise customers) or Invoice
@@ -87,6 +85,6 @@ public interface GenerateDetailedCostReportsClient {
      * @return the result of the long running operation for cost detailed report.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GenerateDetailedCostReportOperationResultInner createOperation(
-        String scope, GenerateDetailedCostReportDefinition parameters, Context context);
+    GenerateDetailedCostReportOperationResultInner createOperation(String scope,
+        GenerateDetailedCostReportDefinition parameters, Context context);
 }

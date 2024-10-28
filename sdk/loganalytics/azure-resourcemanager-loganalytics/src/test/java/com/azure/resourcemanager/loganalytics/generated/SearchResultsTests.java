@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SearchResultsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SearchResults model =
-            BinaryData
-                .fromString(
-                    "{\"query\":\"hpxlktwkuziycs\",\"description\":\"vu\",\"limit\":1693563757,\"startSearchTime\":\"2021-07-18T01:41:15Z\",\"endSearchTime\":\"2021-01-17T09:58:42Z\",\"sourceTable\":\"h\",\"azureAsyncOperationId\":\"qedcgzulwm\"}")
-                .toObject(SearchResults.class);
+        SearchResults model = BinaryData.fromString(
+            "{\"query\":\"hpxlktwkuziycs\",\"description\":\"vu\",\"limit\":1693563757,\"startSearchTime\":\"2021-07-18T01:41:15Z\",\"endSearchTime\":\"2021-01-17T09:58:42Z\",\"sourceTable\":\"h\",\"azureAsyncOperationId\":\"qedcgzulwm\"}")
+            .toObject(SearchResults.class);
         Assertions.assertEquals("hpxlktwkuziycs", model.query());
         Assertions.assertEquals("vu", model.description());
         Assertions.assertEquals(1693563757, model.limit());
@@ -26,13 +24,11 @@ public final class SearchResultsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SearchResults model =
-            new SearchResults()
-                .withQuery("hpxlktwkuziycs")
-                .withDescription("vu")
-                .withLimit(1693563757)
-                .withStartSearchTime(OffsetDateTime.parse("2021-07-18T01:41:15Z"))
-                .withEndSearchTime(OffsetDateTime.parse("2021-01-17T09:58:42Z"));
+        SearchResults model = new SearchResults().withQuery("hpxlktwkuziycs")
+            .withDescription("vu")
+            .withLimit(1693563757)
+            .withStartSearchTime(OffsetDateTime.parse("2021-07-18T01:41:15Z"))
+            .withEndSearchTime(OffsetDateTime.parse("2021-01-17T09:58:42Z"));
         model = BinaryData.fromObject(model).toObject(SearchResults.class);
         Assertions.assertEquals("hpxlktwkuziycs", model.query());
         Assertions.assertEquals("vu", model.description());

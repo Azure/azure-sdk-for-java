@@ -68,8 +68,8 @@ public interface AzureBareMetalInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the OperationStatus object returns the state of an asynchronous operation.
      */
-    OperationStatus restart(
-        String resourceGroupName, String azureBareMetalInstanceName, ForceState forceParameter, Context context);
+    OperationStatus restart(String resourceGroupName, String azureBareMetalInstanceName, ForceState forceParameter,
+        Context context);
 
     /**
      * Shutdown a Bare Metal Instance.
@@ -173,8 +173,8 @@ public interface AzureBareMetalInstances {
      * @return an Azure Bare Metal Instance for the specified subscription, resource group, and instance name along with
      *     {@link Response}.
      */
-    Response<AzureBareMetalInstance> getByResourceGroupWithResponse(
-        String resourceGroupName, String azureBareMetalInstanceName, Context context);
+    Response<AzureBareMetalInstance> getByResourceGroupWithResponse(String resourceGroupName,
+        String azureBareMetalInstanceName, Context context);
 
     /**
      * Gets an Azure Bare Metal Instance.
@@ -206,8 +206,8 @@ public interface AzureBareMetalInstances {
      * @return azureBareMetal instance info on Azure (ARM properties and AzureBareMetal properties) along with {@link
      *     Response}.
      */
-    Response<AzureBareMetalInstance> updateWithResponse(
-        String resourceGroupName, String azureBareMetalInstanceName, Tags tagsParameter, Context context);
+    Response<AzureBareMetalInstance> updateWithResponse(String resourceGroupName, String azureBareMetalInstanceName,
+        Tags tagsParameter, Context context);
 
     /**
      * Patches the Tags field of a Azure Bare Metal Instance.

@@ -35,7 +35,7 @@ public final class TableTransactionFailedException extends TableServiceException
      * {@link TableTransactionAction} failed.
      */
     public TableTransactionFailedException(String message, HttpResponse response, TableServiceError value,
-                                           Integer failedTransactionActionIndex) {
+        Integer failedTransactionActionIndex) {
         super(message, response, value);
 
         this.failedTransactionActionIndex = failedTransactionActionIndex;

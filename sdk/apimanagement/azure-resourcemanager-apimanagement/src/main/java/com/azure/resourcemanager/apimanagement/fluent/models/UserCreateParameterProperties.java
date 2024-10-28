@@ -210,22 +210,16 @@ public final class UserCreateParameterProperties extends UserEntityBaseParameter
     public void validate() {
         super.validate();
         if (email() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property email in model UserCreateParameterProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property email in model UserCreateParameterProperties"));
         }
         if (firstName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property firstName in model UserCreateParameterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property firstName in model UserCreateParameterProperties"));
         }
         if (lastName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property lastName in model UserCreateParameterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property lastName in model UserCreateParameterProperties"));
         }
     }
 

@@ -77,8 +77,8 @@ public final class PrivateEndpointConnectionForPrivateLinkHubInner
 
     /** {@inheritDoc} */
     @Override
-    public PrivateEndpointConnectionForPrivateLinkHubInner withProperties(
-        PrivateEndpointConnectionProperties properties) {
+    public PrivateEndpointConnectionForPrivateLinkHubInner
+        withProperties(PrivateEndpointConnectionProperties properties) {
         super.withProperties(properties);
         return this;
     }

@@ -16,57 +16,38 @@ import org.junit.jupiter.api.Assertions;
 public final class SapDiskConfigurationsResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapDiskConfigurationsResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"volumeConfigurations\":{\"pazlobcufpdz\":{\"recommendedConfiguration\":{\"count\":5896484997878560092,\"sizeGB\":5423097764274102889},\"supportedConfigurations\":[]},\"lhqgnufooojy\":{\"recommendedConfiguration\":{\"count\":733466437358115738,\"sizeGB\":8147558301655778049},\"supportedConfigurations\":[]},\"f\":{\"recommendedConfiguration\":{\"count\":2890649566482151076,\"sizeGB\":5829042994931882548},\"supportedConfigurations\":[]}}}")
-                .toObject(SapDiskConfigurationsResultInner.class);
-        Assertions
-            .assertEquals(
-                5896484997878560092L,
-                model.volumeConfigurations().get("pazlobcufpdz").recommendedConfiguration().count());
-        Assertions
-            .assertEquals(
-                5423097764274102889L,
-                model.volumeConfigurations().get("pazlobcufpdz").recommendedConfiguration().sizeGB());
+        SapDiskConfigurationsResultInner model = BinaryData.fromString(
+            "{\"volumeConfigurations\":{\"pazlobcufpdz\":{\"recommendedConfiguration\":{\"count\":5896484997878560092,\"sizeGB\":5423097764274102889},\"supportedConfigurations\":[]},\"lhqgnufooojy\":{\"recommendedConfiguration\":{\"count\":733466437358115738,\"sizeGB\":8147558301655778049},\"supportedConfigurations\":[]},\"f\":{\"recommendedConfiguration\":{\"count\":2890649566482151076,\"sizeGB\":5829042994931882548},\"supportedConfigurations\":[]}}}")
+            .toObject(SapDiskConfigurationsResultInner.class);
+        Assertions.assertEquals(5896484997878560092L,
+            model.volumeConfigurations().get("pazlobcufpdz").recommendedConfiguration().count());
+        Assertions.assertEquals(5423097764274102889L,
+            model.volumeConfigurations().get("pazlobcufpdz").recommendedConfiguration().sizeGB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapDiskConfigurationsResultInner model =
-            new SapDiskConfigurationsResultInner()
-                .withVolumeConfigurations(
-                    mapOf(
-                        "pazlobcufpdz",
-                        new SapDiskConfiguration()
-                            .withRecommendedConfiguration(
-                                new DiskVolumeConfiguration()
-                                    .withCount(5896484997878560092L)
-                                    .withSizeGB(5423097764274102889L))
-                            .withSupportedConfigurations(Arrays.asList()),
-                        "lhqgnufooojy",
-                        new SapDiskConfiguration()
-                            .withRecommendedConfiguration(
-                                new DiskVolumeConfiguration()
-                                    .withCount(733466437358115738L)
-                                    .withSizeGB(8147558301655778049L))
-                            .withSupportedConfigurations(Arrays.asList()),
-                        "f",
-                        new SapDiskConfiguration()
-                            .withRecommendedConfiguration(
-                                new DiskVolumeConfiguration()
-                                    .withCount(2890649566482151076L)
-                                    .withSizeGB(5829042994931882548L))
-                            .withSupportedConfigurations(Arrays.asList())));
+        SapDiskConfigurationsResultInner model
+            = new SapDiskConfigurationsResultInner().withVolumeConfigurations(mapOf("pazlobcufpdz",
+                new SapDiskConfiguration()
+                    .withRecommendedConfiguration(
+                        new DiskVolumeConfiguration().withCount(5896484997878560092L).withSizeGB(5423097764274102889L))
+                    .withSupportedConfigurations(Arrays.asList()),
+                "lhqgnufooojy",
+                new SapDiskConfiguration()
+                    .withRecommendedConfiguration(
+                        new DiskVolumeConfiguration().withCount(733466437358115738L).withSizeGB(8147558301655778049L))
+                    .withSupportedConfigurations(Arrays.asList()),
+                "f",
+                new SapDiskConfiguration()
+                    .withRecommendedConfiguration(
+                        new DiskVolumeConfiguration().withCount(2890649566482151076L).withSizeGB(5829042994931882548L))
+                    .withSupportedConfigurations(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(SapDiskConfigurationsResultInner.class);
-        Assertions
-            .assertEquals(
-                5896484997878560092L,
-                model.volumeConfigurations().get("pazlobcufpdz").recommendedConfiguration().count());
-        Assertions
-            .assertEquals(
-                5423097764274102889L,
-                model.volumeConfigurations().get("pazlobcufpdz").recommendedConfiguration().sizeGB());
+        Assertions.assertEquals(5896484997878560092L,
+            model.volumeConfigurations().get("pazlobcufpdz").recommendedConfiguration().count());
+        Assertions.assertEquals(5423097764274102889L,
+            model.volumeConfigurations().get("pazlobcufpdz").recommendedConfiguration().sizeGB());
     }
 
     @SuppressWarnings("unchecked")

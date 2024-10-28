@@ -74,15 +74,12 @@ public final class UserAssignedIdentity {
      */
     public void validate() {
         if (clientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property clientId in model UserAssignedIdentity"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property clientId in model UserAssignedIdentity"));
         }
         if (principalId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalId in model UserAssignedIdentity"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property principalId in model UserAssignedIdentity"));
         }
     }
 

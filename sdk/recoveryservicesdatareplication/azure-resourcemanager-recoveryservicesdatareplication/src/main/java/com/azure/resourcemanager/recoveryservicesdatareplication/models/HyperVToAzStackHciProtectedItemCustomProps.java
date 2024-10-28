@@ -301,8 +301,8 @@ public final class HyperVToAzStackHciProtectedItemCustomProps extends ProtectedI
      * @param targetArcClusterCustomLocationId the targetArcClusterCustomLocationId value to set.
      * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemCustomProps withTargetArcClusterCustomLocationId(
-        String targetArcClusterCustomLocationId) {
+    public HyperVToAzStackHciProtectedItemCustomProps
+        withTargetArcClusterCustomLocationId(String targetArcClusterCustomLocationId) {
         this.targetArcClusterCustomLocationId = targetArcClusterCustomLocationId;
         return this;
     }
@@ -351,8 +351,8 @@ public final class HyperVToAzStackHciProtectedItemCustomProps extends ProtectedI
      * @param disksToInclude the disksToInclude value to set.
      * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemCustomProps withDisksToInclude(
-        List<HyperVToAzStackHciDiskInput> disksToInclude) {
+    public HyperVToAzStackHciProtectedItemCustomProps
+        withDisksToInclude(List<HyperVToAzStackHciDiskInput> disksToInclude) {
         this.disksToInclude = disksToInclude;
         return this;
     }
@@ -372,8 +372,8 @@ public final class HyperVToAzStackHciProtectedItemCustomProps extends ProtectedI
      * @param nicsToInclude the nicsToInclude value to set.
      * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemCustomProps withNicsToInclude(
-        List<HyperVToAzStackHciNicInput> nicsToInclude) {
+    public HyperVToAzStackHciProtectedItemCustomProps
+        withNicsToInclude(List<HyperVToAzStackHciNicInput> nicsToInclude) {
         this.nicsToInclude = nicsToInclude;
         return this;
     }
@@ -580,8 +580,8 @@ public final class HyperVToAzStackHciProtectedItemCustomProps extends ProtectedI
      * @param dynamicMemoryConfig the dynamicMemoryConfig value to set.
      * @return the HyperVToAzStackHciProtectedItemCustomProps object itself.
      */
-    public HyperVToAzStackHciProtectedItemCustomProps withDynamicMemoryConfig(
-        ProtectedItemDynamicMemoryConfig dynamicMemoryConfig) {
+    public HyperVToAzStackHciProtectedItemCustomProps
+        withDynamicMemoryConfig(ProtectedItemDynamicMemoryConfig dynamicMemoryConfig) {
         this.dynamicMemoryConfig = dynamicMemoryConfig;
         return this;
     }
@@ -832,92 +832,65 @@ public final class HyperVToAzStackHciProtectedItemCustomProps extends ProtectedI
     public void validate() {
         super.validate();
         if (targetHciClusterId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetHciClusterId in model"
-                            + " HyperVToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property targetHciClusterId in model"
+                    + " HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (targetArcClusterCustomLocationId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetArcClusterCustomLocationId in model"
-                            + " HyperVToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property targetArcClusterCustomLocationId in model"
+                    + " HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (fabricDiscoveryMachineId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fabricDiscoveryMachineId in model"
-                            + " HyperVToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property fabricDiscoveryMachineId in model"
+                    + " HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (disksToInclude() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property disksToInclude in model"
-                            + " HyperVToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property disksToInclude in model" + " HyperVToAzStackHciProtectedItemCustomProps"));
         } else {
             disksToInclude().forEach(e -> e.validate());
         }
         if (nicsToInclude() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property nicsToInclude in model HyperVToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property nicsToInclude in model HyperVToAzStackHciProtectedItemCustomProps"));
         } else {
             nicsToInclude().forEach(e -> e.validate());
         }
         if (targetResourceGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceGroupId in model"
-                            + " HyperVToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property targetResourceGroupId in model"
+                    + " HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (storageContainerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageContainerId in model"
-                            + " HyperVToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property storageContainerId in model"
+                    + " HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (hyperVGeneration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hyperVGeneration in model"
-                            + " HyperVToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property hyperVGeneration in model" + " HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (dynamicMemoryConfig() != null) {
             dynamicMemoryConfig().validate();
         }
         if (runAsAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property runAsAccountId in model"
-                            + " HyperVToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property runAsAccountId in model" + " HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (sourceDraName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceDraName in model HyperVToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourceDraName in model HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (targetDraName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetDraName in model HyperVToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetDraName in model HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (customLocationRegion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customLocationRegion in model"
-                            + " HyperVToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property customLocationRegion in model"
+                    + " HyperVToAzStackHciProtectedItemCustomProps"));
         }
         if (protectedDisks() != null) {
             protectedDisks().forEach(e -> e.validate());

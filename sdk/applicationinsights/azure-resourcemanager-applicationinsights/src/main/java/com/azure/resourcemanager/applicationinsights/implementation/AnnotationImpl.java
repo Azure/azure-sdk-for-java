@@ -13,8 +13,7 @@ public final class AnnotationImpl implements Annotation {
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    AnnotationImpl(
-        AnnotationInner innerObject,
+    AnnotationImpl(AnnotationInner innerObject,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -15,8 +15,8 @@ public final class PrivateLinkResourceImpl implements PrivateLinkResource {
 
     private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    PrivateLinkResourceImpl(
-        PrivateLinkResourceInner innerObject, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
+    PrivateLinkResourceImpl(PrivateLinkResourceInner innerObject,
+        com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

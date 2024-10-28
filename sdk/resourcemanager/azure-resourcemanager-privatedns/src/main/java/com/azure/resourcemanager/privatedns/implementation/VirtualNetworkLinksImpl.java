@@ -15,12 +15,8 @@ import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation of {@link VirtualNetworkLinks}. */
-class VirtualNetworkLinksImpl
-    extends ExternalChildResourcesNonCachedImpl<VirtualNetworkLinkImpl,
-        VirtualNetworkLink,
-        VirtualNetworkLinkInner,
-        PrivateDnsZoneImpl,
-        PrivateDnsZone>
+class VirtualNetworkLinksImpl extends
+    ExternalChildResourcesNonCachedImpl<VirtualNetworkLinkImpl, VirtualNetworkLink, VirtualNetworkLinkInner, PrivateDnsZoneImpl, PrivateDnsZone>
     implements VirtualNetworkLinks {
 
     VirtualNetworkLinksImpl(PrivateDnsZoneImpl parent) {
@@ -34,9 +30,10 @@ class VirtualNetworkLinksImpl
 
     @Override
     public PagedFlux<VirtualNetworkLink> listAsync(int pageSize) {
-        return PagedConverter.mapPage(parent().manager().serviceClient().getVirtualNetworkLinks()
-            .listAsync(parent().resourceGroupName(), parent().name(), pageSize),
-            this::wrapModel);
+        return PagedConverter.mapPage(parent().manager()
+            .serviceClient()
+            .getVirtualNetworkLinks()
+            .listAsync(parent().resourceGroupName(), parent().name(), pageSize), this::wrapModel);
     }
 
     @Override
@@ -46,20 +43,20 @@ class VirtualNetworkLinksImpl
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return deleteByResourceGroupNameAsync(
-            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), null);
+        return deleteByResourceGroupNameAsync(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(id), null);
     }
 
     @Override
     public void deleteById(String id, String etagValue) {
-        deleteByResourceGroupNameAsync(
-            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), etagValue).block();
+        deleteByResourceGroupNameAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id),
+            etagValue).block();
     }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id, String etagValue) {
-        return deleteByResourceGroupNameAsync(
-            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), etagValue);
+        return deleteByResourceGroupNameAsync(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(id), etagValue);
     }
 
     @Override
@@ -79,7 +76,9 @@ class VirtualNetworkLinksImpl
 
     @Override
     public Mono<Void> deleteByResourceGroupNameAsync(String resourceGroupName, String name, String etagValue) {
-        return parent().manager().serviceClient().getVirtualNetworkLinks()
+        return parent().manager()
+            .serviceClient()
+            .getVirtualNetworkLinks()
             .deleteAsync(resourceGroupName, name, etagValue);
     }
 
@@ -100,7 +99,9 @@ class VirtualNetworkLinksImpl
 
     @Override
     public Mono<VirtualNetworkLink> getByNameAsync(String name) {
-        return parent().manager().serviceClient().getVirtualNetworkLinks()
+        return parent().manager()
+            .serviceClient()
+            .getVirtualNetworkLinks()
             .getAsync(parent().resourceGroupName(), parent().name(), name)
             .map(this::wrapModel);
     }
@@ -117,9 +118,10 @@ class VirtualNetworkLinksImpl
 
     @Override
     public PagedFlux<VirtualNetworkLink> listAsync() {
-        return PagedConverter.mapPage(parent().manager().serviceClient().getVirtualNetworkLinks()
-            .listAsync(parent().resourceGroupName(), parent().name()),
-            this::wrapModel);
+        return PagedConverter.mapPage(parent().manager()
+            .serviceClient()
+            .getVirtualNetworkLinks()
+            .listAsync(parent().resourceGroupName(), parent().name()), this::wrapModel);
     }
 
     public VirtualNetworkLinksClient inner() {

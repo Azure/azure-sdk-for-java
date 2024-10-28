@@ -29,8 +29,7 @@ public class KubernetesEncryptionTests extends DiskEncryptionTestBase {
         final String agentPoolName = generateRandomResourceName("ap0", 10);
 
         // create
-        KubernetesCluster kubernetesCluster = azureResourceManager
-            .kubernetesClusters()
+        KubernetesCluster kubernetesCluster = azureResourceManager.kubernetesClusters()
             .define(aksName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
@@ -38,11 +37,11 @@ public class KubernetesEncryptionTests extends DiskEncryptionTestBase {
             .withSystemAssignedManagedServiceIdentity()
             .withDiskEncryptionSet(diskEncryptionSet.id())
             .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
-                .withAgentPoolVirtualMachineCount(1)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .withOSDiskSizeInGB(30)
-                .attach()
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .withOSDiskSizeInGB(30)
+            .attach()
             .withDnsPrefix("mp1" + dnsPrefix)
             .create();
 

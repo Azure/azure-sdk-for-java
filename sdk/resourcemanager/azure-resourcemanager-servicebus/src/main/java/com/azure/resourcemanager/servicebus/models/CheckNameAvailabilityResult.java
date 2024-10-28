@@ -18,11 +18,13 @@ public interface CheckNameAvailabilityResult extends HasInnerModel<CheckNameAvai
      * already been taken or invalid and cannot be used.
      */
     boolean isAvailable();
+
     /**
      * @return the unavailabilityReason that a namespace name could not be used. The
      * Reason element is only returned if NameAvailable is false.
      */
     UnavailableReason unavailabilityReason();
+
     /**
      * @return an error message explaining the Reason value in more detail
      */

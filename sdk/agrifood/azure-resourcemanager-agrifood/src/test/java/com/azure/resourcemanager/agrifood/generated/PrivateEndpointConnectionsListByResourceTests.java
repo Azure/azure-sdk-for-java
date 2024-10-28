@@ -33,47 +33,33 @@ public final class PrivateEndpointConnectionsListByResourceTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"sgwbnbbeld\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"baliourqhakauha\",\"actionsRequired\":\"sfwxosowzxc\"},\"provisioningState\":\"Succeeded\"},\"id\":\"jooxdjebw\",\"name\":\"ucww\",\"type\":\"vo\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"sgwbnbbeld\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"baliourqhakauha\",\"actionsRequired\":\"sfwxosowzxc\"},\"provisioningState\":\"Succeeded\"},\"id\":\"jooxdjebw\",\"name\":\"ucww\",\"type\":\"vo\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AgriFoodManager manager =
-            AgriFoodManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AgriFoodManager manager = AgriFoodManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PrivateEndpointConnection> response =
-            manager.privateEndpointConnections().listByResource("pvfadmwsrcr", "vxpvgomz", Context.NONE);
+        PagedIterable<PrivateEndpointConnection> response
+            = manager.privateEndpointConnections().listByResource("pvfadmwsrcr", "vxpvgomz", Context.NONE);
 
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.PENDING,
-                response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions
-            .assertEquals(
-                "baliourqhakauha", response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions
-            .assertEquals(
-                "sfwxosowzxc", response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+            response.iterator().next().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("baliourqhakauha",
+            response.iterator().next().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("sfwxosowzxc",
+            response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
     }
 }

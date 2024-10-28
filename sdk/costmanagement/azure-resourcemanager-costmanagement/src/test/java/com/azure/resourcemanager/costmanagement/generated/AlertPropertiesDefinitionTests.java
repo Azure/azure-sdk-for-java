@@ -14,9 +14,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AlertPropertiesDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertPropertiesDefinition model =
-            BinaryData
-                .fromString("{\"type\":\"Budget\",\"category\":\"System\",\"criteria\":\"MultiCurrency\"}")
+        AlertPropertiesDefinition model
+            = BinaryData.fromString("{\"type\":\"Budget\",\"category\":\"System\",\"criteria\":\"MultiCurrency\"}")
                 .toObject(AlertPropertiesDefinition.class);
         Assertions.assertEquals(AlertType.BUDGET, model.type());
         Assertions.assertEquals(AlertCategory.SYSTEM, model.category());
@@ -25,11 +24,9 @@ public final class AlertPropertiesDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertPropertiesDefinition model =
-            new AlertPropertiesDefinition()
-                .withType(AlertType.BUDGET)
-                .withCategory(AlertCategory.SYSTEM)
-                .withCriteria(AlertCriteria.MULTI_CURRENCY);
+        AlertPropertiesDefinition model = new AlertPropertiesDefinition().withType(AlertType.BUDGET)
+            .withCategory(AlertCategory.SYSTEM)
+            .withCriteria(AlertCriteria.MULTI_CURRENCY);
         model = BinaryData.fromObject(model).toObject(AlertPropertiesDefinition.class);
         Assertions.assertEquals(AlertType.BUDGET, model.type());
         Assertions.assertEquals(AlertCategory.SYSTEM, model.category());

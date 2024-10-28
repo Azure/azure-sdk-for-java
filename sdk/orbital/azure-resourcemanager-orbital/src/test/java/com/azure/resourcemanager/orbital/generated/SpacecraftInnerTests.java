@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SpacecraftInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SpacecraftInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"failed\",\"noradId\":\"jnchgej\",\"titleLine\":\"podmailzydehojwy\",\"tleLine1\":\"huxinpmqnj\",\"tleLine2\":\"qwixjspro\",\"links\":[{\"name\":\"cputegjvwmfdats\",\"centerFrequencyMHz\":58.022396,\"bandwidthMHz\":80.04477,\"direction\":\"Downlink\",\"polarization\":\"linearVertical\",\"authorizations\":[]},{\"name\":\"hulsuuvmkjozkrwf\",\"centerFrequencyMHz\":13.198918,\"bandwidthMHz\":30.317991,\"direction\":\"Downlink\",\"polarization\":\"LHCP\",\"authorizations\":[]}]},\"location\":\"slwejdpvw\",\"tags\":{\"j\":\"qpsoacctazak\",\"yffdfdos\":\"ahbc\"},\"id\":\"gexpaojakhmsbz\",\"name\":\"hcrzevd\",\"type\":\"hlxaolthqtr\"}")
-                .toObject(SpacecraftInner.class);
+        SpacecraftInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"failed\",\"noradId\":\"jnchgej\",\"titleLine\":\"podmailzydehojwy\",\"tleLine1\":\"huxinpmqnj\",\"tleLine2\":\"qwixjspro\",\"links\":[{\"name\":\"cputegjvwmfdats\",\"centerFrequencyMHz\":58.022396,\"bandwidthMHz\":80.04477,\"direction\":\"Downlink\",\"polarization\":\"linearVertical\",\"authorizations\":[]},{\"name\":\"hulsuuvmkjozkrwf\",\"centerFrequencyMHz\":13.198918,\"bandwidthMHz\":30.317991,\"direction\":\"Downlink\",\"polarization\":\"LHCP\",\"authorizations\":[]}]},\"location\":\"slwejdpvw\",\"tags\":{\"j\":\"qpsoacctazak\",\"yffdfdos\":\"ahbc\"},\"id\":\"gexpaojakhmsbz\",\"name\":\"hcrzevd\",\"type\":\"hlxaolthqtr\"}")
+            .toObject(SpacecraftInner.class);
         Assertions.assertEquals("slwejdpvw", model.location());
         Assertions.assertEquals("qpsoacctazak", model.tags().get("j"));
         Assertions.assertEquals(SpacecraftsPropertiesProvisioningState.FAILED, model.provisioningState());
@@ -39,30 +37,24 @@ public final class SpacecraftInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SpacecraftInner model =
-            new SpacecraftInner()
-                .withLocation("slwejdpvw")
-                .withTags(mapOf("j", "qpsoacctazak", "yffdfdos", "ahbc"))
-                .withProvisioningState(SpacecraftsPropertiesProvisioningState.FAILED)
-                .withNoradId("jnchgej")
-                .withTitleLine("podmailzydehojwy")
-                .withTleLine1("huxinpmqnj")
-                .withTleLine2("qwixjspro")
-                .withLinks(
-                    Arrays
-                        .asList(
-                            new SpacecraftLink()
-                                .withName("cputegjvwmfdats")
-                                .withCenterFrequencyMHz(58.022396f)
-                                .withBandwidthMHz(80.04477f)
-                                .withDirection(Direction.DOWNLINK)
-                                .withPolarization(Polarization.LINEAR_VERTICAL),
-                            new SpacecraftLink()
-                                .withName("hulsuuvmkjozkrwf")
-                                .withCenterFrequencyMHz(13.198918f)
-                                .withBandwidthMHz(30.317991f)
-                                .withDirection(Direction.DOWNLINK)
-                                .withPolarization(Polarization.LHCP)));
+        SpacecraftInner model = new SpacecraftInner().withLocation("slwejdpvw")
+            .withTags(mapOf("j", "qpsoacctazak", "yffdfdos", "ahbc"))
+            .withProvisioningState(SpacecraftsPropertiesProvisioningState.FAILED)
+            .withNoradId("jnchgej")
+            .withTitleLine("podmailzydehojwy")
+            .withTleLine1("huxinpmqnj")
+            .withTleLine2("qwixjspro")
+            .withLinks(Arrays.asList(
+                new SpacecraftLink().withName("cputegjvwmfdats")
+                    .withCenterFrequencyMHz(58.022396f)
+                    .withBandwidthMHz(80.04477f)
+                    .withDirection(Direction.DOWNLINK)
+                    .withPolarization(Polarization.LINEAR_VERTICAL),
+                new SpacecraftLink().withName("hulsuuvmkjozkrwf")
+                    .withCenterFrequencyMHz(13.198918f)
+                    .withBandwidthMHz(30.317991f)
+                    .withDirection(Direction.DOWNLINK)
+                    .withPolarization(Polarization.LHCP)));
         model = BinaryData.fromObject(model).toObject(SpacecraftInner.class);
         Assertions.assertEquals("slwejdpvw", model.location());
         Assertions.assertEquals("qpsoacctazak", model.tags().get("j"));

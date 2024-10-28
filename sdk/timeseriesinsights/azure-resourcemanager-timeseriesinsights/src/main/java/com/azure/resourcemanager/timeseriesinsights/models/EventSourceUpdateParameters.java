@@ -21,8 +21,7 @@ import java.util.Map;
 @JsonTypeName("EventSourceUpdateParameters")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Microsoft.EventHub", value = EventHubEventSourceUpdateParameters.class),
-    @JsonSubTypes.Type(name = "Microsoft.IoTHub", value = IoTHubEventSourceUpdateParameters.class)
-})
+    @JsonSubTypes.Type(name = "Microsoft.IoTHub", value = IoTHubEventSourceUpdateParameters.class) })
 @Fluent
 public class EventSourceUpdateParameters {
     /*

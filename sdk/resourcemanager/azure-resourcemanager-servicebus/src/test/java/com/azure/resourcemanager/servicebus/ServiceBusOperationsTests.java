@@ -45,21 +45,10 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
     private String rgName = "";
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -81,20 +70,17 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
     @Test
     public void canCRUDOnSimpleNamespace() {
         Region region = Region.US_EAST;
-        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
-                .define(rgName)
-                .withRegion(region);
+        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups().define(rgName).withRegion(region);
 
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
         serviceBusManager.namespaces()
-                .define(namespaceDNSLabel)
-                .withRegion(region)
-                .withNewResourceGroup(rgCreatable)
-                .withSku(NamespaceSku.BASIC)
-                .create();
+            .define(namespaceDNSLabel)
+            .withRegion(region)
+            .withNewResourceGroup(rgCreatable)
+            .withSku(NamespaceSku.BASIC)
+            .create();
 
-        ServiceBusNamespace namespace = serviceBusManager.namespaces()
-                .getByResourceGroup(rgName, namespaceDNSLabel);
+        ServiceBusNamespace namespace = serviceBusManager.namespaces().getByResourceGroup(rgName, namespaceDNSLabel);
         Assertions.assertNotNull(namespace);
         Assertions.assertNotNull(namespace.innerModel());
 
@@ -135,9 +121,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
         Assertions.assertTrue(defaultNsRule.namespaceName().equalsIgnoreCase(namespaceDNSLabel));
         Assertions.assertNotNull(defaultNsRule.resourceGroupName());
         Assertions.assertTrue(defaultNsRule.resourceGroupName().equalsIgnoreCase(rgName));
-        namespace.update()
-                .withSku(NamespaceSku.STANDARD)
-                .apply();
+        namespace.update().withSku(NamespaceSku.STANDARD).apply();
         Assertions.assertTrue(namespace.sku().name().equals(NamespaceSku.STANDARD.name()));
         serviceBusManager.namespaces().deleteByResourceGroup(rgName, namespace.name());
     }
@@ -145,24 +129,20 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
     @Test
     public void canCreateNamespaceThenCRUDOnQueue() {
         Region region = Region.US_EAST;
-        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
-                .define(rgName)
-                .withRegion(region);
+        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups().define(rgName).withRegion(region);
 
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
         ServiceBusNamespace namespace = serviceBusManager.namespaces()
-                .define(namespaceDNSLabel)
-                .withRegion(region)
-                .withNewResourceGroup(rgCreatable)
-                .withSku(NamespaceSku.STANDARD)
-                .create();
+            .define(namespaceDNSLabel)
+            .withRegion(region)
+            .withNewResourceGroup(rgCreatable)
+            .withSku(NamespaceSku.STANDARD)
+            .create();
         Assertions.assertNotNull(namespace);
         Assertions.assertNotNull(namespace.innerModel());
 
         String queueName = generateRandomResourceName("queue1-", 15);
-        Queue queue = namespace.queues()
-                .define(queueName)
-                .create();
+        Queue queue = namespace.queues().define(queueName).create();
 
         Assertions.assertNotNull(queue);
         Assertions.assertNotNull(queue.innerModel());
@@ -203,11 +183,11 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
         //
         Assertions.assertFalse(foundQueue.isDeadLetteringEnabledForExpiredMessages());
         foundQueue = foundQueue.update()
-                .withMessageLockDurationInSeconds(120)
-                .withDefaultMessageTTL(Duration.ofMinutes(20))
-                .withExpiredMessageMovedToDeadLetterQueue()
-                .withMessageMovedToDeadLetterQueueOnMaxDeliveryCount(25)
-                .apply();
+            .withMessageLockDurationInSeconds(120)
+            .withDefaultMessageTTL(Duration.ofMinutes(20))
+            .withExpiredMessageMovedToDeadLetterQueue()
+            .withMessageMovedToDeadLetterQueueOnMaxDeliveryCount(25)
+            .apply();
         Assertions.assertEquals(120, foundQueue.lockDurationInSeconds());
         Assertions.assertTrue(foundQueue.isDeadLetteringEnabledForExpiredMessages());
         Assertions.assertEquals(25, foundQueue.maxDeliveryCountBeforeDeadLetteringMessage());
@@ -217,21 +197,19 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
     @Test
     public void canCreateDeleteQueueWithNamespace() {
         Region region = Region.US_EAST;
-        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
-                .define(rgName)
-                .withRegion(region);
+        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups().define(rgName).withRegion(region);
 
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
         String queueName = generateRandomResourceName("queue1-", 15);
         // Create NS with Queue
         //
         ServiceBusNamespace namespace = serviceBusManager.namespaces()
-                .define(namespaceDNSLabel)
-                .withRegion(region)
-                .withNewResourceGroup(rgCreatable)
-                .withSku(NamespaceSku.STANDARD)
-                .withNewQueue(queueName, 1024)
-                .create();
+            .define(namespaceDNSLabel)
+            .withRegion(region)
+            .withNewResourceGroup(rgCreatable)
+            .withSku(NamespaceSku.STANDARD)
+            .withNewQueue(queueName, 1024)
+            .create();
         Assertions.assertNotNull(namespace);
         Assertions.assertNotNull(namespace.innerModel());
         // Lookup queue
@@ -249,9 +227,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
         Assertions.assertNotNull(foundQueue);
         // Remove Queue
         //
-        namespace.update()
-                .withoutQueue(queueName)
-                .apply();
+        namespace.update().withoutQueue(queueName).apply();
         queuesInNamespace = namespace.queues().list();
         Assertions.assertNotNull(queuesInNamespace);
         Assertions.assertEquals(0, TestUtilities.getSize(queuesInNamespace));
@@ -260,24 +236,20 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
     @Test
     public void canCreateNamespaceThenCRUDOnTopic() {
         Region region = Region.US_EAST;
-        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
-                .define(rgName)
-                .withRegion(region);
+        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups().define(rgName).withRegion(region);
 
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
         ServiceBusNamespace namespace = serviceBusManager.namespaces()
-                .define(namespaceDNSLabel)
-                .withRegion(region)
-                .withNewResourceGroup(rgCreatable)
-                .withSku(NamespaceSku.STANDARD)
-                .create();
+            .define(namespaceDNSLabel)
+            .withRegion(region)
+            .withNewResourceGroup(rgCreatable)
+            .withSku(NamespaceSku.STANDARD)
+            .create();
         Assertions.assertNotNull(namespace);
         Assertions.assertNotNull(namespace.innerModel());
 
         String topicName = generateRandomResourceName("topic1-", 15);
-        Topic topic = namespace.topics()
-                .define(topicName)
-                .create();
+        Topic topic = namespace.topics().define(topicName).create();
 
         Assertions.assertNotNull(topic);
         Assertions.assertNotNull(topic.innerModel());
@@ -311,10 +283,10 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
         }
         Assertions.assertNotNull(foundTopic);
         foundTopic = foundTopic.update()
-                .withDefaultMessageTTL(Duration.ofMinutes(20))
-                .withDuplicateMessageDetectionHistoryDuration(Duration.ofMinutes(15))
-                .withDeleteOnIdleDurationInMinutes(25)
-                .apply();
+            .withDefaultMessageTTL(Duration.ofMinutes(20))
+            .withDuplicateMessageDetectionHistoryDuration(Duration.ofMinutes(15))
+            .withDeleteOnIdleDurationInMinutes(25)
+            .apply();
         Duration ttlDuration = foundTopic.defaultMessageTtlDuration();
         Assertions.assertNotNull(ttlDuration);
         Assertions.assertEquals(20, ttlDuration.toMinutes());
@@ -329,21 +301,19 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
     @Test
     public void canCreateDeleteTopicWithNamespace() {
         Region region = Region.US_EAST;
-        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
-                .define(rgName)
-                .withRegion(region);
+        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups().define(rgName).withRegion(region);
 
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
         String topicName = generateRandomResourceName("topic1-", 15);
         // Create NS with Topic
         //
         ServiceBusNamespace namespace = serviceBusManager.namespaces()
-                .define(namespaceDNSLabel)
-                .withRegion(region)
-                .withNewResourceGroup(rgCreatable)
-                .withSku(NamespaceSku.STANDARD)
-                .withNewTopic(topicName, 1024)
-                .create();
+            .define(namespaceDNSLabel)
+            .withRegion(region)
+            .withNewResourceGroup(rgCreatable)
+            .withSku(NamespaceSku.STANDARD)
+            .withNewTopic(topicName, 1024)
+            .create();
         Assertions.assertNotNull(namespace);
         Assertions.assertNotNull(namespace.innerModel());
         // Lookup topic
@@ -361,9 +331,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
         Assertions.assertNotNull(foundTopic);
         // Remove Topic
         //
-        namespace.update()
-                .withoutTopic(topicName)
-                .apply();
+        namespace.update().withoutTopic(topicName).apply();
         topicsInNamespace = namespace.topics().list();
         Assertions.assertNotNull(topicsInNamespace);
         Assertions.assertEquals(0, TestUtilities.getSize(topicsInNamespace));
@@ -372,9 +340,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
     @Test
     public void canOperateOnAuthorizationRules() {
         Region region = Region.US_EAST;
-        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
-                .define(rgName)
-                .withRegion(region);
+        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups().define(rgName).withRegion(region);
 
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
         String queueName = generateRandomResourceName("queue1-", 15);
@@ -383,14 +349,14 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
         // Create NS with Queue, Topic and authorization rule
         //
         ServiceBusNamespace namespace = serviceBusManager.namespaces()
-                .define(namespaceDNSLabel)
-                .withRegion(region)
-                .withNewResourceGroup(rgCreatable)
-                .withSku(NamespaceSku.STANDARD)
-                .withNewQueue(queueName, 1024)
-                .withNewTopic(topicName, 1024)
-                .withNewManageRule(nsRuleName)
-                .create();
+            .define(namespaceDNSLabel)
+            .withRegion(region)
+            .withNewResourceGroup(rgCreatable)
+            .withSku(NamespaceSku.STANDARD)
+            .withNewQueue(queueName, 1024)
+            .withNewTopic(topicName, 1024)
+            .withNewManageRule(nsRuleName)
+            .create();
         // Lookup ns authorization rule
         //
         PagedIterable<NamespaceAuthorizationRule> rulesInNamespace = namespace.authorizationRules().list();
@@ -426,15 +392,10 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
         Assertions.assertNotNull(queue);
         Assertions.assertNotNull(queue.innerModel());
 
-        QueueAuthorizationRule qRule = queue.authorizationRules()
-                .define("rule1")
-                .withListeningEnabled()
-                .create();
+        QueueAuthorizationRule qRule = queue.authorizationRules().define("rule1").withListeningEnabled().create();
         Assertions.assertNotNull(qRule);
         Assertions.assertNotNull(qRule.rights().contains(AccessRights.LISTEN));
-        qRule = qRule.update()
-                .withManagementEnabled()
-                .apply();
+        qRule = qRule.update().withManagementEnabled().apply();
         Assertions.assertNotNull(qRule.rights().contains(AccessRights.MANAGE));
         PagedIterable<QueueAuthorizationRule> rulesInQueue = queue.authorizationRules().list();
         Assertions.assertTrue(TestUtilities.getSize(rulesInQueue) > 0);
@@ -455,15 +416,10 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
         Topic topic = topicsInNamespace.iterator().next();
         Assertions.assertNotNull(topic);
         Assertions.assertNotNull(topic.innerModel());
-        TopicAuthorizationRule tRule = topic.authorizationRules()
-                .define("rule2")
-                .withSendingEnabled()
-                .create();
+        TopicAuthorizationRule tRule = topic.authorizationRules().define("rule2").withSendingEnabled().create();
         Assertions.assertNotNull(tRule);
         Assertions.assertNotNull(tRule.rights().contains(AccessRights.SEND));
-        tRule = tRule.update()
-                .withManagementEnabled()
-                .apply();
+        tRule = tRule.update().withManagementEnabled().apply();
         Assertions.assertNotNull(tRule.rights().contains(AccessRights.MANAGE));
         PagedIterable<TopicAuthorizationRule> rulesInTopic = topic.authorizationRules().list();
         Assertions.assertTrue(TestUtilities.getSize(rulesInTopic) > 0);
@@ -482,9 +438,8 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
     public void canPerformOnNamespaceActions() {
         rgName = null;
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
-        CheckNameAvailabilityResult availabilityResult = serviceBusManager
-                .namespaces()
-                .checkNameAvailability(namespaceDNSLabel);
+        CheckNameAvailabilityResult availabilityResult
+            = serviceBusManager.namespaces().checkNameAvailability(namespaceDNSLabel);
         Assertions.assertNotNull(availabilityResult);
         if (!availabilityResult.isAvailable()) {
             Assertions.assertNotNull(availabilityResult.unavailabilityReason());
@@ -495,9 +450,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
     @Test
     public void canPerformCRUDOnSubscriptions() {
         Region region = Region.US_EAST;
-        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
-                .define(rgName)
-                .withRegion(region);
+        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups().define(rgName).withRegion(region);
 
         String namespaceDNSLabel = generateRandomResourceName("jvsbns", 15);
         String topicName = generateRandomResourceName("topic1-", 15);
@@ -505,18 +458,17 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
         // Create NS with Topic
         //
         ServiceBusNamespace namespace = serviceBusManager.namespaces()
-                .define(namespaceDNSLabel)
-                .withRegion(region)
-                .withNewResourceGroup(rgCreatable)
-                .withSku(NamespaceSku.STANDARD)
-                .withNewTopic(topicName, 1024)
-                .create();
+            .define(namespaceDNSLabel)
+            .withRegion(region)
+            .withNewResourceGroup(rgCreatable)
+            .withSku(NamespaceSku.STANDARD)
+            .withNewTopic(topicName, 1024)
+            .create();
         // Create Topic subscriptions and list it
         //
         Topic topic = namespace.topics().getByName(topicName);
-        ServiceBusSubscription subscription = topic.subscriptions().define(subscriptionName)
-                .withDefaultMessageTTL(Duration.ofMinutes(20))
-                .create();
+        ServiceBusSubscription subscription
+            = topic.subscriptions().define(subscriptionName).withDefaultMessageTTL(Duration.ofMinutes(20)).create();
         Assertions.assertNotNull(subscription);
         Assertions.assertNotNull(subscription.innerModel());
         Assertions.assertEquals(20, subscription.defaultMessageTtlDuration().toMinutes());
@@ -560,8 +512,7 @@ public class ServiceBusOperationsTests extends ResourceManagerTestProxyTestBase 
             .withSku(NamespaceSku.BASIC)
             .create();
 
-        Queue queue = serviceBusNamespace.queues().define(queueName)
-            .create();
+        Queue queue = serviceBusNamespace.queues().define(queueName).create();
 
         Assertions.assertEquals(1, serviceBusNamespace.queues().list().stream().count());
 

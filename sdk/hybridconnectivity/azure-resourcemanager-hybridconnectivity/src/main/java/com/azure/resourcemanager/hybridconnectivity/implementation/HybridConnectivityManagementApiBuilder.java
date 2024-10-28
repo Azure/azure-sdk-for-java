@@ -15,7 +15,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /** A builder for creating a new instance of the HybridConnectivityManagementApiImpl type. */
-@ServiceClientBuilder(serviceClients = {HybridConnectivityManagementApiImpl.class})
+@ServiceClientBuilder(serviceClients = { HybridConnectivityManagementApiImpl.class })
 public final class HybridConnectivityManagementApiBuilder {
     /*
      * server parameter
@@ -105,19 +105,16 @@ public final class HybridConnectivityManagementApiBuilder {
     public HybridConnectivityManagementApiImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        HybridConnectivityManagementApiImpl client =
-            new HybridConnectivityManagementApiImpl(
-                localPipeline, localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        HybridConnectivityManagementApiImpl client = new HybridConnectivityManagementApiImpl(localPipeline,
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint);
         return client;
     }
 }

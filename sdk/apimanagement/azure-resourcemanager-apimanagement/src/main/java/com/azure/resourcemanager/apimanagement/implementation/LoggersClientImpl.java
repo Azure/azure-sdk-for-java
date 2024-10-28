@@ -65,112 +65,73 @@ public final class LoggersClientImpl implements LoggersClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientL")
     public interface LoggersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LoggerCollection>> listByService(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<LoggerCollection>> listByService(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Head("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<LoggersGetEntityTagResponse> getEntityTag(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("loggerId") String loggerId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<LoggersGetResponse> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("loggerId") String loggerId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<LoggersCreateOrUpdateResponse> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("loggerId") String loggerId, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") LoggerContractInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<LoggersGetEntityTagResponse> getEntityTag(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("loggerId") String loggerId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<LoggersUpdateResponse> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("loggerId") String loggerId, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") LoggerUpdateContract parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<LoggersGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("loggerId") String loggerId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("loggerId") String loggerId, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<LoggersCreateOrUpdateResponse> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("loggerId") String loggerId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") LoggerContractInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<LoggersUpdateResponse> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("loggerId") String loggerId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") LoggerUpdateContract parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/loggers/{loggerId}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("loggerId") String loggerId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LoggerCollection>> listByServiceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -192,13 +153,11 @@ public final class LoggersClientImpl implements LoggersClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LoggerContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip) {
+    private Mono<PagedResponse<LoggerContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -208,36 +167,15 @@ public final class LoggersClientImpl implements LoggersClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByService(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            filter,
-                            top,
-                            skip,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<LoggerContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName,
+                filter, top, skip, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<LoggerContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -261,13 +199,11 @@ public final class LoggersClientImpl implements LoggersClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LoggerContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
+    private Mono<PagedResponse<LoggerContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -277,34 +213,16 @@ public final class LoggersClientImpl implements LoggersClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByService(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                filter,
-                top,
-                skip,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByService(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top, skip,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -325,10 +243,9 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return paged Logger list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LoggerContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip) {
-        return new PagedFlux<>(
-            () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip),
+    private PagedFlux<LoggerContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip) {
+        return new PagedFlux<>(() -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip),
             nextLink -> listByServiceNextSinglePageAsync(nextLink));
     }
 
@@ -347,8 +264,7 @@ public final class LoggersClientImpl implements LoggersClient {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
-        return new PagedFlux<>(
-            () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip),
+        return new PagedFlux<>(() -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip),
             nextLink -> listByServiceNextSinglePageAsync(nextLink));
     }
 
@@ -371,8 +287,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return paged Logger list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LoggerContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
+    private PagedFlux<LoggerContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context) {
         return new PagedFlux<>(
             () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, context),
             nextLink -> listByServiceNextSinglePageAsync(nextLink, context));
@@ -415,8 +331,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return paged Logger list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LoggerContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
+    public PagedIterable<LoggerContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context) {
         return new PagedIterable<>(listByServiceAsync(resourceGroupName, serviceName, filter, top, skip, context));
     }
 
@@ -433,13 +349,11 @@ public final class LoggersClientImpl implements LoggersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LoggersGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String loggerId) {
+    private Mono<LoggersGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
+        String serviceName, String loggerId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -452,25 +366,13 @@ public final class LoggersClientImpl implements LoggersClient {
             return Mono.error(new IllegalArgumentException("Parameter loggerId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getEntityTag(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            loggerId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName,
+                loggerId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -488,13 +390,11 @@ public final class LoggersClientImpl implements LoggersClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LoggersGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String loggerId, Context context) {
+    private Mono<LoggersGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
+        String serviceName, String loggerId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -507,23 +407,13 @@ public final class LoggersClientImpl implements LoggersClient {
             return Mono.error(new IllegalArgumentException("Parameter loggerId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getEntityTag(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                loggerId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName, loggerId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -556,8 +446,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return the entity state (Etag) version of the logger specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoggersGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String loggerId, Context context) {
+    public LoggersGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String loggerId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, loggerId, context).block();
     }
 
@@ -588,13 +478,11 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return the details of the logger specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LoggersGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String loggerId) {
+    private Mono<LoggersGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String loggerId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -607,25 +495,13 @@ public final class LoggersClientImpl implements LoggersClient {
             return Mono.error(new IllegalArgumentException("Parameter loggerId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            loggerId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serviceName, loggerId,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -642,13 +518,11 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return the details of the logger specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LoggersGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String loggerId, Context context) {
+    private Mono<LoggersGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName, String loggerId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -661,23 +535,13 @@ public final class LoggersClientImpl implements LoggersClient {
             return Mono.error(new IllegalArgumentException("Parameter loggerId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                loggerId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serviceName, loggerId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -710,8 +574,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return the details of the logger specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoggersGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String loggerId, Context context) {
+    public LoggersGetResponse getWithResponse(String resourceGroupName, String serviceName, String loggerId,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, loggerId, context).block();
     }
 
@@ -745,13 +609,11 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return logger details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LoggersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serviceName, String loggerId, LoggerContractInner parameters, String ifMatch) {
+    private Mono<LoggersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String loggerId, LoggerContractInner parameters, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -764,10 +626,8 @@ public final class LoggersClientImpl implements LoggersClient {
             return Mono.error(new IllegalArgumentException("Parameter loggerId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -777,19 +637,8 @@ public final class LoggersClientImpl implements LoggersClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            loggerId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName, loggerId,
+                    ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -808,18 +657,11 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return logger details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LoggersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String loggerId,
-        LoggerContractInner parameters,
-        String ifMatch,
-        Context context) {
+    private Mono<LoggersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String loggerId, LoggerContractInner parameters, String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -832,10 +674,8 @@ public final class LoggersClientImpl implements LoggersClient {
             return Mono.error(new IllegalArgumentException("Parameter loggerId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -844,18 +684,8 @@ public final class LoggersClientImpl implements LoggersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                loggerId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName, loggerId, ifMatch,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -871,8 +701,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return logger details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LoggerContractInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String loggerId, LoggerContractInner parameters) {
+    private Mono<LoggerContractInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String loggerId,
+        LoggerContractInner parameters) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, loggerId, parameters, ifMatch)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -893,13 +723,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return logger details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoggersCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String loggerId,
-        LoggerContractInner parameters,
-        String ifMatch,
-        Context context) {
+    public LoggersCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String loggerId, LoggerContractInner parameters, String ifMatch, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, serviceName, loggerId, parameters, ifMatch, context)
             .block();
     }
@@ -917,8 +742,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return logger details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoggerContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String loggerId, LoggerContractInner parameters) {
+    public LoggerContractInner createOrUpdate(String resourceGroupName, String serviceName, String loggerId,
+        LoggerContractInner parameters) {
         final String ifMatch = null;
         return createOrUpdateWithResponse(resourceGroupName, serviceName, loggerId, parameters, ifMatch, Context.NONE)
             .getValue();
@@ -939,17 +764,11 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return logger details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LoggersUpdateResponse> updateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String loggerId,
-        String ifMatch,
-        LoggerUpdateContract parameters) {
+    private Mono<LoggersUpdateResponse> updateWithResponseAsync(String resourceGroupName, String serviceName,
+        String loggerId, String ifMatch, LoggerUpdateContract parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -965,10 +784,8 @@ public final class LoggersClientImpl implements LoggersClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -977,20 +794,8 @@ public final class LoggersClientImpl implements LoggersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            loggerId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, serviceName, loggerId,
+                ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1010,18 +815,11 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return logger details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LoggersUpdateResponse> updateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String loggerId,
-        String ifMatch,
-        LoggerUpdateContract parameters,
-        Context context) {
+    private Mono<LoggersUpdateResponse> updateWithResponseAsync(String resourceGroupName, String serviceName,
+        String loggerId, String ifMatch, LoggerUpdateContract parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1037,10 +835,8 @@ public final class LoggersClientImpl implements LoggersClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1049,18 +845,8 @@ public final class LoggersClientImpl implements LoggersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                loggerId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, serviceName, loggerId, ifMatch,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -1078,12 +864,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return logger details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LoggerContractInner> updateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String loggerId,
-        String ifMatch,
-        LoggerUpdateContract parameters) {
+    private Mono<LoggerContractInner> updateAsync(String resourceGroupName, String serviceName, String loggerId,
+        String ifMatch, LoggerUpdateContract parameters) {
         return updateWithResponseAsync(resourceGroupName, serviceName, loggerId, ifMatch, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1104,13 +886,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return logger details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoggersUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String loggerId,
-        String ifMatch,
-        LoggerUpdateContract parameters,
-        Context context) {
+    public LoggersUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String loggerId,
+        String ifMatch, LoggerUpdateContract parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, serviceName, loggerId, ifMatch, parameters, context).block();
     }
 
@@ -1129,11 +906,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return logger details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoggerContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String loggerId,
-        String ifMatch,
+    public LoggerContractInner update(String resourceGroupName, String serviceName, String loggerId, String ifMatch,
         LoggerUpdateContract parameters) {
         return updateWithResponse(resourceGroupName, serviceName, loggerId, ifMatch, parameters, Context.NONE)
             .getValue();
@@ -1153,13 +926,11 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String loggerId, String ifMatch) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String loggerId,
+        String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1175,26 +946,13 @@ public final class LoggersClientImpl implements LoggersClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            loggerId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, loggerId,
+                ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1213,13 +971,11 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String loggerId, String ifMatch, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String loggerId,
+        String ifMatch, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1235,24 +991,13 @@ public final class LoggersClientImpl implements LoggersClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                loggerId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, loggerId, ifMatch,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1289,8 +1034,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String loggerId, String ifMatch, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String loggerId,
+        String ifMatch, Context context) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, loggerId, ifMatch, context).block();
     }
 
@@ -1328,23 +1073,14 @@ public final class LoggersClientImpl implements LoggersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<LoggerContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<LoggerContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1361,29 +1097,19 @@ public final class LoggersClientImpl implements LoggersClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LoggerContractInner>> listByServiceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<LoggerContractInner>> listByServiceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

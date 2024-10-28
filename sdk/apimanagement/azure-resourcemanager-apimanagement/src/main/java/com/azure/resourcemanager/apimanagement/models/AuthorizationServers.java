@@ -39,8 +39,8 @@ public interface AuthorizationServers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged OAuth2 Authorization Servers list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AuthorizationServerContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<AuthorizationServerContract> listByService(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the authorizationServer specified by its identifier.
@@ -54,8 +54,8 @@ public interface AuthorizationServers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the authorizationServer specified by its identifier.
      */
-    AuthorizationServersGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String authsid, Context context);
+    AuthorizationServersGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String authsid, Context context);
 
     /**
      * Gets the entity state (Etag) version of the authorizationServer specified by its identifier.
@@ -81,8 +81,8 @@ public interface AuthorizationServers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the authorization server specified by its identifier.
      */
-    Response<AuthorizationServerContract> getWithResponse(
-        String resourceGroupName, String serviceName, String authsid, Context context);
+    Response<AuthorizationServerContract> getWithResponse(String resourceGroupName, String serviceName, String authsid,
+        Context context);
 
     /**
      * Gets the details of the authorization server specified by its identifier.
@@ -111,8 +111,8 @@ public interface AuthorizationServers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String authsid, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String authsid, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific authorization server instance.
@@ -140,8 +140,8 @@ public interface AuthorizationServers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the client secret details of the authorization server.
      */
-    Response<AuthorizationServerSecretsContract> listSecretsWithResponse(
-        String resourceGroupName, String serviceName, String authsid, Context context);
+    Response<AuthorizationServerSecretsContract> listSecretsWithResponse(String resourceGroupName, String serviceName,
+        String authsid, Context context);
 
     /**
      * Gets the client secret details of the authorization server.

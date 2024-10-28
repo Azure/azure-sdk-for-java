@@ -10,11 +10,9 @@ import com.azure.resourcemanager.appconfiguration.fluent.models.DeletedConfigura
 public final class DeletedConfigurationStoreInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeletedConfigurationStoreInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"uko\",\"name\":\"yaxuconuqszfkb\",\"type\":\"pewr\",\"properties\":{\"configurationStoreId\":\"wv\",\"location\":\"ektcxsen\",\"deletionDate\":\"2021-11-28T07:09:02Z\",\"scheduledPurgeDate\":\"2021-08-04T00:26:01Z\",\"tags\":{\"lihkaetcktvfc\":\"rzpwvlqdqgbiq\",\"nkymuctqhjfbebrj\":\"vf\",\"wutttxfvjrbi\":\"xerf\"},\"purgeProtectionEnabled\":true}}")
-                .toObject(DeletedConfigurationStoreInner.class);
+        DeletedConfigurationStoreInner model = BinaryData.fromString(
+            "{\"id\":\"uko\",\"name\":\"yaxuconuqszfkb\",\"type\":\"pewr\",\"properties\":{\"configurationStoreId\":\"wv\",\"location\":\"ektcxsen\",\"deletionDate\":\"2021-11-28T07:09:02Z\",\"scheduledPurgeDate\":\"2021-08-04T00:26:01Z\",\"tags\":{\"lihkaetcktvfc\":\"rzpwvlqdqgbiq\",\"nkymuctqhjfbebrj\":\"vf\",\"wutttxfvjrbi\":\"xerf\"},\"purgeProtectionEnabled\":true}}")
+            .toObject(DeletedConfigurationStoreInner.class);
     }
 
     @org.junit.jupiter.api.Test

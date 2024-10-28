@@ -16,17 +16,17 @@ public final class ExtractiveSummaryResult extends TextAnalyticsResult {
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
-        ExtractiveSummaryResultPropertiesHelper.setAccessor(
-            new ExtractiveSummaryResultPropertiesHelper.ExtractiveSummaryResultAccessor() {
+        ExtractiveSummaryResultPropertiesHelper
+            .setAccessor(new ExtractiveSummaryResultPropertiesHelper.ExtractiveSummaryResultAccessor() {
                 @Override
                 public void setSentences(ExtractiveSummaryResult documentResult,
-                                         IterableStream<ExtractiveSummarySentence> sentences) {
+                    IterableStream<ExtractiveSummarySentence> sentences) {
                     documentResult.setSentences(sentences);
                 }
 
                 @Override
                 public void setWarnings(ExtractiveSummaryResult documentResult,
-                                        IterableStream<TextAnalyticsWarning> warnings) {
+                    IterableStream<TextAnalyticsWarning> warnings) {
                     documentResult.setWarnings(warnings);
                 }
             });

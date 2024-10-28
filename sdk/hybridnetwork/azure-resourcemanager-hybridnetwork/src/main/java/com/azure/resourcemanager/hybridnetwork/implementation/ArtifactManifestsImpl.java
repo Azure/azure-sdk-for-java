@@ -57,8 +57,8 @@ public final class ArtifactManifestsImpl implements ArtifactManifests {
 
     public Response<ArtifactManifest> getWithResponse(String resourceGroupName, String publisherName,
         String artifactStoreName, String artifactManifestName, Context context) {
-        Response<ArtifactManifestInner> inner = this.serviceClient().getWithResponse(resourceGroupName, publisherName,
-            artifactStoreName, artifactManifestName, context);
+        Response<ArtifactManifestInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, publisherName, artifactStoreName, artifactManifestName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ArtifactManifestImpl(inner.getValue(), this.manager()));
@@ -80,8 +80,9 @@ public final class ArtifactManifestsImpl implements ArtifactManifests {
 
     public Response<ArtifactAccessCredential> listCredentialWithResponse(String resourceGroupName, String publisherName,
         String artifactStoreName, String artifactManifestName, Context context) {
-        Response<ArtifactAccessCredentialInner> inner = this.serviceClient().listCredentialWithResponse(
-            resourceGroupName, publisherName, artifactStoreName, artifactManifestName, context);
+        Response<ArtifactAccessCredentialInner> inner = this.serviceClient()
+            .listCredentialWithResponse(resourceGroupName, publisherName, artifactStoreName, artifactManifestName,
+                context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ArtifactAccessCredentialImpl(inner.getValue(), this.manager()));
@@ -92,8 +93,8 @@ public final class ArtifactManifestsImpl implements ArtifactManifests {
 
     public ArtifactAccessCredential listCredential(String resourceGroupName, String publisherName,
         String artifactStoreName, String artifactManifestName) {
-        ArtifactAccessCredentialInner inner = this.serviceClient().listCredential(resourceGroupName, publisherName,
-            artifactStoreName, artifactManifestName);
+        ArtifactAccessCredentialInner inner = this.serviceClient()
+            .listCredential(resourceGroupName, publisherName, artifactStoreName, artifactManifestName);
         if (inner != null) {
             return new ArtifactAccessCredentialImpl(inner, this.manager());
         } else {
@@ -103,8 +104,8 @@ public final class ArtifactManifestsImpl implements ArtifactManifests {
 
     public ArtifactManifestUpdateState updateState(String resourceGroupName, String publisherName,
         String artifactStoreName, String artifactManifestName, ArtifactManifestUpdateStateInner parameters) {
-        ArtifactManifestUpdateStateInner inner = this.serviceClient().updateState(resourceGroupName, publisherName,
-            artifactStoreName, artifactManifestName, parameters);
+        ArtifactManifestUpdateStateInner inner = this.serviceClient()
+            .updateState(resourceGroupName, publisherName, artifactStoreName, artifactManifestName, parameters);
         if (inner != null) {
             return new ArtifactManifestUpdateStateImpl(inner, this.manager());
         } else {
@@ -115,8 +116,9 @@ public final class ArtifactManifestsImpl implements ArtifactManifests {
     public ArtifactManifestUpdateState updateState(String resourceGroupName, String publisherName,
         String artifactStoreName, String artifactManifestName, ArtifactManifestUpdateStateInner parameters,
         Context context) {
-        ArtifactManifestUpdateStateInner inner = this.serviceClient().updateState(resourceGroupName, publisherName,
-            artifactStoreName, artifactManifestName, parameters, context);
+        ArtifactManifestUpdateStateInner inner = this.serviceClient()
+            .updateState(resourceGroupName, publisherName, artifactStoreName, artifactManifestName, parameters,
+                context);
         if (inner != null) {
             return new ArtifactManifestUpdateStateImpl(inner, this.manager());
         } else {

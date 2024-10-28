@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AcrTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Acr model =
-            BinaryData
-                .fromString(
-                    "{\"acrSubscriptionId\":\"x\",\"acrResourceGroup\":\"jpgd\",\"acrRegistryName\":\"ocjjxhvpmouexh\",\"acrRepositoryName\":\"xibqeojnx\"}")
-                .toObject(Acr.class);
+        Acr model = BinaryData.fromString(
+            "{\"acrSubscriptionId\":\"x\",\"acrResourceGroup\":\"jpgd\",\"acrRegistryName\":\"ocjjxhvpmouexh\",\"acrRepositoryName\":\"xibqeojnx\"}")
+            .toObject(Acr.class);
         Assertions.assertEquals("x", model.acrSubscriptionId());
         Assertions.assertEquals("jpgd", model.acrResourceGroup());
         Assertions.assertEquals("ocjjxhvpmouexh", model.acrRegistryName());
@@ -24,12 +22,10 @@ public final class AcrTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Acr model =
-            new Acr()
-                .withAcrSubscriptionId("x")
-                .withAcrResourceGroup("jpgd")
-                .withAcrRegistryName("ocjjxhvpmouexh")
-                .withAcrRepositoryName("xibqeojnx");
+        Acr model = new Acr().withAcrSubscriptionId("x")
+            .withAcrResourceGroup("jpgd")
+            .withAcrRegistryName("ocjjxhvpmouexh")
+            .withAcrRepositoryName("xibqeojnx");
         model = BinaryData.fromObject(model).toObject(Acr.class);
         Assertions.assertEquals("x", model.acrSubscriptionId());
         Assertions.assertEquals("jpgd", model.acrResourceGroup());

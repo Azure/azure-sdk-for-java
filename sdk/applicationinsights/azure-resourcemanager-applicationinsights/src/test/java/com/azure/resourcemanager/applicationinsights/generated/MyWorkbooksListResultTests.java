@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MyWorkbooksListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MyWorkbooksListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"kind\":\"shared\",\"properties\":{\"displayName\":\"blmpewww\",\"serializedData\":\"bkrvrnsvshqj\",\"version\":\"xc\",\"timeModified\":\"bfovasrruvwbhsq\",\"category\":\"sub\",\"tags\":[\"birx\"],\"userId\":\"ybsrfbjfdtwss\",\"sourceId\":\"ftpvjzbexil\",\"storageUri\":\"nfqqnvwp\"},\"identity\":{\"userAssignedIdentities\":{\"principalId\":\"uoujmkcjhwqy\",\"tenantId\":\"r\"},\"type\":\"UserAssigned\"},\"id\":\"cwyhzdxssa\",\"name\":\"bzmnvdfznud\",\"type\":\"od\",\"etag\":{\"dslgnayqigynduh\":\"gmifthnzd\"},\"location\":\"vhqlkthumaqo\",\"tags\":{\"gccymvaolpssl\":\"ycduier\",\"d\":\"lfmmdnbbglzpswi\"}}],\"nextLink\":\"zbn\"}")
-                .toObject(MyWorkbooksListResult.class);
+        MyWorkbooksListResult model = BinaryData.fromString(
+            "{\"value\":[{\"kind\":\"shared\",\"properties\":{\"displayName\":\"blmpewww\",\"serializedData\":\"bkrvrnsvshqj\",\"version\":\"xc\",\"timeModified\":\"bfovasrruvwbhsq\",\"category\":\"sub\",\"tags\":[\"birx\"],\"userId\":\"ybsrfbjfdtwss\",\"sourceId\":\"ftpvjzbexil\",\"storageUri\":\"nfqqnvwp\"},\"identity\":{\"userAssignedIdentities\":{\"principalId\":\"uoujmkcjhwqy\",\"tenantId\":\"r\"},\"type\":\"UserAssigned\"},\"id\":\"cwyhzdxssa\",\"name\":\"bzmnvdfznud\",\"type\":\"od\",\"etag\":{\"dslgnayqigynduh\":\"gmifthnzd\"},\"location\":\"vhqlkthumaqo\",\"tags\":{\"gccymvaolpssl\":\"ycduier\",\"d\":\"lfmmdnbbglzpswi\"}}],\"nextLink\":\"zbn\"}")
+            .toObject(MyWorkbooksListResult.class);
         Assertions.assertEquals("zbn", model.nextLink());
     }
 

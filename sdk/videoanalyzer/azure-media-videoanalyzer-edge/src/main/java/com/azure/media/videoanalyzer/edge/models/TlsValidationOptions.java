@@ -5,29 +5,37 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Options for controlling the validation of TLS endpoints. */
+/**
+ * Options for controlling the validation of TLS endpoints.
+ */
 @Fluent
-public final class TlsValidationOptions {
+public final class TlsValidationOptions implements JsonSerializable<TlsValidationOptions> {
     /*
-     * When set to 'true' causes the certificate subject name validation to be
-     * skipped. Default is 'false'.
+     * When set to 'true' causes the certificate subject name validation to be skipped. Default is 'false'.
      */
-    @JsonProperty(value = "ignoreHostname")
     private String ignoreHostname;
 
     /*
-     * When set to 'true' causes the certificate chain trust validation to be
-     * skipped. Default is 'false'.
+     * When set to 'true' causes the certificate chain trust validation to be skipped. Default is 'false'.
      */
-    @JsonProperty(value = "ignoreSignature")
     private String ignoreSignature;
+
+    /**
+     * Creates an instance of TlsValidationOptions class.
+     */
+    public TlsValidationOptions() {
+    }
 
     /**
      * Get the ignoreHostname property: When set to 'true' causes the certificate subject name validation to be skipped.
      * Default is 'false'.
-     *
+     * 
      * @return the ignoreHostname value.
      */
     public String getIgnoreHostname() {
@@ -37,7 +45,7 @@ public final class TlsValidationOptions {
     /**
      * Set the ignoreHostname property: When set to 'true' causes the certificate subject name validation to be skipped.
      * Default is 'false'.
-     *
+     * 
      * @param ignoreHostname the ignoreHostname value to set.
      * @return the TlsValidationOptions object itself.
      */
@@ -49,7 +57,7 @@ public final class TlsValidationOptions {
     /**
      * Get the ignoreSignature property: When set to 'true' causes the certificate chain trust validation to be skipped.
      * Default is 'false'.
-     *
+     * 
      * @return the ignoreSignature value.
      */
     public String getIgnoreSignature() {
@@ -59,12 +67,51 @@ public final class TlsValidationOptions {
     /**
      * Set the ignoreSignature property: When set to 'true' causes the certificate chain trust validation to be skipped.
      * Default is 'false'.
-     *
+     * 
      * @param ignoreSignature the ignoreSignature value to set.
      * @return the TlsValidationOptions object itself.
      */
     public TlsValidationOptions setIgnoreSignature(String ignoreSignature) {
         this.ignoreSignature = ignoreSignature;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ignoreHostname", this.ignoreHostname);
+        jsonWriter.writeStringField("ignoreSignature", this.ignoreSignature);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TlsValidationOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TlsValidationOptions if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TlsValidationOptions.
+     */
+    public static TlsValidationOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TlsValidationOptions deserializedTlsValidationOptions = new TlsValidationOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ignoreHostname".equals(fieldName)) {
+                    deserializedTlsValidationOptions.ignoreHostname = reader.getString();
+                } else if ("ignoreSignature".equals(fieldName)) {
+                    deserializedTlsValidationOptions.ignoreSignature = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTlsValidationOptions;
+        });
     }
 }

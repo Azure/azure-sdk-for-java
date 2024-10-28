@@ -23,8 +23,10 @@ public final class ApplicationTypeVersionResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationTypeVersionResourceInner model = new ApplicationTypeVersionResourceInner()
-            .withLocation("sounqecanoaeu").withTags(mapOf("tuo", "yhltrpmopjmcm")).withAppPackageUrl("bcibvyvdcsitynn");
+        ApplicationTypeVersionResourceInner model
+            = new ApplicationTypeVersionResourceInner().withLocation("sounqecanoaeu")
+                .withTags(mapOf("tuo", "yhltrpmopjmcm"))
+                .withAppPackageUrl("bcibvyvdcsitynn");
         model = BinaryData.fromObject(model).toObject(ApplicationTypeVersionResourceInner.class);
         Assertions.assertEquals("sounqecanoaeu", model.location());
         Assertions.assertEquals("yhltrpmopjmcm", model.tags().get("tuo"));

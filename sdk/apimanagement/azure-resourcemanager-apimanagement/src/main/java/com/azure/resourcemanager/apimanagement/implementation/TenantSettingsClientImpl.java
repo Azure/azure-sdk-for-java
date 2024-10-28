@@ -46,8 +46,8 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
      * @param client the instance of the service client containing this operation class.
      */
     TenantSettingsClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy.create(TenantSettingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(TenantSettingsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,45 +58,32 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientT")
     public interface TenantSettingsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/settings")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/settings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TenantSettingsCollection>> listByService(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<TenantSettingsCollection>> listByService(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/settings/{settingsType}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<TenantSettingsGetResponse> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("settingsType") SettingsTypeName settingsType, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/settings/{settingsType}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<TenantSettingsGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("settingsType") SettingsTypeName settingsType,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TenantSettingsCollection>> listByServiceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -112,13 +99,11 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TenantSettingsContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter) {
+    private Mono<PagedResponse<TenantSettingsContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -128,34 +113,15 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByService(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            filter,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<TenantSettingsContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName,
+                filter, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<TenantSettingsContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -173,13 +139,11 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TenantSettingsContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Context context) {
+    private Mono<PagedResponse<TenantSettingsContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -189,32 +153,16 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByService(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                filter,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByService(this.client.getEndpoint(), resourceGroupName, serviceName, filter,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -229,10 +177,9 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
      * @return paged AccessInformation list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TenantSettingsContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String filter) {
-        return new PagedFlux<>(
-            () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter),
+    private PagedFlux<TenantSettingsContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String filter) {
+        return new PagedFlux<>(() -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter),
             nextLink -> listByServiceNextSinglePageAsync(nextLink));
     }
 
@@ -249,8 +196,7 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TenantSettingsContractInner> listByServiceAsync(String resourceGroupName, String serviceName) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter),
+        return new PagedFlux<>(() -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter),
             nextLink -> listByServiceNextSinglePageAsync(nextLink));
     }
 
@@ -267,10 +213,9 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
      * @return paged AccessInformation list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TenantSettingsContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, context),
+    private PagedFlux<TenantSettingsContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String filter, Context context) {
+        return new PagedFlux<>(() -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, context),
             nextLink -> listByServiceNextSinglePageAsync(nextLink, context));
     }
 
@@ -303,8 +248,8 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
      * @return paged AccessInformation list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TenantSettingsContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Context context) {
+    public PagedIterable<TenantSettingsContractInner> listByService(String resourceGroupName, String serviceName,
+        String filter, Context context) {
         return new PagedIterable<>(listByServiceAsync(resourceGroupName, serviceName, filter, context));
     }
 
@@ -320,13 +265,11 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
      * @return tenant settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TenantSettingsGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, SettingsTypeName settingsType) {
+    private Mono<TenantSettingsGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
+        SettingsTypeName settingsType) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -336,28 +279,16 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (settingsType == null) {
             return Mono.error(new IllegalArgumentException("Parameter settingsType is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            settingsType,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serviceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), settingsType, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -374,13 +305,11 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
      * @return tenant settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TenantSettingsGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, SettingsTypeName settingsType, Context context) {
+    private Mono<TenantSettingsGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
+        SettingsTypeName settingsType, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -390,26 +319,16 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (settingsType == null) {
             return Mono.error(new IllegalArgumentException("Parameter settingsType is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                settingsType,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serviceName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), settingsType, accept, context);
     }
 
     /**
@@ -424,8 +343,8 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
      * @return tenant settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TenantSettingsContractInner> getAsync(
-        String resourceGroupName, String serviceName, SettingsTypeName settingsType) {
+    private Mono<TenantSettingsContractInner> getAsync(String resourceGroupName, String serviceName,
+        SettingsTypeName settingsType) {
         return getWithResponseAsync(resourceGroupName, serviceName, settingsType)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -443,8 +362,8 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
      * @return tenant settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TenantSettingsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, SettingsTypeName settingsType, Context context) {
+    public TenantSettingsGetResponse getWithResponse(String resourceGroupName, String serviceName,
+        SettingsTypeName settingsType, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, settingsType, context).block();
     }
 
@@ -460,8 +379,8 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
      * @return tenant settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TenantSettingsContractInner get(
-        String resourceGroupName, String serviceName, SettingsTypeName settingsType) {
+    public TenantSettingsContractInner get(String resourceGroupName, String serviceName,
+        SettingsTypeName settingsType) {
         return getWithResponse(resourceGroupName, serviceName, settingsType, Context.NONE).getValue();
     }
 
@@ -482,23 +401,14 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TenantSettingsContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<TenantSettingsContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -515,29 +425,19 @@ public final class TenantSettingsClientImpl implements TenantSettingsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TenantSettingsContractInner>> listByServiceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<TenantSettingsContractInner>> listByServiceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

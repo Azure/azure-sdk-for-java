@@ -10,11 +10,9 @@ import com.azure.resourcemanager.timeseriesinsights.models.EnvironmentResourcePr
 public final class EnvironmentResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"dataAccessId\":\"9080e088-cd61-4ce9-9418-b27b6f5d0547\",\"dataAccessFqdn\":\"lfbxzpuzycisp\",\"status\":{\"ingress\":{\"state\":\"Paused\"},\"warmStorage\":{}},\"provisioningState\":\"Succeeded\",\"creationTime\":\"2021-02-05T07:41:31Z\"}")
-                .toObject(EnvironmentResourceProperties.class);
+        EnvironmentResourceProperties model = BinaryData.fromString(
+            "{\"dataAccessId\":\"9080e088-cd61-4ce9-9418-b27b6f5d0547\",\"dataAccessFqdn\":\"lfbxzpuzycisp\",\"status\":{\"ingress\":{\"state\":\"Paused\"},\"warmStorage\":{}},\"provisioningState\":\"Succeeded\",\"creationTime\":\"2021-02-05T07:41:31Z\"}")
+            .toObject(EnvironmentResourceProperties.class);
     }
 
     @org.junit.jupiter.api.Test

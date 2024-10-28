@@ -109,16 +109,12 @@ public final class IngressProfileProperties {
      */
     public void validate() {
         if (hostname() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hostname in model IngressProfileProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property hostname in model IngressProfileProperties"));
         }
         if (innerAadProfile() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerAadProfile in model IngressProfileProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerAadProfile in model IngressProfileProperties"));
         } else {
             innerAadProfile().validate();
         }

@@ -84,15 +84,10 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.cr
  * @see ContainerRegistryContentClient
  */
 @ServiceClientBuilder(
-    serviceClients = {
-        ContainerRegistryContentAsyncClient.class,
-        ContainerRegistryContentClient.class
-    })
+    serviceClients = { ContainerRegistryContentAsyncClient.class, ContainerRegistryContentClient.class })
 public final class ContainerRegistryContentClientBuilder implements
-    ConfigurationTrait<ContainerRegistryContentClientBuilder>,
-    EndpointTrait<ContainerRegistryContentClientBuilder>,
-    HttpTrait<ContainerRegistryContentClientBuilder>,
-    TokenCredentialTrait<ContainerRegistryContentClientBuilder> {
+    ConfigurationTrait<ContainerRegistryContentClientBuilder>, EndpointTrait<ContainerRegistryContentClientBuilder>,
+    HttpTrait<ContainerRegistryContentClientBuilder>, TokenCredentialTrait<ContainerRegistryContentClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryContentClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -379,14 +374,14 @@ public final class ContainerRegistryContentClientBuilder implements
         Objects.requireNonNull(endpoint, "'endpoint' can't be null");
 
         // Service version
-        ContainerRegistryServiceVersion serviceVersion = (version != null)
-            ? version
-            : ContainerRegistryServiceVersion.getLatest();
+        ContainerRegistryServiceVersion serviceVersion
+            = (version != null) ? version : ContainerRegistryServiceVersion.getLatest();
 
         Tracer tracer = createTracer(clientOptions);
         HttpPipeline pipeline = getHttpPipeline(tracer);
 
-        ContainerRegistryContentAsyncClient client = new ContainerRegistryContentAsyncClient(repositoryName, pipeline, endpoint, serviceVersion.getVersion(), tracer);
+        ContainerRegistryContentAsyncClient client = new ContainerRegistryContentAsyncClient(repositoryName, pipeline,
+            endpoint, serviceVersion.getVersion(), tracer);
         return client;
     }
 
@@ -405,12 +400,12 @@ public final class ContainerRegistryContentClientBuilder implements
         Objects.requireNonNull(endpoint, "'endpoint' can't be null");
 
         // Service version
-        ContainerRegistryServiceVersion serviceVersion = (version != null)
-            ? version
-            : ContainerRegistryServiceVersion.getLatest();
+        ContainerRegistryServiceVersion serviceVersion
+            = (version != null) ? version : ContainerRegistryServiceVersion.getLatest();
 
         Tracer tracer = createTracer(clientOptions);
-        return new ContainerRegistryContentClient(repositoryName, getHttpPipeline(tracer), endpoint, serviceVersion.getVersion(), tracer);
+        return new ContainerRegistryContentClient(repositoryName, getHttpPipeline(tracer), endpoint,
+            serviceVersion.getVersion(), tracer);
     }
 
     private HttpPipeline getHttpPipeline(Tracer tracer) {
@@ -418,19 +413,8 @@ public final class ContainerRegistryContentClientBuilder implements
             return httpPipeline;
         }
 
-        return UtilsImpl.buildClientPipeline(
-            this.clientOptions,
-            this.httpLogOptions,
-            this.configuration,
-            this.retryPolicy,
-            this.retryOptions,
-            this.credential,
-            this.audience,
-            this.perCallPolicies,
-            this.perRetryPolicies,
-            this.httpClient,
-            this.endpoint,
-            this.version,
-            tracer);
+        return UtilsImpl.buildClientPipeline(this.clientOptions, this.httpLogOptions, this.configuration,
+            this.retryPolicy, this.retryOptions, this.credential, this.audience, this.perCallPolicies,
+            this.perRetryPolicies, this.httpClient, this.endpoint, this.version, tracer);
     }
 }

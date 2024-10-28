@@ -45,12 +45,13 @@ public final class ReplicationNetworksListByReplicationFabricsMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Network> response = manager.replicationNetworks().listByReplicationFabrics("kdv", "el", "modpe",
-            com.azure.core.util.Context.NONE);
+        PagedIterable<Network> response = manager.replicationNetworks()
+            .listByReplicationFabrics("kdv", "el", "modpe", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("sorch", response.iterator().next().properties().fabricType());
         Assertions.assertEquals("o", response.iterator().next().properties().subnets().get(0).name());

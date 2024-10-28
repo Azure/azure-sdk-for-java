@@ -22,8 +22,8 @@ public interface GenerateDetailedCostReportOperationStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the specified operation along with {@link Response}.
      */
-    Response<GenerateDetailedCostReportOperationStatuses> getWithResponse(
-        String operationId, String scope, Context context);
+    Response<GenerateDetailedCostReportOperationStatuses> getWithResponse(String operationId, String scope,
+        Context context);
 
     /**
      * Get the status of the specified operation. This link is provided in the GenerateDetailedCostReport creation

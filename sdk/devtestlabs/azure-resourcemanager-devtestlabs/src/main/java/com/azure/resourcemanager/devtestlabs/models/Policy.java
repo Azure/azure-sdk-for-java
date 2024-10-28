@@ -140,11 +140,8 @@ public interface Policy {
     PolicyInner innerModel();
 
     /** The entirety of the Policy definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /** The Policy definition stages. */
@@ -189,14 +186,9 @@ public interface Policy {
          * The stage of the Policy definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithStatus,
-                DefinitionStages.WithFactName,
-                DefinitionStages.WithFactData,
-                DefinitionStages.WithThreshold,
-                DefinitionStages.WithEvaluatorType {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithDescription,
+            DefinitionStages.WithStatus, DefinitionStages.WithFactName, DefinitionStages.WithFactData,
+            DefinitionStages.WithThreshold, DefinitionStages.WithEvaluatorType {
             /**
              * Executes the create request.
              *

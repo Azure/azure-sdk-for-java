@@ -27,8 +27,8 @@ public interface PortalConfigsClient {
      * @return the collection of the developer portal configurations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PortalConfigCollectionInner> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<PortalConfigCollectionInner> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Lists the developer portal configurations.
@@ -56,8 +56,8 @@ public interface PortalConfigsClient {
      * @return the entity state (Etag) version of the developer portal configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PortalConfigsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String portalConfigId, Context context);
+    PortalConfigsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String portalConfigId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the developer portal configuration.
@@ -85,8 +85,8 @@ public interface PortalConfigsClient {
      * @return the developer portal configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PortalConfigsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String portalConfigId, Context context);
+    PortalConfigsGetResponse getWithResponse(String resourceGroupName, String serviceName, String portalConfigId,
+        Context context);
 
     /**
      * Get the developer portal configuration.
@@ -118,13 +118,8 @@ public interface PortalConfigsClient {
      * @return the developer portal configuration contract along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PortalConfigContractInner> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String portalConfigId,
-        String ifMatch,
-        PortalConfigContractInner parameters,
-        Context context);
+    Response<PortalConfigContractInner> updateWithResponse(String resourceGroupName, String serviceName,
+        String portalConfigId, String ifMatch, PortalConfigContractInner parameters, Context context);
 
     /**
      * Update the developer portal configuration.
@@ -141,12 +136,8 @@ public interface PortalConfigsClient {
      * @return the developer portal configuration contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PortalConfigContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String portalConfigId,
-        String ifMatch,
-        PortalConfigContractInner parameters);
+    PortalConfigContractInner update(String resourceGroupName, String serviceName, String portalConfigId,
+        String ifMatch, PortalConfigContractInner parameters);
 
     /**
      * Create or update the developer portal configuration.
@@ -164,13 +155,8 @@ public interface PortalConfigsClient {
      * @return the developer portal configuration contract along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PortalConfigContractInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String portalConfigId,
-        String ifMatch,
-        PortalConfigContractInner parameters,
-        Context context);
+    Response<PortalConfigContractInner> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String portalConfigId, String ifMatch, PortalConfigContractInner parameters, Context context);
 
     /**
      * Create or update the developer portal configuration.
@@ -187,10 +173,6 @@ public interface PortalConfigsClient {
      * @return the developer portal configuration contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PortalConfigContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String portalConfigId,
-        String ifMatch,
-        PortalConfigContractInner parameters);
+    PortalConfigContractInner createOrUpdate(String resourceGroupName, String serviceName, String portalConfigId,
+        String ifMatch, PortalConfigContractInner parameters);
 }

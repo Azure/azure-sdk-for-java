@@ -101,22 +101,16 @@ public final class CmdkeySetupTypeProperties {
      */
     public void validate() {
         if (targetName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetName in model CmdkeySetupTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetName in model CmdkeySetupTypeProperties"));
         }
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model CmdkeySetupTypeProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property username in model CmdkeySetupTypeProperties"));
         }
         if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property password in model CmdkeySetupTypeProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property password in model CmdkeySetupTypeProperties"));
         } else {
             password().validate();
         }

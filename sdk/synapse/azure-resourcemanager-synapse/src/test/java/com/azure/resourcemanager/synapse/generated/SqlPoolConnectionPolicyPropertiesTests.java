@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlPoolConnectionPolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlPoolConnectionPolicyProperties model =
-            BinaryData
-                .fromString(
-                    "{\"securityEnabledAccess\":\"feo\",\"proxyDnsName\":\"rqwky\",\"proxyPort\":\"ob\",\"visibility\":\"gxedkow\",\"useServerDefault\":\"bqpc\",\"redirectionState\":\"kbwcc\",\"state\":\"jvcdwxlpqekf\"}")
-                .toObject(SqlPoolConnectionPolicyProperties.class);
+        SqlPoolConnectionPolicyProperties model = BinaryData.fromString(
+            "{\"securityEnabledAccess\":\"feo\",\"proxyDnsName\":\"rqwky\",\"proxyPort\":\"ob\",\"visibility\":\"gxedkow\",\"useServerDefault\":\"bqpc\",\"redirectionState\":\"kbwcc\",\"state\":\"jvcdwxlpqekf\"}")
+            .toObject(SqlPoolConnectionPolicyProperties.class);
         Assertions.assertEquals("feo", model.securityEnabledAccess());
         Assertions.assertEquals("rqwky", model.proxyDnsName());
         Assertions.assertEquals("ob", model.proxyPort());
@@ -27,9 +25,8 @@ public final class SqlPoolConnectionPolicyPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlPoolConnectionPolicyProperties model =
-            new SqlPoolConnectionPolicyProperties()
-                .withSecurityEnabledAccess("feo")
+        SqlPoolConnectionPolicyProperties model
+            = new SqlPoolConnectionPolicyProperties().withSecurityEnabledAccess("feo")
                 .withProxyDnsName("rqwky")
                 .withProxyPort("ob")
                 .withVisibility("gxedkow")

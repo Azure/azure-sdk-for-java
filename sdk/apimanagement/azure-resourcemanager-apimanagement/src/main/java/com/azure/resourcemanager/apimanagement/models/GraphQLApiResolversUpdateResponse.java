@@ -21,12 +21,8 @@ public final class GraphQLApiResolversUpdateResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public GraphQLApiResolversUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        ResolverContractInner value,
-        GraphQLApiResolversUpdateHeaders headers) {
+    public GraphQLApiResolversUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        ResolverContractInner value, GraphQLApiResolversUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

@@ -59,14 +59,8 @@ public interface UsersClient {
      * @return paged Users list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UserContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean expandGroups,
-        Context context);
+    PagedIterable<UserContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Boolean expandGroups, Context context);
 
     /**
      * Gets the entity state (Etag) version of the user specified by its identifier.
@@ -81,8 +75,8 @@ public interface UsersClient {
      * @return the entity state (Etag) version of the user specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UsersGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String userId, Context context);
+    UsersGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String userId,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the user specified by its identifier.
@@ -142,14 +136,8 @@ public interface UsersClient {
      * @return user details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UsersCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        UserCreateParameters parameters,
-        Boolean notify,
-        String ifMatch,
-        Context context);
+    UsersCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName, String userId,
+        UserCreateParameters parameters, Boolean notify, String ifMatch, Context context);
 
     /**
      * Creates or Updates a user.
@@ -164,8 +152,8 @@ public interface UsersClient {
      * @return user details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UserContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String userId, UserCreateParameters parameters);
+    UserContractInner createOrUpdate(String resourceGroupName, String serviceName, String userId,
+        UserCreateParameters parameters);
 
     /**
      * Updates the details of the user specified by its identifier.
@@ -183,13 +171,8 @@ public interface UsersClient {
      * @return user details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UsersUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        String ifMatch,
-        UserUpdateParameters parameters,
-        Context context);
+    UsersUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String userId, String ifMatch,
+        UserUpdateParameters parameters, Context context);
 
     /**
      * Updates the details of the user specified by its identifier.
@@ -206,8 +189,8 @@ public interface UsersClient {
      * @return user details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UserContractInner update(
-        String resourceGroupName, String serviceName, String userId, String ifMatch, UserUpdateParameters parameters);
+    UserContractInner update(String resourceGroupName, String serviceName, String userId, String ifMatch,
+        UserUpdateParameters parameters);
 
     /**
      * Deletes specific user.
@@ -228,15 +211,8 @@ public interface UsersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        String ifMatch,
-        Boolean deleteSubscriptions,
-        Boolean notify,
-        AppType appType,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String userId, String ifMatch,
+        Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context);
 
     /**
      * Deletes specific user.
@@ -267,8 +243,8 @@ public interface UsersClient {
      * @return generate SSO Url operations response details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GenerateSsoUrlResultInner> generateSsoUrlWithResponse(
-        String resourceGroupName, String serviceName, String userId, Context context);
+    Response<GenerateSsoUrlResultInner> generateSsoUrlWithResponse(String resourceGroupName, String serviceName,
+        String userId, Context context);
 
     /**
      * Retrieves a redirection URL containing an authentication token for signing a given user into the developer
@@ -299,8 +275,8 @@ public interface UsersClient {
      * @return the Shared Access Authorization Token for the User along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UserTokenResultInner> getSharedAccessTokenWithResponse(
-        String resourceGroupName, String serviceName, String userId, UserTokenParameters parameters, Context context);
+    Response<UserTokenResultInner> getSharedAccessTokenWithResponse(String resourceGroupName, String serviceName,
+        String userId, UserTokenParameters parameters, Context context);
 
     /**
      * Gets the Shared Access Authorization Token for the User.
@@ -315,6 +291,6 @@ public interface UsersClient {
      * @return the Shared Access Authorization Token for the User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    UserTokenResultInner getSharedAccessToken(
-        String resourceGroupName, String serviceName, String userId, UserTokenParameters parameters);
+    UserTokenResultInner getSharedAccessToken(String resourceGroupName, String serviceName, String userId,
+        UserTokenParameters parameters);
 }

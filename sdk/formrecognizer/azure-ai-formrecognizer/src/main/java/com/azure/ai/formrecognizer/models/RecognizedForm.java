@@ -62,8 +62,8 @@ public final class RecognizedForm {
      * @param pageRange First and last page number where the document is found.
      * @param pages List of extracted pages from the form.
      */
-    public RecognizedForm(final Map<String, FormField> fields, final String formType,
-        final FormPageRange pageRange, final List<FormPage> pages) {
+    public RecognizedForm(final Map<String, FormField> fields, final String formType, final FormPageRange pageRange,
+        final List<FormPage> pages) {
         this.fields = fields == null ? null : Collections.unmodifiableMap(fields);
         this.formType = formType;
         this.pageRange = pageRange;

@@ -14,8 +14,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
  * Rewritten in 2.10 to be thread-safe (see [jackson-core#479] for details),
  * to not rely on {@code ThreadLocal} access.
  */
-public class BufferRecycler
-{
+public class BufferRecycler {
     /**
      * Buffer used for reading byte-based input.
      */
@@ -188,6 +187,11 @@ public class BufferRecycler
     /**********************************************************
      */
 
-    protected byte[] balloc(int size) { return new byte[size]; }
-    protected char[] calloc(int size) { return new char[size]; }
+    protected byte[] balloc(int size) {
+        return new byte[size];
+    }
+
+    protected char[] calloc(int size) {
+        return new char[size];
+    }
 }

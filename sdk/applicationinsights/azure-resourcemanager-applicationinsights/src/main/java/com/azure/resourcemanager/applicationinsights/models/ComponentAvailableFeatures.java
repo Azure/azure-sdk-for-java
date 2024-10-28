@@ -20,8 +20,8 @@ public interface ComponentAvailableFeatures {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Application Insights component available features along with {@link Response}.
      */
-    Response<ApplicationInsightsComponentAvailableFeatures> getWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ApplicationInsightsComponentAvailableFeatures> getWithResponse(String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Returns all available features of the application insights component.

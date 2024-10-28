@@ -50,8 +50,8 @@ public interface AssetsClient {
      * @return a collection of Asset items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AssetInner> list(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context);
+    PagedIterable<AssetInner> list(String resourceGroupName, String accountName, String filter, Integer top,
+        String orderby, Context context);
 
     /**
      * Get an Asset
@@ -68,8 +68,8 @@ public interface AssetsClient {
      * @return the details of an Asset in the Media Services account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AssetInner> getWithResponse(
-        String resourceGroupName, String accountName, String assetName, Context context);
+    Response<AssetInner> getWithResponse(String resourceGroupName, String accountName, String assetName,
+        Context context);
 
     /**
      * Get an Asset
@@ -103,8 +103,8 @@ public interface AssetsClient {
      * @return an Asset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AssetInner> createOrUpdateWithResponse(
-        String resourceGroupName, String accountName, String assetName, AssetInner parameters, Context context);
+    Response<AssetInner> createOrUpdateWithResponse(String resourceGroupName, String accountName, String assetName,
+        AssetInner parameters, Context context);
 
     /**
      * Create or update an Asset
@@ -171,8 +171,8 @@ public interface AssetsClient {
      * @return an Asset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AssetInner> updateWithResponse(
-        String resourceGroupName, String accountName, String assetName, AssetInner parameters, Context context);
+    Response<AssetInner> updateWithResponse(String resourceGroupName, String accountName, String assetName,
+        AssetInner parameters, Context context);
 
     /**
      * Update an Asset
@@ -208,12 +208,8 @@ public interface AssetsClient {
      * @return the Asset Storage container SAS URLs along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AssetContainerSasInner> listContainerSasWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        ListContainerSasInput parameters,
-        Context context);
+    Response<AssetContainerSasInner> listContainerSasWithResponse(String resourceGroupName, String accountName,
+        String assetName, ListContainerSasInput parameters, Context context);
 
     /**
      * List the Asset URLs
@@ -231,8 +227,8 @@ public interface AssetsClient {
      * @return the Asset Storage container SAS URLs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetContainerSasInner listContainerSas(
-        String resourceGroupName, String accountName, String assetName, ListContainerSasInput parameters);
+    AssetContainerSasInner listContainerSas(String resourceGroupName, String accountName, String assetName,
+        ListContainerSasInput parameters);
 
     /**
      * Gets the Asset storage key
@@ -250,8 +246,8 @@ public interface AssetsClient {
      *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StorageEncryptedAssetDecryptionDataInner> getEncryptionKeyWithResponse(
-        String resourceGroupName, String accountName, String assetName, Context context);
+    Response<StorageEncryptedAssetDecryptionDataInner> getEncryptionKeyWithResponse(String resourceGroupName,
+        String accountName, String assetName, Context context);
 
     /**
      * Gets the Asset storage key
@@ -267,8 +263,8 @@ public interface AssetsClient {
      * @return the Asset storage encryption keys used to decrypt content created by version 2 of the Media Services API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageEncryptedAssetDecryptionDataInner getEncryptionKey(
-        String resourceGroupName, String accountName, String assetName);
+    StorageEncryptedAssetDecryptionDataInner getEncryptionKey(String resourceGroupName, String accountName,
+        String assetName);
 
     /**
      * List Streaming Locators
@@ -285,8 +281,8 @@ public interface AssetsClient {
      * @return the Streaming Locators associated with this Asset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListStreamingLocatorsResponseInner> listStreamingLocatorsWithResponse(
-        String resourceGroupName, String accountName, String assetName, Context context);
+    Response<ListStreamingLocatorsResponseInner> listStreamingLocatorsWithResponse(String resourceGroupName,
+        String accountName, String assetName, Context context);
 
     /**
      * List Streaming Locators
@@ -302,6 +298,6 @@ public interface AssetsClient {
      * @return the Streaming Locators associated with this Asset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ListStreamingLocatorsResponseInner listStreamingLocators(
-        String resourceGroupName, String accountName, String assetName);
+    ListStreamingLocatorsResponseInner listStreamingLocators(String resourceGroupName, String accountName,
+        String assetName);
 }

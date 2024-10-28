@@ -49,17 +49,21 @@ public final class DeploymentsCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Deployment response = manager.deployments().define("wpusdsttwvogv")
+        Deployment response = manager.deployments()
+            .define("wpusdsttwvogv")
             .withExistingDeviceGroup("bykutw", "fhpagmhrskdsnf", "sd", "akgtdlmkkzevdlh")
             .withProperties(new DeploymentProperties().withDeploymentId("jdcngqqm")
                 .withDeployedImages(Arrays.asList(
-                    new ImageInner().withProperties(new ImageProperties().withImage("gm").withImageId("rwr")
+                    new ImageInner().withProperties(new ImageProperties().withImage("gm")
+                        .withImageId("rwr")
                         .withRegionalDataBoundary(RegionalDataBoundary.NONE)),
-                    new ImageInner().withProperties(new ImageProperties().withImage("kaivwit").withImageId("cywuggwol")
+                    new ImageInner().withProperties(new ImageProperties().withImage("kaivwit")
+                        .withImageId("cywuggwol")
                         .withRegionalDataBoundary(RegionalDataBoundary.EU)))))
             .create();
 

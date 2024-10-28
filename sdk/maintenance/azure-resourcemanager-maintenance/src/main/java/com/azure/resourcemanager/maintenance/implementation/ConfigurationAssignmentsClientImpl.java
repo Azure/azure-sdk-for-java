@@ -530,7 +530,7 @@ public final class ConfigurationAssignmentsClientImpl implements ConfigurationAs
         String configurationAssignmentName, ConfigurationAssignmentInner configurationAssignment) {
         return createOrUpdateParentWithResponseAsync(resourceGroupName, providerName, resourceParentType,
             resourceParentName, resourceType, resourceName, configurationAssignmentName, configurationAssignment)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

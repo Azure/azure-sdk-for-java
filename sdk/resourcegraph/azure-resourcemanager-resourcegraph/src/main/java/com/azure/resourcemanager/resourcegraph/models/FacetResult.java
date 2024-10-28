@@ -115,9 +115,8 @@ public final class FacetResult extends Facet {
     public void validate() {
         super.validate();
         if (data() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property data in model FacetResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property data in model FacetResult"));
         }
     }
 

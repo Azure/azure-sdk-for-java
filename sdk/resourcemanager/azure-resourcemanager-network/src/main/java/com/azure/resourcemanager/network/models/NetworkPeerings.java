@@ -16,14 +16,9 @@ import reactor.core.publisher.Mono;
 
 /** Entry point to network peering management API. */
 @Fluent
-public interface NetworkPeerings
-    extends SupportsCreating<NetworkPeering.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsGettingById<NetworkPeering>,
-        SupportsBatchCreation<NetworkPeering>,
-        SupportsDeletingByParent,
-        SupportsListing<NetworkPeering>,
-        HasManager<NetworkManager> {
+public interface NetworkPeerings extends SupportsCreating<NetworkPeering.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsGettingById<NetworkPeering>, SupportsBatchCreation<NetworkPeering>, SupportsDeletingByParent,
+    SupportsListing<NetworkPeering>, HasManager<NetworkManager> {
 
     /**
      * Finds the peering, if any, that is associated with the specified network.

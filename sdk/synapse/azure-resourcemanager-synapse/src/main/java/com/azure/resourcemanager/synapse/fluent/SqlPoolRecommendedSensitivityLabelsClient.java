@@ -28,12 +28,8 @@ public interface SqlPoolRecommendedSensitivityLabelsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        RecommendedSensitivityLabelUpdateList parameters,
-        Context context);
+    Response<Void> updateWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        RecommendedSensitivityLabelUpdateList parameters, Context context);
 
     /**
      * Update recommended sensitivity labels states of a given SQL Pool using an operations batch.
@@ -47,9 +43,6 @@ public interface SqlPoolRecommendedSensitivityLabelsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    void update(String resourceGroupName, String workspaceName, String sqlPoolName,
         RecommendedSensitivityLabelUpdateList parameters);
 }

@@ -30,37 +30,27 @@ public final class OperationsDiscoveriesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"rjaltolmncw\",\"isDataAction\":true,\"display\":{\"provider\":\"csdbnwdcfhuc\",\"resource\":\"pfuvglsbjjca\",\"operation\":\"xbvtvudu\",\"description\":\"cormr\"},\"origin\":\"qtvcofudflvkgj\",\"properties\":\"datagdknnqv\"},{\"name\":\"znqntoru\",\"isDataAction\":true,\"display\":{\"provider\":\"hmk\",\"resource\":\"grauwjuetaebur\",\"operation\":\"dmovsm\",\"description\":\"xwabmqoe\"},\"origin\":\"ifrvtpu\",\"properties\":\"datajmqlgkfb\"},{\"name\":\"doaon\",\"isDataAction\":false,\"display\":{\"provider\":\"tujitcjedft\",\"resource\":\"ae\",\"operation\":\"ojvdcpzfoqo\",\"description\":\"cybxa\"},\"origin\":\"gszufoxciqopid\",\"properties\":\"datamciodhkhazxkhn\"},{\"name\":\"onlwntoeg\",\"isDataAction\":true,\"display\":{\"provider\":\"whkszzcmrvexztvb\",\"resource\":\"gsfraoyzkoow\",\"operation\":\"mnguxawqaldsyu\",\"description\":\"imerqfobwyznk\"},\"origin\":\"kutwpf\",\"properties\":\"dataa\"}],\"nextLink\":\"hrskdsnfd\"}";
+        String responseStr
+            = "{\"value\":[{\"name\":\"rjaltolmncw\",\"isDataAction\":true,\"display\":{\"provider\":\"csdbnwdcfhuc\",\"resource\":\"pfuvglsbjjca\",\"operation\":\"xbvtvudu\",\"description\":\"cormr\"},\"origin\":\"qtvcofudflvkgj\",\"properties\":\"datagdknnqv\"},{\"name\":\"znqntoru\",\"isDataAction\":true,\"display\":{\"provider\":\"hmk\",\"resource\":\"grauwjuetaebur\",\"operation\":\"dmovsm\",\"description\":\"xwabmqoe\"},\"origin\":\"ifrvtpu\",\"properties\":\"datajmqlgkfb\"},{\"name\":\"doaon\",\"isDataAction\":false,\"display\":{\"provider\":\"tujitcjedft\",\"resource\":\"ae\",\"operation\":\"ojvdcpzfoqo\",\"description\":\"cybxa\"},\"origin\":\"gszufoxciqopid\",\"properties\":\"datamciodhkhazxkhn\"},{\"name\":\"onlwntoeg\",\"isDataAction\":true,\"display\":{\"provider\":\"whkszzcmrvexztvb\",\"resource\":\"gsfraoyzkoow\",\"operation\":\"mnguxawqaldsyu\",\"description\":\"imerqfobwyznk\"},\"origin\":\"kutwpf\",\"properties\":\"dataa\"}],\"nextLink\":\"hrskdsnfd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ResourceMoverManager manager =
-            ResourceMoverManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ResourceMoverManager manager = ResourceMoverManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationsDiscoveryCollection response =
-            manager.operationsDiscoveries().getWithResponse(com.azure.core.util.Context.NONE).getValue();
+        OperationsDiscoveryCollection response
+            = manager.operationsDiscoveries().getWithResponse(com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals("rjaltolmncw", response.value().get(0).name());
         Assertions.assertEquals(true, response.value().get(0).isDataAction());

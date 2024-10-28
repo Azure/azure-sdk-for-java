@@ -45,8 +45,8 @@ public interface CachesClient {
      * @return paged Caches list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CacheContractInner> listByService(
-        String resourceGroupName, String serviceName, Integer top, Integer skip, Context context);
+    PagedIterable<CacheContractInner> listByService(String resourceGroupName, String serviceName, Integer top,
+        Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Cache specified by its identifier.
@@ -62,8 +62,8 @@ public interface CachesClient {
      * @return the entity state (Etag) version of the Cache specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CachesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String cacheId, Context context);
+    CachesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String cacheId,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the Cache specified by its identifier.
@@ -126,13 +126,8 @@ public interface CachesClient {
      * @return cache details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CachesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String cacheId,
-        CacheContractInner parameters,
-        String ifMatch,
-        Context context);
+    CachesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String cacheId, CacheContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or updates an External Cache to be used in Api Management instance.
@@ -148,8 +143,8 @@ public interface CachesClient {
      * @return cache details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CacheContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String cacheId, CacheContractInner parameters);
+    CacheContractInner createOrUpdate(String resourceGroupName, String serviceName, String cacheId,
+        CacheContractInner parameters);
 
     /**
      * Updates the details of the cache specified by its identifier.
@@ -168,13 +163,8 @@ public interface CachesClient {
      * @return cache details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CachesUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String cacheId,
-        String ifMatch,
-        CacheUpdateParameters parameters,
-        Context context);
+    CachesUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String cacheId,
+        String ifMatch, CacheUpdateParameters parameters, Context context);
 
     /**
      * Updates the details of the cache specified by its identifier.
@@ -192,8 +182,8 @@ public interface CachesClient {
      * @return cache details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CacheContractInner update(
-        String resourceGroupName, String serviceName, String cacheId, String ifMatch, CacheUpdateParameters parameters);
+    CacheContractInner update(String resourceGroupName, String serviceName, String cacheId, String ifMatch,
+        CacheUpdateParameters parameters);
 
     /**
      * Deletes specific Cache.
@@ -211,8 +201,8 @@ public interface CachesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String cacheId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String cacheId, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific Cache.

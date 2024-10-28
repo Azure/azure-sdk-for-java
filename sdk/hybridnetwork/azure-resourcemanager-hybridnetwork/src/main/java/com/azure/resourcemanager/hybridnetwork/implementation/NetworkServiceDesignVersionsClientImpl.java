@@ -309,8 +309,10 @@ public final class NetworkServiceDesignVersionsClientImpl implements NetworkServ
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String publisherName,
         String networkServiceDesignGroupName, String networkServiceDesignVersionName) {
-        return this.beginDeleteAsync(resourceGroupName, publisherName, networkServiceDesignGroupName,
-            networkServiceDesignVersionName).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName)
+            .getSyncPoller();
     }
 
     /**
@@ -330,8 +332,10 @@ public final class NetworkServiceDesignVersionsClientImpl implements NetworkServ
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String publisherName,
         String networkServiceDesignGroupName, String networkServiceDesignVersionName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, publisherName, networkServiceDesignGroupName,
-            networkServiceDesignVersionName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -592,8 +596,10 @@ public final class NetworkServiceDesignVersionsClientImpl implements NetworkServ
     public SyncPoller<PollResult<NetworkServiceDesignVersionInner>, NetworkServiceDesignVersionInner>
         beginCreateOrUpdate(String resourceGroupName, String publisherName, String networkServiceDesignGroupName,
             String networkServiceDesignVersionName, NetworkServiceDesignVersionInner parameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, publisherName, networkServiceDesignGroupName,
-            networkServiceDesignVersionName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -615,8 +621,10 @@ public final class NetworkServiceDesignVersionsClientImpl implements NetworkServ
     public SyncPoller<PollResult<NetworkServiceDesignVersionInner>, NetworkServiceDesignVersionInner>
         beginCreateOrUpdate(String resourceGroupName, String publisherName, String networkServiceDesignGroupName,
             String networkServiceDesignVersionName, NetworkServiceDesignVersionInner parameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, publisherName, networkServiceDesignGroupName,
-            networkServiceDesignVersionName, parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1397,8 +1405,10 @@ public final class NetworkServiceDesignVersionsClientImpl implements NetworkServ
         SyncPoller<PollResult<NetworkServiceDesignVersionUpdateStateInner>, NetworkServiceDesignVersionUpdateStateInner>
         beginUpdateState(String resourceGroupName, String publisherName, String networkServiceDesignGroupName,
             String networkServiceDesignVersionName, NetworkServiceDesignVersionUpdateStateInner parameters) {
-        return this.beginUpdateStateAsync(resourceGroupName, publisherName, networkServiceDesignGroupName,
-            networkServiceDesignVersionName, parameters).getSyncPoller();
+        return this
+            .beginUpdateStateAsync(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1422,8 +1432,10 @@ public final class NetworkServiceDesignVersionsClientImpl implements NetworkServ
         beginUpdateState(String resourceGroupName, String publisherName, String networkServiceDesignGroupName,
             String networkServiceDesignVersionName, NetworkServiceDesignVersionUpdateStateInner parameters,
             Context context) {
-        return this.beginUpdateStateAsync(resourceGroupName, publisherName, networkServiceDesignGroupName,
-            networkServiceDesignVersionName, parameters, context).getSyncPoller();
+        return this
+            .beginUpdateStateAsync(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, parameters, context)
+            .getSyncPoller();
     }
 
     /**

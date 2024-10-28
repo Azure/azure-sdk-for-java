@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.managementgroups.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The type of child resource. */
+/**
+ * The type of child resource.
+ */
 public enum ManagementGroupChildType {
-    /** Enum value Microsoft.Management/managementGroups. */
+    /**
+     * Enum value Microsoft.Management/managementGroups.
+     */
     MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS("Microsoft.Management/managementGroups"),
 
-    /** Enum value /subscriptions. */
+    /**
+     * Enum value /subscriptions.
+     */
     SUBSCRIPTIONS("/subscriptions");
 
-    /** The actual serialized value for a ManagementGroupChildType instance. */
+    /**
+     * The actual serialized value for a ManagementGroupChildType instance.
+     */
     private final String value;
 
     ManagementGroupChildType(String value) {
@@ -24,11 +29,10 @@ public enum ManagementGroupChildType {
 
     /**
      * Parses a serialized value to a ManagementGroupChildType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ManagementGroupChildType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ManagementGroupChildType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum ManagementGroupChildType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

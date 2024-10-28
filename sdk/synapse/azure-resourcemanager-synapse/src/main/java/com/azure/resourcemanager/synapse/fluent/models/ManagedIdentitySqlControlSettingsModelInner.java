@@ -56,8 +56,7 @@ public final class ManagedIdentitySqlControlSettingsModelInner extends ProxyReso
      * @return the ManagedIdentitySqlControlSettingsModelInner object itself.
      */
     public ManagedIdentitySqlControlSettingsModelInner withGrantSqlControlToManagedIdentity(
-        ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity
-            grantSqlControlToManagedIdentity) {
+        ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity grantSqlControlToManagedIdentity) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedIdentitySqlControlSettingsModelProperties();
         }

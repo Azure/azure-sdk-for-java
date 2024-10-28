@@ -25,8 +25,8 @@ public interface LivePipelineOperationStatusesClient {
      * @return the operation status of a live pipeline.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LivePipelineOperationStatusInner get(
-        String resourceGroupName, String accountName, String livePipelineName, String operationId);
+    LivePipelineOperationStatusInner get(String resourceGroupName, String accountName, String livePipelineName,
+        String operationId);
 
     /**
      * Get the operation status of a live pipeline.
@@ -42,6 +42,6 @@ public interface LivePipelineOperationStatusesClient {
      * @return the operation status of a live pipeline along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LivePipelineOperationStatusInner> getWithResponse(
-        String resourceGroupName, String accountName, String livePipelineName, String operationId, Context context);
+    Response<LivePipelineOperationStatusInner> getWithResponse(String resourceGroupName, String accountName,
+        String livePipelineName, String operationId, Context context);
 }

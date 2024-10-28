@@ -21,12 +21,8 @@ public final class AuthorizationsCreateOrUpdateResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public AuthorizationsCreateOrUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        AuthorizationContractInner value,
-        AuthorizationsCreateOrUpdateHeaders headers) {
+    public AuthorizationsCreateOrUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        AuthorizationContractInner value, AuthorizationsCreateOrUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

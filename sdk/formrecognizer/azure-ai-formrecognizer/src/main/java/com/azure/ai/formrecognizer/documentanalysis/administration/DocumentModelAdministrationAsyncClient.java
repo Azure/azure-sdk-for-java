@@ -167,8 +167,8 @@ public final class DocumentModelAdministrationAsyncClient {
      * @param audience ARM management audience associated with the given form recognizer resource.
      *
      */
-    DocumentModelAdministrationAsyncClient(FormRecognizerClientImpl formRecognizerClientImpl, DocumentAnalysisServiceVersion serviceVersion,
-                                           DocumentAnalysisAudience audience) {
+    DocumentModelAdministrationAsyncClient(FormRecognizerClientImpl formRecognizerClientImpl,
+        DocumentAnalysisServiceVersion serviceVersion, DocumentAnalysisAudience audience) {
         this.formRecognizerClientImpl = formRecognizerClientImpl;
         this.documentModelsImpl = formRecognizerClientImpl.getDocumentModels();
         this.miscellaneousImpl = formRecognizerClientImpl.getMiscellaneous();
@@ -184,7 +184,8 @@ public final class DocumentModelAdministrationAsyncClient {
      * @return A new {@link DocumentAnalysisAsyncClient} object.
      */
     public DocumentAnalysisAsyncClient getDocumentAnalysisAsyncClient() {
-        return new DocumentAnalysisClientBuilder().endpoint(getEndpoint()).pipeline(getHttpPipeline())
+        return new DocumentAnalysisClientBuilder().endpoint(getEndpoint())
+            .pipeline(getHttpPipeline())
             .audience(this.audience)
             .buildAsyncClient();
     }
@@ -262,7 +263,7 @@ public final class DocumentModelAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<OperationResult, DocumentModelDetails> beginBuildDocumentModel(String blobContainerUrl,
-                                                                                     DocumentModelBuildMode buildMode) {
+        DocumentModelBuildMode buildMode) {
         return beginBuildDocumentModel(blobContainerUrl, buildMode, null, null);
     }
 
@@ -382,8 +383,8 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws NullPointerException If {@code blobContainerUrl} and {@code fileList} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationResult, DocumentModelDetails> beginBuildDocumentModel(
-        ContentSource contentSource, DocumentModelBuildMode buildMode) {
+    public PollerFlux<OperationResult, DocumentModelDetails> beginBuildDocumentModel(ContentSource contentSource,
+        DocumentModelBuildMode buildMode) {
         return beginBuildDocumentModel(contentSource, buildMode, null, Context.NONE);
     }
 
@@ -455,8 +456,8 @@ public final class DocumentModelAdministrationAsyncClient {
     private PollerFlux<OperationResult, DocumentModelDetails> beginBuildDocumentModel(ContentSource contentSource,
         DocumentModelBuildMode buildMode, BuildDocumentModelOptions buildDocumentModelOptions, Context context) {
 
-        buildDocumentModelOptions =  buildDocumentModelOptions == null
-            ? new BuildDocumentModelOptions() : buildDocumentModelOptions;
+        buildDocumentModelOptions
+            = buildDocumentModelOptions == null ? new BuildDocumentModelOptions() : buildDocumentModelOptions;
         String modelId = buildDocumentModelOptions.getModelId();
         if (modelId == null) {
             modelId = Utility.generateRandomModelID();
@@ -652,8 +653,8 @@ public final class DocumentModelAdministrationAsyncClient {
      * @return The {@link DocumentModelCopyAuthorization} that could be used to authorize copying model between resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DocumentModelCopyAuthorization>> getCopyAuthorizationWithResponse(
-        CopyAuthorizationOptions copyAuthorizationOptions) {
+    public Mono<Response<DocumentModelCopyAuthorization>>
+        getCopyAuthorizationWithResponse(CopyAuthorizationOptions copyAuthorizationOptions) {
         try {
             return withContext(context -> getCopyAuthorizationWithResponse(copyAuthorizationOptions, context));
         } catch (RuntimeException ex) {
@@ -661,10 +662,10 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    private Mono<Response<DocumentModelCopyAuthorization>> getCopyAuthorizationWithResponse(
-        CopyAuthorizationOptions copyAuthorizationOptions, Context context) {
-        copyAuthorizationOptions = copyAuthorizationOptions == null
-            ? new CopyAuthorizationOptions() : copyAuthorizationOptions;
+    private Mono<Response<DocumentModelCopyAuthorization>>
+        getCopyAuthorizationWithResponse(CopyAuthorizationOptions copyAuthorizationOptions, Context context) {
+        copyAuthorizationOptions
+            = copyAuthorizationOptions == null ? new CopyAuthorizationOptions() : copyAuthorizationOptions;
         String modelId = copyAuthorizationOptions.getModelId();
         modelId = modelId == null ? Utility.generateRandomModelID() : modelId;
 
@@ -715,8 +716,7 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws NullPointerException If the list of {@code componentModelIds} is null or empty.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationResult, DocumentModelDetails> beginComposeDocumentModel(
-        List<String> componentModelIds) {
+    public PollerFlux<OperationResult, DocumentModelDetails> beginComposeDocumentModel(List<String> componentModelIds) {
         return beginComposeDocumentModel(componentModelIds, null);
     }
 
@@ -790,9 +790,10 @@ public final class DocumentModelAdministrationAsyncClient {
                 getComposeModelOptions(composeDocumentModelOptions), modelId);
 
             return new PollerFlux<>(DEFAULT_POLL_INTERVAL, Utility.activationOperation(() -> documentModelsImpl
-                    .composeModelWithResponseAsync(composeRequest, context).map(response ->
-                        toDocumentOperationResult(response.getDeserializedHeaders().getOperationLocation())), logger),
-                createModelPollOperation(context), cancellationNotSupported(), fetchModelResultOperation(context));
+                .composeModelWithResponseAsync(composeRequest, context)
+                .map(response -> toDocumentOperationResult(response.getDeserializedHeaders().getOperationLocation())),
+                logger), createModelPollOperation(context), cancellationNotSupported(),
+                fetchModelResultOperation(context));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -875,7 +876,6 @@ public final class DocumentModelAdministrationAsyncClient {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
-
 
     /**
      * Get detailed information for a specified model ID.
@@ -1144,29 +1144,30 @@ public final class DocumentModelAdministrationAsyncClient {
             .doOnError(error -> logger.warning("Failed to list all models information", error))
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().stream()
+                res.getValue()
+                    .stream()
                     .map(Transforms::fromInnerDocumentClassifierDetails)
                     .collect(Collectors.toList()),
-                res.getContinuationToken(),
-                null));
+                res.getContinuationToken(), null));
     }
 
-    private Mono<PagedResponse<DocumentClassifierDetails>> listNextPageClassifiers(String nextPageLink, Context context) {
+    private Mono<PagedResponse<DocumentClassifierDetails>> listNextPageClassifiers(String nextPageLink,
+        Context context) {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
         return documentClassifiersImpl.listClassifiersNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error))
+            .doOnError(
+                error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error))
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().stream()
+                res.getValue()
+                    .stream()
                     .map(Transforms::fromInnerDocumentClassifierDetails)
                     .collect(Collectors.toList()),
-                res.getContinuationToken(),
-                null));
+                res.getContinuationToken(), null));
     }
 
     /**
@@ -1241,14 +1242,16 @@ public final class DocumentModelAdministrationAsyncClient {
         }
     }
 
-    private Mono<Response<DocumentClassifierDetails>> getDocumentClassifierWithResponse(String classifierId, Context context) {
+    private Mono<Response<DocumentClassifierDetails>> getDocumentClassifierWithResponse(String classifierId,
+        Context context) {
         if (CoreUtils.isNullOrEmpty(classifierId)) {
             return monoError(logger,
                 new IllegalArgumentException("'classifierId' is required and cannot be null or empty"));
         }
         return documentClassifiersImpl.getClassifierWithResponseAsync(classifierId, context)
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
-            .map(response -> new SimpleResponse<>(response, Transforms.fromInnerDocumentClassifierDetails(response.getValue())));
+            .map(response -> new SimpleResponse<>(response,
+                Transforms.fromInnerDocumentClassifierDetails(response.getValue())));
     }
 
     /**
@@ -1295,7 +1298,8 @@ public final class DocumentModelAdministrationAsyncClient {
      * @throws NullPointerException If {@code documentTypes} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationResult, DocumentClassifierDetails> beginBuildDocumentClassifier(Map<String, ClassifierDocumentTypeDetails> documentTypes) {
+    public PollerFlux<OperationResult, DocumentClassifierDetails>
+        beginBuildDocumentClassifier(Map<String, ClassifierDocumentTypeDetails> documentTypes) {
         return beginBuildDocumentClassifier(documentTypes, null, null);
     }
 
@@ -1360,8 +1364,9 @@ public final class DocumentModelAdministrationAsyncClient {
         Map<String, ClassifierDocumentTypeDetails> documentTypes,
         BuildDocumentClassifierOptions buildDocumentClassifierOptions, Context context) {
 
-        buildDocumentClassifierOptions =  buildDocumentClassifierOptions == null
-            ? new BuildDocumentClassifierOptions() : buildDocumentClassifierOptions;
+        buildDocumentClassifierOptions = buildDocumentClassifierOptions == null
+            ? new BuildDocumentClassifierOptions()
+            : buildDocumentClassifierOptions;
         String classifierId = buildDocumentClassifierOptions.getClassifierId();
         if (classifierId == null) {
             classifierId = Utility.generateRandomModelID();
@@ -1371,27 +1376,28 @@ public final class DocumentModelAdministrationAsyncClient {
             createModelPollOperation(context), cancellationNotSupported(), fetchClassifierResultOperation(context));
     }
 
-    private Function<PollingContext<OperationResult>, Mono<DocumentClassifierDetails>> fetchClassifierResultOperation(
-        Context context) {
+    private Function<PollingContext<OperationResult>, Mono<DocumentClassifierDetails>>
+        fetchClassifierResultOperation(Context context) {
         return (pollingContext) -> {
             try {
                 final String classifierId = pollingContext.getLatestResponse().getValue().getOperationId();
                 return miscellaneousImpl.getOperationWithResponseAsync(classifierId, context)
-                    .map(classifierResponse ->
-                        Transforms.toDocumentClassifierFromOperationId(classifierResponse.getValue()));
+                    .map(classifierResponse -> Transforms
+                        .toDocumentClassifierFromOperationId(classifierResponse.getValue()));
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
             }
         };
     }
-    private Function<PollingContext<OperationResult>, Mono<DocumentModelDetails>> fetchModelResultOperation(
-        Context context) {
+
+    private Function<PollingContext<OperationResult>, Mono<DocumentModelDetails>>
+        fetchModelResultOperation(Context context) {
         return (pollingContext) -> {
             try {
                 final String modelId = pollingContext.getLatestResponse().getValue().getOperationId();
                 return miscellaneousImpl.getOperationWithResponseAsync(modelId, context)
-                    .map(modelSimpleResponse
-                        -> Transforms.toDocumentModelFromOperationId(modelSimpleResponse.getValue()))
+                    .map(modelSimpleResponse -> Transforms
+                        .toDocumentModelFromOperationId(modelSimpleResponse.getValue()))
                     .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -1399,18 +1405,17 @@ public final class DocumentModelAdministrationAsyncClient {
         };
     }
 
-    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>> createModelPollOperation(
-        Context context) {
+    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
+        createModelPollOperation(Context context) {
         return (pollingContext) -> {
             try {
-                PollResponse<OperationResult> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
+                PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
                 String modelId = operationResultPollResponse.getValue().getOperationId();
                 return miscellaneousImpl.getOperationAsync(modelId, context)
-                    .flatMap(modelSimpleResponse ->
-                        processBuildingModelResponse(modelSimpleResponse, operationResultPollResponse))
+                    .flatMap(modelSimpleResponse -> processBuildingModelResponse(modelSimpleResponse,
+                        operationResultPollResponse))
                     .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
-            }  catch (HttpResponseException ex) {
+            } catch (HttpResponseException ex) {
                 return monoError(logger, ex);
             }
         };
@@ -1421,13 +1426,12 @@ public final class DocumentModelAdministrationAsyncClient {
         BuildDocumentModelOptions buildDocumentModelOptions, Context context) {
         return (pollingContext) -> {
             try {
-                BuildDocumentModelRequest buildDocumentModelRequest =
-                    getBuildDocumentModelRequest(contentSource, buildMode, modelId,
-                        buildDocumentModelOptions);
+                BuildDocumentModelRequest buildDocumentModelRequest
+                    = getBuildDocumentModelRequest(contentSource, buildMode, modelId, buildDocumentModelOptions);
 
                 return documentModelsImpl.buildModelWithResponseAsync(buildDocumentModelRequest, context)
-                    .map(response -> toDocumentOperationResult(
-                        response.getDeserializedHeaders().getOperationLocation()))
+                    .map(
+                        response -> toDocumentOperationResult(response.getDeserializedHeaders().getOperationLocation()))
                     .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -1447,11 +1451,9 @@ public final class DocumentModelAdministrationAsyncClient {
                 BuildDocumentClassifierRequest buildDocumentModelRequest = getBuildDocumentClassifierRequest(
                     classifierId, buildDocumentClassifierOptions.getDescription(), toInnerDocTypes(documentTypes));
 
-
                 return documentClassifiersImpl.buildClassifierWithResponseAsync(buildDocumentModelRequest, context)
-                    .map(response ->
-                        toDocumentOperationResult(
-                            response.getDeserializedHeaders().getOperationLocation()))
+                    .map(
+                        response -> toDocumentOperationResult(response.getDeserializedHeaders().getOperationLocation()))
                     .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -1468,12 +1470,15 @@ public final class DocumentModelAdministrationAsyncClient {
             case RUNNING:
                 status = LongRunningOperationStatus.IN_PROGRESS;
                 break;
+
             case SUCCEEDED:
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
+
             case FAILED:
                 return monoError(logger,
                     Transforms.mapResponseErrorToHttpResponseException(getOperationResponse.getError()));
+
             case CANCELED:
             default:
                 status = LongRunningOperationStatus.fromString(getOperationResponse.getStatus().toString(), true);
@@ -1498,8 +1503,8 @@ public final class DocumentModelAdministrationAsyncClient {
                     = getInnerCopyAuthorization(target);
 
                 return documentModelsImpl.copyModelToWithResponseAsync(modelId, copyRequest, context)
-                    .map(response
-                        -> toDocumentOperationResult(response.getDeserializedHeaders().getOperationLocation()))
+                    .map(
+                        response -> toDocumentOperationResult(response.getDeserializedHeaders().getOperationLocation()))
                     .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -1524,8 +1529,8 @@ public final class DocumentModelAdministrationAsyncClient {
         return documentModelsImpl.listModelsNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error))
+            .doOnError(
+                error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error))
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 Transforms.toDocumentModelInfo(res.getValue()), res.getContinuationToken(), null));
@@ -1549,8 +1554,8 @@ public final class DocumentModelAdministrationAsyncClient {
         return miscellaneousImpl.listOperationsNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error))
+            .doOnError(
+                error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error))
             .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 Transforms.toOperationSummary(res.getValue()), res.getContinuationToken(), null));

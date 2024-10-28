@@ -30,7 +30,8 @@ public final class StorageTaskOperationTests {
         StorageTaskOperation model
             = new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_IMMUTABILITY_POLICY)
                 .withParameters(mapOf("jjgpb", "urzafb", "jmkljavbqidtqajz", "oq", "hbzhfepg", "ulpkudjkrl"))
-                .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK);
+                .withOnSuccess(OnSuccess.CONTINUE)
+                .withOnFailure(OnFailure.BREAK);
         model = BinaryData.fromObject(model).toObject(StorageTaskOperation.class);
         Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_IMMUTABILITY_POLICY, model.name());
         Assertions.assertEquals("urzafb", model.parameters().get("jjgpb"));

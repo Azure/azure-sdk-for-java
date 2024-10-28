@@ -42,8 +42,8 @@ public final class SapDiskConfigurationsResultInner {
      * @param volumeConfigurations the volumeConfigurations value to set.
      * @return the SapDiskConfigurationsResultInner object itself.
      */
-    public SapDiskConfigurationsResultInner withVolumeConfigurations(
-        Map<String, SapDiskConfiguration> volumeConfigurations) {
+    public SapDiskConfigurationsResultInner
+        withVolumeConfigurations(Map<String, SapDiskConfiguration> volumeConfigurations) {
         this.volumeConfigurations = volumeConfigurations;
         return this;
     }
@@ -55,14 +55,11 @@ public final class SapDiskConfigurationsResultInner {
      */
     public void validate() {
         if (volumeConfigurations() != null) {
-            volumeConfigurations()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            volumeConfigurations().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

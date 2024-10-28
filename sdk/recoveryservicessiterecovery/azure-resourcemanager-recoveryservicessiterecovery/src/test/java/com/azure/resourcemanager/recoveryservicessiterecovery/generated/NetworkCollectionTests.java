@@ -32,22 +32,25 @@ public final class NetworkCollectionTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NetworkCollection model
-            = new NetworkCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new NetworkInner()
-                                .withProperties(new NetworkProperties().withFabricType("a")
-                                    .withSubnets(Arrays.asList(
-                                        new Subnet().withName("rzayv").withFriendlyName("pgvdf")
-                                            .withAddressList(Arrays.asList("tkftutqxlngx", "efgugnxk",
-                                                "xdqmidtthzrvqdra", "hjybigehoqfbo")),
-                                        new Subnet().withName("kanyktzlcuiywg").withFriendlyName("wgndrvynhzgpp")
-                                            .withAddressList(Arrays.asList("gyncocpecfvmmc", "ofsx", "zevgb")),
-                                        new Subnet().withName("jqabcypmivkwlzuv").withFriendlyName("fwnfnb")
-                                            .withAddressList(Arrays.asList("ionle", "x"))))
-                                    .withFriendlyName("qgtz").withNetworkType("pnqbqqwxrjfe"))
-                                .withLocation("lnwsubisn")))
+            = new NetworkCollection().withValue(Arrays.asList(
+                new NetworkInner()
+                    .withProperties(
+                        new NetworkProperties().withFabricType("a")
+                            .withSubnets(
+                                Arrays.asList(
+                                    new Subnet().withName("rzayv")
+                                        .withFriendlyName("pgvdf")
+                                        .withAddressList(Arrays.asList("tkftutqxlngx", "efgugnxk", "xdqmidtthzrvqdra",
+                                            "hjybigehoqfbo")),
+                                    new Subnet().withName("kanyktzlcuiywg")
+                                        .withFriendlyName("wgndrvynhzgpp")
+                                        .withAddressList(Arrays.asList("gyncocpecfvmmc", "ofsx", "zevgb")),
+                                    new Subnet().withName("jqabcypmivkwlzuv")
+                                        .withFriendlyName("fwnfnb")
+                                        .withAddressList(Arrays.asList("ionle", "x"))))
+                            .withFriendlyName("qgtz")
+                            .withNetworkType("pnqbqqwxrjfe"))
+                    .withLocation("lnwsubisn")))
                 .withNextLink("chcbonqvpkvlrxnj");
         model = BinaryData.fromObject(model).toObject(NetworkCollection.class);
         Assertions.assertEquals("a", model.value().get(0).properties().fabricType());

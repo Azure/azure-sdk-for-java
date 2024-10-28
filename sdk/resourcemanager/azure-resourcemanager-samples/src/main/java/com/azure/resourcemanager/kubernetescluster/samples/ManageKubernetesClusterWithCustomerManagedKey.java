@@ -56,9 +56,9 @@ public class ManageKubernetesClusterWithCustomerManagedKey {
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .defineAccessPolicy()
-                    .forServicePrincipal(clientId)
-                    .allowKeyPermissions(KeyPermissions.CREATE)
-                    .attach()
+                .forServicePrincipal(clientId)
+                .allowKeyPermissions(KeyPermissions.CREATE)
+                .attach()
                 .withPurgeProtectionEnabled()
                 .create();
 
@@ -67,11 +67,7 @@ public class ManageKubernetesClusterWithCustomerManagedKey {
             //=============================================================
             // Create a key in key vault
 
-            Key vaultKey = vault.keys()
-                .define(keyName)
-                .withKeyTypeToCreate(KeyType.RSA)
-                .withKeySize(4096)
-                .create();
+            Key vaultKey = vault.keys().define(keyName).withKeyTypeToCreate(KeyType.RSA).withKeySize(4096).create();
 
             System.out.println("Created key vault key: " + vaultKey.id());
 
@@ -95,9 +91,9 @@ public class ManageKubernetesClusterWithCustomerManagedKey {
 
             vault.update()
                 .defineAccessPolicy()
-                    .forObjectId(des.systemAssignedManagedServiceIdentityPrincipalId())
-                    .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
-                    .attach()
+                .forObjectId(des.systemAssignedManagedServiceIdentityPrincipalId())
+                .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
+                .attach()
                 .apply();
 
             System.out.println("Granted des access to the key vault.");
@@ -105,8 +101,7 @@ public class ManageKubernetesClusterWithCustomerManagedKey {
             //=============================================================
             // Create an Azure Container Service (AKS) with managed Kubernetes cluster, os disk encrypted using customer-managed key
 
-            KubernetesCluster kubernetesCluster = azureResourceManager
-                .kubernetesClusters()
+            KubernetesCluster kubernetesCluster = azureResourceManager.kubernetesClusters()
                 .define(aksName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
@@ -114,11 +109,11 @@ public class ManageKubernetesClusterWithCustomerManagedKey {
                 .withSystemAssignedManagedServiceIdentity()
                 .withDiskEncryptionSet(des.id())
                 .defineAgentPool("agentpool")
-                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
-                    .withAgentPoolVirtualMachineCount(1)
-                    .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                    .withOSDiskSizeInGB(30)
-                    .attach()
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
+                .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                .withOSDiskSizeInGB(30)
+                .attach()
                 .withDnsPrefix("mp1" + aksName)
                 .create();
 
@@ -155,8 +150,7 @@ public class ManageKubernetesClusterWithCustomerManagedKey {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

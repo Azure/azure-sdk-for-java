@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SapSizingRecommendationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapSizingRecommendationRequest model =
-            BinaryData
-                .fromString(
-                    "{\"appLocation\":\"mmhquvgjxpyb\",\"environment\":\"NonProd\",\"sapProduct\":\"ECC\",\"deploymentType\":\"SingleServer\",\"saps\":5740075632492893459,\"dbMemory\":8216479127673757607,\"databaseType\":\"HANA\",\"dbScaleMethod\":\"ScaleUp\",\"highAvailabilityType\":\"AvailabilityZone\"}")
-                .toObject(SapSizingRecommendationRequest.class);
+        SapSizingRecommendationRequest model = BinaryData.fromString(
+            "{\"appLocation\":\"mmhquvgjxpyb\",\"environment\":\"NonProd\",\"sapProduct\":\"ECC\",\"deploymentType\":\"SingleServer\",\"saps\":5740075632492893459,\"dbMemory\":8216479127673757607,\"databaseType\":\"HANA\",\"dbScaleMethod\":\"ScaleUp\",\"highAvailabilityType\":\"AvailabilityZone\"}")
+            .toObject(SapSizingRecommendationRequest.class);
         Assertions.assertEquals("mmhquvgjxpyb", model.appLocation());
         Assertions.assertEquals(SapEnvironmentType.NON_PROD, model.environment());
         Assertions.assertEquals(SapProductType.ECC, model.sapProduct());
@@ -35,17 +33,15 @@ public final class SapSizingRecommendationRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapSizingRecommendationRequest model =
-            new SapSizingRecommendationRequest()
-                .withAppLocation("mmhquvgjxpyb")
-                .withEnvironment(SapEnvironmentType.NON_PROD)
-                .withSapProduct(SapProductType.ECC)
-                .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
-                .withSaps(5740075632492893459L)
-                .withDbMemory(8216479127673757607L)
-                .withDatabaseType(SapDatabaseType.HANA)
-                .withDbScaleMethod(SapDatabaseScaleMethod.SCALE_UP)
-                .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_ZONE);
+        SapSizingRecommendationRequest model = new SapSizingRecommendationRequest().withAppLocation("mmhquvgjxpyb")
+            .withEnvironment(SapEnvironmentType.NON_PROD)
+            .withSapProduct(SapProductType.ECC)
+            .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
+            .withSaps(5740075632492893459L)
+            .withDbMemory(8216479127673757607L)
+            .withDatabaseType(SapDatabaseType.HANA)
+            .withDbScaleMethod(SapDatabaseScaleMethod.SCALE_UP)
+            .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_ZONE);
         model = BinaryData.fromObject(model).toObject(SapSizingRecommendationRequest.class);
         Assertions.assertEquals("mmhquvgjxpyb", model.appLocation());
         Assertions.assertEquals(SapEnvironmentType.NON_PROD, model.environment());

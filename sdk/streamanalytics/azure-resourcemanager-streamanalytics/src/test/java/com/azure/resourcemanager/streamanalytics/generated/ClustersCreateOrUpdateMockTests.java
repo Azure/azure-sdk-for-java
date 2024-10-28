@@ -49,16 +49,22 @@ public final class ClustersCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        StreamAnalyticsManager manager = StreamAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        StreamAnalyticsManager manager = StreamAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Cluster response = manager.clusters().define("bcporxvxcjzhqizx").withRegion("vmmghfcfiwrxgk")
+        Cluster response = manager.clusters()
+            .define("bcporxvxcjzhqizx")
+            .withRegion("vmmghfcfiwrxgk")
             .withExistingResourceGroup("bcxf")
             .withTags(mapOf("zqodfvpgshox", "vyi", "zflbqvg", "sgbpfgzdjtx", "sdtutnwlduyc", "qvlgafcqusrdvetn",
                 "kuqgsjjxundxgket", "uzhyrmewipmvekdx"))
             .withSku(new ClusterSku().withName(ClusterSkuName.DEFAULT).withCapacity(761396625))
-            .withProperties(new ClusterProperties()).withIfMatch("ms").withIfNoneMatch("ynsqyrpfoobr").create();
+            .withProperties(new ClusterProperties())
+            .withIfMatch("ms")
+            .withIfNoneMatch("ynsqyrpfoobr")
+            .create();
 
         Assertions.assertEquals("vk", response.location());
         Assertions.assertEquals("zunbixx", response.tags().get("ti"));

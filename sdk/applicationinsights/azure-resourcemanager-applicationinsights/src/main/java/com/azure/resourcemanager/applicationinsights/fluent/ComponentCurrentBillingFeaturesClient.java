@@ -24,8 +24,8 @@ public interface ComponentCurrentBillingFeaturesClient {
      * @return an Application Insights component billing features along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentBillingFeaturesInner> getWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ApplicationInsightsComponentBillingFeaturesInner> getWithResponse(String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Returns current billing features for an Application Insights component.
@@ -54,10 +54,8 @@ public interface ComponentCurrentBillingFeaturesClient {
      * @return an Application Insights component billing features along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentBillingFeaturesInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties,
+    Response<ApplicationInsightsComponentBillingFeaturesInner> updateWithResponse(String resourceGroupName,
+        String resourceName, ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties,
         Context context);
 
     /**
@@ -73,8 +71,6 @@ public interface ComponentCurrentBillingFeaturesClient {
      * @return an Application Insights component billing features.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentBillingFeaturesInner update(
-        String resourceGroupName,
-        String resourceName,
+    ApplicationInsightsComponentBillingFeaturesInner update(String resourceGroupName, String resourceName,
         ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties);
 }

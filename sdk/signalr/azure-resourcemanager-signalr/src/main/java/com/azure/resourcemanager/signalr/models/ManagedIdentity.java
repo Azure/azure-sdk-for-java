@@ -78,8 +78,8 @@ public final class ManagedIdentity {
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ManagedIdentity object itself.
      */
-    public ManagedIdentity withUserAssignedIdentities(
-        Map<String, UserAssignedIdentityProperty> userAssignedIdentities) {
+    public ManagedIdentity
+        withUserAssignedIdentities(Map<String, UserAssignedIdentityProperty> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
@@ -109,14 +109,11 @@ public final class ManagedIdentity {
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

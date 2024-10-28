@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Test;
 public final class OperationInnerTests {
     @Test
     public void testDeserialize() {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"xbezyiuokktwh\",\"isDataAction\":false,\"display\":{\"provider\":\"ywqsmbsurexim\",\"resource\":\"yocf\",\"operation\":\"ksymd\",\"description\":\"stkiiuxhqyud\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"xbezyiuokktwh\",\"isDataAction\":false,\"display\":{\"provider\":\"ywqsmbsurexim\",\"resource\":\"yocf\",\"operation\":\"ksymd\",\"description\":\"stkiiuxhqyud\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}")
+            .toObject(OperationInner.class);
     }
 
     @Test

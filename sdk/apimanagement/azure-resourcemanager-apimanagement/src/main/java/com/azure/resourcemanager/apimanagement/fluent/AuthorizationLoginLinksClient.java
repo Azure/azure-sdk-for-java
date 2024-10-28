@@ -28,12 +28,8 @@ public interface AuthorizationLoginLinksClient {
      * @return authorization login links.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationLoginLinksPostResponse postWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationLoginRequestContract parameters,
+    AuthorizationLoginLinksPostResponse postWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, AuthorizationLoginRequestContract parameters,
         Context context);
 
     /**
@@ -50,10 +46,6 @@ public interface AuthorizationLoginLinksClient {
      * @return authorization login links.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationLoginResponseContractInner post(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationLoginRequestContract parameters);
+    AuthorizationLoginResponseContractInner post(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, AuthorizationLoginRequestContract parameters);
 }

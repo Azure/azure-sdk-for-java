@@ -28,11 +28,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ReportConfigDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReportConfigDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Usage\",\"timeframe\":\"Custom\",\"timePeriod\":{\"from\":\"2021-08-28T07:34:48Z\",\"to\":\"2021-08-27T18:55:51Z\"},\"dataSet\":{\"granularity\":\"Monthly\",\"configuration\":{\"columns\":[\"uertumk\",\"o\"]},\"aggregation\":{\"bjf\":{\"name\":\"whbmd\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"Dimension\",\"name\":\"bmbexppbhtqqro\"},{\"type\":\"Dimension\",\"name\":\"p\"},{\"type\":\"Dimension\",\"name\":\"s\"}],\"sorting\":[{\"direction\":\"Ascending\",\"name\":\"uxig\"},{\"direction\":\"Descending\",\"name\":\"gzjaoyfhrtxilne\"}],\"filter\":{\"and\":[],\"or\":[]}},\"includeMonetaryCommitment\":false}")
-                .toObject(ReportConfigDefinition.class);
+        ReportConfigDefinition model = BinaryData.fromString(
+            "{\"type\":\"Usage\",\"timeframe\":\"Custom\",\"timePeriod\":{\"from\":\"2021-08-28T07:34:48Z\",\"to\":\"2021-08-27T18:55:51Z\"},\"dataSet\":{\"granularity\":\"Monthly\",\"configuration\":{\"columns\":[\"uertumk\",\"o\"]},\"aggregation\":{\"bjf\":{\"name\":\"whbmd\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"Dimension\",\"name\":\"bmbexppbhtqqro\"},{\"type\":\"Dimension\",\"name\":\"p\"},{\"type\":\"Dimension\",\"name\":\"s\"}],\"sorting\":[{\"direction\":\"Ascending\",\"name\":\"uxig\"},{\"direction\":\"Descending\",\"name\":\"gzjaoyfhrtxilne\"}],\"filter\":{\"and\":[],\"or\":[]}},\"includeMonetaryCommitment\":false}")
+            .toObject(ReportConfigDefinition.class);
         Assertions.assertEquals(ReportType.USAGE, model.type());
         Assertions.assertEquals(ReportTimeframeType.CUSTOM, model.timeframe());
         Assertions.assertEquals(OffsetDateTime.parse("2021-08-28T07:34:48Z"), model.timePeriod().from());
@@ -50,41 +48,24 @@ public final class ReportConfigDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReportConfigDefinition model =
-            new ReportConfigDefinition()
-                .withType(ReportType.USAGE)
-                .withTimeframe(ReportTimeframeType.CUSTOM)
-                .withTimePeriod(
-                    new ReportConfigTimePeriod()
-                        .withFrom(OffsetDateTime.parse("2021-08-28T07:34:48Z"))
-                        .withTo(OffsetDateTime.parse("2021-08-27T18:55:51Z")))
-                .withDataSet(
-                    new ReportConfigDataset()
-                        .withGranularity(ReportGranularityType.MONTHLY)
-                        .withConfiguration(
-                            new ReportConfigDatasetConfiguration().withColumns(Arrays.asList("uertumk", "o")))
-                        .withAggregation(
-                            mapOf(
-                                "bjf", new ReportConfigAggregation().withName("whbmd").withFunction(FunctionType.SUM)))
-                        .withGrouping(
-                            Arrays
-                                .asList(
-                                    new ReportConfigGrouping()
-                                        .withType(QueryColumnType.DIMENSION)
-                                        .withName("bmbexppbhtqqro"),
-                                    new ReportConfigGrouping().withType(QueryColumnType.DIMENSION).withName("p"),
-                                    new ReportConfigGrouping().withType(QueryColumnType.DIMENSION).withName("s")))
-                        .withSorting(
-                            Arrays
-                                .asList(
-                                    new ReportConfigSorting()
-                                        .withDirection(ReportConfigSortingType.ASCENDING)
-                                        .withName("uxig"),
-                                    new ReportConfigSorting()
-                                        .withDirection(ReportConfigSortingType.DESCENDING)
-                                        .withName("gzjaoyfhrtxilne")))
-                        .withFilter(new ReportConfigFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
-                .withIncludeMonetaryCommitment(false);
+        ReportConfigDefinition model = new ReportConfigDefinition().withType(ReportType.USAGE)
+            .withTimeframe(ReportTimeframeType.CUSTOM)
+            .withTimePeriod(new ReportConfigTimePeriod().withFrom(OffsetDateTime.parse("2021-08-28T07:34:48Z"))
+                .withTo(OffsetDateTime.parse("2021-08-27T18:55:51Z")))
+            .withDataSet(new ReportConfigDataset().withGranularity(ReportGranularityType.MONTHLY)
+                .withConfiguration(new ReportConfigDatasetConfiguration().withColumns(Arrays.asList("uertumk", "o")))
+                .withAggregation(
+                    mapOf("bjf", new ReportConfigAggregation().withName("whbmd").withFunction(FunctionType.SUM)))
+                .withGrouping(Arrays.asList(
+                    new ReportConfigGrouping().withType(QueryColumnType.DIMENSION).withName("bmbexppbhtqqro"),
+                    new ReportConfigGrouping().withType(QueryColumnType.DIMENSION).withName("p"),
+                    new ReportConfigGrouping().withType(QueryColumnType.DIMENSION).withName("s")))
+                .withSorting(Arrays.asList(
+                    new ReportConfigSorting().withDirection(ReportConfigSortingType.ASCENDING).withName("uxig"),
+                    new ReportConfigSorting().withDirection(ReportConfigSortingType.DESCENDING)
+                        .withName("gzjaoyfhrtxilne")))
+                .withFilter(new ReportConfigFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
+            .withIncludeMonetaryCommitment(false);
         model = BinaryData.fromObject(model).toObject(ReportConfigDefinition.class);
         Assertions.assertEquals(ReportType.USAGE, model.type());
         Assertions.assertEquals(ReportTimeframeType.CUSTOM, model.timeframe());

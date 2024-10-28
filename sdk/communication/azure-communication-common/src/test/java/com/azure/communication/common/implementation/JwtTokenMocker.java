@@ -18,11 +18,12 @@ public class JwtTokenMocker {
         long expSeconds = expiresAt.getEpochSecond();
         builder.claim("exp", expSeconds);
 
-        JWTClaimsSet claims =  builder.build();
+        JWTClaimsSet claims = builder.build();
         JWT idToken = new PlainJWT(claims);
         return idToken.serialize();
 
     }
+
     public String generateRawToken(String resourceId, String userIdentity, int validForSeconds) {
         String skypeId = generateMockId(resourceId, userIdentity);
         JWTClaimsSet.Builder builder = new JWTClaimsSet.Builder();

@@ -14,14 +14,17 @@ import java.time.OffsetDateTime;
 public final class DataFeedIngestionStatusHelper {
     private static DataFeedIngestionStatusAccessor accessor;
 
-    private DataFeedIngestionStatusHelper() { }
+    private DataFeedIngestionStatusHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link DataFeedIngestionStatus} instance.
      */
     public interface DataFeedIngestionStatusAccessor {
         void setTimestamp(DataFeedIngestionStatus ingestionStatus, OffsetDateTime dataTime);
+
         void setMessage(DataFeedIngestionStatus ingestionStatus, String message);
+
         void setIngestionStatusType(DataFeedIngestionStatus ingestionStatus, IngestionStatusType ingestionStatusType);
     }
 
@@ -42,8 +45,8 @@ public final class DataFeedIngestionStatusHelper {
         accessor.setMessage(ingestionStatus, message);
     }
 
-    public static void setIngestionStatusType(DataFeedIngestionStatus ingestionStatus, IngestionStatusType ingestionStatusType) {
+    public static void setIngestionStatusType(DataFeedIngestionStatus ingestionStatus,
+        IngestionStatusType ingestionStatusType) {
         accessor.setIngestionStatusType(ingestionStatus, ingestionStatusType);
     }
 }
-

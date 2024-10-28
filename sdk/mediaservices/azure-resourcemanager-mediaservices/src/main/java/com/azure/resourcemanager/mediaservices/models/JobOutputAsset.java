@@ -68,9 +68,8 @@ public final class JobOutputAsset extends JobOutput {
     public void validate() {
         super.validate();
         if (assetName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property assetName in model JobOutputAsset"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property assetName in model JobOutputAsset"));
         }
     }
 

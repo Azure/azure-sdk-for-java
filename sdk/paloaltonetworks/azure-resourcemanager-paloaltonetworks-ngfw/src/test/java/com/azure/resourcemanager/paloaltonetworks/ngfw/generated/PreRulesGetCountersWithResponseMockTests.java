@@ -44,12 +44,14 @@ public final class PreRulesGetCountersWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RuleCounter response = manager.preRules()
-            .getCountersWithResponse("yglqdhmrjzral", "xpjb", "ypsjoq", com.azure.core.util.Context.NONE).getValue();
+            .getCountersWithResponse("yglqdhmrjzral", "xpjb", "ypsjoq", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("jenkyh", response.priority());
         Assertions.assertEquals("zv", response.ruleStackName());

@@ -48,10 +48,8 @@ public final class TaskModelCustomProperties {
      */
     public void validate() {
         if (instanceType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property instanceType in model TaskModelCustomProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property instanceType in model TaskModelCustomProperties"));
         }
     }
 

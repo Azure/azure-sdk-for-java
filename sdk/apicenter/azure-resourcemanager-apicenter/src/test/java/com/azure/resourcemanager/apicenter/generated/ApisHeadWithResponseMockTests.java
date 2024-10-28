@@ -41,12 +41,13 @@ public final class ApisHeadWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.apis().headWithResponse("lfoakg", "kfpagao", "pulpqblylsyxk", "jnsjervtiagxsd",
-            com.azure.core.util.Context.NONE);
+        manager.apis()
+            .headWithResponse("lfoakg", "kfpagao", "pulpqblylsyxk", "jnsjervtiagxsd", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -19,8 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DataAccountDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ManagedDisk", value = ManagedDiskDetails.class),
-    @JsonSubTypes.Type(name = "StorageAccount", value = StorageAccountDetails.class)
-})
+    @JsonSubTypes.Type(name = "StorageAccount", value = StorageAccountDetails.class) })
 @Fluent
 public class DataAccountDetails {
     /*

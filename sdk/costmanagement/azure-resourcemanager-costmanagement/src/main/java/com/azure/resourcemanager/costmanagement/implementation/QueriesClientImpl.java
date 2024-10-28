@@ -53,30 +53,24 @@ public final class QueriesClientImpl implements QueriesClient {
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
     public interface QueriesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/{scope}/providers/Microsoft.CostManagement/query")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QueryResultInner>> usage(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") QueryDefinition parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<QueryResultInner>> usage(@HostParam("$host") String endpoint,
+            @PathParam(value = "scope", encoded = true) String scope, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") QueryDefinition parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.CostManagement/{externalCloudProviderType}/{externalCloudProviderId}/query")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<QueryResultInner>> usageByExternalCloudProviderType(
-            @HostParam("$host") String endpoint,
+        Mono<Response<QueryResultInner>> usageByExternalCloudProviderType(@HostParam("$host") String endpoint,
             @PathParam("externalCloudProviderType") ExternalCloudProviderType externalCloudProviderType,
             @PathParam("externalCloudProviderId") String externalCloudProviderId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") QueryDefinition parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") QueryDefinition parameters,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -106,10 +100,8 @@ public final class QueriesClientImpl implements QueriesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QueryResultInner>> usageWithResponseAsync(String scope, QueryDefinition parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -121,11 +113,8 @@ public final class QueriesClientImpl implements QueriesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .usage(
-                            this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context))
+            .withContext(context -> service.usage(this.client.getEndpoint(), scope, this.client.getApiVersion(),
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -155,13 +144,11 @@ public final class QueriesClientImpl implements QueriesClient {
      * @return result of query along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<QueryResultInner>> usageWithResponseAsync(
-        String scope, QueryDefinition parameters, Context context) {
+    private Mono<Response<QueryResultInner>> usageWithResponseAsync(String scope, QueryDefinition parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -173,8 +160,8 @@ public final class QueriesClientImpl implements QueriesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .usage(this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept, context);
+        return service.usage(this.client.getEndpoint(), scope, this.client.getApiVersion(), parameters, accept,
+            context);
     }
 
     /**
@@ -281,25 +268,19 @@ public final class QueriesClientImpl implements QueriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QueryResultInner>> usageByExternalCloudProviderTypeWithResponseAsync(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId,
         QueryDefinition parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (externalCloudProviderType == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter externalCloudProviderType is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter externalCloudProviderType is required and cannot be null."));
         }
         if (externalCloudProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter externalCloudProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter externalCloudProviderId is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -308,17 +289,9 @@ public final class QueriesClientImpl implements QueriesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .usageByExternalCloudProviderType(
-                            this.client.getEndpoint(),
-                            externalCloudProviderType,
-                            externalCloudProviderId,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.usageByExternalCloudProviderType(this.client.getEndpoint(),
+                externalCloudProviderType, externalCloudProviderId, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -339,26 +312,19 @@ public final class QueriesClientImpl implements QueriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<QueryResultInner>> usageByExternalCloudProviderTypeWithResponseAsync(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        QueryDefinition parameters,
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, QueryDefinition parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (externalCloudProviderType == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter externalCloudProviderType is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter externalCloudProviderType is required and cannot be null."));
         }
         if (externalCloudProviderId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter externalCloudProviderId is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter externalCloudProviderId is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -367,15 +333,8 @@ public final class QueriesClientImpl implements QueriesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .usageByExternalCloudProviderType(
-                this.client.getEndpoint(),
-                externalCloudProviderType,
-                externalCloudProviderId,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.usageByExternalCloudProviderType(this.client.getEndpoint(), externalCloudProviderType,
+            externalCloudProviderId, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -394,12 +353,10 @@ public final class QueriesClientImpl implements QueriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<QueryResultInner> usageByExternalCloudProviderTypeAsync(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId,
         QueryDefinition parameters) {
-        return usageByExternalCloudProviderTypeWithResponseAsync(
-                externalCloudProviderType, externalCloudProviderId, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return usageByExternalCloudProviderTypeWithResponseAsync(externalCloudProviderType, externalCloudProviderId,
+            parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -419,13 +376,10 @@ public final class QueriesClientImpl implements QueriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueryResultInner> usageByExternalCloudProviderTypeWithResponse(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        QueryDefinition parameters,
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, QueryDefinition parameters,
         Context context) {
-        return usageByExternalCloudProviderTypeWithResponseAsync(
-                externalCloudProviderType, externalCloudProviderId, parameters, context)
-            .block();
+        return usageByExternalCloudProviderTypeWithResponseAsync(externalCloudProviderType, externalCloudProviderId,
+            parameters, context).block();
     }
 
     /**
@@ -443,12 +397,9 @@ public final class QueriesClientImpl implements QueriesClient {
      * @return result of query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public QueryResultInner usageByExternalCloudProviderType(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        QueryDefinition parameters) {
-        return usageByExternalCloudProviderTypeWithResponse(
-                externalCloudProviderType, externalCloudProviderId, parameters, Context.NONE)
-            .getValue();
+    public QueryResultInner usageByExternalCloudProviderType(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId, QueryDefinition parameters) {
+        return usageByExternalCloudProviderTypeWithResponse(externalCloudProviderType, externalCloudProviderId,
+            parameters, Context.NONE).getValue();
     }
 }

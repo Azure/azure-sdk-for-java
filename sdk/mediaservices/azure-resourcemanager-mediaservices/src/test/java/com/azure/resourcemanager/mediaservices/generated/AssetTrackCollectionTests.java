@@ -12,11 +12,9 @@ import java.util.Arrays;
 public final class AssetTrackCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssetTrackCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"jn\",\"name\":\"bckhsmtxpsi\",\"type\":\"btfhvpesaps\"}]}")
-                .toObject(AssetTrackCollection.class);
+        AssetTrackCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"jn\",\"name\":\"bckhsmtxpsi\",\"type\":\"btfhvpesaps\"}]}")
+            .toObject(AssetTrackCollection.class);
     }
 
     @org.junit.jupiter.api.Test

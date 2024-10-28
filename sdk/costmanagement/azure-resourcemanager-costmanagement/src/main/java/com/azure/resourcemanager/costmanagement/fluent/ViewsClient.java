@@ -249,8 +249,8 @@ public interface ViewsClient {
      * @return states and configurations of Cost Analysis along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ViewInner> createOrUpdateByScopeWithResponse(
-        String scope, String viewName, ViewInner parameters, Context context);
+    Response<ViewInner> createOrUpdateByScopeWithResponse(String scope, String viewName, ViewInner parameters,
+        Context context);
 
     /**
      * The operation to create or update a view. Update operation requires latest eTag to be set in the request. You may

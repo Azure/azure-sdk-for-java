@@ -12,7 +12,8 @@ import java.util.List;
 /** The Environment, models and assets used for inferencing. */
 @Immutable
 public final class AciServiceResponseEnvironmentImageRequest extends EnvironmentImageResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AciServiceResponseEnvironmentImageRequest.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AciServiceResponseEnvironmentImageRequest.class);
 
     /** {@inheritDoc} */
     @Override
@@ -51,8 +52,8 @@ public final class AciServiceResponseEnvironmentImageRequest extends Environment
 
     /** {@inheritDoc} */
     @Override
-    public AciServiceResponseEnvironmentImageRequest withEnvironmentReference(
-        EnvironmentImageResponseEnvironmentReference environmentReference) {
+    public AciServiceResponseEnvironmentImageRequest
+        withEnvironmentReference(EnvironmentImageResponseEnvironmentReference environmentReference) {
         super.withEnvironmentReference(environmentReference);
         return this;
     }

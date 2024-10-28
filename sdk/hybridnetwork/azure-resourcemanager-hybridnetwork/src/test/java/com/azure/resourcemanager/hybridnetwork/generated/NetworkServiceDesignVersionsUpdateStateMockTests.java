@@ -45,12 +45,13 @@ public final class NetworkServiceDesignVersionsUpdateStateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetworkServiceDesignVersionUpdateState response
-            = manager.networkServiceDesignVersions().updateState("razisg", "kiuemv", "nbwzohmnrxxbso", "klinhmdptysprq",
+        NetworkServiceDesignVersionUpdateState response = manager.networkServiceDesignVersions()
+            .updateState("razisg", "kiuemv", "nbwzohmnrxxbso", "klinhmdptysprq",
                 new NetworkServiceDesignVersionUpdateStateInner().withVersionState(VersionState.VALIDATING),
                 com.azure.core.util.Context.NONE);
 

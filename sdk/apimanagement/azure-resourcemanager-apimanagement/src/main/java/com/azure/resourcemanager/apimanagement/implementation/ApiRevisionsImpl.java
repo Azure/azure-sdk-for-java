@@ -19,29 +19,23 @@ public final class ApiRevisionsImpl implements ApiRevisions {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public ApiRevisionsImpl(
-        ApiRevisionsClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public ApiRevisionsImpl(ApiRevisionsClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ApiRevisionContract> listByService(
-        String resourceGroupName, String serviceName, String apiId) {
-        PagedIterable<ApiRevisionContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, apiId);
+    public PagedIterable<ApiRevisionContract> listByService(String resourceGroupName, String serviceName,
+        String apiId) {
+        PagedIterable<ApiRevisionContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, apiId);
         return Utils.mapPage(inner, inner1 -> new ApiRevisionContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ApiRevisionContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
-        PagedIterable<ApiRevisionContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, apiId, filter, top, skip, context);
+    public PagedIterable<ApiRevisionContract> listByService(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context) {
+        PagedIterable<ApiRevisionContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, apiId, filter, top, skip, context);
         return Utils.mapPage(inner, inner1 -> new ApiRevisionContractImpl(inner1, this.manager()));
     }
 

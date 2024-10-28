@@ -40,9 +40,16 @@
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-opens com.azure.iot.modelsrepository/com.azure.iot.modelsrepository=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+    </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>

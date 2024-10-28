@@ -221,17 +221,16 @@ public interface BigDataPoolResourceInfo {
     BigDataPoolResourceInfoInner innerModel();
 
     /** The entirety of the BigDataPoolResourceInfo definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The BigDataPoolResourceInfo definition stages. */
     interface DefinitionStages {
         /** The first stage of the BigDataPoolResourceInfo definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -250,6 +249,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -261,29 +261,20 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
+
         /**
          * The stage of the BigDataPoolResourceInfo definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithProvisioningState,
-                DefinitionStages.WithAutoScale,
-                DefinitionStages.WithAutoPause,
-                DefinitionStages.WithIsComputeIsolationEnabled,
-                DefinitionStages.WithIsAutotuneEnabled,
-                DefinitionStages.WithSessionLevelPackagesEnabled,
-                DefinitionStages.WithDynamicExecutorAllocation,
-                DefinitionStages.WithSparkEventsFolder,
-                DefinitionStages.WithNodeCount,
-                DefinitionStages.WithLibraryRequirements,
-                DefinitionStages.WithCustomLibraries,
-                DefinitionStages.WithSparkConfigProperties,
-                DefinitionStages.WithSparkVersion,
-                DefinitionStages.WithDefaultSparkLogFolder,
-                DefinitionStages.WithNodeSize,
-                DefinitionStages.WithNodeSizeFamily,
-                DefinitionStages.WithForce {
+            extends DefinitionStages.WithTags, DefinitionStages.WithProvisioningState, DefinitionStages.WithAutoScale,
+            DefinitionStages.WithAutoPause, DefinitionStages.WithIsComputeIsolationEnabled,
+            DefinitionStages.WithIsAutotuneEnabled, DefinitionStages.WithSessionLevelPackagesEnabled,
+            DefinitionStages.WithDynamicExecutorAllocation, DefinitionStages.WithSparkEventsFolder,
+            DefinitionStages.WithNodeCount, DefinitionStages.WithLibraryRequirements,
+            DefinitionStages.WithCustomLibraries, DefinitionStages.WithSparkConfigProperties,
+            DefinitionStages.WithSparkVersion, DefinitionStages.WithDefaultSparkLogFolder,
+            DefinitionStages.WithNodeSize, DefinitionStages.WithNodeSizeFamily, DefinitionStages.WithForce {
             /**
              * Executes the create request.
              *
@@ -299,6 +290,7 @@ public interface BigDataPoolResourceInfo {
              */
             BigDataPoolResourceInfo create(Context context);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -309,6 +301,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify provisioningState. */
         interface WithProvisioningState {
             /**
@@ -319,6 +312,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withProvisioningState(String provisioningState);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify autoScale. */
         interface WithAutoScale {
             /**
@@ -332,6 +326,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withAutoScale(AutoScaleProperties autoScale);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify autoPause. */
         interface WithAutoPause {
             /**
@@ -345,6 +340,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withAutoPause(AutoPauseProperties autoPause);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify isComputeIsolationEnabled. */
         interface WithIsComputeIsolationEnabled {
             /**
@@ -355,6 +351,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withIsComputeIsolationEnabled(Boolean isComputeIsolationEnabled);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify isAutotuneEnabled. */
         interface WithIsAutotuneEnabled {
             /**
@@ -368,6 +365,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withIsAutotuneEnabled(Boolean isAutotuneEnabled);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify sessionLevelPackagesEnabled. */
         interface WithSessionLevelPackagesEnabled {
             /**
@@ -378,6 +376,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withSessionLevelPackagesEnabled(Boolean sessionLevelPackagesEnabled);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify dynamicExecutorAllocation. */
         interface WithDynamicExecutorAllocation {
             /**
@@ -388,6 +387,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withDynamicExecutorAllocation(DynamicExecutorAllocation dynamicExecutorAllocation);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify sparkEventsFolder. */
         interface WithSparkEventsFolder {
             /**
@@ -398,6 +398,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withSparkEventsFolder(String sparkEventsFolder);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify nodeCount. */
         interface WithNodeCount {
             /**
@@ -408,6 +409,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withNodeCount(Integer nodeCount);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify libraryRequirements. */
         interface WithLibraryRequirements {
             /**
@@ -421,6 +423,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withLibraryRequirements(LibraryRequirements libraryRequirements);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify customLibraries. */
         interface WithCustomLibraries {
             /**
@@ -432,6 +435,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withCustomLibraries(List<LibraryInfo> customLibraries);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify sparkConfigProperties. */
         interface WithSparkConfigProperties {
             /**
@@ -445,6 +449,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withSparkConfigProperties(SparkConfigProperties sparkConfigProperties);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify sparkVersion. */
         interface WithSparkVersion {
             /**
@@ -455,6 +460,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withSparkVersion(String sparkVersion);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify defaultSparkLogFolder. */
         interface WithDefaultSparkLogFolder {
             /**
@@ -465,6 +471,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withDefaultSparkLogFolder(String defaultSparkLogFolder);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify nodeSize. */
         interface WithNodeSize {
             /**
@@ -475,6 +482,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withNodeSize(NodeSize nodeSize);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify nodeSizeFamily. */
         interface WithNodeSizeFamily {
             /**
@@ -485,6 +493,7 @@ public interface BigDataPoolResourceInfo {
              */
             WithCreate withNodeSizeFamily(NodeSizeFamily nodeSizeFamily);
         }
+
         /** The stage of the BigDataPoolResourceInfo definition allowing to specify force. */
         interface WithForce {
             /**
@@ -496,6 +505,7 @@ public interface BigDataPoolResourceInfo {
             WithCreate withForce(Boolean force);
         }
     }
+
     /**
      * Begins update for the BigDataPoolResourceInfo resource.
      *
@@ -520,6 +530,7 @@ public interface BigDataPoolResourceInfo {
          */
         BigDataPoolResourceInfo apply(Context context);
     }
+
     /** The BigDataPoolResourceInfo update stages. */
     interface UpdateStages {
         /** The stage of the BigDataPoolResourceInfo update allowing to specify tags. */
@@ -533,6 +544,7 @@ public interface BigDataPoolResourceInfo {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -63,13 +63,11 @@ public final class BatchAIManager {
     private BatchAIManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new BatchAIBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new BatchAIBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -177,15 +175,13 @@ public final class BatchAIManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.batchai")
                 .append("/")
                 .append("1.0.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -205,18 +201,14 @@ public final class BatchAIManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies
-                .add(
-                    new BearerTokenAuthenticationPolicy(
-                        credential, profile.getEnvironment().getManagementEndpoint() + "/.default"));
+            policies.add(new BearerTokenAuthenticationPolicy(credential,
+                profile.getEnvironment().getManagementEndpoint() + "/.default"));
             policies.addAll(this.policies);
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new BatchAIManager(httpPipeline, profile, defaultPollInterval);
         }
     }

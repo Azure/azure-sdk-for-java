@@ -45,8 +45,8 @@ public interface SqlVirtualMachinesClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlVirtualMachineInner> listBySqlVmGroup(
-        String resourceGroupName, String sqlVirtualMachineGroupName, Context context);
+    PagedIterable<SqlVirtualMachineInner> listBySqlVmGroup(String resourceGroupName, String sqlVirtualMachineGroupName,
+        Context context);
 
     /**
      * Gets all SQL virtual machines in a subscription.
@@ -84,8 +84,8 @@ public interface SqlVirtualMachinesClient {
      * @return a SQL virtual machine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlVirtualMachineInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String sqlVirtualMachineName, String expand, Context context);
+    Response<SqlVirtualMachineInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String sqlVirtualMachineName, String expand, Context context);
 
     /**
      * Gets a SQL virtual machine.
@@ -114,8 +114,8 @@ public interface SqlVirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginCreateOrUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters);
+    SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginCreateOrUpdate(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVirtualMachineInner parameters);
 
     /**
      * Creates or updates a SQL virtual machine.
@@ -131,8 +131,8 @@ public interface SqlVirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginCreateOrUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters, Context context);
+    SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginCreateOrUpdate(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVirtualMachineInner parameters, Context context);
 
     /**
      * Creates or updates a SQL virtual machine.
@@ -147,8 +147,8 @@ public interface SqlVirtualMachinesClient {
      * @return a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlVirtualMachineInner createOrUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters);
+    SqlVirtualMachineInner createOrUpdate(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVirtualMachineInner parameters);
 
     /**
      * Creates or updates a SQL virtual machine.
@@ -164,8 +164,8 @@ public interface SqlVirtualMachinesClient {
      * @return a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlVirtualMachineInner createOrUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineInner parameters, Context context);
+    SqlVirtualMachineInner createOrUpdate(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVirtualMachineInner parameters, Context context);
 
     /**
      * Deletes a SQL virtual machine.
@@ -194,8 +194,8 @@ public interface SqlVirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String sqlVirtualMachineName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sqlVirtualMachineName,
+        Context context);
 
     /**
      * Deletes a SQL virtual machine.
@@ -237,8 +237,8 @@ public interface SqlVirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters);
+    SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginUpdate(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters);
 
     /**
      * Updates a SQL virtual machine.
@@ -254,8 +254,8 @@ public interface SqlVirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginUpdate(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters, Context context);
+    SyncPoller<PollResult<SqlVirtualMachineInner>, SqlVirtualMachineInner> beginUpdate(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters, Context context);
 
     /**
      * Updates a SQL virtual machine.
@@ -270,8 +270,8 @@ public interface SqlVirtualMachinesClient {
      * @return a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlVirtualMachineInner update(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters);
+    SqlVirtualMachineInner update(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVirtualMachineUpdate parameters);
 
     /**
      * Updates a SQL virtual machine.
@@ -287,8 +287,8 @@ public interface SqlVirtualMachinesClient {
      * @return a SQL virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlVirtualMachineInner update(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVirtualMachineUpdate parameters, Context context);
+    SqlVirtualMachineInner update(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVirtualMachineUpdate parameters, Context context);
 
     /**
      * Gets all SQL virtual machines in a resource group.
@@ -344,8 +344,8 @@ public interface SqlVirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStartAssessment(
-        String resourceGroupName, String sqlVirtualMachineName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStartAssessment(String resourceGroupName, String sqlVirtualMachineName,
+        Context context);
 
     /**
      * Starts SQL best practices Assessment on SQL virtual machine.
@@ -401,8 +401,8 @@ public interface SqlVirtualMachinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRedeploy(
-        String resourceGroupName, String sqlVirtualMachineName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRedeploy(String resourceGroupName, String sqlVirtualMachineName,
+        Context context);
 
     /**
      * Uninstalls and reinstalls the SQL IaaS Extension.

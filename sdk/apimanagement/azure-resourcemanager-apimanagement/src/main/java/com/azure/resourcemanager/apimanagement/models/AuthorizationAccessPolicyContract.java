@@ -81,8 +81,8 @@ public interface AuthorizationAccessPolicyContract {
              * @param authorizationId Identifier of the authorization.
              * @return the next definition stage.
              */
-            WithCreate withExistingAuthorization(
-                String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId);
+            WithCreate withExistingAuthorization(String resourceGroupName, String serviceName,
+                String authorizationProviderId, String authorizationId);
         }
 
         /**

@@ -78,7 +78,7 @@ public class ContentTypeDetectionTest {
      */
     @Test
     public void tiffBigEndianContentDetectionTest() {
-        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(new byte[]{0x4D, 0x4D, 0x00, 0x2A}));
+        Flux<ByteBuffer> buffer = toFluxByteBuffer(new ByteArrayInputStream(new byte[] { 0x4D, 0x4D, 0x00, 0x2A }));
         assertEquals(ContentType.IMAGE_TIFF, detectContentType(buffer).block());
     }
 

@@ -41,8 +41,8 @@ public final class ManagementNetworkConfigurationPatchableProperties {
      * @param infrastructureVpnConfiguration the infrastructureVpnConfiguration value to set.
      * @return the ManagementNetworkConfigurationPatchableProperties object itself.
      */
-    public ManagementNetworkConfigurationPatchableProperties withInfrastructureVpnConfiguration(
-        VpnConfigurationPatchableProperties infrastructureVpnConfiguration) {
+    public ManagementNetworkConfigurationPatchableProperties
+        withInfrastructureVpnConfiguration(VpnConfigurationPatchableProperties infrastructureVpnConfiguration) {
         this.infrastructureVpnConfiguration = infrastructureVpnConfiguration;
         return this;
     }
@@ -62,8 +62,8 @@ public final class ManagementNetworkConfigurationPatchableProperties {
      * @param workloadVpnConfiguration the workloadVpnConfiguration value to set.
      * @return the ManagementNetworkConfigurationPatchableProperties object itself.
      */
-    public ManagementNetworkConfigurationPatchableProperties withWorkloadVpnConfiguration(
-        VpnConfigurationPatchableProperties workloadVpnConfiguration) {
+    public ManagementNetworkConfigurationPatchableProperties
+        withWorkloadVpnConfiguration(VpnConfigurationPatchableProperties workloadVpnConfiguration) {
         this.workloadVpnConfiguration = workloadVpnConfiguration;
         return this;
     }

@@ -11,24 +11,25 @@ import com.beust.jcommander.Parameter;
  * @see EventProcessorTest
  */
 public class EventProcessorOptions extends EventHubsOptions {
-    @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")
+    @Parameter(names = { "-cg", "--consumerGroup" }, description = "Name of the consumer group.")
     private String consumerGroup = "$Default";
 
     @Parameter(names = { "--prefetch" }, description = "Prefetch for the receiver.")
     private int prefetch = 500;
 
-    @Parameter(names = {"-scs", "--storageConnectionString"}, description = "Connection string for Storage account.",
+    @Parameter(
+        names = { "-scs", "--storageConnectionString" },
+        description = "Connection string for Storage account.",
         required = true)
     private String storageConnectionString;
 
-    @Parameter(names = {"-se", "--storageEndpoint"}, description = "Endpoint for storage account",
-        required = true)
+    @Parameter(names = { "-se", "--storageEndpoint" }, description = "Endpoint for storage account", required = true)
     private String storageEndpoint;
 
-    @Parameter(names = {"-e", "--eventsToSend"}, description = "Number of events to send per partition.")
+    @Parameter(names = { "-e", "--eventsToSend" }, description = "Number of events to send per partition.")
     private int eventsToSend = 100000;
 
-    @Parameter(names = {"--publish"}, description = "Switch to indicate whether to publish messages or not.")
+    @Parameter(names = { "--publish" }, description = "Switch to indicate whether to publish messages or not.")
     private boolean publishMessages = false;
 
     /**

@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkTapPropertiesDestinationsItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkTapPropertiesDestinationsItem model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"avi\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"g\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"wichmxczby\"]},\"destinationTapRuleId\":\"ocgmzdcts\"}")
-                .toObject(NetworkTapPropertiesDestinationsItem.class);
+        NetworkTapPropertiesDestinationsItem model = BinaryData.fromString(
+            "{\"name\":\"avi\",\"destinationType\":\"IsolationDomain\",\"destinationId\":\"g\",\"isolationDomainProperties\":{\"encapsulation\":\"None\",\"neighborGroupIds\":[\"wichmxczby\"]},\"destinationTapRuleId\":\"ocgmzdcts\"}")
+            .toObject(NetworkTapPropertiesDestinationsItem.class);
         Assertions.assertEquals("avi", model.name());
         Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN, model.destinationType());
         Assertions.assertEquals("g", model.destinationId());
@@ -30,16 +28,12 @@ public final class NetworkTapPropertiesDestinationsItemTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkTapPropertiesDestinationsItem model =
-            new NetworkTapPropertiesDestinationsItem()
-                .withName("avi")
-                .withDestinationType(DestinationType.ISOLATION_DOMAIN)
-                .withDestinationId("g")
-                .withIsolationDomainProperties(
-                    new IsolationDomainProperties()
-                        .withEncapsulation(Encapsulation.NONE)
-                        .withNeighborGroupIds(Arrays.asList("wichmxczby")))
-                .withDestinationTapRuleId("ocgmzdcts");
+        NetworkTapPropertiesDestinationsItem model = new NetworkTapPropertiesDestinationsItem().withName("avi")
+            .withDestinationType(DestinationType.ISOLATION_DOMAIN)
+            .withDestinationId("g")
+            .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
+                .withNeighborGroupIds(Arrays.asList("wichmxczby")))
+            .withDestinationTapRuleId("ocgmzdcts");
         model = BinaryData.fromObject(model).toObject(NetworkTapPropertiesDestinationsItem.class);
         Assertions.assertEquals("avi", model.name());
         Assertions.assertEquals(DestinationType.ISOLATION_DOMAIN, model.destinationType());

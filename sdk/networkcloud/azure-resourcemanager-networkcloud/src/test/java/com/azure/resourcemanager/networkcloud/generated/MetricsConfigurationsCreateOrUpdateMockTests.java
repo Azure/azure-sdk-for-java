@@ -34,46 +34,34 @@ public final class MetricsConfigurationsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"extendedLocation\":{\"name\":\"w\",\"type\":\"ch\"},\"properties\":{\"collectionInterval\":5033961721581707117,\"detailedStatus\":\"Applied\",\"detailedStatusMessage\":\"kshfy\",\"disabledMetrics\":[\"ibjepzwhj\"],\"enabledMetrics\":[\"dgbggcjxzh\",\"livwehsud\",\"mymbhdosmbng\",\"q\"],\"provisioningState\":\"Succeeded\"},\"location\":\"duvxd\",\"tags\":{\"mnrs\":\"xatm\",\"dmiplois\":\"nxoirxy\",\"ntwgkvyo\":\"kzsoxz\"},\"id\":\"psapzu\",\"name\":\"zwwy\",\"type\":\"bdjzghximkg\"}";
+        String responseStr
+            = "{\"extendedLocation\":{\"name\":\"w\",\"type\":\"ch\"},\"properties\":{\"collectionInterval\":5033961721581707117,\"detailedStatus\":\"Applied\",\"detailedStatusMessage\":\"kshfy\",\"disabledMetrics\":[\"ibjepzwhj\"],\"enabledMetrics\":[\"dgbggcjxzh\",\"livwehsud\",\"mymbhdosmbng\",\"q\"],\"provisioningState\":\"Succeeded\"},\"location\":\"duvxd\",\"tags\":{\"mnrs\":\"xatm\",\"dmiplois\":\"nxoirxy\",\"ntwgkvyo\":\"kzsoxz\"},\"id\":\"psapzu\",\"name\":\"zwwy\",\"type\":\"bdjzghximkg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ClusterMetricsConfiguration response =
-            manager
-                .metricsConfigurations()
-                .define("gwn")
-                .withRegion("svkkjbjolpyokl")
-                .withExistingCluster("udayprldidwmtf", "bvtzldzchub")
-                .withExtendedLocation(new ExtendedLocation().withName("zuvigvl").withType("hfrbzakpjt"))
-                .withCollectionInterval(735504182529978592L)
-                .withTags(mapOf("hmlieoigowxxb", "znad", "qe", "tpsyi", "wanvmwdvgjqcrbko", "qwtqszzgyksik"))
-                .withEnabledMetrics(Arrays.asList("bgngcrusxhirc"))
-                .create();
+        ClusterMetricsConfiguration response = manager.metricsConfigurations()
+            .define("gwn")
+            .withRegion("svkkjbjolpyokl")
+            .withExistingCluster("udayprldidwmtf", "bvtzldzchub")
+            .withExtendedLocation(new ExtendedLocation().withName("zuvigvl").withType("hfrbzakpjt"))
+            .withCollectionInterval(735504182529978592L)
+            .withTags(mapOf("hmlieoigowxxb", "znad", "qe", "tpsyi", "wanvmwdvgjqcrbko", "qwtqszzgyksik"))
+            .withEnabledMetrics(Arrays.asList("bgngcrusxhirc"))
+            .create();
 
         Assertions.assertEquals("duvxd", response.location());
         Assertions.assertEquals("xatm", response.tags().get("mnrs"));

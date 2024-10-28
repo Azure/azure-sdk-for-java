@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InventoryItemsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InventoryItemsList model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"frbbc\",\"value\":[{\"properties\":{\"inventoryType\":\"InventoryItemProperties\",\"managedResourceId\":\"agtltdhlfkqoj\",\"moRefId\":\"kvgtrdcn\",\"moName\":\"mzzs\",\"provisioningState\":\"Succeeded\"},\"kind\":\"rnysux\",\"id\":\"rafwgckhocxvdf\",\"name\":\"fwafqrouda\",\"type\":\"pavehhr\"},{\"properties\":{\"inventoryType\":\"InventoryItemProperties\",\"managedResourceId\":\"bunzozudh\",\"moRefId\":\"gkmoyxcdyuibhmfd\",\"moName\":\"zydvfvf\",\"provisioningState\":\"Failed\"},\"kind\":\"eoisrvhmgor\",\"id\":\"ukiscvwmzhw\",\"name\":\"lefaxvxilcbtgn\",\"type\":\"nzeyqxtjj\"},{\"properties\":{\"inventoryType\":\"InventoryItemProperties\",\"managedResourceId\":\"qlqhycavodg\",\"moRefId\":\"dbeesmie\",\"moName\":\"lrariaawiu\",\"provisioningState\":\"Deleting\"},\"kind\":\"wqfbylyrfgiagt\",\"id\":\"jocqwogfnzjvusf\",\"name\":\"ld\",\"type\":\"ozuxylfsbtkadpys\"}]}")
-                .toObject(InventoryItemsList.class);
+        InventoryItemsList model = BinaryData.fromString(
+            "{\"nextLink\":\"frbbc\",\"value\":[{\"properties\":{\"inventoryType\":\"InventoryItemProperties\",\"managedResourceId\":\"agtltdhlfkqoj\",\"moRefId\":\"kvgtrdcn\",\"moName\":\"mzzs\",\"provisioningState\":\"Succeeded\"},\"kind\":\"rnysux\",\"id\":\"rafwgckhocxvdf\",\"name\":\"fwafqrouda\",\"type\":\"pavehhr\"},{\"properties\":{\"inventoryType\":\"InventoryItemProperties\",\"managedResourceId\":\"bunzozudh\",\"moRefId\":\"gkmoyxcdyuibhmfd\",\"moName\":\"zydvfvf\",\"provisioningState\":\"Failed\"},\"kind\":\"eoisrvhmgor\",\"id\":\"ukiscvwmzhw\",\"name\":\"lefaxvxilcbtgn\",\"type\":\"nzeyqxtjj\"},{\"properties\":{\"inventoryType\":\"InventoryItemProperties\",\"managedResourceId\":\"qlqhycavodg\",\"moRefId\":\"dbeesmie\",\"moName\":\"lrariaawiu\",\"provisioningState\":\"Deleting\"},\"kind\":\"wqfbylyrfgiagt\",\"id\":\"jocqwogfnzjvusf\",\"name\":\"ld\",\"type\":\"ozuxylfsbtkadpys\"}]}")
+            .toObject(InventoryItemsList.class);
         Assertions.assertEquals("frbbc", model.nextLink());
         Assertions.assertEquals("agtltdhlfkqoj", model.value().get(0).properties().managedResourceId());
         Assertions.assertEquals("kvgtrdcn", model.value().get(0).properties().moRefId());
@@ -28,33 +26,21 @@ public final class InventoryItemsListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InventoryItemsList model =
-            new InventoryItemsList()
-                .withNextLink("frbbc")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new InventoryItemInner()
-                                .withProperties(
-                                    new InventoryItemProperties()
-                                        .withManagedResourceId("agtltdhlfkqoj")
-                                        .withMoRefId("kvgtrdcn")
-                                        .withMoName("mzzs"))
-                                .withKind("rnysux"),
-                            new InventoryItemInner()
-                                .withProperties(
-                                    new InventoryItemProperties()
-                                        .withManagedResourceId("bunzozudh")
-                                        .withMoRefId("gkmoyxcdyuibhmfd")
-                                        .withMoName("zydvfvf"))
-                                .withKind("eoisrvhmgor"),
-                            new InventoryItemInner()
-                                .withProperties(
-                                    new InventoryItemProperties()
-                                        .withManagedResourceId("qlqhycavodg")
-                                        .withMoRefId("dbeesmie")
-                                        .withMoName("lrariaawiu"))
-                                .withKind("wqfbylyrfgiagt")));
+        InventoryItemsList model = new InventoryItemsList().withNextLink("frbbc")
+            .withValue(Arrays.asList(
+                new InventoryItemInner()
+                    .withProperties(new InventoryItemProperties().withManagedResourceId("agtltdhlfkqoj")
+                        .withMoRefId("kvgtrdcn")
+                        .withMoName("mzzs"))
+                    .withKind("rnysux"),
+                new InventoryItemInner().withProperties(new InventoryItemProperties().withManagedResourceId("bunzozudh")
+                    .withMoRefId("gkmoyxcdyuibhmfd")
+                    .withMoName("zydvfvf")).withKind("eoisrvhmgor"),
+                new InventoryItemInner()
+                    .withProperties(new InventoryItemProperties().withManagedResourceId("qlqhycavodg")
+                        .withMoRefId("dbeesmie")
+                        .withMoName("lrariaawiu"))
+                    .withKind("wqfbylyrfgiagt")));
         model = BinaryData.fromObject(model).toObject(InventoryItemsList.class);
         Assertions.assertEquals("frbbc", model.nextLink());
         Assertions.assertEquals("agtltdhlfkqoj", model.value().get(0).properties().managedResourceId());

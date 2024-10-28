@@ -14,8 +14,8 @@ class VirtualMachineExtensionImageImpl extends WrapperImpl<VirtualMachineExtensi
     implements VirtualMachineExtensionImage {
     private final VirtualMachineExtensionImageVersion version;
 
-    VirtualMachineExtensionImageImpl(
-        VirtualMachineExtensionImageVersion version, VirtualMachineExtensionImageInner inner) {
+    VirtualMachineExtensionImageImpl(VirtualMachineExtensionImageVersion version,
+        VirtualMachineExtensionImageInner inner) {
         super(inner);
         this.version = version;
     }

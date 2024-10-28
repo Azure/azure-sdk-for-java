@@ -180,16 +180,12 @@ public final class MediaServiceOperationStatusInner {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model MediaServiceOperationStatusInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model MediaServiceOperationStatusInner"));
         }
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model MediaServiceOperationStatusInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property status in model MediaServiceOperationStatusInner"));
         }
     }
 

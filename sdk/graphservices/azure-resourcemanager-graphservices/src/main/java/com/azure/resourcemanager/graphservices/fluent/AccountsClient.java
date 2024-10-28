@@ -75,8 +75,8 @@ public interface AccountsClient {
      * @return account details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccountResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<AccountResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Returns account resource for a given name.
@@ -103,8 +103,8 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of account details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccountResourceInner>, AccountResourceInner> beginCreateAndUpdate(
-        String resourceGroupName, String resourceName, AccountResourceInner accountResource);
+    SyncPoller<PollResult<AccountResourceInner>, AccountResourceInner> beginCreateAndUpdate(String resourceGroupName,
+        String resourceName, AccountResourceInner accountResource);
 
     /**
      * Create or update account resource.
@@ -119,8 +119,8 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of account details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccountResourceInner>, AccountResourceInner> beginCreateAndUpdate(
-        String resourceGroupName, String resourceName, AccountResourceInner accountResource, Context context);
+    SyncPoller<PollResult<AccountResourceInner>, AccountResourceInner> beginCreateAndUpdate(String resourceGroupName,
+        String resourceName, AccountResourceInner accountResource, Context context);
 
     /**
      * Create or update account resource.
@@ -134,8 +134,8 @@ public interface AccountsClient {
      * @return account details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccountResourceInner createAndUpdate(
-        String resourceGroupName, String resourceName, AccountResourceInner accountResource);
+    AccountResourceInner createAndUpdate(String resourceGroupName, String resourceName,
+        AccountResourceInner accountResource);
 
     /**
      * Create or update account resource.
@@ -150,8 +150,8 @@ public interface AccountsClient {
      * @return account details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccountResourceInner createAndUpdate(
-        String resourceGroupName, String resourceName, AccountResourceInner accountResource, Context context);
+    AccountResourceInner createAndUpdate(String resourceGroupName, String resourceName,
+        AccountResourceInner accountResource, Context context);
 
     /**
      * Update account details.
@@ -166,8 +166,8 @@ public interface AccountsClient {
      * @return account details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccountResourceInner> updateWithResponse(
-        String resourceGroupName, String resourceName, AccountPatchResource accountResource, Context context);
+    Response<AccountResourceInner> updateWithResponse(String resourceGroupName, String resourceName,
+        AccountPatchResource accountResource, Context context);
 
     /**
      * Update account details.

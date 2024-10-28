@@ -47,9 +47,10 @@ public final class AccessListRoleBindingsWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ConfluentManager manager = ConfluentManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ConfluentManager manager = ConfluentManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AccessListRoleBindingsSuccessResponse response = manager.access()
             .listRoleBindingsWithResponse("vgfab", "iyji",

@@ -19,8 +19,8 @@ public final class ModelsImpl implements Models {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    public ModelsImpl(
-        ModelsClient innerClient, com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
+    public ModelsImpl(ModelsClient innerClient,
+        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

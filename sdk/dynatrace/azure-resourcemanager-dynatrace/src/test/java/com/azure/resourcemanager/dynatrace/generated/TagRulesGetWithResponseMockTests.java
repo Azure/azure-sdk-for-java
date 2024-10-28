@@ -35,40 +35,28 @@ public final class TagRulesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"logRules\":{\"sendAadLogs\":\"Enabled\",\"sendSubscriptionLogs\":\"Enabled\",\"sendActivityLogs\":\"Disabled\",\"filteringTags\":[{\"name\":\"swzts\",\"value\":\"pgn\",\"action\":\"Include\"},{\"name\":\"hpzxbzpfzab\",\"value\":\"cuh\",\"action\":\"Include\"},{\"name\":\"tyq\",\"value\":\"lbbovplw\",\"action\":\"Exclude\"}]},\"metricRules\":{\"sendingMetrics\":\"Disabled\",\"filteringTags\":[{\"name\":\"osvmk\",\"value\":\"sxqu\",\"action\":\"Include\"}]},\"provisioningState\":\"Accepted\"},\"id\":\"mg\",\"name\":\"xnkjzkdesl\",\"type\":\"vlopwiyighx\"}";
+        String responseStr
+            = "{\"properties\":{\"logRules\":{\"sendAadLogs\":\"Enabled\",\"sendSubscriptionLogs\":\"Enabled\",\"sendActivityLogs\":\"Disabled\",\"filteringTags\":[{\"name\":\"swzts\",\"value\":\"pgn\",\"action\":\"Include\"},{\"name\":\"hpzxbzpfzab\",\"value\":\"cuh\",\"action\":\"Include\"},{\"name\":\"tyq\",\"value\":\"lbbovplw\",\"action\":\"Exclude\"}]},\"metricRules\":{\"sendingMetrics\":\"Disabled\",\"filteringTags\":[{\"name\":\"osvmk\",\"value\":\"sxqu\",\"action\":\"Include\"}]},\"provisioningState\":\"Accepted\"},\"id\":\"mg\",\"name\":\"xnkjzkdesl\",\"type\":\"vlopwiyighx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DynatraceManager manager =
-            DynatraceManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DynatraceManager manager = DynatraceManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        TagRule response =
-            manager
-                .tagRules()
-                .getWithResponse("lmuzy", "xaepdkzjancuxr", "d", com.azure.core.util.Context.NONE)
-                .getValue();
+        TagRule response = manager.tagRules()
+            .getWithResponse("lmuzy", "xaepdkzjancuxr", "d", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(SendAadLogsStatus.ENABLED, response.logRules().sendAadLogs());
         Assertions.assertEquals(SendSubscriptionLogsStatus.ENABLED, response.logRules().sendSubscriptionLogs());

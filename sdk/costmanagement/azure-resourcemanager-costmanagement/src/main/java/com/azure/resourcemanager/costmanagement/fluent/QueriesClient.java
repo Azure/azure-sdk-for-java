@@ -86,9 +86,7 @@ public interface QueriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<QueryResultInner> usageByExternalCloudProviderTypeWithResponse(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        QueryDefinition parameters,
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, QueryDefinition parameters,
         Context context);
 
     /**
@@ -106,8 +104,6 @@ public interface QueriesClient {
      * @return result of query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QueryResultInner usageByExternalCloudProviderType(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        QueryDefinition parameters);
+    QueryResultInner usageByExternalCloudProviderType(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId, QueryDefinition parameters);
 }

@@ -50,8 +50,8 @@ public final class ScanResultsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     ScanResultsImpl(PurviewScanningClientImpl client) {
-        this.service =
-                RestProxy.create(ScanResultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ScanResultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,172 +63,90 @@ public final class ScanResultsImpl {
     @ServiceInterface(name = "PurviewScanningClien")
     public interface ScanResultsService {
         @Put("/datasources/{dataSourceName}/scans/{scanName}/runs/{runId}")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> runScan(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @PathParam("runId") String runId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> runScan(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @PathParam("runId") String runId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Put("/datasources/{dataSourceName}/scans/{scanName}/runs/{runId}")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> runScanSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @PathParam("runId") String runId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> runScanSync(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @PathParam("runId") String runId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/datasources/{dataSourceName}/scans/{scanName}/runs/{runId}/:cancel")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> cancelScan(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @PathParam("runId") String runId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> cancelScan(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @PathParam("runId") String runId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/datasources/{dataSourceName}/scans/{scanName}/runs/{runId}/:cancel")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> cancelScanSync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @PathParam("runId") String runId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> cancelScanSync(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @PathParam("runId") String runId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/datasources/{dataSourceName}/scans/{scanName}/runs")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listScanHistory(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listScanHistory(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/datasources/{dataSourceName}/scans/{scanName}/runs")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listScanHistorySync(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listScanHistorySync(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listScanHistoryNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("Endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listScanHistoryNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> listScanHistoryNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("Endpoint") String endpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> listScanHistoryNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("Endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
@@ -281,20 +199,11 @@ public final class ScanResultsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> runScanWithResponseAsync(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> runScanWithResponseAsync(String dataSourceName, String scanName, String runId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.runScan(
-                                this.client.getEndpoint(),
-                                dataSourceName,
-                                scanName,
-                                runId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.runScan(this.client.getEndpoint(), dataSourceName, scanName,
+            runId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -347,18 +256,11 @@ public final class ScanResultsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> runScanWithResponse(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
+    public Response<BinaryData> runScanWithResponse(String dataSourceName, String scanName, String runId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.runScanSync(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                runId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.runScanSync(this.client.getEndpoint(), dataSourceName, scanName, runId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -401,20 +303,11 @@ public final class ScanResultsImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelScanWithResponseAsync(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> cancelScanWithResponseAsync(String dataSourceName, String scanName, String runId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.cancelScan(
-                                this.client.getEndpoint(),
-                                dataSourceName,
-                                scanName,
-                                runId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.cancelScan(this.client.getEndpoint(), dataSourceName, scanName,
+            runId, this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -457,18 +350,11 @@ public final class ScanResultsImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelScanWithResponse(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
+    public Response<BinaryData> cancelScanWithResponse(String dataSourceName, String scanName, String runId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelScanSync(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                runId,
-                this.client.getServiceVersion().getVersion(),
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.cancelScanSync(this.client.getEndpoint(), dataSourceName, scanName, runId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -533,28 +419,14 @@ public final class ScanResultsImpl {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listScanHistorySinglePageAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listScanHistorySinglePageAsync(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listScanHistory(
-                                        this.client.getEndpoint(),
-                                        dataSourceName,
-                                        scanName,
-                                        this.client.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listScanHistory(this.client.getEndpoint(), dataSourceName, scanName,
+                this.client.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -619,16 +491,13 @@ public final class ScanResultsImpl {
      * @return the paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listScanHistoryAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listScanHistoryAsync(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listScanHistorySinglePageAsync(dataSourceName, scanName, requestOptions),
-                nextLink -> listScanHistoryNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listScanHistorySinglePageAsync(dataSourceName, scanName, requestOptions),
+            nextLink -> listScanHistoryNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -693,25 +562,13 @@ public final class ScanResultsImpl {
      * @return the response body along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> listScanHistorySinglePage(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> listScanHistorySinglePage(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listScanHistorySync(
-                        this.client.getEndpoint(),
-                        dataSourceName,
-                        scanName,
-                        this.client.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listScanHistorySync(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     /**
@@ -776,16 +633,13 @@ public final class ScanResultsImpl {
      * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listScanHistory(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listScanHistory(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedIterable<>(
-                () -> listScanHistorySinglePage(dataSourceName, scanName, requestOptions),
-                nextLink -> listScanHistoryNextSinglePage(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> listScanHistorySinglePage(dataSourceName, scanName, requestOptions),
+            nextLink -> listScanHistoryNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -850,22 +704,14 @@ public final class ScanResultsImpl {
      * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listScanHistoryNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listScanHistoryNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listScanHistoryNext(
-                                        nextLink, this.client.getEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "value"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listScanHistoryNext(nextLink, this.client.getEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -932,16 +778,10 @@ public final class ScanResultsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private PagedResponse<BinaryData> listScanHistoryNextSinglePage(String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
-        Response<BinaryData> res =
-                service.listScanHistoryNextSync(
-                        nextLink, this.client.getEndpoint(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                getValues(res.getValue(), "value"),
-                getNextLink(res.getValue(), "nextLink"),
-                null);
+        Response<BinaryData> res = service.listScanHistoryNextSync(nextLink, this.client.getEndpoint(), accept,
+            requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

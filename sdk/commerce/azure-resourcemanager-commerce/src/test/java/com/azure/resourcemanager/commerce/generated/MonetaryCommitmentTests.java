@@ -16,34 +16,27 @@ import org.junit.jupiter.api.Assertions;
 public final class MonetaryCommitmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonetaryCommitment model =
-            BinaryData
-                .fromString(
-                    "{\"Name\":\"Monetary"
-                        + " Commitment\",\"TieredDiscount\":{},\"ExcludedMeterIds\":[\"1aa0f45b-4326-4b78-b0fa-9687c4611286\",\"a60e66b9-10f9-4a92-a7aa-2bf3d302a701\",\"c826acba-6f28-454d-aae4-42fa65ea852b\",\"9baf4d39-7eb5-409a-be03-328ec7b54019\"],\"EffectiveDate\":\"2021-06-11T05:03:33Z\"}")
-                .toObject(MonetaryCommitment.class);
+        MonetaryCommitment model = BinaryData.fromString("{\"Name\":\"Monetary"
+            + " Commitment\",\"TieredDiscount\":{},\"ExcludedMeterIds\":[\"1aa0f45b-4326-4b78-b0fa-9687c4611286\",\"a60e66b9-10f9-4a92-a7aa-2bf3d302a701\",\"c826acba-6f28-454d-aae4-42fa65ea852b\",\"9baf4d39-7eb5-409a-be03-328ec7b54019\"],\"EffectiveDate\":\"2021-06-11T05:03:33Z\"}")
+            .toObject(MonetaryCommitment.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-11T05:03:33Z"), model.effectiveDate());
-        Assertions
-            .assertEquals(UUID.fromString("1aa0f45b-4326-4b78-b0fa-9687c4611286"), model.excludedMeterIds().get(0));
+        Assertions.assertEquals(UUID.fromString("1aa0f45b-4326-4b78-b0fa-9687c4611286"),
+            model.excludedMeterIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonetaryCommitment model =
-            new MonetaryCommitment()
-                .withEffectiveDate(OffsetDateTime.parse("2021-06-11T05:03:33Z"))
+        MonetaryCommitment model
+            = new MonetaryCommitment().withEffectiveDate(OffsetDateTime.parse("2021-06-11T05:03:33Z"))
                 .withTieredDiscount(mapOf())
-                .withExcludedMeterIds(
-                    Arrays
-                        .asList(
-                            UUID.fromString("1aa0f45b-4326-4b78-b0fa-9687c4611286"),
-                            UUID.fromString("a60e66b9-10f9-4a92-a7aa-2bf3d302a701"),
-                            UUID.fromString("c826acba-6f28-454d-aae4-42fa65ea852b"),
-                            UUID.fromString("9baf4d39-7eb5-409a-be03-328ec7b54019")));
+                .withExcludedMeterIds(Arrays.asList(UUID.fromString("1aa0f45b-4326-4b78-b0fa-9687c4611286"),
+                    UUID.fromString("a60e66b9-10f9-4a92-a7aa-2bf3d302a701"),
+                    UUID.fromString("c826acba-6f28-454d-aae4-42fa65ea852b"),
+                    UUID.fromString("9baf4d39-7eb5-409a-be03-328ec7b54019")));
         model = BinaryData.fromObject(model).toObject(MonetaryCommitment.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-11T05:03:33Z"), model.effectiveDate());
-        Assertions
-            .assertEquals(UUID.fromString("1aa0f45b-4326-4b78-b0fa-9687c4611286"), model.excludedMeterIds().get(0));
+        Assertions.assertEquals(UUID.fromString("1aa0f45b-4326-4b78-b0fa-9687c4611286"),
+            model.excludedMeterIds().get(0));
     }
 
     @SuppressWarnings("unchecked")

@@ -33,48 +33,36 @@ public final class ResourcePoolsCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"uuid\":\"ylnio\",\"vCenterId\":\"zgb\",\"moRefId\":\"edm\",\"inventoryItemId\":\"kvnlvxbcuiiznkt\",\"moName\":\"ansnvp\",\"cpuSharesLevel\":\"bmikost\",\"cpuReservationMHz\":4326566704546612095,\"cpuLimitMHz\":4946452508128515048,\"memSharesLevel\":\"qnyophzfyls\",\"memReservationMB\":1557828548687606223,\"memLimitMB\":2804347969541145358,\"memOverallUsageGB\":8283915751167918851,\"memCapacityGB\":3624952235307178463,\"cpuOverallUsageMHz\":51966962354029378,\"cpuCapacityMHz\":4477654614915843418,\"customResourceName\":\"fwlwxjwetnps\",\"datastoreIds\":[\"lafzvaylptr\",\"qqwzt\",\"mwqkchcxwaxf\"],\"networkIds\":[\"jkjexf\",\"eqvhpsylkk\",\"hkbffmbm\"],\"statuses\":[{\"type\":\"gywwpgjxs\",\"status\":\"tf\",\"reason\":\"gicgaaoepttaq\",\"message\":\"dewemxswv\",\"severity\":\"unzzjgehk\",\"lastUpdatedAt\":\"2021-10-15T08:21:58Z\"},{\"type\":\"rtixokff\",\"status\":\"inljqepqwhixmo\",\"reason\":\"tshi\",\"message\":\"gvelfc\",\"severity\":\"uccbirdsvuw\",\"lastUpdatedAt\":\"2021-09-01T15:39:22Z\"},{\"type\":\"egstmninwjizci\",\"status\":\"ghgshejjtbxqmu\",\"reason\":\"xlxqzvn\",\"message\":\"sbycucrwnamikz\",\"severity\":\"rqbsmswziq\",\"lastUpdatedAt\":\"2021-08-26T22:22:09Z\"}],\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"type\":\"ruswhv\",\"name\":\"zznvfbyc\"},\"kind\":\"jww\",\"location\":\"xzv\",\"tags\":{\"aohdjh\":\"mxqhndvnoamldse\",\"pelnjetag\":\"flzokxco\",\"npbs\":\"tsxoatftgz\",\"g\":\"vefloccsrmozihmi\"},\"id\":\"wtxxpkyjcx\",\"name\":\"jxgrytfmp\",\"type\":\"ycilrmcaykggnox\"}";
+        String responseStr
+            = "{\"properties\":{\"uuid\":\"ylnio\",\"vCenterId\":\"zgb\",\"moRefId\":\"edm\",\"inventoryItemId\":\"kvnlvxbcuiiznkt\",\"moName\":\"ansnvp\",\"cpuSharesLevel\":\"bmikost\",\"cpuReservationMHz\":4326566704546612095,\"cpuLimitMHz\":4946452508128515048,\"memSharesLevel\":\"qnyophzfyls\",\"memReservationMB\":1557828548687606223,\"memLimitMB\":2804347969541145358,\"memOverallUsageGB\":8283915751167918851,\"memCapacityGB\":3624952235307178463,\"cpuOverallUsageMHz\":51966962354029378,\"cpuCapacityMHz\":4477654614915843418,\"customResourceName\":\"fwlwxjwetnps\",\"datastoreIds\":[\"lafzvaylptr\",\"qqwzt\",\"mwqkchcxwaxf\"],\"networkIds\":[\"jkjexf\",\"eqvhpsylkk\",\"hkbffmbm\"],\"statuses\":[{\"type\":\"gywwpgjxs\",\"status\":\"tf\",\"reason\":\"gicgaaoepttaq\",\"message\":\"dewemxswv\",\"severity\":\"unzzjgehk\",\"lastUpdatedAt\":\"2021-10-15T08:21:58Z\"},{\"type\":\"rtixokff\",\"status\":\"inljqepqwhixmo\",\"reason\":\"tshi\",\"message\":\"gvelfc\",\"severity\":\"uccbirdsvuw\",\"lastUpdatedAt\":\"2021-09-01T15:39:22Z\"},{\"type\":\"egstmninwjizci\",\"status\":\"ghgshejjtbxqmu\",\"reason\":\"xlxqzvn\",\"message\":\"sbycucrwnamikz\",\"severity\":\"rqbsmswziq\",\"lastUpdatedAt\":\"2021-08-26T22:22:09Z\"}],\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"type\":\"ruswhv\",\"name\":\"zznvfbyc\"},\"kind\":\"jww\",\"location\":\"xzv\",\"tags\":{\"aohdjh\":\"mxqhndvnoamldse\",\"pelnjetag\":\"flzokxco\",\"npbs\":\"tsxoatftgz\",\"g\":\"vefloccsrmozihmi\"},\"id\":\"wtxxpkyjcx\",\"name\":\"jxgrytfmp\",\"type\":\"ycilrmcaykggnox\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ConnectedVMwareManager manager =
-            ConnectedVMwareManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ConnectedVMwareManager manager = ConnectedVMwareManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ResourcePool response =
-            manager
-                .resourcePools()
-                .define("ygznmmaxrizk")
-                .withRegion("bcblemb")
-                .withExistingResourceGroup("aabzmif")
-                .withTags(mapOf("xk", "wvq", "tswbzuwfmd", "ivqiheb", "vcjfelisdjubggb", "ragegi"))
-                .withExtendedLocation(new ExtendedLocation().withType("wdofdbxiqx").withName("iqbi"))
-                .withKind("mwwinhehfqpofv")
-                .withVCenterId("eixynllxecwcroj")
-                .withMoRefId("slhcawjutifd")
-                .withInventoryItemId("mvi")
-                .create();
+        ResourcePool response = manager.resourcePools()
+            .define("ygznmmaxrizk")
+            .withRegion("bcblemb")
+            .withExistingResourceGroup("aabzmif")
+            .withTags(mapOf("xk", "wvq", "tswbzuwfmd", "ivqiheb", "vcjfelisdjubggb", "ragegi"))
+            .withExtendedLocation(new ExtendedLocation().withType("wdofdbxiqx").withName("iqbi"))
+            .withKind("mwwinhehfqpofv")
+            .withVCenterId("eixynllxecwcroj")
+            .withMoRefId("slhcawjutifd")
+            .withInventoryItemId("mvi")
+            .create();
 
         Assertions.assertEquals("xzv", response.location());
         Assertions.assertEquals("mxqhndvnoamldse", response.tags().get("aohdjh"));

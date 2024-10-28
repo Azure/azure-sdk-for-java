@@ -54,9 +54,11 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
          * 4. add one more ACS target to the call.
          * 5. remove the newly added target from the call.
          */
-        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenAddParticipantFinallyRemoveParticipantAutomatedTest", next))
-            .buildAsyncClient();
+        CommunicationIdentityAsyncClient identityAsyncClient
+            = getCommunicationIdentityClientUsingConnectionString(httpClient)
+                .addPolicy((context, next) -> logHeaders(
+                    "createVOIPCallAndAnswerThenAddParticipantFinallyRemoveParticipantAutomatedTest", next))
+                .buildAsyncClient();
 
         List<CallConnectionAsync> callDestructors = new ArrayList<>();
 
@@ -71,20 +73,23 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
 
             // Create call automation client for caller.
             CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenAddParticipantFinallyRemoveParticipantAutomatedTest", next))
+                .addPolicy((context, next) -> logHeaders(
+                    "createVOIPCallAndAnswerThenAddParticipantFinallyRemoveParticipantAutomatedTest", next))
                 .sourceIdentity(caller)
                 .buildAsyncClient();
 
             // Create call automation client for receivers.
             CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenAddParticipantFinallyRemoveParticipantAutomatedTest", next))
+                .addPolicy((context, next) -> logHeaders(
+                    "createVOIPCallAndAnswerThenAddParticipantFinallyRemoveParticipantAutomatedTest", next))
                 .buildAsyncClient();
 
             // create a call
             List<CommunicationIdentifier> targetParticipants = new ArrayList<>(Arrays.asList(receiver));
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targetParticipants,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            Response<CreateCallResult> createCallResultResponse
+                = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);
@@ -97,9 +102,11 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            AnswerCallOptions answerCallOptions
+                = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult
+                = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block())
+                    .getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
@@ -107,12 +114,14 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             callDestructors.add(answerCallResult.getCallConnectionAsync());
 
             // wait for callConnected
-            CallConnected callConnected = waitForEvent(CallConnected.class, receiverConnectionId, Duration.ofSeconds(10));
+            CallConnected callConnected
+                = waitForEvent(CallConnected.class, receiverConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnected);
 
             // add another receiver to the call
             AddParticipantOptions addParticipantsOptions = new AddParticipantOptions(new CallInvite(anotherReceiver));
-            Response<AddParticipantResult> addParticipantsResultResponse = createCallResult.getCallConnectionAsync().addParticipantWithResponse(addParticipantsOptions).block();
+            Response<AddParticipantResult> addParticipantsResultResponse
+                = createCallResult.getCallConnectionAsync().addParticipantWithResponse(addParticipantsOptions).block();
             assertNotNull(addParticipantsResultResponse);
 
             // wait for the incomingCallContext on another receiver
@@ -122,27 +131,33 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             // answer the call
             answerCallOptions = new AnswerCallOptions(anotherIncomingCallContext,
                 DISPATCHER_CALLBACK + String.format("?q=%s", anotherUniqueId));
-            AnswerCallResult anotherAnswerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            AnswerCallResult anotherAnswerCallResult
+                = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block())
+                    .getValue();
             assertNotNull(anotherAnswerCallResult);
             assertNotNull(anotherAnswerCallResult.getCallConnectionAsync());
             assertNotNull(anotherAnswerCallResult.getCallConnectionProperties());
             callDestructors.add(anotherAnswerCallResult.getCallConnectionAsync());
 
             // wait for addParticipantSucceed
-            AddParticipantSucceeded addParticipantSucceeded = waitForEvent(AddParticipantSucceeded.class, callerConnectionId, Duration.ofSeconds(10));
+            AddParticipantSucceeded addParticipantSucceeded
+                = waitForEvent(AddParticipantSucceeded.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(addParticipantSucceeded);
 
             // check participant number in the call
-            List<CallParticipant> listParticipantsResult = createCallResult.getCallConnectionAsync().listParticipants().log().collectList().block();
+            List<CallParticipant> listParticipantsResult
+                = createCallResult.getCallConnectionAsync().listParticipants().log().collectList().block();
             assertNotNull(listParticipantsResult);
             assertEquals(3, listParticipantsResult.size());
 
             // remove a participant from the call
-            RemoveParticipantResult removeParticipantResult = createCallResult.getCallConnectionAsync().removeParticipant(receiver).block();
+            RemoveParticipantResult removeParticipantResult
+                = createCallResult.getCallConnectionAsync().removeParticipant(receiver).block();
             assertNotNull(removeParticipantResult);
 
             // wait for removeParticipantSucceed
-            RemoveParticipantSucceeded removeParticipantSucceeded = waitForEvent(RemoveParticipantSucceeded.class, callerConnectionId, Duration.ofSeconds(10));
+            RemoveParticipantSucceeded removeParticipantSucceeded
+                = waitForEvent(RemoveParticipantSucceeded.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(removeParticipantSucceeded);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
@@ -173,9 +188,11 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
          * 4. add one more ACS target to the call.
          * 5. cancel the add participant request.
          */
-        CommunicationIdentityAsyncClient identityAsyncClient = getCommunicationIdentityClientUsingConnectionString(httpClient)
-            .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenAddParticipantFinallyCancelAddParticipant", next))
-            .buildAsyncClient();
+        CommunicationIdentityAsyncClient identityAsyncClient
+            = getCommunicationIdentityClientUsingConnectionString(httpClient)
+                .addPolicy((context,
+                    next) -> logHeaders("createVOIPCallAndAnswerThenAddParticipantFinallyCancelAddParticipant", next))
+                .buildAsyncClient();
 
         List<CallConnectionAsync> callDestructors = new ArrayList<>();
 
@@ -189,20 +206,23 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
 
             // Create call automation client for caller.
             CallAutomationAsyncClient callerAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenAddParticipantFinallyCancelAddParticipant", next))
+                .addPolicy((context,
+                    next) -> logHeaders("createVOIPCallAndAnswerThenAddParticipantFinallyCancelAddParticipant", next))
                 .sourceIdentity(caller)
                 .buildAsyncClient();
 
             // Create call automation client for receivers.
             CallAutomationAsyncClient receiverAsyncClient = getCallAutomationClientUsingConnectionString(httpClient)
-                .addPolicy((context, next) -> logHeaders("createVOIPCallAndAnswerThenAddParticipantFinallyCancelAddParticipant", next))
+                .addPolicy((context,
+                    next) -> logHeaders("createVOIPCallAndAnswerThenAddParticipantFinallyCancelAddParticipant", next))
                 .buildAsyncClient();
 
             // create a call
             List<CommunicationIdentifier> targetParticipants = new ArrayList<>(Arrays.asList(receiver));
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targetParticipants,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
+            Response<CreateCallResult> createCallResultResponse
+                = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);
@@ -215,9 +235,11 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            AnswerCallResult answerCallResult = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
+            AnswerCallOptions answerCallOptions
+                = new AnswerCallOptions(incomingCallContext, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+            AnswerCallResult answerCallResult
+                = Objects.requireNonNull(receiverAsyncClient.answerCallWithResponse(answerCallOptions).block())
+                    .getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
@@ -225,26 +247,28 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             callDestructors.add(answerCallResult.getCallConnectionAsync());
 
             // wait for callConnected
-            CallConnected callConnected = waitForEvent(CallConnected.class, receiverConnectionId, Duration.ofSeconds(10));
+            CallConnected callConnected
+                = waitForEvent(CallConnected.class, receiverConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnected);
 
             // add another receiver to the call
             AddParticipantOptions addParticipantsOptions = new AddParticipantOptions(new CallInvite(anotherReceiver));
-            Response<AddParticipantResult> addParticipantsResultResponse = createCallResult.getCallConnectionAsync().addParticipantWithResponse(addParticipantsOptions).block();
+            Response<AddParticipantResult> addParticipantsResultResponse
+                = createCallResult.getCallConnectionAsync().addParticipantWithResponse(addParticipantsOptions).block();
             assertNotNull(addParticipantsResultResponse);
 
             // ensure invitation is sent
             sleepIfRunningAgainstService(3000);
 
             // cancel add participant
-            CancelAddParticipantOperationResult cancelAddParticipantResponse = createCallResult
-                    .getCallConnectionAsync()
-                    .cancelAddParticipantOperation(addParticipantsResultResponse.getValue().getInvitationId())
-                    .block();
+            CancelAddParticipantOperationResult cancelAddParticipantResponse = createCallResult.getCallConnectionAsync()
+                .cancelAddParticipantOperation(addParticipantsResultResponse.getValue().getInvitationId())
+                .block();
             assertNotNull(cancelAddParticipantResponse);
 
             // wait for CancelAddParticipantSucceeded
-            CancelAddParticipantSucceeded cancelAddParticipantSucceeded = waitForEvent(CancelAddParticipantSucceeded.class, callerConnectionId, Duration.ofSeconds(10));
+            CancelAddParticipantSucceeded cancelAddParticipantSucceeded
+                = waitForEvent(CancelAddParticipantSucceeded.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(cancelAddParticipantSucceeded);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);

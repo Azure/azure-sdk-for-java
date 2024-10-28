@@ -20,11 +20,7 @@ public final class ApiWikisUpdateResponse extends ResponseBase<ApiWikisUpdateHea
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ApiWikisUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        WikiContractInner value,
+    public ApiWikisUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, WikiContractInner value,
         ApiWikisUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

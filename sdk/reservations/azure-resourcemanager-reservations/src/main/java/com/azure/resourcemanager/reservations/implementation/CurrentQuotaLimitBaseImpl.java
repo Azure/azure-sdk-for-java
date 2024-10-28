@@ -55,20 +55,16 @@ public final class CurrentQuotaLimitBaseImpl
     }
 
     public CurrentQuotaLimitBase create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getQuotas()
-                .createOrUpdate(subscriptionId, providerId, location, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getQuotas()
+            .createOrUpdate(subscriptionId, providerId, location, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CurrentQuotaLimitBase create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getQuotas()
-                .createOrUpdate(subscriptionId, providerId, location, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getQuotas()
+            .createOrUpdate(subscriptionId, providerId, location, resourceName, this.innerModel(), context);
         return this;
     }
 
@@ -83,25 +79,20 @@ public final class CurrentQuotaLimitBaseImpl
     }
 
     public CurrentQuotaLimitBase apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getQuotas()
-                .update(subscriptionId, providerId, location, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getQuotas()
+            .update(subscriptionId, providerId, location, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CurrentQuotaLimitBase apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getQuotas()
-                .update(subscriptionId, providerId, location, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getQuotas()
+            .update(subscriptionId, providerId, location, resourceName, this.innerModel(), context);
         return this;
     }
 
-    CurrentQuotaLimitBaseImpl(
-        CurrentQuotaLimitBaseInner innerObject,
+    CurrentQuotaLimitBaseImpl(CurrentQuotaLimitBaseInner innerObject,
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -112,22 +103,18 @@ public final class CurrentQuotaLimitBaseImpl
     }
 
     public CurrentQuotaLimitBase refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getQuotas()
-                .getWithResponse(subscriptionId, providerId, location, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getQuotas()
+            .getWithResponse(subscriptionId, providerId, location, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CurrentQuotaLimitBase refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getQuotas()
-                .getWithResponse(subscriptionId, providerId, location, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getQuotas()
+            .getWithResponse(subscriptionId, providerId, location, resourceName, context)
+            .getValue();
         return this;
     }
 

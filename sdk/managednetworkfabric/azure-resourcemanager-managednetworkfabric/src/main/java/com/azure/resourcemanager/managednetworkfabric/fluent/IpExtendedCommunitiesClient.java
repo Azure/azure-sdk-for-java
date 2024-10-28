@@ -30,8 +30,8 @@ public interface IpExtendedCommunitiesClient {
      * @return the {@link SyncPoller} for polling of the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginCreate(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body);
+    SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginCreate(String resourceGroupName,
+        String ipExtendedCommunityName, IpExtendedCommunityInner body);
 
     /**
      * Create an IP Extended Community.
@@ -48,8 +48,8 @@ public interface IpExtendedCommunitiesClient {
      * @return the {@link SyncPoller} for polling of the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginCreate(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body, Context context);
+    SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginCreate(String resourceGroupName,
+        String ipExtendedCommunityName, IpExtendedCommunityInner body, Context context);
 
     /**
      * Create an IP Extended Community.
@@ -65,8 +65,8 @@ public interface IpExtendedCommunitiesClient {
      * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IpExtendedCommunityInner create(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body);
+    IpExtendedCommunityInner create(String resourceGroupName, String ipExtendedCommunityName,
+        IpExtendedCommunityInner body);
 
     /**
      * Create an IP Extended Community.
@@ -83,8 +83,8 @@ public interface IpExtendedCommunitiesClient {
      * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IpExtendedCommunityInner create(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityInner body, Context context);
+    IpExtendedCommunityInner create(String resourceGroupName, String ipExtendedCommunityName,
+        IpExtendedCommunityInner body, Context context);
 
     /**
      * Gets an IP Extended Community.
@@ -100,8 +100,8 @@ public interface IpExtendedCommunitiesClient {
      * @return the IP Extended Community resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IpExtendedCommunityInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String ipExtendedCommunityName, Context context);
+    Response<IpExtendedCommunityInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String ipExtendedCommunityName, Context context);
 
     /**
      * Gets an IP Extended Community.
@@ -132,8 +132,8 @@ public interface IpExtendedCommunitiesClient {
      * @return the {@link SyncPoller} for polling of the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginUpdate(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body);
+    SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginUpdate(String resourceGroupName,
+        String ipExtendedCommunityName, IpExtendedCommunityPatch body);
 
     /**
      * Updates the IP Extended Community.
@@ -150,8 +150,8 @@ public interface IpExtendedCommunitiesClient {
      * @return the {@link SyncPoller} for polling of the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginUpdate(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body, Context context);
+    SyncPoller<PollResult<IpExtendedCommunityInner>, IpExtendedCommunityInner> beginUpdate(String resourceGroupName,
+        String ipExtendedCommunityName, IpExtendedCommunityPatch body, Context context);
 
     /**
      * Updates the IP Extended Community.
@@ -167,8 +167,8 @@ public interface IpExtendedCommunitiesClient {
      * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IpExtendedCommunityInner update(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body);
+    IpExtendedCommunityInner update(String resourceGroupName, String ipExtendedCommunityName,
+        IpExtendedCommunityPatch body);
 
     /**
      * Updates the IP Extended Community.
@@ -185,8 +185,8 @@ public interface IpExtendedCommunitiesClient {
      * @return the IP Extended Community resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IpExtendedCommunityInner update(
-        String resourceGroupName, String ipExtendedCommunityName, IpExtendedCommunityPatch body, Context context);
+    IpExtendedCommunityInner update(String resourceGroupName, String ipExtendedCommunityName,
+        IpExtendedCommunityPatch body, Context context);
 
     /**
      * Deletes the IP Extended Community.
@@ -217,8 +217,8 @@ public interface IpExtendedCommunitiesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String ipExtendedCommunityName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ipExtendedCommunityName,
+        Context context);
 
     /**
      * Deletes the IP Extended Community.

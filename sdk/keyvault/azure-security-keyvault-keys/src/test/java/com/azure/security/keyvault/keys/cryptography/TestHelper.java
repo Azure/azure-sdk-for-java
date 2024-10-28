@@ -18,10 +18,10 @@ import static com.azure.core.test.TestBase.getHttpClients;
 
 public class TestHelper {
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-    private static final String AZURE_KEYVAULT_TEST_CRYPTOGRAPHY_SERVICE_VERSIONS =
-        "AZURE_KEYVAULT_TEST_CRYPTOGRAPHY_SERVICE_VERSIONS";
-    private static final String SERVICE_VERSION_FROM_ENV =
-        Configuration.getGlobalConfiguration().get(AZURE_KEYVAULT_TEST_CRYPTOGRAPHY_SERVICE_VERSIONS);
+    private static final String AZURE_KEYVAULT_TEST_CRYPTOGRAPHY_SERVICE_VERSIONS
+        = "AZURE_KEYVAULT_TEST_CRYPTOGRAPHY_SERVICE_VERSIONS";
+    private static final String SERVICE_VERSION_FROM_ENV
+        = Configuration.getGlobalConfiguration().get(AZURE_KEYVAULT_TEST_CRYPTOGRAPHY_SERVICE_VERSIONS);
 
     /**
      * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
@@ -34,10 +34,9 @@ public class TestHelper {
         // arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
 
-        getHttpClients()
-            .forEach(httpClient ->
-                Arrays.stream(CryptographyServiceVersion.values()).filter(TestHelper::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
+        getHttpClients().forEach(httpClient -> Arrays.stream(CryptographyServiceVersion.values())
+            .filter(TestHelper::shouldServiceVersionBeTested)
+            .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
 
         return argumentsList.stream();
     }

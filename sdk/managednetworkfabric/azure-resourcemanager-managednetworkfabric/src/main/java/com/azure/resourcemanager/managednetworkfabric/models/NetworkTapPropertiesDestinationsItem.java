@@ -36,8 +36,8 @@ public final class NetworkTapPropertiesDestinationsItem extends DestinationPrope
 
     /** {@inheritDoc} */
     @Override
-    public NetworkTapPropertiesDestinationsItem withIsolationDomainProperties(
-        IsolationDomainProperties isolationDomainProperties) {
+    public NetworkTapPropertiesDestinationsItem
+        withIsolationDomainProperties(IsolationDomainProperties isolationDomainProperties) {
         super.withIsolationDomainProperties(isolationDomainProperties);
         return this;
     }

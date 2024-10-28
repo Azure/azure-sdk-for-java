@@ -202,10 +202,8 @@ public final class NotificationChannelInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model NotificationChannelInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model NotificationChannelInner"));
         } else {
             innerProperties().validate();
         }

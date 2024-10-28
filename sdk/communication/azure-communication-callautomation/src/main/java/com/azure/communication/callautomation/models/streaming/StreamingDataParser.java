@@ -67,7 +67,8 @@ public final class StreamingDataParser {
                         // Possible return of AudioData
                         final AudioDataConverter audioInternal = AudioDataConverter.fromJson(reader);
                         if (audioInternal != null) {
-                            return new AudioData(audioInternal.getData(), audioInternal.getTimestamp(), audioInternal.getParticipantRawID(), audioInternal.isSilent());
+                            return new AudioData(audioInternal.getData(), audioInternal.getTimestamp(),
+                                audioInternal.getParticipantRawID(), audioInternal.isSilent());
                         } else {
                             return null;
                         }
@@ -75,23 +76,35 @@ public final class StreamingDataParser {
                         // Possible return of AudioMetadata
                         final AudioMetadataConverter metadataInternal = AudioMetadataConverter.fromJson(reader);
                         if (metadataInternal != null) {
-                            return new AudioMetadata(metadataInternal.getMediaSubscriptionId(), metadataInternal.getEncoding(), metadataInternal.getSampleRate(), metadataInternal.getChannels(), metadataInternal.getLength());
+                            return new AudioMetadata(metadataInternal.getMediaSubscriptionId(),
+                                metadataInternal.getEncoding(), metadataInternal.getSampleRate(),
+                                metadataInternal.getChannels(), metadataInternal.getLength());
                         } else {
                             return null;
                         }
                     } else if ("transcriptionData".equals(fieldName)) {
                         // Possible return of TranscriptionData
-                        final TranscriptionDataConverter transcriptionInternal = TranscriptionDataConverter.fromJson(reader);
+                        final TranscriptionDataConverter transcriptionInternal
+                            = TranscriptionDataConverter.fromJson(reader);
                         if (transcriptionInternal != null) {
-                            return new TranscriptionData(transcriptionInternal.getText(), transcriptionInternal.getFormat(), transcriptionInternal.getConfidence(), transcriptionInternal.getOffset(), transcriptionInternal.getDuration(), transcriptionInternal.getWords(), transcriptionInternal.getParticipantRawID(), transcriptionInternal.getResultStatus());
+                            return new TranscriptionData(transcriptionInternal.getText(),
+                                transcriptionInternal.getFormat(), transcriptionInternal.getConfidence(),
+                                transcriptionInternal.getOffset(), transcriptionInternal.getDuration(),
+                                transcriptionInternal.getWords(), transcriptionInternal.getParticipantRawID(),
+                                transcriptionInternal.getResultStatus());
                         } else {
                             return null;
                         }
                     } else if ("transcriptionMetadata".equals(fieldName)) {
                         // Possible return of TranscriptionMetadata.
-                        final TranscriptionMetadataConverter transcriptionMetadataInternal = TranscriptionMetadataConverter.fromJson(reader);
+                        final TranscriptionMetadataConverter transcriptionMetadataInternal
+                            = TranscriptionMetadataConverter.fromJson(reader);
                         if (transcriptionMetadataInternal != null) {
-                            return new TranscriptionMetadata(transcriptionMetadataInternal.getTranscriptionSubscriptionId(), transcriptionMetadataInternal.getLocale(), transcriptionMetadataInternal.getCallConnectionId(), transcriptionMetadataInternal.getCorrelationId());
+                            return new TranscriptionMetadata(
+                                transcriptionMetadataInternal.getTranscriptionSubscriptionId(),
+                                transcriptionMetadataInternal.getLocale(),
+                                transcriptionMetadataInternal.getCallConnectionId(),
+                                transcriptionMetadataInternal.getCorrelationId());
                         } else {
                             return null;
                         }

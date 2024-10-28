@@ -16,7 +16,7 @@ public class EmbeddingsAsyncClientTest extends EmbeddingsClientTestBase {
     private EmbeddingsAsyncClient getEmbeddingsAsyncClient(HttpClient httpClient) {
         return getEmbeddingsClientBuilder(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .buildAsyncClient();
+                .buildAsyncClient();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -24,12 +24,10 @@ public class EmbeddingsAsyncClientTest extends EmbeddingsClientTestBase {
     public void testGetEmbeddings(HttpClient httpClient) {
         client = getEmbeddingsAsyncClient(httpClient);
         getEmbeddingsRunner((promptList) -> {
-            StepVerifier.create(client.embed(promptList))
-                .assertNext(result -> {
-                    assertNotNull(result.getUsage());
-                    assertEmbeddings(result);
-                })
-                .verifyComplete();
+            StepVerifier.create(client.embed(promptList)).assertNext(result -> {
+                assertNotNull(result.getUsage());
+                assertEmbeddings(result);
+            }).verifyComplete();
         });
     }
 }

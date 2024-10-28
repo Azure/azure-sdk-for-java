@@ -51,9 +51,8 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolSensitivityLabelsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(SqlPoolSensitivityLabelsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SqlPoolSensitivityLabelsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,180 +63,124 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolSensitivityLabelsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/currentSensitivityLabels")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/currentSensitivityLabels")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SensitivityLabelListResult>> listCurrent(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SensitivityLabelListResult>> listCurrent(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/currentSensitivityLabels")
-        @ExpectedResponses({200})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/currentSensitivityLabels")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> update(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("sqlPoolName") String sqlPoolName,
-            @BodyParam("application/json") SensitivityLabelUpdateList parameters,
-            Context context);
+            @BodyParam("application/json") SensitivityLabelUpdateList parameters, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/recommendedSensitivityLabels")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/recommendedSensitivityLabels")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SensitivityLabelListResult>> listRecommended(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<SensitivityLabelListResult>> listRecommended(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("sqlPoolName") String sqlPoolName,
             @QueryParam("includeDisabledRecommendations") Boolean includeDisabledRecommendations,
-            @QueryParam("$skipToken") String skipToken,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("$skipToken") String skipToken, @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}"
-                + "/sensitivityLabels/{sensitivityLabelSource}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}"
+            + "/sensitivityLabels/{sensitivityLabelSource}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SensitivityLabelInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("schemaName") String schemaName,
-            @PathParam("tableName") String tableName,
-            @PathParam("columnName") String columnName,
+        Mono<Response<SensitivityLabelInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("schemaName") String schemaName,
+            @PathParam("tableName") String tableName, @PathParam("columnName") String columnName,
             @PathParam("sensitivityLabelSource") String sensitivityLabelSource,
-            @BodyParam("application/json") SensitivityLabelInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SensitivityLabelInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}"
-                + "/sensitivityLabels/{sensitivityLabelSource}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}"
+            + "/sensitivityLabels/{sensitivityLabelSource}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("schemaName") String schemaName,
-            @PathParam("tableName") String tableName,
-            @PathParam("columnName") String columnName,
-            @PathParam("sensitivityLabelSource") String sensitivityLabelSource,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("schemaName") String schemaName,
+            @PathParam("tableName") String tableName, @PathParam("columnName") String columnName,
+            @PathParam("sensitivityLabelSource") String sensitivityLabelSource, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}"
-                + "/sensitivityLabels/{sensitivityLabelSource}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}"
+            + "/sensitivityLabels/{sensitivityLabelSource}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SensitivityLabelInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("schemaName") String schemaName,
-            @PathParam("tableName") String tableName,
-            @PathParam("columnName") String columnName,
+        Mono<Response<SensitivityLabelInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("schemaName") String schemaName,
+            @PathParam("tableName") String tableName, @PathParam("columnName") String columnName,
             @PathParam("sensitivityLabelSource") SensitivityLabelSource sensitivityLabelSource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}"
-                + "/sensitivityLabels/{sensitivityLabelSource}/enable")
-        @ExpectedResponses({200})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}"
+            + "/sensitivityLabels/{sensitivityLabelSource}/enable")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> enableRecommendation(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("schemaName") String schemaName,
-            @PathParam("tableName") String tableName,
-            @PathParam("columnName") String columnName,
-            @PathParam("sensitivityLabelSource") String sensitivityLabelSource,
-            Context context);
+        Mono<Response<Void>> enableRecommendation(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("schemaName") String schemaName,
+            @PathParam("tableName") String tableName, @PathParam("columnName") String columnName,
+            @PathParam("sensitivityLabelSource") String sensitivityLabelSource, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}"
-                + "/sensitivityLabels/{sensitivityLabelSource}/disable")
-        @ExpectedResponses({200})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}"
+            + "/sensitivityLabels/{sensitivityLabelSource}/disable")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> disableRecommendation(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("schemaName") String schemaName,
-            @PathParam("tableName") String tableName,
-            @PathParam("columnName") String columnName,
-            @PathParam("sensitivityLabelSource") String sensitivityLabelSource,
-            Context context);
+        Mono<Response<Void>> disableRecommendation(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("schemaName") String schemaName,
+            @PathParam("tableName") String tableName, @PathParam("columnName") String columnName,
+            @PathParam("sensitivityLabelSource") String sensitivityLabelSource, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SensitivityLabelListResult>> listCurrentNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SensitivityLabelListResult>> listRecommendedNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -255,19 +198,15 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return sQL pool sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SensitivityLabelInner>> listCurrentSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter) {
+    private Mono<PagedResponse<SensitivityLabelInner>> listCurrentSinglePageAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -283,27 +222,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listCurrent(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<SensitivityLabelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listCurrent(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, workspaceName, sqlPoolName, filter, accept, context))
+            .<PagedResponse<SensitivityLabelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -323,19 +245,15 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return sQL pool sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SensitivityLabelInner>> listCurrentSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter, Context context) {
+    private Mono<PagedResponse<SensitivityLabelInner>> listCurrentSinglePageAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -351,25 +269,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listCurrent(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listCurrent(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, sqlPoolName, filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -387,10 +290,9 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return sQL pool sensitivity labels as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SensitivityLabelInner> listCurrentAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter) {
-        return new PagedFlux<>(
-            () -> listCurrentSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, filter),
+    private PagedFlux<SensitivityLabelInner> listCurrentAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String filter) {
+        return new PagedFlux<>(() -> listCurrentSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, filter),
             nextLink -> listCurrentNextSinglePageAsync(nextLink));
     }
 
@@ -408,11 +310,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return sQL pool sensitivity labels as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SensitivityLabelInner> listCurrentAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private PagedFlux<SensitivityLabelInner> listCurrentAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listCurrentSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, filter),
+        return new PagedFlux<>(() -> listCurrentSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, filter),
             nextLink -> listCurrentNextSinglePageAsync(nextLink));
     }
 
@@ -432,8 +333,8 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return sQL pool sensitivity labels as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SensitivityLabelInner> listCurrentAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter, Context context) {
+    private PagedFlux<SensitivityLabelInner> listCurrentAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String filter, Context context) {
         return new PagedFlux<>(
             () -> listCurrentSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, filter, context),
             nextLink -> listCurrentNextSinglePageAsync(nextLink, context));
@@ -453,8 +354,8 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return sQL pool sensitivity labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SensitivityLabelInner> listCurrent(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public PagedIterable<SensitivityLabelInner> listCurrent(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         final String filter = null;
         return new PagedIterable<>(listCurrentAsync(resourceGroupName, workspaceName, sqlPoolName, filter));
     }
@@ -475,8 +376,8 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return sQL pool sensitivity labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SensitivityLabelInner> listCurrent(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter, Context context) {
+    public PagedIterable<SensitivityLabelInner> listCurrent(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String filter, Context context) {
         return new PagedIterable<>(listCurrentAsync(resourceGroupName, workspaceName, sqlPoolName, filter, context));
     }
 
@@ -493,19 +394,15 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SensitivityLabelUpdateList parameters) {
+    private Mono<Response<Void>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, SensitivityLabelUpdateList parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -524,18 +421,8 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         }
         final String apiVersion = "2021-06-01";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            parameters,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -553,23 +440,15 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SensitivityLabelUpdateList parameters,
-        Context context) {
+    private Mono<Response<Void>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, SensitivityLabelUpdateList parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -588,16 +467,8 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         }
         final String apiVersion = "2021-06-01";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                parameters,
-                context);
+        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, parameters, context);
     }
 
     /**
@@ -613,8 +484,8 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SensitivityLabelUpdateList parameters) {
+    private Mono<Void> updateAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SensitivityLabelUpdateList parameters) {
         return updateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, parameters)
             .flatMap(ignored -> Mono.empty());
     }
@@ -633,12 +504,8 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SensitivityLabelUpdateList parameters,
-        Context context) {
+    public Response<Void> updateWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SensitivityLabelUpdateList parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, parameters, context).block();
     }
 
@@ -654,8 +521,8 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SensitivityLabelUpdateList parameters) {
+    public void update(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SensitivityLabelUpdateList parameters) {
         updateWithResponse(resourceGroupName, workspaceName, sqlPoolName, parameters, Context.NONE);
     }
 
@@ -677,24 +544,16 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        Boolean includeDisabledRecommendations,
-        String skipToken,
+    private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedSinglePageAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, Boolean includeDisabledRecommendations, String skipToken,
         String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -709,30 +568,11 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRecommended(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            includeDisabledRecommendations,
-                            skipToken,
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<SensitivityLabelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listRecommended(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName,
+                includeDisabledRecommendations, skipToken, filter, accept, context))
+            .<PagedResponse<SensitivityLabelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -755,25 +595,16 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedSinglePageAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        Boolean includeDisabledRecommendations,
-        String skipToken,
-        String filter,
-        Context context) {
+    private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedSinglePageAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, Boolean includeDisabledRecommendations, String skipToken,
+        String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -789,27 +620,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listRecommended(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                includeDisabledRecommendations,
-                skipToken,
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listRecommended(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, sqlPoolName, includeDisabledRecommendations, skipToken, filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -829,17 +643,11 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return sensitivity labels of a given SQL pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SensitivityLabelInner> listRecommendedAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        Boolean includeDisabledRecommendations,
-        String skipToken,
-        String filter) {
+    private PagedFlux<SensitivityLabelInner> listRecommendedAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Boolean includeDisabledRecommendations, String skipToken, String filter) {
         return new PagedFlux<>(
-            () ->
-                listRecommendedSinglePageAsync(
-                    resourceGroupName, workspaceName, sqlPoolName, includeDisabledRecommendations, skipToken, filter),
+            () -> listRecommendedSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName,
+                includeDisabledRecommendations, skipToken, filter),
             nextLink -> listRecommendedNextSinglePageAsync(nextLink));
     }
 
@@ -857,15 +665,14 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return sensitivity labels of a given SQL pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SensitivityLabelInner> listRecommendedAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private PagedFlux<SensitivityLabelInner> listRecommendedAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         final Boolean includeDisabledRecommendations = null;
         final String skipToken = null;
         final String filter = null;
         return new PagedFlux<>(
-            () ->
-                listRecommendedSinglePageAsync(
-                    resourceGroupName, workspaceName, sqlPoolName, includeDisabledRecommendations, skipToken, filter),
+            () -> listRecommendedSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName,
+                includeDisabledRecommendations, skipToken, filter),
             nextLink -> listRecommendedNextSinglePageAsync(nextLink));
     }
 
@@ -887,24 +694,11 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return sensitivity labels of a given SQL pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SensitivityLabelInner> listRecommendedAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        Boolean includeDisabledRecommendations,
-        String skipToken,
-        String filter,
-        Context context) {
+    private PagedFlux<SensitivityLabelInner> listRecommendedAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Boolean includeDisabledRecommendations, String skipToken, String filter, Context context) {
         return new PagedFlux<>(
-            () ->
-                listRecommendedSinglePageAsync(
-                    resourceGroupName,
-                    workspaceName,
-                    sqlPoolName,
-                    includeDisabledRecommendations,
-                    skipToken,
-                    filter,
-                    context),
+            () -> listRecommendedSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName,
+                includeDisabledRecommendations, skipToken, filter, context),
             nextLink -> listRecommendedNextSinglePageAsync(nextLink, context));
     }
 
@@ -922,14 +716,13 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return sensitivity labels of a given SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SensitivityLabelInner> listRecommended(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public PagedIterable<SensitivityLabelInner> listRecommended(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         final Boolean includeDisabledRecommendations = null;
         final String skipToken = null;
         final String filter = null;
-        return new PagedIterable<>(
-            listRecommendedAsync(
-                resourceGroupName, workspaceName, sqlPoolName, includeDisabledRecommendations, skipToken, filter));
+        return new PagedIterable<>(listRecommendedAsync(resourceGroupName, workspaceName, sqlPoolName,
+            includeDisabledRecommendations, skipToken, filter));
     }
 
     /**
@@ -950,23 +743,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return sensitivity labels of a given SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SensitivityLabelInner> listRecommended(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        Boolean includeDisabledRecommendations,
-        String skipToken,
-        String filter,
-        Context context) {
-        return new PagedIterable<>(
-            listRecommendedAsync(
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                includeDisabledRecommendations,
-                skipToken,
-                filter,
-                context));
+    public PagedIterable<SensitivityLabelInner> listRecommended(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Boolean includeDisabledRecommendations, String skipToken, String filter, Context context) {
+        return new PagedIterable<>(listRecommendedAsync(resourceGroupName, workspaceName, sqlPoolName,
+            includeDisabledRecommendations, skipToken, filter, context));
     }
 
     /**
@@ -985,25 +765,16 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return a sensitivity label along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SensitivityLabelInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
+    private Mono<Response<SensitivityLabelInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String schemaName, String tableName, String columnName,
         SensitivityLabelInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1033,23 +804,9 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         final String sensitivityLabelSource = "current";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            schemaName,
-                            tableName,
-                            columnName,
-                            sensitivityLabelSource,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName,
+                columnName, sensitivityLabelSource, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1070,26 +827,16 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return a sensitivity label along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SensitivityLabelInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelInner parameters,
-        Context context) {
+    private Mono<Response<SensitivityLabelInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String schemaName, String tableName, String columnName,
+        SensitivityLabelInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1119,21 +866,9 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         final String sensitivityLabelSource = "current";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                schemaName,
-                tableName,
-                columnName,
-                sensitivityLabelSource,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, sensitivityLabelSource,
+            parameters, accept, context);
     }
 
     /**
@@ -1152,17 +887,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return a sensitivity label on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SensitivityLabelInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelInner parameters) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<SensitivityLabelInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName, SensitivityLabelInner parameters) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName,
+            columnName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1182,18 +910,11 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return a sensitivity label along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SensitivityLabelInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelInner parameters,
+    public Response<SensitivityLabelInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName, SensitivityLabelInner parameters,
         Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, parameters, context)
-            .block();
+        return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName,
+            columnName, parameters, context).block();
     }
 
     /**
@@ -1212,24 +933,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return a sensitivity label.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SensitivityLabelInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelInner parameters) {
-        return createOrUpdateWithResponse(
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                schemaName,
-                tableName,
-                columnName,
-                parameters,
-                Context.NONE)
-            .getValue();
+    public SensitivityLabelInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName, SensitivityLabelInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName,
+            columnName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -1247,24 +954,15 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1288,21 +986,9 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "current";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            schemaName,
-                            tableName,
-                            columnName,
-                            sensitivityLabelSource,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName,
+                columnName, sensitivityLabelSource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1322,25 +1008,15 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1364,19 +1040,8 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "current";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                schemaName,
-                tableName,
-                columnName,
-                sensitivityLabelSource,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, schemaName, tableName, columnName, sensitivityLabelSource, context);
     }
 
     /**
@@ -1394,13 +1059,8 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName)
             .flatMap(ignored -> Mono.empty());
     }
@@ -1421,17 +1081,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context) {
-        return deleteWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, context)
-            .block();
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName,
+            context).block();
     }
 
     /**
@@ -1448,15 +1101,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
-        deleteWithResponse(
-            resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, Context.NONE);
+    public void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName,
+        String tableName, String columnName) {
+        deleteWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName,
+            Context.NONE);
     }
 
     /**
@@ -1476,25 +1124,16 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SensitivityLabelInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
+    private Mono<Response<SensitivityLabelInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName,
         SensitivityLabelSource sensitivityLabelSource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1516,29 +1155,15 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
             return Mono.error(new IllegalArgumentException("Parameter columnName is required and cannot be null."));
         }
         if (sensitivityLabelSource == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sensitivityLabelSource is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sensitivityLabelSource is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            schemaName,
-                            tableName,
-                            columnName,
-                            sensitivityLabelSource,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName,
+                sensitivityLabelSource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1560,26 +1185,16 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SensitivityLabelInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelSource sensitivityLabelSource,
-        Context context) {
+    private Mono<Response<SensitivityLabelInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName,
+        SensitivityLabelSource sensitivityLabelSource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1601,27 +1216,14 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
             return Mono.error(new IllegalArgumentException("Parameter columnName is required and cannot be null."));
         }
         if (sensitivityLabelSource == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter sensitivityLabelSource is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter sensitivityLabelSource is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                schemaName,
-                tableName,
-                columnName,
-                sensitivityLabelSource,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, schemaName, tableName, columnName, sensitivityLabelSource, accept, context);
     }
 
     /**
@@ -1640,23 +1242,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return the sensitivity label of a given column on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SensitivityLabelInner> getAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelSource sensitivityLabelSource) {
-        return getWithResponseAsync(
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                schemaName,
-                tableName,
-                columnName,
-                sensitivityLabelSource)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<SensitivityLabelInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName, SensitivityLabelSource sensitivityLabelSource) {
+        return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName,
+            sensitivityLabelSource).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1676,25 +1265,11 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return the sensitivity label of a given column along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SensitivityLabelInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelSource sensitivityLabelSource,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                schemaName,
-                tableName,
-                columnName,
-                sensitivityLabelSource,
-                context)
-            .block();
+    public Response<SensitivityLabelInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName,
+        SensitivityLabelSource sensitivityLabelSource, Context context) {
+        return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName,
+            sensitivityLabelSource, context).block();
     }
 
     /**
@@ -1713,24 +1288,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return the sensitivity label of a given column.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SensitivityLabelInner get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelSource sensitivityLabelSource) {
-        return getWithResponse(
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                schemaName,
-                tableName,
-                columnName,
-                sensitivityLabelSource,
-                Context.NONE)
-            .getValue();
+    public SensitivityLabelInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName, SensitivityLabelSource sensitivityLabelSource) {
+        return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName,
+            sensitivityLabelSource, Context.NONE).getValue();
     }
 
     /**
@@ -1748,24 +1309,15 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> enableRecommendationWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
+    private Mono<Response<Void>> enableRecommendationWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1789,21 +1341,9 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "recommended";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .enableRecommendation(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            schemaName,
-                            tableName,
-                            columnName,
-                            sensitivityLabelSource,
-                            context))
+            .withContext(context -> service.enableRecommendation(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName,
+                columnName, sensitivityLabelSource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1823,25 +1363,15 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> enableRecommendationWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context) {
+    private Mono<Response<Void>> enableRecommendationWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1865,19 +1395,9 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "recommended";
         context = this.client.mergeContext(context);
-        return service
-            .enableRecommendation(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                schemaName,
-                tableName,
-                columnName,
-                sensitivityLabelSource,
-                context);
+        return service.enableRecommendation(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, sensitivityLabelSource,
+            context);
     }
 
     /**
@@ -1895,16 +1415,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> enableRecommendationAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
-        return enableRecommendationWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName)
-            .flatMap(ignored -> Mono.empty());
+    private Mono<Void> enableRecommendationAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName) {
+        return enableRecommendationWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName,
+            tableName, columnName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1923,17 +1437,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> enableRecommendationWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context) {
-        return enableRecommendationWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, context)
-            .block();
+    public Response<Void> enableRecommendationWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName, Context context) {
+        return enableRecommendationWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName,
+            tableName, columnName, context).block();
     }
 
     /**
@@ -1950,15 +1457,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enableRecommendation(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
-        enableRecommendationWithResponse(
-            resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, Context.NONE);
+    public void enableRecommendation(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName) {
+        enableRecommendationWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName,
+            columnName, Context.NONE);
     }
 
     /**
@@ -1976,24 +1478,15 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> disableRecommendationWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
+    private Mono<Response<Void>> disableRecommendationWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2017,21 +1510,9 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "recommended";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .disableRecommendation(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            schemaName,
-                            tableName,
-                            columnName,
-                            sensitivityLabelSource,
-                            context))
+            .withContext(context -> service.disableRecommendation(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName,
+                columnName, sensitivityLabelSource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2051,25 +1532,15 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> disableRecommendationWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context) {
+    private Mono<Response<Void>> disableRecommendationWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2093,19 +1564,9 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
         final String apiVersion = "2021-06-01";
         final String sensitivityLabelSource = "recommended";
         context = this.client.mergeContext(context);
-        return service
-            .disableRecommendation(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                schemaName,
-                tableName,
-                columnName,
-                sensitivityLabelSource,
-                context);
+        return service.disableRecommendation(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, sensitivityLabelSource,
+            context);
     }
 
     /**
@@ -2123,16 +1584,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> disableRecommendationAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
-        return disableRecommendationWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName)
-            .flatMap(ignored -> Mono.empty());
+    private Mono<Void> disableRecommendationAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName) {
+        return disableRecommendationWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName,
+            tableName, columnName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2151,17 +1606,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> disableRecommendationWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context) {
-        return disableRecommendationWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, context)
-            .block();
+    public Response<Void> disableRecommendationWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName, Context context) {
+        return disableRecommendationWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName,
+            tableName, columnName, context).block();
     }
 
     /**
@@ -2178,15 +1626,10 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableRecommendation(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
-        disableRecommendationWithResponse(
-            resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, Context.NONE);
+    public void disableRecommendation(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName) {
+        disableRecommendationWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName,
+            columnName, Context.NONE);
     }
 
     /**
@@ -2205,23 +1648,14 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listCurrentNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SensitivityLabelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SensitivityLabelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2237,30 +1671,20 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return a list of sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SensitivityLabelInner>> listCurrentNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SensitivityLabelInner>> listCurrentNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listCurrentNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listCurrentNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2279,23 +1703,14 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listRecommendedNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SensitivityLabelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SensitivityLabelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2311,29 +1726,19 @@ public final class SqlPoolSensitivityLabelsClientImpl implements SqlPoolSensitiv
      * @return a list of sensitivity labels along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SensitivityLabelInner>> listRecommendedNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listRecommendedNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listRecommendedNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

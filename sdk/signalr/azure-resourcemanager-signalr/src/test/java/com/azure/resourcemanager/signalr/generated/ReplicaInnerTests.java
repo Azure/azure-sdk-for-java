@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ReplicaInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicaInner model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"name\":\"zuxylfsbtkadpyso\",\"tier\":\"Premium\",\"size\":\"gkbugrjqct\",\"family\":\"cmisofie\",\"capacity\":860547851},\"properties\":{\"provisioningState\":\"Running\",\"regionEndpointEnabled\":\"qdhcu\",\"resourceStopped\":\"cp\"},\"location\":\"wkhihihlhzdsqt\",\"tags\":{\"ecactx\":\"rgnowcjhfgm\"},\"id\":\"wotey\",\"name\":\"wcluqovekqvgq\",\"type\":\"uwifzmpjwyiv\"}")
-                .toObject(ReplicaInner.class);
+        ReplicaInner model = BinaryData.fromString(
+            "{\"sku\":{\"name\":\"zuxylfsbtkadpyso\",\"tier\":\"Premium\",\"size\":\"gkbugrjqct\",\"family\":\"cmisofie\",\"capacity\":860547851},\"properties\":{\"provisioningState\":\"Running\",\"regionEndpointEnabled\":\"qdhcu\",\"resourceStopped\":\"cp\"},\"location\":\"wkhihihlhzdsqt\",\"tags\":{\"ecactx\":\"rgnowcjhfgm\"},\"id\":\"wotey\",\"name\":\"wcluqovekqvgq\",\"type\":\"uwifzmpjwyiv\"}")
+            .toObject(ReplicaInner.class);
         Assertions.assertEquals("wkhihihlhzdsqt", model.location());
         Assertions.assertEquals("rgnowcjhfgm", model.tags().get("ecactx"));
         Assertions.assertEquals("zuxylfsbtkadpyso", model.sku().name());
@@ -31,17 +29,12 @@ public final class ReplicaInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicaInner model =
-            new ReplicaInner()
-                .withLocation("wkhihihlhzdsqt")
-                .withTags(mapOf("ecactx", "rgnowcjhfgm"))
-                .withSku(
-                    new ResourceSku()
-                        .withName("zuxylfsbtkadpyso")
-                        .withTier(SignalRSkuTier.PREMIUM)
-                        .withCapacity(860547851))
-                .withRegionEndpointEnabled("qdhcu")
-                .withResourceStopped("cp");
+        ReplicaInner model = new ReplicaInner().withLocation("wkhihihlhzdsqt")
+            .withTags(mapOf("ecactx", "rgnowcjhfgm"))
+            .withSku(
+                new ResourceSku().withName("zuxylfsbtkadpyso").withTier(SignalRSkuTier.PREMIUM).withCapacity(860547851))
+            .withRegionEndpointEnabled("qdhcu")
+            .withResourceStopped("cp");
         model = BinaryData.fromObject(model).toObject(ReplicaInner.class);
         Assertions.assertEquals("wkhihihlhzdsqt", model.location());
         Assertions.assertEquals("rgnowcjhfgm", model.tags().get("ecactx"));

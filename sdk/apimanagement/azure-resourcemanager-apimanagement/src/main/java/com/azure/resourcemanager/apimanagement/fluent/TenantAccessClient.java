@@ -48,8 +48,8 @@ public interface TenantAccessClient {
      * @return paged AccessInformation list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AccessInformationContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Context context);
+    PagedIterable<AccessInformationContractInner> listByService(String resourceGroupName, String serviceName,
+        String filter, Context context);
 
     /**
      * Tenant access metadata.
@@ -64,8 +64,8 @@ public interface TenantAccessClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TenantAccessGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
+    TenantAccessGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context);
 
     /**
      * Tenant access metadata.
@@ -93,8 +93,8 @@ public interface TenantAccessClient {
      * @return tenant access information details without secrets.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TenantAccessGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
+    TenantAccessGetResponse getWithResponse(String resourceGroupName, String serviceName, AccessIdName accessName,
+        Context context);
 
     /**
      * Get tenant access information details without secrets.
@@ -126,13 +126,8 @@ public interface TenantAccessClient {
      * @return tenant Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TenantAccessCreateResponse createWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        AccessIdName accessName,
-        String ifMatch,
-        AccessInformationCreateParameters parameters,
-        Context context);
+    TenantAccessCreateResponse createWithResponse(String resourceGroupName, String serviceName, AccessIdName accessName,
+        String ifMatch, AccessInformationCreateParameters parameters, Context context);
 
     /**
      * Update tenant access information details.
@@ -149,12 +144,8 @@ public interface TenantAccessClient {
      * @return tenant Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessInformationContractInner create(
-        String resourceGroupName,
-        String serviceName,
-        AccessIdName accessName,
-        String ifMatch,
-        AccessInformationCreateParameters parameters);
+    AccessInformationContractInner create(String resourceGroupName, String serviceName, AccessIdName accessName,
+        String ifMatch, AccessInformationCreateParameters parameters);
 
     /**
      * Update tenant access information details.
@@ -172,13 +163,8 @@ public interface TenantAccessClient {
      * @return tenant Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TenantAccessUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        AccessIdName accessName,
-        String ifMatch,
-        AccessInformationUpdateParameters parameters,
-        Context context);
+    TenantAccessUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, AccessIdName accessName,
+        String ifMatch, AccessInformationUpdateParameters parameters, Context context);
 
     /**
      * Update tenant access information details.
@@ -195,12 +181,8 @@ public interface TenantAccessClient {
      * @return tenant Settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessInformationContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        AccessIdName accessName,
-        String ifMatch,
-        AccessInformationUpdateParameters parameters);
+    AccessInformationContractInner update(String resourceGroupName, String serviceName, AccessIdName accessName,
+        String ifMatch, AccessInformationUpdateParameters parameters);
 
     /**
      * Regenerate primary access key.
@@ -215,8 +197,8 @@ public interface TenantAccessClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> regeneratePrimaryKeyWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
+    Response<Void> regeneratePrimaryKeyWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context);
 
     /**
      * Regenerate primary access key.
@@ -244,8 +226,8 @@ public interface TenantAccessClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> regenerateSecondaryKeyWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
+    Response<Void> regenerateSecondaryKeyWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context);
 
     /**
      * Regenerate secondary access key.
@@ -273,8 +255,8 @@ public interface TenantAccessClient {
      * @return tenant access information details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TenantAccessListSecretsResponse listSecretsWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context);
+    TenantAccessListSecretsResponse listSecretsWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context);
 
     /**
      * Get tenant access information details.
@@ -288,6 +270,6 @@ public interface TenantAccessClient {
      * @return tenant access information details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessInformationSecretsContractInner listSecrets(
-        String resourceGroupName, String serviceName, AccessIdName accessName);
+    AccessInformationSecretsContractInner listSecrets(String resourceGroupName, String serviceName,
+        AccessIdName accessName);
 }

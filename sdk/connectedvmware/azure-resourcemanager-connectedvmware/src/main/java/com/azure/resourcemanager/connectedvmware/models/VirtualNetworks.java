@@ -23,8 +23,8 @@ public interface VirtualNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return define the virtualNetwork along with {@link Response}.
      */
-    Response<VirtualNetwork> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualNetworkName, Context context);
+    Response<VirtualNetwork> getByResourceGroupWithResponse(String resourceGroupName, String virtualNetworkName,
+        Context context);
 
     /**
      * Gets a virtual network.

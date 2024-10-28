@@ -22,9 +22,7 @@ public class RootCauseListTest extends ServiceTest<PerfStressOptions> {
 
     @Override
     public void run() {
-        super.metricsAdvisorClient
-            .listIncidentRootCauses(super.detectionConfigId,
-                super.incidentId)
+        super.metricsAdvisorClient.listIncidentRootCauses(super.detectionConfigId, super.incidentId)
             .stream()
             .limit(super.maxListElements)
             .forEach(rootCause -> {
@@ -33,9 +31,7 @@ public class RootCauseListTest extends ServiceTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return super.metricsAdvisorAsyncClient
-            .listIncidentRootCauses(super.detectionConfigId,
-                super.incidentId)
+        return super.metricsAdvisorAsyncClient.listIncidentRootCauses(super.detectionConfigId, super.incidentId)
             .take(super.maxListElements)
             .then();
     }

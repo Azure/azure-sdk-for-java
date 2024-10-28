@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MyWorkbookInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MyWorkbookInner model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"user\",\"properties\":{\"displayName\":\"lpstdbhhxsrzdz\",\"serializedData\":\"cers\",\"version\":\"ntnev\",\"timeModified\":\"wjmy\",\"category\":\"tdss\",\"tags\":[\"tmweriofzpyq\",\"emwabnet\"],\"userId\":\"hszhedplvwiwu\",\"sourceId\":\"wmbesldnkw\",\"storageUri\":\"pp\"},\"identity\":{\"userAssignedIdentities\":{\"principalId\":\"ogaok\",\"tenantId\":\"z\"},\"type\":\"None\"},\"id\":\"morppxebmnzbtbh\",\"name\":\"pglkf\",\"type\":\"ohdneuel\",\"etag\":{\"ibqdxbxwakbogqx\":\"dkwobdagx\",\"lbpodxunk\":\"dlkzgxhuri\"},\"location\":\"ebxmubyynt\",\"tags\":{\"ltmuwlauwzizx\":\"bqtkoievseotgqr\",\"d\":\"mpgcjefuzmuvpbt\"}}")
-                .toObject(MyWorkbookInner.class);
+        MyWorkbookInner model = BinaryData.fromString(
+            "{\"kind\":\"user\",\"properties\":{\"displayName\":\"lpstdbhhxsrzdz\",\"serializedData\":\"cers\",\"version\":\"ntnev\",\"timeModified\":\"wjmy\",\"category\":\"tdss\",\"tags\":[\"tmweriofzpyq\",\"emwabnet\"],\"userId\":\"hszhedplvwiwu\",\"sourceId\":\"wmbesldnkw\",\"storageUri\":\"pp\"},\"identity\":{\"userAssignedIdentities\":{\"principalId\":\"ogaok\",\"tenantId\":\"z\"},\"type\":\"None\"},\"id\":\"morppxebmnzbtbh\",\"name\":\"pglkf\",\"type\":\"ohdneuel\",\"etag\":{\"ibqdxbxwakbogqx\":\"dkwobdagx\",\"lbpodxunk\":\"dlkzgxhuri\"},\"location\":\"ebxmubyynt\",\"tags\":{\"ltmuwlauwzizx\":\"bqtkoievseotgqr\",\"d\":\"mpgcjefuzmuvpbt\"}}")
+            .toObject(MyWorkbookInner.class);
         Assertions.assertEquals("ebxmubyynt", model.location());
         Assertions.assertEquals("bqtkoievseotgqr", model.tags().get("ltmuwlauwzizx"));
         Assertions.assertEquals(MyWorkbookManagedIdentityType.NONE, model.identity().type());
@@ -42,26 +40,23 @@ public final class MyWorkbookInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MyWorkbookInner model =
-            new MyWorkbookInner()
-                .withLocation("ebxmubyynt")
-                .withTags(mapOf("ltmuwlauwzizx", "bqtkoievseotgqr", "d", "mpgcjefuzmuvpbt"))
-                .withIdentity(
-                    new MyWorkbookManagedIdentity()
-                        .withUserAssignedIdentities(new MyWorkbookUserAssignedIdentities())
-                        .withType(MyWorkbookManagedIdentityType.NONE))
-                .withId("morppxebmnzbtbh")
-                .withName("pglkf")
-                .withType("ohdneuel")
-                .withEtag(mapOf("ibqdxbxwakbogqx", "dkwobdagx", "lbpodxunk", "dlkzgxhuri"))
-                .withKind(Kind.USER)
-                .withDisplayName("lpstdbhhxsrzdz")
-                .withSerializedData("cers")
-                .withVersion("ntnev")
-                .withCategory("tdss")
-                .withTagsPropertiesTags(Arrays.asList("tmweriofzpyq", "emwabnet"))
-                .withSourceId("wmbesldnkw")
-                .withStorageUri("pp");
+        MyWorkbookInner model = new MyWorkbookInner().withLocation("ebxmubyynt")
+            .withTags(mapOf("ltmuwlauwzizx", "bqtkoievseotgqr", "d", "mpgcjefuzmuvpbt"))
+            .withIdentity(
+                new MyWorkbookManagedIdentity().withUserAssignedIdentities(new MyWorkbookUserAssignedIdentities())
+                    .withType(MyWorkbookManagedIdentityType.NONE))
+            .withId("morppxebmnzbtbh")
+            .withName("pglkf")
+            .withType("ohdneuel")
+            .withEtag(mapOf("ibqdxbxwakbogqx", "dkwobdagx", "lbpodxunk", "dlkzgxhuri"))
+            .withKind(Kind.USER)
+            .withDisplayName("lpstdbhhxsrzdz")
+            .withSerializedData("cers")
+            .withVersion("ntnev")
+            .withCategory("tdss")
+            .withTagsPropertiesTags(Arrays.asList("tmweriofzpyq", "emwabnet"))
+            .withSourceId("wmbesldnkw")
+            .withStorageUri("pp");
         model = BinaryData.fromObject(model).toObject(MyWorkbookInner.class);
         Assertions.assertEquals("ebxmubyynt", model.location());
         Assertions.assertEquals("bqtkoievseotgqr", model.tags().get("ltmuwlauwzizx"));

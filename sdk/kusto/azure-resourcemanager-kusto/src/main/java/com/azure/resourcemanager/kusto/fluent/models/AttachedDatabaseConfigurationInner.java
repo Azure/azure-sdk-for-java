@@ -144,8 +144,8 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
      * @param defaultPrincipalsModificationKind the defaultPrincipalsModificationKind value to set.
      * @return the AttachedDatabaseConfigurationInner object itself.
      */
-    public AttachedDatabaseConfigurationInner withDefaultPrincipalsModificationKind(
-        DefaultPrincipalsModificationKind defaultPrincipalsModificationKind) {
+    public AttachedDatabaseConfigurationInner
+        withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind defaultPrincipalsModificationKind) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AttachedDatabaseConfigurationProperties();
         }
@@ -168,8 +168,8 @@ public final class AttachedDatabaseConfigurationInner extends ProxyResource {
      * @param tableLevelSharingProperties the tableLevelSharingProperties value to set.
      * @return the AttachedDatabaseConfigurationInner object itself.
      */
-    public AttachedDatabaseConfigurationInner withTableLevelSharingProperties(
-        TableLevelSharingProperties tableLevelSharingProperties) {
+    public AttachedDatabaseConfigurationInner
+        withTableLevelSharingProperties(TableLevelSharingProperties tableLevelSharingProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AttachedDatabaseConfigurationProperties();
         }

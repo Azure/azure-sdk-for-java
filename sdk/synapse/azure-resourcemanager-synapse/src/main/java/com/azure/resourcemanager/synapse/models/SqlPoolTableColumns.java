@@ -24,8 +24,8 @@ public interface SqlPoolTableColumns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return columns in a given table in a SQL pool as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SqlPoolColumn> listByTableName(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName);
+    PagedIterable<SqlPoolColumn> listByTableName(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName);
 
     /**
      * Gets columns in a given table in a SQL pool
@@ -44,12 +44,6 @@ public interface SqlPoolTableColumns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return columns in a given table in a SQL pool as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SqlPoolColumn> listByTableName(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String filter,
-        Context context);
+    PagedIterable<SqlPoolColumn> listByTableName(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String filter, Context context);
 }

@@ -89,8 +89,8 @@ public interface L3NetworksClient {
      * @return properties of the provided layer 3 (L3) network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<L3NetworkInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String l3NetworkName, Context context);
+    Response<L3NetworkInner> getByResourceGroupWithResponse(String resourceGroupName, String l3NetworkName,
+        Context context);
 
     /**
      * Retrieve the layer 3 (L3) network.
@@ -122,8 +122,8 @@ public interface L3NetworksClient {
      *     domain set up for layer-3 resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<L3NetworkInner>, L3NetworkInner> beginCreateOrUpdate(
-        String resourceGroupName, String l3NetworkName, L3NetworkInner l3NetworkParameters);
+    SyncPoller<PollResult<L3NetworkInner>, L3NetworkInner> beginCreateOrUpdate(String resourceGroupName,
+        String l3NetworkName, L3NetworkInner l3NetworkParameters);
 
     /**
      * Create or update the layer 3 (L3) network.
@@ -141,8 +141,8 @@ public interface L3NetworksClient {
      *     domain set up for layer-3 resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<L3NetworkInner>, L3NetworkInner> beginCreateOrUpdate(
-        String resourceGroupName, String l3NetworkName, L3NetworkInner l3NetworkParameters, Context context);
+    SyncPoller<PollResult<L3NetworkInner>, L3NetworkInner> beginCreateOrUpdate(String resourceGroupName,
+        String l3NetworkName, L3NetworkInner l3NetworkParameters, Context context);
 
     /**
      * Create or update the layer 3 (L3) network.
@@ -175,8 +175,8 @@ public interface L3NetworksClient {
      * @return l3Network represents a network that utilizes a single isolation domain set up for layer-3 resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    L3NetworkInner createOrUpdate(
-        String resourceGroupName, String l3NetworkName, L3NetworkInner l3NetworkParameters, Context context);
+    L3NetworkInner createOrUpdate(String resourceGroupName, String l3NetworkName, L3NetworkInner l3NetworkParameters,
+        Context context);
 
     /**
      * Delete the layer 3 (L3) network.
@@ -254,11 +254,8 @@ public interface L3NetworksClient {
      *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<L3NetworkInner> updateWithResponse(
-        String resourceGroupName,
-        String l3NetworkName,
-        L3NetworkPatchParameters l3NetworkUpdateParameters,
-        Context context);
+    Response<L3NetworkInner> updateWithResponse(String resourceGroupName, String l3NetworkName,
+        L3NetworkPatchParameters l3NetworkUpdateParameters, Context context);
 
     /**
      * Patch the layer 3 (L3) network.

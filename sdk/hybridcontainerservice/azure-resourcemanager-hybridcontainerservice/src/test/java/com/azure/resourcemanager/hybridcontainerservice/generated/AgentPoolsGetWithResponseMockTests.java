@@ -47,7 +47,8 @@ public final class AgentPoolsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridContainerServiceManager manager = HybridContainerServiceManager.configure().withHttpClient(httpClient)
+        HybridContainerServiceManager manager = HybridContainerServiceManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 

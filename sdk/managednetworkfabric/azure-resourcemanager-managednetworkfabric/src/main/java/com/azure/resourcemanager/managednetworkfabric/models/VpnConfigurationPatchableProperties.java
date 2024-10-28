@@ -53,8 +53,8 @@ public final class VpnConfigurationPatchableProperties {
      * @param networkToNetworkInterconnectId the networkToNetworkInterconnectId value to set.
      * @return the VpnConfigurationPatchableProperties object itself.
      */
-    public VpnConfigurationPatchableProperties withNetworkToNetworkInterconnectId(
-        String networkToNetworkInterconnectId) {
+    public VpnConfigurationPatchableProperties
+        withNetworkToNetworkInterconnectId(String networkToNetworkInterconnectId) {
         this.networkToNetworkInterconnectId = networkToNetworkInterconnectId;
         return this;
     }
@@ -114,8 +114,8 @@ public final class VpnConfigurationPatchableProperties {
      * @param optionAProperties the optionAProperties value to set.
      * @return the VpnConfigurationPatchableProperties object itself.
      */
-    public VpnConfigurationPatchableProperties withOptionAProperties(
-        VpnConfigurationPatchablePropertiesOptionAProperties optionAProperties) {
+    public VpnConfigurationPatchableProperties
+        withOptionAProperties(VpnConfigurationPatchablePropertiesOptionAProperties optionAProperties) {
         this.optionAProperties = optionAProperties;
         return this;
     }

@@ -605,8 +605,10 @@ public abstract class JsonReader implements Closeable {
         } else if (token == JsonToken.NUMBER) {
             String numberText = getText();
 
-            if ("INF".equals(numberText) || "Infinity".equals(numberText)
-                || "-INF".equals(numberText) || "-Infinity".equals(numberText)
+            if ("INF".equals(numberText)
+                || "Infinity".equals(numberText)
+                || "-INF".equals(numberText)
+                || "-Infinity".equals(numberText)
                 || "NaN".equals(numberText)) {
                 // Return special Double values as text as not all implementations of JsonReader may be able to handle
                 // them as Doubles when parsing generically.

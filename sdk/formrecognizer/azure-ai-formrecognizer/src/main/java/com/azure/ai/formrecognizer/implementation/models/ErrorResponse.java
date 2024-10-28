@@ -47,6 +47,9 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

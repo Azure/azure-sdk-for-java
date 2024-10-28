@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.fluent.models.ReplicationLinkProperties
 public final class ReplicationLinkPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicationLinkProperties model =
-            BinaryData
-                .fromString(
-                    "{\"isTerminationAllowed\":true,\"replicationMode\":\"iwubmwmbesldnk\",\"partnerServer\":\"tppjflcx\",\"partnerDatabase\":\"aokonzmnsik\",\"partnerLocation\":\"kqze\",\"role\":\"Copy\",\"partnerRole\":\"NonReadableSecondary\",\"startTime\":\"2021-09-09T14:39:27Z\",\"percentComplete\":684892546,\"replicationState\":\"PENDING\"}")
-                .toObject(ReplicationLinkProperties.class);
+        ReplicationLinkProperties model = BinaryData.fromString(
+            "{\"isTerminationAllowed\":true,\"replicationMode\":\"iwubmwmbesldnk\",\"partnerServer\":\"tppjflcx\",\"partnerDatabase\":\"aokonzmnsik\",\"partnerLocation\":\"kqze\",\"role\":\"Copy\",\"partnerRole\":\"NonReadableSecondary\",\"startTime\":\"2021-09-09T14:39:27Z\",\"percentComplete\":684892546,\"replicationState\":\"PENDING\"}")
+            .toObject(ReplicationLinkProperties.class);
     }
 
     @org.junit.jupiter.api.Test

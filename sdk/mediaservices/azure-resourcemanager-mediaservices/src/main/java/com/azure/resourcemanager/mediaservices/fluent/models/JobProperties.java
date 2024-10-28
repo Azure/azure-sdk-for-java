@@ -243,16 +243,14 @@ public final class JobProperties {
      */
     public void validate() {
         if (input() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property input in model JobProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property input in model JobProperties"));
         } else {
             input().validate();
         }
         if (outputs() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property outputs in model JobProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property outputs in model JobProperties"));
         } else {
             outputs().forEach(e -> e.validate());
         }

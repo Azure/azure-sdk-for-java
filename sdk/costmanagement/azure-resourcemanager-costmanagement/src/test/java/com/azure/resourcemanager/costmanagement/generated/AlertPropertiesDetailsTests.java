@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AlertPropertiesDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertPropertiesDetails model =
-            BinaryData
-                .fromString(
-                    "{\"timeGrainType\":\"None\",\"periodStartDate\":\"dng\",\"triggeredBy\":\"ocipazyxoeg\",\"resourceGroupFilter\":[\"datajnpiucgyg\"],\"resourceFilter\":[\"datazntypmrb\",\"dataizcdrqjsd\"],\"meterFilter\":[\"datanfyhx\",\"dataeoejzic\",\"dataifsjttgzfbishcb\",\"datahajdeyeamdpha\"],\"tagFilter\":\"datalpbuxwgipwhonowk\",\"operator\":\"GreaterThanOrEqualTo\",\"unit\":\"kix\",\"contactEmails\":[\"jeputtmrywn\",\"zoqftiyqzrnkcqvy\",\"lwh\"],\"contactGroups\":[\"icohoqqnwvl\",\"yav\",\"hheunmmqhgyx\",\"konocu\"],\"contactRoles\":[\"lyaxuc\",\"nuqszfkbey\",\"ewrmjmwvvjektc\"],\"overridingAlert\":\"enhwlrs\",\"departmentName\":\"rzpwvlqdqgbiq\",\"companyName\":\"ihkaetcktvfc\",\"enrollmentNumber\":\"fsnkymuctq\",\"enrollmentStartDate\":\"fbebrjcxer\",\"enrollmentEndDate\":\"wutttxfvjrbi\"}")
-                .toObject(AlertPropertiesDetails.class);
+        AlertPropertiesDetails model = BinaryData.fromString(
+            "{\"timeGrainType\":\"None\",\"periodStartDate\":\"dng\",\"triggeredBy\":\"ocipazyxoeg\",\"resourceGroupFilter\":[\"datajnpiucgyg\"],\"resourceFilter\":[\"datazntypmrb\",\"dataizcdrqjsd\"],\"meterFilter\":[\"datanfyhx\",\"dataeoejzic\",\"dataifsjttgzfbishcb\",\"datahajdeyeamdpha\"],\"tagFilter\":\"datalpbuxwgipwhonowk\",\"operator\":\"GreaterThanOrEqualTo\",\"unit\":\"kix\",\"contactEmails\":[\"jeputtmrywn\",\"zoqftiyqzrnkcqvy\",\"lwh\"],\"contactGroups\":[\"icohoqqnwvl\",\"yav\",\"hheunmmqhgyx\",\"konocu\"],\"contactRoles\":[\"lyaxuc\",\"nuqszfkbey\",\"ewrmjmwvvjektc\"],\"overridingAlert\":\"enhwlrs\",\"departmentName\":\"rzpwvlqdqgbiq\",\"companyName\":\"ihkaetcktvfc\",\"enrollmentNumber\":\"fsnkymuctq\",\"enrollmentStartDate\":\"fbebrjcxer\",\"enrollmentEndDate\":\"wutttxfvjrbi\"}")
+            .toObject(AlertPropertiesDetails.class);
         Assertions.assertEquals(AlertTimeGrainType.NONE, model.timeGrainType());
         Assertions.assertEquals("dng", model.periodStartDate());
         Assertions.assertEquals("ocipazyxoeg", model.triggeredBy());
@@ -37,26 +35,24 @@ public final class AlertPropertiesDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertPropertiesDetails model =
-            new AlertPropertiesDetails()
-                .withTimeGrainType(AlertTimeGrainType.NONE)
-                .withPeriodStartDate("dng")
-                .withTriggeredBy("ocipazyxoeg")
-                .withResourceGroupFilter(Arrays.asList("datajnpiucgyg"))
-                .withResourceFilter(Arrays.asList("datazntypmrb", "dataizcdrqjsd"))
-                .withMeterFilter(Arrays.asList("datanfyhx", "dataeoejzic", "dataifsjttgzfbishcb", "datahajdeyeamdpha"))
-                .withTagFilter("datalpbuxwgipwhonowk")
-                .withOperator(AlertOperator.GREATER_THAN_OR_EQUAL_TO)
-                .withUnit("kix")
-                .withContactEmails(Arrays.asList("jeputtmrywn", "zoqftiyqzrnkcqvy", "lwh"))
-                .withContactGroups(Arrays.asList("icohoqqnwvl", "yav", "hheunmmqhgyx", "konocu"))
-                .withContactRoles(Arrays.asList("lyaxuc", "nuqszfkbey", "ewrmjmwvvjektc"))
-                .withOverridingAlert("enhwlrs")
-                .withDepartmentName("rzpwvlqdqgbiq")
-                .withCompanyName("ihkaetcktvfc")
-                .withEnrollmentNumber("fsnkymuctq")
-                .withEnrollmentStartDate("fbebrjcxer")
-                .withEnrollmentEndDate("wutttxfvjrbi");
+        AlertPropertiesDetails model = new AlertPropertiesDetails().withTimeGrainType(AlertTimeGrainType.NONE)
+            .withPeriodStartDate("dng")
+            .withTriggeredBy("ocipazyxoeg")
+            .withResourceGroupFilter(Arrays.asList("datajnpiucgyg"))
+            .withResourceFilter(Arrays.asList("datazntypmrb", "dataizcdrqjsd"))
+            .withMeterFilter(Arrays.asList("datanfyhx", "dataeoejzic", "dataifsjttgzfbishcb", "datahajdeyeamdpha"))
+            .withTagFilter("datalpbuxwgipwhonowk")
+            .withOperator(AlertOperator.GREATER_THAN_OR_EQUAL_TO)
+            .withUnit("kix")
+            .withContactEmails(Arrays.asList("jeputtmrywn", "zoqftiyqzrnkcqvy", "lwh"))
+            .withContactGroups(Arrays.asList("icohoqqnwvl", "yav", "hheunmmqhgyx", "konocu"))
+            .withContactRoles(Arrays.asList("lyaxuc", "nuqszfkbey", "ewrmjmwvvjektc"))
+            .withOverridingAlert("enhwlrs")
+            .withDepartmentName("rzpwvlqdqgbiq")
+            .withCompanyName("ihkaetcktvfc")
+            .withEnrollmentNumber("fsnkymuctq")
+            .withEnrollmentStartDate("fbebrjcxer")
+            .withEnrollmentEndDate("wutttxfvjrbi");
         model = BinaryData.fromObject(model).toObject(AlertPropertiesDetails.class);
         Assertions.assertEquals(AlertTimeGrainType.NONE, model.timeGrainType());
         Assertions.assertEquals("dng", model.periodStartDate());

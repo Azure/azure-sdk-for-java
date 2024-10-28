@@ -58,7 +58,8 @@ final class TestUtils {
     static final String VALID_HTTP_LOCALHOST = "http://localhost:8080";
     static final String VALID_URL = "https://resources/contoso-allinone.jpg";
     // Disables OperationLocation and Location Sanitizer
-    static final String[] REMOVE_SANITIZER_ID = {"AZSDK2003", "AZSDK2030"};
+    static final String[] REMOVE_SANITIZER_ID = { "AZSDK2003", "AZSDK2030" };
+
     private TestUtils() {
     }
 
@@ -99,6 +100,7 @@ final class TestUtils {
         // By default, we will assume that the authority is public
         return AzureAuthorityHosts.AZURE_PUBLIC_CLOUD;
     }
+
     static InputStream getContentDetectionFileData(String localFileUrl) {
         try {
             return new FileInputStream(localFileUrl);
@@ -117,12 +119,11 @@ final class TestUtils {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
-        getHttpClients()
-            .forEach(httpClient -> {
-                Arrays.stream(FormRecognizerServiceVersion.values()).filter(
-                    TestUtils::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
-            });
+        getHttpClients().forEach(httpClient -> {
+            Arrays.stream(FormRecognizerServiceVersion.values())
+                .filter(TestUtils::shouldServiceVersionBeTested)
+                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
+        });
         return argumentsList.stream();
     }
 
@@ -143,8 +144,8 @@ final class TestUtils {
      * @return Boolean indicates whether filters out the service version or not.
      */
     private static boolean shouldServiceVersionBeTested(FormRecognizerServiceVersion serviceVersion) {
-        String serviceVersionFromEnv =
-            Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_TEST_SERVICE_VERSIONS");
+        String serviceVersionFromEnv
+            = Configuration.getGlobalConfiguration().get("AZURE_FORM_RECOGNIZER_TEST_SERVICE_VERSIONS");
         if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return FormRecognizerServiceVersion.getLatest().equals(serviceVersion);
         }
@@ -152,22 +153,20 @@ final class TestUtils {
             return true;
         }
         String[] configuredServiceVersionList = serviceVersionFromEnv.split(",");
-        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
-            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+        return Arrays.stream(configuredServiceVersionList)
+            .anyMatch(configuredServiceVersion -> serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
 
     static void validateExceptionSource(HttpResponseException errorResponseException) {
-        StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(
-            errorResponseException.getResponse().getRequest().getBody()))
+        StepVerifier
+            .create(
+                FluxUtil.collectBytesInByteBufferStream(errorResponseException.getResponse().getRequest().getBody()))
             .assertNext(bytes -> assertEquals(ENCODED_EMPTY_SPACE, new String(bytes, StandardCharsets.UTF_8)))
             .verifyComplete();
     }
 
     static <T, U> SyncPoller<T, U> setSyncPollerPollInterval(SyncPoller<T, U> syncPoller,
         InterceptorManager interceptorManager) {
-        return interceptorManager.isPlaybackMode()
-            ? syncPoller.setPollInterval(Duration.ofMillis(1))
-            : syncPoller;
+        return interceptorManager.isPlaybackMode() ? syncPoller.setPollInterval(Duration.ofMillis(1)) : syncPoller;
     }
 }
-

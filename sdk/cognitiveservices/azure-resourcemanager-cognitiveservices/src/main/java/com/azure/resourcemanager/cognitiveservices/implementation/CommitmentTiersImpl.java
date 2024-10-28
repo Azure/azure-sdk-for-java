@@ -19,8 +19,7 @@ public final class CommitmentTiersImpl implements CommitmentTiers {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    public CommitmentTiersImpl(
-        CommitmentTiersClient innerClient,
+    public CommitmentTiersImpl(CommitmentTiersClient innerClient,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

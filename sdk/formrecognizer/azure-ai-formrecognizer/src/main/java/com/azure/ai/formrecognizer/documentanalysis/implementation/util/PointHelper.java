@@ -20,6 +20,7 @@ public final class PointHelper {
      */
     public interface PointAccessor {
         void setX(Point point, float xCoordinate);
+
         void setY(Point point, float yCoordinate);
     }
 

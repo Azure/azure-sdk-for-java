@@ -21,8 +21,8 @@ public final class GroupUsersImpl implements GroupUsers {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public GroupUsersImpl(
-        GroupUsersClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public GroupUsersImpl(GroupUsersClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -32,23 +32,16 @@ public final class GroupUsersImpl implements GroupUsers {
         return Utils.mapPage(inner, inner1 -> new UserContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<UserContract> list(
-        String resourceGroupName,
-        String serviceName,
-        String groupId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
-        PagedIterable<UserContractInner> inner =
-            this.serviceClient().list(resourceGroupName, serviceName, groupId, filter, top, skip, context);
+    public PagedIterable<UserContract> list(String resourceGroupName, String serviceName, String groupId, String filter,
+        Integer top, Integer skip, Context context) {
+        PagedIterable<UserContractInner> inner
+            = this.serviceClient().list(resourceGroupName, serviceName, groupId, filter, top, skip, context);
         return Utils.mapPage(inner, inner1 -> new UserContractImpl(inner1, this.manager()));
     }
 
-    public Response<Boolean> checkEntityExistsWithResponse(
-        String resourceGroupName, String serviceName, String groupId, String userId, Context context) {
-        return this
-            .serviceClient()
+    public Response<Boolean> checkEntityExistsWithResponse(String resourceGroupName, String serviceName, String groupId,
+        String userId, Context context) {
+        return this.serviceClient()
             .checkEntityExistsWithResponse(resourceGroupName, serviceName, groupId, userId, context);
     }
 
@@ -56,15 +49,12 @@ public final class GroupUsersImpl implements GroupUsers {
         return this.serviceClient().checkEntityExists(resourceGroupName, serviceName, groupId, userId);
     }
 
-    public Response<UserContract> createWithResponse(
-        String resourceGroupName, String serviceName, String groupId, String userId, Context context) {
-        Response<UserContractInner> inner =
-            this.serviceClient().createWithResponse(resourceGroupName, serviceName, groupId, userId, context);
+    public Response<UserContract> createWithResponse(String resourceGroupName, String serviceName, String groupId,
+        String userId, Context context) {
+        Response<UserContractInner> inner
+            = this.serviceClient().createWithResponse(resourceGroupName, serviceName, groupId, userId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new UserContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -80,8 +70,8 @@ public final class GroupUsersImpl implements GroupUsers {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String groupId, String userId, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String groupId,
+        String userId, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, groupId, userId, context);
     }
 

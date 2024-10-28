@@ -12,35 +12,17 @@ import java.util.Map;
 public final class IntegrationRuntimeNodeMonitoringDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeNodeMonitoringData model =
-            BinaryData
-                .fromString(
-                    "{\"nodeName\":\"vmfqhppubo\",\"availableMemoryInMB\":1380428673,\"cpuUtilization\":1908236647,\"concurrentJobsLimit\":61402651,\"concurrentJobsRunning\":58075104,\"maxConcurrentJobs\":342947659,\"sentBytes\":99.36763,\"receivedBytes\":14.429962,\"\":{\"kauxof\":\"datatcjuahokqto\",\"ywhslwkojpllndnp\":\"datahfphwpnulaiywze\"}}")
-                .toObject(IntegrationRuntimeNodeMonitoringData.class);
+        IntegrationRuntimeNodeMonitoringData model = BinaryData.fromString(
+            "{\"nodeName\":\"vmfqhppubo\",\"availableMemoryInMB\":1380428673,\"cpuUtilization\":1908236647,\"concurrentJobsLimit\":61402651,\"concurrentJobsRunning\":58075104,\"maxConcurrentJobs\":342947659,\"sentBytes\":99.36763,\"receivedBytes\":14.429962,\"\":{\"kauxof\":\"datatcjuahokqto\",\"ywhslwkojpllndnp\":\"datahfphwpnulaiywze\"}}")
+            .toObject(IntegrationRuntimeNodeMonitoringData.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeNodeMonitoringData model =
-            new IntegrationRuntimeNodeMonitoringData()
-                .withAdditionalProperties(
-                    mapOf(
-                        "nodeName",
-                        "vmfqhppubo",
-                        "cpuUtilization",
-                        1908236647,
-                        "receivedBytes",
-                        14.429962f,
-                        "concurrentJobsLimit",
-                        61402651,
-                        "concurrentJobsRunning",
-                        58075104,
-                        "maxConcurrentJobs",
-                        342947659,
-                        "availableMemoryInMB",
-                        1380428673,
-                        "sentBytes",
-                        99.36763f));
+        IntegrationRuntimeNodeMonitoringData model = new IntegrationRuntimeNodeMonitoringData()
+            .withAdditionalProperties(mapOf("nodeName", "vmfqhppubo", "cpuUtilization", 1908236647, "receivedBytes",
+                14.429962f, "concurrentJobsLimit", 61402651, "concurrentJobsRunning", 58075104, "maxConcurrentJobs",
+                342947659, "availableMemoryInMB", 1380428673, "sentBytes", 99.36763f));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeNodeMonitoringData.class);
     }
 

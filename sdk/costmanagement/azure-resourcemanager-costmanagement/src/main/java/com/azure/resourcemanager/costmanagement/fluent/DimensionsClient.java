@@ -70,8 +70,8 @@ public interface DimensionsClient {
      * @return result of listing dimensions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DimensionInner> list(
-        String scope, String filter, String expand, String skiptoken, Integer top, Context context);
+    PagedIterable<DimensionInner> list(String scope, String filter, String expand, String skiptoken, Integer top,
+        Context context);
 
     /**
      * Lists the dimensions by the external cloud provider type.
@@ -87,8 +87,8 @@ public interface DimensionsClient {
      * @return result of listing dimensions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DimensionInner> byExternalCloudProviderType(
-        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId);
+    PagedIterable<DimensionInner> byExternalCloudProviderType(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId);
 
     /**
      * Lists the dimensions by the external cloud provider type.
@@ -113,12 +113,6 @@ public interface DimensionsClient {
      * @return result of listing dimensions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DimensionInner> byExternalCloudProviderType(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        String filter,
-        String expand,
-        String skiptoken,
-        Integer top,
-        Context context);
+    PagedIterable<DimensionInner> byExternalCloudProviderType(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId, String filter, String expand, String skiptoken, Integer top, Context context);
 }

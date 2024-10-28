@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PackageCarrierInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PackageCarrierInfo model =
-            BinaryData
-                .fromString("{\"carrierName\":\"pyd\",\"trackingId\":\"yhxdeoejzicwi\"}")
-                .toObject(PackageCarrierInfo.class);
+        PackageCarrierInfo model = BinaryData.fromString("{\"carrierName\":\"pyd\",\"trackingId\":\"yhxdeoejzicwi\"}")
+            .toObject(PackageCarrierInfo.class);
         Assertions.assertEquals("pyd", model.carrierName());
         Assertions.assertEquals("yhxdeoejzicwi", model.trackingId());
     }

@@ -45,12 +45,14 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        DeviceUpdateManager manager = DeviceUpdateManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        DeviceUpdateManager manager = DeviceUpdateManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnection response = manager.privateEndpointConnections()
-            .getWithResponse("htpwij", "hyjsvfycx", "bfvoowvrv", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("htpwij", "hyjsvfycx", "bfvoowvrv", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             response.privateLinkServiceConnectionState().status());

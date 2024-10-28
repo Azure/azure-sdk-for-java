@@ -41,7 +41,8 @@ public final class ClustersStartMockTests {
             return Mono.just(httpResponse);
         }));
 
-        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure().withHttpClient(httpClient)
+        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
