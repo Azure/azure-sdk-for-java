@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The SparkMavenPackage model. */
 @Fluent
 public final class SparkMavenPackage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SparkMavenPackage.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SparkMavenPackage.class);
 
     /*
      * The group property.

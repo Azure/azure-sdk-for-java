@@ -98,18 +98,16 @@ public interface B2CTenantResource {
     B2CTenantResourceInner innerModel();
 
     /** The entirety of the B2CTenantResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithSku, DefinitionStages.WithCreate {
     }
+
     /** The B2CTenantResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the B2CTenantResource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the B2CTenantResource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -132,6 +130,7 @@ public interface B2CTenantResource {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the B2CTenantResource definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -142,6 +141,7 @@ public interface B2CTenantResource {
              */
             WithSku withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the B2CTenantResource definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -154,6 +154,7 @@ public interface B2CTenantResource {
              */
             WithCreate withSku(B2CResourceSku sku);
         }
+
         /**
          * The stage of the B2CTenantResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -175,6 +176,7 @@ public interface B2CTenantResource {
              */
             B2CTenantResource create(Context context);
         }
+
         /** The stage of the B2CTenantResource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -185,6 +187,7 @@ public interface B2CTenantResource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the B2CTenantResource definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -195,6 +198,7 @@ public interface B2CTenantResource {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the B2CTenantResource definition allowing to specify countryCode. */
         interface WithCountryCode {
             /**
@@ -212,6 +216,7 @@ public interface B2CTenantResource {
             WithCreate withCountryCode(String countryCode);
         }
     }
+
     /**
      * Begins update for the B2CTenantResource resource.
      *
@@ -237,6 +242,7 @@ public interface B2CTenantResource {
          */
         B2CTenantResource apply(Context context);
     }
+
     /** The B2CTenantResource update stages. */
     interface UpdateStages {
         /** The stage of the B2CTenantResource update allowing to specify tags. */
@@ -249,6 +255,7 @@ public interface B2CTenantResource {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the B2CTenantResource update allowing to specify sku. */
         interface WithSku {
             /**
@@ -261,6 +268,7 @@ public interface B2CTenantResource {
              */
             Update withSku(B2CResourceSku sku);
         }
+
         /** The stage of the B2CTenantResource update allowing to specify billingConfig. */
         interface WithBillingConfig {
             /**
@@ -271,6 +279,7 @@ public interface B2CTenantResource {
              */
             Update withBillingConfig(B2CTenantResourcePropertiesBillingConfig billingConfig);
         }
+
         /** The stage of the B2CTenantResource update allowing to specify tenantId. */
         interface WithTenantId {
             /**
@@ -282,6 +291,7 @@ public interface B2CTenantResource {
             Update withTenantId(String tenantId);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

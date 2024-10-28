@@ -50,17 +50,22 @@ public final class CommunicationServicesCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        CommunicationManager manager = CommunicationManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        CommunicationManager manager = CommunicationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CommunicationServiceResource response
-            = manager.communicationServices().define("kfrlhrxsbky").withRegion("hcdhmdual")
-                .withExistingResourceGroup("bh").withTags(mapOf("adm", "qpv", "r", "sr", "fmisg", "vxpvgomz"))
-                .withIdentity(
-                    new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("ahvljuaha", new UserAssignedIdentity())))
-                .withDataLocation("z").withLinkedDomains(Arrays.asList("eyvjusrtslhspkde", "maofmxagkv")).create();
+        CommunicationServiceResource response = manager.communicationServices()
+            .define("kfrlhrxsbky")
+            .withRegion("hcdhmdual")
+            .withExistingResourceGroup("bh")
+            .withTags(mapOf("adm", "qpv", "r", "sr", "fmisg", "vxpvgomz"))
+            .withIdentity(
+                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("ahvljuaha", new UserAssignedIdentity())))
+            .withDataLocation("z")
+            .withLinkedDomains(Arrays.asList("eyvjusrtslhspkde", "maofmxagkv"))
+            .create();
 
         Assertions.assertEquals("ow", response.location());
         Assertions.assertEquals("rzqlveu", response.tags().get("lupj"));

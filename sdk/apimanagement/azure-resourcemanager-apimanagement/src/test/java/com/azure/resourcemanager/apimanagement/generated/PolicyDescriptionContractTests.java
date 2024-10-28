@@ -10,11 +10,9 @@ import com.azure.resourcemanager.apimanagement.models.PolicyDescriptionContract;
 public final class PolicyDescriptionContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyDescriptionContract model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"iqcpszpmcvq\",\"scope\":3829090780057392318},\"id\":\"mvxyrxdh\",\"name\":\"vqojbxaotcgbz\",\"type\":\"mbtple\"}")
-                .toObject(PolicyDescriptionContract.class);
+        PolicyDescriptionContract model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"iqcpszpmcvq\",\"scope\":3829090780057392318},\"id\":\"mvxyrxdh\",\"name\":\"vqojbxaotcgbz\",\"type\":\"mbtple\"}")
+            .toObject(PolicyDescriptionContract.class);
     }
 
     @org.junit.jupiter.api.Test

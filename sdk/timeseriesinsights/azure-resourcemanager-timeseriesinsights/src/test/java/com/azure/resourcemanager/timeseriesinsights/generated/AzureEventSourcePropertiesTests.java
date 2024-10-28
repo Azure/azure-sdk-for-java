@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureEventSourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureEventSourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"eventSourceResourceId\":\"kyzxuutk\",\"timestampPropertyName\":\"ws\",\"localTimestamp\":{\"format\":\"Embedded\",\"timeZoneOffset\":{\"propertyName\":\"otogtwrupqs\"}},\"ingressStartAt\":{\"type\":\"EventSourceCreationTime\",\"time\":\"cykvceo\"},\"provisioningState\":\"Failed\",\"creationTime\":\"2021-05-12T18:53:43Z\"}")
-                .toObject(AzureEventSourceProperties.class);
+        AzureEventSourceProperties model = BinaryData.fromString(
+            "{\"eventSourceResourceId\":\"kyzxuutk\",\"timestampPropertyName\":\"ws\",\"localTimestamp\":{\"format\":\"Embedded\",\"timeZoneOffset\":{\"propertyName\":\"otogtwrupqs\"}},\"ingressStartAt\":{\"type\":\"EventSourceCreationTime\",\"time\":\"cykvceo\"},\"provisioningState\":\"Failed\",\"creationTime\":\"2021-05-12T18:53:43Z\"}")
+            .toObject(AzureEventSourceProperties.class);
         Assertions.assertEquals("ws", model.timestampPropertyName());
         Assertions.assertEquals(LocalTimestampFormat.EMBEDDED, model.localTimestamp().format());
         Assertions.assertEquals("otogtwrupqs", model.localTimestamp().timeZoneOffset().propertyName());
@@ -30,16 +28,12 @@ public final class AzureEventSourcePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureEventSourceProperties model =
-            new AzureEventSourceProperties()
-                .withTimestampPropertyName("ws")
-                .withLocalTimestamp(
-                    new LocalTimestamp()
-                        .withFormat(LocalTimestampFormat.EMBEDDED)
-                        .withTimeZoneOffset(new LocalTimestampTimeZoneOffset().withPropertyName("otogtwrupqs")))
-                .withType(IngressStartAtType.EVENT_SOURCE_CREATION_TIME)
-                .withTime("cykvceo")
-                .withEventSourceResourceId("kyzxuutk");
+        AzureEventSourceProperties model = new AzureEventSourceProperties().withTimestampPropertyName("ws")
+            .withLocalTimestamp(new LocalTimestamp().withFormat(LocalTimestampFormat.EMBEDDED)
+                .withTimeZoneOffset(new LocalTimestampTimeZoneOffset().withPropertyName("otogtwrupqs")))
+            .withType(IngressStartAtType.EVENT_SOURCE_CREATION_TIME)
+            .withTime("cykvceo")
+            .withEventSourceResourceId("kyzxuutk");
         model = BinaryData.fromObject(model).toObject(AzureEventSourceProperties.class);
         Assertions.assertEquals("ws", model.timestampPropertyName());
         Assertions.assertEquals(LocalTimestampFormat.EMBEDDED, model.localTimestamp().format());

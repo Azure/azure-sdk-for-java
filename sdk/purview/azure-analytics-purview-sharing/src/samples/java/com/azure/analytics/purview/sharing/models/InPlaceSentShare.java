@@ -4,78 +4,37 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.UUID;
-
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * An InPlace share kind.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "shareKind")
-@JsonTypeName("InPlace")
-@JsonFlatten
 @Fluent
-public class InPlaceSentShare extends SentShare {
+public final class InPlaceSentShare extends SentShare {
     /*
-     * A class for sent share artifact.
+     * Defines the supported types for share.
      */
-    @JsonProperty(value = "properties.artifact", required = true)
-    private Artifact artifact;
+    private ShareKind shareKind = ShareKind.IN_PLACE_SHARE_KIND;
 
     /*
-     * Time at which the sent share was created. Represented in the standard date-time format as defined by [RFC
-     * 3339](https://www.rfc-editor.org/rfc/rfc3339)
+     * Properties for InPlace sent share.
      */
-    @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdAt;
+    private InPlaceSentShareProperties properties;
 
     /*
-     * List of shares on which the sent share depends.
+     * Type of the resource.
      */
-    @JsonProperty(value = "properties.dependsOn", access = JsonProperty.Access.WRITE_ONLY)
-    private List<UUID> dependsOn;
+    private String type;
 
     /*
-     * Sent share description.
+     * The unique id of the resource.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The name of the sent share
-     */
-    @JsonProperty(value = "properties.displayName", required = true)
-    private String displayName;
-
-    /*
-     * Email of the sender who created the sent share.
-     */
-    @JsonProperty(value = "properties.senderEmail", access = JsonProperty.Access.WRITE_ONLY)
-    private String senderEmail;
-
-    /*
-     * Name of the sender who created the sent share.
-     */
-    @JsonProperty(value = "properties.senderName", access = JsonProperty.Access.WRITE_ONLY)
-    private String senderName;
-
-    /*
-     * Tenant name of the sender who created the sent share.
-     */
-    @JsonProperty(value = "properties.senderTenantName", access = JsonProperty.Access.WRITE_ONLY)
-    private String senderTenantName;
-
-    /*
-     * State of the resource
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private State state;
+    private String id;
 
     /**
      * Creates an instance of InPlaceSentShare class.
@@ -84,117 +43,96 @@ public class InPlaceSentShare extends SentShare {
     }
 
     /**
-     * Get the artifact property: A class for sent share artifact.
-     * 
-     * @return the artifact value.
+     * Get the shareKind property: Defines the supported types for share.
+     *
+     * @return the shareKind value.
      */
-    public Artifact getArtifact() {
-        return this.artifact;
+    @Override
+    public ShareKind getShareKind() {
+        return this.shareKind;
     }
 
     /**
-     * Set the artifact property: A class for sent share artifact.
-     * 
-     * @param artifact the artifact value to set.
+     * Get the properties property: Properties for InPlace sent share.
+     *
+     * @return the properties value.
+     */
+    public InPlaceSentShareProperties getProperties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Properties for InPlace sent share.
+     *
+     * @param properties the properties value to set.
      * @return the InPlaceSentShare object itself.
      */
-    public InPlaceSentShare setArtifact(Artifact artifact) {
-        this.artifact = artifact;
+    public InPlaceSentShare setProperties(InPlaceSentShareProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the createdAt property: Time at which the sent share was created. Represented in the standard date-time
-     * format as defined by [RFC 3339](https://www.rfc-editor.org/rfc/rfc3339).
-     * 
-     * @return the createdAt value.
+     * Get the type property: Type of the resource.
+     *
+     * @return the type value.
      */
-    public OffsetDateTime getCreatedAt() {
-        return this.createdAt;
+    @Override
+    public String getType() {
+        return this.type;
     }
 
     /**
-     * Get the dependsOn property: List of shares on which the sent share depends.
-     * 
-     * @return the dependsOn value.
+     * Get the id property: The unique id of the resource.
+     *
+     * @return the id value.
      */
-    public List<UUID> getDependsOn() {
-        return this.dependsOn;
+    @Override
+    public String getId() {
+        return this.id;
     }
 
     /**
-     * Get the description property: Sent share description.
-     * 
-     * @return the description value.
+     * {@inheritDoc}
      */
-    public String getDescription() {
-        return this.description;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("shareKind", this.shareKind == null ? null : this.shareKind.toString());
+        return jsonWriter.writeEndObject();
     }
 
     /**
-     * Set the description property: Sent share description.
-     * 
-     * @param description the description value to set.
-     * @return the InPlaceSentShare object itself.
+     * Reads an instance of InPlaceSentShare from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InPlaceSentShare if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InPlaceSentShare.
      */
-    public InPlaceSentShare setDescription(String description) {
-        this.description = description;
-        return this;
-    }
+    public static InPlaceSentShare fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InPlaceSentShare deserializedInPlaceSentShare = new InPlaceSentShare();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-    /**
-     * Get the displayName property: The name of the sent share.
-     * 
-     * @return the displayName value.
-     */
-    public String getDisplayName() {
-        return this.displayName;
-    }
+                if ("id".equals(fieldName)) {
+                    deserializedInPlaceSentShare.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedInPlaceSentShare.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedInPlaceSentShare.properties = InPlaceSentShareProperties.fromJson(reader);
+                } else if ("shareKind".equals(fieldName)) {
+                    deserializedInPlaceSentShare.shareKind = ShareKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-    /**
-     * Set the displayName property: The name of the sent share.
-     * 
-     * @param displayName the displayName value to set.
-     * @return the InPlaceSentShare object itself.
-     */
-    public InPlaceSentShare setDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
-    }
-
-    /**
-     * Get the senderEmail property: Email of the sender who created the sent share.
-     * 
-     * @return the senderEmail value.
-     */
-    public String getSenderEmail() {
-        return this.senderEmail;
-    }
-
-    /**
-     * Get the senderName property: Name of the sender who created the sent share.
-     * 
-     * @return the senderName value.
-     */
-    public String getSenderName() {
-        return this.senderName;
-    }
-
-    /**
-     * Get the senderTenantName property: Tenant name of the sender who created the sent share.
-     * 
-     * @return the senderTenantName value.
-     */
-    public String getSenderTenantName() {
-        return this.senderTenantName;
-    }
-
-    /**
-     * Get the state property: State of the resource.
-     * 
-     * @return the state value.
-     */
-    public State getState() {
-        return this.state;
+            return deserializedInPlaceSentShare;
+        });
     }
 }

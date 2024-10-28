@@ -10,9 +10,8 @@ import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationIn
 public final class ApplicationInsightsComponentWebTestLocationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentWebTestLocationInner model =
-            BinaryData
-                .fromString("{\"DisplayName\":\"qfbow\",\"Tag\":\"anyktzlcuiywg\"}")
+        ApplicationInsightsComponentWebTestLocationInner model
+            = BinaryData.fromString("{\"DisplayName\":\"qfbow\",\"Tag\":\"anyktzlcuiywg\"}")
                 .toObject(ApplicationInsightsComponentWebTestLocationInner.class);
     }
 

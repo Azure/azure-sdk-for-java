@@ -45,12 +45,14 @@ public final class ImagesGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Image response = manager.images()
-            .getWithResponse("mpgcjefuzmuvpbt", "d", "morppxebmnzbtbh", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("mpgcjefuzmuvpbt", "d", "morppxebmnzbtbh", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("lkfg", response.properties().image());
         Assertions.assertEquals("dneu", response.properties().imageId());

@@ -27,8 +27,8 @@ public interface ResourceProvidersClient {
      * @return check SKU availability result list along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuAvailabilityListResultInner> checkSkuAvailabilityWithResponse(
-        String location, CheckSkuAvailabilityParameter parameters, Context context);
+    Response<SkuAvailabilityListResultInner> checkSkuAvailabilityWithResponse(String location,
+        CheckSkuAvailabilityParameter parameters, Context context);
 
     /**
      * Check available SKUs.
@@ -54,8 +54,8 @@ public interface ResourceProvidersClient {
      * @return domain availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DomainAvailabilityInner> checkDomainAvailabilityWithResponse(
-        CheckDomainAvailabilityParameter parameters, Context context);
+    Response<DomainAvailabilityInner> checkDomainAvailabilityWithResponse(CheckDomainAvailabilityParameter parameters,
+        Context context);
 
     /**
      * Check whether a domain is available.

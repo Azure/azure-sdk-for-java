@@ -30,8 +30,7 @@ import java.util.Iterator;
  *
  * @since 2.2
  */
-public interface TreeNode
-{
+public interface TreeNode {
     /*
     /**********************************************************
     /* Minimal introspection methods

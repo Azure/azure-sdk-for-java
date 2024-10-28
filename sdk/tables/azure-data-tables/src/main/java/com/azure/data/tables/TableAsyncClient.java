@@ -295,7 +295,7 @@ public final class TableAsyncClient {
     private final TableAsyncClient transactionalBatchClient;
 
     TableAsyncClient(String tableName, HttpPipeline pipeline, String serviceUrl, TableServiceVersion serviceVersion,
-                     SerializerAdapter tablesSerializer, SerializerAdapter transactionalBatchSerializer) {
+        SerializerAdapter tablesSerializer, SerializerAdapter transactionalBatchSerializer) {
         try {
             if (tableName == null) {
                 throw new NullPointerException("'tableName' must not be null to create a TableClient.");
@@ -314,14 +314,13 @@ public final class TableAsyncClient {
             throw logger.logExceptionAsError(ex);
         }
 
-        this.tablesImplementation = new AzureTableImplBuilder()
-            .url(serviceUrl)
+        this.tablesImplementation = new AzureTableImplBuilder().url(serviceUrl)
             .serializerAdapter(tablesSerializer)
             .pipeline(pipeline)
             .version(serviceVersion.getVersion())
             .buildClient();
-        this.transactionalBatchImplementation =
-            new TransactionalBatchImpl(tablesImplementation, transactionalBatchSerializer);
+        this.transactionalBatchImplementation
+            = new TransactionalBatchImpl(tablesImplementation, transactionalBatchSerializer);
         this.tableName = tableName;
         this.pipeline = tablesImplementation.getHttpPipeline();
         this.transactionalBatchClient = new TableAsyncClient(this, serviceVersion, tablesSerializer);
@@ -332,8 +331,7 @@ public final class TableAsyncClient {
         this.accountName = client.getAccountName();
         this.tableEndpoint = client.getTableEndpoint();
         this.pipeline = BuilderHelper.buildNullClientPipeline();
-        this.tablesImplementation = new AzureTableImplBuilder()
-            .url(client.getTablesImplementation().getUrl())
+        this.tablesImplementation = new AzureTableImplBuilder().url(client.getTablesImplementation().getUrl())
             .serializerAdapter(tablesSerializer)
             .pipeline(this.pipeline)
             .version(serviceVersion.getVersion())
@@ -422,7 +420,6 @@ public final class TableAsyncClient {
         return new TableSasGenerator(tableSasSignatureValues, getTableName(), azureNamedKeyCredential).getSas();
     }
 
-
     /**
      * Creates the table within the Tables service.
      *
@@ -475,12 +472,11 @@ public final class TableAsyncClient {
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         try {
-            return tablesImplementation.getTables().createWithResponseAsync(properties, null,
-                    ResponseFormat.RETURN_NO_CONTENT, null, context)
+            return tablesImplementation.getTables()
+                .createWithResponseAsync(properties, null, ResponseFormat.RETURN_NO_CONTENT, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
-                .map(response ->
-                    new SimpleResponse<>(response,
-                        TableItemAccessHelper.createItem(new TableResponseProperties().setTableName(tableName))));
+                .map(response -> new SimpleResponse<>(response,
+                    TableItemAccessHelper.createItem(new TableResponseProperties().setTableName(tableName))));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -534,7 +530,8 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> deleteTableWithResponse(Context context) {
         try {
-            return tablesImplementation.getTables().deleteWithResponseAsync(tableName, null, context)
+            return tablesImplementation.getTables()
+                .deleteWithResponseAsync(tableName, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
                 .onErrorResume(TableServiceException.class, e -> swallowExceptionForStatusCode(404, e, logger));
@@ -615,11 +612,12 @@ public final class TableAsyncClient {
         EntityHelper.setPropertiesFromGetters(entity, logger);
 
         try {
-            return tablesImplementation.getTables().insertEntityWithResponseAsync(tableName, null, null,
-                    ResponseFormat.RETURN_NO_CONTENT, entity.getProperties(), null, context)
+            return tablesImplementation.getTables()
+                .insertEntityWithResponseAsync(tableName, null, null, ResponseFormat.RETURN_NO_CONTENT,
+                    entity.getProperties(), null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
-                .map(response ->
-                    new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+                .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), null));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -699,7 +697,7 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
-                                                  Context context) {
+        Context context) {
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
         }
@@ -715,17 +713,15 @@ public final class TableAsyncClient {
                     .updateEntityWithResponseAsync(tableName, partitionKey, rowKey, null, null, null,
                         entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
-                    .map(response ->
-                        new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                            null));
+                    .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), null));
             } else {
                 return tablesImplementation.getTables()
                     .mergeEntityWithResponseAsync(tableName, partitionKey, rowKey, null, null, null,
                         entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
-                    .map(response ->
-                        new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                            null));
+                    .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), null));
             }
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -850,12 +846,12 @@ public final class TableAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
-                                                         boolean ifUnchanged) {
+        boolean ifUnchanged) {
         return withContext(context -> updateEntityWithResponse(entity, updateMode, ifUnchanged, context));
     }
 
     Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
-                                                  boolean ifUnchanged, Context context) {
+        boolean ifUnchanged, Context context) {
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
         }
@@ -872,17 +868,15 @@ public final class TableAsyncClient {
                     .updateEntityWithResponseAsync(tableName, partitionKey, rowKey, null, null, eTag,
                         entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
-                    .map(response ->
-                        new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                            null));
+                    .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), null));
             } else {
                 return tablesImplementation.getTables()
                     .mergeEntityWithResponseAsync(tableName, partitionKey, rowKey, null, null, eTag,
                         entity.getProperties(), null, context)
                     .onErrorMap(TableUtils::mapThrowableToTableServiceException)
-                    .map(response ->
-                        new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                            null));
+                    .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), null));
             }
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -985,7 +979,7 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, boolean ifUnchanged,
-                                                  Context context) {
+        Context context) {
         eTag = ifUnchanged ? eTag : "*";
 
         if (partitionKey == null || rowKey == null) {
@@ -993,8 +987,9 @@ public final class TableAsyncClient {
         }
 
         try {
-            return tablesImplementation.getTables().deleteEntityWithResponseAsync(tableName,
-            TableUtils.escapeSingleQuotes(partitionKey), TableUtils.escapeSingleQuotes(rowKey), eTag, null, null, null, context)
+            return tablesImplementation.getTables()
+                .deleteEntityWithResponseAsync(tableName, TableUtils.escapeSingleQuotes(partitionKey),
+                    TableUtils.escapeSingleQuotes(rowKey), eTag, null, null, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .map(response -> (Response<Void>) new SimpleResponse<Void>(response, null))
                 .onErrorResume(TableServiceException.class, e -> swallowExceptionForStatusCode(404, e, logger));
@@ -1071,8 +1066,7 @@ public final class TableAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<TableEntity> listEntities(ListEntitiesOptions options) {
-        return new PagedFlux<>(
-            () -> withContext(context -> listEntitiesFirstPage(context, options, TableEntity.class)),
+        return new PagedFlux<>(() -> withContext(context -> listEntitiesFirstPage(context, options, TableEntity.class)),
             token -> withContext(context -> listEntitiesNextPage(token, context, options, TableEntity.class)));
     }
 
@@ -1083,14 +1077,12 @@ public final class TableAsyncClient {
     }
 
     private <T extends TableEntity> Mono<PagedResponse<T>> listEntitiesFirstPage(Context context,
-                                                                                 ListEntitiesOptions options,
-                                                                                 Class<T> resultType) {
+        ListEntitiesOptions options, Class<T> resultType) {
         return listEntities(null, null, context, options, resultType);
     }
 
     private <T extends TableEntity> Mono<PagedResponse<T>> listEntitiesNextPage(String token, Context context,
-                                                                                ListEntitiesOptions options,
-                                                                                Class<T> resultType) {
+        ListEntitiesOptions options, Class<T> resultType) {
         if (token == null) {
             return Mono.empty();
         }
@@ -1104,23 +1096,22 @@ public final class TableAsyncClient {
     }
 
     private <T extends TableEntity> Mono<PagedResponse<T>> listEntities(String nextPartitionKey, String nextRowKey,
-                                                                        Context context, ListEntitiesOptions options,
-                                                                        Class<T> resultType) {
+        Context context, ListEntitiesOptions options, Class<T> resultType) {
         String select = null;
 
         if (options.getSelect() != null) {
             select = String.join(",", options.getSelect());
         }
 
-        QueryOptions queryOptions = new QueryOptions()
-            .setFilter(options.getFilter())
+        QueryOptions queryOptions = new QueryOptions().setFilter(options.getFilter())
             .setTop(options.getTop())
             .setSelect(select)
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
 
         try {
-            return tablesImplementation.getTables().queryEntitiesWithResponseAsync(tableName, null, null,
-                    nextPartitionKey, nextRowKey, queryOptions, context)
+            return tablesImplementation.getTables()
+                .queryEntitiesWithResponseAsync(tableName, null, null, nextPartitionKey, nextRowKey, queryOptions,
+                    context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .flatMap(response -> {
                     final TableEntityQueryResponse tablesQueryEntityResponse = response.getValue();
@@ -1226,10 +1217,9 @@ public final class TableAsyncClient {
     }
 
     <T extends TableEntity> Mono<Response<T>> getEntityWithResponse(String partitionKey, String rowKey,
-                                                                    List<String> select, Class<T> resultType,
-                                                                    Context context) {
-        QueryOptions queryOptions = new QueryOptions()
-            .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
+        List<String> select, Class<T> resultType, Context context) {
+        QueryOptions queryOptions
+            = new QueryOptions().setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
 
         if (select != null) {
             queryOptions.setSelect(String.join(",", select));
@@ -1240,8 +1230,10 @@ public final class TableAsyncClient {
         }
 
         try {
-            return tablesImplementation.getTables().queryEntityWithPartitionAndRowKeyWithResponseAsync(tableName,
-                    TableUtils.escapeSingleQuotes(partitionKey), TableUtils.escapeSingleQuotes(rowKey), null, null, queryOptions, context)
+            return tablesImplementation.getTables()
+                .queryEntityWithPartitionAndRowKeyWithResponseAsync(tableName,
+                    TableUtils.escapeSingleQuotes(partitionKey), TableUtils.escapeSingleQuotes(rowKey), null, null,
+                    queryOptions, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .handle((response, sink) -> {
                     final Map<String, Object> matchingEntity = response.getValue();
@@ -1428,7 +1420,7 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
-                                                       Context context) {
+        Context context) {
         /*
          * We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
          * OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
@@ -1440,15 +1432,15 @@ public final class TableAsyncClient {
                 if (signedIdentifier != null && signedIdentifier.getAccessPolicy() != null) {
                     if (signedIdentifier.getAccessPolicy().getStartsOn() != null) {
                         signedIdentifier.getAccessPolicy()
-                            .setStartsOn(signedIdentifier.getAccessPolicy()
-                                .getStartsOn().truncatedTo(ChronoUnit.SECONDS));
+                            .setStartsOn(
+                                signedIdentifier.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
                     }
 
                     if (signedIdentifier.getAccessPolicy().getExpiresOn() != null) {
 
                         signedIdentifier.getAccessPolicy()
-                            .setExpiresOn(signedIdentifier.getAccessPolicy()
-                                .getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
+                            .setExpiresOn(
+                                signedIdentifier.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
                     }
                 }
             }
@@ -1640,11 +1632,13 @@ public final class TableAsyncClient {
      * may cause a given {@link TableTransactionAction action} to fail.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TableTransactionResult>> submitTransactionWithResponse(List<TableTransactionAction> transactionActions) {
+    public Mono<Response<TableTransactionResult>>
+        submitTransactionWithResponse(List<TableTransactionAction> transactionActions) {
         return withContext(context -> submitTransactionWithResponse(transactionActions, context));
     }
 
-    Mono<Response<TableTransactionResult>> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Context context) {
+    Mono<Response<TableTransactionResult>>
+        submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Context context) {
         if (transactionActions.isEmpty()) {
             return monoError(logger,
                 new IllegalArgumentException("A transaction must contain at least one operation."));
@@ -1658,32 +1652,37 @@ public final class TableAsyncClient {
                     operations.add(new TransactionalBatchAction.CreateEntity(transactionAction.getEntity()));
 
                     break;
+
                 case UPSERT_MERGE:
                     operations.add(new TransactionalBatchAction.UpsertEntity(transactionAction.getEntity(),
                         TableEntityUpdateMode.MERGE));
 
                     break;
+
                 case UPSERT_REPLACE:
                     operations.add(new TransactionalBatchAction.UpsertEntity(transactionAction.getEntity(),
                         TableEntityUpdateMode.REPLACE));
 
                     break;
+
                 case UPDATE_MERGE:
                     operations.add(new TransactionalBatchAction.UpdateEntity(transactionAction.getEntity(),
                         TableEntityUpdateMode.MERGE, transactionAction.getIfUnchanged()));
 
                     break;
+
                 case UPDATE_REPLACE:
                     operations.add(new TransactionalBatchAction.UpdateEntity(transactionAction.getEntity(),
                         TableEntityUpdateMode.REPLACE, transactionAction.getIfUnchanged()));
 
                     break;
+
                 case DELETE:
-                    operations.add(
-                        new TransactionalBatchAction.DeleteEntity(transactionAction.getEntity(),
-                            transactionAction.getIfUnchanged()));
+                    operations.add(new TransactionalBatchAction.DeleteEntity(transactionAction.getEntity(),
+                        transactionAction.getIfUnchanged()));
 
                     break;
+
                 default:
                     break;
             }
@@ -1692,23 +1691,24 @@ public final class TableAsyncClient {
         try {
             return Flux.fromIterable(operations)
                 .flatMapSequential(op -> op.prepareRequest(transactionalBatchClient).zipWith(Mono.just(op)))
-                .collect(TransactionalBatchRequestBody::new, (body, pair) ->
-                    body.addChangeOperation(new TransactionalBatchSubRequest(pair.getT2(), pair.getT1())))
+                .collect(TransactionalBatchRequestBody::new,
+                    (body, pair) -> body
+                        .addChangeOperation(new TransactionalBatchSubRequest(pair.getT2(), pair.getT1())))
                 .publishOn(Schedulers.boundedElastic())
-                .flatMap(body ->
-                    transactionalBatchImplementation.submitTransactionalBatchWithRestResponseAsync(body, null,
-                        context).zipWith(Mono.just(body)))
+                .flatMap(body -> transactionalBatchImplementation
+                    .submitTransactionalBatchWithRestResponseAsync(body, null, context)
+                    .zipWith(Mono.just(body)))
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .flatMap(pair -> parseResponse(pair.getT2(), pair.getT1()))
-                .map(response ->
-                    new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                        new TableTransactionResult(transactionActions, response.getValue())));
+                .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), new TableTransactionResult(transactionActions, response.getValue())));
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }
     }
 
-    private Mono<Response<List<TableTransactionActionResponse>>> parseResponse(TransactionalBatchRequestBody requestBody,
+    private Mono<Response<List<TableTransactionActionResponse>>> parseResponse(
+        TransactionalBatchRequestBody requestBody,
         ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> response) {
         TableServiceJsonError error = null;
         String errorMessage = null;
@@ -1735,7 +1735,8 @@ public final class TableAsyncClient {
                     error = (TableServiceJsonError) subResponse.getValue();
 
                     // Make a best effort to locate the failed operation and include it in the message
-                    if (changes != null && error.getOdataError() != null
+                    if (changes != null
+                        && error.getOdataError() != null
                         && error.getOdataError().getMessage() != null
                         && error.getOdataError().getMessage().getValue() != null) {
 
@@ -1751,12 +1752,11 @@ public final class TableAsyncClient {
                         }
                     }
                 } else if (subResponse.getValue() instanceof String) {
-                    errorMessage = "The service returned the following data for the failed operation: "
-                        + subResponse.getValue();
+                    errorMessage
+                        = "The service returned the following data for the failed operation: " + subResponse.getValue();
                 } else {
-                    errorMessage =
-                        "The service returned the following status code for the failed operation: "
-                            + subResponse.getStatusCode();
+                    errorMessage = "The service returned the following status code for the failed operation: "
+                        + subResponse.getStatusCode();
                 }
             }
         }

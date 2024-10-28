@@ -127,10 +127,8 @@ public final class TransferFilterDetails {
      */
     public void validate() {
         if (dataAccountType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataAccountType in model TransferFilterDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property dataAccountType in model TransferFilterDetails"));
         }
         if (blobFilterDetails() != null) {
             blobFilterDetails().validate();

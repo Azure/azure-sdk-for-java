@@ -48,10 +48,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param client the instance of the service client containing this operation class.
      */
     PrivateEndpointConnectionsClientImpl(AzureDigitalTwinsManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    PrivateEndpointConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PrivateEndpointConnectionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,65 +60,45 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     @Host("{$host}")
     @ServiceInterface(name = "AzureDigitalTwinsMan")
     public interface PrivateEndpointConnectionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/privateEndpointConnections")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/privateEndpointConnections")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionsResponseInner>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PrivateEndpointConnectionsResponseInner>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<PrivateEndpointConnectionInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DigitalTwins/digitalTwinsInstances/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
             @BodyParam("application/json") PrivateEndpointConnectionInner privateEndpointConnection,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -135,19 +113,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionsResponseInner>> listWithResponseAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<Response<PrivateEndpointConnectionsResponseInner>> listWithResponseAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -158,17 +132,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -185,19 +150,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionsResponseInner>> listWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<PrivateEndpointConnectionsResponseInner>> listWithResponseAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -208,15 +169,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, resourceName, accept, context);
     }
 
     /**
@@ -246,8 +200,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the available private link connections for a Digital Twin along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateEndpointConnectionsResponseInner> listWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
+    public Response<PrivateEndpointConnectionsResponseInner> listWithResponse(String resourceGroupName,
+        String resourceName, Context context) {
         return listWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
@@ -279,19 +233,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
+    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName, String privateEndpointConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -301,25 +251,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            privateEndpointConnectionName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, privateEndpointConnectionName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -337,19 +276,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
+    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName, String privateEndpointConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -359,23 +294,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                privateEndpointConnectionName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, resourceName, privateEndpointConnectionName, accept, context);
     }
 
     /**
@@ -391,8 +316,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionInner> getAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
+    private Mono<PrivateEndpointConnectionInner> getAsync(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName) {
         return getWithResponseAsync(resourceGroupName, resourceName, privateEndpointConnectionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -410,8 +335,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return private endpoint connection properties for the given private endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
+    public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context).block();
     }
 
@@ -427,8 +352,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return private endpoint connection properties for the given private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner get(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
+    public PrivateEndpointConnectionInner get(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName) {
         return getWithResponse(resourceGroupName, resourceName, privateEndpointConnectionName, Context.NONE).getValue();
     }
 
@@ -444,19 +369,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -466,25 +387,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            privateEndpointConnectionName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, privateEndpointConnectionName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -501,19 +411,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -523,23 +429,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                privateEndpointConnectionName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, resourceName, privateEndpointConnectionName, accept, context);
     }
 
     /**
@@ -554,14 +450,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, resourceName, privateEndpointConnectionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, resourceName, privateEndpointConnectionName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -577,14 +471,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -599,8 +492,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName) {
         return this.beginDeleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName).getSyncPoller();
     }
 
@@ -617,10 +510,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context)
             .getSyncPoller();
     }
 
@@ -636,10 +528,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName) {
-        return beginDeleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName) {
+        return beginDeleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -656,10 +547,9 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String privateEndpointConnectionName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -690,8 +580,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context) {
+    public void delete(String resourceGroupName, String resourceName, String privateEndpointConnectionName,
+        Context context) {
         deleteAsync(resourceGroupName, resourceName, privateEndpointConnectionName, context).block();
     }
 
@@ -709,22 +599,16 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -734,34 +618,20 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (privateEndpointConnection == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnection is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter privateEndpointConnection is required and cannot be null."));
         } else {
             privateEndpointConnection.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            privateEndpointConnectionName,
-                            privateEndpointConnection,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, privateEndpointConnectionName,
+                privateEndpointConnection, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -780,23 +650,16 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -806,32 +669,20 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (privateEndpointConnection == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnection is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter privateEndpointConnection is required and cannot be null."));
         } else {
             privateEndpointConnection.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                privateEndpointConnectionName,
-                privateEndpointConnection,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, privateEndpointConnectionName,
+            privateEndpointConnection, accept, context);
     }
 
     /**
@@ -848,22 +699,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String resourceName,
-            String privateEndpointConnectionName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String resourceName, String privateEndpointConnectionName,
             PrivateEndpointConnectionInner privateEndpointConnection) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection);
-        return this
-            .client
-            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PrivateEndpointConnectionInner.class,
-                PrivateEndpointConnectionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, resourceName,
+            privateEndpointConnectionName, privateEndpointConnection);
+        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -881,24 +723,14 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String resourceName,
-            String privateEndpointConnectionName,
-            PrivateEndpointConnectionInner privateEndpointConnection,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String resourceName, String privateEndpointConnectionName,
+            PrivateEndpointConnectionInner privateEndpointConnection, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, context);
-        return this
-            .client
-            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PrivateEndpointConnectionInner.class,
-                PrivateEndpointConnectionInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, resourceName,
+            privateEndpointConnectionName, privateEndpointConnection, context);
+        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class,
+            context);
     }
 
     /**
@@ -915,13 +747,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection)
+            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, privateEndpointConnectionName,
+                privateEndpointConnection)
             .getSyncPoller();
     }
 
@@ -940,14 +770,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
-        Context context) {
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection, Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, context)
+            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, privateEndpointConnectionName,
+                privateEndpointConnection, context)
             .getSyncPoller();
     }
 
@@ -964,15 +791,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the private endpoint connection of a Digital Twin on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<PrivateEndpointConnectionInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, privateEndpointConnectionName,
+            privateEndpointConnection).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -989,16 +811,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the private endpoint connection of a Digital Twin on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
+    private Mono<PrivateEndpointConnectionInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, privateEndpointConnectionName,
+            privateEndpointConnection, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1014,14 +831,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the private endpoint connection of a Digital Twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection) {
-        return createOrUpdateAsync(
-                resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection)
-            .block();
+    public PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
+        return createOrUpdateAsync(resourceGroupName, resourceName, privateEndpointConnectionName,
+            privateEndpointConnection).block();
     }
 
     /**
@@ -1038,14 +851,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the private endpoint connection of a Digital Twin.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
+    public PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
         Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, resourceName, privateEndpointConnectionName, privateEndpointConnection, context)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, resourceName, privateEndpointConnectionName,
+            privateEndpointConnection, context).block();
     }
 }

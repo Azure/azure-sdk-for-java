@@ -30,8 +30,8 @@ public interface VaultsClient {
      * @return the details of the vault along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VaultModelInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String vaultName, Context context);
+    Response<VaultModelInner> getByResourceGroupWithResponse(String resourceGroupName, String vaultName,
+        Context context);
 
     /**
      * Gets the vault.
@@ -78,8 +78,8 @@ public interface VaultsClient {
      * @return the {@link SyncPoller} for polling of vault model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VaultModelInner>, VaultModelInner> beginCreate(
-        String resourceGroupName, String vaultName, VaultModelInner body, Context context);
+    SyncPoller<PollResult<VaultModelInner>, VaultModelInner> beginCreate(String resourceGroupName, String vaultName,
+        VaultModelInner body, Context context);
 
     /**
      * Puts the vault.
@@ -143,8 +143,8 @@ public interface VaultsClient {
      * @return the {@link SyncPoller} for polling of vault model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VaultModelInner>, VaultModelInner> beginUpdate(
-        String resourceGroupName, String vaultName, VaultModelUpdate body, Context context);
+    SyncPoller<PollResult<VaultModelInner>, VaultModelInner> beginUpdate(String resourceGroupName, String vaultName,
+        VaultModelUpdate body, Context context);
 
     /**
      * Updates the vault.
@@ -295,6 +295,6 @@ public interface VaultsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VaultModelInner> listByResourceGroup(
-        String resourceGroupName, String continuationToken, Context context);
+    PagedIterable<VaultModelInner> listByResourceGroup(String resourceGroupName, String continuationToken,
+        Context context);
 }

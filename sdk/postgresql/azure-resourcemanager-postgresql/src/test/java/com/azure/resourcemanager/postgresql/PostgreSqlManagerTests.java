@@ -36,13 +36,11 @@ public class PostgreSqlManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        postgreSqlManager = PostgreSqlManager
-            .configure()
+        postgreSqlManager = PostgreSqlManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -53,10 +51,7 @@ public class PostgreSqlManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -75,29 +70,28 @@ public class PostgreSqlManagerTests extends TestProxyTestBase {
         try {
             String serverName = "postgresql" + randomPadding;
             String adminName = "sqlAdmin" + randomPadding;
-            String adminPwd = "sqlAdmin"
-                + UUID.randomUUID().toString().replace("-", StringUtil.EMPTY_STRING).substring(0, 8);
+            String adminPwd
+                = "sqlAdmin" + UUID.randomUUID().toString().replace("-", StringUtil.EMPTY_STRING).substring(0, 8);
             // @embedmeStart
             server = postgreSqlManager.servers()
                 .define(serverName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withProperties(
-                    new ServerPropertiesForDefaultCreate()
-                        .withAdministratorLogin(adminName)
-                        .withAdministratorLoginPassword(adminPwd)
-                        .withStorageProfile(new StorageProfile()
-                            .withBackupRetentionDays(7)
-                            .withGeoRedundantBackup(GeoRedundantBackup.DISABLED)
-                            .withStorageMB(102400)
-                            .withStorageAutogrow(StorageAutogrow.ENABLED))
-                        .withSslEnforcement(SslEnforcementEnum.ENABLED)
-                        .withPublicNetworkAccess(PublicNetworkAccessEnum.ENABLED)
-                        .withInfrastructureEncryption(InfrastructureEncryption.DISABLED)
-                        .withVersion(ServerVersion.ONE_ONE)
-                )
+                .withProperties(new ServerPropertiesForDefaultCreate().withAdministratorLogin(adminName)
+                    .withAdministratorLoginPassword(adminPwd)
+                    .withStorageProfile(new StorageProfile().withBackupRetentionDays(7)
+                        .withGeoRedundantBackup(GeoRedundantBackup.DISABLED)
+                        .withStorageMB(102400)
+                        .withStorageAutogrow(StorageAutogrow.ENABLED))
+                    .withSslEnforcement(SslEnforcementEnum.ENABLED)
+                    .withPublicNetworkAccess(PublicNetworkAccessEnum.ENABLED)
+                    .withInfrastructureEncryption(InfrastructureEncryption.DISABLED)
+                    .withVersion(ServerVersion.ONE_ONE))
                 .withIdentity(new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED))
-                .withSku(new Sku().withName("GP_Gen5_4").withTier(SkuTier.GENERAL_PURPOSE).withCapacity(4).withFamily("Gen5"))
+                .withSku(new Sku().withName("GP_Gen5_4")
+                    .withTier(SkuTier.GENERAL_PURPOSE)
+                    .withCapacity(4)
+                    .withFamily("Gen5"))
                 .create();
             // @embedmeEnd
             server.refresh();

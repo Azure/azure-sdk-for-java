@@ -32,37 +32,27 @@ public final class SqlPoolsPauseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"sku\":{\"tier\":\"fqwtltngvm\",\"name\":\"uptrklz\",\"capacity\":1008629589},\"properties\":{\"maxSizeBytes\":1427322319045036829,\"collation\":\"xfsv\",\"sourceDatabaseId\":\"h\",\"recoverableDatabaseId\":\"ynwlslrcigtzjcv\",\"provisioningState\":\"Succeeded\",\"status\":\"xpavid\",\"restorePointInTime\":\"2021-01-18T02:31:50Z\",\"createMode\":\"PointInTimeRestore\",\"creationDate\":\"2021-08-20T14:25:11Z\",\"storageAccountType\":\"LRS\",\"sourceDatabaseDeletionDate\":\"2021-01-18T14:39:45Z\"},\"location\":\"ezslp\",\"tags\":{\"gpazwu\":\"cbdsvalpnptwtrk\",\"qvn\":\"x\",\"gqlmfaewzgi\":\"obfelhldiuhz\",\"qhnmhk\":\"djpxpqht\"},\"id\":\"ezsdsuxheq\",\"name\":\"gcruxspinym\",\"type\":\"qgwokmikp\"}";
+        String responseStr
+            = "{\"sku\":{\"tier\":\"fqwtltngvm\",\"name\":\"uptrklz\",\"capacity\":1008629589},\"properties\":{\"maxSizeBytes\":1427322319045036829,\"collation\":\"xfsv\",\"sourceDatabaseId\":\"h\",\"recoverableDatabaseId\":\"ynwlslrcigtzjcv\",\"provisioningState\":\"Succeeded\",\"status\":\"xpavid\",\"restorePointInTime\":\"2021-01-18T02:31:50Z\",\"createMode\":\"PointInTimeRestore\",\"creationDate\":\"2021-08-20T14:25:11Z\",\"storageAccountType\":\"LRS\",\"sourceDatabaseDeletionDate\":\"2021-01-18T14:39:45Z\"},\"location\":\"ezslp\",\"tags\":{\"gpazwu\":\"cbdsvalpnptwtrk\",\"qvn\":\"x\",\"gqlmfaewzgi\":\"obfelhldiuhz\",\"qhnmhk\":\"djpxpqht\"},\"id\":\"ezsdsuxheq\",\"name\":\"gcruxspinym\",\"type\":\"qgwokmikp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SqlPool response =
-            manager.sqlPools().pause("nsyby", "polwzrghsrlei", "kfscjfncjwv", com.azure.core.util.Context.NONE);
+        SqlPool response
+            = manager.sqlPools().pause("nsyby", "polwzrghsrlei", "kfscjfncjwv", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("ezslp", response.location());
         Assertions.assertEquals("cbdsvalpnptwtrk", response.tags().get("gpazwu"));

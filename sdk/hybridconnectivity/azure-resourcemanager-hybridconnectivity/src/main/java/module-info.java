@@ -10,10 +10,6 @@ module com.azure.resourcemanager.hybridconnectivity {
     exports com.azure.resourcemanager.hybridconnectivity.fluent.models;
     exports com.azure.resourcemanager.hybridconnectivity.models;
 
-    opens com.azure.resourcemanager.hybridconnectivity.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.hybridconnectivity.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.hybridconnectivity.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.hybridconnectivity.models to com.azure.core, com.fasterxml.jackson.databind;
 }

@@ -21,8 +21,7 @@ import java.time.OffsetDateTime;
 @JsonTypeName("BenefitRecommendationProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Single", value = SingleScopeBenefitRecommendationProperties.class),
-    @JsonSubTypes.Type(name = "Shared", value = SharedScopeBenefitRecommendationProperties.class)
-})
+    @JsonSubTypes.Type(name = "Shared", value = SharedScopeBenefitRecommendationProperties.class) })
 @Fluent
 public class BenefitRecommendationProperties {
     /*

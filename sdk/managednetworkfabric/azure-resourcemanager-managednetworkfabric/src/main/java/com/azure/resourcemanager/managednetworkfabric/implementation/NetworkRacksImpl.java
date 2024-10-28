@@ -21,22 +21,18 @@ public final class NetworkRacksImpl implements NetworkRacks {
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    public NetworkRacksImpl(
-        NetworkRacksClient innerClient,
+    public NetworkRacksImpl(NetworkRacksClient innerClient,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<NetworkRack> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkRackName, Context context) {
-        Response<NetworkRackInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, networkRackName, context);
+    public Response<NetworkRack> getByResourceGroupWithResponse(String resourceGroupName, String networkRackName,
+        Context context) {
+        Response<NetworkRackInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, networkRackName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NetworkRackImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -83,18 +79,13 @@ public final class NetworkRacksImpl implements NetworkRacks {
     public NetworkRack getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String networkRackName = Utils.getValueFromIdByName(id, "networkRacks");
         if (networkRackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'networkRacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkRacks'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, networkRackName, Context.NONE).getValue();
     }
@@ -102,18 +93,13 @@ public final class NetworkRacksImpl implements NetworkRacks {
     public Response<NetworkRack> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String networkRackName = Utils.getValueFromIdByName(id, "networkRacks");
         if (networkRackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'networkRacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkRacks'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, networkRackName, context);
     }
@@ -121,18 +107,13 @@ public final class NetworkRacksImpl implements NetworkRacks {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String networkRackName = Utils.getValueFromIdByName(id, "networkRacks");
         if (networkRackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'networkRacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkRacks'.", id)));
         }
         this.delete(resourceGroupName, networkRackName, Context.NONE);
     }
@@ -140,18 +121,13 @@ public final class NetworkRacksImpl implements NetworkRacks {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String networkRackName = Utils.getValueFromIdByName(id, "networkRacks");
         if (networkRackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'networkRacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'networkRacks'.", id)));
         }
         this.delete(resourceGroupName, networkRackName, context);
     }

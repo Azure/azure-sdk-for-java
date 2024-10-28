@@ -44,12 +44,8 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
      * @param client the instance of the service client containing this operation class.
      */
     WorkspaceManagedSqlServerUsagesClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    WorkspaceManagedSqlServerUsagesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(WorkspaceManagedSqlServerUsagesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,30 +56,22 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface WorkspaceManagedSqlServerUsagesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlUsages")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlUsages")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerUsageListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ServerUsageListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerUsageListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ServerUsageListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -102,16 +90,12 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ServerUsageInner>> listSinglePageAsync(String resourceGroupName, String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -123,26 +107,10 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            accept,
-                            context))
-            .<PagedResponse<ServerUsageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, accept, context))
+            .<PagedResponse<ServerUsageInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -161,19 +129,15 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ServerUsageInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<PagedResponse<ServerUsageInner>> listSinglePageAsync(String resourceGroupName, String workspaceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -186,23 +150,10 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -220,8 +171,8 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServerUsageInner> listAsync(String resourceGroupName, String workspaceName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -240,8 +191,7 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ServerUsageInner> listAsync(String resourceGroupName, String workspaceName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -299,23 +249,13 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ServerUsageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ServerUsageInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -337,23 +277,13 @@ public final class WorkspaceManagedSqlServerUsagesClientImpl implements Workspac
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

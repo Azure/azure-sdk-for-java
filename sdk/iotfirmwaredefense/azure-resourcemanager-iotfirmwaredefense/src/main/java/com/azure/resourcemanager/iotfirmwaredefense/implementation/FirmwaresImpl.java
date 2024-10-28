@@ -72,8 +72,8 @@ public final class FirmwaresImpl implements Firmwares {
 
     public Response<UrlToken> generateDownloadUrlWithResponse(String resourceGroupName, String workspaceName,
         String firmwareId, Context context) {
-        Response<UrlTokenInner> inner = this.serviceClient().generateDownloadUrlWithResponse(resourceGroupName,
-            workspaceName, firmwareId, context);
+        Response<UrlTokenInner> inner = this.serviceClient()
+            .generateDownloadUrlWithResponse(resourceGroupName, workspaceName, firmwareId, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new UrlTokenImpl(inner.getValue(), this.manager()));

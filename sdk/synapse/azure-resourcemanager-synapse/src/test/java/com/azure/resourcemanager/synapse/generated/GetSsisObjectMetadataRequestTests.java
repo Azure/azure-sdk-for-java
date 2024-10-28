@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class GetSsisObjectMetadataRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GetSsisObjectMetadataRequest model =
-            BinaryData.fromString("{\"metadataPath\":\"prltzkatbhjmz\"}").toObject(GetSsisObjectMetadataRequest.class);
+        GetSsisObjectMetadataRequest model = BinaryData.fromString("{\"metadataPath\":\"prltzkatbhjmz\"}")
+            .toObject(GetSsisObjectMetadataRequest.class);
         Assertions.assertEquals("prltzkatbhjmz", model.metadataPath());
     }
 

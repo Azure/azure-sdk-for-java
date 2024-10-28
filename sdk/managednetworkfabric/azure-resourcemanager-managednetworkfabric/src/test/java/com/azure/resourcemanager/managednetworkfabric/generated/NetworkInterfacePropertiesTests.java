@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkInterfacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkInterfaceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"physicalIdentifier\":\"rwtx\",\"connectedTo\":\"isamonatniz\",\"interfaceType\":\"Management\",\"ipv4Address\":\"qsqjghrmthsplwst\",\"ipv6Address\":\"srgxfq\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Enabled\",\"annotation\":\"ovxgzwhsxyrujmti\"}")
-                .toObject(NetworkInterfaceProperties.class);
+        NetworkInterfaceProperties model = BinaryData.fromString(
+            "{\"physicalIdentifier\":\"rwtx\",\"connectedTo\":\"isamonatniz\",\"interfaceType\":\"Management\",\"ipv4Address\":\"qsqjghrmthsplwst\",\"ipv6Address\":\"srgxfq\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Enabled\",\"annotation\":\"ovxgzwhsxyrujmti\"}")
+            .toObject(NetworkInterfaceProperties.class);
         Assertions.assertEquals("ovxgzwhsxyrujmti", model.annotation());
     }
 

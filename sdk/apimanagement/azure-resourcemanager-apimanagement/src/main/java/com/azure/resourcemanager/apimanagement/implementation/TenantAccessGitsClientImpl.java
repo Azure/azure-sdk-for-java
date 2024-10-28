@@ -39,8 +39,8 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
      * @param client the instance of the service client containing this operation class.
      */
     TenantAccessGitsClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy.create(TenantAccessGitsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(TenantAccessGitsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,35 +51,23 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientT")
     public interface TenantAccessGitsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}/git/regeneratePrimaryKey")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}/git/regeneratePrimaryKey")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> regeneratePrimaryKey(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("accessName") AccessIdName accessName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> regeneratePrimaryKey(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("accessName") AccessIdName accessName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}/git/regenerateSecondaryKey")
-        @ExpectedResponses({204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/tenant/{accessName}/git/regenerateSecondaryKey")
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> regenerateSecondaryKey(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("accessName") AccessIdName accessName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> regenerateSecondaryKey(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("accessName") AccessIdName accessName, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -94,13 +82,11 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> regeneratePrimaryKeyWithResponseAsync(
-        String resourceGroupName, String serviceName, AccessIdName accessName) {
+    private Mono<Response<Void>> regeneratePrimaryKeyWithResponseAsync(String resourceGroupName, String serviceName,
+        AccessIdName accessName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -110,28 +96,16 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (accessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accessName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .regeneratePrimaryKey(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accessName,
-                            accept,
-                            context))
+            .withContext(context -> service.regeneratePrimaryKey(this.client.getEndpoint(), resourceGroupName,
+                serviceName, this.client.getApiVersion(), this.client.getSubscriptionId(), accessName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -148,13 +122,11 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> regeneratePrimaryKeyWithResponseAsync(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context) {
+    private Mono<Response<Void>> regeneratePrimaryKeyWithResponseAsync(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -164,26 +136,16 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (accessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accessName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regeneratePrimaryKey(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accessName,
-                accept,
-                context);
+        return service.regeneratePrimaryKey(this.client.getEndpoint(), resourceGroupName, serviceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accessName, accept, context);
     }
 
     /**
@@ -198,8 +160,8 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> regeneratePrimaryKeyAsync(
-        String resourceGroupName, String serviceName, AccessIdName accessName) {
+    private Mono<Void> regeneratePrimaryKeyAsync(String resourceGroupName, String serviceName,
+        AccessIdName accessName) {
         return regeneratePrimaryKeyWithResponseAsync(resourceGroupName, serviceName, accessName)
             .flatMap(ignored -> Mono.empty());
     }
@@ -217,8 +179,8 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> regeneratePrimaryKeyWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context) {
+    public Response<Void> regeneratePrimaryKeyWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context) {
         return regeneratePrimaryKeyWithResponseAsync(resourceGroupName, serviceName, accessName, context).block();
     }
 
@@ -249,13 +211,11 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> regenerateSecondaryKeyWithResponseAsync(
-        String resourceGroupName, String serviceName, AccessIdName accessName) {
+    private Mono<Response<Void>> regenerateSecondaryKeyWithResponseAsync(String resourceGroupName, String serviceName,
+        AccessIdName accessName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -265,28 +225,16 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (accessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accessName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .regenerateSecondaryKey(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accessName,
-                            accept,
-                            context))
+            .withContext(context -> service.regenerateSecondaryKey(this.client.getEndpoint(), resourceGroupName,
+                serviceName, this.client.getApiVersion(), this.client.getSubscriptionId(), accessName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -303,13 +251,11 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> regenerateSecondaryKeyWithResponseAsync(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context) {
+    private Mono<Response<Void>> regenerateSecondaryKeyWithResponseAsync(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -319,26 +265,16 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (accessName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accessName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regenerateSecondaryKey(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accessName,
-                accept,
-                context);
+        return service.regenerateSecondaryKey(this.client.getEndpoint(), resourceGroupName, serviceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accessName, accept, context);
     }
 
     /**
@@ -353,8 +289,8 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> regenerateSecondaryKeyAsync(
-        String resourceGroupName, String serviceName, AccessIdName accessName) {
+    private Mono<Void> regenerateSecondaryKeyAsync(String resourceGroupName, String serviceName,
+        AccessIdName accessName) {
         return regenerateSecondaryKeyWithResponseAsync(resourceGroupName, serviceName, accessName)
             .flatMap(ignored -> Mono.empty());
     }
@@ -372,8 +308,8 @@ public final class TenantAccessGitsClientImpl implements TenantAccessGitsClient 
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> regenerateSecondaryKeyWithResponse(
-        String resourceGroupName, String serviceName, AccessIdName accessName, Context context) {
+    public Response<Void> regenerateSecondaryKeyWithResponse(String resourceGroupName, String serviceName,
+        AccessIdName accessName, Context context) {
         return regenerateSecondaryKeyWithResponseAsync(resourceGroupName, serviceName, accessName, context).block();
     }
 

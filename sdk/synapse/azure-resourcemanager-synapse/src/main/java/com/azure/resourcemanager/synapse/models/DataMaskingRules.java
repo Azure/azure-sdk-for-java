@@ -23,12 +23,8 @@ public interface DataMaskingRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specific Sql pool data masking rule along with {@link Response}.
      */
-    Response<DataMaskingRule> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String dataMaskingRuleName,
-        Context context);
+    Response<DataMaskingRule> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String dataMaskingRuleName, Context context);
 
     /**
      * Gets the specific Sql pool data masking rule.
@@ -69,8 +65,8 @@ public interface DataMaskingRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Sql pool data masking rules as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DataMaskingRule> listBySqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<DataMaskingRule> listBySqlPool(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Gets the specific Sql pool data masking rule.

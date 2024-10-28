@@ -22,11 +22,8 @@ public interface ManagedPrivateEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response}.
      */
-    Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        ManagedPrivateEndpointsCheckNameRequest resourceName,
-        Context context);
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        ManagedPrivateEndpointsCheckNameRequest resourceName, Context context);
 
     /**
      * Checks that the managed private endpoints resource name is valid and is not already in use.
@@ -39,8 +36,8 @@ public interface ManagedPrivateEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request.
      */
-    CheckNameResult checkNameAvailability(
-        String resourceGroupName, String clusterName, ManagedPrivateEndpointsCheckNameRequest resourceName);
+    CheckNameResult checkNameAvailability(String resourceGroupName, String clusterName,
+        ManagedPrivateEndpointsCheckNameRequest resourceName);
 
     /**
      * Returns the list of managed private endpoints.
@@ -79,8 +76,8 @@ public interface ManagedPrivateEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a managed private endpoint along with {@link Response}.
      */
-    Response<ManagedPrivateEndpoint> getWithResponse(
-        String resourceGroupName, String clusterName, String managedPrivateEndpointName, Context context);
+    Response<ManagedPrivateEndpoint> getWithResponse(String resourceGroupName, String clusterName,
+        String managedPrivateEndpointName, Context context);
 
     /**
      * Gets a managed private endpoint.

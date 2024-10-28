@@ -112,9 +112,8 @@ public final class TagRuleInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model TagRuleInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model TagRuleInner"));
         } else {
             innerProperties().validate();
         }

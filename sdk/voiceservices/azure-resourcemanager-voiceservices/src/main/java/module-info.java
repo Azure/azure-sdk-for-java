@@ -10,10 +10,6 @@ module com.azure.resourcemanager.voiceservices {
     exports com.azure.resourcemanager.voiceservices.fluent.models;
     exports com.azure.resourcemanager.voiceservices.models;
 
-    opens com.azure.resourcemanager.voiceservices.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.voiceservices.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.voiceservices.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.voiceservices.models to com.azure.core, com.fasterxml.jackson.databind;
 }

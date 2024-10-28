@@ -12,8 +12,8 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerNestedProfi
 /** Implementation for {@link TrafficManagerNestedProfileEndpoint}. */
 class TrafficManagerNestedProfileEndpointImpl extends TrafficManagerEndpointImpl
     implements TrafficManagerNestedProfileEndpoint {
-    TrafficManagerNestedProfileEndpointImpl(
-        String name, TrafficManagerProfileImpl parent, EndpointInner inner, EndpointsClient client) {
+    TrafficManagerNestedProfileEndpointImpl(String name, TrafficManagerProfileImpl parent, EndpointInner inner,
+        EndpointsClient client) {
         super(name, parent, inner, client);
     }
 

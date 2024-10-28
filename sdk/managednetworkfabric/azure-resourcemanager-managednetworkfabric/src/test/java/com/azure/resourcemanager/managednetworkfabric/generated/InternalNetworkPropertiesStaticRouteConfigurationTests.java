@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InternalNetworkPropertiesStaticRouteConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InternalNetworkPropertiesStaticRouteConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"extension\":\"NoExtension\",\"bfdConfiguration\":{\"administrativeState\":\"RMA\",\"intervalInMilliSeconds\":1414511629,\"multiplier\":119953679},\"ipv4Routes\":[{\"prefix\":\"g\",\"nextHop\":[\"qvzvlu\"]},{\"prefix\":\"q\",\"nextHop\":[\"ios\",\"scyvaifppuacvf\",\"eowpsfxtjdhsoymh\",\"v\"]},{\"prefix\":\"yqfttehdpboujst\",\"nextHop\":[\"vvdshxcdedsue\",\"ygnxcgjtfrnqukt\",\"fnslnlrxsmy\",\"trwntfmtbgw\"]}],\"ipv6Routes\":[{\"prefix\":\"wnaz\",\"nextHop\":[\"rrdreyzjwhset\",\"wjwzzqseuzuukykc\",\"qhyqqzzdcykey\",\"tewfopazdazgbsq\"]},{\"prefix\":\"pew\",\"nextHop\":[\"fut\"]}]}")
-                .toObject(InternalNetworkPropertiesStaticRouteConfiguration.class);
+        InternalNetworkPropertiesStaticRouteConfiguration model = BinaryData.fromString(
+            "{\"extension\":\"NoExtension\",\"bfdConfiguration\":{\"administrativeState\":\"RMA\",\"intervalInMilliSeconds\":1414511629,\"multiplier\":119953679},\"ipv4Routes\":[{\"prefix\":\"g\",\"nextHop\":[\"qvzvlu\"]},{\"prefix\":\"q\",\"nextHop\":[\"ios\",\"scyvaifppuacvf\",\"eowpsfxtjdhsoymh\",\"v\"]},{\"prefix\":\"yqfttehdpboujst\",\"nextHop\":[\"vvdshxcdedsue\",\"ygnxcgjtfrnqukt\",\"fnslnlrxsmy\",\"trwntfmtbgw\"]}],\"ipv6Routes\":[{\"prefix\":\"wnaz\",\"nextHop\":[\"rrdreyzjwhset\",\"wjwzzqseuzuukykc\",\"qhyqqzzdcykey\",\"tewfopazdazgbsq\"]},{\"prefix\":\"pew\",\"nextHop\":[\"fut\"]}]}")
+            .toObject(InternalNetworkPropertiesStaticRouteConfiguration.class);
         Assertions.assertEquals(1414511629, model.bfdConfiguration().intervalInMilliSeconds());
         Assertions.assertEquals(119953679, model.bfdConfiguration().multiplier());
         Assertions.assertEquals("g", model.ipv4Routes().get(0).prefix());
@@ -31,30 +29,22 @@ public final class InternalNetworkPropertiesStaticRouteConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InternalNetworkPropertiesStaticRouteConfiguration model =
-            new InternalNetworkPropertiesStaticRouteConfiguration()
+        InternalNetworkPropertiesStaticRouteConfiguration model
+            = new InternalNetworkPropertiesStaticRouteConfiguration()
                 .withBfdConfiguration(
                     new BfdConfiguration().withIntervalInMilliSeconds(1414511629).withMultiplier(119953679))
-                .withIpv4Routes(
-                    Arrays
-                        .asList(
-                            new StaticRouteProperties().withPrefix("g").withNextHop(Arrays.asList("qvzvlu")),
-                            new StaticRouteProperties()
-                                .withPrefix("q")
-                                .withNextHop(Arrays.asList("ios", "scyvaifppuacvf", "eowpsfxtjdhsoymh", "v")),
-                            new StaticRouteProperties()
-                                .withPrefix("yqfttehdpboujst")
-                                .withNextHop(
-                                    Arrays.asList("vvdshxcdedsue", "ygnxcgjtfrnqukt", "fnslnlrxsmy", "trwntfmtbgw"))))
+                .withIpv4Routes(Arrays.asList(
+                    new StaticRouteProperties().withPrefix("g").withNextHop(Arrays.asList("qvzvlu")),
+                    new StaticRouteProperties().withPrefix("q")
+                        .withNextHop(Arrays.asList("ios", "scyvaifppuacvf", "eowpsfxtjdhsoymh", "v")),
+                    new StaticRouteProperties().withPrefix("yqfttehdpboujst")
+                        .withNextHop(Arrays.asList("vvdshxcdedsue", "ygnxcgjtfrnqukt", "fnslnlrxsmy", "trwntfmtbgw"))))
                 .withIpv6Routes(
                     Arrays
                         .asList(
-                            new StaticRouteProperties()
-                                .withPrefix("wnaz")
-                                .withNextHop(
-                                    Arrays
-                                        .asList(
-                                            "rrdreyzjwhset", "wjwzzqseuzuukykc", "qhyqqzzdcykey", "tewfopazdazgbsq")),
+                            new StaticRouteProperties().withPrefix("wnaz")
+                                .withNextHop(Arrays.asList("rrdreyzjwhset", "wjwzzqseuzuukykc", "qhyqqzzdcykey",
+                                    "tewfopazdazgbsq")),
                             new StaticRouteProperties().withPrefix("pew").withNextHop(Arrays.asList("fut"))))
                 .withExtension(Extension.NO_EXTENSION);
         model = BinaryData.fromObject(model).toObject(InternalNetworkPropertiesStaticRouteConfiguration.class);

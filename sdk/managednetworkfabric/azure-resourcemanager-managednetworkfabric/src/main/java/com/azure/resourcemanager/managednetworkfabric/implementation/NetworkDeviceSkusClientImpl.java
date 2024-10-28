@@ -44,8 +44,8 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
      * @param client the instance of the service client containing this operation class.
      */
     NetworkDeviceSkusClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
-        this.service =
-            RestProxy.create(NetworkDeviceSkusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(NetworkDeviceSkusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,39 +56,30 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
     @Host("{$host}")
     @ServiceInterface(name = "AzureNetworkFabricMa")
     public interface NetworkDeviceSkusService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkDeviceSkus/{networkDeviceSkuName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkDeviceSkus/{networkDeviceSkuName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkDeviceSkuInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("networkDeviceSkuName") String networkDeviceSkuName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<NetworkDeviceSkuInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("networkDeviceSkuName") String networkDeviceSkuName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkDeviceSkus")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkDeviceSkusListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<NetworkDeviceSkusListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkDeviceSkusListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -105,16 +96,12 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkDeviceSkuInner>> getWithResponseAsync(String networkDeviceSkuName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (networkDeviceSkuName == null) {
             return Mono
@@ -122,16 +109,8 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            networkDeviceSkuName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), networkDeviceSkuName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -150,16 +129,12 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkDeviceSkuInner>> getWithResponseAsync(String networkDeviceSkuName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (networkDeviceSkuName == null) {
             return Mono
@@ -167,14 +142,8 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                networkDeviceSkuName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            networkDeviceSkuName, accept, context);
     }
 
     /**
@@ -238,37 +207,19 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkDeviceSkuInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<NetworkDeviceSkuInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<NetworkDeviceSkuInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -286,35 +237,20 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkDeviceSkuInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -328,8 +264,8 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkDeviceSkuInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -345,8 +281,8 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkDeviceSkuInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -395,24 +331,15 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkDeviceSkuInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NetworkDeviceSkuInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -428,29 +355,19 @@ public final class NetworkDeviceSkusClientImpl implements NetworkDeviceSkusClien
      * @return list of Network Device SKUs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkDeviceSkuInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NetworkDeviceSkuInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

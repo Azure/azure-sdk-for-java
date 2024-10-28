@@ -44,8 +44,8 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
      * @param client the instance of the service client containing this operation class.
      */
     ApiRevisionsClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ApiRevisionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ApiRevisionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,33 +56,23 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientA")
     public interface ApiRevisionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/revisions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/revisions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApiRevisionCollection>> listByService(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApiRevisionCollection>> listByService(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
+            @QueryParam("$skip") Integer skip, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiRevisionCollection>> listByServiceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -103,13 +93,11 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApiRevisionContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName, String serviceName, String apiId, String filter, Integer top, Integer skip) {
+    private Mono<PagedResponse<ApiRevisionContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String serviceName, String apiId, String filter, Integer top, Integer skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -122,37 +110,16 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
             return Mono.error(new IllegalArgumentException("Parameter apiId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByService(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            filter,
-                            top,
-                            skip,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ApiRevisionContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName, apiId,
+                    filter, top, skip, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ApiRevisionContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -175,19 +142,11 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApiRevisionContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
+    private Mono<PagedResponse<ApiRevisionContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String serviceName, String apiId, String filter, Integer top, Integer skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -200,35 +159,16 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
             return Mono.error(new IllegalArgumentException("Parameter apiId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByService(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                filter,
-                top,
-                skip,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByService(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, filter, top, skip,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -248,8 +188,8 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
      * @return paged API Revision list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ApiRevisionContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String apiId, String filter, Integer top, Integer skip) {
+    private PagedFlux<ApiRevisionContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String apiId, String filter, Integer top, Integer skip) {
         return new PagedFlux<>(
             () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, apiId, filter, top, skip),
             nextLink -> listByServiceNextSinglePageAsync(nextLink));
@@ -267,8 +207,8 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
      * @return paged API Revision list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ApiRevisionContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String apiId) {
+    private PagedFlux<ApiRevisionContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String apiId) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -295,14 +235,8 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
      * @return paged API Revision list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ApiRevisionContractInner> listByServiceAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
+    private PagedFlux<ApiRevisionContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String apiId, String filter, Integer top, Integer skip, Context context) {
         return new PagedFlux<>(
             () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, apiId, filter, top, skip, context),
             nextLink -> listByServiceNextSinglePageAsync(nextLink, context));
@@ -320,8 +254,8 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
      * @return paged API Revision list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ApiRevisionContractInner> listByService(
-        String resourceGroupName, String serviceName, String apiId) {
+    public PagedIterable<ApiRevisionContractInner> listByService(String resourceGroupName, String serviceName,
+        String apiId) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -346,14 +280,8 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
      * @return paged API Revision list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ApiRevisionContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
+    public PagedIterable<ApiRevisionContractInner> listByService(String resourceGroupName, String serviceName,
+        String apiId, String filter, Integer top, Integer skip, Context context) {
         return new PagedIterable<>(
             listByServiceAsync(resourceGroupName, serviceName, apiId, filter, top, skip, context));
     }
@@ -375,23 +303,14 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ApiRevisionContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ApiRevisionContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -408,29 +327,19 @@ public final class ApiRevisionsClientImpl implements ApiRevisionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApiRevisionContractInner>> listByServiceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ApiRevisionContractInner>> listByServiceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

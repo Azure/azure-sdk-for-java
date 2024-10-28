@@ -24,10 +24,13 @@ public final class HyperVReplicaAzurePolicyDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaAzurePolicyDetails model = new HyperVReplicaAzurePolicyDetails()
-            .withRecoveryPointHistoryDurationInHours(779585791)
-            .withApplicationConsistentSnapshotFrequencyInHours(1492620534).withReplicationInterval(2041507399)
-            .withOnlineReplicationStartTime("igjsugswhgs").withEncryption("dkwwn").withActiveStorageAccountId("foct");
+        HyperVReplicaAzurePolicyDetails model
+            = new HyperVReplicaAzurePolicyDetails().withRecoveryPointHistoryDurationInHours(779585791)
+                .withApplicationConsistentSnapshotFrequencyInHours(1492620534)
+                .withReplicationInterval(2041507399)
+                .withOnlineReplicationStartTime("igjsugswhgs")
+                .withEncryption("dkwwn")
+                .withActiveStorageAccountId("foct");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzurePolicyDetails.class);
         Assertions.assertEquals(779585791, model.recoveryPointHistoryDurationInHours());
         Assertions.assertEquals(1492620534, model.applicationConsistentSnapshotFrequencyInHours());

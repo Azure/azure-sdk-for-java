@@ -20,9 +20,8 @@ import com.azure.resourcemanager.sql.models.SqlElasticPoolStandardMinEDTUs;
 import com.azure.resourcemanager.sql.models.SqlElasticPoolStandardStorage;
 
 /** Implementation for SqlElasticPool as inline definition inside a SqlDatabase definition. */
-public class SqlElasticPoolForDatabaseImpl
-    implements SqlElasticPool.SqlElasticPoolDefinition<
-        SqlDatabaseOperations.DefinitionStages.WithExistingDatabaseAfterElasticPool> {
+public class SqlElasticPoolForDatabaseImpl implements
+    SqlElasticPool.SqlElasticPoolDefinition<SqlDatabaseOperations.DefinitionStages.WithExistingDatabaseAfterElasticPool> {
 
     private SqlElasticPoolImpl sqlElasticPool;
     private SqlDatabaseImpl sqlDatabase;

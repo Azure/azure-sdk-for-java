@@ -92,43 +92,31 @@ public final class AvailabilityGroupListenerImpl
 
     private String availabilityGroupListenerName;
 
-    public AvailabilityGroupListenerImpl withExistingSqlVirtualMachineGroup(
-        String resourceGroupName, String sqlVirtualMachineGroupName) {
+    public AvailabilityGroupListenerImpl withExistingSqlVirtualMachineGroup(String resourceGroupName,
+        String sqlVirtualMachineGroupName) {
         this.resourceGroupName = resourceGroupName;
         this.sqlVirtualMachineGroupName = sqlVirtualMachineGroupName;
         return this;
     }
 
     public AvailabilityGroupListener create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAvailabilityGroupListeners()
-                .createOrUpdate(
-                    resourceGroupName,
-                    sqlVirtualMachineGroupName,
-                    availabilityGroupListenerName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAvailabilityGroupListeners()
+            .createOrUpdate(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName,
+                this.innerModel(), Context.NONE);
         return this;
     }
 
     public AvailabilityGroupListener create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAvailabilityGroupListeners()
-                .createOrUpdate(
-                    resourceGroupName,
-                    sqlVirtualMachineGroupName,
-                    availabilityGroupListenerName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAvailabilityGroupListeners()
+            .createOrUpdate(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName,
+                this.innerModel(), context);
         return this;
     }
 
-    AvailabilityGroupListenerImpl(
-        String name, com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager) {
+    AvailabilityGroupListenerImpl(String name,
+        com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager) {
         this.innerObject = new AvailabilityGroupListenerInner();
         this.serviceManager = serviceManager;
         this.availabilityGroupListenerName = name;
@@ -139,35 +127,22 @@ public final class AvailabilityGroupListenerImpl
     }
 
     public AvailabilityGroupListener apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAvailabilityGroupListeners()
-                .createOrUpdate(
-                    resourceGroupName,
-                    sqlVirtualMachineGroupName,
-                    availabilityGroupListenerName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAvailabilityGroupListeners()
+            .createOrUpdate(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName,
+                this.innerModel(), Context.NONE);
         return this;
     }
 
     public AvailabilityGroupListener apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAvailabilityGroupListeners()
-                .createOrUpdate(
-                    resourceGroupName,
-                    sqlVirtualMachineGroupName,
-                    availabilityGroupListenerName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAvailabilityGroupListeners()
+            .createOrUpdate(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName,
+                this.innerModel(), context);
         return this;
     }
 
-    AvailabilityGroupListenerImpl(
-        AvailabilityGroupListenerInner innerObject,
+    AvailabilityGroupListenerImpl(AvailabilityGroupListenerInner innerObject,
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -178,29 +153,21 @@ public final class AvailabilityGroupListenerImpl
 
     public AvailabilityGroupListener refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAvailabilityGroupListeners()
-                .getWithResponse(
-                    resourceGroupName,
-                    sqlVirtualMachineGroupName,
-                    availabilityGroupListenerName,
-                    localExpand,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAvailabilityGroupListeners()
+            .getWithResponse(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, localExpand,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public AvailabilityGroupListener refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAvailabilityGroupListeners()
-                .getWithResponse(
-                    resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAvailabilityGroupListeners()
+            .getWithResponse(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, localExpand,
+                context)
+            .getValue();
         return this;
     }
 
@@ -209,20 +176,20 @@ public final class AvailabilityGroupListenerImpl
         return this;
     }
 
-    public AvailabilityGroupListenerImpl withLoadBalancerConfigurations(
-        List<LoadBalancerConfiguration> loadBalancerConfigurations) {
+    public AvailabilityGroupListenerImpl
+        withLoadBalancerConfigurations(List<LoadBalancerConfiguration> loadBalancerConfigurations) {
         this.innerModel().withLoadBalancerConfigurations(loadBalancerConfigurations);
         return this;
     }
 
-    public AvailabilityGroupListenerImpl withMultiSubnetIpConfigurations(
-        List<MultiSubnetIpConfiguration> multiSubnetIpConfigurations) {
+    public AvailabilityGroupListenerImpl
+        withMultiSubnetIpConfigurations(List<MultiSubnetIpConfiguration> multiSubnetIpConfigurations) {
         this.innerModel().withMultiSubnetIpConfigurations(multiSubnetIpConfigurations);
         return this;
     }
 
-    public AvailabilityGroupListenerImpl withCreateDefaultAvailabilityGroupIfNotExist(
-        Boolean createDefaultAvailabilityGroupIfNotExist) {
+    public AvailabilityGroupListenerImpl
+        withCreateDefaultAvailabilityGroupIfNotExist(Boolean createDefaultAvailabilityGroupIfNotExist) {
         this.innerModel().withCreateDefaultAvailabilityGroupIfNotExist(createDefaultAvailabilityGroupIfNotExist);
         return this;
     }
@@ -232,8 +199,8 @@ public final class AvailabilityGroupListenerImpl
         return this;
     }
 
-    public AvailabilityGroupListenerImpl withAvailabilityGroupConfiguration(
-        AgConfiguration availabilityGroupConfiguration) {
+    public AvailabilityGroupListenerImpl
+        withAvailabilityGroupConfiguration(AgConfiguration availabilityGroupConfiguration) {
         this.innerModel().withAvailabilityGroupConfiguration(availabilityGroupConfiguration);
         return this;
     }

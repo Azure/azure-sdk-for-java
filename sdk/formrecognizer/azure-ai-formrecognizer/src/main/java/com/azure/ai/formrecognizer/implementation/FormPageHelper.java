@@ -14,7 +14,8 @@ import java.util.List;
 public final class FormPageHelper {
     private static FormPageAccessor accessor;
 
-    private FormPageHelper() { }
+    private FormPageHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link FormPage} instance.

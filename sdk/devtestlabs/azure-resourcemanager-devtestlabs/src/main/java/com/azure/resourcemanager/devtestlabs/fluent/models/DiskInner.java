@@ -266,9 +266,8 @@ public final class DiskInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model DiskInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model DiskInner"));
         } else {
             innerProperties().validate();
         }

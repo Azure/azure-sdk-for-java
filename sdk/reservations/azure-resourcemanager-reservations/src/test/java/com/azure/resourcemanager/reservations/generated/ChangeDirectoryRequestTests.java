@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ChangeDirectoryRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChangeDirectoryRequest model =
-            BinaryData.fromString("{\"destinationTenantId\":\"btkuwhh\"}").toObject(ChangeDirectoryRequest.class);
+        ChangeDirectoryRequest model
+            = BinaryData.fromString("{\"destinationTenantId\":\"btkuwhh\"}").toObject(ChangeDirectoryRequest.class);
         Assertions.assertEquals("btkuwhh", model.destinationTenantId());
     }
 

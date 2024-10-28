@@ -92,7 +92,7 @@ class ExtractiveSummaryUtilClient {
     }
 
     PollerFlux<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> extractiveSummaryAsync(
-            Iterable<TextDocumentInput> documents, ExtractiveSummaryOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, ExtractiveSummaryOptions options, Context context) {
         try {
             checkUnsupportedServiceVersionForExtractiveSummary();
             inputDocumentsValidation(documents);
@@ -100,49 +100,35 @@ class ExtractiveSummaryUtilClient {
             final Context finalContext = getNotNullContext(context);
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final ExtractiveSummarySentencesOrder orderBy = options.getOrderBy();
-            return new PollerFlux<>(
-                DEFAULT_POLL_INTERVAL,
-                activationOperation(
-                    service.submitJobWithResponseAsync(
-                        new AnalyzeTextJobsInput()
-                            .setDisplayName(options.getDisplayName())
-                            .setAnalysisInput(
-                                new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
-                            .setTasks(Arrays.asList(
-                                new ExtractiveSummarizationLROTask().setParameters(
-                                    new ExtractiveSummarizationTaskParameters()
-                                        .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                                        .setSortBy(orderBy == null ? null
-                                            : ExtractiveSummarySentencesOrder.fromString(orderBy.toString()))
-                                        .setSentenceCount(options.getMaxSentenceCount())
-                                        .setModelVersion(options.getModelVersion())
-                                        .setLoggingOptOut(options.isServiceLogsDisabled())
-                                ))),
-                        finalContext)
-                        .map(responseBase -> {
-                            final ExtractiveSummaryOperationDetail operationDetail =
-                                new ExtractiveSummaryOperationDetail();
-                            ExtractiveSummaryOperationDetailPropertiesHelper.setOperationId(operationDetail,
-                                parseOperationId(responseBase.getDeserializedHeaders().getOperationLocation()));
-                            return operationDetail;
-                        })
-                ),
-                pollingOperation(
-                    operationId -> service.jobStatusWithResponseAsync(operationId,
-                        finalIncludeStatistics, null, null, finalContext)),
-                cancelOperation(
-                    operationId -> service.cancelJobWithResponseAsync(operationId, finalContext)),
-                fetchingOperation(
-                    operationId -> Mono.just(getExtractiveSummaryPagedFlux(operationId, null, null,
-                        finalIncludeStatistics, finalContext)))
-            );
+            return new PollerFlux<>(DEFAULT_POLL_INTERVAL,
+                activationOperation(service.submitJobWithResponseAsync(new AnalyzeTextJobsInput()
+                    .setDisplayName(options.getDisplayName())
+                    .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
+                    .setTasks(Arrays.asList(new ExtractiveSummarizationLROTask().setParameters(
+                        new ExtractiveSummarizationTaskParameters().setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                            .setSortBy(
+                                orderBy == null ? null : ExtractiveSummarySentencesOrder.fromString(orderBy.toString()))
+                            .setSentenceCount(options.getMaxSentenceCount())
+                            .setModelVersion(options.getModelVersion())
+                            .setLoggingOptOut(options.isServiceLogsDisabled())))),
+                    finalContext).map(responseBase -> {
+                        final ExtractiveSummaryOperationDetail operationDetail = new ExtractiveSummaryOperationDetail();
+                        ExtractiveSummaryOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                            parseOperationId(responseBase.getDeserializedHeaders().getOperationLocation()));
+                        return operationDetail;
+                    })),
+                pollingOperation(operationId -> service.jobStatusWithResponseAsync(operationId, finalIncludeStatistics,
+                    null, null, finalContext)),
+                cancelOperation(operationId -> service.cancelJobWithResponseAsync(operationId, finalContext)),
+                fetchingOperation(operationId -> Mono.just(
+                    getExtractiveSummaryPagedFlux(operationId, null, null, finalIncludeStatistics, finalContext))));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
     }
 
     SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable> extractiveSummaryPagedIterable(
-            Iterable<TextDocumentInput> documents, ExtractiveSummaryOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, ExtractiveSummaryOptions options, Context context) {
         try {
             checkUnsupportedServiceVersionForExtractiveSummary();
             inputDocumentsValidation(documents);
@@ -153,43 +139,38 @@ class ExtractiveSummaryUtilClient {
             final ExtractiveSummarySentencesOrder orderBy = options.getOrderBy();
 
             final ExtractiveSummarizationLROTask task = new ExtractiveSummarizationLROTask().setParameters(
-                new ExtractiveSummarizationTaskParameters()
-                    .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                new ExtractiveSummarizationTaskParameters().setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                     .setSortBy(orderBy == null ? null : ExtractiveSummarySentencesOrder.fromString(orderBy.toString()))
                     .setSentenceCount(options.getMaxSentenceCount())
                     .setModelVersion(options.getModelVersion())
                     .setLoggingOptOut(options.isServiceLogsDisabled()));
-            return SyncPoller.createPoller(
-                DEFAULT_POLL_INTERVAL,
+            return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
                 cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     activationOperationSync(documents, task, displayName, finalContext).apply(cxt)),
-                pollingOperationSync(operationId -> service.jobStatusWithResponse(operationId,
-                    finalIncludeStatistics, null, null, finalContext)),
+                pollingOperationSync(operationId -> service.jobStatusWithResponse(operationId, finalIncludeStatistics,
+                    null, null, finalContext)),
                 cancelOperationSync(operationId -> service.cancelJobWithResponse(operationId, finalContext)),
-                fetchingOperationIterable(
-                    operationId -> getExtractiveSummaryPagedIterable(operationId, null, null,
-                        finalIncludeStatistics, finalContext)));
+                fetchingOperationIterable(operationId -> getExtractiveSummaryPagedIterable(operationId, null, null,
+                    finalIncludeStatistics, finalContext)));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
-    ExtractiveSummaryPagedFlux getExtractiveSummaryPagedFlux(
-        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
-        return new ExtractiveSummaryPagedFlux(
-            () -> (continuationToken, pageSize) ->
-                getPagedResult(continuationToken, operationId, top, skip, showStats, context).flux());
+    ExtractiveSummaryPagedFlux getExtractiveSummaryPagedFlux(UUID operationId, Integer top, Integer skip,
+        boolean showStats, Context context) {
+        return new ExtractiveSummaryPagedFlux(() -> (continuationToken,
+            pageSize) -> getPagedResult(continuationToken, operationId, top, skip, showStats, context).flux());
     }
 
-    ExtractiveSummaryPagedIterable getExtractiveSummaryPagedIterable(
-        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
-        return new ExtractiveSummaryPagedIterable(
-            () -> (continuationToken, pageSize) ->
-                getPagedResultSync(continuationToken, operationId, top, skip, showStats, context));
+    ExtractiveSummaryPagedIterable getExtractiveSummaryPagedIterable(UUID operationId, Integer top, Integer skip,
+        boolean showStats, Context context) {
+        return new ExtractiveSummaryPagedIterable(() -> (continuationToken,
+            pageSize) -> getPagedResultSync(continuationToken, operationId, top, skip, showStats, context));
     }
 
-    Mono<PagedResponse<ExtractiveSummaryResultCollection>> getPagedResult(String continuationToken,
-        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
+    Mono<PagedResponse<ExtractiveSummaryResultCollection>> getPagedResult(String continuationToken, UUID operationId,
+        Integer top, Integer skip, boolean showStats, Context context) {
         try {
             if (continuationToken != null) {
                 final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
@@ -205,8 +186,8 @@ class ExtractiveSummaryUtilClient {
         }
     }
 
-    PagedResponse<ExtractiveSummaryResultCollection> getPagedResultSync(String continuationToken,
-        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
+    PagedResponse<ExtractiveSummaryResultCollection> getPagedResultSync(String continuationToken, UUID operationId,
+        Integer top, Integer skip, boolean showStats, Context context) {
         if (continuationToken != null) {
             final Map<String, Object> continuationTokenMap = parseNextLink(continuationToken);
             top = getTopContinuesToken(continuationTokenMap);
@@ -217,8 +198,8 @@ class ExtractiveSummaryUtilClient {
             service.jobStatusWithResponse(operationId, showStats, top, skip, context));
     }
 
-    private PagedResponse<ExtractiveSummaryResultCollection> toExtractiveSummaryResultCollectionPagedResponse(
-        Response<AnalyzeTextJobState> response) {
+    private PagedResponse<ExtractiveSummaryResultCollection>
+        toExtractiveSummaryResultCollectionPagedResponse(Response<AnalyzeTextJobState> response) {
 
         final AnalyzeTextJobState jobState = response.getValue();
         final List<AnalyzeTextLROResult> lroResults = jobState.getTasks().getItems();
@@ -226,49 +207,44 @@ class ExtractiveSummaryUtilClient {
         final ExtractiveSummarizationResult extractiveSummarizationResult;
         final AnalyzeTextLROResult lroResult = lroResults.get(0);
         if (lroResult instanceof ExtractiveSummarizationLROResult) {
-            ExtractiveSummarizationLROResult extractiveSummarizationLROResult =
-                (ExtractiveSummarizationLROResult) lroResults.get(0);
+            ExtractiveSummarizationLROResult extractiveSummarizationLROResult
+                = (ExtractiveSummarizationLROResult) lroResults.get(0);
             extractiveSummarizationResult = extractiveSummarizationLROResult.getResults();
         } else {
             throw LOGGER.logExceptionAsError(
                 new RuntimeException("Invalid class type returned: " + lroResult.getClass().getName()));
         }
 
-        final ExtractiveSummaryResultCollection extractiveSummaryResultCollection =
-            toExtractiveSummaryResultCollection(extractiveSummarizationResult);
+        final ExtractiveSummaryResultCollection extractiveSummaryResultCollection
+            = toExtractiveSummaryResultCollection(extractiveSummarizationResult);
         final RequestStatistics requestStatistics = extractiveSummarizationResult.getStatistics();
         if (requestStatistics != null) {
             final TextDocumentBatchStatistics batchStatistic = new TextDocumentBatchStatistics(
                 requestStatistics.getDocumentsCount(), requestStatistics.getValidDocumentsCount(),
                 requestStatistics.getErroneousDocumentsCount(), requestStatistics.getTransactionsCount());
-            ExtractiveSummaryResultCollectionPropertiesHelper.setStatistics(
-                extractiveSummaryResultCollection, batchStatistic);
+            ExtractiveSummaryResultCollectionPropertiesHelper.setStatistics(extractiveSummaryResultCollection,
+                batchStatistic);
         }
 
         final List<Error> errors = jobState.getErrors();
 
         if (!CoreUtils.isNullOrEmpty(errors)) {
-            final TextAnalyticsException textAnalyticsException = new TextAnalyticsException(
-                "Extract summary operation failed", null, null);
-            final IterableStream<TextAnalyticsError> textAnalyticsErrors =
-                IterableStream.of(errors.stream().map(Utility::toTextAnalyticsError).collect(Collectors.toList()));
+            final TextAnalyticsException textAnalyticsException
+                = new TextAnalyticsException("Extract summary operation failed", null, null);
+            final IterableStream<TextAnalyticsError> textAnalyticsErrors
+                = IterableStream.of(errors.stream().map(Utility::toTextAnalyticsError).collect(Collectors.toList()));
             TextAnalyticsExceptionPropertiesHelper.setErrors(textAnalyticsException, textAnalyticsErrors);
             throw LOGGER.logExceptionAsError(textAnalyticsException);
         }
 
-        return new PagedResponseBase<Void, ExtractiveSummaryResultCollection>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            Arrays.asList(extractiveSummaryResultCollection),
-            jobState.getNextLink(),
-            null);
+        return new PagedResponseBase<Void, ExtractiveSummaryResultCollection>(response.getRequest(),
+            response.getStatusCode(), response.getHeaders(), Arrays.asList(extractiveSummaryResultCollection),
+            jobState.getNextLink(), null);
     }
 
     // Activation operation
-    private Function<PollingContext<ExtractiveSummaryOperationDetail>,
-        Mono<ExtractiveSummaryOperationDetail>> activationOperation(
-        Mono<ExtractiveSummaryOperationDetail> operationResult) {
+    private Function<PollingContext<ExtractiveSummaryOperationDetail>, Mono<ExtractiveSummaryOperationDetail>>
+        activationOperation(Mono<ExtractiveSummaryOperationDetail> operationResult) {
         return pollingContext -> {
             try {
                 return operationResult.onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
@@ -280,16 +256,12 @@ class ExtractiveSummaryUtilClient {
 
     private Function<PollingContext<ExtractiveSummaryOperationDetail>, ExtractiveSummaryOperationDetail>
         activationOperationSync(Iterable<TextDocumentInput> documents, AnalyzeTextLROTask task, String displayName,
-        Context context) {
+            Context context) {
         return pollingContext -> {
-            final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse =
-                service.submitJobWithResponse(
-                    new AnalyzeTextJobsInput()
-                        .setDisplayName(displayName)
-                        .setAnalysisInput(new MultiLanguageAnalysisInput()
-                            .setDocuments(toMultiLanguageInput(documents)))
-                        .setTasks(Arrays.asList(task)),
-                    context);
+            final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse
+                = service.submitJobWithResponse(new AnalyzeTextJobsInput().setDisplayName(displayName)
+                    .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
+                    .setTasks(Arrays.asList(task)), context);
             final ExtractiveSummaryOperationDetail operationDetail = new ExtractiveSummaryOperationDetail();
             ExtractiveSummaryOperationDetailPropertiesHelper.setOperationId(operationDetail,
                 parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
@@ -298,17 +270,17 @@ class ExtractiveSummaryUtilClient {
     }
 
     // Polling operation
-    private Function<PollingContext<ExtractiveSummaryOperationDetail>,
-        Mono<PollResponse<ExtractiveSummaryOperationDetail>>> pollingOperation(
-        Function<UUID, Mono<Response<AnalyzeTextJobState>>> pollingFunction) {
+    private
+        Function<PollingContext<ExtractiveSummaryOperationDetail>, Mono<PollResponse<ExtractiveSummaryOperationDetail>>>
+        pollingOperation(Function<UUID, Mono<Response<AnalyzeTextJobState>>> pollingFunction) {
         return pollingContext -> {
             try {
-                final PollResponse<ExtractiveSummaryOperationDetail> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
+                final PollResponse<ExtractiveSummaryOperationDetail> operationResultPollResponse
+                    = pollingContext.getLatestResponse();
                 final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
                 return pollingFunction.apply(operationId)
-                    .flatMap(modelResponse ->
-                        Mono.just(processAnalyzeTextModelResponse(modelResponse, operationResultPollResponse)))
+                    .flatMap(modelResponse -> Mono
+                        .just(processAnalyzeTextModelResponse(modelResponse, operationResultPollResponse)))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
@@ -316,12 +288,11 @@ class ExtractiveSummaryUtilClient {
         };
     }
 
-    private Function<PollingContext<ExtractiveSummaryOperationDetail>,
-        PollResponse<ExtractiveSummaryOperationDetail>> pollingOperationSync(
-        Function<UUID, Response<AnalyzeTextJobState>> pollingFunction) {
+    private Function<PollingContext<ExtractiveSummaryOperationDetail>, PollResponse<ExtractiveSummaryOperationDetail>>
+        pollingOperationSync(Function<UUID, Response<AnalyzeTextJobState>> pollingFunction) {
         return pollingContext -> {
-            final PollResponse<ExtractiveSummaryOperationDetail> operationResultPollResponse =
-                pollingContext.getLatestResponse();
+            final PollResponse<ExtractiveSummaryOperationDetail> operationResultPollResponse
+                = pollingContext.getLatestResponse();
             final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
             return processAnalyzeTextModelResponse(pollingFunction.apply(operationId), operationResultPollResponse);
         };
@@ -349,29 +320,27 @@ class ExtractiveSummaryUtilClient {
     }
 
     // Cancel operation
-    private BiFunction<PollingContext<ExtractiveSummaryOperationDetail>,
-        PollResponse<ExtractiveSummaryOperationDetail>,
-        Mono<ExtractiveSummaryOperationDetail>> cancelOperation(
-        Function<UUID, Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>>> cancelFunction) {
+    private
+        BiFunction<PollingContext<ExtractiveSummaryOperationDetail>, PollResponse<ExtractiveSummaryOperationDetail>, Mono<ExtractiveSummaryOperationDetail>>
+        cancelOperation(Function<UUID, Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
             try {
-                return cancelFunction.apply(resultUuid)
-                    .map(cancelJobResponse -> {
-                        final ExtractiveSummaryOperationDetail operationResult = new ExtractiveSummaryOperationDetail();
-                        ExtractiveSummaryOperationDetailPropertiesHelper.setOperationId(operationResult,
-                            parseOperationId(cancelJobResponse.getDeserializedHeaders().getOperationLocation()));
-                        return operationResult;
-                    }).onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+                return cancelFunction.apply(resultUuid).map(cancelJobResponse -> {
+                    final ExtractiveSummaryOperationDetail operationResult = new ExtractiveSummaryOperationDetail();
+                    ExtractiveSummaryOperationDetailPropertiesHelper.setOperationId(operationResult,
+                        parseOperationId(cancelJobResponse.getDeserializedHeaders().getOperationLocation()));
+                    return operationResult;
+                }).onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
             }
         };
     }
 
-    private BiFunction<PollingContext<ExtractiveSummaryOperationDetail>,
-        PollResponse<ExtractiveSummaryOperationDetail>, ExtractiveSummaryOperationDetail> cancelOperationSync(
-        Function<UUID, ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelFunction) {
+    private
+        BiFunction<PollingContext<ExtractiveSummaryOperationDetail>, PollResponse<ExtractiveSummaryOperationDetail>, ExtractiveSummaryOperationDetail>
+        cancelOperationSync(Function<UUID, ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
             ResponseBase<AnalyzeTextsCancelJobHeaders, Void> cancelJobResponse = cancelFunction.apply(resultUuid);
@@ -394,15 +363,15 @@ class ExtractiveSummaryUtilClient {
         } else if (CANCELLED.equals(state)) {
             status = LongRunningOperationStatus.USER_CANCELLED;
         } else {
-            status = LongRunningOperationStatus.fromString(
-                analyzeOperationResultResponse.getValue().getStatus().toString(), true);
+            status = LongRunningOperationStatus
+                .fromString(analyzeOperationResultResponse.getValue().getStatus().toString(), true);
         }
         ExtractiveSummaryOperationDetailPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getDisplayName());
         ExtractiveSummaryOperationDetailPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getCreatedDateTime());
-        ExtractiveSummaryOperationDetailPropertiesHelper.setLastModifiedAt(
-            operationResultPollResponse.getValue(), analyzeOperationResultResponse.getValue().getLastUpdatedDateTime());
+        ExtractiveSummaryOperationDetailPropertiesHelper.setLastModifiedAt(operationResultPollResponse.getValue(),
+            analyzeOperationResultResponse.getValue().getLastUpdatedDateTime());
         ExtractiveSummaryOperationDetailPropertiesHelper.setExpiresAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getExpirationDateTime());
         return new PollResponse<>(status, operationResultPollResponse.getValue());

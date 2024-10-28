@@ -73,9 +73,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
             return this;
         } else if (this.virtualMachine.innerModel().identity().type().equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
             this.virtualMachine.innerModel().identity().withType(ResourceIdentityType.NONE);
-        } else if (this
-            .virtualMachine
-            .innerModel()
+        } else if (this.virtualMachine.innerModel()
             .identity()
             .type()
             .equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
@@ -210,15 +208,15 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
                     }
                 }
                 Set<String> removeIds = new HashSet<>();
-                for (Map.Entry<String, VirtualMachineIdentityUserAssignedIdentities> entrySet
-                    : this.userAssignedIdentities.entrySet()) {
+                for (Map.Entry<String, VirtualMachineIdentityUserAssignedIdentities> entrySet : this.userAssignedIdentities
+                    .entrySet()) {
                     if (entrySet.getValue() == null) {
                         removeIds.add(entrySet.getKey().toLowerCase(Locale.ROOT));
                     }
                 }
                 // If so check user want to remove all the identities
-                boolean removeAllCurrentIds =
-                    currentIds.size() == removeIds.size() && currentIds.containsAll(removeIds);
+                boolean removeAllCurrentIds
+                    = currentIds.size() == removeIds.size() && currentIds.containsAll(removeIds);
                 if (removeAllCurrentIds) {
                     // If so adjust  the identity type [Setting type to SYSTEM_ASSIGNED orNONE will remove all the
                     // identities]

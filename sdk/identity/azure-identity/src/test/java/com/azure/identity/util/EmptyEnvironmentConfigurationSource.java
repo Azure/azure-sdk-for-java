@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
 /**
  * A {@link ConfigurationSource} that contains empty values for AZURE_* environment variables.
  */
@@ -29,7 +28,8 @@ public class EmptyEnvironmentConfigurationSource implements ConfigurationSource 
         if (path == null) {
             return testData;
         }
-        return testData.entrySet().stream()
+        return testData.entrySet()
+            .stream()
             .filter(prop -> prop.getKey().startsWith(path + "."))
             .collect(Collectors.toMap(Map.Entry<String, String>::getKey, Map.Entry<String, String>::getValue));
     }

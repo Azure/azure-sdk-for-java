@@ -165,8 +165,8 @@ public final class IotDpsPropertiesDescription {
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the IotDpsPropertiesDescription object itself.
      */
-    public IotDpsPropertiesDescription withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public IotDpsPropertiesDescription
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }
@@ -273,8 +273,8 @@ public final class IotDpsPropertiesDescription {
      * @param authorizationPolicies the authorizationPolicies value to set.
      * @return the IotDpsPropertiesDescription object itself.
      */
-    public IotDpsPropertiesDescription withAuthorizationPolicies(
-        List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies) {
+    public IotDpsPropertiesDescription
+        withAuthorizationPolicies(List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies) {
         this.authorizationPolicies = authorizationPolicies;
         return this;
     }

@@ -20,12 +20,8 @@ public final class UsersCreateOrUpdateResponse extends ResponseBase<UsersCreateO
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public UsersCreateOrUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        UserContractInner value,
-        UsersCreateOrUpdateHeaders headers) {
+    public UsersCreateOrUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        UserContractInner value, UsersCreateOrUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "copyLogDetailsType",
     defaultImpl = GranularCopyLogDetails.class)
 @JsonTypeName("GranularCopyLogDetails")
-@JsonSubTypes({@JsonSubTypes.Type(name = "DataBoxCustomerDisk", value = DataBoxDiskGranularCopyLogDetails.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "DataBoxCustomerDisk", value = DataBoxDiskGranularCopyLogDetails.class) })
 @Immutable
 public class GranularCopyLogDetails {
     /** Creates an instance of GranularCopyLogDetails class. */

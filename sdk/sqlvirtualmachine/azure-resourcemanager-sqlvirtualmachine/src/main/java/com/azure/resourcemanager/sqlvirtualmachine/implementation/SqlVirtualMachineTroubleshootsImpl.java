@@ -18,17 +18,16 @@ public final class SqlVirtualMachineTroubleshootsImpl implements SqlVirtualMachi
 
     private final com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager;
 
-    public SqlVirtualMachineTroubleshootsImpl(
-        SqlVirtualMachineTroubleshootsClient innerClient,
+    public SqlVirtualMachineTroubleshootsImpl(SqlVirtualMachineTroubleshootsClient innerClient,
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public SqlVmTroubleshooting troubleshoot(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters) {
-        SqlVmTroubleshootingInner inner =
-            this.serviceClient().troubleshoot(resourceGroupName, sqlVirtualMachineName, parameters);
+    public SqlVmTroubleshooting troubleshoot(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVmTroubleshootingInner parameters) {
+        SqlVmTroubleshootingInner inner
+            = this.serviceClient().troubleshoot(resourceGroupName, sqlVirtualMachineName, parameters);
         if (inner != null) {
             return new SqlVmTroubleshootingImpl(inner, this.manager());
         } else {
@@ -36,10 +35,10 @@ public final class SqlVirtualMachineTroubleshootsImpl implements SqlVirtualMachi
         }
     }
 
-    public SqlVmTroubleshooting troubleshoot(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters, Context context) {
-        SqlVmTroubleshootingInner inner =
-            this.serviceClient().troubleshoot(resourceGroupName, sqlVirtualMachineName, parameters, context);
+    public SqlVmTroubleshooting troubleshoot(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVmTroubleshootingInner parameters, Context context) {
+        SqlVmTroubleshootingInner inner
+            = this.serviceClient().troubleshoot(resourceGroupName, sqlVirtualMachineName, parameters, context);
         if (inner != null) {
             return new SqlVmTroubleshootingImpl(inner, this.manager());
         } else {

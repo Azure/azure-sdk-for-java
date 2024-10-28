@@ -54,8 +54,8 @@ public class Slf4jLoggerShim {
         try {
             nopLoggerClass = Class.forName("org.slf4j.helpers.NOPLogger", true, Slf4jLoggerShim.class.getClassLoader());
 
-            Class<?> loggerFactoryClass = Class.forName("org.slf4j.LoggerFactory", true,
-                Slf4jLoggerShim.class.getClassLoader());
+            Class<?> loggerFactoryClass
+                = Class.forName("org.slf4j.LoggerFactory", true, Slf4jLoggerShim.class.getClassLoader());
             Class<?> loggerClass = Class.forName("org.slf4j.Logger", true, Slf4jLoggerShim.class.getClassLoader());
 
             getLoggerMethodHandle = ReflectionUtils.getMethodInvoker(loggerFactoryClass,
@@ -69,14 +69,14 @@ public class Slf4jLoggerShim {
             logErrorMethodHandle = ReflectionUtils.getMethodInvoker(loggerClass,
                 loggerClass.getMethod("error", String.class, Throwable.class));
 
-            isVerboseEnabledMethodHandle = ReflectionUtils.getMethodInvoker(loggerClass,
-                loggerClass.getMethod("isDebugEnabled"));
-            isInfoEnabledMethodHandle = ReflectionUtils.getMethodInvoker(loggerClass,
-                loggerClass.getMethod("isInfoEnabled"));
-            isWarnEnabledMethodHandle = ReflectionUtils.getMethodInvoker(loggerClass,
-                loggerClass.getMethod("isWarnEnabled"));
-            isErrorEnabledMethodHandle = ReflectionUtils.getMethodInvoker(loggerClass,
-                loggerClass.getMethod("isErrorEnabled"));
+            isVerboseEnabledMethodHandle
+                = ReflectionUtils.getMethodInvoker(loggerClass, loggerClass.getMethod("isDebugEnabled"));
+            isInfoEnabledMethodHandle
+                = ReflectionUtils.getMethodInvoker(loggerClass, loggerClass.getMethod("isInfoEnabled"));
+            isWarnEnabledMethodHandle
+                = ReflectionUtils.getMethodInvoker(loggerClass, loggerClass.getMethod("isWarnEnabled"));
+            isErrorEnabledMethodHandle
+                = ReflectionUtils.getMethodInvoker(loggerClass, loggerClass.getMethod("isErrorEnabled"));
         } catch (Exception e) {
             DEFAULT_LOGGER.log(VERBOSE, "Failed to initialize Slf4jLoggerShim.", e);
 
@@ -156,15 +156,16 @@ public class Slf4jLoggerShim {
             case VERBOSE:
                 return (slf4jLoggerAvailable && isVerboseEnabled)
                     || (!slf4jLoggerAvailable && isVerboseEnabledForDefault);
+
             case INFORMATIONAL:
-                return (slf4jLoggerAvailable && isInfoEnabled)
-                    || (!slf4jLoggerAvailable && isInfoEnabledForDefault);
+                return (slf4jLoggerAvailable && isInfoEnabled) || (!slf4jLoggerAvailable && isInfoEnabledForDefault);
+
             case WARNING:
-                return (slf4jLoggerAvailable && isWarnEnabled)
-                    || (!slf4jLoggerAvailable && isWarnEnabledForDefault);
+                return (slf4jLoggerAvailable && isWarnEnabled) || (!slf4jLoggerAvailable && isWarnEnabledForDefault);
+
             case ERROR:
-                return (slf4jLoggerAvailable && isErrorEnabled)
-                    || (!slf4jLoggerAvailable && isErrorEnabledForDefault);
+                return (slf4jLoggerAvailable && isErrorEnabled) || (!slf4jLoggerAvailable && isErrorEnabledForDefault);
+
             default:
                 return false;
         }
@@ -187,18 +188,22 @@ public class Slf4jLoggerShim {
                         LOGGER_VERBOSE.invokeWithArguments(localSlf4jLogger, message, throwable);
 
                         break;
+
                     case INFORMATIONAL:
                         LOGGER_INFO.invokeWithArguments(localSlf4jLogger, message, throwable);
 
                         break;
+
                     case WARNING:
                         LOGGER_WARN.invokeWithArguments(localSlf4jLogger, message, throwable);
 
                         break;
+
                     case ERROR:
                         LOGGER_ERROR.invokeWithArguments(localSlf4jLogger, message, throwable);
 
                         break;
+
                     default:
                         // Don't do anything, this state shouldn't be possible.
                         break;

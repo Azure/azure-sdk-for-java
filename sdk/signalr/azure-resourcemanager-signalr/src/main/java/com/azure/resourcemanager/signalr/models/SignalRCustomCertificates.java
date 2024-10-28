@@ -47,8 +47,8 @@ public interface SignalRCustomCertificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a custom certificate along with {@link Response}.
      */
-    Response<CustomCertificate> getWithResponse(
-        String resourceGroupName, String resourceName, String certificateName, Context context);
+    Response<CustomCertificate> getWithResponse(String resourceGroupName, String resourceName, String certificateName,
+        Context context);
 
     /**
      * Get a custom certificate.
@@ -75,8 +75,8 @@ public interface SignalRCustomCertificates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String certificateName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String certificateName,
+        Context context);
 
     /**
      * Delete a custom certificate.

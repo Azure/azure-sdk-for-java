@@ -76,9 +76,8 @@ public final class LibraryListResponse {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model LibraryListResponse"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model LibraryListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }

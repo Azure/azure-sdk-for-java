@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagementGroupChildInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagementGroupChildInfo model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"/subscriptions\",\"id\":\"qgoulznd\",\"name\":\"kwy\",\"displayName\":\"gfgibm\",\"children\":[{\"type\":\"/subscriptions\",\"id\":\"qsrxybzqqed\",\"name\":\"tbciqfouflmm\",\"displayName\":\"zsm\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"ugpbkw\",\"name\":\"utduqktapspwgcu\",\"displayName\":\"tumkdosvqwhbm\",\"children\":[]}]}")
-                .toObject(ManagementGroupChildInfo.class);
+        ManagementGroupChildInfo model = BinaryData.fromString(
+            "{\"type\":\"/subscriptions\",\"id\":\"qgoulznd\",\"name\":\"kwy\",\"displayName\":\"gfgibm\",\"children\":[{\"type\":\"/subscriptions\",\"id\":\"qsrxybzqqed\",\"name\":\"tbciqfouflmm\",\"displayName\":\"zsm\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"ugpbkw\",\"name\":\"utduqktapspwgcu\",\"displayName\":\"tumkdosvqwhbm\",\"children\":[]}]}")
+            .toObject(ManagementGroupChildInfo.class);
         Assertions.assertEquals(ManagementGroupChildType.SUBSCRIPTIONS, model.type());
         Assertions.assertEquals("qgoulznd", model.id());
         Assertions.assertEquals("kwy", model.name());
@@ -30,27 +28,21 @@ public final class ManagementGroupChildInfoTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementGroupChildInfo model =
-            new ManagementGroupChildInfo()
-                .withType(ManagementGroupChildType.SUBSCRIPTIONS)
-                .withId("qgoulznd")
-                .withName("kwy")
-                .withDisplayName("gfgibm")
-                .withChildren(
-                    Arrays
-                        .asList(
-                            new ManagementGroupChildInfo()
-                                .withType(ManagementGroupChildType.SUBSCRIPTIONS)
-                                .withId("qsrxybzqqed")
-                                .withName("tbciqfouflmm")
-                                .withDisplayName("zsm")
-                                .withChildren(Arrays.asList()),
-                            new ManagementGroupChildInfo()
-                                .withType(ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS)
-                                .withId("ugpbkw")
-                                .withName("utduqktapspwgcu")
-                                .withDisplayName("tumkdosvqwhbm")
-                                .withChildren(Arrays.asList())));
+        ManagementGroupChildInfo model = new ManagementGroupChildInfo().withType(ManagementGroupChildType.SUBSCRIPTIONS)
+            .withId("qgoulznd")
+            .withName("kwy")
+            .withDisplayName("gfgibm")
+            .withChildren(Arrays.asList(
+                new ManagementGroupChildInfo().withType(ManagementGroupChildType.SUBSCRIPTIONS)
+                    .withId("qsrxybzqqed")
+                    .withName("tbciqfouflmm")
+                    .withDisplayName("zsm")
+                    .withChildren(Arrays.asList()),
+                new ManagementGroupChildInfo().withType(ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS)
+                    .withId("ugpbkw")
+                    .withName("utduqktapspwgcu")
+                    .withDisplayName("tumkdosvqwhbm")
+                    .withChildren(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(ManagementGroupChildInfo.class);
         Assertions.assertEquals(ManagementGroupChildType.SUBSCRIPTIONS, model.type());
         Assertions.assertEquals("qgoulznd", model.id());

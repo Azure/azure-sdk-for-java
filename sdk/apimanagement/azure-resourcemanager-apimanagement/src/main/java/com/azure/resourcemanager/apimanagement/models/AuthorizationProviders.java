@@ -39,8 +39,8 @@ public interface AuthorizationProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Authorization Provider list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AuthorizationProviderContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<AuthorizationProviderContract> listByService(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the details of the authorization provider specified by its identifier.
@@ -54,8 +54,8 @@ public interface AuthorizationProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the authorization provider specified by its identifier.
      */
-    Response<AuthorizationProviderContract> getWithResponse(
-        String resourceGroupName, String serviceName, String authorizationProviderId, Context context);
+    Response<AuthorizationProviderContract> getWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, Context context);
 
     /**
      * Gets the details of the authorization provider specified by its identifier.
@@ -84,8 +84,8 @@ public interface AuthorizationProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String authorizationProviderId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String authorizationProviderId,
+        String ifMatch, Context context);
 
     /**
      * Deletes specific authorization provider from the API Management service instance.

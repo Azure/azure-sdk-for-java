@@ -84,9 +84,8 @@ public final class AccountResourceInner extends Resource {
             systemData().validate();
         }
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model AccountResourceInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model AccountResourceInner"));
         } else {
             properties().validate();
         }

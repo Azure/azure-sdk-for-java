@@ -27,7 +27,7 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
         String messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
         messages = new ArrayList<>();
         for (int i = 0; i < options.getMessagesToSend(); ++i) {
-            ServiceBusMessage message =  new ServiceBusMessage(messageContent);
+            ServiceBusMessage message = new ServiceBusMessage(messageContent);
             message.setMessageId(UUID.randomUUID().toString());
             messages.add(message);
         }

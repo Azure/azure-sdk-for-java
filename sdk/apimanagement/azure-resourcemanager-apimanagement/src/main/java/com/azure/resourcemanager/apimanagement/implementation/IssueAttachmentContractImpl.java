@@ -64,8 +64,8 @@ public final class IssueAttachmentContractImpl
 
     private String updateIfMatch;
 
-    public IssueAttachmentContractImpl withExistingIssue(
-        String resourceGroupName, String serviceName, String apiId, String issueId) {
+    public IssueAttachmentContractImpl withExistingIssue(String resourceGroupName, String serviceName, String apiId,
+        String issueId) {
         this.resourceGroupName = resourceGroupName;
         this.serviceName = serviceName;
         this.apiId = apiId;
@@ -74,43 +74,25 @@ public final class IssueAttachmentContractImpl
     }
 
     public IssueAttachmentContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssueAttachments()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    apiId,
-                    issueId,
-                    attachmentId,
-                    this.innerModel(),
-                    createIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssueAttachments()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, issueId, attachmentId, this.innerModel(),
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IssueAttachmentContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssueAttachments()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    apiId,
-                    issueId,
-                    attachmentId,
-                    this.innerModel(),
-                    createIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssueAttachments()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, issueId, attachmentId, this.innerModel(),
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
-    IssueAttachmentContractImpl(
-        String name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    IssueAttachmentContractImpl(String name,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = new IssueAttachmentContractInner();
         this.serviceManager = serviceManager;
         this.attachmentId = name;
@@ -123,43 +105,24 @@ public final class IssueAttachmentContractImpl
     }
 
     public IssueAttachmentContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssueAttachments()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    apiId,
-                    issueId,
-                    attachmentId,
-                    this.innerModel(),
-                    updateIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssueAttachments()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, issueId, attachmentId, this.innerModel(),
+                updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IssueAttachmentContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssueAttachments()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    apiId,
-                    issueId,
-                    attachmentId,
-                    this.innerModel(),
-                    updateIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssueAttachments()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, issueId, attachmentId, this.innerModel(),
+                updateIfMatch, context)
+            .getValue();
         return this;
     }
 
-    IssueAttachmentContractImpl(
-        IssueAttachmentContractInner innerObject,
+    IssueAttachmentContractImpl(IssueAttachmentContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -171,22 +134,18 @@ public final class IssueAttachmentContractImpl
     }
 
     public IssueAttachmentContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssueAttachments()
-                .getWithResponse(resourceGroupName, serviceName, apiId, issueId, attachmentId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssueAttachments()
+            .getWithResponse(resourceGroupName, serviceName, apiId, issueId, attachmentId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IssueAttachmentContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssueAttachments()
-                .getWithResponse(resourceGroupName, serviceName, apiId, issueId, attachmentId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssueAttachments()
+            .getWithResponse(resourceGroupName, serviceName, apiId, issueId, attachmentId, context)
+            .getValue();
         return this;
     }
 

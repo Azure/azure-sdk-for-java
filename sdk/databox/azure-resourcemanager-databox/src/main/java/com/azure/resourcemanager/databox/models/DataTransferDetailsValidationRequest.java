@@ -139,16 +139,12 @@ public final class DataTransferDetailsValidationRequest extends ValidationInputR
             dataImportDetails().forEach(e -> e.validate());
         }
         if (deviceType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deviceType in model DataTransferDetailsValidationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property deviceType in model DataTransferDetailsValidationRequest"));
         }
         if (transferType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property transferType in model DataTransferDetailsValidationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property transferType in model DataTransferDetailsValidationRequest"));
         }
     }
 

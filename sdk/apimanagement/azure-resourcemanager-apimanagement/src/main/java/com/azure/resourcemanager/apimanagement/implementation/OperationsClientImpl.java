@@ -44,8 +44,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @param client the instance of the service client containing this operation class.
      */
     OperationsClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,34 +56,25 @@ public final class OperationsClientImpl implements OperationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientO")
     public interface OperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operationsByTags")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/operationsByTags")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TagResourceCollection>> listByTags(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
+        Mono<Response<TagResourceCollection>> listByTags(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
             @QueryParam("$skip") Integer skip,
             @QueryParam("includeNotTaggedOperations") Boolean includeNotTaggedOperations,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TagResourceCollection>> listByTagsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -110,19 +101,12 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return paged Tag list representation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TagResourceContractInner>> listByTagsSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
+    private Mono<PagedResponse<TagResourceContractInner>> listByTagsSinglePageAsync(String resourceGroupName,
+        String serviceName, String apiId, String filter, Integer top, Integer skip,
         Boolean includeNotTaggedOperations) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -135,38 +119,16 @@ public final class OperationsClientImpl implements OperationsClient {
             return Mono.error(new IllegalArgumentException("Parameter apiId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByTags(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            filter,
-                            top,
-                            skip,
-                            includeNotTaggedOperations,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<TagResourceContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByTags(this.client.getEndpoint(), resourceGroupName, serviceName, apiId,
+                filter, top, skip, includeNotTaggedOperations, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<TagResourceContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -195,20 +157,12 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return paged Tag list representation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TagResourceContractInner>> listByTagsSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean includeNotTaggedOperations,
+    private Mono<PagedResponse<TagResourceContractInner>> listByTagsSinglePageAsync(String resourceGroupName,
+        String serviceName, String apiId, String filter, Integer top, Integer skip, Boolean includeNotTaggedOperations,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -221,36 +175,15 @@ public final class OperationsClientImpl implements OperationsClient {
             return Mono.error(new IllegalArgumentException("Parameter apiId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByTags(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                filter,
-                top,
-                skip,
-                includeNotTaggedOperations,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByTags(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, filter, top, skip,
+            includeNotTaggedOperations, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -277,19 +210,10 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return paged Tag list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TagResourceContractInner> listByTagsAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean includeNotTaggedOperations) {
-        return new PagedFlux<>(
-            () ->
-                listByTagsSinglePageAsync(
-                    resourceGroupName, serviceName, apiId, filter, top, skip, includeNotTaggedOperations),
-            nextLink -> listByTagsNextSinglePageAsync(nextLink));
+    private PagedFlux<TagResourceContractInner> listByTagsAsync(String resourceGroupName, String serviceName,
+        String apiId, String filter, Integer top, Integer skip, Boolean includeNotTaggedOperations) {
+        return new PagedFlux<>(() -> listByTagsSinglePageAsync(resourceGroupName, serviceName, apiId, filter, top, skip,
+            includeNotTaggedOperations), nextLink -> listByTagsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -305,17 +229,14 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return paged Tag list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TagResourceContractInner> listByTagsAsync(
-        String resourceGroupName, String serviceName, String apiId) {
+    private PagedFlux<TagResourceContractInner> listByTagsAsync(String resourceGroupName, String serviceName,
+        String apiId) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
         final Boolean includeNotTaggedOperations = null;
-        return new PagedFlux<>(
-            () ->
-                listByTagsSinglePageAsync(
-                    resourceGroupName, serviceName, apiId, filter, top, skip, includeNotTaggedOperations),
-            nextLink -> listByTagsNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByTagsSinglePageAsync(resourceGroupName, serviceName, apiId, filter, top, skip,
+            includeNotTaggedOperations), nextLink -> listByTagsNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -343,20 +264,10 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return paged Tag list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TagResourceContractInner> listByTagsAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean includeNotTaggedOperations,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByTagsSinglePageAsync(
-                    resourceGroupName, serviceName, apiId, filter, top, skip, includeNotTaggedOperations, context),
-            nextLink -> listByTagsNextSinglePageAsync(nextLink, context));
+    private PagedFlux<TagResourceContractInner> listByTagsAsync(String resourceGroupName, String serviceName,
+        String apiId, String filter, Integer top, Integer skip, Boolean includeNotTaggedOperations, Context context) {
+        return new PagedFlux<>(() -> listByTagsSinglePageAsync(resourceGroupName, serviceName, apiId, filter, top, skip,
+            includeNotTaggedOperations, context), nextLink -> listByTagsNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -372,8 +283,8 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TagResourceContractInner> listByTags(
-        String resourceGroupName, String serviceName, String apiId) {
+    public PagedIterable<TagResourceContractInner> listByTags(String resourceGroupName, String serviceName,
+        String apiId) {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
@@ -407,18 +318,10 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TagResourceContractInner> listByTags(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean includeNotTaggedOperations,
-        Context context) {
-        return new PagedIterable<>(
-            listByTagsAsync(
-                resourceGroupName, serviceName, apiId, filter, top, skip, includeNotTaggedOperations, context));
+    public PagedIterable<TagResourceContractInner> listByTags(String resourceGroupName, String serviceName,
+        String apiId, String filter, Integer top, Integer skip, Boolean includeNotTaggedOperations, Context context) {
+        return new PagedIterable<>(listByTagsAsync(resourceGroupName, serviceName, apiId, filter, top, skip,
+            includeNotTaggedOperations, context));
     }
 
     /**
@@ -437,23 +340,14 @@ public final class OperationsClientImpl implements OperationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByTagsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TagResourceContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<TagResourceContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -469,29 +363,19 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return paged Tag list representation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TagResourceContractInner>> listByTagsNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<TagResourceContractInner>> listByTagsNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByTagsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByTagsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

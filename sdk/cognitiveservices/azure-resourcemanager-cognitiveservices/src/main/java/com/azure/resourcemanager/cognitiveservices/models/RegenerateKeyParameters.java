@@ -48,9 +48,8 @@ public final class RegenerateKeyParameters {
      */
     public void validate() {
         if (keyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyName in model RegenerateKeyParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyName in model RegenerateKeyParameters"));
         }
     }
 

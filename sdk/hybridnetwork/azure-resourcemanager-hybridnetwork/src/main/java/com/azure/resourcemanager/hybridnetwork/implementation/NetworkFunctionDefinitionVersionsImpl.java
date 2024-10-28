@@ -31,20 +31,23 @@ public final class NetworkFunctionDefinitionVersionsImpl implements NetworkFunct
 
     public void delete(String resourceGroupName, String publisherName, String networkFunctionDefinitionGroupName,
         String networkFunctionDefinitionVersionName) {
-        this.serviceClient().delete(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
-            networkFunctionDefinitionVersionName);
+        this.serviceClient()
+            .delete(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName);
     }
 
     public void delete(String resourceGroupName, String publisherName, String networkFunctionDefinitionGroupName,
         String networkFunctionDefinitionVersionName, Context context) {
-        this.serviceClient().delete(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
-            networkFunctionDefinitionVersionName, context);
+        this.serviceClient()
+            .delete(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName, context);
     }
 
     public Response<NetworkFunctionDefinitionVersion> getWithResponse(String resourceGroupName, String publisherName,
         String networkFunctionDefinitionGroupName, String networkFunctionDefinitionVersionName, Context context) {
-        Response<NetworkFunctionDefinitionVersionInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            publisherName, networkFunctionDefinitionGroupName, networkFunctionDefinitionVersionName, context);
+        Response<NetworkFunctionDefinitionVersionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NetworkFunctionDefinitionVersionImpl(inner.getValue(), this.manager()));
@@ -55,8 +58,9 @@ public final class NetworkFunctionDefinitionVersionsImpl implements NetworkFunct
 
     public NetworkFunctionDefinitionVersion get(String resourceGroupName, String publisherName,
         String networkFunctionDefinitionGroupName, String networkFunctionDefinitionVersionName) {
-        NetworkFunctionDefinitionVersionInner inner = this.serviceClient().get(resourceGroupName, publisherName,
-            networkFunctionDefinitionGroupName, networkFunctionDefinitionVersionName);
+        NetworkFunctionDefinitionVersionInner inner = this.serviceClient()
+            .get(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName);
         if (inner != null) {
             return new NetworkFunctionDefinitionVersionImpl(inner, this.manager());
         } else {
@@ -73,17 +77,18 @@ public final class NetworkFunctionDefinitionVersionsImpl implements NetworkFunct
 
     public PagedIterable<NetworkFunctionDefinitionVersion> listByNetworkFunctionDefinitionGroup(
         String resourceGroupName, String publisherName, String networkFunctionDefinitionGroupName, Context context) {
-        PagedIterable<NetworkFunctionDefinitionVersionInner> inner
-            = this.serviceClient().listByNetworkFunctionDefinitionGroup(resourceGroupName, publisherName,
-                networkFunctionDefinitionGroupName, context);
+        PagedIterable<NetworkFunctionDefinitionVersionInner> inner = this.serviceClient()
+            .listByNetworkFunctionDefinitionGroup(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                context);
         return Utils.mapPage(inner, inner1 -> new NetworkFunctionDefinitionVersionImpl(inner1, this.manager()));
     }
 
     public NetworkFunctionDefinitionVersionUpdateState updateState(String resourceGroupName, String publisherName,
         String networkFunctionDefinitionGroupName, String networkFunctionDefinitionVersionName,
         NetworkFunctionDefinitionVersionUpdateStateInner parameters) {
-        NetworkFunctionDefinitionVersionUpdateStateInner inner = this.serviceClient().updateState(resourceGroupName,
-            publisherName, networkFunctionDefinitionGroupName, networkFunctionDefinitionVersionName, parameters);
+        NetworkFunctionDefinitionVersionUpdateStateInner inner = this.serviceClient()
+            .updateState(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName, parameters);
         if (inner != null) {
             return new NetworkFunctionDefinitionVersionUpdateStateImpl(inner, this.manager());
         } else {
@@ -94,8 +99,8 @@ public final class NetworkFunctionDefinitionVersionsImpl implements NetworkFunct
     public NetworkFunctionDefinitionVersionUpdateState updateState(String resourceGroupName, String publisherName,
         String networkFunctionDefinitionGroupName, String networkFunctionDefinitionVersionName,
         NetworkFunctionDefinitionVersionUpdateStateInner parameters, Context context) {
-        NetworkFunctionDefinitionVersionUpdateStateInner inner
-            = this.serviceClient().updateState(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+        NetworkFunctionDefinitionVersionUpdateStateInner inner = this.serviceClient()
+            .updateState(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
                 networkFunctionDefinitionVersionName, parameters, context);
         if (inner != null) {
             return new NetworkFunctionDefinitionVersionUpdateStateImpl(inner, this.manager());
@@ -126,8 +131,10 @@ public final class NetworkFunctionDefinitionVersionsImpl implements NetworkFunct
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'networkFunctionDefinitionVersions'.", id)));
         }
-        return this.getWithResponse(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
-            networkFunctionDefinitionVersionName, Context.NONE).getValue();
+        return this
+            .getWithResponse(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName, Context.NONE)
+            .getValue();
     }
 
     public Response<NetworkFunctionDefinitionVersion> getByIdWithResponse(String id, Context context) {

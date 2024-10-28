@@ -16,7 +16,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Immutable
 public class FileInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FileInner.class);
 
     /*
      * Name of the file.

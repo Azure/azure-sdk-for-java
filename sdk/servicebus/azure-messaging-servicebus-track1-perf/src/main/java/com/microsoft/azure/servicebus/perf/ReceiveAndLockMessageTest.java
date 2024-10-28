@@ -36,7 +36,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     }
 
     private Mono<Void> sendMessage() {
-        int total =  options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
+        int total = options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
 
         List<Message> messages = new ArrayList<>();
         for (int i = 0; i < total; ++i) {
@@ -50,8 +50,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     @Override
     public Mono<Void> setupAsync() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
-        return super.setupAsync()
-            .then(sendMessage());
+        return super.setupAsync().then(sendMessage());
     }
 
     @Override
@@ -75,9 +74,9 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     @Override
     public Mono<Void> runAsync() {
         return Mono.fromFuture(receiver.receiveBatchAsync(options.getMessagesToReceive())
-            .thenComposeAsync(iMessages -> CompletableFuture.allOf(iMessages
-                .stream()
-                .map(x -> receiver.completeAsync(x.getLockToken())).toArray(CompletableFuture[]::new))));
+            .thenComposeAsync(iMessages -> CompletableFuture.allOf(iMessages.stream()
+                .map(x -> receiver.completeAsync(x.getLockToken()))
+                .toArray(CompletableFuture[]::new))));
     }
 
     /**

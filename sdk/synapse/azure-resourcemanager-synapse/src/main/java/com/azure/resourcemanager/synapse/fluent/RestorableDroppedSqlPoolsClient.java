@@ -27,8 +27,8 @@ public interface RestorableDroppedSqlPoolsClient {
      * @return a deleted sql pool that can be restored along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RestorableDroppedSqlPoolInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId, Context context);
+    Response<RestorableDroppedSqlPoolInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String restorableDroppedSqlPoolId, Context context);
 
     /**
      * Gets a deleted sql pool that can be restored.
@@ -43,8 +43,8 @@ public interface RestorableDroppedSqlPoolsClient {
      * @return a deleted sql pool that can be restored.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RestorableDroppedSqlPoolInner get(
-        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId);
+    RestorableDroppedSqlPoolInner get(String resourceGroupName, String workspaceName,
+        String restorableDroppedSqlPoolId);
 
     /**
      * Gets a list of deleted Sql pools that can be restored.
@@ -71,6 +71,6 @@ public interface RestorableDroppedSqlPoolsClient {
      * @return a list of deleted Sql pools that can be restored as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RestorableDroppedSqlPoolInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<RestorableDroppedSqlPoolInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 }

@@ -12,17 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AssetContainerSasInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssetContainerSasInner model =
-            BinaryData
-                .fromString("{\"assetContainerSasUrls\":[\"xywnytnrsynlqidy\"]}")
-                .toObject(AssetContainerSasInner.class);
+        AssetContainerSasInner model = BinaryData.fromString("{\"assetContainerSasUrls\":[\"xywnytnrsynlqidy\"]}")
+            .toObject(AssetContainerSasInner.class);
         Assertions.assertEquals("xywnytnrsynlqidy", model.assetContainerSasUrls().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssetContainerSasInner model =
-            new AssetContainerSasInner().withAssetContainerSasUrls(Arrays.asList("xywnytnrsynlqidy"));
+        AssetContainerSasInner model
+            = new AssetContainerSasInner().withAssetContainerSasUrls(Arrays.asList("xywnytnrsynlqidy"));
         model = BinaryData.fromObject(model).toObject(AssetContainerSasInner.class);
         Assertions.assertEquals("xywnytnrsynlqidy", model.assetContainerSasUrls().get(0));
     }

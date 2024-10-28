@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricAvailabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricAvailability model =
-            BinaryData
-                .fromString("{\"timeGrain\":\"ugjzzdatqxhocdge\",\"blobDuration\":\"lgphu\"}")
+        MetricAvailability model
+            = BinaryData.fromString("{\"timeGrain\":\"ugjzzdatqxhocdge\",\"blobDuration\":\"lgphu\"}")
                 .toObject(MetricAvailability.class);
         Assertions.assertEquals("ugjzzdatqxhocdge", model.timeGrain());
         Assertions.assertEquals("lgphu", model.blobDuration());

@@ -87,8 +87,8 @@ public final class ApiManagementServiceUpdateProperties extends ApiManagementSer
 
     /** {@inheritDoc} */
     @Override
-    public ApiManagementServiceUpdateProperties withHostnameConfigurations(
-        List<HostnameConfiguration> hostnameConfigurations) {
+    public ApiManagementServiceUpdateProperties
+        withHostnameConfigurations(List<HostnameConfiguration> hostnameConfigurations) {
         super.withHostnameConfigurations(hostnameConfigurations);
         return this;
     }
@@ -109,8 +109,8 @@ public final class ApiManagementServiceUpdateProperties extends ApiManagementSer
 
     /** {@inheritDoc} */
     @Override
-    public ApiManagementServiceUpdateProperties withVirtualNetworkConfiguration(
-        VirtualNetworkConfiguration virtualNetworkConfiguration) {
+    public ApiManagementServiceUpdateProperties
+        withVirtualNetworkConfiguration(VirtualNetworkConfiguration virtualNetworkConfiguration) {
         super.withVirtualNetworkConfiguration(virtualNetworkConfiguration);
         return this;
     }
@@ -180,8 +180,8 @@ public final class ApiManagementServiceUpdateProperties extends ApiManagementSer
 
     /** {@inheritDoc} */
     @Override
-    public ApiManagementServiceUpdateProperties withPrivateEndpointConnections(
-        List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
+    public ApiManagementServiceUpdateProperties
+        withPrivateEndpointConnections(List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
         super.withPrivateEndpointConnections(privateEndpointConnections);
         return this;
     }

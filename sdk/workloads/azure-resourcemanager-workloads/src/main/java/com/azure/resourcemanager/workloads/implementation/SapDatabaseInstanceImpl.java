@@ -125,29 +125,24 @@ public final class SapDatabaseInstanceImpl
 
     private UpdateSapDatabaseInstanceRequest updateBody;
 
-    public SapDatabaseInstanceImpl withExistingSapVirtualInstance(
-        String resourceGroupName, String sapVirtualInstanceName) {
+    public SapDatabaseInstanceImpl withExistingSapVirtualInstance(String resourceGroupName,
+        String sapVirtualInstanceName) {
         this.resourceGroupName = resourceGroupName;
         this.sapVirtualInstanceName = sapVirtualInstanceName;
         return this;
     }
 
     public SapDatabaseInstance create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapDatabaseInstances()
-                .create(
-                    resourceGroupName, sapVirtualInstanceName, databaseInstanceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapDatabaseInstances()
+            .create(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SapDatabaseInstance create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapDatabaseInstances()
-                .create(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapDatabaseInstances()
+            .create(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, this.innerModel(), context);
         return this;
     }
 
@@ -163,25 +158,21 @@ public final class SapDatabaseInstanceImpl
     }
 
     public SapDatabaseInstance apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapDatabaseInstances()
-                .update(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapDatabaseInstances()
+            .update(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, updateBody, Context.NONE);
         return this;
     }
 
     public SapDatabaseInstance apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapDatabaseInstances()
-                .update(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapDatabaseInstances()
+            .update(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, updateBody, context);
         return this;
     }
 
-    SapDatabaseInstanceImpl(
-        SapDatabaseInstanceInner innerObject, com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
+    SapDatabaseInstanceImpl(SapDatabaseInstanceInner innerObject,
+        com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -190,46 +181,38 @@ public final class SapDatabaseInstanceImpl
     }
 
     public SapDatabaseInstance refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapDatabaseInstances()
-                .getWithResponse(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapDatabaseInstances()
+            .getWithResponse(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SapDatabaseInstance refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapDatabaseInstances()
-                .getWithResponse(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapDatabaseInstances()
+            .getWithResponse(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, context)
+            .getValue();
         return this;
     }
 
     public OperationStatusResult startInstance() {
-        return serviceManager
-            .sapDatabaseInstances()
+        return serviceManager.sapDatabaseInstances()
             .startInstance(resourceGroupName, sapVirtualInstanceName, databaseInstanceName);
     }
 
     public OperationStatusResult startInstance(Context context) {
-        return serviceManager
-            .sapDatabaseInstances()
+        return serviceManager.sapDatabaseInstances()
             .startInstance(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, context);
     }
 
     public OperationStatusResult stopInstance() {
-        return serviceManager
-            .sapDatabaseInstances()
+        return serviceManager.sapDatabaseInstances()
             .stopInstance(resourceGroupName, sapVirtualInstanceName, databaseInstanceName);
     }
 
     public OperationStatusResult stopInstance(StopRequest body, Context context) {
-        return serviceManager
-            .sapDatabaseInstances()
+        return serviceManager.sapDatabaseInstances()
             .stopInstance(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context);
     }
 

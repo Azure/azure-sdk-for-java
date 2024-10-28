@@ -37,19 +37,15 @@ public class DownloadContentAsyncUnitTests {
 
     @BeforeEach
     public void setup() {
-        CallAutomationAsyncClient callingServerClient =
-            CallAutomationUnitTestBase.getCallAutomationAsyncClient(new ArrayList<>(
-                Collections.singletonList(
-                    new SimpleEntry<>(CallAutomationUnitTestBase.generateDownloadResult(CONTENTS), 200)
-                )));
+        CallAutomationAsyncClient callingServerClient
+            = CallAutomationUnitTestBase.getCallAutomationAsyncClient(new ArrayList<>(Collections
+                .singletonList(new SimpleEntry<>(CallAutomationUnitTestBase.generateDownloadResult(CONTENTS), 200))));
         callRecording = callingServerClient.getCallRecordingAsync();
     }
 
     @Test
     public void downloadStream() {
-        StepVerifier.create(
-            callRecording.downloadStream(AMS_ENDPOINT)
-        ).consumeNextWith(byteBuffer -> {
+        StepVerifier.create(callRecording.downloadStream(AMS_ENDPOINT)).consumeNextWith(byteBuffer -> {
             String resultContents = new String(byteBuffer.array(), StandardCharsets.UTF_8);
             assertEquals(CONTENTS, resultContents);
         }).verifyComplete();
@@ -57,29 +53,23 @@ public class DownloadContentAsyncUnitTests {
 
     @Test
     public void downloadStreamWithResponse() {
-        StepVerifier.create(
-            callRecording.downloadStreamWithResponse(
-                AMS_ENDPOINT,
-                new HttpRange(CONTENTS.length()))
-        ).consumeNextWith(response -> {
-            assertEquals(200, response.getStatusCode());
-            verifyContents(response.getValue());
-        }).verifyComplete();
+        StepVerifier.create(callRecording.downloadStreamWithResponse(AMS_ENDPOINT, new HttpRange(CONTENTS.length())))
+            .consumeNextWith(response -> {
+                assertEquals(200, response.getStatusCode());
+                verifyContents(response.getValue());
+            })
+            .verifyComplete();
     }
 
     @Test
     public void downloadStreamWithResponseThrowException() {
-        CallAutomationAsyncClient callingServerClient =
-            CallAutomationUnitTestBase.getCallAutomationAsyncClient(new ArrayList<>(
-                Collections.singletonList(
-                    new SimpleEntry<>("", 416)
-                )));
+        CallAutomationAsyncClient callingServerClient = CallAutomationUnitTestBase
+            .getCallAutomationAsyncClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>("", 416))));
         callRecording = callingServerClient.getCallRecordingAsync();
 
-        StepVerifier.create(
-            callRecording.downloadStreamWithResponse(AMS_ENDPOINT, new HttpRange(CONTENTS.length()))
-        ).consumeNextWith(response ->
-            StepVerifier.create(response.getValue()).verifyError(NullPointerException.class));
+        StepVerifier.create(callRecording.downloadStreamWithResponse(AMS_ENDPOINT, new HttpRange(CONTENTS.length())))
+            .consumeNextWith(
+                response -> StepVerifier.create(response.getValue()).verifyError(NullPointerException.class));
     }
 
     @Test
@@ -87,7 +77,8 @@ public class DownloadContentAsyncUnitTests {
         String fileName = "./" + UUID.randomUUID().toString().replace("-", "") + ".txt";
         Path path = FileSystems.getDefault().getPath(fileName);
         ParallelDownloadOptions parallelOptions = new ParallelDownloadOptions().setMaxConcurrency(1).setBlockSize(512L);
-        DownloadToFileOptions options = new DownloadToFileOptions().setParallelDownloadOptions(parallelOptions).setOverwrite(true);
+        DownloadToFileOptions options
+            = new DownloadToFileOptions().setParallelDownloadOptions(parallelOptions).setOverwrite(true);
         File file = null;
 
         try {
@@ -106,10 +97,9 @@ public class DownloadContentAsyncUnitTests {
     }
 
     private void verifyContents(Flux<ByteBuffer> response) {
-        StepVerifier.create(response)
-            .consumeNextWith(byteBuffer -> {
-                String resultContents = new String(byteBuffer.array(), StandardCharsets.UTF_8);
-                assertEquals(CONTENTS, resultContents);
-            }).verifyComplete();
+        StepVerifier.create(response).consumeNextWith(byteBuffer -> {
+            String resultContents = new String(byteBuffer.array(), StandardCharsets.UTF_8);
+            assertEquals(CONTENTS, resultContents);
+        }).verifyComplete();
     }
 }

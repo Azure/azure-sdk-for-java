@@ -74,10 +74,8 @@ public final class NotificationPreference {
      */
     public void validate() {
         if (stageName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property stageName in model NotificationPreference"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property stageName in model NotificationPreference"));
         }
     }
 

@@ -55,8 +55,8 @@ public final class StreamingPolicyFairPlayConfiguration {
      * @param customLicenseAcquisitionUrlTemplate the customLicenseAcquisitionUrlTemplate value to set.
      * @return the StreamingPolicyFairPlayConfiguration object itself.
      */
-    public StreamingPolicyFairPlayConfiguration withCustomLicenseAcquisitionUrlTemplate(
-        String customLicenseAcquisitionUrlTemplate) {
+    public StreamingPolicyFairPlayConfiguration
+        withCustomLicenseAcquisitionUrlTemplate(String customLicenseAcquisitionUrlTemplate) {
         this.customLicenseAcquisitionUrlTemplate = customLicenseAcquisitionUrlTemplate;
         return this;
     }

@@ -80,8 +80,8 @@ public interface OperationsClient {
      * @return the result of a request to check the availability of a resource name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NameAvailabilityStatusInner> regionalCheckNameAvailabilityWithResponse(
-        String location, CheckNameAvailabilityParameters checkNameAvailabilityParameters, Context context);
+    Response<NameAvailabilityStatusInner> regionalCheckNameAvailabilityWithResponse(String location,
+        CheckNameAvailabilityParameters checkNameAvailabilityParameters, Context context);
 
     /**
      * Checks whether the configuration store name is available for use.
@@ -94,6 +94,6 @@ public interface OperationsClient {
      * @return the result of a request to check the availability of a resource name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NameAvailabilityStatusInner regionalCheckNameAvailability(
-        String location, CheckNameAvailabilityParameters checkNameAvailabilityParameters);
+    NameAvailabilityStatusInner regionalCheckNameAvailability(String location,
+        CheckNameAvailabilityParameters checkNameAvailabilityParameters);
 }

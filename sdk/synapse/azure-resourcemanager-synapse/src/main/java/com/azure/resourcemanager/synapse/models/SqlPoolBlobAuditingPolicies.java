@@ -24,8 +24,8 @@ public interface SqlPoolBlobAuditingPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a SQL pool's blob auditing policy along with {@link Response}.
      */
-    Response<SqlPoolBlobAuditingPolicy> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    Response<SqlPoolBlobAuditingPolicy> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context);
 
     /**
      * Get a SQL pool's blob auditing policy
@@ -53,8 +53,8 @@ public interface SqlPoolBlobAuditingPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Sql pool auditing settings as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SqlPoolBlobAuditingPolicy> listBySqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName);
+    PagedIterable<SqlPoolBlobAuditingPolicy> listBySqlPool(String resourceGroupName, String workspaceName,
+        String sqlPoolName);
 
     /**
      * Lists auditing settings of a Sql pool.
@@ -68,8 +68,8 @@ public interface SqlPoolBlobAuditingPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Sql pool auditing settings as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SqlPoolBlobAuditingPolicy> listBySqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<SqlPoolBlobAuditingPolicy> listBySqlPool(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context);
 
     /**
      * Get a SQL pool's blob auditing policy

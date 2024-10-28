@@ -78,10 +78,8 @@ public class AzureEventSourceProperties extends EventSourceCommonProperties {
     public void validate() {
         super.validate();
         if (eventSourceResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property eventSourceResourceId in model AzureEventSourceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property eventSourceResourceId in model AzureEventSourceProperties"));
         }
     }
 

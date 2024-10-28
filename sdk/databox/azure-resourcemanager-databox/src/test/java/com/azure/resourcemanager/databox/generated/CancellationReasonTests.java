@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CancellationReasonTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CancellationReason model =
-            BinaryData.fromString("{\"reason\":\"kiidzyex\"}").toObject(CancellationReason.class);
+        CancellationReason model
+            = BinaryData.fromString("{\"reason\":\"kiidzyex\"}").toObject(CancellationReason.class);
         Assertions.assertEquals("kiidzyex", model.reason());
     }
 

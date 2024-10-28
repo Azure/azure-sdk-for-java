@@ -18,8 +18,7 @@ import io.clientcore.core.json.implementation.jackson.core.JsonToken;
  *
  * @since 2.9
  */
-public class WritableTypeId
-{
+public class WritableTypeId {
     /**
      * Enumeration of values that matches enum `As` from annotation
      * `JsonTypeInfo`: separate definition to avoid dependency between
@@ -154,7 +153,8 @@ public class WritableTypeId
      */
     public Object extra;
 
-    public WritableTypeId() { }
+    public WritableTypeId() {
+    }
 
     /**
      * Constructor used when calling a method for generating and writing Type Id;
@@ -190,8 +190,7 @@ public class WritableTypeId
      * @param valueShape Serialize shape writer will use for value
      * @param id Actual type id to use if known; {@code null} if not
      */
-    public WritableTypeId(Object value, JsonToken valueShape, Object id)
-    {
+    public WritableTypeId(Object value, JsonToken valueShape, Object id) {
         forValue = value;
         this.id = id;
         this.valueShape = valueShape;

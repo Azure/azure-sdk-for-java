@@ -46,9 +46,10 @@ public final class DataTypesListByDataProductMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NetworkAnalyticsManager manager = NetworkAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkAnalyticsManager manager = NetworkAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DataType> response
             = manager.dataTypes().listByDataProduct("gmifthnzd", "dslgnayqigynduh", com.azure.core.util.Context.NONE);

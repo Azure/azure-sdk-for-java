@@ -55,18 +55,17 @@ public final class StorageConstants {
     /**
      * Exception message when the value could not be parsed into an enum.
      */
-    public static final String ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE =
-        "%s could not be parsed from '%s' due to invalid value %s.";
+    public static final String ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE
+        = "%s could not be parsed from '%s' due to invalid value %s.";
 
+    public static final DateTimeFormatter ISO_8601_UTC_DATE_FORMATTER
+        = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
 
-    public static final DateTimeFormatter ISO_8601_UTC_DATE_FORMATTER =
-        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
+    public static final String BLOB_ALREADY_EXISTS
+        = "Blob already exists. Specify overwrite to true to force update the blob.";
 
-    public static final String BLOB_ALREADY_EXISTS =
-        "Blob already exists. Specify overwrite to true to force update the blob.";
-
-    public static final String FILE_ALREADY_EXISTS =
-        "File already exists. Specify overwrite to true to force update the file.";
+    public static final String FILE_ALREADY_EXISTS
+        = "File already exists. Specify overwrite to true to force update the file.";
 
     /**
      * Buffer width used to copy data to output streams.

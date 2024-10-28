@@ -49,9 +49,10 @@ public final class ServicesListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ServiceFabricManager manager = ServiceFabricManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ServiceFabricManager manager = ServiceFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ServiceResource> response
             = manager.services().list("uvvfonkp", "hqyikvy", "auy", com.azure.core.util.Context.NONE);

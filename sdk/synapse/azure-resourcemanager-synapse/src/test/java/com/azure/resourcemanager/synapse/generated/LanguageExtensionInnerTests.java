@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class LanguageExtensionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LanguageExtensionInner model =
-            BinaryData.fromString("{\"languageExtensionName\":\"PYTHON\"}").toObject(LanguageExtensionInner.class);
+        LanguageExtensionInner model
+            = BinaryData.fromString("{\"languageExtensionName\":\"PYTHON\"}").toObject(LanguageExtensionInner.class);
         Assertions.assertEquals(LanguageExtensionName.PYTHON, model.languageExtensionName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LanguageExtensionInner model =
-            new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON);
+        LanguageExtensionInner model
+            = new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON);
         model = BinaryData.fromObject(model).toObject(LanguageExtensionInner.class);
         Assertions.assertEquals(LanguageExtensionName.PYTHON, model.languageExtensionName());
     }

@@ -44,10 +44,8 @@ public final class SignalRPrivateLinkResourcesClientImpl implements SignalRPriva
      * @param client the instance of the service client containing this operation class.
      */
     SignalRPrivateLinkResourcesClientImpl(SignalRManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    SignalRPrivateLinkResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SignalRPrivateLinkResourcesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,29 +56,21 @@ public final class SignalRPrivateLinkResourcesClientImpl implements SignalRPriva
     @Host("{$host}")
     @ServiceInterface(name = "SignalRManagementCli")
     public interface SignalRPrivateLinkResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateLinkResources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateLinkResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PrivateLinkResourceList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PrivateLinkResourceList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -95,19 +85,15 @@ public final class SignalRPrivateLinkResourcesClientImpl implements SignalRPriva
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -118,26 +104,10 @@ public final class SignalRPrivateLinkResourcesClientImpl implements SignalRPriva
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
-            .<PagedResponse<PrivateLinkResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+            .<PagedResponse<PrivateLinkResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -154,19 +124,15 @@ public final class SignalRPrivateLinkResourcesClientImpl implements SignalRPriva
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -178,23 +144,10 @@ public final class SignalRPrivateLinkResourcesClientImpl implements SignalRPriva
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -210,8 +163,8 @@ public final class SignalRPrivateLinkResourcesClientImpl implements SignalRPriva
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateLinkResourceInner> listAsync(String resourceGroupName, String resourceName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, resourceName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -227,10 +180,9 @@ public final class SignalRPrivateLinkResourcesClientImpl implements SignalRPriva
      *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateLinkResourceInner> listAsync(
-        String resourceGroupName, String resourceName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, resourceName, context),
+    private PagedFlux<PrivateLinkResourceInner> listAsync(String resourceGroupName, String resourceName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -263,8 +215,8 @@ public final class SignalRPrivateLinkResourcesClientImpl implements SignalRPriva
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateLinkResourceInner> list(
-        String resourceGroupName, String resourceName, Context context) {
+    public PagedIterable<PrivateLinkResourceInner> list(String resourceGroupName, String resourceName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, resourceName, context));
     }
 
@@ -285,23 +237,13 @@ public final class SignalRPrivateLinkResourcesClientImpl implements SignalRPriva
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PrivateLinkResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PrivateLinkResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -323,23 +265,13 @@ public final class SignalRPrivateLinkResourcesClientImpl implements SignalRPriva
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -21,28 +21,28 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     private final com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager;
 
-    public PrivateLinkResourcesImpl(
-        PrivateLinkResourcesClient innerClient, com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
+    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
+        com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PrivateLinkResource> listByResource(String resourceGroupName, String farmBeatsResourceName) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().listByResource(resourceGroupName, farmBeatsResourceName);
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().listByResource(resourceGroupName, farmBeatsResourceName);
         return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PrivateLinkResource> listByResource(
-        String resourceGroupName, String farmBeatsResourceName, Context context) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().listByResource(resourceGroupName, farmBeatsResourceName, context);
+    public PagedIterable<PrivateLinkResource> listByResource(String resourceGroupName, String farmBeatsResourceName,
+        Context context) {
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().listByResource(resourceGroupName, farmBeatsResourceName, context);
         return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
     public PrivateLinkResource get(String resourceGroupName, String farmBeatsResourceName, String subResourceName) {
-        PrivateLinkResourceInner inner =
-            this.serviceClient().get(resourceGroupName, farmBeatsResourceName, subResourceName);
+        PrivateLinkResourceInner inner
+            = this.serviceClient().get(resourceGroupName, farmBeatsResourceName, subResourceName);
         if (inner != null) {
             return new PrivateLinkResourceImpl(inner, this.manager());
         } else {
@@ -50,15 +50,12 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         }
     }
 
-    public Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String subResourceName, Context context) {
-        Response<PrivateLinkResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, farmBeatsResourceName, subResourceName, context);
+    public Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String farmBeatsResourceName,
+        String subResourceName, Context context) {
+        Response<PrivateLinkResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, farmBeatsResourceName, subResourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

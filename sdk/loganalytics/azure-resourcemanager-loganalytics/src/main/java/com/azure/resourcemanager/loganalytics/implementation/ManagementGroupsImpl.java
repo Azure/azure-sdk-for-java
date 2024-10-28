@@ -19,8 +19,8 @@ public final class ManagementGroupsImpl implements ManagementGroups {
 
     private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public ManagementGroupsImpl(
-        ManagementGroupsClient innerClient, com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
+    public ManagementGroupsImpl(ManagementGroupsClient innerClient,
+        com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -31,8 +31,8 @@ public final class ManagementGroupsImpl implements ManagementGroups {
     }
 
     public PagedIterable<ManagementGroup> list(String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<ManagementGroupInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, context);
+        PagedIterable<ManagementGroupInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, context);
         return Utils.mapPage(inner, inner1 -> new ManagementGroupImpl(inner1, this.manager()));
     }
 

@@ -93,8 +93,8 @@ public interface AzureBareMetalStorageInstancesClient {
      *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureBareMetalStorageInstanceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Context context);
+    Response<AzureBareMetalStorageInstanceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, Context context);
 
     /**
      * Gets an Azure Bare Metal Storage instance.
@@ -110,8 +110,8 @@ public interface AzureBareMetalStorageInstancesClient {
      * @return an Azure Bare Metal Storage instance for the specified subscription, resource group, and instance name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureBareMetalStorageInstanceInner getByResourceGroup(
-        String resourceGroupName, String azureBareMetalStorageInstanceName);
+    AzureBareMetalStorageInstanceInner getByResourceGroup(String resourceGroupName,
+        String azureBareMetalStorageInstanceName);
 
     /**
      * Create an azure bare metal storage resource.
@@ -128,10 +128,8 @@ public interface AzureBareMetalStorageInstancesClient {
      *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureBareMetalStorageInstanceInner> createWithResponse(
-        String resourceGroupName,
-        String azureBareMetalStorageInstanceName,
-        AzureBareMetalStorageInstanceInner requestBodyParameters,
+    Response<AzureBareMetalStorageInstanceInner> createWithResponse(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, AzureBareMetalStorageInstanceInner requestBodyParameters,
         Context context);
 
     /**
@@ -147,9 +145,7 @@ public interface AzureBareMetalStorageInstancesClient {
      * @return azureBareMetalStorageInstance info on Azure (ARM properties and AzureBareMetalStorage properties).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureBareMetalStorageInstanceInner create(
-        String resourceGroupName,
-        String azureBareMetalStorageInstanceName,
+    AzureBareMetalStorageInstanceInner create(String resourceGroupName, String azureBareMetalStorageInstanceName,
         AzureBareMetalStorageInstanceInner requestBodyParameters);
 
     /**
@@ -170,8 +166,8 @@ public interface AzureBareMetalStorageInstancesClient {
      *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureBareMetalStorageInstanceInner> updateWithResponse(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Tags tagsParameter, Context context);
+    Response<AzureBareMetalStorageInstanceInner> updateWithResponse(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, Tags tagsParameter, Context context);
 
     /**
      * Patches the Tags field of a Azure Bare Metal Storage instance.
@@ -189,8 +185,8 @@ public interface AzureBareMetalStorageInstancesClient {
      * @return azureBareMetalStorageInstance info on Azure (ARM properties and AzureBareMetalStorage properties).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureBareMetalStorageInstanceInner update(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Tags tagsParameter);
+    AzureBareMetalStorageInstanceInner update(String resourceGroupName, String azureBareMetalStorageInstanceName,
+        Tags tagsParameter);
 
     /**
      * Delete an AzureBareMetalStorageInstance.
@@ -205,8 +201,8 @@ public interface AzureBareMetalStorageInstancesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String azureBareMetalStorageInstanceName,
+        Context context);
 
     /**
      * Delete an AzureBareMetalStorageInstance.

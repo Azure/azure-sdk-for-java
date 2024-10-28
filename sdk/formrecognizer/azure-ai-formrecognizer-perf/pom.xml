@@ -19,6 +19,7 @@
   <properties>
     <perf.test.mainClass>com.azure.ai.formrecognizer.perf.App</perf.test.mainClass>
     <perf.test.imageName>azure-ai-formrecognizer-perf</perf.test.imageName>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

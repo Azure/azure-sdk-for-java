@@ -156,11 +156,8 @@ public interface VirtualNetwork {
     VirtualNetworkInner innerModel();
 
     /** The entirety of the VirtualNetwork definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The VirtualNetwork definition stages. */
@@ -204,12 +201,8 @@ public interface VirtualNetwork {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithExtendedLocation,
-                DefinitionStages.WithKind,
-                DefinitionStages.WithVCenterId,
-                DefinitionStages.WithMoRefId,
-                DefinitionStages.WithInventoryItemId {
+            extends DefinitionStages.WithTags, DefinitionStages.WithExtendedLocation, DefinitionStages.WithKind,
+            DefinitionStages.WithVCenterId, DefinitionStages.WithMoRefId, DefinitionStages.WithInventoryItemId {
             /**
              * Executes the create request.
              *

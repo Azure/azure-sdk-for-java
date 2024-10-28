@@ -21,7 +21,8 @@ public final class RecordingKind extends ExpandableStringEnum<RecordingKind> {
     /**
      * Creates a new instance of RecordingKind value.
      */
-    public RecordingKind() {}
+    public RecordingKind() {
+    }
 
     /**
      * Creates or finds a RecordingKind from its string representation.

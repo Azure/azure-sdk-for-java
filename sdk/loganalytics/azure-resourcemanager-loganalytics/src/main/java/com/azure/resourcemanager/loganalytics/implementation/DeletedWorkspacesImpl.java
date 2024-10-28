@@ -19,8 +19,7 @@ public final class DeletedWorkspacesImpl implements DeletedWorkspaces {
 
     private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    public DeletedWorkspacesImpl(
-        DeletedWorkspacesClient innerClient,
+    public DeletedWorkspacesImpl(DeletedWorkspacesClient innerClient,
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

@@ -49,10 +49,10 @@ public class MetricsAdvisorClientBuilderTest extends TestProxyTestBase {
     @Test
     @DoNotRecord
     public void clientBuilderWithInvalidKeyCredential() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> new MetricsAdvisorClientBuilder()
-            .endpoint(PLAYBACK_ENDPOINT)
-            .credential(new MetricsAdvisorKeyCredential("", ""))
-            .buildClient());
+        Exception exception = assertThrows(IllegalArgumentException.class,
+            () -> new MetricsAdvisorClientBuilder().endpoint(PLAYBACK_ENDPOINT)
+                .credential(new MetricsAdvisorKeyCredential("", ""))
+                .buildClient());
         assertEquals("Missing credential information while building a client.", exception.getMessage());
     }
 
@@ -62,13 +62,10 @@ public class MetricsAdvisorClientBuilderTest extends TestProxyTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void clientBuilderWithNullServiceVersion(HttpClient httpClient,
-                                                    MetricsAdvisorServiceVersion serviceVersion) {
-        clientBuilderWithNullServiceVersionRunner(httpClient, serviceVersion, (clientBuilder) ->
-            clientBuilder
-                .buildClient()
-                .listFeedback(METRIC_ID,
-                    new ListMetricFeedbackOptions().setMaxPageSize(PAGE_SIZE),
-                    Context.NONE)
+        MetricsAdvisorServiceVersion serviceVersion) {
+        clientBuilderWithNullServiceVersionRunner(httpClient, serviceVersion,
+            (clientBuilder) -> clientBuilder.buildClient()
+                .listFeedback(METRIC_ID, new ListMetricFeedbackOptions().setMaxPageSize(PAGE_SIZE), Context.NONE)
                 .stream()
                 .limit(LISTING_LIMIT)
                 .forEach(metricFeedback -> assertNotNull(metricFeedback)));
@@ -82,11 +79,8 @@ public class MetricsAdvisorClientBuilderTest extends TestProxyTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void clientBuilderWithDefaultPipeline(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, (clientBuilder) -> {
-            clientBuilder
-                .buildClient()
-                .listFeedback(METRIC_ID,
-                    new ListMetricFeedbackOptions().setMaxPageSize(PAGE_SIZE),
-                    Context.NONE)
+            clientBuilder.buildClient()
+                .listFeedback(METRIC_ID, new ListMetricFeedbackOptions().setMaxPageSize(PAGE_SIZE), Context.NONE)
                 .stream()
                 .limit(LISTING_LIMIT)
                 .forEach(metricFeedback -> assertNotNull(metricFeedback));
@@ -99,10 +93,10 @@ public class MetricsAdvisorClientBuilderTest extends TestProxyTestBase {
     @Test
     @DoNotRecord
     public void clientBuilderWithInvalidEndpoint() {
-        assertThrows(RuntimeException.class, () -> new MetricsAdvisorClientBuilder()
-            .endpoint(INVALID_ENDPOINT)
-            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(10))))
-            .buildClient());
+        assertThrows(RuntimeException.class,
+            () -> new MetricsAdvisorClientBuilder().endpoint(INVALID_ENDPOINT)
+                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(10))))
+                .buildClient());
     }
 
     /**
@@ -112,12 +106,9 @@ public class MetricsAdvisorClientBuilderTest extends TestProxyTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
     public void clientBuilderWithTokenCredential(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        clientBuilderWithTokenCredentialRunner(httpClient, serviceVersion, (clientBuilder) ->
-            clientBuilder
-                .buildClient()
-                .listFeedback(METRIC_ID,
-                    new ListMetricFeedbackOptions().setMaxPageSize(PAGE_SIZE),
-                    Context.NONE)
+        clientBuilderWithTokenCredentialRunner(httpClient, serviceVersion,
+            (clientBuilder) -> clientBuilder.buildClient()
+                .listFeedback(METRIC_ID, new ListMetricFeedbackOptions().setMaxPageSize(PAGE_SIZE), Context.NONE)
                 .stream()
                 .limit(LISTING_LIMIT)
                 .forEach(metricFeedback -> assertNotNull(metricFeedback)));
@@ -126,37 +117,36 @@ public class MetricsAdvisorClientBuilderTest extends TestProxyTestBase {
     @Test
     @DoNotRecord
     public void bothRetryOptionsAndRetryPolicySet() {
-        assertThrows(IllegalStateException.class, () -> new MetricsAdvisorClientBuilder()
-            .endpoint(PLAYBACK_ENDPOINT)
-            .credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"))
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-            .retryPolicy(new RetryPolicy())
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new MetricsAdvisorClientBuilder().endpoint(PLAYBACK_ENDPOINT)
+                .credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"))
+                .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+                .retryPolicy(new RetryPolicy())
+                .buildClient());
     }
 
     // Client builder runner
-    private void clientBuilderWithNullServiceVersionRunner(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion,
-                                                   Consumer<MetricsAdvisorClientBuilder> testRunner) {
-        final MetricsAdvisorClientBuilder clientBuilder =
-            createClientBuilder(httpClient, serviceVersion, getEndpoint(), getMetricsAdvisorKeyCredential())
+    private void clientBuilderWithNullServiceVersionRunner(HttpClient httpClient,
+        MetricsAdvisorServiceVersion serviceVersion, Consumer<MetricsAdvisorClientBuilder> testRunner) {
+        final MetricsAdvisorClientBuilder clientBuilder
+            = createClientBuilder(httpClient, serviceVersion, getEndpoint(), getMetricsAdvisorKeyCredential())
                 .retryPolicy(new RetryPolicy())
                 .serviceVersion(null);
         testRunner.accept(clientBuilder);
     }
 
-    private void clientBuilderWithDefaultPipelineRunner(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion,
-                                                Consumer<MetricsAdvisorClientBuilder> testRunner) {
-        final MetricsAdvisorClientBuilder clientBuilder =
-            createClientBuilder(httpClient, serviceVersion, getEndpoint(), getMetricsAdvisorKeyCredential())
+    private void clientBuilderWithDefaultPipelineRunner(HttpClient httpClient,
+        MetricsAdvisorServiceVersion serviceVersion, Consumer<MetricsAdvisorClientBuilder> testRunner) {
+        final MetricsAdvisorClientBuilder clientBuilder
+            = createClientBuilder(httpClient, serviceVersion, getEndpoint(), getMetricsAdvisorKeyCredential())
                 .configuration(Configuration.getGlobalConfiguration())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         testRunner.accept(clientBuilder);
     }
 
-    private void clientBuilderWithTokenCredentialRunner(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion,
-                                                Consumer<MetricsAdvisorClientBuilder> testRunner) {
-        final MetricsAdvisorClientBuilder clientBuilder = new MetricsAdvisorClientBuilder()
-            .endpoint(getEndpoint())
+    private void clientBuilderWithTokenCredentialRunner(HttpClient httpClient,
+        MetricsAdvisorServiceVersion serviceVersion, Consumer<MetricsAdvisorClientBuilder> testRunner) {
+        final MetricsAdvisorClientBuilder clientBuilder = new MetricsAdvisorClientBuilder().endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion)
             .configuration(Configuration.getGlobalConfiguration())
@@ -182,10 +172,9 @@ public class MetricsAdvisorClientBuilderTest extends TestProxyTestBase {
      * @param credential the given {@link MetricsAdvisorKeyCredential} credential
      * @return {@link MetricsAdvisorClientBuilder}
      */
-    private MetricsAdvisorClientBuilder createClientBuilder(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion,
-                                                    String endpoint, MetricsAdvisorKeyCredential credential) {
-        final MetricsAdvisorClientBuilder clientBuilder = new MetricsAdvisorClientBuilder()
-            .credential(credential)
+    private MetricsAdvisorClientBuilder createClientBuilder(HttpClient httpClient,
+        MetricsAdvisorServiceVersion serviceVersion, String endpoint, MetricsAdvisorKeyCredential credential) {
+        final MetricsAdvisorClientBuilder clientBuilder = new MetricsAdvisorClientBuilder().credential(credential)
             .endpoint(endpoint)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);
@@ -193,7 +182,8 @@ public class MetricsAdvisorClientBuilderTest extends TestProxyTestBase {
         if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-api-key"))));
+            interceptorManager
+                .addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-api-key"))));
         }
         return clientBuilder;
     }
@@ -218,7 +208,7 @@ public class MetricsAdvisorClientBuilderTest extends TestProxyTestBase {
         return interceptorManager.isPlaybackMode()
             ? new MetricsAdvisorKeyCredential("subscription_key", "api_key")
             : new MetricsAdvisorKeyCredential(
-            Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_SUBSCRIPTION_KEY"),
-            Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_API_KEY"));
+                Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_SUBSCRIPTION_KEY"),
+                Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_API_KEY"));
     }
 }

@@ -120,10 +120,8 @@ public final class EncryptionProtectorProperties {
      */
     public void validate() {
         if (serverKeyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serverKeyType in model EncryptionProtectorProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property serverKeyType in model EncryptionProtectorProperties"));
         }
     }
 

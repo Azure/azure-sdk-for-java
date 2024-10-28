@@ -105,8 +105,9 @@ public final class EventGridCloudNativeEventPublisher {
      *
      * @throws NullPointerException if {@code events} is null.
      */
-    public static Response<Void> sendEventsWithResponse(EventGridPublisherClient<com.azure.core.models.CloudEvent> syncClient,
-        Iterable<CloudEvent> events, Context context) {
+    public static Response<Void> sendEventsWithResponse(
+        EventGridPublisherClient<com.azure.core.models.CloudEvent> syncClient, Iterable<CloudEvent> events,
+        Context context) {
         return syncClient.sendEventsWithResponse(toEventGridCloudEvents(events), context);
     }
 
@@ -177,13 +178,10 @@ public final class EventGridCloudNativeEventPublisher {
 
         // io.cloudevents.CloudEvent's id, source, type, and specversion are required.
         // azure CloudEvent's source, type, and format(if data exist) are required.
-        final com.azure.core.models.CloudEvent cloudEvent = new com.azure.core.models.CloudEvent(
-            event.getSource().toString(), // required
-            event.getType(), // required
-            binaryData,
-            dataFormat,
-            event.getDataContentType() == null ? null : event.getDataContentType()
-        );
+        final com.azure.core.models.CloudEvent cloudEvent
+            = new com.azure.core.models.CloudEvent(event.getSource().toString(), // required
+                event.getType(), // required
+                binaryData, dataFormat, event.getDataContentType() == null ? null : event.getDataContentType());
 
         // optional: subject
         if (event.getSubject() != null) {

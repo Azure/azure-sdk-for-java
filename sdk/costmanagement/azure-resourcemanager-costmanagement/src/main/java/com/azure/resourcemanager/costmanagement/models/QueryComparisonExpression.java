@@ -101,21 +101,16 @@ public final class QueryComparisonExpression {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model QueryComparisonExpression"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model QueryComparisonExpression"));
         }
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operator in model QueryComparisonExpression"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property operator in model QueryComparisonExpression"));
         }
         if (values() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property values in model QueryComparisonExpression"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property values in model QueryComparisonExpression"));
         }
     }
 

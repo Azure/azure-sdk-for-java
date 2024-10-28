@@ -10,10 +10,8 @@ import com.azure.resourcemanager.databox.models.ValidationInputRequest;
 public final class ValidationInputRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidationInputRequest model =
-            BinaryData
-                .fromString("{\"validationType\":\"ValidationInputRequest\"}")
-                .toObject(ValidationInputRequest.class);
+        ValidationInputRequest model = BinaryData.fromString("{\"validationType\":\"ValidationInputRequest\"}")
+            .toObject(ValidationInputRequest.class);
     }
 
     @org.junit.jupiter.api.Test

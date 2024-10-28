@@ -40,17 +40,16 @@ public class AvsManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        resourceManager = ResourceManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile)
-            .withDefaultSubscription();
+        resourceManager = ResourceManager.configure()
+          .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+          .authenticate(credential, profile)
+          .withDefaultSubscription();
 
         avsManager = AvsManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .authenticate(credential, profile);
+          .configure()
+          .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+          .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+          .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -58,10 +57,7 @@ public class AvsManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 

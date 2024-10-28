@@ -18,8 +18,10 @@ import java.util.UUID;
 abstract class EncryptionSettings {
     /** @return encryption specific settings to be set on virtual machine storage profile */
     abstract DiskEncryptionSettings storageProfileEncryptionSettings();
+
     /** @return encryption extension public settings */
     abstract HashMap<String, Object> extensionPublicSettings();
+
     /** @return encryption extension protected settings */
     abstract HashMap<String, Object> extensionProtectedSettings();
 
@@ -30,8 +32,8 @@ abstract class EncryptionSettings {
      * @param <T> the config type
      * @return enable settings
      */
-    static <T extends VirtualMachineEncryptionConfiguration<T>> Enable<T> createEnable(
-        final VirtualMachineEncryptionConfiguration<T> config) {
+    static <T extends VirtualMachineEncryptionConfiguration<T>> Enable<T>
+        createEnable(final VirtualMachineEncryptionConfiguration<T> config) {
         return new Enable<T>(config);
     }
 
@@ -68,8 +70,7 @@ abstract class EncryptionSettings {
                 }
             }
             DiskEncryptionSettings diskEncryptionSettings = new DiskEncryptionSettings();
-            diskEncryptionSettings
-                .withEnabled(true)
+            diskEncryptionSettings.withEnabled(true)
                 .withKeyEncryptionKey(keyEncryptionKey)
                 .withDiskEncryptionKey(new KeyVaultSecretReference())
                 .diskEncryptionKey()
@@ -86,10 +87,7 @@ abstract class EncryptionSettings {
             publicSettings.put("VolumeType", config.volumeType().toString());
             publicSettings.put("SequenceVersion", UUID.randomUUID());
             if (config.keyEncryptionKeyUrl() != null) {
-                publicSettings
-                    .put(
-                        "KeyEncryptionKeyURL",
-                        config.keyEncryptionKeyUrl()); // KeyVault to hold Key for encrypting "Disk Encryption Key" (aka
+                publicSettings.put("KeyEncryptionKeyURL", config.keyEncryptionKeyUrl()); // KeyVault to hold Key for encrypting "Disk Encryption Key" (aka
                 // kek).
             }
             if (this.requestedForLegacyEncryptExtension()) {

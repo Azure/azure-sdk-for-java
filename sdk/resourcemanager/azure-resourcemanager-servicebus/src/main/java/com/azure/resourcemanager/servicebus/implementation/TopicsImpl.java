@@ -18,14 +18,8 @@ import reactor.core.publisher.Mono;
 /**
  * Implementation for Topics.
  */
-class TopicsImpl
-    extends ServiceBusChildResourcesImpl<
-        Topic,
-        TopicImpl,
-        SBTopicInner,
-        TopicsClient,
-        ServiceBusManager,
-        ServiceBusNamespace>
+class TopicsImpl extends
+    ServiceBusChildResourcesImpl<Topic, TopicImpl, SBTopicInner, TopicsClient, ServiceBusManager, ServiceBusNamespace>
     implements Topics {
     private final String resourceGroupName;
     private final String namespaceName;
@@ -47,9 +41,7 @@ class TopicsImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return this.innerModel().deleteAsync(this.resourceGroupName,
-                this.namespaceName,
-                name);
+        return this.innerModel().deleteAsync(this.resourceGroupName, this.namespaceName, name);
     }
 
     @Override
@@ -64,18 +56,13 @@ class TopicsImpl
 
     @Override
     protected PagedIterable<SBTopicInner> listInner() {
-        return this.innerModel().listByNamespace(this.resourceGroupName,
-                this.namespaceName);
+        return this.innerModel().listByNamespace(this.resourceGroupName, this.namespaceName);
     }
 
     @Override
     protected TopicImpl wrapModel(String name) {
-        return new TopicImpl(this.resourceGroupName,
-                this.namespaceName,
-                name,
-                this.region,
-                new SBTopicInner(),
-                this.manager());
+        return new TopicImpl(this.resourceGroupName, this.namespaceName, name, this.region, new SBTopicInner(),
+            this.manager());
     }
 
     @Override
@@ -83,12 +70,8 @@ class TopicsImpl
         if (inner == null) {
             return null;
         }
-        return new TopicImpl(this.resourceGroupName,
-                this.namespaceName,
-                inner.name(),
-                this.region,
-                inner,
-                this.manager());
+        return new TopicImpl(this.resourceGroupName, this.namespaceName, inner.name(), this.region, inner,
+            this.manager());
     }
 
     @Override

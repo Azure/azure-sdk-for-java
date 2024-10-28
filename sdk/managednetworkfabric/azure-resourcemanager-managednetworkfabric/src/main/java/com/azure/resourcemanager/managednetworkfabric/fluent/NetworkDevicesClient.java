@@ -34,8 +34,8 @@ public interface NetworkDevicesClient {
      * @return the {@link SyncPoller} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginCreate(
-        String resourceGroupName, String networkDeviceName, NetworkDeviceInner body);
+    SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginCreate(String resourceGroupName,
+        String networkDeviceName, NetworkDeviceInner body);
 
     /**
      * Create Network Device.
@@ -52,8 +52,8 @@ public interface NetworkDevicesClient {
      * @return the {@link SyncPoller} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginCreate(
-        String resourceGroupName, String networkDeviceName, NetworkDeviceInner body, Context context);
+    SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginCreate(String resourceGroupName,
+        String networkDeviceName, NetworkDeviceInner body, Context context);
 
     /**
      * Create Network Device.
@@ -86,8 +86,8 @@ public interface NetworkDevicesClient {
      * @return the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkDeviceInner create(
-        String resourceGroupName, String networkDeviceName, NetworkDeviceInner body, Context context);
+    NetworkDeviceInner create(String resourceGroupName, String networkDeviceName, NetworkDeviceInner body,
+        Context context);
 
     /**
      * Gets a Network Device.
@@ -103,8 +103,8 @@ public interface NetworkDevicesClient {
      * @return the Network Device resource details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkDeviceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkDeviceName, Context context);
+    Response<NetworkDeviceInner> getByResourceGroupWithResponse(String resourceGroupName, String networkDeviceName,
+        Context context);
 
     /**
      * Gets a Network Device.
@@ -135,8 +135,8 @@ public interface NetworkDevicesClient {
      * @return the {@link SyncPoller} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginUpdate(
-        String resourceGroupName, String networkDeviceName, NetworkDevicePatchParameters body);
+    SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginUpdate(String resourceGroupName,
+        String networkDeviceName, NetworkDevicePatchParameters body);
 
     /**
      * Updates a Network Device.
@@ -153,8 +153,8 @@ public interface NetworkDevicesClient {
      * @return the {@link SyncPoller} for polling of the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginUpdate(
-        String resourceGroupName, String networkDeviceName, NetworkDevicePatchParameters body, Context context);
+    SyncPoller<PollResult<NetworkDeviceInner>, NetworkDeviceInner> beginUpdate(String resourceGroupName,
+        String networkDeviceName, NetworkDevicePatchParameters body, Context context);
 
     /**
      * Updates a Network Device.
@@ -187,8 +187,8 @@ public interface NetworkDevicesClient {
      * @return the Network Device resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkDeviceInner update(
-        String resourceGroupName, String networkDeviceName, NetworkDevicePatchParameters body, Context context);
+    NetworkDeviceInner update(String resourceGroupName, String networkDeviceName, NetworkDevicePatchParameters body,
+        Context context);
 
     /**
      * Deletes a Network Device.
@@ -354,8 +354,8 @@ public interface NetworkDevicesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner reboot(
-        String resourceGroupName, String networkDeviceName, RebootProperties body);
+    CommonPostActionResponseForStateUpdateInner reboot(String resourceGroupName, String networkDeviceName,
+        RebootProperties body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -372,8 +372,8 @@ public interface NetworkDevicesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner reboot(
-        String resourceGroupName, String networkDeviceName, RebootProperties body, Context context);
+    CommonPostActionResponseForStateUpdateInner reboot(String resourceGroupName, String networkDeviceName,
+        RebootProperties body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -421,8 +421,8 @@ public interface NetworkDevicesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner refreshConfiguration(
-        String resourceGroupName, String networkDeviceName);
+    CommonPostActionResponseForStateUpdateInner refreshConfiguration(String resourceGroupName,
+        String networkDeviceName);
 
     /**
      * Implements the operation to the underlying resources.
@@ -438,8 +438,8 @@ public interface NetworkDevicesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner refreshConfiguration(
-        String resourceGroupName, String networkDeviceName, Context context);
+    CommonPostActionResponseForStateUpdateInner refreshConfiguration(String resourceGroupName, String networkDeviceName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -456,8 +456,8 @@ public interface NetworkDevicesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body);
+        beginUpdateAdministrativeState(String resourceGroupName, String networkDeviceName,
+            UpdateDeviceAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -475,8 +475,8 @@ public interface NetworkDevicesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body, Context context);
+        beginUpdateAdministrativeState(String resourceGroupName, String networkDeviceName,
+            UpdateDeviceAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -492,8 +492,8 @@ public interface NetworkDevicesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body);
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String networkDeviceName, UpdateDeviceAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -510,8 +510,8 @@ public interface NetworkDevicesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String networkDeviceName, UpdateDeviceAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -562,8 +562,8 @@ public interface NetworkDevicesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner upgrade(
-        String resourceGroupName, String networkDeviceName, UpdateVersion body);
+    CommonPostActionResponseForStateUpdateInner upgrade(String resourceGroupName, String networkDeviceName,
+        UpdateVersion body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -580,6 +580,6 @@ public interface NetworkDevicesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner upgrade(
-        String resourceGroupName, String networkDeviceName, UpdateVersion body, Context context);
+    CommonPostActionResponseForStateUpdateInner upgrade(String resourceGroupName, String networkDeviceName,
+        UpdateVersion body, Context context);
 }

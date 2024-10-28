@@ -42,12 +42,14 @@ public final class StreamingJobsScaleMockTests {
             return Mono.just(httpResponse);
         }));
 
-        StreamAnalyticsManager manager = StreamAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        StreamAnalyticsManager manager = StreamAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.streamingJobs().scale("fqjbvleo", "fmluiqtqzfavyvn",
-            new ScaleStreamingJobParameters().withStreamingUnits(951173892), com.azure.core.util.Context.NONE);
+        manager.streamingJobs()
+            .scale("fqjbvleo", "fmluiqtqzfavyvn", new ScaleStreamingJobParameters().withStreamingUnits(951173892),
+                com.azure.core.util.Context.NONE);
 
     }
 }

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DataMaskingRuleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataMaskingRuleInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"id\":\"mrhublwpc\",\"aliasName\":\"utr\",\"ruleState\":\"Disabled\",\"schemaName\":\"pauutpw\",\"tableName\":\"qhih\",\"columnName\":\"jqgwzp\",\"maskingFunction\":\"CCN\",\"numberFrom\":\"n\",\"numberTo\":\"ypsxjvfoim\",\"prefixSize\":\"slirciz\",\"suffixSize\":\"vydfceacvlhvygdy\",\"replacementString\":\"umrtwnawjsl\"},\"location\":\"wkojgcyztsfmzn\",\"kind\":\"eqphchqnrnr\",\"id\":\"x\",\"name\":\"huwrykqgaifm\",\"type\":\"iklbydvkhb\"}")
-                .toObject(DataMaskingRuleInner.class);
+        DataMaskingRuleInner model = BinaryData.fromString(
+            "{\"properties\":{\"id\":\"mrhublwpc\",\"aliasName\":\"utr\",\"ruleState\":\"Disabled\",\"schemaName\":\"pauutpw\",\"tableName\":\"qhih\",\"columnName\":\"jqgwzp\",\"maskingFunction\":\"CCN\",\"numberFrom\":\"n\",\"numberTo\":\"ypsxjvfoim\",\"prefixSize\":\"slirciz\",\"suffixSize\":\"vydfceacvlhvygdy\",\"replacementString\":\"umrtwnawjsl\"},\"location\":\"wkojgcyztsfmzn\",\"kind\":\"eqphchqnrnr\",\"id\":\"x\",\"name\":\"huwrykqgaifm\",\"type\":\"iklbydvkhb\"}")
+            .toObject(DataMaskingRuleInner.class);
         Assertions.assertEquals("utr", model.aliasName());
         Assertions.assertEquals(DataMaskingRuleState.DISABLED, model.ruleState());
         Assertions.assertEquals("pauutpw", model.schemaName());
@@ -33,19 +31,17 @@ public final class DataMaskingRuleInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataMaskingRuleInner model =
-            new DataMaskingRuleInner()
-                .withAliasName("utr")
-                .withRuleState(DataMaskingRuleState.DISABLED)
-                .withSchemaName("pauutpw")
-                .withTableName("qhih")
-                .withColumnName("jqgwzp")
-                .withMaskingFunction(DataMaskingFunction.CCN)
-                .withNumberFrom("n")
-                .withNumberTo("ypsxjvfoim")
-                .withPrefixSize("slirciz")
-                .withSuffixSize("vydfceacvlhvygdy")
-                .withReplacementString("umrtwnawjsl");
+        DataMaskingRuleInner model = new DataMaskingRuleInner().withAliasName("utr")
+            .withRuleState(DataMaskingRuleState.DISABLED)
+            .withSchemaName("pauutpw")
+            .withTableName("qhih")
+            .withColumnName("jqgwzp")
+            .withMaskingFunction(DataMaskingFunction.CCN)
+            .withNumberFrom("n")
+            .withNumberTo("ypsxjvfoim")
+            .withPrefixSize("slirciz")
+            .withSuffixSize("vydfceacvlhvygdy")
+            .withReplacementString("umrtwnawjsl");
         model = BinaryData.fromObject(model).toObject(DataMaskingRuleInner.class);
         Assertions.assertEquals("utr", model.aliasName());
         Assertions.assertEquals(DataMaskingRuleState.DISABLED, model.ruleState());

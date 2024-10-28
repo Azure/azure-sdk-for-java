@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ReferenceDataSetKeyPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReferenceDataSetKeyProperty model =
-            BinaryData.fromString("{\"name\":\"vo\",\"type\":\"Bool\"}").toObject(ReferenceDataSetKeyProperty.class);
+        ReferenceDataSetKeyProperty model
+            = BinaryData.fromString("{\"name\":\"vo\",\"type\":\"Bool\"}").toObject(ReferenceDataSetKeyProperty.class);
         Assertions.assertEquals("vo", model.name());
         Assertions.assertEquals(ReferenceDataKeyPropertyType.BOOL, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReferenceDataSetKeyProperty model =
-            new ReferenceDataSetKeyProperty().withName("vo").withType(ReferenceDataKeyPropertyType.BOOL);
+        ReferenceDataSetKeyProperty model
+            = new ReferenceDataSetKeyProperty().withName("vo").withType(ReferenceDataKeyPropertyType.BOOL);
         model = BinaryData.fromObject(model).toObject(ReferenceDataSetKeyProperty.class);
         Assertions.assertEquals("vo", model.name());
         Assertions.assertEquals(ReferenceDataKeyPropertyType.BOOL, model.type());

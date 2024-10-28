@@ -129,8 +129,8 @@ public final class VpnConfigurationProperties {
      * @param optionAProperties the optionAProperties value to set.
      * @return the VpnConfigurationProperties object itself.
      */
-    public VpnConfigurationProperties withOptionAProperties(
-        VpnConfigurationPropertiesOptionAProperties optionAProperties) {
+    public VpnConfigurationProperties
+        withOptionAProperties(VpnConfigurationPropertiesOptionAProperties optionAProperties) {
         this.optionAProperties = optionAProperties;
         return this;
     }
@@ -142,10 +142,8 @@ public final class VpnConfigurationProperties {
      */
     public void validate() {
         if (peeringOption() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property peeringOption in model VpnConfigurationProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property peeringOption in model VpnConfigurationProperties"));
         }
         if (optionBProperties() != null) {
             optionBProperties().validate();

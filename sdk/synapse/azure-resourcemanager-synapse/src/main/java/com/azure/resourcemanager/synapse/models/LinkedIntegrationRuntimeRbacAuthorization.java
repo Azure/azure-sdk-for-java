@@ -54,10 +54,8 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
     public void validate() {
         super.validate();
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceId in model LinkedIntegrationRuntimeRbacAuthorization"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resourceId in model LinkedIntegrationRuntimeRbacAuthorization"));
         }
     }
 

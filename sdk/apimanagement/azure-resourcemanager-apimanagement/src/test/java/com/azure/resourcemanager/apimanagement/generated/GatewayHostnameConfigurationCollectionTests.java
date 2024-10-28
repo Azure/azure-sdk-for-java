@@ -10,11 +10,9 @@ import com.azure.resourcemanager.apimanagement.models.GatewayHostnameConfigurati
 public final class GatewayHostnameConfigurationCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayHostnameConfigurationCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"hostname\":\"tvkitbfjtdy\",\"certificateId\":\"nplfac\",\"negotiateClientCertificate\":true,\"tls10Enabled\":true,\"tls11Enabled\":false,\"http2Enabled\":true},\"id\":\"etjt\",\"name\":\"rhutf\",\"type\":\"oadtxopgehpadkmd\"},{\"properties\":{\"hostname\":\"szxvctkbbxuhar\",\"certificateId\":\"ir\",\"negotiateClientCertificate\":false,\"tls10Enabled\":true,\"tls11Enabled\":false,\"http2Enabled\":true},\"id\":\"ngsux\",\"name\":\"czbmyq\",\"type\":\"ogh\"},{\"properties\":{\"hostname\":\"idjanormovdxxur\",\"certificateId\":\"ujmoi\",\"negotiateClientCertificate\":true,\"tls10Enabled\":true,\"tls11Enabled\":true,\"http2Enabled\":false},\"id\":\"e\",\"name\":\"jslkyozdsfzjue\",\"type\":\"rhrhtsl\"}],\"nextLink\":\"tv\"}")
-                .toObject(GatewayHostnameConfigurationCollection.class);
+        GatewayHostnameConfigurationCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"hostname\":\"tvkitbfjtdy\",\"certificateId\":\"nplfac\",\"negotiateClientCertificate\":true,\"tls10Enabled\":true,\"tls11Enabled\":false,\"http2Enabled\":true},\"id\":\"etjt\",\"name\":\"rhutf\",\"type\":\"oadtxopgehpadkmd\"},{\"properties\":{\"hostname\":\"szxvctkbbxuhar\",\"certificateId\":\"ir\",\"negotiateClientCertificate\":false,\"tls10Enabled\":true,\"tls11Enabled\":false,\"http2Enabled\":true},\"id\":\"ngsux\",\"name\":\"czbmyq\",\"type\":\"ogh\"},{\"properties\":{\"hostname\":\"idjanormovdxxur\",\"certificateId\":\"ujmoi\",\"negotiateClientCertificate\":true,\"tls10Enabled\":true,\"tls11Enabled\":true,\"http2Enabled\":false},\"id\":\"e\",\"name\":\"jslkyozdsfzjue\",\"type\":\"rhrhtsl\"}],\"nextLink\":\"tv\"}")
+            .toObject(GatewayHostnameConfigurationCollection.class);
     }
 
     @org.junit.jupiter.api.Test

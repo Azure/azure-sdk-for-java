@@ -19,14 +19,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
  * @param <ManagerT> the manager type for this resource provider type
  * @param <ParentT> the type of the parent resource
  */
-public abstract class IndependentChildResourcesImpl<
-        T extends IndependentChildResource<ManagerT, InnerT>,
-        ImplT extends T,
-        InnerT,
-        InnerCollectionT,
-        ManagerT extends Manager<?>,
-        ParentT extends Resource & HasResourceGroup>
-        extends IndependentChildrenImpl<T, ImplT, InnerT, InnerCollectionT, ManagerT, ParentT> {
+public abstract class IndependentChildResourcesImpl<T extends IndependentChildResource<ManagerT, InnerT>, ImplT extends T, InnerT, InnerCollectionT, ManagerT extends Manager<?>, ParentT extends Resource & HasResourceGroup>
+    extends IndependentChildrenImpl<T, ImplT, InnerT, InnerCollectionT, ManagerT, ParentT> {
 
     protected IndependentChildResourcesImpl(InnerCollectionT innerCollection, ManagerT manager) {
         super(innerCollection, manager);

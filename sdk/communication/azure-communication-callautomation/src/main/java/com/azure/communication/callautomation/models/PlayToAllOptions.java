@@ -125,12 +125,12 @@ public final class PlayToAllOptions {
         return this;
     }
 
-     /**
-     * Get the interruptCallMediaOperation property: If set play can barge into other existing
-     * queued-up/currently-processing requests.
-     *
-     * @return the interruptCallMediaOperation value.
-     */
+    /**
+    * Get the interruptCallMediaOperation property: If set play can barge into other existing
+    * queued-up/currently-processing requests.
+    *
+    * @return the interruptCallMediaOperation value.
+    */
     public boolean isInterruptCallMediaOperation() {
         return this.interruptCallMediaOperation;
     }

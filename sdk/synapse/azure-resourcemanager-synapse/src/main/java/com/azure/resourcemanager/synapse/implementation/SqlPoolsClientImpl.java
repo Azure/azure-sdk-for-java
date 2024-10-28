@@ -67,144 +67,96 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlPoolInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<SqlPoolInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @BodyParam("application/json") SqlPoolPatchInfo sqlPoolInfo,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @BodyParam("application/json") SqlPoolInner sqlPoolInfo,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SqlPoolInfoListResult>> listByWorkspace(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/pause")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> pause(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/resume")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> resume(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/move")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> rename(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("sqlPoolName") String sqlPoolName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @BodyParam("application/json") ResourceMoveDefinition parameters, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @BodyParam("application/json") SqlPoolPatchInfo sqlPoolInfo,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @BodyParam("application/json") SqlPoolInner sqlPoolInfo,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlPoolInfoListResult>> listByWorkspace(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/pause")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> pause(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/resume")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> resume(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/move")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> rename(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @BodyParam("application/json") ResourceMoveDefinition parameters,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SqlPoolInfoListResult>> listByWorkspaceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -221,19 +173,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlPoolInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private Mono<Response<SqlPoolInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -248,18 +196,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -278,19 +216,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlPoolInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    private Mono<Response<SqlPoolInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -305,16 +239,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, accept, context);
     }
 
     /**
@@ -351,8 +277,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlPoolInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    public Response<SqlPoolInner> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, context).block();
     }
 
@@ -389,19 +315,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -422,18 +344,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            sqlPoolInfo,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -453,23 +365,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SqlPoolPatchInfo sqlPoolInfo,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -489,17 +393,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                sqlPoolInfo,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, sqlPoolInfo, accept, context);
     }
 
     /**
@@ -517,14 +412,12 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link PollerFlux} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginUpdateAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo);
-        return this
-            .client
-            .<SqlPoolInner, SqlPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, this.client.getContext());
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginUpdateAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo);
+        return this.client.<SqlPoolInner, SqlPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SqlPoolInner.class, SqlPoolInner.class, this.client.getContext());
     }
 
     /**
@@ -543,19 +436,13 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link PollerFlux} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SqlPoolPatchInfo sqlPoolInfo,
-        Context context) {
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginUpdateAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context);
-        return this
-            .client
-            .<SqlPoolInner, SqlPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context);
+        return this.client.<SqlPoolInner, SqlPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SqlPoolInner.class, SqlPoolInner.class, context);
     }
 
     /**
@@ -573,8 +460,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginUpdate(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo) {
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginUpdate(String resourceGroupName,
+        String workspaceName, String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo) {
         return this.beginUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo).getSyncPoller();
     }
 
@@ -594,14 +481,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SqlPoolPatchInfo sqlPoolInfo,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context)
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginUpdate(String resourceGroupName,
+        String workspaceName, String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context)
             .getSyncPoller();
     }
 
@@ -620,10 +502,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlPoolInner> updateAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo)
-            .last()
+    private Mono<SqlPoolInner> updateAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SqlPoolPatchInfo sqlPoolInfo) {
+        return beginUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -643,14 +524,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlPoolInner> updateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SqlPoolPatchInfo sqlPoolInfo,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context)
-            .last()
+    private Mono<SqlPoolInner> updateAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SqlPoolPatchInfo sqlPoolInfo, Context context) {
+        return beginUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -669,8 +545,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlPoolInner update(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo) {
+    public SqlPoolInner update(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SqlPoolPatchInfo sqlPoolInfo) {
         return updateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo).block();
     }
 
@@ -690,12 +566,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlPoolInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SqlPoolPatchInfo sqlPoolInfo,
-        Context context) {
+    public SqlPoolInner update(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SqlPoolPatchInfo sqlPoolInfo, Context context) {
         return updateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context).block();
     }
 
@@ -714,19 +586,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, SqlPoolInner sqlPoolInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -747,18 +615,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            sqlPoolInfo,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -778,19 +636,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, SqlPoolInner sqlPoolInfo, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -810,17 +664,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                sqlPoolInfo,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, sqlPoolInfo, accept, context);
     }
 
     /**
@@ -838,14 +683,12 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link PollerFlux} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginCreateAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo);
-        return this
-            .client
-            .<SqlPoolInner, SqlPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, this.client.getContext());
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginCreateAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo);
+        return this.client.<SqlPoolInner, SqlPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SqlPoolInner.class, SqlPoolInner.class, this.client.getContext());
     }
 
     /**
@@ -864,15 +707,13 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link PollerFlux} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginCreateAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo, Context context) {
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginCreateAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context);
-        return this
-            .client
-            .<SqlPoolInner, SqlPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context);
+        return this.client.<SqlPoolInner, SqlPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SqlPoolInner.class, SqlPoolInner.class, context);
     }
 
     /**
@@ -890,8 +731,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo) {
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(String resourceGroupName,
+        String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo) {
         return this.beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo).getSyncPoller();
     }
 
@@ -911,10 +752,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo, Context context) {
-        return this
-            .beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context)
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(String resourceGroupName,
+        String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo, Context context) {
+        return this.beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context)
             .getSyncPoller();
     }
 
@@ -933,10 +773,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlPoolInner> createAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo) {
-        return beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo)
-            .last()
+    private Mono<SqlPoolInner> createAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SqlPoolInner sqlPoolInfo) {
+        return beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -956,10 +795,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlPoolInner> createAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo, Context context) {
-        return beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context)
-            .last()
+    private Mono<SqlPoolInner> createAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SqlPoolInner sqlPoolInfo, Context context) {
+        return beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -978,8 +816,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlPoolInner create(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo) {
+    public SqlPoolInner create(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SqlPoolInner sqlPoolInfo) {
         return createAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo).block();
     }
 
@@ -999,8 +837,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlPoolInner create(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo, Context context) {
+    public SqlPoolInner create(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SqlPoolInner sqlPoolInfo, Context context) {
         return createAsync(resourceGroupName, workspaceName, sqlPoolName, sqlPoolInfo, context).block();
     }
 
@@ -1018,19 +856,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1045,18 +879,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1075,19 +899,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1102,16 +922,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, accept, context);
     }
 
     /**
@@ -1128,13 +940,11 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link PollerFlux} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginDeleteAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName);
-        return this
-            .client
-            .<SqlPoolInner, SqlPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, this.client.getContext());
+        return this.client.<SqlPoolInner, SqlPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SqlPoolInner.class, SqlPoolInner.class, this.client.getContext());
     }
 
     /**
@@ -1152,15 +962,13 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link PollerFlux} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginDeleteAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, context);
-        return this
-            .client
-            .<SqlPoolInner, SqlPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, context);
+        return this.client.<SqlPoolInner, SqlPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SqlPoolInner.class, SqlPoolInner.class, context);
     }
 
     /**
@@ -1177,8 +985,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginDelete(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginDelete(String resourceGroupName,
+        String workspaceName, String sqlPoolName) {
         return this.beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName).getSyncPoller();
     }
 
@@ -1197,8 +1005,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginDelete(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginDelete(String resourceGroupName,
+        String workspaceName, String sqlPoolName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, context).getSyncPoller();
     }
 
@@ -1217,8 +1025,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlPoolInner> deleteAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1237,10 +1044,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlPoolInner> deleteAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, context)
-            .last()
+    private Mono<SqlPoolInner> deleteAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1294,19 +1100,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool collection along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlPoolInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<PagedResponse<SqlPoolInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1318,26 +1120,10 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByWorkspace(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            accept,
-                            context))
-            .<PagedResponse<SqlPoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context))
+            .<PagedResponse<SqlPoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1355,19 +1141,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool collection along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlPoolInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<PagedResponse<SqlPoolInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1380,23 +1162,10 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByWorkspace(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1413,8 +1182,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlPoolInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName) {
-        return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName),
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink));
     }
 
@@ -1432,10 +1200,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SqlPoolInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName, Context context) {
-        return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context),
+    private PagedFlux<SqlPoolInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
+        Context context) {
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink, context));
     }
 
@@ -1470,8 +1237,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlPoolInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context) {
+    public PagedIterable<SqlPoolInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context) {
         return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName, context));
     }
 
@@ -1489,19 +1256,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> pauseWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private Mono<Response<Flux<ByteBuffer>>> pauseWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1516,18 +1279,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .pause(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            accept,
-                            context))
+            .withContext(context -> service.pause(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1546,19 +1299,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> pauseWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> pauseWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1573,16 +1322,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .pause(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                accept,
-                context);
+        return service.pause(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, accept, context);
     }
 
     /**
@@ -1599,13 +1340,11 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link PollerFlux} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginPauseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginPauseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = pauseWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName);
-        return this
-            .client
-            .<SqlPoolInner, SqlPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, this.client.getContext());
+        return this.client.<SqlPoolInner, SqlPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SqlPoolInner.class, SqlPoolInner.class, this.client.getContext());
     }
 
     /**
@@ -1623,15 +1362,13 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link PollerFlux} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginPauseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginPauseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            pauseWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, context);
-        return this
-            .client
-            .<SqlPoolInner, SqlPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = pauseWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, context);
+        return this.client.<SqlPoolInner, SqlPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SqlPoolInner.class, SqlPoolInner.class, context);
     }
 
     /**
@@ -1648,8 +1385,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginPause(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginPause(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         return this.beginPauseAsync(resourceGroupName, workspaceName, sqlPoolName).getSyncPoller();
     }
 
@@ -1668,8 +1405,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginPause(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginPause(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
         return this.beginPauseAsync(resourceGroupName, workspaceName, sqlPoolName, context).getSyncPoller();
     }
 
@@ -1688,8 +1425,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlPoolInner> pauseAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        return beginPauseAsync(resourceGroupName, workspaceName, sqlPoolName)
-            .last()
+        return beginPauseAsync(resourceGroupName, workspaceName, sqlPoolName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1708,10 +1444,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlPoolInner> pauseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        return beginPauseAsync(resourceGroupName, workspaceName, sqlPoolName, context)
-            .last()
+    private Mono<SqlPoolInner> pauseAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context) {
+        return beginPauseAsync(resourceGroupName, workspaceName, sqlPoolName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1766,19 +1501,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1793,18 +1524,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .resume(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            accept,
-                            context))
+            .withContext(context -> service.resume(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1823,19 +1544,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> resumeWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1850,16 +1567,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .resume(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                accept,
-                context);
+        return service.resume(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, accept, context);
     }
 
     /**
@@ -1876,13 +1585,11 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link PollerFlux} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginResumeAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginResumeAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = resumeWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName);
-        return this
-            .client
-            .<SqlPoolInner, SqlPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, this.client.getContext());
+        return this.client.<SqlPoolInner, SqlPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SqlPoolInner.class, SqlPoolInner.class, this.client.getContext());
     }
 
     /**
@@ -1900,15 +1607,13 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link PollerFlux} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginResumeAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    private PollerFlux<PollResult<SqlPoolInner>, SqlPoolInner> beginResumeAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            resumeWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, context);
-        return this
-            .client
-            .<SqlPoolInner, SqlPoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SqlPoolInner.class, SqlPoolInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = resumeWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, context);
+        return this.client.<SqlPoolInner, SqlPoolInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SqlPoolInner.class, SqlPoolInner.class, context);
     }
 
     /**
@@ -1925,8 +1630,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginResume(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginResume(String resourceGroupName,
+        String workspaceName, String sqlPoolName) {
         return this.beginResumeAsync(resourceGroupName, workspaceName, sqlPoolName).getSyncPoller();
     }
 
@@ -1945,8 +1650,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginResume(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    public SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginResume(String resourceGroupName,
+        String workspaceName, String sqlPoolName, Context context) {
         return this.beginResumeAsync(resourceGroupName, workspaceName, sqlPoolName, context).getSyncPoller();
     }
 
@@ -1965,8 +1670,7 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SqlPoolInner> resumeAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        return beginResumeAsync(resourceGroupName, workspaceName, sqlPoolName)
-            .last()
+        return beginResumeAsync(resourceGroupName, workspaceName, sqlPoolName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1985,10 +1689,9 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return sQL pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlPoolInner> resumeAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        return beginResumeAsync(resourceGroupName, workspaceName, sqlPoolName, context)
-            .last()
+    private Mono<SqlPoolInner> resumeAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context) {
+        return beginResumeAsync(resourceGroupName, workspaceName, sqlPoolName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -2044,19 +1747,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> renameWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, ResourceMoveDefinition parameters) {
+    private Mono<Response<Void>> renameWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, ResourceMoveDefinition parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2075,18 +1774,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         }
         final String apiVersion = "2021-06-01";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .rename(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            parameters,
-                            context))
+            .withContext(context -> service.rename(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, parameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2106,23 +1795,15 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> renameWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        ResourceMoveDefinition parameters,
-        Context context) {
+    private Mono<Response<Void>> renameWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, ResourceMoveDefinition parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2141,16 +1822,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
         }
         final String apiVersion = "2021-06-01";
         context = this.client.mergeContext(context);
-        return service
-            .rename(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                parameters,
-                context);
+        return service.rename(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, parameters, context);
     }
 
     /**
@@ -2168,8 +1841,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> renameAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, ResourceMoveDefinition parameters) {
+    private Mono<Void> renameAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        ResourceMoveDefinition parameters) {
         return renameWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, parameters)
             .flatMap(ignored -> Mono.empty());
     }
@@ -2190,12 +1863,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> renameWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        ResourceMoveDefinition parameters,
-        Context context) {
+    public Response<Void> renameWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        ResourceMoveDefinition parameters, Context context) {
         return renameWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, parameters, context).block();
     }
 
@@ -2213,8 +1882,8 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rename(
-        String resourceGroupName, String workspaceName, String sqlPoolName, ResourceMoveDefinition parameters) {
+    public void rename(String resourceGroupName, String workspaceName, String sqlPoolName,
+        ResourceMoveDefinition parameters) {
         renameWithResponse(resourceGroupName, workspaceName, sqlPoolName, parameters, Context.NONE);
     }
 
@@ -2234,23 +1903,14 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SqlPoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SqlPoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2271,23 +1931,13 @@ public final class SqlPoolsClientImpl implements SqlPoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

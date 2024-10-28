@@ -30,37 +30,27 @@ public final class SapVirtualInstancesDeleteMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"vcyy\",\"name\":\"fgdo\",\"status\":\"cubiipuipw\",\"percentComplete\":63.20965,\"startTime\":\"2021-04-29T06:53:37Z\",\"endTime\":\"2021-09-14T04:06:38Z\",\"operations\":[{\"id\":\"nizshqvcim\",\"name\":\"vfgmblrrilby\",\"status\":\"dxsm\",\"percentComplete\":31.605476,\"startTime\":\"2021-03-19T10:07:06Z\",\"endTime\":\"2021-05-11T00:41:26Z\",\"operations\":[]}]}";
+        String responseStr
+            = "{\"id\":\"vcyy\",\"name\":\"fgdo\",\"status\":\"cubiipuipw\",\"percentComplete\":63.20965,\"startTime\":\"2021-04-29T06:53:37Z\",\"endTime\":\"2021-09-14T04:06:38Z\",\"operations\":[{\"id\":\"nizshqvcim\",\"name\":\"vfgmblrrilby\",\"status\":\"dxsm\",\"percentComplete\":31.605476,\"startTime\":\"2021-03-19T10:07:06Z\",\"endTime\":\"2021-05-11T00:41:26Z\",\"operations\":[]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        WorkloadsManager manager =
-            WorkloadsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        WorkloadsManager manager = WorkloadsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationStatusResult response =
-            manager.sapVirtualInstances().delete("xmsivfomiloxggdu", "iqndieuzaofj", com.azure.core.util.Context.NONE);
+        OperationStatusResult response = manager.sapVirtualInstances()
+            .delete("xmsivfomiloxggdu", "iqndieuzaofj", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("vcyy", response.id());
         Assertions.assertEquals("fgdo", response.name());

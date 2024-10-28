@@ -32,40 +32,28 @@ public final class SqlPoolsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"sku\":{\"tier\":\"tkgsuxunrswgkpj\",\"name\":\"oyikebhuhks\",\"capacity\":1524104857},\"properties\":{\"maxSizeBytes\":1934129892108471165,\"collation\":\"eoijyzcqypzqzufg\",\"sourceDatabaseId\":\"fejyvdwtfxptpqa\",\"recoverableDatabaseId\":\"mkncfgybmxsnxo\",\"provisioningState\":\"ullojk\",\"status\":\"yhgww\",\"restorePointInTime\":\"2021-03-30T05:34:26Z\",\"createMode\":\"Default\",\"creationDate\":\"2021-05-01T10:12:57Z\",\"storageAccountType\":\"LRS\",\"sourceDatabaseDeletionDate\":\"2020-12-23T13:16:04Z\"},\"location\":\"yrcvuqbsgzlrq\",\"tags\":{\"gdxwbsfpyxx\":\"nq\",\"ecominxojjluxxd\":\"jlf\",\"dzzqjmu\":\"ilz\",\"ovribq\":\"za\"},\"id\":\"otokhtvwtaznk\",\"name\":\"qww\",\"type\":\"wjyofgwhnkbtl\"}";
+        String responseStr
+            = "{\"sku\":{\"tier\":\"tkgsuxunrswgkpj\",\"name\":\"oyikebhuhks\",\"capacity\":1524104857},\"properties\":{\"maxSizeBytes\":1934129892108471165,\"collation\":\"eoijyzcqypzqzufg\",\"sourceDatabaseId\":\"fejyvdwtfxptpqa\",\"recoverableDatabaseId\":\"mkncfgybmxsnxo\",\"provisioningState\":\"ullojk\",\"status\":\"yhgww\",\"restorePointInTime\":\"2021-03-30T05:34:26Z\",\"createMode\":\"Default\",\"creationDate\":\"2021-05-01T10:12:57Z\",\"storageAccountType\":\"LRS\",\"sourceDatabaseDeletionDate\":\"2020-12-23T13:16:04Z\"},\"location\":\"yrcvuqbsgzlrq\",\"tags\":{\"gdxwbsfpyxx\":\"nq\",\"ecominxojjluxxd\":\"jlf\",\"dzzqjmu\":\"ilz\",\"ovribq\":\"za\"},\"id\":\"otokhtvwtaznk\",\"name\":\"qww\",\"type\":\"wjyofgwhnkbtl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SqlPool response =
-            manager
-                .sqlPools()
-                .getWithResponse("xbibanbaupw", "zvpaklozkxbzrpej", "lssan", com.azure.core.util.Context.NONE)
-                .getValue();
+        SqlPool response = manager.sqlPools()
+            .getWithResponse("xbibanbaupw", "zvpaklozkxbzrpej", "lssan", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("yrcvuqbsgzlrq", response.location());
         Assertions.assertEquals("nq", response.tags().get("gdxwbsfpyxx"));

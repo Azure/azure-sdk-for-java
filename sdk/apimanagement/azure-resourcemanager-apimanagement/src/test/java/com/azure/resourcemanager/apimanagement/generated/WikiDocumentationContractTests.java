@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class WikiDocumentationContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WikiDocumentationContract model =
-            BinaryData.fromString("{\"documentationId\":\"cjbctviv\"}").toObject(WikiDocumentationContract.class);
+        WikiDocumentationContract model
+            = BinaryData.fromString("{\"documentationId\":\"cjbctviv\"}").toObject(WikiDocumentationContract.class);
         Assertions.assertEquals("cjbctviv", model.documentationId());
     }
 

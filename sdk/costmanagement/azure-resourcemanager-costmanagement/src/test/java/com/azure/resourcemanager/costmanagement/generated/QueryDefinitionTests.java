@@ -26,11 +26,9 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Usage\",\"timeframe\":\"TheLastBillingMonth\",\"timePeriod\":{\"from\":\"2021-04-02T08:06:31Z\",\"to\":\"2021-08-30T17:38:27Z\"},\"dataset\":{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"hdneuelfph\",\"dyhtozfikdowwquu\"]},\"aggregation\":{\"qzonosggbhcohf\":{\"name\":\"xclvit\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"Dimension\",\"name\":\"n\"},{\"type\":\"Dimension\",\"name\":\"ljuti\"}],\"filter\":{\"and\":[],\"or\":[]}}}")
-                .toObject(QueryDefinition.class);
+        QueryDefinition model = BinaryData.fromString(
+            "{\"type\":\"Usage\",\"timeframe\":\"TheLastBillingMonth\",\"timePeriod\":{\"from\":\"2021-04-02T08:06:31Z\",\"to\":\"2021-08-30T17:38:27Z\"},\"dataset\":{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"hdneuelfph\",\"dyhtozfikdowwquu\"]},\"aggregation\":{\"qzonosggbhcohf\":{\"name\":\"xclvit\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"Dimension\",\"name\":\"n\"},{\"type\":\"Dimension\",\"name\":\"ljuti\"}],\"filter\":{\"and\":[],\"or\":[]}}}")
+            .toObject(QueryDefinition.class);
         Assertions.assertEquals(ExportType.USAGE, model.type());
         Assertions.assertEquals(TimeframeType.THE_LAST_BILLING_MONTH, model.timeframe());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T08:06:31Z"), model.timePeriod().from());
@@ -45,30 +43,18 @@ public final class QueryDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryDefinition model =
-            new QueryDefinition()
-                .withType(ExportType.USAGE)
-                .withTimeframe(TimeframeType.THE_LAST_BILLING_MONTH)
-                .withTimePeriod(
-                    new QueryTimePeriod()
-                        .withFrom(OffsetDateTime.parse("2021-04-02T08:06:31Z"))
-                        .withTo(OffsetDateTime.parse("2021-08-30T17:38:27Z")))
-                .withDataset(
-                    new QueryDataset()
-                        .withGranularity(GranularityType.DAILY)
-                        .withConfiguration(
-                            new QueryDatasetConfiguration()
-                                .withColumns(Arrays.asList("hdneuelfph", "dyhtozfikdowwquu")))
-                        .withAggregation(
-                            mapOf(
-                                "qzonosggbhcohf",
-                                new QueryAggregation().withName("xclvit").withFunction(FunctionType.SUM)))
-                        .withGrouping(
-                            Arrays
-                                .asList(
-                                    new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("n"),
-                                    new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("ljuti")))
-                        .withFilter(new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())));
+        QueryDefinition model = new QueryDefinition().withType(ExportType.USAGE)
+            .withTimeframe(TimeframeType.THE_LAST_BILLING_MONTH)
+            .withTimePeriod(new QueryTimePeriod().withFrom(OffsetDateTime.parse("2021-04-02T08:06:31Z"))
+                .withTo(OffsetDateTime.parse("2021-08-30T17:38:27Z")))
+            .withDataset(new QueryDataset().withGranularity(GranularityType.DAILY)
+                .withConfiguration(
+                    new QueryDatasetConfiguration().withColumns(Arrays.asList("hdneuelfph", "dyhtozfikdowwquu")))
+                .withAggregation(
+                    mapOf("qzonosggbhcohf", new QueryAggregation().withName("xclvit").withFunction(FunctionType.SUM)))
+                .withGrouping(Arrays.asList(new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("n"),
+                    new QueryGrouping().withType(QueryColumnType.DIMENSION).withName("ljuti")))
+                .withFilter(new QueryFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(QueryDefinition.class);
         Assertions.assertEquals(ExportType.USAGE, model.type());
         Assertions.assertEquals(TimeframeType.THE_LAST_BILLING_MONTH, model.timeframe());

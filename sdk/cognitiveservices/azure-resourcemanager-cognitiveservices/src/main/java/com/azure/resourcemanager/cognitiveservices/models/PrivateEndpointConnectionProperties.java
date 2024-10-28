@@ -77,8 +77,8 @@ public final class PrivateEndpointConnectionProperties {
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionProperties object itself.
      */
-    public PrivateEndpointConnectionProperties withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionProperties
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }
@@ -122,11 +122,9 @@ public final class PrivateEndpointConnectionProperties {
             privateEndpoint().validate();
         }
         if (privateLinkServiceConnectionState() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property privateLinkServiceConnectionState in model"
-                            + " PrivateEndpointConnectionProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property privateLinkServiceConnectionState in model"
+                    + " PrivateEndpointConnectionProperties"));
         } else {
             privateLinkServiceConnectionState().validate();
         }

@@ -14,23 +14,18 @@ import org.junit.jupiter.api.Assertions;
 public final class KeyDeliveryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KeyDelivery model =
-            BinaryData
-                .fromString(
-                    "{\"accessControl\":{\"defaultAction\":\"Deny\",\"ipAllowList\":[\"cbtwnpzaoqvuh\",\"hcffcyddglmjthjq\",\"wpyeicxmqciwqvh\"]}}")
-                .toObject(KeyDelivery.class);
+        KeyDelivery model = BinaryData.fromString(
+            "{\"accessControl\":{\"defaultAction\":\"Deny\",\"ipAllowList\":[\"cbtwnpzaoqvuh\",\"hcffcyddglmjthjq\",\"wpyeicxmqciwqvh\"]}}")
+            .toObject(KeyDelivery.class);
         Assertions.assertEquals(DefaultAction.DENY, model.accessControl().defaultAction());
         Assertions.assertEquals("cbtwnpzaoqvuh", model.accessControl().ipAllowList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KeyDelivery model =
-            new KeyDelivery()
-                .withAccessControl(
-                    new AccessControl()
-                        .withDefaultAction(DefaultAction.DENY)
-                        .withIpAllowList(Arrays.asList("cbtwnpzaoqvuh", "hcffcyddglmjthjq", "wpyeicxmqciwqvh")));
+        KeyDelivery model
+            = new KeyDelivery().withAccessControl(new AccessControl().withDefaultAction(DefaultAction.DENY)
+                .withIpAllowList(Arrays.asList("cbtwnpzaoqvuh", "hcffcyddglmjthjq", "wpyeicxmqciwqvh")));
         model = BinaryData.fromObject(model).toObject(KeyDelivery.class);
         Assertions.assertEquals(DefaultAction.DENY, model.accessControl().defaultAction());
         Assertions.assertEquals("cbtwnpzaoqvuh", model.accessControl().ipAllowList().get(0));

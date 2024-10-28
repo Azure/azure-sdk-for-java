@@ -219,8 +219,8 @@ public final class ApplicationInsightsComponentAnalyticsItemInner {
      * @param properties the properties value to set.
      * @return the ApplicationInsightsComponentAnalyticsItemInner object itself.
      */
-    public ApplicationInsightsComponentAnalyticsItemInner withProperties(
-        ApplicationInsightsComponentAnalyticsItemProperties properties) {
+    public ApplicationInsightsComponentAnalyticsItemInner
+        withProperties(ApplicationInsightsComponentAnalyticsItemProperties properties) {
         this.properties = properties;
         return this;
     }

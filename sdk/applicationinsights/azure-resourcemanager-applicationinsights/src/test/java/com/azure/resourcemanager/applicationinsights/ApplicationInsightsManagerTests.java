@@ -45,30 +45,27 @@ public class ApplicationInsightsManagerTests extends TestProxyTestBase {
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
-
-        applicationInsightsManager = ApplicationInsightsManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .authenticate(credential, profile);
-
-        logAnalyticsManager = LogAnalyticsManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .authenticate(credential, profile);
-
-        // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
-        String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
-        testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
-        if (testEnv) {
-            resourceGroupName = testResourceGroup;
-        } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
-        }
+      
+      applicationInsightsManager = ApplicationInsightsManager
+        .configure()
+        .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        withPolicy(new ProviderRegistrationPolicy(resourceManager))
+        .authenticate(credential, profile);
+      
+      logAnalyticsManager = LogAnalyticsManager
+        .configure()
+        .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+        .authenticate(credential, profile);
+      
+      // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
+      String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
+      testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
+      if (testEnv) {
+        resourceGroupName = testResourceGroup;
+      } else {
+        resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
+      }
     }
 
     @Override
@@ -105,7 +102,8 @@ public class ApplicationInsightsManagerTests extends TestProxyTestBase {
             // @embedmeEnd
             component.refresh();
             Assertions.assertEquals(component.name(), componentName);
-            Assertions.assertEquals(component.name(), applicationInsightsManager.components().getById(component.id()).name());
+            Assertions.assertEquals(component.name(),
+                applicationInsightsManager.components().getById(component.id()).name());
             Assertions.assertTrue(applicationInsightsManager.components().list().stream().findAny().isPresent());
         } finally {
             if (component != null) {

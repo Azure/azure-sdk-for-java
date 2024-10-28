@@ -46,8 +46,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @param client the instance of the service client containing this operation class.
      */
     AccessPoliciesClientImpl(TimeSeriesInsightsClientImpl client) {
-        this.service =
-            RestProxy.create(AccessPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(AccessPoliciesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,86 +58,66 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
     @Host("{$host}")
     @ServiceInterface(name = "TimeSeriesInsightsCl")
     public interface AccessPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/accessPolicies/{accessPolicyName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}/accessPolicies/{accessPolicyName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccessPolicyResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AccessPolicyResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName,
-            @PathParam("accessPolicyName") String accessPolicyName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("accessPolicyName") String accessPolicyName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AccessPolicyCreateOrUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/accessPolicies/{accessPolicyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}/accessPolicies/{accessPolicyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccessPolicyResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AccessPolicyResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName,
-            @PathParam("accessPolicyName") String accessPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("accessPolicyName") String accessPolicyName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/accessPolicies/{accessPolicyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}/accessPolicies/{accessPolicyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccessPolicyResourceInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AccessPolicyResourceInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName,
-            @PathParam("accessPolicyName") String accessPolicyName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("accessPolicyName") String accessPolicyName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") AccessPolicyUpdateParameters accessPolicyUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/accessPolicies/{accessPolicyName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}/accessPolicies/{accessPolicyName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName,
-            @PathParam("accessPolicyName") String accessPolicyName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("accessPolicyName") String accessPolicyName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/accessPolicies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}/accessPolicies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccessPolicyListResponseInner>> listByEnvironment(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AccessPolicyListResponseInner>> listByEnvironment(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("environmentName") String environmentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -155,22 +135,15 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessPolicyResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
-        AccessPolicyCreateOrUpdateParameters parameters) {
+    private Mono<Response<AccessPolicyResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String environmentName, String accessPolicyName, AccessPolicyCreateOrUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -191,19 +164,9 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            accessPolicyName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, accessPolicyName, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -223,23 +186,16 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessPolicyResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
-        AccessPolicyCreateOrUpdateParameters parameters,
+    private Mono<Response<AccessPolicyResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String environmentName, String accessPolicyName, AccessPolicyCreateOrUpdateParameters parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -260,17 +216,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                accessPolicyName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, accessPolicyName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -288,11 +235,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccessPolicyResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
-        AccessPolicyCreateOrUpdateParameters parameters) {
+    private Mono<AccessPolicyResourceInner> createOrUpdateAsync(String resourceGroupName, String environmentName,
+        String accessPolicyName, AccessPolicyCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, accessPolicyName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -313,15 +257,11 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessPolicyResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
-        AccessPolicyCreateOrUpdateParameters parameters,
+    public Response<AccessPolicyResourceInner> createOrUpdateWithResponse(String resourceGroupName,
+        String environmentName, String accessPolicyName, AccessPolicyCreateOrUpdateParameters parameters,
         Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, environmentName, accessPolicyName, parameters, context)
-            .block();
+        return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, accessPolicyName, parameters,
+            context).block();
     }
 
     /**
@@ -338,14 +278,10 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return an access policy is used to grant users and applications access to the environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessPolicyResourceInner createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
-        AccessPolicyCreateOrUpdateParameters parameters) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, environmentName, accessPolicyName, parameters, Context.NONE)
-            .getValue();
+    public AccessPolicyResourceInner createOrUpdate(String resourceGroupName, String environmentName,
+        String accessPolicyName, AccessPolicyCreateOrUpdateParameters parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, environmentName, accessPolicyName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
@@ -363,19 +299,15 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessPolicyResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String environmentName, String accessPolicyName) {
+    private Mono<Response<AccessPolicyResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String environmentName, String accessPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -391,18 +323,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            accessPolicyName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, accessPolicyName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -422,19 +344,15 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessPolicyResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String environmentName, String accessPolicyName, Context context) {
+    private Mono<Response<AccessPolicyResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String environmentName, String accessPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -450,16 +368,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                accessPolicyName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, accessPolicyName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -477,8 +387,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccessPolicyResourceInner> getAsync(
-        String resourceGroupName, String environmentName, String accessPolicyName) {
+    private Mono<AccessPolicyResourceInner> getAsync(String resourceGroupName, String environmentName,
+        String accessPolicyName) {
         return getWithResponseAsync(resourceGroupName, environmentName, accessPolicyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -498,8 +408,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return the access policy with the specified name in the specified environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessPolicyResourceInner> getWithResponse(
-        String resourceGroupName, String environmentName, String accessPolicyName, Context context) {
+    public Response<AccessPolicyResourceInner> getWithResponse(String resourceGroupName, String environmentName,
+        String accessPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, environmentName, accessPolicyName, context).block();
     }
 
@@ -537,22 +447,15 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessPolicyResourceInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
-        AccessPolicyUpdateParameters accessPolicyUpdateParameters) {
+    private Mono<Response<AccessPolicyResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String environmentName, String accessPolicyName, AccessPolicyUpdateParameters accessPolicyUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -567,28 +470,16 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
                 .error(new IllegalArgumentException("Parameter accessPolicyName is required and cannot be null."));
         }
         if (accessPolicyUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter accessPolicyUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter accessPolicyUpdateParameters is required and cannot be null."));
         } else {
             accessPolicyUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            accessPolicyName,
-                            this.client.getApiVersion(),
-                            accessPolicyUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, accessPolicyName, this.client.getApiVersion(),
+                accessPolicyUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -609,23 +500,16 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessPolicyResourceInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
-        AccessPolicyUpdateParameters accessPolicyUpdateParameters,
+    private Mono<Response<AccessPolicyResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String environmentName, String accessPolicyName, AccessPolicyUpdateParameters accessPolicyUpdateParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -640,26 +524,16 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
                 .error(new IllegalArgumentException("Parameter accessPolicyName is required and cannot be null."));
         }
         if (accessPolicyUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter accessPolicyUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter accessPolicyUpdateParameters is required and cannot be null."));
         } else {
             accessPolicyUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                accessPolicyName,
-                this.client.getApiVersion(),
-                accessPolicyUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, accessPolicyName, this.client.getApiVersion(), accessPolicyUpdateParameters, accept,
+            context);
     }
 
     /**
@@ -678,14 +552,10 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccessPolicyResourceInner> updateAsync(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
-        AccessPolicyUpdateParameters accessPolicyUpdateParameters) {
-        return updateWithResponseAsync(
-                resourceGroupName, environmentName, accessPolicyName, accessPolicyUpdateParameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<AccessPolicyResourceInner> updateAsync(String resourceGroupName, String environmentName,
+        String accessPolicyName, AccessPolicyUpdateParameters accessPolicyUpdateParameters) {
+        return updateWithResponseAsync(resourceGroupName, environmentName, accessPolicyName,
+            accessPolicyUpdateParameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -705,15 +575,10 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessPolicyResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
-        AccessPolicyUpdateParameters accessPolicyUpdateParameters,
-        Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, environmentName, accessPolicyName, accessPolicyUpdateParameters, context)
-            .block();
+    public Response<AccessPolicyResourceInner> updateWithResponse(String resourceGroupName, String environmentName,
+        String accessPolicyName, AccessPolicyUpdateParameters accessPolicyUpdateParameters, Context context) {
+        return updateWithResponseAsync(resourceGroupName, environmentName, accessPolicyName,
+            accessPolicyUpdateParameters, context).block();
     }
 
     /**
@@ -731,14 +596,10 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return an access policy is used to grant users and applications access to the environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessPolicyResourceInner update(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
+    public AccessPolicyResourceInner update(String resourceGroupName, String environmentName, String accessPolicyName,
         AccessPolicyUpdateParameters accessPolicyUpdateParameters) {
-        return updateWithResponse(
-                resourceGroupName, environmentName, accessPolicyName, accessPolicyUpdateParameters, Context.NONE)
-            .getValue();
+        return updateWithResponse(resourceGroupName, environmentName, accessPolicyName, accessPolicyUpdateParameters,
+            Context.NONE).getValue();
     }
 
     /**
@@ -755,19 +616,15 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String environmentName, String accessPolicyName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String environmentName,
+        String accessPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -783,18 +640,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            accessPolicyName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, accessPolicyName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -813,19 +660,15 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String environmentName, String accessPolicyName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String environmentName,
+        String accessPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -841,16 +684,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                accessPolicyName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, accessPolicyName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -887,8 +722,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String accessPolicyName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String accessPolicyName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, environmentName, accessPolicyName, context).block();
     }
 
@@ -922,19 +757,15 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessPolicyListResponseInner>> listByEnvironmentWithResponseAsync(
-        String resourceGroupName, String environmentName) {
+    private Mono<Response<AccessPolicyListResponseInner>> listByEnvironmentWithResponseAsync(String resourceGroupName,
+        String environmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -947,16 +778,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByEnvironment(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.listByEnvironment(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, environmentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -974,19 +797,15 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessPolicyListResponseInner>> listByEnvironmentWithResponseAsync(
-        String resourceGroupName, String environmentName, Context context) {
+    private Mono<Response<AccessPolicyListResponseInner>> listByEnvironmentWithResponseAsync(String resourceGroupName,
+        String environmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -998,15 +817,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByEnvironment(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listByEnvironment(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1021,8 +833,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return the response of the List access policies operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccessPolicyListResponseInner> listByEnvironmentAsync(
-        String resourceGroupName, String environmentName) {
+    private Mono<AccessPolicyListResponseInner> listByEnvironmentAsync(String resourceGroupName,
+        String environmentName) {
         return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1040,8 +852,8 @@ public final class AccessPoliciesClientImpl implements AccessPoliciesClient {
      * @return the response of the List access policies operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessPolicyListResponseInner> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context) {
+    public Response<AccessPolicyListResponseInner> listByEnvironmentWithResponse(String resourceGroupName,
+        String environmentName, Context context) {
         return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName, context).block();
     }
 

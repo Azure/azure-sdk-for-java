@@ -48,9 +48,7 @@ public interface EnvironmentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentCreateOrUpdateParameters parameters,
+        String resourceGroupName, String environmentName, EnvironmentCreateOrUpdateParameters parameters,
         Context context);
 
     /**
@@ -66,8 +64,8 @@ public interface EnvironmentsClient {
      *     Insights resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EnvironmentResourceInner createOrUpdate(
-        String resourceGroupName, String environmentName, EnvironmentCreateOrUpdateParameters parameters);
+    EnvironmentResourceInner createOrUpdate(String resourceGroupName, String environmentName,
+        EnvironmentCreateOrUpdateParameters parameters);
 
     /**
      * Create or update an environment in the specified subscription and resource group.
@@ -83,11 +81,8 @@ public interface EnvironmentsClient {
      *     Insights resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EnvironmentResourceInner createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentCreateOrUpdateParameters parameters,
-        Context context);
+    EnvironmentResourceInner createOrUpdate(String resourceGroupName, String environmentName,
+        EnvironmentCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Gets the environment with the specified name in the specified subscription and resource group.
@@ -105,8 +100,8 @@ public interface EnvironmentsClient {
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EnvironmentResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String environmentName, String expand, Context context);
+    Response<EnvironmentResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String environmentName,
+        String expand, Context context);
 
     /**
      * Gets the environment with the specified name in the specified subscription and resource group.
@@ -136,8 +131,8 @@ public interface EnvironmentsClient {
      *     and is the top level Azure Time Series Insights resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginUpdate(
-        String resourceGroupName, String environmentName, EnvironmentUpdateParameters environmentUpdateParameters);
+    SyncPoller<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginUpdate(String resourceGroupName,
+        String environmentName, EnvironmentUpdateParameters environmentUpdateParameters);
 
     /**
      * Updates the environment with the specified name in the specified subscription and resource group.
@@ -154,11 +149,8 @@ public interface EnvironmentsClient {
      *     and is the top level Azure Time Series Insights resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginUpdate(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentUpdateParameters environmentUpdateParameters,
-        Context context);
+    SyncPoller<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginUpdate(String resourceGroupName,
+        String environmentName, EnvironmentUpdateParameters environmentUpdateParameters, Context context);
 
     /**
      * Updates the environment with the specified name in the specified subscription and resource group.
@@ -174,8 +166,8 @@ public interface EnvironmentsClient {
      *     Insights resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EnvironmentResourceInner update(
-        String resourceGroupName, String environmentName, EnvironmentUpdateParameters environmentUpdateParameters);
+    EnvironmentResourceInner update(String resourceGroupName, String environmentName,
+        EnvironmentUpdateParameters environmentUpdateParameters);
 
     /**
      * Updates the environment with the specified name in the specified subscription and resource group.
@@ -192,11 +184,8 @@ public interface EnvironmentsClient {
      *     Insights resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EnvironmentResourceInner update(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentUpdateParameters environmentUpdateParameters,
-        Context context);
+    EnvironmentResourceInner update(String resourceGroupName, String environmentName,
+        EnvironmentUpdateParameters environmentUpdateParameters, Context context);
 
     /**
      * Deletes the environment with the specified name in the specified subscription and resource group.

@@ -78,9 +78,7 @@ public interface Queries {
      * @return result of query along with {@link Response}.
      */
     Response<QueryResult> usageByExternalCloudProviderTypeWithResponse(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        QueryDefinition parameters,
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, QueryDefinition parameters,
         Context context);
 
     /**
@@ -97,8 +95,6 @@ public interface Queries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of query.
      */
-    QueryResult usageByExternalCloudProviderType(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        QueryDefinition parameters);
+    QueryResult usageByExternalCloudProviderType(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId, QueryDefinition parameters);
 }

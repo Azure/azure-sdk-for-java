@@ -68,7 +68,8 @@ public final class TranscriptionData extends StreamingData {
      * @param participantRawID The identified speaker based on participant raw ID
      * @param resultStatus Status of the result of transcription
      */
-    public TranscriptionData(String text, String format, double confidence, long offset, long duration, List<Word> words, String participantRawID, String resultStatus) {
+    public TranscriptionData(String text, String format, double confidence, long offset, long duration,
+        List<Word> words, String participantRawID, String resultStatus) {
         this.text = text;
         this.format = convertToTextFormatEnum(format);
         this.confidence = confidence;
@@ -137,6 +138,7 @@ public final class TranscriptionData extends StreamingData {
     public Long getOffset() {
         return offset;
     }
+
     /**
      * Get the duration property.
      *
@@ -145,6 +147,7 @@ public final class TranscriptionData extends StreamingData {
     public Long getDuration() {
         return duration;
     }
+
     /**
      * Get the words property.
      *

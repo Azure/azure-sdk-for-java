@@ -73,7 +73,10 @@ public final class ClassUtil {
         return constructor.map(it -> (R) instantiateClass(it, constructorArguments))
             .orElseThrow(() -> new IllegalStateException(String.format(
                 "No suitable constructor found on %s to match the given arguments: %s. Make sure you implement a constructor taking these",
-                baseClass, Arrays.stream(constructorArguments).map(Object::getClass).map(u -> getQualifiedName(u))
+                baseClass,
+                Arrays.stream(constructorArguments)
+                    .map(Object::getClass)
+                    .map(u -> getQualifiedName(u))
                     .collect(Collectors.joining(", ")))));
     }
 
@@ -94,7 +97,8 @@ public final class ClassUtil {
             try {
                 Class<?> clazz = Class.forName(className);
                 if (!assignableClass.isAssignableFrom(clazz)) {
-                    throw new AzureException("Provided class [" + className + "] is not a [ " + assignableClass.getSimpleName() + "]");
+                    throw new AzureException(
+                        "Provided class [" + className + "] is not a [ " + assignableClass.getSimpleName() + "]");
                 }
                 return (Class<T>) clazz;
             } catch (ClassNotFoundException e) {
@@ -152,15 +156,17 @@ public final class ClassUtil {
             for (int i = 0; i < args.length; i++) {
                 if (args[i] == null) {
                     Class<?> parameterType = parameterTypes[i];
-                    argsWithDefaultValues[i] = (parameterType.isPrimitive() ? DEFAULT_TYPE_VALUES.get(parameterType) : null);
+                    argsWithDefaultValues[i]
+                        = (parameterType.isPrimitive() ? DEFAULT_TYPE_VALUES.get(parameterType) : null);
                 } else {
                     argsWithDefaultValues[i] = args[i];
                 }
             }
             return ctor.newInstance(argsWithDefaultValues);
         } catch (InstantiationException ex) {
-            throw new AzureInstantiateException("Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: "
-                + "Is it an abstract class?", ex);
+            throw new AzureInstantiateException(
+                "Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: " + "Is it an abstract class?",
+                ex);
         } catch (IllegalAccessException ex) {
             throw new AzureInstantiateException("Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: "
                 + "Is the constructor accessible?", ex);
@@ -168,14 +174,15 @@ public final class ClassUtil {
             throw new AzureInstantiateException("Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: "
                 + "Illegal arguments for constructor", ex);
         } catch (InvocationTargetException ex) {
-            throw new AzureInstantiateException("Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: "
-                + "Constructor threw exception", ex);
+            throw new AzureInstantiateException(
+                "Failed to instantiate [" + ctor.getDeclaringClass().getName() + "]: " + "Constructor threw exception",
+                ex);
         }
     }
 
     private static void makeAccessible(Constructor<?> ctor) {
-        if ((!Modifier.isPublic(ctor.getModifiers())
-            || !Modifier.isPublic(ctor.getDeclaringClass().getModifiers())) && !ctor.isAccessible()) {
+        if ((!Modifier.isPublic(ctor.getModifiers()) || !Modifier.isPublic(ctor.getDeclaringClass().getModifiers()))
+            && !ctor.isAccessible()) {
             ctor.setAccessible(true);
         }
     }

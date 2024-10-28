@@ -46,8 +46,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @param client the instance of the service client containing this operation class.
      */
     EventSourcesClientImpl(TimeSeriesInsightsClientImpl client) {
-        this.service =
-            RestProxy.create(EventSourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(EventSourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,86 +58,64 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
     @Host("{$host}")
     @ServiceInterface(name = "TimeSeriesInsightsCl")
     public interface EventSourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/eventSources/{eventSourceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}/eventSources/{eventSourceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSourceResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSourceResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @PathParam("eventSourceName") String eventSourceName,
+            @PathParam("environmentName") String environmentName, @PathParam("eventSourceName") String eventSourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") EventSourceCreateOrUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/eventSources/{eventSourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}/eventSources/{eventSourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSourceResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSourceResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @PathParam("eventSourceName") String eventSourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("environmentName") String environmentName, @PathParam("eventSourceName") String eventSourceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/eventSources/{eventSourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}/eventSources/{eventSourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSourceResourceInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSourceResourceInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @PathParam("eventSourceName") String eventSourceName,
+            @PathParam("environmentName") String environmentName, @PathParam("eventSourceName") String eventSourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") EventSourceUpdateParameters eventSourceUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/eventSources/{eventSourceName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}/eventSources/{eventSourceName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @PathParam("eventSourceName") String eventSourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("environmentName") String environmentName, @PathParam("eventSourceName") String eventSourceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/eventSources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}/eventSources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSourceListResponseInner>> listByEnvironment(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSourceListResponseInner>> listByEnvironment(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("environmentName") String environmentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -155,22 +133,15 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSourceResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceCreateOrUpdateParameters parameters) {
+    private Mono<Response<EventSourceResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String environmentName, String eventSourceName, EventSourceCreateOrUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -191,19 +162,9 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            eventSourceName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, eventSourceName, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -223,23 +184,16 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSourceResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceCreateOrUpdateParameters parameters,
+    private Mono<Response<EventSourceResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String environmentName, String eventSourceName, EventSourceCreateOrUpdateParameters parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -260,17 +214,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                eventSourceName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, eventSourceName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -287,11 +232,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @return an environment receives data from one or more event sources on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSourceResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceCreateOrUpdateParameters parameters) {
+    private Mono<EventSourceResourceInner> createOrUpdateAsync(String resourceGroupName, String environmentName,
+        String eventSourceName, EventSourceCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, eventSourceName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -311,11 +253,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @return an environment receives data from one or more event sources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventSourceResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceCreateOrUpdateParameters parameters,
+    public Response<EventSourceResourceInner> createOrUpdateWithResponse(String resourceGroupName,
+        String environmentName, String eventSourceName, EventSourceCreateOrUpdateParameters parameters,
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, eventSourceName, parameters, context)
             .block();
@@ -335,11 +274,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @return an environment receives data from one or more event sources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSourceResourceInner createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceCreateOrUpdateParameters parameters) {
+    public EventSourceResourceInner createOrUpdate(String resourceGroupName, String environmentName,
+        String eventSourceName, EventSourceCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponse(resourceGroupName, environmentName, eventSourceName, parameters, Context.NONE)
             .getValue();
     }
@@ -359,19 +295,15 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSourceResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String environmentName, String eventSourceName) {
+    private Mono<Response<EventSourceResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String environmentName, String eventSourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -387,18 +319,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            eventSourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, eventSourceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -418,19 +340,15 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSourceResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String environmentName, String eventSourceName, Context context) {
+    private Mono<Response<EventSourceResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String environmentName, String eventSourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -446,16 +364,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                eventSourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, eventSourceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -473,8 +383,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSourceResourceInner> getAsync(
-        String resourceGroupName, String environmentName, String eventSourceName) {
+    private Mono<EventSourceResourceInner> getAsync(String resourceGroupName, String environmentName,
+        String eventSourceName) {
         return getWithResponseAsync(resourceGroupName, environmentName, eventSourceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -494,8 +404,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @return the event source with the specified name in the specified environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventSourceResourceInner> getWithResponse(
-        String resourceGroupName, String environmentName, String eventSourceName, Context context) {
+    public Response<EventSourceResourceInner> getWithResponse(String resourceGroupName, String environmentName,
+        String eventSourceName, Context context) {
         return getWithResponseAsync(resourceGroupName, environmentName, eventSourceName, context).block();
     }
 
@@ -533,22 +443,15 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSourceResourceInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceUpdateParameters eventSourceUpdateParameters) {
+    private Mono<Response<EventSourceResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String environmentName, String eventSourceName, EventSourceUpdateParameters eventSourceUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -563,28 +466,16 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
                 .error(new IllegalArgumentException("Parameter eventSourceName is required and cannot be null."));
         }
         if (eventSourceUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter eventSourceUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter eventSourceUpdateParameters is required and cannot be null."));
         } else {
             eventSourceUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            eventSourceName,
-                            this.client.getApiVersion(),
-                            eventSourceUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, eventSourceName, this.client.getApiVersion(),
+                eventSourceUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -605,23 +496,16 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSourceResourceInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceUpdateParameters eventSourceUpdateParameters,
+    private Mono<Response<EventSourceResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String environmentName, String eventSourceName, EventSourceUpdateParameters eventSourceUpdateParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -636,26 +520,16 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
                 .error(new IllegalArgumentException("Parameter eventSourceName is required and cannot be null."));
         }
         if (eventSourceUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter eventSourceUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter eventSourceUpdateParameters is required and cannot be null."));
         } else {
             eventSourceUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                eventSourceName,
-                this.client.getApiVersion(),
-                eventSourceUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, eventSourceName, this.client.getApiVersion(), eventSourceUpdateParameters, accept,
+            context);
     }
 
     /**
@@ -673,11 +547,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @return an environment receives data from one or more event sources on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSourceResourceInner> updateAsync(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceUpdateParameters eventSourceUpdateParameters) {
+    private Mono<EventSourceResourceInner> updateAsync(String resourceGroupName, String environmentName,
+        String eventSourceName, EventSourceUpdateParameters eventSourceUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -698,15 +569,10 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @return an environment receives data from one or more event sources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventSourceResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceUpdateParameters eventSourceUpdateParameters,
-        Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters, context)
-            .block();
+    public Response<EventSourceResourceInner> updateWithResponse(String resourceGroupName, String environmentName,
+        String eventSourceName, EventSourceUpdateParameters eventSourceUpdateParameters, Context context) {
+        return updateWithResponseAsync(resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters,
+            context).block();
     }
 
     /**
@@ -724,14 +590,10 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @return an environment receives data from one or more event sources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSourceResourceInner update(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
+    public EventSourceResourceInner update(String resourceGroupName, String environmentName, String eventSourceName,
         EventSourceUpdateParameters eventSourceUpdateParameters) {
-        return updateWithResponse(
-                resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters, Context.NONE)
-            .getValue();
+        return updateWithResponse(resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters,
+            Context.NONE).getValue();
     }
 
     /**
@@ -748,19 +610,15 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String environmentName, String eventSourceName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String environmentName,
+        String eventSourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -776,18 +634,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            eventSourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, eventSourceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -806,19 +654,15 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String environmentName, String eventSourceName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String environmentName,
+        String eventSourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -834,16 +678,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                eventSourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, eventSourceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -880,8 +716,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String eventSourceName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String eventSourceName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, environmentName, eventSourceName, context).block();
     }
 
@@ -916,19 +752,15 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSourceListResponseInner>> listByEnvironmentWithResponseAsync(
-        String resourceGroupName, String environmentName) {
+    private Mono<Response<EventSourceListResponseInner>> listByEnvironmentWithResponseAsync(String resourceGroupName,
+        String environmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -941,16 +773,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByEnvironment(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.listByEnvironment(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, environmentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -969,19 +793,15 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSourceListResponseInner>> listByEnvironmentWithResponseAsync(
-        String resourceGroupName, String environmentName, Context context) {
+    private Mono<Response<EventSourceListResponseInner>> listByEnvironmentWithResponseAsync(String resourceGroupName,
+        String environmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -993,15 +813,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByEnvironment(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listByEnvironment(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1017,8 +830,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @return the response of the List EventSources operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSourceListResponseInner> listByEnvironmentAsync(
-        String resourceGroupName, String environmentName) {
+    private Mono<EventSourceListResponseInner> listByEnvironmentAsync(String resourceGroupName,
+        String environmentName) {
         return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1037,8 +850,8 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      * @return the response of the List EventSources operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventSourceListResponseInner> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context) {
+    public Response<EventSourceListResponseInner> listByEnvironmentWithResponse(String resourceGroupName,
+        String environmentName, Context context) {
         return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName, context).block();
     }
 

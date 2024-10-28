@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class AutoScaleSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoScaleSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AutoScaleSettings.class);
 
     /*
      * The minimum number of compute nodes the Batch AI service will try to

@@ -14,8 +14,8 @@ public final class SapSoftwareInstallationType extends ExpandableStringEnum<SapS
     public static final SapSoftwareInstallationType SERVICE_INITIATED = fromString("ServiceInitiated");
 
     /** Static value SAPInstallWithoutOSConfig for SapSoftwareInstallationType. */
-    public static final SapSoftwareInstallationType SAPINSTALL_WITHOUT_OSCONFIG =
-        fromString("SAPInstallWithoutOSConfig");
+    public static final SapSoftwareInstallationType SAPINSTALL_WITHOUT_OSCONFIG
+        = fromString("SAPInstallWithoutOSConfig");
 
     /** Static value External for SapSoftwareInstallationType. */
     public static final SapSoftwareInstallationType EXTERNAL = fromString("External");

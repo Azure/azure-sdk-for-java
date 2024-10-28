@@ -33,37 +33,27 @@ public final class ScheduledActionsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"displayName\":\"mfxapjwogqqno\",\"fileDestination\":{\"fileFormats\":[]},\"notification\":{\"to\":[],\"language\":\"cdabtqwpwya\",\"message\":\"zasqbucljgkyexao\",\"regionalFormat\":\"yaipidsda\",\"subject\":\"ltxijjumfqwazln\"},\"notificationEmail\":\"mcjn\",\"schedule\":{\"frequency\":\"Weekly\",\"hourOfDay\":706743032,\"daysOfWeek\":[],\"weeksOfMonth\":[],\"dayOfMonth\":260855518,\"startDate\":\"2021-06-21T10:55:23Z\",\"endDate\":\"2021-08-28T15:42:49Z\"},\"scope\":\"nyfusfzsvtuikzh\",\"status\":\"Expired\",\"viewId\":\"qglcfhmlrqryxynq\"},\"eTag\":\"rd\",\"kind\":\"Email\",\"id\":\"wxznptgoei\",\"name\":\"bbabp\",\"type\":\"hv\"}";
+        String responseStr
+            = "{\"properties\":{\"displayName\":\"mfxapjwogqqno\",\"fileDestination\":{\"fileFormats\":[]},\"notification\":{\"to\":[],\"language\":\"cdabtqwpwya\",\"message\":\"zasqbucljgkyexao\",\"regionalFormat\":\"yaipidsda\",\"subject\":\"ltxijjumfqwazln\"},\"notificationEmail\":\"mcjn\",\"schedule\":{\"frequency\":\"Weekly\",\"hourOfDay\":706743032,\"daysOfWeek\":[],\"weeksOfMonth\":[],\"dayOfMonth\":260855518,\"startDate\":\"2021-06-21T10:55:23Z\",\"endDate\":\"2021-08-28T15:42:49Z\"},\"scope\":\"nyfusfzsvtuikzh\",\"status\":\"Expired\",\"viewId\":\"qglcfhmlrqryxynq\"},\"eTag\":\"rd\",\"kind\":\"Email\",\"id\":\"wxznptgoei\",\"name\":\"bbabp\",\"type\":\"hv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ScheduledAction response =
-            manager.scheduledActions().getWithResponse("ex", com.azure.core.util.Context.NONE).getValue();
+        ScheduledAction response
+            = manager.scheduledActions().getWithResponse("ex", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals(ScheduledActionKind.EMAIL, response.kind());
         Assertions.assertEquals("mfxapjwogqqno", response.displayName());

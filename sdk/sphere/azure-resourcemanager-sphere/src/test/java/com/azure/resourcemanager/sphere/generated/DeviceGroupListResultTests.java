@@ -33,15 +33,18 @@ public final class DeviceGroupListResultTests {
     public void testSerialize() throws Exception {
         DeviceGroupListResult model = new DeviceGroupListResult().withValue(Arrays.asList(
             new DeviceGroupInner().withProperties(new DeviceGroupProperties().withDescription("oaeupfhyhltrpmo")
-                .withOsFeedType(OSFeedType.RETAIL_EVAL).withUpdatePolicy(UpdatePolicy.UPDATE_ALL)
+                .withOsFeedType(OSFeedType.RETAIL_EVAL)
+                .withUpdatePolicy(UpdatePolicy.UPDATE_ALL)
                 .withAllowCrashDumpsCollection(AllowCrashDumpCollection.ENABLED)
                 .withRegionalDataBoundary(RegionalDataBoundary.NONE)),
             new DeviceGroupInner().withProperties(new DeviceGroupProperties().withDescription("yzydagfuaxbezyi")
-                .withOsFeedType(OSFeedType.RETAIL_EVAL).withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
+                .withOsFeedType(OSFeedType.RETAIL_EVAL)
+                .withUpdatePolicy(UpdatePolicy.NO3RD_PARTY_APP_UPDATES)
                 .withAllowCrashDumpsCollection(AllowCrashDumpCollection.DISABLED)
                 .withRegionalDataBoundary(RegionalDataBoundary.EU)),
             new DeviceGroupInner().withProperties(new DeviceGroupProperties().withDescription("s")
-                .withOsFeedType(OSFeedType.RETAIL_EVAL).withUpdatePolicy(UpdatePolicy.UPDATE_ALL)
+                .withOsFeedType(OSFeedType.RETAIL_EVAL)
+                .withUpdatePolicy(UpdatePolicy.UPDATE_ALL)
                 .withAllowCrashDumpsCollection(AllowCrashDumpCollection.ENABLED)
                 .withRegionalDataBoundary(RegionalDataBoundary.NONE))));
         model = BinaryData.fromObject(model).toObject(DeviceGroupListResult.class);

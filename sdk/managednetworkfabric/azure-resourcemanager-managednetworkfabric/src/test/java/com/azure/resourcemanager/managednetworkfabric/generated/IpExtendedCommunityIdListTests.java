@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class IpExtendedCommunityIdListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpExtendedCommunityIdList model =
-            BinaryData
-                .fromString("{\"ipExtendedCommunityIds\":[\"ssijuaxxfd\",\"ypkcpwsrqnn\",\"ju\"]}")
+        IpExtendedCommunityIdList model
+            = BinaryData.fromString("{\"ipExtendedCommunityIds\":[\"ssijuaxxfd\",\"ypkcpwsrqnn\",\"ju\"]}")
                 .toObject(IpExtendedCommunityIdList.class);
         Assertions.assertEquals("ssijuaxxfd", model.ipExtendedCommunityIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpExtendedCommunityIdList model =
-            new IpExtendedCommunityIdList()
-                .withIpExtendedCommunityIds(Arrays.asList("ssijuaxxfd", "ypkcpwsrqnn", "ju"));
+        IpExtendedCommunityIdList model = new IpExtendedCommunityIdList()
+            .withIpExtendedCommunityIds(Arrays.asList("ssijuaxxfd", "ypkcpwsrqnn", "ju"));
         model = BinaryData.fromObject(model).toObject(IpExtendedCommunityIdList.class);
         Assertions.assertEquals("ssijuaxxfd", model.ipExtendedCommunityIds().get(0));
     }

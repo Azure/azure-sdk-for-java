@@ -26,8 +26,8 @@ public interface ResourceProvidersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> mitigateWithResponse(
-        String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest, Context context);
+    Response<Void> mitigateWithResponse(String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest,
+        Context context);
 
     /**
      * Request to mitigate for a given job.

@@ -25,14 +25,13 @@ public class App {
     public static void main(String[] args) {
         Class<?>[] testClasses;
 
-        testClasses = new Class<?>[]{
+        testClasses = new Class<?>[] {
             ReceiveAndDeleteMessageTest.class,
             ReceiveAndLockMessageTest.class,
             SendMessageTest.class,
             SendMessagesTest.class,
             SendBatchTest.class,
-            ReceiveMessagesTest.class
-        };
+            ReceiveMessagesTest.class };
 
         PerfStressProgram.run(testClasses, args);
     }

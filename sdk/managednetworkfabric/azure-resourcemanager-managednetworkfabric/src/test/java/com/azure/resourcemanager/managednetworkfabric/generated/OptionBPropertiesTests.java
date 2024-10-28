@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OptionBPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OptionBProperties model =
-            BinaryData
-                .fromString(
-                    "{\"importRouteTargets\":[\"bjrmvgo\",\"plehmumk\",\"dllc\",\"dpr\"],\"exportRouteTargets\":[\"kgqggoxsstcivrak\",\"rrynjcwmhly\",\"gnukxrkemjpe\"],\"routeTargets\":{\"importIpv4RouteTargets\":[\"lzaudg\",\"tfbclakkuc\"],\"importIpv6RouteTargets\":[\"nhczbutoucgjt\",\"rjwayhicqq\",\"wvgwkslvli\"],\"exportIpv4RouteTargets\":[\"vbia\",\"v\",\"srgekzyqxadyfhb\"],\"exportIpv6RouteTargets\":[\"hojqttbspvkhg\",\"aqjsgyzstujr\",\"xrk\"]}}")
-                .toObject(OptionBProperties.class);
+        OptionBProperties model = BinaryData.fromString(
+            "{\"importRouteTargets\":[\"bjrmvgo\",\"plehmumk\",\"dllc\",\"dpr\"],\"exportRouteTargets\":[\"kgqggoxsstcivrak\",\"rrynjcwmhly\",\"gnukxrkemjpe\"],\"routeTargets\":{\"importIpv4RouteTargets\":[\"lzaudg\",\"tfbclakkuc\"],\"importIpv6RouteTargets\":[\"nhczbutoucgjt\",\"rjwayhicqq\",\"wvgwkslvli\"],\"exportIpv4RouteTargets\":[\"vbia\",\"v\",\"srgekzyqxadyfhb\"],\"exportIpv6RouteTargets\":[\"hojqttbspvkhg\",\"aqjsgyzstujr\",\"xrk\"]}}")
+            .toObject(OptionBProperties.class);
         Assertions.assertEquals("bjrmvgo", model.importRouteTargets().get(0));
         Assertions.assertEquals("kgqggoxsstcivrak", model.exportRouteTargets().get(0));
         Assertions.assertEquals("lzaudg", model.routeTargets().importIpv4RouteTargets().get(0));
@@ -28,13 +26,11 @@ public final class OptionBPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OptionBProperties model =
-            new OptionBProperties()
-                .withImportRouteTargets(Arrays.asList("bjrmvgo", "plehmumk", "dllc", "dpr"))
+        OptionBProperties model
+            = new OptionBProperties().withImportRouteTargets(Arrays.asList("bjrmvgo", "plehmumk", "dllc", "dpr"))
                 .withExportRouteTargets(Arrays.asList("kgqggoxsstcivrak", "rrynjcwmhly", "gnukxrkemjpe"))
                 .withRouteTargets(
-                    new RouteTargetInformation()
-                        .withImportIpv4RouteTargets(Arrays.asList("lzaudg", "tfbclakkuc"))
+                    new RouteTargetInformation().withImportIpv4RouteTargets(Arrays.asList("lzaudg", "tfbclakkuc"))
                         .withImportIpv6RouteTargets(Arrays.asList("nhczbutoucgjt", "rjwayhicqq", "wvgwkslvli"))
                         .withExportIpv4RouteTargets(Arrays.asList("vbia", "v", "srgekzyqxadyfhb"))
                         .withExportIpv6RouteTargets(Arrays.asList("hojqttbspvkhg", "aqjsgyzstujr", "xrk")));

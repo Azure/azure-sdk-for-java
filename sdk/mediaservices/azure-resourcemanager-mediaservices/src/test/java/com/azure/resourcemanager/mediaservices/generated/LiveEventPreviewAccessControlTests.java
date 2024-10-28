@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventPreviewAccessControlTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventPreviewAccessControl model =
-            BinaryData
-                .fromString(
-                    "{\"ip\":{\"allow\":[{\"name\":\"kzivgvvcnayrh\",\"address\":\"nxxmueedndrdv\",\"subnetPrefixLength\":928139019},{\"name\":\"qqtch\",\"address\":\"lmfmtdaay\",\"subnetPrefixLength\":76843266}]}}")
-                .toObject(LiveEventPreviewAccessControl.class);
+        LiveEventPreviewAccessControl model = BinaryData.fromString(
+            "{\"ip\":{\"allow\":[{\"name\":\"kzivgvvcnayrh\",\"address\":\"nxxmueedndrdv\",\"subnetPrefixLength\":928139019},{\"name\":\"qqtch\",\"address\":\"lmfmtdaay\",\"subnetPrefixLength\":76843266}]}}")
+            .toObject(LiveEventPreviewAccessControl.class);
         Assertions.assertEquals("kzivgvvcnayrh", model.ip().allow().get(0).name());
         Assertions.assertEquals("nxxmueedndrdv", model.ip().allow().get(0).address());
         Assertions.assertEquals(928139019, model.ip().allow().get(0).subnetPrefixLength());
@@ -26,21 +24,10 @@ public final class LiveEventPreviewAccessControlTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveEventPreviewAccessControl model =
-            new LiveEventPreviewAccessControl()
-                .withIp(
-                    new IpAccessControl()
-                        .withAllow(
-                            Arrays
-                                .asList(
-                                    new IpRange()
-                                        .withName("kzivgvvcnayrh")
-                                        .withAddress("nxxmueedndrdv")
-                                        .withSubnetPrefixLength(928139019),
-                                    new IpRange()
-                                        .withName("qqtch")
-                                        .withAddress("lmfmtdaay")
-                                        .withSubnetPrefixLength(76843266))));
+        LiveEventPreviewAccessControl model
+            = new LiveEventPreviewAccessControl().withIp(new IpAccessControl().withAllow(Arrays.asList(
+                new IpRange().withName("kzivgvvcnayrh").withAddress("nxxmueedndrdv").withSubnetPrefixLength(928139019),
+                new IpRange().withName("qqtch").withAddress("lmfmtdaay").withSubnetPrefixLength(76843266))));
         model = BinaryData.fromObject(model).toObject(LiveEventPreviewAccessControl.class);
         Assertions.assertEquals("kzivgvvcnayrh", model.ip().allow().get(0).name());
         Assertions.assertEquals("nxxmueedndrdv", model.ip().allow().get(0).address());

@@ -34,8 +34,8 @@ public interface ApiOperationPoliciesClient {
      * @return the list of policy configuration at the API Operation level along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyCollectionInner> listByOperationWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String operationId, Context context);
+    Response<PolicyCollectionInner> listByOperationWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String operationId, Context context);
 
     /**
      * Get the list of policy configuration at the API Operation level.
@@ -52,8 +52,8 @@ public interface ApiOperationPoliciesClient {
      * @return the list of policy configuration at the API Operation level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyCollectionInner listByOperation(
-        String resourceGroupName, String serviceName, String apiId, String operationId);
+    PolicyCollectionInner listByOperation(String resourceGroupName, String serviceName, String apiId,
+        String operationId);
 
     /**
      * Gets the entity state (Etag) version of the API operation policy specified by its identifier.
@@ -72,13 +72,8 @@ public interface ApiOperationPoliciesClient {
      * @return the entity state (Etag) version of the API operation policy specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiOperationPoliciesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        PolicyIdName policyId,
-        Context context);
+    ApiOperationPoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String operationId, PolicyIdName policyId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the API operation policy specified by its identifier.
@@ -95,8 +90,8 @@ public interface ApiOperationPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void getEntityTag(
-        String resourceGroupName, String serviceName, String apiId, String operationId, PolicyIdName policyId);
+    void getEntityTag(String resourceGroupName, String serviceName, String apiId, String operationId,
+        PolicyIdName policyId);
 
     /**
      * Get the policy configuration at the API Operation level.
@@ -116,14 +111,8 @@ public interface ApiOperationPoliciesClient {
      * @return the policy configuration at the API Operation level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiOperationPoliciesGetResponse getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
-        Context context);
+    ApiOperationPoliciesGetResponse getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String operationId, PolicyIdName policyId, PolicyExportFormat format, Context context);
 
     /**
      * Get the policy configuration at the API Operation level.
@@ -141,8 +130,8 @@ public interface ApiOperationPoliciesClient {
      * @return the policy configuration at the API Operation level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyContractInner get(
-        String resourceGroupName, String serviceName, String apiId, String operationId, PolicyIdName policyId);
+    PolicyContractInner get(String resourceGroupName, String serviceName, String apiId, String operationId,
+        PolicyIdName policyId);
 
     /**
      * Creates or updates policy configuration for the API Operation level.
@@ -163,14 +152,8 @@ public interface ApiOperationPoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiOperationPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch,
+    ApiOperationPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String operationId, PolicyIdName policyId, PolicyContractInner parameters, String ifMatch,
         Context context);
 
     /**
@@ -190,13 +173,8 @@ public interface ApiOperationPoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters);
+    PolicyContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId, String operationId,
+        PolicyIdName policyId, PolicyContractInner parameters);
 
     /**
      * Deletes the policy configuration at the Api Operation.
@@ -217,14 +195,8 @@ public interface ApiOperationPoliciesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        PolicyIdName policyId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String operationId,
+        PolicyIdName policyId, String ifMatch, Context context);
 
     /**
      * Deletes the policy configuration at the Api Operation.
@@ -243,11 +215,6 @@ public interface ApiOperationPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        PolicyIdName policyId,
+    void delete(String resourceGroupName, String serviceName, String apiId, String operationId, PolicyIdName policyId,
         String ifMatch);
 }

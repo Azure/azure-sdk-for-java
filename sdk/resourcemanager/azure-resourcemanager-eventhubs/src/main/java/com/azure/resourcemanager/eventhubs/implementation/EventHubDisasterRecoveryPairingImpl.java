@@ -22,13 +22,10 @@ import java.util.Objects;
 /**
  * Implementation for {@link EventHubDisasterRecoveryPairing}.
  */
-class EventHubDisasterRecoveryPairingImpl
-    extends NestedResourceImpl<EventHubDisasterRecoveryPairing,
-        ArmDisasterRecoveryInner,
-        EventHubDisasterRecoveryPairingImpl>
-    implements EventHubDisasterRecoveryPairing,
-        EventHubDisasterRecoveryPairing.Definition,
-        EventHubDisasterRecoveryPairing.Update {
+class EventHubDisasterRecoveryPairingImpl extends
+    NestedResourceImpl<EventHubDisasterRecoveryPairing, ArmDisasterRecoveryInner, EventHubDisasterRecoveryPairingImpl>
+    implements EventHubDisasterRecoveryPairing, EventHubDisasterRecoveryPairing.Definition,
+    EventHubDisasterRecoveryPairing.Update {
 
     private Ancestors.OneAncestor ancestor;
     private final ClientLogger logger = new ClientLogger(EventHubDisasterRecoveryPairingImpl.class);
@@ -68,8 +65,8 @@ class EventHubDisasterRecoveryPairingImpl
     }
 
     @Override
-    public EventHubDisasterRecoveryPairingImpl withNewPrimaryNamespace(
-        Creatable<EventHubNamespace> namespaceCreatable) {
+    public EventHubDisasterRecoveryPairingImpl
+        withNewPrimaryNamespace(Creatable<EventHubNamespace> namespaceCreatable) {
         this.addDependency(namespaceCreatable);
         if (namespaceCreatable instanceof EventHubNamespaceImpl) {
             EventHubNamespaceImpl namespace = ((EventHubNamespaceImpl) namespaceCreatable);
@@ -87,8 +84,8 @@ class EventHubDisasterRecoveryPairingImpl
     }
 
     @Override
-    public EventHubDisasterRecoveryPairingImpl withExistingPrimaryNamespace(
-        String resourceGroupName, String primaryNamespaceName) {
+    public EventHubDisasterRecoveryPairingImpl withExistingPrimaryNamespace(String resourceGroupName,
+        String primaryNamespaceName) {
         this.ancestor = new Ancestors().new OneAncestor(resourceGroupName, primaryNamespaceName);
         return this;
     }
@@ -100,8 +97,8 @@ class EventHubDisasterRecoveryPairingImpl
     }
 
     @Override
-    public EventHubDisasterRecoveryPairingImpl withNewSecondaryNamespace(
-        Creatable<EventHubNamespace> namespaceCreatable) {
+    public EventHubDisasterRecoveryPairingImpl
+        withNewSecondaryNamespace(Creatable<EventHubNamespace> namespaceCreatable) {
         this.addDependency(namespaceCreatable);
         if (namespaceCreatable instanceof EventHubNamespaceImpl) {
             EventHubNamespaceImpl namespace = ((EventHubNamespaceImpl) namespaceCreatable);
@@ -128,21 +125,21 @@ class EventHubDisasterRecoveryPairingImpl
 
     @Override
     public Mono<EventHubDisasterRecoveryPairing> createResourceAsync() {
-        return this.manager().serviceClient().getDisasterRecoveryConfigs()
-            .createOrUpdateAsync(this.ancestor().resourceGroupName(),
-                this.ancestor().ancestor1Name(),
-                this.name(),
+        return this.manager()
+            .serviceClient()
+            .getDisasterRecoveryConfigs()
+            .createOrUpdateAsync(this.ancestor().resourceGroupName(), this.ancestor().ancestor1Name(), this.name(),
                 this.innerModel())
-                .map(innerToFluentMap(this));
+            .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<Void> breakPairingAsync() {
-        return this.manager().serviceClient().getDisasterRecoveryConfigs()
-            .breakPairingAsync(this.ancestor().resourceGroupName(),
-                    this.ancestor().ancestor1Name(),
-                    this.name())
-                .then(refreshAsync())
+        return this.manager()
+            .serviceClient()
+            .getDisasterRecoveryConfigs()
+            .breakPairingAsync(this.ancestor().resourceGroupName(), this.ancestor().ancestor1Name(), this.name())
+            .then(refreshAsync())
             .then();
     }
 
@@ -156,7 +153,9 @@ class EventHubDisasterRecoveryPairingImpl
         // Fail over is run against secondary namespace (because primary might be down at time of failover)
         //
         ResourceId secondaryNs = ResourceId.fromString(this.innerModel().partnerNamespace());
-        return this.manager().serviceClient().getDisasterRecoveryConfigs()
+        return this.manager()
+            .serviceClient()
+            .getDisasterRecoveryConfigs()
             .failOverAsync(secondaryNs.resourceGroupName(), secondaryNs.name(), this.name())
             .then(refreshAsync())
             .then();
@@ -169,25 +168,26 @@ class EventHubDisasterRecoveryPairingImpl
 
     @Override
     public PagedFlux<DisasterRecoveryPairingAuthorizationRule> listAuthorizationRulesAsync() {
-        return this.manager().disasterRecoveryPairingAuthorizationRules()
-            .listByDisasterRecoveryPairingAsync(this.ancestor().resourceGroupName(),
-                this.ancestor().ancestor1Name(),
+        return this.manager()
+            .disasterRecoveryPairingAuthorizationRules()
+            .listByDisasterRecoveryPairingAsync(this.ancestor().resourceGroupName(), this.ancestor().ancestor1Name(),
                 this.name());
     }
 
     @Override
     public PagedIterable<DisasterRecoveryPairingAuthorizationRule> listAuthorizationRules() {
-        return this.manager().disasterRecoveryPairingAuthorizationRules()
-            .listByDisasterRecoveryPairing(this.ancestor().resourceGroupName(),
-                this.ancestor().ancestor1Name(),
+        return this.manager()
+            .disasterRecoveryPairingAuthorizationRules()
+            .listByDisasterRecoveryPairing(this.ancestor().resourceGroupName(), this.ancestor().ancestor1Name(),
                 this.name());
     }
 
     @Override
     protected Mono<ArmDisasterRecoveryInner> getInnerAsync() {
-        return this.manager().serviceClient().getDisasterRecoveryConfigs().getAsync(this.ancestor().resourceGroupName(),
-                this.ancestor().ancestor1Name(),
-                this.name());
+        return this.manager()
+            .serviceClient()
+            .getDisasterRecoveryConfigs()
+            .getAsync(this.ancestor().resourceGroupName(), this.ancestor().ancestor1Name(), this.name());
     }
 
     private Ancestors.OneAncestor ancestor() {

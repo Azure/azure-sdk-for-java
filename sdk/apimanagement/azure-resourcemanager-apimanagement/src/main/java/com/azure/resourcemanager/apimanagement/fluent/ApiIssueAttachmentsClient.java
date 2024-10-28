@@ -29,8 +29,8 @@ public interface ApiIssueAttachmentsClient {
      * @return paged Issue Attachment list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IssueAttachmentContractInner> listByService(
-        String resourceGroupName, String serviceName, String apiId, String issueId);
+    PagedIterable<IssueAttachmentContractInner> listByService(String resourceGroupName, String serviceName,
+        String apiId, String issueId);
 
     /**
      * Lists all attachments for the Issue associated with the specified API.
@@ -52,15 +52,8 @@ public interface ApiIssueAttachmentsClient {
      * @return paged Issue Attachment list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IssueAttachmentContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<IssueAttachmentContractInner> listByService(String resourceGroupName, String serviceName,
+        String apiId, String issueId, String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
@@ -77,13 +70,8 @@ public interface ApiIssueAttachmentsClient {
      * @return the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiIssueAttachmentsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String attachmentId,
-        Context context);
+    ApiIssueAttachmentsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String issueId, String attachmentId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
@@ -115,13 +103,8 @@ public interface ApiIssueAttachmentsClient {
      * @return the details of the issue Attachment for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiIssueAttachmentsGetResponse getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String attachmentId,
-        Context context);
+    ApiIssueAttachmentsGetResponse getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String issueId, String attachmentId, Context context);
 
     /**
      * Gets the details of the issue Attachment for an API specified by its identifier.
@@ -137,8 +120,8 @@ public interface ApiIssueAttachmentsClient {
      * @return the details of the issue Attachment for an API specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IssueAttachmentContractInner get(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String attachmentId);
+    IssueAttachmentContractInner get(String resourceGroupName, String serviceName, String apiId, String issueId,
+        String attachmentId);
 
     /**
      * Creates a new Attachment for the Issue in an API or updates an existing one.
@@ -157,14 +140,8 @@ public interface ApiIssueAttachmentsClient {
      * @return issue Attachment Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiIssueAttachmentsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String attachmentId,
-        IssueAttachmentContractInner parameters,
-        String ifMatch,
+    ApiIssueAttachmentsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String issueId, String attachmentId, IssueAttachmentContractInner parameters, String ifMatch,
         Context context);
 
     /**
@@ -182,13 +159,8 @@ public interface ApiIssueAttachmentsClient {
      * @return issue Attachment Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IssueAttachmentContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String attachmentId,
-        IssueAttachmentContractInner parameters);
+    IssueAttachmentContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId,
+        String issueId, String attachmentId, IssueAttachmentContractInner parameters);
 
     /**
      * Deletes the specified comment from an Issue.
@@ -207,14 +179,8 @@ public interface ApiIssueAttachmentsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String attachmentId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String issueId,
+        String attachmentId, String ifMatch, Context context);
 
     /**
      * Deletes the specified comment from an Issue.
@@ -231,11 +197,6 @@ public interface ApiIssueAttachmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String attachmentId,
+    void delete(String resourceGroupName, String serviceName, String apiId, String issueId, String attachmentId,
         String ifMatch);
 }

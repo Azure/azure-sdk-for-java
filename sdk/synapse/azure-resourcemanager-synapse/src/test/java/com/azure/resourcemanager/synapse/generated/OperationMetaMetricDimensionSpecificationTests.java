@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationMetaMetricDimensionSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationMetaMetricDimensionSpecification model =
-            BinaryData
-                .fromString("{\"displayName\":\"cpc\",\"name\":\"hurzafblj\",\"toBeExportedForShoebox\":true}")
+        OperationMetaMetricDimensionSpecification model
+            = BinaryData.fromString("{\"displayName\":\"cpc\",\"name\":\"hurzafblj\",\"toBeExportedForShoebox\":true}")
                 .toObject(OperationMetaMetricDimensionSpecification.class);
         Assertions.assertEquals("cpc", model.displayName());
         Assertions.assertEquals("hurzafblj", model.name());
@@ -22,9 +21,8 @@ public final class OperationMetaMetricDimensionSpecificationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationMetaMetricDimensionSpecification model =
-            new OperationMetaMetricDimensionSpecification()
-                .withDisplayName("cpc")
+        OperationMetaMetricDimensionSpecification model
+            = new OperationMetaMetricDimensionSpecification().withDisplayName("cpc")
                 .withName("hurzafblj")
                 .withToBeExportedForShoebox(true);
         model = BinaryData.fromObject(model).toObject(OperationMetaMetricDimensionSpecification.class);

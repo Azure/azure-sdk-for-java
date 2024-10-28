@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NotificationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NotificationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"to\":[\"kghtpwijnh\",\"jsvfycxzbfvoowv\",\"vmtgjqppy\"],\"language\":\"tronzmyhgfi\",\"message\":\"sxkm\",\"regionalFormat\":\"a\",\"subject\":\"krrjrea\"}")
-                .toObject(NotificationProperties.class);
+        NotificationProperties model = BinaryData.fromString(
+            "{\"to\":[\"kghtpwijnh\",\"jsvfycxzbfvoowv\",\"vmtgjqppy\"],\"language\":\"tronzmyhgfi\",\"message\":\"sxkm\",\"regionalFormat\":\"a\",\"subject\":\"krrjrea\"}")
+            .toObject(NotificationProperties.class);
         Assertions.assertEquals("kghtpwijnh", model.to().get(0));
         Assertions.assertEquals("tronzmyhgfi", model.language());
         Assertions.assertEquals("sxkm", model.message());
@@ -26,9 +24,8 @@ public final class NotificationPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NotificationProperties model =
-            new NotificationProperties()
-                .withTo(Arrays.asList("kghtpwijnh", "jsvfycxzbfvoowv", "vmtgjqppy"))
+        NotificationProperties model
+            = new NotificationProperties().withTo(Arrays.asList("kghtpwijnh", "jsvfycxzbfvoowv", "vmtgjqppy"))
                 .withLanguage("tronzmyhgfi")
                 .withMessage("sxkm")
                 .withRegionalFormat("a")

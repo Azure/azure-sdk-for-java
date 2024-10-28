@@ -48,10 +48,8 @@ public class FeaturesRule {
      */
     public void validate() {
         if (requiredFeaturesPolicy() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property requiredFeaturesPolicy in model FeaturesRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property requiredFeaturesPolicy in model FeaturesRule"));
         }
     }
 

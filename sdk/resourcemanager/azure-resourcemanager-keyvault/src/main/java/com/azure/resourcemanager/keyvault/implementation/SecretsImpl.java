@@ -81,20 +81,14 @@ class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, SecretProper
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
         String name = nameFromId(id);
-        return inner
-            .beginDeleteSecret(name)
-            .last()
-            .flatMap(
-                asyncPollResponse -> {
-                    if (asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
-                        return asyncPollResponse.getFinalResult();
-                    } else {
-                        return Mono
-                            .error(
-                                new RuntimeException(
-                                    "polling completed unsuccessfully with status:" + asyncPollResponse.getStatus()));
-                    }
-                });
+        return inner.beginDeleteSecret(name).last().flatMap(asyncPollResponse -> {
+            if (asyncPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+                return asyncPollResponse.getFinalResult();
+            } else {
+                return Mono.error(new RuntimeException(
+                    "polling completed unsuccessfully with status:" + asyncPollResponse.getStatus()));
+            }
+        });
     }
 
     @Override
@@ -161,8 +155,8 @@ class SecretsImpl extends CreatableWrappersImpl<Secret, SecretImpl, SecretProper
             mockSecret.put("id", mockId);
             SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
             String json = serializerAdapter.serialize(mockSecret, SerializerEncoding.JSON);
-            SecretProperties secretProperties = serializerAdapter.deserialize(json, SecretProperties.class,
-                SerializerEncoding.JSON);
+            SecretProperties secretProperties
+                = serializerAdapter.deserialize(json, SecretProperties.class, SerializerEncoding.JSON);
 
             secretProperties.setEnabled(enabled);
 

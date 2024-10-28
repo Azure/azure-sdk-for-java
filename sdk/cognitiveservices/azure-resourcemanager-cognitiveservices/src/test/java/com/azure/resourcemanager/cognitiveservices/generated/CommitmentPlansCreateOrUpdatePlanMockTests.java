@@ -37,59 +37,43 @@ public final class CommitmentPlansCreateOrUpdatePlanMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"etag\":\"vibidmhmwffpl\",\"kind\":\"u\",\"sku\":{\"name\":\"pckc\",\"tier\":\"Free\",\"size\":\"weyoxoy\",\"family\":\"k\",\"capacity\":420064622},\"tags\":{\"shbraga\":\"moiroqb\",\"vbopfppdbwnu\":\"yyrmfsvbp\",\"fdmmcpug\":\"gahxkumasjcaa\",\"hoqhnl\":\"ehqepvufhbzehe\"},\"location\":\"nbldxeaclgschori\",\"properties\":{\"provisioningState\":\"Succeeded\",\"commitmentPlanGuid\":\"rmoucsofl\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"iyfc\",\"current\":{\"tier\":\"eolhbhlvbmx\",\"count\":3919977,\"quota\":{\"quantity\":4601909388448494407,\"unit\":\"cudfbsfarfsiowl\"},\"startDate\":\"xnq\",\"endDate\":\"wgfstmhqykizm\"},\"autoRenew\":true,\"next\":{\"tier\":\"afclu\",\"count\":1013116019,\"quota\":{\"quantity\":8904305259908062937,\"unit\":\"im\"},\"startDate\":\"vwg\",\"endDate\":\"wpbmzgwesydsxwef\"},\"last\":{\"tier\":\"cbvopwndyqleallk\",\"count\":1225153333,\"quota\":{\"quantity\":571481130330646230,\"unit\":\"kxxpvbrd\"},\"startDate\":\"mzsyzfhotl\",\"endDate\":\"k\"},\"provisioningIssues\":[\"ch\",\"nsjlpjrtws\",\"hv\",\"uic\"]},\"id\":\"hvtrrmhwrbfdpyf\",\"name\":\"ubhvj\",\"type\":\"lrocuyzlwh\"}";
+        String responseStr
+            = "{\"etag\":\"vibidmhmwffpl\",\"kind\":\"u\",\"sku\":{\"name\":\"pckc\",\"tier\":\"Free\",\"size\":\"weyoxoy\",\"family\":\"k\",\"capacity\":420064622},\"tags\":{\"shbraga\":\"moiroqb\",\"vbopfppdbwnu\":\"yyrmfsvbp\",\"fdmmcpug\":\"gahxkumasjcaa\",\"hoqhnl\":\"ehqepvufhbzehe\"},\"location\":\"nbldxeaclgschori\",\"properties\":{\"provisioningState\":\"Succeeded\",\"commitmentPlanGuid\":\"rmoucsofl\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"iyfc\",\"current\":{\"tier\":\"eolhbhlvbmx\",\"count\":3919977,\"quota\":{\"quantity\":4601909388448494407,\"unit\":\"cudfbsfarfsiowl\"},\"startDate\":\"xnq\",\"endDate\":\"wgfstmhqykizm\"},\"autoRenew\":true,\"next\":{\"tier\":\"afclu\",\"count\":1013116019,\"quota\":{\"quantity\":8904305259908062937,\"unit\":\"im\"},\"startDate\":\"vwg\",\"endDate\":\"wpbmzgwesydsxwef\"},\"last\":{\"tier\":\"cbvopwndyqleallk\",\"count\":1225153333,\"quota\":{\"quantity\":571481130330646230,\"unit\":\"kxxpvbrd\"},\"startDate\":\"mzsyzfhotl\",\"endDate\":\"k\"},\"provisioningIssues\":[\"ch\",\"nsjlpjrtws\",\"hv\",\"uic\"]},\"id\":\"hvtrrmhwrbfdpyf\",\"name\":\"ubhvj\",\"type\":\"lrocuyzlwh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CognitiveServicesManager manager =
-            CognitiveServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CognitiveServicesManager manager = CognitiveServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CommitmentPlan response =
-            manager
-                .commitmentPlans()
-                .definePlan("arfdlpukhpyrnei")
-                .withExistingResourceGroup("ta")
-                .withRegion("f")
-                .withTags(mapOf("duugwbsre", "uevrhrljyoogwxhn", "nlvhhtklnvnafvv", "rfqkfuar"))
-                .withKind("khnmgbrou")
-                .withSku(
-                    new Sku()
-                        .withName("dbhfhp")
-                        .withTier(SkuTier.BASIC)
-                        .withSize("jzoywjxhp")
-                        .withFamily("lontacnpq")
-                        .withCapacity(68476839))
-                .withProperties(
-                    new CommitmentPlanProperties()
-                        .withCommitmentPlanGuid("bo")
-                        .withHostingModel(HostingModel.PROVISIONED_WEB)
-                        .withPlanType("xypokkhmi")
-                        .withCurrent(new CommitmentPeriod().withTier("ymc").withCount(331015750))
-                        .withAutoRenew(false)
-                        .withNext(new CommitmentPeriod().withTier("mxxdtddmflh").withCount(334709748)))
-                .create();
+        CommitmentPlan response = manager.commitmentPlans()
+            .definePlan("arfdlpukhpyrnei")
+            .withExistingResourceGroup("ta")
+            .withRegion("f")
+            .withTags(mapOf("duugwbsre", "uevrhrljyoogwxhn", "nlvhhtklnvnafvv", "rfqkfuar"))
+            .withKind("khnmgbrou")
+            .withSku(new Sku().withName("dbhfhp")
+                .withTier(SkuTier.BASIC)
+                .withSize("jzoywjxhp")
+                .withFamily("lontacnpq")
+                .withCapacity(68476839))
+            .withProperties(new CommitmentPlanProperties().withCommitmentPlanGuid("bo")
+                .withHostingModel(HostingModel.PROVISIONED_WEB)
+                .withPlanType("xypokkhmi")
+                .withCurrent(new CommitmentPeriod().withTier("ymc").withCount(331015750))
+                .withAutoRenew(false)
+                .withNext(new CommitmentPeriod().withTier("mxxdtddmflh").withCount(334709748)))
+            .create();
 
         Assertions.assertEquals("u", response.kind());
         Assertions.assertEquals("pckc", response.sku().name());

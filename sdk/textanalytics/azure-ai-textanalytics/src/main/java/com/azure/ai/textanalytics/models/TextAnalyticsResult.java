@@ -79,11 +79,9 @@ public class TextAnalyticsResult {
      */
     void throwExceptionIfError() {
         if (this.isError()) {
-            throw logger.logExceptionAsError(new TextAnalyticsException(
-                String.format(Locale.ROOT,
-                    "Error in accessing the property on document id: %s, when %s returned with an error: %s",
-                    this.id, this.getClass().getSimpleName(), this.error.getMessage()),
-                this.error.getErrorCode(), null));
+            throw logger.logExceptionAsError(new TextAnalyticsException(String.format(Locale.ROOT,
+                "Error in accessing the property on document id: %s, when %s returned with an error: %s", this.id,
+                this.getClass().getSimpleName(), this.error.getMessage()), this.error.getErrorCode(), null));
         }
     }
 }

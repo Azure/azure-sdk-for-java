@@ -13,10 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessPolicyResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessPolicyResourceProperties model =
-            BinaryData
-                .fromString("{\"principalObjectId\":\"jh\",\"description\":\"daj\",\"roles\":[\"Contributor\"]}")
-                .toObject(AccessPolicyResourceProperties.class);
+        AccessPolicyResourceProperties model = BinaryData
+            .fromString("{\"principalObjectId\":\"jh\",\"description\":\"daj\",\"roles\":[\"Contributor\"]}")
+            .toObject(AccessPolicyResourceProperties.class);
         Assertions.assertEquals("jh", model.principalObjectId());
         Assertions.assertEquals("daj", model.description());
         Assertions.assertEquals(AccessPolicyRole.CONTRIBUTOR, model.roles().get(0));
@@ -24,11 +23,9 @@ public final class AccessPolicyResourcePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessPolicyResourceProperties model =
-            new AccessPolicyResourceProperties()
-                .withPrincipalObjectId("jh")
-                .withDescription("daj")
-                .withRoles(Arrays.asList(AccessPolicyRole.CONTRIBUTOR));
+        AccessPolicyResourceProperties model = new AccessPolicyResourceProperties().withPrincipalObjectId("jh")
+            .withDescription("daj")
+            .withRoles(Arrays.asList(AccessPolicyRole.CONTRIBUTOR));
         model = BinaryData.fromObject(model).toObject(AccessPolicyResourceProperties.class);
         Assertions.assertEquals("jh", model.principalObjectId());
         Assertions.assertEquals("daj", model.description());

@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumePatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumePatchParameters model =
-            BinaryData.fromString("{\"tags\":{\"ejchcsrlz\":\"vdulajv\"}}").toObject(VolumePatchParameters.class);
+        VolumePatchParameters model
+            = BinaryData.fromString("{\"tags\":{\"ejchcsrlz\":\"vdulajv\"}}").toObject(VolumePatchParameters.class);
         Assertions.assertEquals("vdulajv", model.tags().get("ejchcsrlz"));
     }
 

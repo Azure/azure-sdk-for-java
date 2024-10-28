@@ -53,11 +53,14 @@ public final class DedicatedHsmsCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure().withHttpClient(httpClient)
+        HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DedicatedHsm response = manager.dedicatedHsms().define("iayz").withRegion("ppnvdxz")
+        DedicatedHsm response = manager.dedicatedHsms()
+            .define("iayz")
+            .withRegion("ppnvdxz")
             .withExistingResourceGroup("irclnpk")
             .withProperties(new DedicatedHsmProperties()
                 .withNetworkProfile(new NetworkProfile().withSubnet(new ApiEntityReference().withId("p"))
@@ -66,7 +69,8 @@ public final class DedicatedHsmsCreateOrUpdateMockTests {
                     .withNetworkInterfaces(Arrays.asList(new NetworkInterface().withPrivateIpAddress("luwmncst"))))
                 .withStampId("jfybvpoekrsgsgb"))
             .withTags(mapOf("vqagtltdhlf", "hfrbbc", "vgtrdcnifmzzs", "qojpy", "g", "ymbrnysuxmpraf"))
-            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS60)).withZones(Arrays.asList("nk", "mtk", "bo"))
+            .withSku(new Sku().withName(SkuName.PAY_SHIELD10K_LMK1_CPS60))
+            .withZones(Arrays.asList("nk", "mtk", "bo"))
             .create();
 
         Assertions.assertEquals("uqovekqvgqouwif", response.location());

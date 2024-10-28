@@ -7,8 +7,10 @@ package com.azure.security.confidentialledger.certificate.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.json.models.JsonElement;
+import com.azure.json.models.JsonObject;
+import com.azure.json.models.JsonString;
 import com.azure.security.confidentialledger.ConfidentialLedgerEnvironment;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -22,18 +24,18 @@ public final class GetLedgerIdentityTests extends ConfidentialLedgerCertificateC
         final RequestOptions requestOptions = new RequestOptions();
 
         // Act
-        final Response<BinaryData> response =
-                confidentialLedgerCertificateClient.getLedgerIdentityWithResponse(ledgerName, requestOptions);
+        final Response<BinaryData> response
+            = confidentialLedgerCertificateClient.getLedgerIdentityWithResponse(ledgerName, requestOptions);
 
         // Assert
         Assertions.assertEquals(200, response.getStatusCode());
 
-        final JsonNode jsonNode = OBJECT_MAPPER.readTree(response.getValue().toBytes());
-        final JsonNode ledgerTlsCertificate = jsonNode.get("ledgerTlsCertificate");
+        final JsonObject jsonObject = response.getValue().toObject(JsonObject.class);
+        final JsonElement ledgerTlsCertificate = jsonObject.getProperty("ledgerTlsCertificate");
 
         Assertions.assertNotNull(ledgerTlsCertificate);
-
-        final String certificate = ledgerTlsCertificate.asText();
+        Assertions.assertTrue(ledgerTlsCertificate.isString());
+        final String certificate = ((JsonString) ledgerTlsCertificate).getValue();
         Assertions.assertNotNull(certificate);
     }
 }

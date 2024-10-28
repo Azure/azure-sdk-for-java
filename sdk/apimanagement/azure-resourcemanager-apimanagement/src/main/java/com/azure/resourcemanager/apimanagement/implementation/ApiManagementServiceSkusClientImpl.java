@@ -44,9 +44,8 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      * @param client the instance of the service client containing this operation class.
      */
     ApiManagementServiceSkusClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ApiManagementServiceSkusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ApiManagementServiceSkusService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,29 +56,22 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientA")
     public interface ApiManagementServiceSkusService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/skus")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/skus")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourceSkuResults>> listAvailableServiceSkus(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ResourceSkuResults>> listAvailableServiceSkus(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourceSkuResults>> listAvailableServiceSkusNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -96,13 +88,11 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceSkuResultInner>> listAvailableServiceSkusSinglePageAsync(
-        String resourceGroupName, String serviceName) {
+    private Mono<PagedResponse<ResourceSkuResultInner>>
+        listAvailableServiceSkusSinglePageAsync(String resourceGroupName, String serviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -112,33 +102,15 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listAvailableServiceSkus(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ResourceSkuResultInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listAvailableServiceSkus(this.client.getEndpoint(), resourceGroupName,
+                serviceName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ResourceSkuResultInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -157,13 +129,11 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceSkuResultInner>> listAvailableServiceSkusSinglePageAsync(
-        String resourceGroupName, String serviceName, Context context) {
+    private Mono<PagedResponse<ResourceSkuResultInner>>
+        listAvailableServiceSkusSinglePageAsync(String resourceGroupName, String serviceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -173,31 +143,16 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listAvailableServiceSkus(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listAvailableServiceSkus(this.client.getEndpoint(), resourceGroupName, serviceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -213,10 +168,9 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      * @return all available SKU for a given API Management service as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ResourceSkuResultInner> listAvailableServiceSkusAsync(
-        String resourceGroupName, String serviceName) {
-        return new PagedFlux<>(
-            () -> listAvailableServiceSkusSinglePageAsync(resourceGroupName, serviceName),
+    private PagedFlux<ResourceSkuResultInner> listAvailableServiceSkusAsync(String resourceGroupName,
+        String serviceName) {
+        return new PagedFlux<>(() -> listAvailableServiceSkusSinglePageAsync(resourceGroupName, serviceName),
             nextLink -> listAvailableServiceSkusNextSinglePageAsync(nextLink));
     }
 
@@ -234,10 +188,9 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      * @return all available SKU for a given API Management service as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ResourceSkuResultInner> listAvailableServiceSkusAsync(
-        String resourceGroupName, String serviceName, Context context) {
-        return new PagedFlux<>(
-            () -> listAvailableServiceSkusSinglePageAsync(resourceGroupName, serviceName, context),
+    private PagedFlux<ResourceSkuResultInner> listAvailableServiceSkusAsync(String resourceGroupName,
+        String serviceName, Context context) {
+        return new PagedFlux<>(() -> listAvailableServiceSkusSinglePageAsync(resourceGroupName, serviceName, context),
             nextLink -> listAvailableServiceSkusNextSinglePageAsync(nextLink, context));
     }
 
@@ -254,8 +207,8 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      * @return all available SKU for a given API Management service as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceSkuResultInner> listAvailableServiceSkus(
-        String resourceGroupName, String serviceName) {
+    public PagedIterable<ResourceSkuResultInner> listAvailableServiceSkus(String resourceGroupName,
+        String serviceName) {
         return new PagedIterable<>(listAvailableServiceSkusAsync(resourceGroupName, serviceName));
     }
 
@@ -273,8 +226,8 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      * @return all available SKU for a given API Management service as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ResourceSkuResultInner> listAvailableServiceSkus(
-        String resourceGroupName, String serviceName, Context context) {
+    public PagedIterable<ResourceSkuResultInner> listAvailableServiceSkus(String resourceGroupName, String serviceName,
+        Context context) {
         return new PagedIterable<>(listAvailableServiceSkusAsync(resourceGroupName, serviceName, context));
     }
 
@@ -295,24 +248,15 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listAvailableServiceSkusNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ResourceSkuResultInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ResourceSkuResultInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -329,29 +273,19 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourceSkuResultInner>> listAvailableServiceSkusNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ResourceSkuResultInner>> listAvailableServiceSkusNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listAvailableServiceSkusNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listAvailableServiceSkusNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

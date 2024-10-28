@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ForecastTimePeriodTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ForecastTimePeriod model =
-            BinaryData
-                .fromString("{\"from\":\"2021-09-27T18:37:59Z\",\"to\":\"2021-12-05T06:49:37Z\"}")
+        ForecastTimePeriod model
+            = BinaryData.fromString("{\"from\":\"2021-09-27T18:37:59Z\",\"to\":\"2021-12-05T06:49:37Z\"}")
                 .toObject(ForecastTimePeriod.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-27T18:37:59Z"), model.from());
         Assertions.assertEquals(OffsetDateTime.parse("2021-12-05T06:49:37Z"), model.to());
@@ -22,10 +21,8 @@ public final class ForecastTimePeriodTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForecastTimePeriod model =
-            new ForecastTimePeriod()
-                .withFrom(OffsetDateTime.parse("2021-09-27T18:37:59Z"))
-                .withTo(OffsetDateTime.parse("2021-12-05T06:49:37Z"));
+        ForecastTimePeriod model = new ForecastTimePeriod().withFrom(OffsetDateTime.parse("2021-09-27T18:37:59Z"))
+            .withTo(OffsetDateTime.parse("2021-12-05T06:49:37Z"));
         model = BinaryData.fromObject(model).toObject(ForecastTimePeriod.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-09-27T18:37:59Z"), model.from());
         Assertions.assertEquals(OffsetDateTime.parse("2021-12-05T06:49:37Z"), model.to());

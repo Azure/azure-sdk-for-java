@@ -16,16 +16,16 @@ public final class ResourceProviderManifestPropertiesTemplateDeploymentOptions e
 
     /** {@inheritDoc} */
     @Override
-    public ResourceProviderManifestPropertiesTemplateDeploymentOptions withPreflightSupported(
-        Boolean preflightSupported) {
+    public ResourceProviderManifestPropertiesTemplateDeploymentOptions
+        withPreflightSupported(Boolean preflightSupported) {
         super.withPreflightSupported(preflightSupported);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceProviderManifestPropertiesTemplateDeploymentOptions withPreflightOptions(
-        List<PreflightOption> preflightOptions) {
+    public ResourceProviderManifestPropertiesTemplateDeploymentOptions
+        withPreflightOptions(List<PreflightOption> preflightOptions) {
         super.withPreflightOptions(preflightOptions);
         return this;
     }

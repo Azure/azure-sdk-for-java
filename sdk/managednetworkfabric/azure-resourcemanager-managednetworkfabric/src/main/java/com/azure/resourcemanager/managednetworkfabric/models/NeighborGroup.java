@@ -119,11 +119,8 @@ public interface NeighborGroup {
     NeighborGroupInner innerModel();
 
     /** The entirety of the NeighborGroup definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The NeighborGroup definition stages. */

@@ -22,41 +22,31 @@ public final class UserSubscriptionsImpl implements UserSubscriptions {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public UserSubscriptionsImpl(
-        UserSubscriptionsClient innerClient,
+    public UserSubscriptionsImpl(UserSubscriptionsClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<SubscriptionContract> list(String resourceGroupName, String serviceName, String userId) {
-        PagedIterable<SubscriptionContractInner> inner =
-            this.serviceClient().list(resourceGroupName, serviceName, userId);
+        PagedIterable<SubscriptionContractInner> inner
+            = this.serviceClient().list(resourceGroupName, serviceName, userId);
         return Utils.mapPage(inner, inner1 -> new SubscriptionContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SubscriptionContract> list(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
-        PagedIterable<SubscriptionContractInner> inner =
-            this.serviceClient().list(resourceGroupName, serviceName, userId, filter, top, skip, context);
+    public PagedIterable<SubscriptionContract> list(String resourceGroupName, String serviceName, String userId,
+        String filter, Integer top, Integer skip, Context context) {
+        PagedIterable<SubscriptionContractInner> inner
+            = this.serviceClient().list(resourceGroupName, serviceName, userId, filter, top, skip, context);
         return Utils.mapPage(inner, inner1 -> new SubscriptionContractImpl(inner1, this.manager()));
     }
 
-    public Response<SubscriptionContract> getWithResponse(
-        String resourceGroupName, String serviceName, String userId, String sid, Context context) {
-        UserSubscriptionsGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, userId, sid, context);
+    public Response<SubscriptionContract> getWithResponse(String resourceGroupName, String serviceName, String userId,
+        String sid, Context context) {
+        UserSubscriptionsGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, userId, sid, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SubscriptionContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;

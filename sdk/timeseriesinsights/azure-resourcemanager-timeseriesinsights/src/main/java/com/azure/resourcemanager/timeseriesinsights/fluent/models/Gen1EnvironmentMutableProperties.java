@@ -74,8 +74,8 @@ public final class Gen1EnvironmentMutableProperties {
      * @param storageLimitExceededBehavior the storageLimitExceededBehavior value to set.
      * @return the Gen1EnvironmentMutableProperties object itself.
      */
-    public Gen1EnvironmentMutableProperties withStorageLimitExceededBehavior(
-        StorageLimitExceededBehavior storageLimitExceededBehavior) {
+    public Gen1EnvironmentMutableProperties
+        withStorageLimitExceededBehavior(StorageLimitExceededBehavior storageLimitExceededBehavior) {
         this.storageLimitExceededBehavior = storageLimitExceededBehavior;
         return this;
     }

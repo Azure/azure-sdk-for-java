@@ -15,40 +15,33 @@ import org.junit.jupiter.api.Assertions;
 public final class ListPathsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListPathsResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"streamingPaths\":[{\"streamingProtocol\":\"Dash\",\"encryptionScheme\":\"CommonEncryptionCbcs\",\"paths\":[\"thhqzonosggbh\",\"ohfwds\"]},{\"streamingProtocol\":\"Hls\",\"encryptionScheme\":\"NoEncryption\",\"paths\":[\"jutiiswacff\",\"dkzzewkfvhqcrail\"]}],\"downloadPaths\":[\"ppfufl\"]}")
-                .toObject(ListPathsResponseInner.class);
-        Assertions
-            .assertEquals(StreamingPolicyStreamingProtocol.DASH, model.streamingPaths().get(0).streamingProtocol());
-        Assertions
-            .assertEquals(EncryptionScheme.COMMON_ENCRYPTION_CBCS, model.streamingPaths().get(0).encryptionScheme());
+        ListPathsResponseInner model = BinaryData.fromString(
+            "{\"streamingPaths\":[{\"streamingProtocol\":\"Dash\",\"encryptionScheme\":\"CommonEncryptionCbcs\",\"paths\":[\"thhqzonosggbh\",\"ohfwds\"]},{\"streamingProtocol\":\"Hls\",\"encryptionScheme\":\"NoEncryption\",\"paths\":[\"jutiiswacff\",\"dkzzewkfvhqcrail\"]}],\"downloadPaths\":[\"ppfufl\"]}")
+            .toObject(ListPathsResponseInner.class);
+        Assertions.assertEquals(StreamingPolicyStreamingProtocol.DASH,
+            model.streamingPaths().get(0).streamingProtocol());
+        Assertions.assertEquals(EncryptionScheme.COMMON_ENCRYPTION_CBCS,
+            model.streamingPaths().get(0).encryptionScheme());
         Assertions.assertEquals("thhqzonosggbh", model.streamingPaths().get(0).paths().get(0));
         Assertions.assertEquals("ppfufl", model.downloadPaths().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListPathsResponseInner model =
-            new ListPathsResponseInner()
-                .withStreamingPaths(
-                    Arrays
-                        .asList(
-                            new StreamingPath()
-                                .withStreamingProtocol(StreamingPolicyStreamingProtocol.DASH)
-                                .withEncryptionScheme(EncryptionScheme.COMMON_ENCRYPTION_CBCS)
-                                .withPaths(Arrays.asList("thhqzonosggbh", "ohfwds")),
-                            new StreamingPath()
-                                .withStreamingProtocol(StreamingPolicyStreamingProtocol.HLS)
-                                .withEncryptionScheme(EncryptionScheme.NO_ENCRYPTION)
-                                .withPaths(Arrays.asList("jutiiswacff", "dkzzewkfvhqcrail"))))
-                .withDownloadPaths(Arrays.asList("ppfufl"));
+        ListPathsResponseInner model = new ListPathsResponseInner()
+            .withStreamingPaths(Arrays.asList(
+                new StreamingPath().withStreamingProtocol(StreamingPolicyStreamingProtocol.DASH)
+                    .withEncryptionScheme(EncryptionScheme.COMMON_ENCRYPTION_CBCS)
+                    .withPaths(Arrays.asList("thhqzonosggbh", "ohfwds")),
+                new StreamingPath().withStreamingProtocol(StreamingPolicyStreamingProtocol.HLS)
+                    .withEncryptionScheme(EncryptionScheme.NO_ENCRYPTION)
+                    .withPaths(Arrays.asList("jutiiswacff", "dkzzewkfvhqcrail"))))
+            .withDownloadPaths(Arrays.asList("ppfufl"));
         model = BinaryData.fromObject(model).toObject(ListPathsResponseInner.class);
-        Assertions
-            .assertEquals(StreamingPolicyStreamingProtocol.DASH, model.streamingPaths().get(0).streamingProtocol());
-        Assertions
-            .assertEquals(EncryptionScheme.COMMON_ENCRYPTION_CBCS, model.streamingPaths().get(0).encryptionScheme());
+        Assertions.assertEquals(StreamingPolicyStreamingProtocol.DASH,
+            model.streamingPaths().get(0).streamingProtocol());
+        Assertions.assertEquals(EncryptionScheme.COMMON_ENCRYPTION_CBCS,
+            model.streamingPaths().get(0).encryptionScheme());
         Assertions.assertEquals("thhqzonosggbh", model.streamingPaths().get(0).paths().get(0));
         Assertions.assertEquals("ppfufl", model.downloadPaths().get(0));
     }

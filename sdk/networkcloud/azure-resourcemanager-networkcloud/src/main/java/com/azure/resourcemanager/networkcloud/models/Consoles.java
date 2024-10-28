@@ -53,8 +53,8 @@ public interface Consoles {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided virtual machine console along with {@link Response}.
      */
-    Response<Console> getWithResponse(
-        String resourceGroupName, String virtualMachineName, String consoleName, Context context);
+    Response<Console> getWithResponse(String resourceGroupName, String virtualMachineName, String consoleName,
+        Context context);
 
     /**
      * Retrieve the virtual machine console.
