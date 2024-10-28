@@ -13,25 +13,25 @@ public final class SubscriptionUnderManagementGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriptionUnderManagementGroupProperties model = BinaryData.fromString(
-            "{\"tenant\":\"ftadehxnltyfs\",\"displayName\":\"pusuesn\",\"parent\":{\"id\":\"ej\"},\"state\":\"vorxzdmohct\"}")
+            "{\"tenant\":\"ashsfwxos\",\"displayName\":\"z\",\"parent\":{\"id\":\"gicjooxdjeb\"},\"state\":\"ucww\"}")
             .toObject(SubscriptionUnderManagementGroupProperties.class);
-        Assertions.assertEquals("ftadehxnltyfs", model.tenant());
-        Assertions.assertEquals("pusuesn", model.displayName());
-        Assertions.assertEquals("ej", model.parent().id());
-        Assertions.assertEquals("vorxzdmohct", model.state());
+        Assertions.assertEquals("ashsfwxos", model.tenant());
+        Assertions.assertEquals("z", model.displayName());
+        Assertions.assertEquals("gicjooxdjeb", model.parent().id());
+        Assertions.assertEquals("ucww", model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SubscriptionUnderManagementGroupProperties model
-            = new SubscriptionUnderManagementGroupProperties().withTenant("ftadehxnltyfs")
-                .withDisplayName("pusuesn")
-                .withParent(new DescendantParentGroupInfo().withId("ej"))
-                .withState("vorxzdmohct");
+            = new SubscriptionUnderManagementGroupProperties().withTenant("ashsfwxos")
+                .withDisplayName("z")
+                .withParent(new DescendantParentGroupInfo().withId("gicjooxdjeb"))
+                .withState("ucww");
         model = BinaryData.fromObject(model).toObject(SubscriptionUnderManagementGroupProperties.class);
-        Assertions.assertEquals("ftadehxnltyfs", model.tenant());
-        Assertions.assertEquals("pusuesn", model.displayName());
-        Assertions.assertEquals("ej", model.parent().id());
-        Assertions.assertEquals("vorxzdmohct", model.state());
+        Assertions.assertEquals("ashsfwxos", model.tenant());
+        Assertions.assertEquals("z", model.displayName());
+        Assertions.assertEquals("gicjooxdjeb", model.parent().id());
+        Assertions.assertEquals("ucww", model.state());
     }
 }

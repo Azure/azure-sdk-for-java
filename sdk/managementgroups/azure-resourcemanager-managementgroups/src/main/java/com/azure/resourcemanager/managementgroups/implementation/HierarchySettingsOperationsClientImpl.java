@@ -31,17 +31,23 @@ import com.azure.resourcemanager.managementgroups.fluent.models.HierarchySetting
 import com.azure.resourcemanager.managementgroups.models.CreateOrUpdateSettingsRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in HierarchySettingsOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in HierarchySettingsOperationsClient.
+ */
 public final class HierarchySettingsOperationsClientImpl implements HierarchySettingsOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final HierarchySettingsOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ManagementGroupsApiImpl client;
 
     /**
      * Initializes an instance of HierarchySettingsOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     HierarchySettingsOperationsClientImpl(ManagementGroupsApiImpl client) {
@@ -102,13 +108,13 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     /**
      * Gets all the hierarchy settings defined at the Management Group level. Settings can only be set on the root
      * Management Group of the hierarchy.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the hierarchy settings defined at the Management Group level along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HierarchySettingsListInner>> listWithResponseAsync(String groupId) {
@@ -128,14 +134,14 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     /**
      * Gets all the hierarchy settings defined at the Management Group level. Settings can only be set on the root
      * Management Group of the hierarchy.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the hierarchy settings defined at the Management Group level along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HierarchySettingsListInner>> listWithResponseAsync(String groupId, Context context) {
@@ -154,13 +160,13 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     /**
      * Gets all the hierarchy settings defined at the Management Group level. Settings can only be set on the root
      * Management Group of the hierarchy.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the hierarchy settings defined at the Management Group level on successful completion of {@link
-     *     Mono}.
+     * @return all the hierarchy settings defined at the Management Group level on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<HierarchySettingsListInner> listAsync(String groupId) {
@@ -170,7 +176,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     /**
      * Gets all the hierarchy settings defined at the Management Group level. Settings can only be set on the root
      * Management Group of the hierarchy.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -186,7 +192,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     /**
      * Gets all the hierarchy settings defined at the Management Group level. Settings can only be set on the root
      * Management Group of the hierarchy.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -201,13 +207,13 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     /**
      * Gets the hierarchy settings defined at the Management Group level. Settings can only be set on the root
      * Management Group of the hierarchy.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the hierarchy settings defined at the Management Group level along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HierarchySettingsInner>> getWithResponseAsync(String groupId) {
@@ -227,14 +233,14 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     /**
      * Gets the hierarchy settings defined at the Management Group level. Settings can only be set on the root
      * Management Group of the hierarchy.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the hierarchy settings defined at the Management Group level along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HierarchySettingsInner>> getWithResponseAsync(String groupId, Context context) {
@@ -253,7 +259,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     /**
      * Gets the hierarchy settings defined at the Management Group level. Settings can only be set on the root
      * Management Group of the hierarchy.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -268,7 +274,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     /**
      * Gets the hierarchy settings defined at the Management Group level. Settings can only be set on the root
      * Management Group of the hierarchy.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,7 +290,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
     /**
      * Gets the hierarchy settings defined at the Management Group level. Settings can only be set on the root
      * Management Group of the hierarchy.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -298,14 +304,14 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
 
     /**
      * Creates or updates the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param createTenantSettingsRequest Tenant level settings request parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return settings defined at the Management Group scope along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HierarchySettingsInner>> createOrUpdateWithResponseAsync(String groupId,
@@ -332,7 +338,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
 
     /**
      * Creates or updates the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param createTenantSettingsRequest Tenant level settings request parameter.
      * @param context The context to associate with this operation.
@@ -340,7 +346,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return settings defined at the Management Group scope along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HierarchySettingsInner>> createOrUpdateWithResponseAsync(String groupId,
@@ -366,7 +372,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
 
     /**
      * Creates or updates the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param createTenantSettingsRequest Tenant level settings request parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -383,7 +389,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
 
     /**
      * Creates or updates the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param createTenantSettingsRequest Tenant level settings request parameter.
      * @param context The context to associate with this operation.
@@ -400,7 +406,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
 
     /**
      * Creates or updates the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param createTenantSettingsRequest Tenant level settings request parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -416,14 +422,14 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
 
     /**
      * Updates the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param createTenantSettingsRequest Tenant level settings request parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return settings defined at the Management Group scope along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HierarchySettingsInner>> updateWithResponseAsync(String groupId,
@@ -450,7 +456,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
 
     /**
      * Updates the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param createTenantSettingsRequest Tenant level settings request parameter.
      * @param context The context to associate with this operation.
@@ -458,7 +464,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return settings defined at the Management Group scope along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<HierarchySettingsInner>> updateWithResponseAsync(String groupId,
@@ -484,7 +490,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
 
     /**
      * Updates the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param createTenantSettingsRequest Tenant level settings request parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -501,7 +507,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
 
     /**
      * Updates the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param createTenantSettingsRequest Tenant level settings request parameter.
      * @param context The context to associate with this operation.
@@ -518,7 +524,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
 
     /**
      * Updates the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param createTenantSettingsRequest Tenant level settings request parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -533,7 +539,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
 
     /**
      * Deletes the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -557,7 +563,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
 
     /**
      * Deletes the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -581,7 +587,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
 
     /**
      * Deletes the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -595,7 +601,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
 
     /**
      * Deletes the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -610,7 +616,7 @@ public final class HierarchySettingsOperationsClientImpl implements HierarchySet
 
     /**
      * Deletes the hierarchy settings defined at the Management Group level.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

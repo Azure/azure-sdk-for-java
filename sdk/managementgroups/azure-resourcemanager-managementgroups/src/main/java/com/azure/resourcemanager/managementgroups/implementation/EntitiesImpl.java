@@ -29,7 +29,7 @@ public final class EntitiesImpl implements Entities {
 
     public PagedIterable<EntityInfo> list() {
         PagedIterable<EntityInfoInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new EntityInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EntityInfoImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EntityInfo> list(String skiptoken, Integer skip, Integer top, String select,
@@ -37,7 +37,7 @@ public final class EntitiesImpl implements Entities {
         Context context) {
         PagedIterable<EntityInfoInner> inner = this.serviceClient()
             .list(skiptoken, skip, top, select, search, filter, view, groupName, cacheControl, context);
-        return Utils.mapPage(inner, inner1 -> new EntityInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EntityInfoImpl(inner1, this.manager()));
     }
 
     private EntitiesClient serviceClient() {

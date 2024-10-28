@@ -38,12 +38,12 @@ public final class ManagementGroupsImpl implements ManagementGroups {
 
     public PagedIterable<ManagementGroupInfo> list() {
         PagedIterable<ManagementGroupInfoInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ManagementGroupInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagementGroupInfoImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ManagementGroupInfo> list(String cacheControl, String skiptoken, Context context) {
         PagedIterable<ManagementGroupInfoInner> inner = this.serviceClient().list(cacheControl, skiptoken, context);
-        return Utils.mapPage(inner, inner1 -> new ManagementGroupInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagementGroupInfoImpl(inner1, this.manager()));
     }
 
     public Response<ManagementGroup> getWithResponse(String groupId, ManagementGroupExpandType expand, Boolean recurse,
@@ -128,14 +128,14 @@ public final class ManagementGroupsImpl implements ManagementGroups {
 
     public PagedIterable<DescendantInfo> getDescendants(String groupId) {
         PagedIterable<DescendantInfoInner> inner = this.serviceClient().getDescendants(groupId);
-        return Utils.mapPage(inner, inner1 -> new DescendantInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DescendantInfoImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DescendantInfo> getDescendants(String groupId, String skiptoken, Integer top,
         Context context) {
         PagedIterable<DescendantInfoInner> inner
             = this.serviceClient().getDescendants(groupId, skiptoken, top, context);
-        return Utils.mapPage(inner, inner1 -> new DescendantInfoImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DescendantInfoImpl(inner1, this.manager()));
     }
 
     private ManagementGroupsClient serviceClient() {

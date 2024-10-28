@@ -11,15 +11,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.managementgroups.fluent.models.SubscriptionUnderManagementGroupInner;
 
-/** An instance of this class provides access to all the operations defined in ManagementGroupSubscriptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagementGroupSubscriptionsClient.
+ */
 public interface ManagementGroupSubscriptionsClient {
     /**
      * Associates existing subscription with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +34,7 @@ public interface ManagementGroupSubscriptionsClient {
 
     /**
      * Associates existing subscription with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,11 +47,11 @@ public interface ManagementGroupSubscriptionsClient {
 
     /**
      * De-associates subscription from the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -61,7 +63,7 @@ public interface ManagementGroupSubscriptionsClient {
 
     /**
      * De-associates subscription from the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,11 +75,11 @@ public interface ManagementGroupSubscriptionsClient {
 
     /**
      * Retrieves details about given subscription which is associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -90,7 +92,7 @@ public interface ManagementGroupSubscriptionsClient {
 
     /**
      * Retrieves details about given subscription which is associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -103,7 +105,7 @@ public interface ManagementGroupSubscriptionsClient {
 
     /**
      * Retrieves details about all subscriptions which are associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,11 +117,11 @@ public interface ManagementGroupSubscriptionsClient {
 
     /**
      * Retrieves details about all subscriptions which are associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
