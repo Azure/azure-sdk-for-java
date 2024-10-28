@@ -5,7 +5,7 @@
     },
     "JavaTestVersion": "1.21",
     "TestGoals": "surefire:test",
-    "VersionOverrides": [
+    "VersionOverride": [
       "reactor_2020",
       "reactor_2022",
       "reactor_2023",
