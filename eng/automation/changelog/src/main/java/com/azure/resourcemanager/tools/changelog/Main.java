@@ -73,6 +73,7 @@ public class Main {
         changeLogs.forEach(x -> {
             if (!x.isClassLevelChanged()) {
                 breakingChange.append(x.getBreakingChange());
+                breakingChangeItems.add(x.getBreakingChange());
             }
         });
         changeLogs.forEach(x -> {
