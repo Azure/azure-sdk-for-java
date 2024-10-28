@@ -136,9 +136,9 @@ public final class ApplicationTypeResourceImpl
         com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.applicationTypeName = Utils.getValueFromIdByName(innerObject.id(), "applicationTypes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.applicationTypeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applicationTypes");
     }
 
     public ApplicationTypeResource refresh() {
