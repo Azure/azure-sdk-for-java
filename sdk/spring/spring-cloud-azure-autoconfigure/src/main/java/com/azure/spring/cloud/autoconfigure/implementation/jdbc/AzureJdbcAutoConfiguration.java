@@ -12,7 +12,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 
 
 /**
@@ -29,7 +28,6 @@ public class AzureJdbcAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @DependsOn("springTokenCredentialProviderContextProvider")
     JdbcPropertiesBeanPostProcessor jdbcConfigurationPropertiesBeanPostProcessor() {
         return new JdbcPropertiesBeanPostProcessor();
     }

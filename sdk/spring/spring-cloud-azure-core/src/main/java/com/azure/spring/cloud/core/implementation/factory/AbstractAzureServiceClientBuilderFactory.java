@@ -19,6 +19,9 @@ import com.azure.spring.cloud.core.provider.connectionstring.ConnectionStringPro
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -34,11 +37,13 @@ import java.util.stream.Collectors;
  *
  * @param <T> Type of the service client builder
  */
-public abstract class AbstractAzureServiceClientBuilderFactory<T> implements AzureServiceClientBuilderFactory<T> {
+public abstract class AbstractAzureServiceClientBuilderFactory<T> implements AzureServiceClientBuilderFactory<T>, ApplicationContextAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureServiceClientBuilderFactory.class);
     private static final TokenCredential DEFAULT_DEFAULT_TOKEN_CREDENTIAL = new DefaultAzureCredentialBuilder().build();
     private static final AzureTokenCredentialResolver DEFAULT_TOKEN_CREDENTIAL_RESOLVER = new AzureTokenCredentialResolver();
+
+    private ApplicationContext applicationContext;
 
     /**
      * Create an instance of Azure sdk client builder.
@@ -185,6 +190,21 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected void configureCredential(T builder) {
         List<AuthenticationDescriptor<?>> descriptors = getAuthenticationDescriptors(builder);
+        String tokenCredentialBeanName = getAzureProperties().getCredential().getTokenCredentialBeanName();
+        if (applicationContext != null && StringUtils.hasText(tokenCredentialBeanName)) {
+            Optional<AuthenticationDescriptor<?>> tokenCredentialDescriptor = descriptors.stream()
+                .filter(auth -> TokenCredential.class == auth.getAzureCredentialType())
+                .findFirst();
+            if (tokenCredentialDescriptor.isPresent()) {
+                LOGGER.debug("Will configure the custom token credential bean ({}) for {}.",
+                    tokenCredentialBeanName, builder.getClass().getSimpleName());
+                TokenCredential customTokenCredential = applicationContext.getBean(tokenCredentialBeanName, TokenCredential.class);
+                ((AuthenticationDescriptor<TokenCredential>)tokenCredentialDescriptor.get()).getConsumer().accept(customTokenCredential);
+                credentialConfigured = true;
+                return;
+            }
+        }
+
         Object azureCredential = resolveAzureCredential(getAzureProperties(), descriptors);
         if (azureCredential == null) {
             LOGGER.debug("No authentication credential configured for class {}.", builder.getClass().getSimpleName());
@@ -346,5 +366,10 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         } else {
             LOGGER.debug("Will ignore the 'null' token credential resolver.");
         }
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }

@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.resourcemanager;
 
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.implementation.condition.ConditionalOnMissingProperty;
-import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.ServiceBusArmConnectionStringProvider;
 import com.azure.spring.cloud.resourcemanager.implementation.provisioning.DefaultServiceBusProvisioner;
@@ -49,11 +48,7 @@ public class AzureServiceBusResourceManagerAutoConfiguration extends AzureServic
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, value = "namespace")
-    @ConditionalOnMissingProperty({
-        AzureServiceBusProperties.PREFIX + ".connection-string",
-        AzureGlobalProperties.PREFIX + ".credential.token-credential-bean-name",
-        AzureServiceBusProperties.PREFIX + ".credential.token-credential-bean-name"
-    })
+    @ConditionalOnMissingProperty(prefix = AzureServiceBusProperties.PREFIX, value = "connection-string")
     @Order
     ServiceBusArmConnectionStringProvider serviceBusArmConnectionStringProvider() {
         return new ServiceBusArmConnectionStringProvider(this.azureResourceManager,
