@@ -29,13 +29,13 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     public PagedIterable<GroupIdInformation> list(String resourceGroupName, String workspaceName) {
         PagedIterable<GroupIdInformationInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new GroupIdInformationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GroupIdInformationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<GroupIdInformation> list(String resourceGroupName, String workspaceName, Context context) {
         PagedIterable<GroupIdInformationInner> inner
             = this.serviceClient().list(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new GroupIdInformationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GroupIdInformationImpl(inner1, this.manager()));
     }
 
     public Response<GroupIdInformation> getWithResponse(String resourceGroupName, String workspaceName, String groupId,

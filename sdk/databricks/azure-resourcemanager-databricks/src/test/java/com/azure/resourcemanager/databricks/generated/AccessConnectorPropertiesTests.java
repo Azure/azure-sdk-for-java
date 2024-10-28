@@ -11,7 +11,7 @@ public final class AccessConnectorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessConnectorProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"Ready\"}").toObject(AccessConnectorProperties.class);
+            = BinaryData.fromString("{\"provisioningState\":\"Succeeded\"}").toObject(AccessConnectorProperties.class);
     }
 
     @org.junit.jupiter.api.Test

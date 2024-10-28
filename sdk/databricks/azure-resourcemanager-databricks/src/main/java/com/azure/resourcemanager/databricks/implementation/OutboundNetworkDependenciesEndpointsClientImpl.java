@@ -32,15 +32,19 @@ import reactor.core.publisher.Mono;
  */
 public final class OutboundNetworkDependenciesEndpointsClientImpl
     implements OutboundNetworkDependenciesEndpointsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OutboundNetworkDependenciesEndpointsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureDatabricksManagementClientImpl client;
 
     /**
      * Initializes an instance of OutboundNetworkDependenciesEndpointsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OutboundNetworkDependenciesEndpointsClientImpl(AzureDatabricksManagementClientImpl client) {
@@ -68,18 +72,18 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified Workspace.
-     *
-     * <p>Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must
-     * configure outbound access with these endpoints. For more information, see
+     * 
+     * Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must configure
+     * outbound access with these endpoints. For more information, see
      * https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/udr.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<OutboundEnvironmentEndpointInner>>> listWithResponseAsync(String resourceGroupName,
@@ -109,19 +113,19 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified Workspace.
-     *
-     * <p>Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must
-     * configure outbound access with these endpoints. For more information, see
+     * 
+     * Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must configure
+     * outbound access with these endpoints. For more information, see
      * https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/udr.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<OutboundEnvironmentEndpointInner>>> listWithResponseAsync(String resourceGroupName,
@@ -150,18 +154,18 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified Workspace.
-     *
-     * <p>Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must
-     * configure outbound access with these endpoints. For more information, see
+     * 
+     * Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must configure
+     * outbound access with these endpoints. For more information, see
      * https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/udr.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<OutboundEnvironmentEndpointInner>> listAsync(String resourceGroupName, String workspaceName) {
@@ -170,19 +174,19 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified Workspace.
-     *
-     * <p>Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must
-     * configure outbound access with these endpoints. For more information, see
+     * 
+     * Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must configure
+     * outbound access with these endpoints. For more information, see
      * https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/udr.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane along with {@link
-     *     Response}.
+     * @return the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<OutboundEnvironmentEndpointInner>> listWithResponse(String resourceGroupName,
@@ -192,11 +196,11 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified Workspace.
-     *
-     * <p>Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must
-     * configure outbound access with these endpoints. For more information, see
+     * 
+     * Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must configure
+     * outbound access with these endpoints. For more information, see
      * https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/udr.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
