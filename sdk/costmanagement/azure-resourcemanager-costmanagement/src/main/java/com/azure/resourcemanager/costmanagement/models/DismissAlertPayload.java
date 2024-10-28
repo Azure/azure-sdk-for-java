@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.fluent.models.AlertProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The request payload to update an alert. */
+/**
+ * The request payload to update an alert.
+ */
 @Fluent
-public final class DismissAlertPayload {
+public final class DismissAlertPayload implements JsonSerializable<DismissAlertPayload> {
     /*
      * Alert properties.
      */
-    @JsonProperty(value = "properties")
     private AlertProperties innerProperties;
 
-    /** Creates an instance of DismissAlertPayload class. */
+    /**
+     * Creates an instance of DismissAlertPayload class.
+     */
     public DismissAlertPayload() {
     }
 
     /**
      * Get the innerProperties property: Alert properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AlertProperties innerProperties() {
@@ -32,7 +39,7 @@ public final class DismissAlertPayload {
 
     /**
      * Get the definition property: defines the type of alert.
-     *
+     * 
      * @return the definition value.
      */
     public AlertPropertiesDefinition definition() {
@@ -41,7 +48,7 @@ public final class DismissAlertPayload {
 
     /**
      * Set the definition property: defines the type of alert.
-     *
+     * 
      * @param definition the definition value to set.
      * @return the DismissAlertPayload object itself.
      */
@@ -55,7 +62,7 @@ public final class DismissAlertPayload {
 
     /**
      * Get the description property: Alert description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -64,7 +71,7 @@ public final class DismissAlertPayload {
 
     /**
      * Set the description property: Alert description.
-     *
+     * 
      * @param description the description value to set.
      * @return the DismissAlertPayload object itself.
      */
@@ -78,7 +85,7 @@ public final class DismissAlertPayload {
 
     /**
      * Get the source property: Source of alert.
-     *
+     * 
      * @return the source value.
      */
     public AlertSource source() {
@@ -87,7 +94,7 @@ public final class DismissAlertPayload {
 
     /**
      * Set the source property: Source of alert.
-     *
+     * 
      * @param source the source value to set.
      * @return the DismissAlertPayload object itself.
      */
@@ -101,7 +108,7 @@ public final class DismissAlertPayload {
 
     /**
      * Get the details property: Alert details.
-     *
+     * 
      * @return the details value.
      */
     public AlertPropertiesDetails details() {
@@ -110,7 +117,7 @@ public final class DismissAlertPayload {
 
     /**
      * Set the details property: Alert details.
-     *
+     * 
      * @param details the details value to set.
      * @return the DismissAlertPayload object itself.
      */
@@ -124,7 +131,7 @@ public final class DismissAlertPayload {
 
     /**
      * Get the costEntityId property: related budget.
-     *
+     * 
      * @return the costEntityId value.
      */
     public String costEntityId() {
@@ -133,7 +140,7 @@ public final class DismissAlertPayload {
 
     /**
      * Set the costEntityId property: related budget.
-     *
+     * 
      * @param costEntityId the costEntityId value to set.
      * @return the DismissAlertPayload object itself.
      */
@@ -147,7 +154,7 @@ public final class DismissAlertPayload {
 
     /**
      * Get the status property: alert status.
-     *
+     * 
      * @return the status value.
      */
     public AlertStatus status() {
@@ -156,7 +163,7 @@ public final class DismissAlertPayload {
 
     /**
      * Set the status property: alert status.
-     *
+     * 
      * @param status the status value to set.
      * @return the DismissAlertPayload object itself.
      */
@@ -170,7 +177,7 @@ public final class DismissAlertPayload {
 
     /**
      * Get the creationTime property: dateTime in which alert was created.
-     *
+     * 
      * @return the creationTime value.
      */
     public String creationTime() {
@@ -179,7 +186,7 @@ public final class DismissAlertPayload {
 
     /**
      * Set the creationTime property: dateTime in which alert was created.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the DismissAlertPayload object itself.
      */
@@ -193,7 +200,7 @@ public final class DismissAlertPayload {
 
     /**
      * Get the closeTime property: dateTime in which alert was closed.
-     *
+     * 
      * @return the closeTime value.
      */
     public String closeTime() {
@@ -202,7 +209,7 @@ public final class DismissAlertPayload {
 
     /**
      * Set the closeTime property: dateTime in which alert was closed.
-     *
+     * 
      * @param closeTime the closeTime value to set.
      * @return the DismissAlertPayload object itself.
      */
@@ -216,7 +223,7 @@ public final class DismissAlertPayload {
 
     /**
      * Get the modificationTime property: dateTime in which alert was last modified.
-     *
+     * 
      * @return the modificationTime value.
      */
     public String modificationTime() {
@@ -225,7 +232,7 @@ public final class DismissAlertPayload {
 
     /**
      * Set the modificationTime property: dateTime in which alert was last modified.
-     *
+     * 
      * @param modificationTime the modificationTime value to set.
      * @return the DismissAlertPayload object itself.
      */
@@ -239,7 +246,7 @@ public final class DismissAlertPayload {
 
     /**
      * Get the statusModificationUsername property: User who last modified the alert.
-     *
+     * 
      * @return the statusModificationUsername value.
      */
     public String statusModificationUsername() {
@@ -248,7 +255,7 @@ public final class DismissAlertPayload {
 
     /**
      * Set the statusModificationUsername property: User who last modified the alert.
-     *
+     * 
      * @param statusModificationUsername the statusModificationUsername value to set.
      * @return the DismissAlertPayload object itself.
      */
@@ -262,7 +269,7 @@ public final class DismissAlertPayload {
 
     /**
      * Get the statusModificationTime property: dateTime in which the alert status was last modified.
-     *
+     * 
      * @return the statusModificationTime value.
      */
     public String statusModificationTime() {
@@ -271,7 +278,7 @@ public final class DismissAlertPayload {
 
     /**
      * Set the statusModificationTime property: dateTime in which the alert status was last modified.
-     *
+     * 
      * @param statusModificationTime the statusModificationTime value to set.
      * @return the DismissAlertPayload object itself.
      */
@@ -285,12 +292,48 @@ public final class DismissAlertPayload {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DismissAlertPayload from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DismissAlertPayload if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DismissAlertPayload.
+     */
+    public static DismissAlertPayload fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DismissAlertPayload deserializedDismissAlertPayload = new DismissAlertPayload();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedDismissAlertPayload.innerProperties = AlertProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDismissAlertPayload;
+        });
     }
 }

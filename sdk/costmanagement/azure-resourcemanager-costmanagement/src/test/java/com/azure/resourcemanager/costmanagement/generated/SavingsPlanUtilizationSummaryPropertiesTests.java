@@ -13,7 +13,7 @@ public final class SavingsPlanUtilizationSummaryPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SavingsPlanUtilizationSummaryProperties model = BinaryData.fromString(
-            "{\"armSkuName\":\"xoftpipiwyczu\",\"benefitId\":\"a\",\"benefitOrderId\":\"qjlihhyuspska\",\"benefitType\":\"SavingsPlan\",\"usageDate\":\"2021-12-09T00:48:19Z\"}")
+            "{\"armSkuName\":\"arvvlfnt\",\"benefitId\":\"tpo\",\"benefitOrderId\":\"enazerohzrsqals\",\"benefitType\":\"SavingsPlan\",\"usageDate\":\"2021-01-21T06:07:33Z\"}")
             .toObject(SavingsPlanUtilizationSummaryProperties.class);
         Assertions.assertEquals(BenefitKind.SAVINGS_PLAN, model.benefitType());
     }

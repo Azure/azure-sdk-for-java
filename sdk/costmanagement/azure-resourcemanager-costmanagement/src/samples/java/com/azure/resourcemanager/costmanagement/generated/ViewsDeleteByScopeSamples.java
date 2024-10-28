@@ -4,22 +4,23 @@
 
 package com.azure.resourcemanager.costmanagement.generated;
 
-/** Samples for Views DeleteByScope. */
+/**
+ * Samples for Views DeleteByScope.
+ */
 public final class ViewsDeleteByScopeSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ViewDeleteByResourceGroup.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ViewDeleteByResourceGroup.json
      */
     /**
      * Sample code: ResourceGroupDeleteView.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void resourceGroupDeleteView(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .views()
-            .deleteByScopeWithResponse(
-                "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG",
-                "TestView",
-                com.azure.core.util.Context.NONE);
+        manager.views()
+            .deleteByScopeWithResponse("subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG",
+                "TestView", com.azure.core.util.Context.NONE);
     }
 }

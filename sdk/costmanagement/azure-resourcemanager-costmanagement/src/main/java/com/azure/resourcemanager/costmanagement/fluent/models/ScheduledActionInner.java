@@ -5,37 +5,126 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.models.FileDestination;
 import com.azure.resourcemanager.costmanagement.models.NotificationProperties;
 import com.azure.resourcemanager.costmanagement.models.ScheduleProperties;
 import com.azure.resourcemanager.costmanagement.models.ScheduledActionKind;
 import com.azure.resourcemanager.costmanagement.models.ScheduledActionProxyResource;
 import com.azure.resourcemanager.costmanagement.models.ScheduledActionStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Scheduled action definition. */
+/**
+ * Scheduled action definition.
+ */
 @Fluent
 public final class ScheduledActionInner extends ScheduledActionProxyResource {
     /*
      * The properties of the scheduled action.
      */
-    @JsonProperty(value = "properties")
     private ScheduledActionProperties innerProperties;
 
-    /** Creates an instance of ScheduledActionInner class. */
+    /*
+     * Kind of the scheduled action.
+     */
+    private SystemData systemData;
+
+    /*
+     * Resource Etag. For update calls, eTag is optional and can be specified to achieve optimistic concurrency. Fetch
+     * the resource's eTag by doing a 'GET' call first and then including the latest eTag as part of the request body or
+     * 'If-Match' header while performing the update. For create calls, eTag is not required.
+     */
+    private String etag;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ScheduledActionInner class.
+     */
     public ScheduledActionInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the scheduled action.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ScheduledActionProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Kind of the scheduled action.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the etag property: Resource Etag. For update calls, eTag is optional and can be specified to achieve
+     * optimistic concurrency. Fetch the resource's eTag by doing a 'GET' call first and then including the latest eTag
+     * as part of the request body or 'If-Match' header while performing the update. For create calls, eTag is not
+     * required.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduledActionInner withKind(ScheduledActionKind kind) {
         super.withKind(kind);
@@ -44,7 +133,7 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
 
     /**
      * Get the displayName property: Scheduled action name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -53,7 +142,7 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
 
     /**
      * Set the displayName property: Scheduled action name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ScheduledActionInner object itself.
      */
@@ -67,7 +156,7 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
 
     /**
      * Get the fileDestination property: Destination format of the view data. This is optional.
-     *
+     * 
      * @return the fileDestination value.
      */
     public FileDestination fileDestination() {
@@ -76,7 +165,7 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
 
     /**
      * Set the fileDestination property: Destination format of the view data. This is optional.
-     *
+     * 
      * @param fileDestination the fileDestination value to set.
      * @return the ScheduledActionInner object itself.
      */
@@ -90,7 +179,7 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
 
     /**
      * Get the notification property: Notification properties based on scheduled action kind.
-     *
+     * 
      * @return the notification value.
      */
     public NotificationProperties notification() {
@@ -99,7 +188,7 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
 
     /**
      * Set the notification property: Notification properties based on scheduled action kind.
-     *
+     * 
      * @param notification the notification value to set.
      * @return the ScheduledActionInner object itself.
      */
@@ -114,7 +203,7 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
     /**
      * Get the notificationEmail property: Email address of the point of contact that should get the unsubscribe
      * requests and notification emails.
-     *
+     * 
      * @return the notificationEmail value.
      */
     public String notificationEmail() {
@@ -124,7 +213,7 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
     /**
      * Set the notificationEmail property: Email address of the point of contact that should get the unsubscribe
      * requests and notification emails.
-     *
+     * 
      * @param notificationEmail the notificationEmail value to set.
      * @return the ScheduledActionInner object itself.
      */
@@ -138,7 +227,7 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
 
     /**
      * Get the schedule property: Schedule of the scheduled action.
-     *
+     * 
      * @return the schedule value.
      */
     public ScheduleProperties schedule() {
@@ -147,7 +236,7 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
 
     /**
      * Set the schedule property: Schedule of the scheduled action.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the ScheduledActionInner object itself.
      */
@@ -173,7 +262,7 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
      * for ExternalBillingAccount scope, and
      * '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for ExternalSubscription
      * scope.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -194,7 +283,7 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
      * for ExternalBillingAccount scope, and
      * '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for ExternalSubscription
      * scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the ScheduledActionInner object itself.
      */
@@ -208,7 +297,7 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
 
     /**
      * Get the status property: Status of the scheduled action.
-     *
+     * 
      * @return the status value.
      */
     public ScheduledActionStatus status() {
@@ -217,7 +306,7 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
 
     /**
      * Set the status property: Status of the scheduled action.
-     *
+     * 
      * @param status the status value to set.
      * @return the ScheduledActionInner object itself.
      */
@@ -232,7 +321,7 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
     /**
      * Get the viewId property: Cost analysis viewId used for scheduled action. For example,
      * '/providers/Microsoft.CostManagement/views/swaggerExample'.
-     *
+     * 
      * @return the viewId value.
      */
     public String viewId() {
@@ -242,7 +331,7 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
     /**
      * Set the viewId property: Cost analysis viewId used for scheduled action. For example,
      * '/providers/Microsoft.CostManagement/views/swaggerExample'.
-     *
+     * 
      * @param viewId the viewId value to set.
      * @return the ScheduledActionInner object itself.
      */
@@ -256,14 +345,63 @@ public final class ScheduledActionInner extends ScheduledActionProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind() == null ? null : kind().toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduledActionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduledActionInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduledActionInner.
+     */
+    public static ScheduledActionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduledActionInner deserializedScheduledActionInner = new ScheduledActionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedScheduledActionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedScheduledActionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedScheduledActionInner.type = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedScheduledActionInner.etag = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedScheduledActionInner.withKind(ScheduledActionKind.fromString(reader.getString()));
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedScheduledActionInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedScheduledActionInner.innerProperties = ScheduledActionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduledActionInner;
+        });
     }
 }
