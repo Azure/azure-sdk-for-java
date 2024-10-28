@@ -13,7 +13,7 @@ public final class ResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"69302b8f-5663-4c3b-932a-ee7af2f94b9f\",\"type\":\"None\",\"tenantId\":\"570ff5b7-a1c1-4e0b-809d-2547824d6276\"}")
+            "{\"principalId\":\"39efef18-cc9b-4781-b315-cd71eec2685e\",\"type\":\"None\",\"tenantId\":\"0eb800b8-1bdc-46fc-95ce-8e3ed7e30e1f\"}")
             .toObject(ResourceIdentity.class);
         Assertions.assertEquals(IdentityType.NONE, model.type());
     }
