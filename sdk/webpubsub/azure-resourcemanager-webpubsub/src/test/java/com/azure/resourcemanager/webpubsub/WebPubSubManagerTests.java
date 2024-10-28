@@ -40,11 +40,9 @@ public class WebPubSubManagerTests extends TestProxyTestBase {
 
         resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile)
-            .withDefaultSubscription();
+            .authenticate(credential, profile).withDefaultSubscription();
 
-        webPubSubManager = WebPubSubManager
-            .configure()
+        webPubSubManager = WebPubSubManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);

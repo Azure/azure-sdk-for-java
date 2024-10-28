@@ -39,8 +39,7 @@ public class ContainerAppsApiManagerTests extends TestProxyTestBase {
 
         resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile)
-            .withDefaultSubscription();
+            .authenticate(credential, profile).withDefaultSubscription();
 
         containerAppsApiManager = ContainerAppsApiManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
