@@ -98,8 +98,8 @@ public class ApplicationInsightsManagerTests extends TestProxyTestBase {
                 .create();
             // @embedmeEnd
             component.refresh();
-            Assertions.assertEquals(component.name(), componentName);
-            Assertions.assertEquals(component.name(), applicationInsightsManager.components().getById(component.id()).name());
+            Assertions.assertEquals(componentName, component.name());
+            Assertions.assertEquals(componentName, applicationInsightsManager.components().getById(component.id()).name());
             Assertions.assertTrue(applicationInsightsManager.components().list().stream().findAny().isPresent());
         } finally {
             if (component != null) {
