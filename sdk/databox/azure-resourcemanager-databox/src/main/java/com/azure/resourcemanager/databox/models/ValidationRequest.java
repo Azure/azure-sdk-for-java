@@ -19,7 +19,7 @@ import java.util.List;
     property = "validationCategory",
     defaultImpl = ValidationRequest.class)
 @JsonTypeName("ValidationRequest")
-@JsonSubTypes({@JsonSubTypes.Type(name = "JobCreationValidation", value = CreateJobValidations.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "JobCreationValidation", value = CreateJobValidations.class) })
 @Fluent
 public class ValidationRequest {
     /*
@@ -61,10 +61,8 @@ public class ValidationRequest {
      */
     public void validate() {
         if (individualRequestDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property individualRequestDetails in model ValidationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property individualRequestDetails in model ValidationRequest"));
         } else {
             individualRequestDetails().forEach(e -> e.validate());
         }

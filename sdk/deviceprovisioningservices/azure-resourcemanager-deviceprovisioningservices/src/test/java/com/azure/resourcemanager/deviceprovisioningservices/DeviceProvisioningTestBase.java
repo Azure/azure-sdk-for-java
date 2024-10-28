@@ -47,8 +47,8 @@ public class DeviceProvisioningTestBase extends TestProxyTestBase {
     }
 
     public IotDpsManager createIotDpsManager() {
-        return IotDpsManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        return IotDpsManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
     }
 
@@ -57,10 +57,7 @@ public class DeviceProvisioningTestBase extends TestProxyTestBase {
             return resourceManager.resourceGroups().getByName(testResourceGroup);
         } else {
             String resourceGroupName = DEFAULT_INSTANCE_NAME + "-" + createRandomSuffix();
-            return resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(DEFAULT_REGION)
-                .create();
+            return resourceManager.resourceGroups().define(resourceGroupName).withRegion(DEFAULT_REGION).create();
         }
     }
 
@@ -71,12 +68,13 @@ public class DeviceProvisioningTestBase extends TestProxyTestBase {
     }
 
     public IotHubManager createIotHubManager() {
-        return IotHubManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        return IotHubManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
     }
 
-    public ProvisioningServiceDescriptionInner createProvisioningService(IotDpsManager iotDpsManager, ResourceGroup resourceGroup) {
+    public ProvisioningServiceDescriptionInner createProvisioningService(IotDpsManager iotDpsManager,
+        ResourceGroup resourceGroup) {
         String serviceName = DEFAULT_INSTANCE_NAME + "-" + createRandomSuffix();
 
         try {
@@ -96,14 +94,12 @@ public class DeviceProvisioningTestBase extends TestProxyTestBase {
                 NameAvailabilityInfo availabilityInfo = iotDpsManager.iotDpsResources()
                     .checkProvisioningServiceNameAvailability(new OperationInputs().withName(serviceName));
 
-                assertTrue(
-                    availabilityInfo.nameAvailable(),
+                assertTrue(availabilityInfo.nameAvailable(),
                     "Service name was unavailable even after deleting the existing service with the name");
             }
         }
 
-        ProvisioningServiceDescription provisioningServiceDescription = iotDpsManager
-            .iotDpsResources()
+        ProvisioningServiceDescription provisioningServiceDescription = iotDpsManager.iotDpsResources()
             .define(serviceName)
             .withRegion(DEFAULT_REGION)
             .withExistingResourceGroup(resourceGroup.name())
@@ -111,8 +107,7 @@ public class DeviceProvisioningTestBase extends TestProxyTestBase {
             .withSku(Constants.DefaultSku.INSTANCE)
             .create();
 
-        ProvisioningServiceDescriptionInner inner = iotDpsManager
-            .serviceClient()
+        ProvisioningServiceDescriptionInner inner = iotDpsManager.serviceClient()
             .getIotDpsResources()
             .createOrUpdate(resourceGroup.name(), serviceName, provisioningServiceDescription.innerModel());
 

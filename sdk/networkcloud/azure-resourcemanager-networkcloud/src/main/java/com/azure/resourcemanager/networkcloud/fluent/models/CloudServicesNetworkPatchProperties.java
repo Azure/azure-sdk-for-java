@@ -49,8 +49,8 @@ public final class CloudServicesNetworkPatchProperties {
      * @param additionalEgressEndpoints the additionalEgressEndpoints value to set.
      * @return the CloudServicesNetworkPatchProperties object itself.
      */
-    public CloudServicesNetworkPatchProperties withAdditionalEgressEndpoints(
-        List<EgressEndpoint> additionalEgressEndpoints) {
+    public CloudServicesNetworkPatchProperties
+        withAdditionalEgressEndpoints(List<EgressEndpoint> additionalEgressEndpoints) {
         this.additionalEgressEndpoints = additionalEgressEndpoints;
         return this;
     }

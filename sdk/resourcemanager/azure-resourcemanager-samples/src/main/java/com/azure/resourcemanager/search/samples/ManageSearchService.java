@@ -68,14 +68,16 @@ public class ManageSearchService {
 
                 t1 = new Date();
 
-                SearchService searchServiceFree = azureResourceManager.searchServices().define(searchServiceName + "free")
+                SearchService searchServiceFree = azureResourceManager.searchServices()
+                    .define(searchServiceName + "free")
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withFreeSku()
                     .create();
 
                 t2 = new Date();
-                System.out.println("Created Azure Search service: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + searchServiceFree.id());
+                System.out.println("Created Azure Search service: (took " + ((t2.getTime() - t1.getTime()) / 1000)
+                    + " seconds) " + searchServiceFree.id());
                 Utils.print(searchServiceFree);
             }
 
@@ -86,7 +88,8 @@ public class ManageSearchService {
 
             t1 = new Date();
 
-            SearchService searchService = azureResourceManager.searchServices().define(searchServiceName)
+            SearchService searchService = azureResourceManager.searchServices()
+                .define(searchServiceName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withStandardSku()
@@ -95,9 +98,9 @@ public class ManageSearchService {
                 .create();
 
             t2 = new Date();
-            System.out.println("Created Azure Search service: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + searchService.id());
+            System.out.println("Created Azure Search service: (took " + ((t2.getTime() - t1.getTime()) / 1000)
+                + " seconds) " + searchService.id());
             Utils.print(searchService);
-
 
             //=============================================================
             // Iterate through the Azure Search service resources
@@ -108,14 +111,12 @@ public class ManageSearchService {
                 Utils.print(service);
             }
 
-
             //=============================================================
             // Add a query key for the Search service resource
 
             System.out.println("Add a query key to an Azure Search service");
 
             searchService.createQueryKey("testKey1");
-
 
             //=============================================================
             // Regenerate the admin keys for an Azure Search service resource
@@ -124,7 +125,6 @@ public class ManageSearchService {
 
             searchService.regenerateAdminKeys(AdminKeyKind.PRIMARY);
             searchService.regenerateAdminKeys(AdminKeyKind.SECONDARY);
-
 
             //=============================================================
             // Update the Search service to use three replicas and three partitions and update the tags
@@ -141,7 +141,6 @@ public class ManageSearchService {
 
             Utils.print(searchService);
 
-
             //=============================================================
             // Delete a query key for an Azure Search service resource
 
@@ -150,7 +149,6 @@ public class ManageSearchService {
             searchService.deleteQueryKey(searchService.listQueryKeys().iterator().next().key());
 
             Utils.print(searchService);
-
 
             //=============================================================
             // Delete the Search service resource
@@ -187,11 +185,9 @@ public class ManageSearchService {
             // Authenticate
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-            final TokenCredential credential = new DefaultAzureCredentialBuilder()
-                .build();
+            final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

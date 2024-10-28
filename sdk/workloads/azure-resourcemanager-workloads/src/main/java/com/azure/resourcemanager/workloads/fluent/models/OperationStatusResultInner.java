@@ -233,10 +233,8 @@ public final class OperationStatusResultInner {
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model OperationStatusResultInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property status in model OperationStatusResultInner"));
         }
         if (operations() != null) {
             operations().forEach(e -> e.validate());

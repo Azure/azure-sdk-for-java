@@ -30,46 +30,34 @@ public final class ApiSchemasCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"contentType\":\"cjqpzjvnpjr\",\"document\":{\"value\":\"pgsjbioagwviqehm\",\"definitions\":\"datavaolidxdfsfvkjc\",\"components\":\"databrsvxphtjnhp\"}},\"id\":\"jl\",\"name\":\"k\",\"type\":\"cyzhimmydtdtftmi\"}";
+        String responseStr
+            = "{\"properties\":{\"contentType\":\"cjqpzjvnpjr\",\"document\":{\"value\":\"pgsjbioagwviqehm\",\"definitions\":\"datavaolidxdfsfvkjc\",\"components\":\"databrsvxphtjnhp\"}},\"id\":\"jl\",\"name\":\"k\",\"type\":\"cyzhimmydtdtftmi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SchemaContract response =
-            manager
-                .apiSchemas()
-                .define("urmd")
-                .withExistingApi("fndcbsyhlud", "jkkovohwvprj", "dvt")
-                .withContentType("cntjna")
-                .withValue("hvqiiasbtwskkf")
-                .withDefinitions("datayikmxhhqsxjbjk")
-                .withComponents("datariglb")
-                .withIfMatch("onztpcjptnnt")
-                .create();
+        SchemaContract response = manager.apiSchemas()
+            .define("urmd")
+            .withExistingApi("fndcbsyhlud", "jkkovohwvprj", "dvt")
+            .withContentType("cntjna")
+            .withValue("hvqiiasbtwskkf")
+            .withDefinitions("datayikmxhhqsxjbjk")
+            .withComponents("datariglb")
+            .withIfMatch("onztpcjptnnt")
+            .create();
 
         Assertions.assertEquals("cjqpzjvnpjr", response.contentType());
         Assertions.assertEquals("pgsjbioagwviqehm", response.value());

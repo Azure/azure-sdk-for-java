@@ -45,12 +45,14 @@ public final class InstancesGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        DeviceUpdateManager manager = DeviceUpdateManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        DeviceUpdateManager manager = DeviceUpdateManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Instance response = manager.instances()
-            .getWithResponse("lvdnkfx", "semdwzrmu", "apfcqdpsq", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("lvdnkfx", "semdwzrmu", "apfcqdpsq", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("bopgxedkowepbqp", response.location());
         Assertions.assertEquals("kbwcc", response.tags().get("njv"));

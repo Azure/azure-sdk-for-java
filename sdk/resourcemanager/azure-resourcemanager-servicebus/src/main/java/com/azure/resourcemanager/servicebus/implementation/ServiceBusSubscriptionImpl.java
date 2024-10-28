@@ -19,24 +19,12 @@ import java.time.OffsetDateTime;
  * Implementation for Subscription.
  */
 class ServiceBusSubscriptionImpl extends
-    IndependentChildResourceImpl<
-        ServiceBusSubscription,
-        Topic,
-        SBSubscriptionInner,
-        ServiceBusSubscriptionImpl,
-        ServiceBusManager>
-    implements
-        ServiceBusSubscription,
-        ServiceBusSubscription.Definition,
-        ServiceBusSubscription.Update {
+    IndependentChildResourceImpl<ServiceBusSubscription, Topic, SBSubscriptionInner, ServiceBusSubscriptionImpl, ServiceBusManager>
+    implements ServiceBusSubscription, ServiceBusSubscription.Definition, ServiceBusSubscription.Update {
     private final String namespaceName;
 
-    ServiceBusSubscriptionImpl(String resourceGroupName,
-                               String namespaceName,
-                               String topicName,
-                               String name,
-                               SBSubscriptionInner inner,
-                               ServiceBusManager manager) {
+    ServiceBusSubscriptionImpl(String resourceGroupName, String namespaceName, String topicName, String name,
+        SBSubscriptionInner inner, ServiceBusManager manager) {
         super(name, inner, manager);
         this.namespaceName = namespaceName;
         this.withExistingParentResource(resourceGroupName, topicName);
@@ -108,8 +96,7 @@ class ServiceBusSubscriptionImpl extends
 
     @Override
     public long activeMessageCount() {
-        if (this.innerModel().countDetails() == null
-                || this.innerModel().countDetails().activeMessageCount() == null) {
+        if (this.innerModel().countDetails() == null || this.innerModel().countDetails().activeMessageCount() == null) {
             return 0;
         }
         return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().activeMessageCount());
@@ -118,7 +105,7 @@ class ServiceBusSubscriptionImpl extends
     @Override
     public long deadLetterMessageCount() {
         if (this.innerModel().countDetails() == null
-                || this.innerModel().countDetails().deadLetterMessageCount() == null) {
+            || this.innerModel().countDetails().deadLetterMessageCount() == null) {
             return 0;
         }
         return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().deadLetterMessageCount());
@@ -127,7 +114,7 @@ class ServiceBusSubscriptionImpl extends
     @Override
     public long scheduledMessageCount() {
         if (this.innerModel().countDetails() == null
-                || this.innerModel().countDetails().scheduledMessageCount() == null) {
+            || this.innerModel().countDetails().scheduledMessageCount() == null) {
             return 0;
         }
         return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().scheduledMessageCount());
@@ -136,7 +123,7 @@ class ServiceBusSubscriptionImpl extends
     @Override
     public long transferDeadLetterMessageCount() {
         if (this.innerModel().countDetails() == null
-                || this.innerModel().countDetails().transferDeadLetterMessageCount() == null) {
+            || this.innerModel().countDetails().transferDeadLetterMessageCount() == null) {
             return 0;
         }
         return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().transferDeadLetterMessageCount());
@@ -145,7 +132,7 @@ class ServiceBusSubscriptionImpl extends
     @Override
     public long transferMessageCount() {
         if (this.innerModel().countDetails() == null
-                || this.innerModel().countDetails().transferMessageCount() == null) {
+            || this.innerModel().countDetails().transferMessageCount() == null) {
             return 0;
         }
         return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().transferMessageCount());
@@ -241,22 +228,20 @@ class ServiceBusSubscriptionImpl extends
 
     @Override
     protected Mono<SBSubscriptionInner> getInnerAsync() {
-        return this.manager().serviceClient().getSubscriptions()
-                .getAsync(this.resourceGroupName(),
-                        this.namespaceName,
-                        this.parentName,
-                        this.name());
+        return this.manager()
+            .serviceClient()
+            .getSubscriptions()
+            .getAsync(this.resourceGroupName(), this.namespaceName, this.parentName, this.name());
     }
 
     @Override
     protected Mono<ServiceBusSubscription> createChildResourceAsync() {
         final ServiceBusSubscription self = this;
-        return this.manager().serviceClient().getSubscriptions()
-            .createOrUpdateAsync(this.resourceGroupName(),
-                    this.namespaceName,
-                    this.parentName,
-                    this.name(),
-                    this.innerModel())
+        return this.manager()
+            .serviceClient()
+            .getSubscriptions()
+            .createOrUpdateAsync(this.resourceGroupName(), this.namespaceName, this.parentName, this.name(),
+                this.innerModel())
             .map(inner -> {
                 setInner(inner);
                 return self;

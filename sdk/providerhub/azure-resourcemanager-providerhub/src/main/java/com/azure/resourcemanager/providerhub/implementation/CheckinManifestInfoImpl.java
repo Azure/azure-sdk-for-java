@@ -12,8 +12,8 @@ public final class CheckinManifestInfoImpl implements CheckinManifestInfo {
 
     private final com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager;
 
-    CheckinManifestInfoImpl(
-        CheckinManifestInfoInner innerObject, com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
+    CheckinManifestInfoImpl(CheckinManifestInfoInner innerObject,
+        com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

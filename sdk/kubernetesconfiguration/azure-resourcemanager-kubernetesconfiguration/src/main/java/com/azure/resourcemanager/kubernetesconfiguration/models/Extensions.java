@@ -27,13 +27,8 @@ public interface Extensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Extension object.
      */
-    Extension create(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        ExtensionInner extension);
+    Extension create(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String extensionName, ExtensionInner extension);
 
     /**
      * Create a new Kubernetes Cluster Extension.
@@ -52,14 +47,8 @@ public interface Extensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Extension object.
      */
-    Extension create(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        ExtensionInner extension,
-        Context context);
+    Extension create(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String extensionName, ExtensionInner extension, Context context);
 
     /**
      * Gets Kubernetes Cluster Extension.
@@ -77,13 +66,8 @@ public interface Extensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kubernetes Cluster Extension along with {@link Response}.
      */
-    Response<Extension> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        Context context);
+    Response<Extension> getWithResponse(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String extensionName, Context context);
 
     /**
      * Gets Kubernetes Cluster Extension.
@@ -100,11 +84,7 @@ public interface Extensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kubernetes Cluster Extension.
      */
-    Extension get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
+    Extension get(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
         String extensionName);
 
     /**
@@ -121,11 +101,7 @@ public interface Extensions {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
+    void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
         String extensionName);
 
     /**
@@ -144,14 +120,8 @@ public interface Extensions {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        Boolean forceDelete,
-        Context context);
+    void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String extensionName, Boolean forceDelete, Context context);
 
     /**
      * Patch an existing Kubernetes Cluster Extension.
@@ -169,13 +139,8 @@ public interface Extensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Extension object.
      */
-    Extension update(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        PatchExtension patchExtension);
+    Extension update(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String extensionName, PatchExtension patchExtension);
 
     /**
      * Patch an existing Kubernetes Cluster Extension.
@@ -194,14 +159,8 @@ public interface Extensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Extension object.
      */
-    Extension update(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        PatchExtension patchExtension,
-        Context context);
+    Extension update(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String extensionName, PatchExtension patchExtension, Context context);
 
     /**
      * List all Extensions in the cluster.
@@ -217,8 +176,8 @@ public interface Extensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Extensions as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Extension> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName);
+    PagedIterable<Extension> list(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName);
 
     /**
      * List all Extensions in the cluster.
@@ -235,6 +194,6 @@ public interface Extensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list Extensions as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Extension> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context);
+    PagedIterable<Extension> list(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, Context context);
 }

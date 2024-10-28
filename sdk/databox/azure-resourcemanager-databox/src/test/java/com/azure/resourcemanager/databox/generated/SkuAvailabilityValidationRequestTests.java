@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuAvailabilityValidationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuAvailabilityValidationRequest model =
-            BinaryData
-                .fromString(
-                    "{\"validationType\":\"ValidateSkuAvailability\",\"deviceType\":\"DataBox\",\"transferType\":\"ImportToAzure\",\"country\":\"pxacqqudfn\",\"location\":\"yxbaaabjyvayf\"}")
-                .toObject(SkuAvailabilityValidationRequest.class);
+        SkuAvailabilityValidationRequest model = BinaryData.fromString(
+            "{\"validationType\":\"ValidateSkuAvailability\",\"deviceType\":\"DataBox\",\"transferType\":\"ImportToAzure\",\"country\":\"pxacqqudfn\",\"location\":\"yxbaaabjyvayf\"}")
+            .toObject(SkuAvailabilityValidationRequest.class);
         Assertions.assertEquals(SkuName.DATA_BOX, model.deviceType());
         Assertions.assertEquals(TransferType.IMPORT_TO_AZURE, model.transferType());
         Assertions.assertEquals("pxacqqudfn", model.country());
@@ -26,12 +24,10 @@ public final class SkuAvailabilityValidationRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuAvailabilityValidationRequest model =
-            new SkuAvailabilityValidationRequest()
-                .withDeviceType(SkuName.DATA_BOX)
-                .withTransferType(TransferType.IMPORT_TO_AZURE)
-                .withCountry("pxacqqudfn")
-                .withLocation("yxbaaabjyvayf");
+        SkuAvailabilityValidationRequest model = new SkuAvailabilityValidationRequest().withDeviceType(SkuName.DATA_BOX)
+            .withTransferType(TransferType.IMPORT_TO_AZURE)
+            .withCountry("pxacqqudfn")
+            .withLocation("yxbaaabjyvayf");
         model = BinaryData.fromObject(model).toObject(SkuAvailabilityValidationRequest.class);
         Assertions.assertEquals(SkuName.DATA_BOX, model.deviceType());
         Assertions.assertEquals(TransferType.IMPORT_TO_AZURE, model.transferType());

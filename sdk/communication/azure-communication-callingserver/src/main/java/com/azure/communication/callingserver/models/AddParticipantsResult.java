@@ -26,8 +26,8 @@ public final class AddParticipantsResult {
     private final String operationContext;
 
     static {
-        AddParticipantsResponseConstructorProxy.setAccessor(
-            new AddParticipantsResponseConstructorProxy.AddParticipantsResponseConstructorAccessor() {
+        AddParticipantsResponseConstructorProxy
+            .setAccessor(new AddParticipantsResponseConstructorProxy.AddParticipantsResponseConstructorAccessor() {
                 @Override
                 public AddParticipantsResult create(AddParticipantsResponseInternal internalHeaders) {
                     return new AddParticipantsResult(internalHeaders);

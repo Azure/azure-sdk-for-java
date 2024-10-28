@@ -31,8 +31,8 @@ public interface ProtectedItemsClient {
      * @return the details of the protected item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProtectedItemModelInner> getWithResponse(
-        String resourceGroupName, String vaultName, String protectedItemName, Context context);
+    Response<ProtectedItemModelInner> getWithResponse(String resourceGroupName, String vaultName,
+        String protectedItemName, Context context);
 
     /**
      * Gets the protected item.
@@ -64,8 +64,8 @@ public interface ProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of protected item model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginCreate(
-        String resourceGroupName, String vaultName, String protectedItemName);
+    SyncPoller<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginCreate(String resourceGroupName,
+        String vaultName, String protectedItemName);
 
     /**
      * Puts the protected item.
@@ -83,12 +83,8 @@ public interface ProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of protected item model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginCreate(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        ProtectedItemModelInner body,
-        Context context);
+    SyncPoller<PollResult<ProtectedItemModelInner>, ProtectedItemModelInner> beginCreate(String resourceGroupName,
+        String vaultName, String protectedItemName, ProtectedItemModelInner body, Context context);
 
     /**
      * Puts the protected item.
@@ -122,12 +118,8 @@ public interface ProtectedItemsClient {
      * @return protected item model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectedItemModelInner create(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        ProtectedItemModelInner body,
-        Context context);
+    ProtectedItemModelInner create(String resourceGroupName, String vaultName, String protectedItemName,
+        ProtectedItemModelInner body, Context context);
 
     /**
      * Deletes the protected item.
@@ -143,8 +135,8 @@ public interface ProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vaultName, String protectedItemName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName,
+        String protectedItemName);
 
     /**
      * Deletes the protected item.
@@ -162,8 +154,8 @@ public interface ProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vaultName, String protectedItemName,
+        Boolean forceDelete, Context context);
 
     /**
      * Deletes the protected item.
@@ -195,8 +187,8 @@ public interface ProtectedItemsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete, Context context);
+    void delete(String resourceGroupName, String vaultName, String protectedItemName, Boolean forceDelete,
+        Context context);
 
     /**
      * Lists the protected items.
@@ -243,8 +235,8 @@ public interface ProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of planned failover model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner> beginPlannedFailover(
-        String resourceGroupName, String vaultName, String protectedItemName);
+    SyncPoller<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner>
+        beginPlannedFailover(String resourceGroupName, String vaultName, String protectedItemName);
 
     /**
      * Performs planned failover.
@@ -263,10 +255,7 @@ public interface ProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PlannedFailoverModelInner>, PlannedFailoverModelInner> beginPlannedFailover(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        PlannedFailoverModelInner body,
+        String resourceGroupName, String vaultName, String protectedItemName, PlannedFailoverModelInner body,
         Context context);
 
     /**
@@ -301,10 +290,6 @@ public interface ProtectedItemsClient {
      * @return planned failover model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PlannedFailoverModelInner plannedFailover(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        PlannedFailoverModelInner body,
-        Context context);
+    PlannedFailoverModelInner plannedFailover(String resourceGroupName, String vaultName, String protectedItemName,
+        PlannedFailoverModelInner body, Context context);
 }

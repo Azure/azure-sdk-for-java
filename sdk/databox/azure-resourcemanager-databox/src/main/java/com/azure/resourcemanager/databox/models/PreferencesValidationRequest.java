@@ -83,10 +83,8 @@ public final class PreferencesValidationRequest extends ValidationInputRequest {
             preference().validate();
         }
         if (deviceType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deviceType in model PreferencesValidationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property deviceType in model PreferencesValidationRequest"));
         }
     }
 

@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.webpubsub {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.webpubsub;
     exports com.azure.resourcemanager.webpubsub.fluent;
     exports com.azure.resourcemanager.webpubsub.fluent.models;
     exports com.azure.resourcemanager.webpubsub.models;
+
     opens com.azure.resourcemanager.webpubsub.fluent.models to com.azure.core;
     opens com.azure.resourcemanager.webpubsub.models to com.azure.core;
 }

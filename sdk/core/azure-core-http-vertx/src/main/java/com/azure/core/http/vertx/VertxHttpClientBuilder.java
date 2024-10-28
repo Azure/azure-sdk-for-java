@@ -33,7 +33,8 @@ public class VertxHttpClientBuilder {
 
     private static final ClientLogger LOGGER = new ClientLogger(VertxHttpClientBuilder.class);
     private static final Pattern NON_PROXY_HOSTS_SPLIT = Pattern.compile("(?<!\\\\)\\|");
-    private static final Pattern NON_PROXY_HOST_DESANITIZE = Pattern.compile("(\\?|\\\\|\\(|\\)|\\\\E|\\\\Q|\\.\\.)");
+    private static final Pattern NON_PROXY_HOST_REMOVE_SANITIZATION
+        = Pattern.compile("(\\?|\\\\|\\(|\\)|\\\\E|\\\\Q|\\.\\.)");
     private static final Pattern NON_PROXY_HOST_DOT_STAR = Pattern.compile("(\\.\\*)");
 
     private Duration connectTimeout;
@@ -240,7 +241,7 @@ public class VertxHttpClientBuilder {
 
                 String nonProxyHosts = buildProxyOptions.getNonProxyHosts();
                 if (!CoreUtils.isNullOrEmpty(nonProxyHosts)) {
-                    for (String nonProxyHost : desanitizedNonProxyHosts(nonProxyHosts)) {
+                    for (String nonProxyHost : removeNonProxyHostsSanitation(nonProxyHosts)) {
                         buildOptions.addNonProxyHost(nonProxyHost);
                     }
                 }
@@ -278,14 +279,16 @@ public class VertxHttpClientBuilder {
      * This is necessary as Vert.x will apply its own sanitization logic.
      *
      * @param nonProxyHosts The list of non-proxy hosts
-     * @return String array of desanitized proxy host strings
+     * @return String array of proxy host strings without sanitation.
      */
-    private String[] desanitizedNonProxyHosts(String nonProxyHosts) {
-        String desanitzedNonProxyHosts = NON_PROXY_HOST_DESANITIZE.matcher(nonProxyHosts).replaceAll("");
+    private String[] removeNonProxyHostsSanitation(String nonProxyHosts) {
+        String nonProxyHostsSanitationRemoved
+            = NON_PROXY_HOST_REMOVE_SANITIZATION.matcher(nonProxyHosts).replaceAll("");
 
-        desanitzedNonProxyHosts = NON_PROXY_HOST_DOT_STAR.matcher(desanitzedNonProxyHosts).replaceAll("*");
+        nonProxyHostsSanitationRemoved
+            = NON_PROXY_HOST_DOT_STAR.matcher(nonProxyHostsSanitationRemoved).replaceAll("*");
 
-        return NON_PROXY_HOSTS_SPLIT.split(desanitzedNonProxyHosts);
+        return NON_PROXY_HOSTS_SPLIT.split(nonProxyHostsSanitationRemoved);
     }
 
     // Enum Singleton Pattern

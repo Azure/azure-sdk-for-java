@@ -13,7 +13,8 @@ public class BrowserCustomizationOptions {
     /**
      * Creates an instance of BrowserCustomizationOptions.
      */
-    public BrowserCustomizationOptions() { }
+    public BrowserCustomizationOptions() {
+    }
 
     /**
      * Configures the property to set the success message which the browser will show to the user upon successful

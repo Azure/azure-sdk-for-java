@@ -11,10 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CostManagementProxyResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CostManagementProxyResource model =
-            BinaryData
-                .fromString("{\"eTag\":\"pgvdf\",\"id\":\"iotkftutqxl\",\"name\":\"gxlefgugnxkrxd\",\"type\":\"mi\"}")
-                .toObject(CostManagementProxyResource.class);
+        CostManagementProxyResource model = BinaryData
+            .fromString("{\"eTag\":\"pgvdf\",\"id\":\"iotkftutqxl\",\"name\":\"gxlefgugnxkrxd\",\"type\":\"mi\"}")
+            .toObject(CostManagementProxyResource.class);
         Assertions.assertEquals("pgvdf", model.etag());
     }
 

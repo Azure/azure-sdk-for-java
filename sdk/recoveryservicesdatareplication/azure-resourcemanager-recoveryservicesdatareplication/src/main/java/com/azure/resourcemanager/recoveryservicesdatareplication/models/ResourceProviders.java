@@ -23,8 +23,8 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return check name availability response model along with {@link Response}.
      */
-    Response<CheckNameAvailabilityResponseModel> checkNameAvailabilityWithResponse(
-        String location, CheckNameAvailabilityModel body, Context context);
+    Response<CheckNameAvailabilityResponseModel> checkNameAvailabilityWithResponse(String location,
+        CheckNameAvailabilityModel body, Context context);
 
     /**
      * Performs the resource name availability check.
@@ -51,8 +51,8 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment preflight model along with {@link Response}.
      */
-    Response<DeploymentPreflightModel> deploymentPreflightWithResponse(
-        String resourceGroupName, String deploymentId, DeploymentPreflightModelInner body, Context context);
+    Response<DeploymentPreflightModel> deploymentPreflightWithResponse(String resourceGroupName, String deploymentId,
+        DeploymentPreflightModelInner body, Context context);
 
     /**
      * Performs resource deployment validation.

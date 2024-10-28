@@ -186,11 +186,8 @@ public interface Workbook {
     WorkbookInner innerModel();
 
     /** The entirety of the Workbook definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The Workbook definition stages. */
@@ -233,20 +230,11 @@ public interface Workbook {
          * The stage of the Workbook definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithKind,
-                DefinitionStages.WithEtag,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithSerializedData,
-                DefinitionStages.WithVersion,
-                DefinitionStages.WithCategory,
-                DefinitionStages.WithTagsPropertiesTags,
-                DefinitionStages.WithSourceId,
-                DefinitionStages.WithStorageUri,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithSourceIdParameter {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithKind, DefinitionStages.WithEtag, DefinitionStages.WithDisplayName,
+            DefinitionStages.WithSerializedData, DefinitionStages.WithVersion, DefinitionStages.WithCategory,
+            DefinitionStages.WithTagsPropertiesTags, DefinitionStages.WithSourceId, DefinitionStages.WithStorageUri,
+            DefinitionStages.WithDescription, DefinitionStages.WithSourceIdParameter {
             /**
              * Executes the create request.
              *
@@ -420,16 +408,9 @@ public interface Workbook {
     Workbook.Update update();
 
     /** The template for Workbook update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithKind,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithSerializedData,
-            UpdateStages.WithCategory,
-            UpdateStages.WithTagsPropertiesTags,
-            UpdateStages.WithDescription,
-            UpdateStages.WithRevision,
-            UpdateStages.WithSourceId {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithKind, UpdateStages.WithDisplayName,
+        UpdateStages.WithSerializedData, UpdateStages.WithCategory, UpdateStages.WithTagsPropertiesTags,
+        UpdateStages.WithDescription, UpdateStages.WithRevision, UpdateStages.WithSourceId {
         /**
          * Executes the update request.
          *

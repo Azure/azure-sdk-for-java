@@ -19,8 +19,8 @@ public final class RegionsImpl implements Regions {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public RegionsImpl(
-        RegionsClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public RegionsImpl(RegionsClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -31,8 +31,8 @@ public final class RegionsImpl implements Regions {
     }
 
     public PagedIterable<RegionContract> listByService(String resourceGroupName, String serviceName, Context context) {
-        PagedIterable<RegionContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, context);
+        PagedIterable<RegionContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, context);
         return Utils.mapPage(inner, inner1 -> new RegionContractImpl(inner1, this.manager()));
     }
 

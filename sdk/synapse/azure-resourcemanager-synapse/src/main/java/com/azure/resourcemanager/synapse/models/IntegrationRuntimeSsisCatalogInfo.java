@@ -43,7 +43,8 @@ public final class IntegrationRuntimeSsisCatalogInfo {
     /*
      * Catalog information for managed dedicated integration runtime.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /** Creates an instance of IntegrationRuntimeSsisCatalogInfo class. */
     public IntegrationRuntimeSsisCatalogInfo() {
@@ -126,8 +127,8 @@ public final class IntegrationRuntimeSsisCatalogInfo {
      * @param catalogPricingTier the catalogPricingTier value to set.
      * @return the IntegrationRuntimeSsisCatalogInfo object itself.
      */
-    public IntegrationRuntimeSsisCatalogInfo withCatalogPricingTier(
-        IntegrationRuntimeSsisCatalogPricingTier catalogPricingTier) {
+    public IntegrationRuntimeSsisCatalogInfo
+        withCatalogPricingTier(IntegrationRuntimeSsisCatalogPricingTier catalogPricingTier) {
         this.catalogPricingTier = catalogPricingTier;
         return this;
     }

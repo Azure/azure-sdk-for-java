@@ -47,12 +47,15 @@ public final class MonitoredSubscriptionsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure().withHttpClient(httpClient)
+        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        MonitoredSubscriptionProperties response = manager.monitoredSubscriptions().getWithResponse("vdkcrodtj",
-            "nfwjlfltkacjvefk", ConfigurationName.DEFAULT, com.azure.core.util.Context.NONE).getValue();
+        MonitoredSubscriptionProperties response = manager.monitoredSubscriptions()
+            .getWithResponse("vdkcrodtj", "nfwjlfltkacjvefk", ConfigurationName.DEFAULT,
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(PatchOperation.ADD_COMPLETE, response.properties().patchOperation());
         Assertions.assertEquals("kfpagao", response.properties().monitoredSubscriptionList().get(0).subscriptionId());

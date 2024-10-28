@@ -34,11 +34,17 @@ public final class NamedAgentPoolProfileTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamedAgentPoolProfile model = new NamedAgentPoolProfile().withOsType(OsType.WINDOWS).withOsSku(Ossku.CBLMARINER)
+        NamedAgentPoolProfile model = new NamedAgentPoolProfile().withOsType(OsType.WINDOWS)
+            .withOsSku(Ossku.CBLMARINER)
             .withNodeLabels(mapOf("rifkwm", "mglzlhj"))
             .withNodeTaints(Arrays.asList("tsizntocipaoua", "psqucmpoyf", "kfo", "knygjofjddeq"))
-            .withMaxCount(752788462).withMinCount(1305479900).withEnableAutoScaling(true).withMaxPods(727938504)
-            .withCount(1770977837).withVmSize("jnqglhqgnu").withName("wifsq");
+            .withMaxCount(752788462)
+            .withMinCount(1305479900)
+            .withEnableAutoScaling(true)
+            .withMaxPods(727938504)
+            .withCount(1770977837)
+            .withVmSize("jnqglhqgnu")
+            .withName("wifsq");
         model = BinaryData.fromObject(model).toObject(NamedAgentPoolProfile.class);
         Assertions.assertEquals(OsType.WINDOWS, model.osType());
         Assertions.assertEquals(Ossku.CBLMARINER, model.osSku());

@@ -5,12 +5,10 @@ package com.microsoft.azure.servicebus.perf.core;
 
 import com.azure.perf.test.core.PerfStressOptions;
 import com.beust.jcommander.Parameter;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 /**
  * Represents the command line configurable options for a performance test.
  */
-@JsonPropertyOrder(alphabetic = true)
 public class ServiceBusStressOptions extends PerfStressOptions {
 
     @Parameter(names = { "-mr", "--maxReceive" }, description = "MaxReceive messages")
@@ -22,7 +20,9 @@ public class ServiceBusStressOptions extends PerfStressOptions {
     @Parameter(names = { "-msb", "--messageSizeBytes" }, description = "Size(in bytes) of one Message")
     private int messagesSizeBytesToSend = 10;
 
-    @Parameter(names = { "-idm", "--isDeleteMode" }, description = "Receiver client is receive_and_delete mode or peek_lock mode")
+    @Parameter(
+        names = { "-idm", "--isDeleteMode" },
+        description = "Receiver client is receive_and_delete mode or peek_lock mode")
     private boolean isDeleteMode = true;
 
     /**

@@ -32,8 +32,8 @@ public interface AzureBareMetalInstancesClient {
      *     operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginStart(
-        String resourceGroupName, String azureBareMetalInstanceName);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginStart(String resourceGroupName,
+        String azureBareMetalInstanceName);
 
     /**
      * Start a Bare Metal Instance.
@@ -50,8 +50,8 @@ public interface AzureBareMetalInstancesClient {
      *     operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginStart(
-        String resourceGroupName, String azureBareMetalInstanceName, Context context);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginStart(String resourceGroupName,
+        String azureBareMetalInstanceName, Context context);
 
     /**
      * Start a Bare Metal Instance.
@@ -98,8 +98,8 @@ public interface AzureBareMetalInstancesClient {
      *     operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginRestart(
-        String resourceGroupName, String azureBareMetalInstanceName);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginRestart(String resourceGroupName,
+        String azureBareMetalInstanceName);
 
     /**
      * Restart a Bare Metal Instance.
@@ -118,8 +118,8 @@ public interface AzureBareMetalInstancesClient {
      *     operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginRestart(
-        String resourceGroupName, String azureBareMetalInstanceName, ForceState forceParameter, Context context);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginRestart(String resourceGroupName,
+        String azureBareMetalInstanceName, ForceState forceParameter, Context context);
 
     /**
      * Restart a Bare Metal Instance.
@@ -152,8 +152,8 @@ public interface AzureBareMetalInstancesClient {
      * @return the OperationStatus object returns the state of an asynchronous operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusInner restart(
-        String resourceGroupName, String azureBareMetalInstanceName, ForceState forceParameter, Context context);
+    OperationStatusInner restart(String resourceGroupName, String azureBareMetalInstanceName, ForceState forceParameter,
+        Context context);
 
     /**
      * Shutdown a Bare Metal Instance.
@@ -169,8 +169,8 @@ public interface AzureBareMetalInstancesClient {
      *     operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginShutdown(
-        String resourceGroupName, String azureBareMetalInstanceName);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginShutdown(String resourceGroupName,
+        String azureBareMetalInstanceName);
 
     /**
      * Shutdown a Bare Metal Instance.
@@ -187,8 +187,8 @@ public interface AzureBareMetalInstancesClient {
      *     operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginShutdown(
-        String resourceGroupName, String azureBareMetalInstanceName, Context context);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginShutdown(String resourceGroupName,
+        String azureBareMetalInstanceName, Context context);
 
     /**
      * Shutdown a Bare Metal Instance.
@@ -299,8 +299,8 @@ public interface AzureBareMetalInstancesClient {
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureBareMetalInstanceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String azureBareMetalInstanceName, Context context);
+    Response<AzureBareMetalInstanceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String azureBareMetalInstanceName, Context context);
 
     /**
      * Gets an Azure Bare Metal Instance.
@@ -334,8 +334,8 @@ public interface AzureBareMetalInstancesClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureBareMetalInstanceInner> updateWithResponse(
-        String resourceGroupName, String azureBareMetalInstanceName, Tags tagsParameter, Context context);
+    Response<AzureBareMetalInstanceInner> updateWithResponse(String resourceGroupName,
+        String azureBareMetalInstanceName, Tags tagsParameter, Context context);
 
     /**
      * Patches the Tags field of a Azure Bare Metal Instance.

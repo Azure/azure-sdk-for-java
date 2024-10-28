@@ -45,12 +45,13 @@ public final class FunctionsListByStreamingJobMockTests {
             return Mono.just(httpResponse);
         }));
 
-        StreamAnalyticsManager manager = StreamAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        StreamAnalyticsManager manager = StreamAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Function> response = manager.functions().listByStreamingJob("wspughftqsxhqx", "j", "ukndxdigrjgu",
-            com.azure.core.util.Context.NONE);
+        PagedIterable<Function> response = manager.functions()
+            .listByStreamingJob("wspughftqsxhqx", "j", "ukndxdigrjgu", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("wygzlvdnkfxusem", response.iterator().next().id());
         Assertions.assertEquals("amvpphoszqzudph", response.iterator().next().properties().inputs().get(0).dataType());

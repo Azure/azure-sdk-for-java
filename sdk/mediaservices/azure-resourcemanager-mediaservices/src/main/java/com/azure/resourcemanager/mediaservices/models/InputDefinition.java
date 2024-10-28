@@ -23,8 +23,7 @@ import java.util.List;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.FromAllInputFile", value = FromAllInputFile.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.FromEachInputFile", value = FromEachInputFile.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.InputFile", value = InputFile.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.Media.InputFile", value = InputFile.class) })
 @Fluent
 public class InputDefinition {
     /*

@@ -293,8 +293,8 @@ public final class AuthorizationServerUpdateContract extends ProxyResource {
      * @param clientAuthenticationMethod the clientAuthenticationMethod value to set.
      * @return the AuthorizationServerUpdateContract object itself.
      */
-    public AuthorizationServerUpdateContract withClientAuthenticationMethod(
-        List<ClientAuthenticationMethod> clientAuthenticationMethod) {
+    public AuthorizationServerUpdateContract
+        withClientAuthenticationMethod(List<ClientAuthenticationMethod> clientAuthenticationMethod) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AuthorizationServerUpdateContractProperties();
         }
@@ -321,8 +321,8 @@ public final class AuthorizationServerUpdateContract extends ProxyResource {
      * @param tokenBodyParameters the tokenBodyParameters value to set.
      * @return the AuthorizationServerUpdateContract object itself.
      */
-    public AuthorizationServerUpdateContract withTokenBodyParameters(
-        List<TokenBodyParameterContract> tokenBodyParameters) {
+    public AuthorizationServerUpdateContract
+        withTokenBodyParameters(List<TokenBodyParameterContract> tokenBodyParameters) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AuthorizationServerUpdateContractProperties();
         }
@@ -418,8 +418,8 @@ public final class AuthorizationServerUpdateContract extends ProxyResource {
      * @param bearerTokenSendingMethods the bearerTokenSendingMethods value to set.
      * @return the AuthorizationServerUpdateContract object itself.
      */
-    public AuthorizationServerUpdateContract withBearerTokenSendingMethods(
-        List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
+    public AuthorizationServerUpdateContract
+        withBearerTokenSendingMethods(List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AuthorizationServerUpdateContractProperties();
         }

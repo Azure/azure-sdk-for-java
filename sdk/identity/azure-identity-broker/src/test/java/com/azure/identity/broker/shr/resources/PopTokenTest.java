@@ -29,9 +29,11 @@ public class PopTokenTest {
             WinDef.HWND hwnd = User32.INSTANCE.GetForegroundWindow();
             long hwndValue = com.sun.jna.Pointer.nativeValue(hwnd.getPointer());
 
-            InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserBrokerCredentialBuilder().setWindowHandle(hwndValue).build();
+            InteractiveBrowserCredential interactiveBrowserCredential
+                = new InteractiveBrowserBrokerCredentialBuilder().setWindowHandle(hwndValue).build();
 
-            PopTokenAuthenticationPolicy policy = new PopTokenAuthenticationPolicy(interactiveBrowserCredential, "https://graph.microsoft.com/.default");
+            PopTokenAuthenticationPolicy policy = new PopTokenAuthenticationPolicy(interactiveBrowserCredential,
+                "https://graph.microsoft.com/.default");
             HttpPipeline pipeline = new HttpPipelineBuilder().policies(policy).build();
             HttpRequest request = new HttpRequest(HttpMethod.GET, "https://graph.microsoft.com/v1.0/me");
             HttpResponse httpResponse = pipeline.sendSync(request, Context.NONE);

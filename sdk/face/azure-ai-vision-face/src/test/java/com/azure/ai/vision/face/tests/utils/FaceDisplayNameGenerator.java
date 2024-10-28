@@ -8,8 +8,8 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import java.lang.reflect.Method;
 
 public class FaceDisplayNameGenerator implements DisplayNameGenerator {
-    private static final DisplayNameGenerator STANDARD_DISPLAY_NAME_GENERATOR =
-        DisplayNameGenerator.getDisplayNameGenerator(Standard.class);
+    private static final DisplayNameGenerator STANDARD_DISPLAY_NAME_GENERATOR
+        = DisplayNameGenerator.getDisplayNameGenerator(Standard.class);
 
     @Override
     public String generateDisplayNameForClass(Class<?> testClass) {

@@ -22,34 +22,31 @@ public final class ContentTypesImpl implements ContentTypes {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public ContentTypesImpl(
-        ContentTypesClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public ContentTypesImpl(ContentTypesClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ContentTypeContract> listByService(String resourceGroupName, String serviceName) {
-        PagedIterable<ContentTypeContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName);
+        PagedIterable<ContentTypeContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName);
         return Utils.mapPage(inner, inner1 -> new ContentTypeContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ContentTypeContract> listByService(
-        String resourceGroupName, String serviceName, Context context) {
-        PagedIterable<ContentTypeContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, context);
+    public PagedIterable<ContentTypeContract> listByService(String resourceGroupName, String serviceName,
+        Context context) {
+        PagedIterable<ContentTypeContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, context);
         return Utils.mapPage(inner, inner1 -> new ContentTypeContractImpl(inner1, this.manager()));
     }
 
-    public Response<ContentTypeContract> getWithResponse(
-        String resourceGroupName, String serviceName, String contentTypeId, Context context) {
-        ContentTypesGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, contentTypeId, context);
+    public Response<ContentTypeContract> getWithResponse(String resourceGroupName, String serviceName,
+        String contentTypeId, Context context) {
+        ContentTypesGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, contentTypeId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ContentTypeContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -65,8 +62,8 @@ public final class ContentTypesImpl implements ContentTypes {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String contentTypeId, String ifMatch, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String contentTypeId,
+        String ifMatch, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, contentTypeId, ifMatch, context);
     }
 
@@ -77,25 +74,18 @@ public final class ContentTypesImpl implements ContentTypes {
     public ContentTypeContract getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String contentTypeId = Utils.getValueFromIdByName(id, "contentTypes");
         if (contentTypeId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'contentTypes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'contentTypes'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, contentTypeId, Context.NONE).getValue();
     }
@@ -103,25 +93,18 @@ public final class ContentTypesImpl implements ContentTypes {
     public Response<ContentTypeContract> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String contentTypeId = Utils.getValueFromIdByName(id, "contentTypes");
         if (contentTypeId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'contentTypes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'contentTypes'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, contentTypeId, context);
     }
@@ -129,25 +112,18 @@ public final class ContentTypesImpl implements ContentTypes {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String contentTypeId = Utils.getValueFromIdByName(id, "contentTypes");
         if (contentTypeId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'contentTypes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'contentTypes'.", id)));
         }
         String localIfMatch = null;
         this.deleteWithResponse(resourceGroupName, serviceName, contentTypeId, localIfMatch, Context.NONE);
@@ -156,25 +132,18 @@ public final class ContentTypesImpl implements ContentTypes {
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String contentTypeId = Utils.getValueFromIdByName(id, "contentTypes");
         if (contentTypeId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'contentTypes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'contentTypes'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, serviceName, contentTypeId, ifMatch, context);
     }

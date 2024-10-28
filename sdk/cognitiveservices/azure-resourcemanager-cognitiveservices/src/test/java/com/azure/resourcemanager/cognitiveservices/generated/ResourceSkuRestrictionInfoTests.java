@@ -12,21 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceSkuRestrictionInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSkuRestrictionInfo model =
-            BinaryData
-                .fromString(
-                    "{\"locations\":[\"nwsubisnj\",\"mpmngnzscxaqwoo\",\"hcbonqvpkvlr\"],\"zones\":[\"ea\",\"eipheoflokeyy\"]}")
-                .toObject(ResourceSkuRestrictionInfo.class);
+        ResourceSkuRestrictionInfo model = BinaryData.fromString(
+            "{\"locations\":[\"nwsubisnj\",\"mpmngnzscxaqwoo\",\"hcbonqvpkvlr\"],\"zones\":[\"ea\",\"eipheoflokeyy\"]}")
+            .toObject(ResourceSkuRestrictionInfo.class);
         Assertions.assertEquals("nwsubisnj", model.locations().get(0));
         Assertions.assertEquals("ea", model.zones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceSkuRestrictionInfo model =
-            new ResourceSkuRestrictionInfo()
-                .withLocations(Arrays.asList("nwsubisnj", "mpmngnzscxaqwoo", "hcbonqvpkvlr"))
-                .withZones(Arrays.asList("ea", "eipheoflokeyy"));
+        ResourceSkuRestrictionInfo model = new ResourceSkuRestrictionInfo()
+            .withLocations(Arrays.asList("nwsubisnj", "mpmngnzscxaqwoo", "hcbonqvpkvlr"))
+            .withZones(Arrays.asList("ea", "eipheoflokeyy"));
         model = BinaryData.fromObject(model).toObject(ResourceSkuRestrictionInfo.class);
         Assertions.assertEquals("nwsubisnj", model.locations().get(0));
         Assertions.assertEquals("ea", model.zones().get(0));

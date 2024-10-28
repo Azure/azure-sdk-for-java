@@ -92,7 +92,8 @@ public class TaskTests extends BatchClientTestBase {
             //UPDATE
             Integer maxRetrycount = 5;
             Duration retentionPeriod = Duration.ofDays(5);
-            task.setConstraints(new BatchTaskConstraints().setMaxTaskRetryCount(maxRetrycount).setRetentionTime(retentionPeriod));
+            task.setConstraints(
+                new BatchTaskConstraints().setMaxTaskRetryCount(maxRetrycount).setRetentionTime(retentionPeriod));
             batchClient.replaceTask(jobId, taskId, task);
 
             //GET After UPDATE
@@ -136,7 +137,6 @@ public class TaskTests extends BatchClientTestBase {
             if (getTestMode() == TestMode.RECORD) {
                 Assertions.assertEquals("msmpi", task.getApplicationPackageReferences().get(0).getApplicationId());
             }
-
 
         } finally {
             try {
@@ -189,7 +189,8 @@ public class TaskTests extends BatchClientTestBase {
             files.add(file);
 
             // CREATE
-            BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId, String.format("/bin/bash -c 'set -e; set -o pipefail; cat %s'", blobFileName)).setResourceFiles(files);
+            BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId,
+                String.format("/bin/bash -c 'set -e; set -o pipefail; cat %s'", blobFileName)).setResourceFiles(files);
             batchClient.createTask(jobId, taskToCreate);
 
             // GET
@@ -240,12 +241,16 @@ public class TaskTests extends BatchClientTestBase {
                     outputSas = redacted;
                 }
                 // UPLOAD LOG
-                UploadBatchServiceLogsContent logsContent = new UploadBatchServiceLogsContent(outputSas, OffsetDateTime.now().minusMinutes(-10));
-                UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClient.uploadNodeLogs(liveIaasPoolId, task.getNodeInfo().getNodeId(), logsContent);
+                UploadBatchServiceLogsContent logsContent
+                    = new UploadBatchServiceLogsContent(outputSas, OffsetDateTime.now().minusMinutes(-10));
+                UploadBatchServiceLogsResult uploadBatchServiceLogsResult
+                    = batchClient.uploadNodeLogs(liveIaasPoolId, task.getNodeInfo().getNodeId(), logsContent);
 
                 Assertions.assertNotNull(uploadBatchServiceLogsResult);
                 Assertions.assertTrue(uploadBatchServiceLogsResult.getNumberOfFilesUploaded() > 0);
-                Assertions.assertTrue(uploadBatchServiceLogsResult.getVirtualDirectoryName().toLowerCase().contains(liveIaasPoolId.toLowerCase()));
+                Assertions.assertTrue(uploadBatchServiceLogsResult.getVirtualDirectoryName()
+                    .toLowerCase()
+                    .contains(liveIaasPoolId.toLowerCase()));
             }
 
             // DELETE
@@ -286,7 +291,8 @@ public class TaskTests extends BatchClientTestBase {
             // CREATE
             List<BatchTaskCreateContent> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
-                BatchTaskCreateContent taskCreateContent = new BatchTaskCreateContent(String.format("mytask%d", i), String.format("cmd /c echo hello %d", i));
+                BatchTaskCreateContent taskCreateContent = new BatchTaskCreateContent(String.format("mytask%d", i),
+                    String.format("cmd /c echo hello %d", i));
                 tasksToAdd.add(taskCreateContent);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions();
@@ -315,9 +321,7 @@ public class TaskTests extends BatchClientTestBase {
         String accessKey = Configuration.getGlobalConfiguration().get("AZURE_BATCH_ACCESS_KEY");
         accessKey = (accessKey == null || accessKey.isEmpty()) ? "RANDOM_KEY" : accessKey;
 
-        AzureNamedKeyCredential noExistCredentials1 = new AzureNamedKeyCredential(
-            "noexistaccount", accessKey
-        );
+        AzureNamedKeyCredential noExistCredentials1 = new AzureNamedKeyCredential("noexistaccount", accessKey);
         batchClientBuilder.credential(noExistCredentials1);
 
         String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasksWithError");
@@ -327,7 +331,8 @@ public class TaskTests extends BatchClientTestBase {
             // CREATE
             List<BatchTaskCreateContent> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
-                BatchTaskCreateContent taskCreateContent = new BatchTaskCreateContent(String.format("mytask%d", i), String.format("cmd /c echo hello %d", i));
+                BatchTaskCreateContent taskCreateContent = new BatchTaskCreateContent(String.format("mytask%d", i),
+                    String.format("cmd /c echo hello %d", i));
                 tasksToAdd.add(taskCreateContent);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions();
@@ -360,7 +365,9 @@ public class TaskTests extends BatchClientTestBase {
 
         // If this test fails try increasing the size of the Task in case maximum size increase
         for (int i = 0; i < 10000; i++) {
-            resourceFile = new ResourceFile().setHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile" + i).setFilePath("resourceFile" + i);
+            resourceFile
+                = new ResourceFile().setHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile" + i)
+                    .setFilePath("resourceFile" + i);
             resourceFiles.add(resourceFile);
         }
         taskToAdd.setResourceFiles(resourceFiles);
@@ -415,7 +422,9 @@ public class TaskTests extends BatchClientTestBase {
 
         // Num Resource Files * Max Chunk Size should be greater than or equal to the limit which triggers the PoisonTask test to ensure we encounter the error in the initial chunk.
         for (int i = 0; i < 100; i++) {
-            resourceFile = new ResourceFile().setHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile" + i).setFilePath("resourceFile" + i);
+            resourceFile
+                = new ResourceFile().setHttpUrl("https://mystorageaccount.blob.core.windows.net/files/resourceFile" + i)
+                    .setFilePath("resourceFile" + i);
             resourceFiles.add(resourceFile);
         }
         // Num tasks to add
@@ -467,7 +476,8 @@ public class TaskTests extends BatchClientTestBase {
             // CREATE
             List<BatchTaskCreateContent> tasksToAdd = new ArrayList<>();
             for (int i = 0; i < taskCount; i++) {
-                BatchTaskCreateContent taskCreateContent = new BatchTaskCreateContent(String.format("mytask%d", i), String.format("cmd /c echo hello %d", i));
+                BatchTaskCreateContent taskCreateContent = new BatchTaskCreateContent(String.format("mytask%d", i),
+                    String.format("cmd /c echo hello %d", i));
                 tasksToAdd.add(taskCreateContent);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions();
@@ -521,18 +531,23 @@ public class TaskTests extends BatchClientTestBase {
         try {
             // CREATE
             List<OutputFile> outputs = new ArrayList<>();
-            OutputFileBlobContainerDestination fileBlobContainerDestination = new OutputFileBlobContainerDestination(containerUrl);
+            OutputFileBlobContainerDestination fileBlobContainerDestination
+                = new OutputFileBlobContainerDestination(containerUrl);
             fileBlobContainerDestination.setPath("taskLogs/output.txt");
 
             OutputFileDestination fileDestination = new OutputFileDestination();
             fileDestination.setContainer(fileBlobContainerDestination);
 
-            outputs.add(new OutputFile("../stdout.txt", fileDestination, new OutputFileUploadConfig(OutputFileUploadCondition.TASK_COMPLETION)));
+            outputs.add(new OutputFile("../stdout.txt", fileDestination,
+                new OutputFileUploadConfig(OutputFileUploadCondition.TASK_COMPLETION)));
 
-            OutputFileBlobContainerDestination fileBlobErrContainerDestination = new OutputFileBlobContainerDestination(containerUrl);
+            OutputFileBlobContainerDestination fileBlobErrContainerDestination
+                = new OutputFileBlobContainerDestination(containerUrl);
             fileBlobErrContainerDestination.setPath("taskLogs/err.txt");
 
-            outputs.add(new OutputFile("../stderr.txt", new OutputFileDestination().setContainer(fileBlobErrContainerDestination), new OutputFileUploadConfig(OutputFileUploadCondition.TASK_FAILURE)));
+            outputs.add(new OutputFile("../stderr.txt",
+                new OutputFileDestination().setContainer(fileBlobErrContainerDestination),
+                new OutputFileUploadConfig(OutputFileUploadCondition.TASK_FAILURE)));
 
             BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId, "bash -c \"echo hello\"");
             taskToCreate.setOutputFiles(outputs);
@@ -552,8 +567,7 @@ public class TaskTests extends BatchClientTestBase {
                 }
             }
 
-            taskToCreate = new BatchTaskCreateContent(badTaskId, "bash -c \"bad command\"")
-                .setOutputFiles(outputs);
+            taskToCreate = new BatchTaskCreateContent(badTaskId, "bash -c \"bad command\"").setOutputFiles(outputs);
 
             batchClient.createTask(jobId, taskToCreate);
 
@@ -624,19 +638,11 @@ public class TaskTests extends BatchClientTestBase {
     @Test
     public void testDeserializationOfBatchTaskStatistics() {
         // Simulated JSON response with numbers as strings
-        String jsonResponse = "{"
-            + "\"url\":\"http://example.com/statistics\","
-            + "\"startTime\":\"2022-01-01T00:00:00Z\","
-            + "\"lastUpdateTime\":\"2022-01-01T01:00:00Z\","
-            + "\"userCPUTime\":\"PT1H\","
-            + "\"kernelCPUTime\":\"PT2H\","
-            + "\"wallClockTime\":\"PT3H\","
-            + "\"readIOps\":\"1000\","
-            + "\"writeIOps\":\"500\","
-            + "\"readIOGiB\":0.5,"
-            + "\"writeIOGiB\":0.25,"
-            + "\"waitTime\":\"PT30M\""
-            + "}";
+        String jsonResponse = "{" + "\"url\":\"http://example.com/statistics\","
+            + "\"startTime\":\"2022-01-01T00:00:00Z\"," + "\"lastUpdateTime\":\"2022-01-01T01:00:00Z\","
+            + "\"userCPUTime\":\"PT1H\"," + "\"kernelCPUTime\":\"PT2H\"," + "\"wallClockTime\":\"PT3H\","
+            + "\"readIOps\":\"1000\"," + "\"writeIOps\":\"500\"," + "\"readIOGiB\":0.5," + "\"writeIOGiB\":0.25,"
+            + "\"waitTime\":\"PT30M\"" + "}";
 
         // Deserialize JSON response using JsonReader from JsonProviders
         try (JsonReader jsonReader = JsonProviders.createReader(new StringReader(jsonResponse))) {

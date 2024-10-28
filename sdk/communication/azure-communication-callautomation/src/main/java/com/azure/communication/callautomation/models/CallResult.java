@@ -39,7 +39,8 @@ public abstract class CallResult {
      */
     protected String operationContextFromRequest;
 
-    CallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection, CallConnectionAsync callConnectionAsync) {
+    CallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection,
+        CallConnectionAsync callConnectionAsync) {
         this.callConnectionProperties = callConnectionProperties;
         this.callConnection = callConnection;
         this.callConnectionAsync = callConnectionAsync;
@@ -52,7 +53,8 @@ public abstract class CallResult {
      * @param callConnectionId the call connection id
      * @param operationContext the operation context
      */
-    public void setEventProcessor(CallAutomationEventProcessor eventProcessor, String callConnectionId, String operationContext) {
+    public void setEventProcessor(CallAutomationEventProcessor eventProcessor, String callConnectionId,
+        String operationContext) {
         this.eventProcessor = eventProcessor;
         this.callConnectionId = callConnectionId;
         this.operationContextFromRequest = operationContext;

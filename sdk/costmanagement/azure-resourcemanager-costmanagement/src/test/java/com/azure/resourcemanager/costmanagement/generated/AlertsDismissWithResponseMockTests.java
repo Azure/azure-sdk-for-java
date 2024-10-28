@@ -41,78 +41,60 @@ public final class AlertsDismissWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"definition\":{\"type\":\"Budget\",\"category\":\"Usage\",\"criteria\":\"ForecastCostThresholdExceeded\"},\"description\":\"vzvfvaawzqadfl\",\"source\":\"Preset\",\"details\":{\"timeGrainType\":\"Quarterly\",\"periodStartDate\":\"aecxndtic\",\"triggeredBy\":\"pvz\",\"resourceGroupFilter\":[],\"resourceFilter\":[],\"meterFilter\":[],\"tagFilter\":\"datald\",\"operator\":\"LessThan\",\"unit\":\"rclnpkc\",\"contactEmails\":[],\"contactGroups\":[],\"contactRoles\":[],\"overridingAlert\":\"ykhyawfvjlboxqvk\",\"departmentName\":\"mxho\",\"companyName\":\"ynhdwdigum\",\"enrollmentNumber\":\"raauzzpt\",\"enrollmentStartDate\":\"zysdzh\",\"enrollmentEndDate\":\"wwvaiqyuvvfonk\"},\"costEntityId\":\"qyikvy\",\"status\":\"Overridden\",\"creationTime\":\"avluwmncs\",\"closeTime\":\"ijf\",\"modificationTime\":\"vpo\",\"statusModificationUserName\":\"rsg\",\"statusModificationTime\":\"b\"},\"eTag\":\"uzqgnjdgkynsc\",\"id\":\"i\",\"name\":\"hzvhxnkomtkubo\",\"type\":\"ppnvdxz\"}";
+        String responseStr
+            = "{\"properties\":{\"definition\":{\"type\":\"Budget\",\"category\":\"Usage\",\"criteria\":\"ForecastCostThresholdExceeded\"},\"description\":\"vzvfvaawzqadfl\",\"source\":\"Preset\",\"details\":{\"timeGrainType\":\"Quarterly\",\"periodStartDate\":\"aecxndtic\",\"triggeredBy\":\"pvz\",\"resourceGroupFilter\":[],\"resourceFilter\":[],\"meterFilter\":[],\"tagFilter\":\"datald\",\"operator\":\"LessThan\",\"unit\":\"rclnpkc\",\"contactEmails\":[],\"contactGroups\":[],\"contactRoles\":[],\"overridingAlert\":\"ykhyawfvjlboxqvk\",\"departmentName\":\"mxho\",\"companyName\":\"ynhdwdigum\",\"enrollmentNumber\":\"raauzzpt\",\"enrollmentStartDate\":\"zysdzh\",\"enrollmentEndDate\":\"wwvaiqyuvvfonk\"},\"costEntityId\":\"qyikvy\",\"status\":\"Overridden\",\"creationTime\":\"avluwmncs\",\"closeTime\":\"ijf\",\"modificationTime\":\"vpo\",\"statusModificationUserName\":\"rsg\",\"statusModificationTime\":\"b\"},\"eTag\":\"uzqgnjdgkynsc\",\"id\":\"i\",\"name\":\"hzvhxnkomtkubo\",\"type\":\"ppnvdxz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Alert response =
-            manager
-                .alerts()
-                .dismissWithResponse(
-                    "g",
-                    "ddrihpf",
-                    new DismissAlertPayload()
-                        .withDefinition(
-                            new AlertPropertiesDefinition()
-                                .withType(AlertType.X_CLOUD)
-                                .withCategory(AlertCategory.COST)
-                                .withCriteria(AlertCriteria.COST_THRESHOLD_EXCEEDED))
-                        .withDescription("omdjvlpjxxkzbrm")
-                        .withSource(AlertSource.USER)
-                        .withDetails(
-                            new AlertPropertiesDetails()
-                                .withTimeGrainType(AlertTimeGrainType.MONTHLY)
-                                .withPeriodStartDate("ykzkdncjdxo")
-                                .withTriggeredBy("zoggculapz")
-                                .withResourceGroupFilter(Arrays.asList())
-                                .withResourceFilter(Arrays.asList())
-                                .withMeterFilter(Arrays.asList())
-                                .withTagFilter("dataogtqxepnylbf")
-                                .withOperator(AlertOperator.EQUAL_TO)
-                                .withUnit("tlvofq")
-                                .withContactEmails(Arrays.asList())
-                                .withContactGroups(Arrays.asList())
-                                .withContactRoles(Arrays.asList())
-                                .withOverridingAlert("byfmowuxr")
-                                .withDepartmentName("pvdwxf")
-                                .withCompanyName("iivwzjbhyzsxjrka")
-                                .withEnrollmentNumber("trnegvmnvuqeqvld")
-                                .withEnrollmentStartDate("astjbkkdmflvestm")
-                                .withEnrollmentEndDate("xrrilozapee"))
-                        .withCostEntityId("pxlktwkuziycsl")
-                        .withStatus(AlertStatus.OVERRIDDEN)
-                        .withCreationTime("uztcktyhjtqed")
-                        .withCloseTime("zulwmmrqzzrrj")
-                        .withModificationTime("gl")
-                        .withStatusModificationUsername("zgkrvqe")
-                        .withStatusModificationTime("toepryu"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        Alert response = manager.alerts()
+            .dismissWithResponse("g", "ddrihpf",
+                new DismissAlertPayload()
+                    .withDefinition(new AlertPropertiesDefinition().withType(AlertType.X_CLOUD)
+                        .withCategory(AlertCategory.COST)
+                        .withCriteria(AlertCriteria.COST_THRESHOLD_EXCEEDED))
+                    .withDescription("omdjvlpjxxkzbrm")
+                    .withSource(AlertSource.USER)
+                    .withDetails(new AlertPropertiesDetails().withTimeGrainType(AlertTimeGrainType.MONTHLY)
+                        .withPeriodStartDate("ykzkdncjdxo")
+                        .withTriggeredBy("zoggculapz")
+                        .withResourceGroupFilter(Arrays.asList())
+                        .withResourceFilter(Arrays.asList())
+                        .withMeterFilter(Arrays.asList())
+                        .withTagFilter("dataogtqxepnylbf")
+                        .withOperator(AlertOperator.EQUAL_TO)
+                        .withUnit("tlvofq")
+                        .withContactEmails(Arrays.asList())
+                        .withContactGroups(Arrays.asList())
+                        .withContactRoles(Arrays.asList())
+                        .withOverridingAlert("byfmowuxr")
+                        .withDepartmentName("pvdwxf")
+                        .withCompanyName("iivwzjbhyzsxjrka")
+                        .withEnrollmentNumber("trnegvmnvuqeqvld")
+                        .withEnrollmentStartDate("astjbkkdmflvestm")
+                        .withEnrollmentEndDate("xrrilozapee"))
+                    .withCostEntityId("pxlktwkuziycsl")
+                    .withStatus(AlertStatus.OVERRIDDEN)
+                    .withCreationTime("uztcktyhjtqed")
+                    .withCloseTime("zulwmmrqzzrrj")
+                    .withModificationTime("gl")
+                    .withStatusModificationUsername("zgkrvqe")
+                    .withStatusModificationTime("toepryu"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("uzqgnjdgkynsc", response.etag());
         Assertions.assertEquals(AlertType.BUDGET, response.definition().type());

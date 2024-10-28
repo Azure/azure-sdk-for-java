@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class L3NetworkPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L3NetworkProperties model =
-            BinaryData
-                .fromString(
-                    "{\"associatedResourceIds\":[\"rribd\",\"ibqipqkg\",\"vxndz\"],\"clusterId\":\"krefajpjo\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"nyhgbijtji\",\"hybridAksClustersAssociatedIds\":[\"zs\",\"ab\"],\"hybridAksIpamEnabled\":\"False\",\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"awfsdjpvkvpbjxbk\",\"ipAllocationType\":\"DualStack\",\"ipv4ConnectedPrefix\":\"dvncjabudurgk\",\"ipv6ConnectedPrefix\":\"mokzhjjklf\",\"l3IsolationDomainId\":\"hmouwqlgzrfze\",\"provisioningState\":\"Accepted\",\"virtualMachinesAssociatedIds\":[\"zi\",\"ayuhqlbjbsy\",\"bqwrvtldgm\"],\"vlan\":8878391256590645383}")
-                .toObject(L3NetworkProperties.class);
+        L3NetworkProperties model = BinaryData.fromString(
+            "{\"associatedResourceIds\":[\"rribd\",\"ibqipqkg\",\"vxndz\"],\"clusterId\":\"krefajpjo\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"nyhgbijtji\",\"hybridAksClustersAssociatedIds\":[\"zs\",\"ab\"],\"hybridAksIpamEnabled\":\"False\",\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"awfsdjpvkvpbjxbk\",\"ipAllocationType\":\"DualStack\",\"ipv4ConnectedPrefix\":\"dvncjabudurgk\",\"ipv6ConnectedPrefix\":\"mokzhjjklf\",\"l3IsolationDomainId\":\"hmouwqlgzrfze\",\"provisioningState\":\"Accepted\",\"virtualMachinesAssociatedIds\":[\"zi\",\"ayuhqlbjbsy\",\"bqwrvtldgm\"],\"vlan\":8878391256590645383}")
+            .toObject(L3NetworkProperties.class);
         Assertions.assertEquals(HybridAksIpamEnabled.FALSE, model.hybridAksIpamEnabled());
         Assertions.assertEquals(HybridAksPluginType.DPDK, model.hybridAksPluginType());
         Assertions.assertEquals("awfsdjpvkvpbjxbk", model.interfaceName());
@@ -31,16 +29,14 @@ public final class L3NetworkPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L3NetworkProperties model =
-            new L3NetworkProperties()
-                .withHybridAksIpamEnabled(HybridAksIpamEnabled.FALSE)
-                .withHybridAksPluginType(HybridAksPluginType.DPDK)
-                .withInterfaceName("awfsdjpvkvpbjxbk")
-                .withIpAllocationType(IpAllocationType.DUAL_STACK)
-                .withIpv4ConnectedPrefix("dvncjabudurgk")
-                .withIpv6ConnectedPrefix("mokzhjjklf")
-                .withL3IsolationDomainId("hmouwqlgzrfze")
-                .withVlan(8878391256590645383L);
+        L3NetworkProperties model = new L3NetworkProperties().withHybridAksIpamEnabled(HybridAksIpamEnabled.FALSE)
+            .withHybridAksPluginType(HybridAksPluginType.DPDK)
+            .withInterfaceName("awfsdjpvkvpbjxbk")
+            .withIpAllocationType(IpAllocationType.DUAL_STACK)
+            .withIpv4ConnectedPrefix("dvncjabudurgk")
+            .withIpv6ConnectedPrefix("mokzhjjklf")
+            .withL3IsolationDomainId("hmouwqlgzrfze")
+            .withVlan(8878391256590645383L);
         model = BinaryData.fromObject(model).toObject(L3NetworkProperties.class);
         Assertions.assertEquals(HybridAksIpamEnabled.FALSE, model.hybridAksIpamEnabled());
         Assertions.assertEquals(HybridAksPluginType.DPDK, model.hybridAksPluginType());

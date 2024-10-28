@@ -64,8 +64,8 @@ public interface Workspaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace details along with {@link Response}.
      */
-    Response<WorkspaceResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<WorkspaceResource> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Returns a workspace with the given name.

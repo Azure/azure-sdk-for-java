@@ -348,28 +348,20 @@ public final class DataMaskingRuleProperties {
      */
     public void validate() {
         if (schemaName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schemaName in model DataMaskingRuleProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property schemaName in model DataMaskingRuleProperties"));
         }
         if (tableName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property tableName in model DataMaskingRuleProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property tableName in model DataMaskingRuleProperties"));
         }
         if (columnName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property columnName in model DataMaskingRuleProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property columnName in model DataMaskingRuleProperties"));
         }
         if (maskingFunction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property maskingFunction in model DataMaskingRuleProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property maskingFunction in model DataMaskingRuleProperties"));
         }
     }
 

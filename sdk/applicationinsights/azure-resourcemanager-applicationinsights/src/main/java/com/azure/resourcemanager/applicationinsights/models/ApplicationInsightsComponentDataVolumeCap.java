@@ -114,8 +114,8 @@ public final class ApplicationInsightsComponentDataVolumeCap {
      * @param stopSendNotificationWhenHitThreshold the stopSendNotificationWhenHitThreshold value to set.
      * @return the ApplicationInsightsComponentDataVolumeCap object itself.
      */
-    public ApplicationInsightsComponentDataVolumeCap withStopSendNotificationWhenHitThreshold(
-        Boolean stopSendNotificationWhenHitThreshold) {
+    public ApplicationInsightsComponentDataVolumeCap
+        withStopSendNotificationWhenHitThreshold(Boolean stopSendNotificationWhenHitThreshold) {
         this.stopSendNotificationWhenHitThreshold = stopSendNotificationWhenHitThreshold;
         return this;
     }
@@ -137,8 +137,8 @@ public final class ApplicationInsightsComponentDataVolumeCap {
      * @param stopSendNotificationWhenHitCap the stopSendNotificationWhenHitCap value to set.
      * @return the ApplicationInsightsComponentDataVolumeCap object itself.
      */
-    public ApplicationInsightsComponentDataVolumeCap withStopSendNotificationWhenHitCap(
-        Boolean stopSendNotificationWhenHitCap) {
+    public ApplicationInsightsComponentDataVolumeCap
+        withStopSendNotificationWhenHitCap(Boolean stopSendNotificationWhenHitCap) {
         this.stopSendNotificationWhenHitCap = stopSendNotificationWhenHitCap;
         return this;
     }

@@ -62,11 +62,8 @@ public interface InventoryItem {
     InventoryItemInner innerModel();
 
     /** The entirety of the InventoryItem definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
     /** The InventoryItem definition stages. */

@@ -29,8 +29,8 @@ public interface WorkspacePurges {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing operationId for a specific purge action.
      */
-    Response<WorkspacePurgeResponse> purgeWithResponse(
-        String resourceGroupName, String workspaceName, WorkspacePurgeBody body, Context context);
+    Response<WorkspacePurgeResponse> purgeWithResponse(String resourceGroupName, String workspaceName,
+        WorkspacePurgeBody body, Context context);
 
     /**
      * Purges data in an Log Analytics workspace by a set of user-defined filters.
@@ -65,8 +65,8 @@ public interface WorkspacePurges {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status of an ongoing purge operation along with {@link Response}.
      */
-    Response<WorkspacePurgeStatusResponse> getPurgeStatusWithResponse(
-        String resourceGroupName, String workspaceName, String purgeId, Context context);
+    Response<WorkspacePurgeStatusResponse> getPurgeStatusWithResponse(String resourceGroupName, String workspaceName,
+        String purgeId, Context context);
 
     /**
      * Gets status of an ongoing purge operation.

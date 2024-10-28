@@ -31,20 +31,22 @@ public final class NetworkServiceDesignVersionsImpl implements NetworkServiceDes
 
     public void delete(String resourceGroupName, String publisherName, String networkServiceDesignGroupName,
         String networkServiceDesignVersionName) {
-        this.serviceClient().delete(resourceGroupName, publisherName, networkServiceDesignGroupName,
-            networkServiceDesignVersionName);
+        this.serviceClient()
+            .delete(resourceGroupName, publisherName, networkServiceDesignGroupName, networkServiceDesignVersionName);
     }
 
     public void delete(String resourceGroupName, String publisherName, String networkServiceDesignGroupName,
         String networkServiceDesignVersionName, Context context) {
-        this.serviceClient().delete(resourceGroupName, publisherName, networkServiceDesignGroupName,
-            networkServiceDesignVersionName, context);
+        this.serviceClient()
+            .delete(resourceGroupName, publisherName, networkServiceDesignGroupName, networkServiceDesignVersionName,
+                context);
     }
 
     public Response<NetworkServiceDesignVersion> getWithResponse(String resourceGroupName, String publisherName,
         String networkServiceDesignGroupName, String networkServiceDesignVersionName, Context context) {
-        Response<NetworkServiceDesignVersionInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            publisherName, networkServiceDesignGroupName, networkServiceDesignVersionName, context);
+        Response<NetworkServiceDesignVersionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NetworkServiceDesignVersionImpl(inner.getValue(), this.manager()));
@@ -55,8 +57,8 @@ public final class NetworkServiceDesignVersionsImpl implements NetworkServiceDes
 
     public NetworkServiceDesignVersion get(String resourceGroupName, String publisherName,
         String networkServiceDesignGroupName, String networkServiceDesignVersionName) {
-        NetworkServiceDesignVersionInner inner = this.serviceClient().get(resourceGroupName, publisherName,
-            networkServiceDesignGroupName, networkServiceDesignVersionName);
+        NetworkServiceDesignVersionInner inner = this.serviceClient()
+            .get(resourceGroupName, publisherName, networkServiceDesignGroupName, networkServiceDesignVersionName);
         if (inner != null) {
             return new NetworkServiceDesignVersionImpl(inner, this.manager());
         } else {
@@ -81,8 +83,9 @@ public final class NetworkServiceDesignVersionsImpl implements NetworkServiceDes
     public NetworkServiceDesignVersionUpdateState updateState(String resourceGroupName, String publisherName,
         String networkServiceDesignGroupName, String networkServiceDesignVersionName,
         NetworkServiceDesignVersionUpdateStateInner parameters) {
-        NetworkServiceDesignVersionUpdateStateInner inner = this.serviceClient().updateState(resourceGroupName,
-            publisherName, networkServiceDesignGroupName, networkServiceDesignVersionName, parameters);
+        NetworkServiceDesignVersionUpdateStateInner inner = this.serviceClient()
+            .updateState(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, parameters);
         if (inner != null) {
             return new NetworkServiceDesignVersionUpdateStateImpl(inner, this.manager());
         } else {
@@ -93,8 +96,9 @@ public final class NetworkServiceDesignVersionsImpl implements NetworkServiceDes
     public NetworkServiceDesignVersionUpdateState updateState(String resourceGroupName, String publisherName,
         String networkServiceDesignGroupName, String networkServiceDesignVersionName,
         NetworkServiceDesignVersionUpdateStateInner parameters, Context context) {
-        NetworkServiceDesignVersionUpdateStateInner inner = this.serviceClient().updateState(resourceGroupName,
-            publisherName, networkServiceDesignGroupName, networkServiceDesignVersionName, parameters, context);
+        NetworkServiceDesignVersionUpdateStateInner inner = this.serviceClient()
+            .updateState(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, parameters, context);
         if (inner != null) {
             return new NetworkServiceDesignVersionUpdateStateImpl(inner, this.manager());
         } else {
@@ -123,8 +127,10 @@ public final class NetworkServiceDesignVersionsImpl implements NetworkServiceDes
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The resource ID '%s' is not valid. Missing path segment 'networkServiceDesignVersions'.", id)));
         }
-        return this.getWithResponse(resourceGroupName, publisherName, networkServiceDesignGroupName,
-            networkServiceDesignVersionName, Context.NONE).getValue();
+        return this
+            .getWithResponse(resourceGroupName, publisherName, networkServiceDesignGroupName,
+                networkServiceDesignVersionName, Context.NONE)
+            .getValue();
     }
 
     public Response<NetworkServiceDesignVersion> getByIdWithResponse(String id, Context context) {

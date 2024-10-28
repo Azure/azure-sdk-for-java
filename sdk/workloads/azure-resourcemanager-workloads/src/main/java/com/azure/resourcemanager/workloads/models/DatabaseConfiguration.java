@@ -100,8 +100,8 @@ public final class DatabaseConfiguration {
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the DatabaseConfiguration object itself.
      */
-    public DatabaseConfiguration withVirtualMachineConfiguration(
-        VirtualMachineConfiguration virtualMachineConfiguration) {
+    public DatabaseConfiguration
+        withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
         return this;
     }
@@ -153,15 +153,12 @@ public final class DatabaseConfiguration {
      */
     public void validate() {
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property subnetId in model DatabaseConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property subnetId in model DatabaseConfiguration"));
         }
         if (virtualMachineConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property virtualMachineConfiguration in model DatabaseConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property virtualMachineConfiguration in model DatabaseConfiguration"));
         } else {
             virtualMachineConfiguration().validate();
         }

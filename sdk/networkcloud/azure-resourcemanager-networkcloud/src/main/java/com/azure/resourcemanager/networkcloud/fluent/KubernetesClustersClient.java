@@ -91,8 +91,8 @@ public interface KubernetesClustersClient {
      * @return properties of the provided the Kubernetes cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<KubernetesClusterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String kubernetesClusterName, Context context);
+    Response<KubernetesClusterInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String kubernetesClusterName, Context context);
 
     /**
      * Retrieve the Kubernetes cluster.
@@ -124,8 +124,8 @@ public interface KubernetesClustersClient {
      *     Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginCreateOrUpdate(
-        String resourceGroupName, String kubernetesClusterName, KubernetesClusterInner kubernetesClusterParameters);
+    SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginCreateOrUpdate(String resourceGroupName,
+        String kubernetesClusterName, KubernetesClusterInner kubernetesClusterParameters);
 
     /**
      * Create or update the Kubernetes cluster.
@@ -143,11 +143,8 @@ public interface KubernetesClustersClient {
      *     Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        KubernetesClusterInner kubernetesClusterParameters,
-        Context context);
+    SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginCreateOrUpdate(String resourceGroupName,
+        String kubernetesClusterName, KubernetesClusterInner kubernetesClusterParameters, Context context);
 
     /**
      * Create or update the Kubernetes cluster.
@@ -163,8 +160,8 @@ public interface KubernetesClustersClient {
      * @return kubernetesCluster represents the Kubernetes cluster hosted on Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    KubernetesClusterInner createOrUpdate(
-        String resourceGroupName, String kubernetesClusterName, KubernetesClusterInner kubernetesClusterParameters);
+    KubernetesClusterInner createOrUpdate(String resourceGroupName, String kubernetesClusterName,
+        KubernetesClusterInner kubernetesClusterParameters);
 
     /**
      * Create or update the Kubernetes cluster.
@@ -181,11 +178,8 @@ public interface KubernetesClustersClient {
      * @return kubernetesCluster represents the Kubernetes cluster hosted on Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    KubernetesClusterInner createOrUpdate(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        KubernetesClusterInner kubernetesClusterParameters,
-        Context context);
+    KubernetesClusterInner createOrUpdate(String resourceGroupName, String kubernetesClusterName,
+        KubernetesClusterInner kubernetesClusterParameters, Context context);
 
     /**
      * Delete the Kubernetes cluster.
@@ -216,8 +210,8 @@ public interface KubernetesClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String kubernetesClusterName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String kubernetesClusterName,
+        Context context);
 
     /**
      * Delete the Kubernetes cluster.
@@ -263,8 +257,8 @@ public interface KubernetesClustersClient {
      *     Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginUpdate(
-        String resourceGroupName, String kubernetesClusterName);
+    SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginUpdate(String resourceGroupName,
+        String kubernetesClusterName);
 
     /**
      * Patch the Kubernetes cluster.
@@ -283,10 +277,8 @@ public interface KubernetesClustersClient {
      *     Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginUpdate(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        KubernetesClusterPatchParameters kubernetesClusterUpdateParameters,
+    SyncPoller<PollResult<KubernetesClusterInner>, KubernetesClusterInner> beginUpdate(String resourceGroupName,
+        String kubernetesClusterName, KubernetesClusterPatchParameters kubernetesClusterUpdateParameters,
         Context context);
 
     /**
@@ -321,11 +313,8 @@ public interface KubernetesClustersClient {
      * @return kubernetesCluster represents the Kubernetes cluster hosted on Network Cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    KubernetesClusterInner update(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        KubernetesClusterPatchParameters kubernetesClusterUpdateParameters,
-        Context context);
+    KubernetesClusterInner update(String resourceGroupName, String kubernetesClusterName,
+        KubernetesClusterPatchParameters kubernetesClusterUpdateParameters, Context context);
 
     /**
      * Restart a targeted node.
@@ -342,8 +331,7 @@ public interface KubernetesClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestartNode(
-        String resourceGroupName,
-        String kubernetesClusterName,
+        String resourceGroupName, String kubernetesClusterName,
         KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters);
 
     /**
@@ -362,10 +350,8 @@ public interface KubernetesClustersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginRestartNode(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters,
-        Context context);
+        String resourceGroupName, String kubernetesClusterName,
+        KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters, Context context);
 
     /**
      * Restart a targeted node.
@@ -381,9 +367,7 @@ public interface KubernetesClustersClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner restartNode(
-        String resourceGroupName,
-        String kubernetesClusterName,
+    OperationStatusResultInner restartNode(String resourceGroupName, String kubernetesClusterName,
         KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters);
 
     /**
@@ -401,9 +385,6 @@ public interface KubernetesClustersClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner restartNode(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters,
-        Context context);
+    OperationStatusResultInner restartNode(String resourceGroupName, String kubernetesClusterName,
+        KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters, Context context);
 }

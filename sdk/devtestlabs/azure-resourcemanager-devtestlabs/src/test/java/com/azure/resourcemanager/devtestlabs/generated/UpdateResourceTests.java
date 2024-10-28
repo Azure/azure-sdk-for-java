@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateResource model =
-            BinaryData.fromString("{\"tags\":{\"railvpnppfuf\":\"acffgdkzzewkfvhq\"}}").toObject(UpdateResource.class);
+        UpdateResource model = BinaryData.fromString("{\"tags\":{\"railvpnppfuf\":\"acffgdkzzewkfvhq\"}}")
+            .toObject(UpdateResource.class);
         Assertions.assertEquals("acffgdkzzewkfvhq", model.tags().get("railvpnppfuf"));
     }
 

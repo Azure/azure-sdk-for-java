@@ -37,7 +37,6 @@ public final class ParallelDownloadOptions {
         return blockSize;
     }
 
-
     /**
      * Sets the block size.
      * The block size is the size of each data chunk returned from the service.
@@ -106,8 +105,7 @@ public final class ParallelDownloadOptions {
      */
     static void assertInBounds(final String param, final long value, final long min, final long max) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException(String.format(Locale.ROOT,
-                PARAMETER_NOT_IN_RANGE, param, min, max));
+            throw new IllegalArgumentException(String.format(Locale.ROOT, PARAMETER_NOT_IN_RANGE, param, min, max));
         }
     }
 }

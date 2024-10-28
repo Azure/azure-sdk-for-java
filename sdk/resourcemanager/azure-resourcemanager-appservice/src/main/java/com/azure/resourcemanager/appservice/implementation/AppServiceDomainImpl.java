@@ -43,8 +43,9 @@ class AppServiceDomainImpl
         super(name, innerObject, manager);
         innerModel().withLocation("global");
         if (innerModel().managedHostNames() != null) {
-            this.hostNameMap =
-                innerModel().managedHostNames().stream().collect(Collectors.toMap(Hostname::name, Function.identity()));
+            this.hostNameMap = innerModel().managedHostNames()
+                .stream()
+                .collect(Collectors.toMap(Hostname::name, Function.identity()));
         }
     }
 
@@ -58,6 +59,7 @@ class AppServiceDomainImpl
         }
         return super.createAsync();
     }
+
     @Override
     public Mono<AppServiceDomain> createResourceAsync() {
         if (this.dnsZoneCreatable != null) {
@@ -68,8 +70,7 @@ class AppServiceDomainImpl
         String[] domainParts = this.name().split("\\.");
         String topLevel = domainParts[domainParts.length - 1];
         final DomainsClient client = this.manager().serviceClient().getDomains();
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getTopLevelDomains()
             .listAgreementsAsync(topLevel, new TopLevelDomainAgreementOption())
@@ -77,20 +78,16 @@ class AppServiceDomainImpl
             .map(TldLegalAgreementInner::agreementKey)
             .collectList()
             // Step 2: Create domain
-            .flatMap(
-                keys -> {
-                    try {
-                        innerModel()
-                            .withConsent(
-                                new DomainPurchaseConsent()
-                                    .withAgreedAt(OffsetDateTime.now())
-                                    .withAgreedBy(Inet4Address.getLocalHost().getHostAddress())
-                                    .withAgreementKeys(keys));
-                    } catch (UnknownHostException e) {
-                        return Mono.error(e);
-                    }
-                    return client.createOrUpdateAsync(resourceGroupName(), name(), innerModel());
-                })
+            .flatMap(keys -> {
+                try {
+                    innerModel().withConsent(new DomainPurchaseConsent().withAgreedAt(OffsetDateTime.now())
+                        .withAgreedBy(Inet4Address.getLocalHost().getHostAddress())
+                        .withAgreementKeys(keys));
+                } catch (UnknownHostException e) {
+                    return Mono.error(e);
+                }
+                return client.createOrUpdateAsync(resourceGroupName(), name(), innerModel());
+            })
             .map(innerToFluentMap(this))
             .doOnSuccess(ignored -> dnsZoneCreatable = null);
     }
@@ -190,10 +187,9 @@ class AppServiceDomainImpl
 
     @Override
     public Mono<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
-        DomainOwnershipIdentifierInner identifierInner =
-            new DomainOwnershipIdentifierInner().withOwnershipId(domainVerificationToken);
-        return this
-            .manager()
+        DomainOwnershipIdentifierInner identifierInner
+            = new DomainOwnershipIdentifierInner().withOwnershipId(domainVerificationToken);
+        return this.manager()
             .serviceClient()
             .getDomains()
             .createOrUpdateOwnershipIdentifierAsync(resourceGroupName(), name(), certificateOrderName, identifierInner)
@@ -248,12 +244,14 @@ class AppServiceDomainImpl
     public AppServiceDomainImpl withNewDnsZone(String dnsZoneName) {
         Creatable<DnsZone> dnsZone;
         if (creatableGroup != null && isInCreateMode()) {
-            dnsZone = manager().dnsZoneManager().zones()
+            dnsZone = manager().dnsZoneManager()
+                .zones()
                 .define(dnsZoneName)
                 .withNewResourceGroup(creatableGroup)
                 .withETagCheck();
         } else {
-            dnsZone = manager().dnsZoneManager().zones()
+            dnsZone = manager().dnsZoneManager()
+                .zones()
                 .define(dnsZoneName)
                 .withExistingResourceGroup(resourceGroupName())
                 .withETagCheck();

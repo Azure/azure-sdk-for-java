@@ -115,11 +115,13 @@ public interface Asset {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The Asset definition stages. */
     interface DefinitionStages {
         /** The first stage of the Asset definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the Asset definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -131,15 +133,13 @@ public interface Asset {
              */
             WithCreate withExistingMediaService(String resourceGroupName, String accountName);
         }
+
         /**
          * The stage of the Asset definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithAlternateId,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithContainer,
-                DefinitionStages.WithStorageAccountName {
+        interface WithCreate extends DefinitionStages.WithAlternateId, DefinitionStages.WithDescription,
+            DefinitionStages.WithContainer, DefinitionStages.WithStorageAccountName {
             /**
              * Executes the create request.
              *
@@ -155,6 +155,7 @@ public interface Asset {
              */
             Asset create(Context context);
         }
+
         /** The stage of the Asset definition allowing to specify alternateId. */
         interface WithAlternateId {
             /**
@@ -165,6 +166,7 @@ public interface Asset {
              */
             WithCreate withAlternateId(String alternateId);
         }
+
         /** The stage of the Asset definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -175,6 +177,7 @@ public interface Asset {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the Asset definition allowing to specify container. */
         interface WithContainer {
             /**
@@ -185,6 +188,7 @@ public interface Asset {
              */
             WithCreate withContainer(String container);
         }
+
         /** The stage of the Asset definition allowing to specify storageAccountName. */
         interface WithStorageAccountName {
             /**
@@ -196,6 +200,7 @@ public interface Asset {
             WithCreate withStorageAccountName(String storageAccountName);
         }
     }
+
     /**
      * Begins update for the Asset resource.
      *
@@ -204,11 +209,8 @@ public interface Asset {
     Asset.Update update();
 
     /** The template for Asset update. */
-    interface Update
-        extends UpdateStages.WithAlternateId,
-            UpdateStages.WithDescription,
-            UpdateStages.WithContainer,
-            UpdateStages.WithStorageAccountName {
+    interface Update extends UpdateStages.WithAlternateId, UpdateStages.WithDescription, UpdateStages.WithContainer,
+        UpdateStages.WithStorageAccountName {
         /**
          * Executes the update request.
          *
@@ -224,6 +226,7 @@ public interface Asset {
          */
         Asset apply(Context context);
     }
+
     /** The Asset update stages. */
     interface UpdateStages {
         /** The stage of the Asset update allowing to specify alternateId. */
@@ -236,6 +239,7 @@ public interface Asset {
              */
             Update withAlternateId(String alternateId);
         }
+
         /** The stage of the Asset update allowing to specify description. */
         interface WithDescription {
             /**
@@ -246,6 +250,7 @@ public interface Asset {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the Asset update allowing to specify container. */
         interface WithContainer {
             /**
@@ -256,6 +261,7 @@ public interface Asset {
              */
             Update withContainer(String container);
         }
+
         /** The stage of the Asset update allowing to specify storageAccountName. */
         interface WithStorageAccountName {
             /**
@@ -267,6 +273,7 @@ public interface Asset {
             Update withStorageAccountName(String storageAccountName);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

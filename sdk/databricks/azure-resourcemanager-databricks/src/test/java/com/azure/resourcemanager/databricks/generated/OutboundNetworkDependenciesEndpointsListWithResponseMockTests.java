@@ -31,40 +31,28 @@ public final class OutboundNetworkDependenciesEndpointsListWithResponseMockTests
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "[{\"category\":\"ibahwflus\",\"endpoints\":[{\"domainName\":\"hrkwo\",\"endpointDetails\":[]},{\"domainName\":\"voqacpiexpbt\",\"endpointDetails\":[]},{\"domainName\":\"bwoenwashrt\",\"endpointDetails\":[]},{\"domainName\":\"cnqxwbpokulpi\",\"endpointDetails\":[]}]}]";
+        String responseStr
+            = "[{\"category\":\"ibahwflus\",\"endpoints\":[{\"domainName\":\"hrkwo\",\"endpointDetails\":[]},{\"domainName\":\"voqacpiexpbt\",\"endpointDetails\":[]},{\"domainName\":\"bwoenwashrt\",\"endpointDetails\":[]},{\"domainName\":\"cnqxwbpokulpi\",\"endpointDetails\":[]}]}]";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureDatabricksManager manager =
-            AzureDatabricksManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureDatabricksManager manager = AzureDatabricksManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        List<OutboundEnvironmentEndpoint> response =
-            manager
-                .outboundNetworkDependenciesEndpoints()
-                .listWithResponse("i", "m", com.azure.core.util.Context.NONE)
-                .getValue();
+        List<OutboundEnvironmentEndpoint> response = manager.outboundNetworkDependenciesEndpoints()
+            .listWithResponse("i", "m", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("ibahwflus", response.get(0).category());
         Assertions.assertEquals("hrkwo", response.get(0).endpoints().get(0).domainName());

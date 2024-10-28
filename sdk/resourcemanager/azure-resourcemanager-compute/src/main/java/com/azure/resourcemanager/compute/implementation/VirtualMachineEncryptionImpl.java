@@ -30,13 +30,11 @@ class VirtualMachineEncryptionImpl implements VirtualMachineEncryption {
     @Override
     public Mono<DiskVolumeEncryptionMonitor> enableAsync(String keyVaultId, String aadClientId, String aadSecret) {
         if (this.virtualMachine.osType() == OperatingSystemTypes.LINUX) {
-            return enableAsync(
-                new LinuxVMDiskEncryptionConfiguration(keyVaultId, aadClientId, aadSecret,
-                    virtualMachine.manager().environment()));
+            return enableAsync(new LinuxVMDiskEncryptionConfiguration(keyVaultId, aadClientId, aadSecret,
+                virtualMachine.manager().environment()));
         } else {
-            return enableAsync(
-                new WindowsVMDiskEncryptionConfiguration(keyVaultId, aadClientId, aadSecret,
-                    virtualMachine.manager().environment()));
+            return enableAsync(new WindowsVMDiskEncryptionConfiguration(keyVaultId, aadClientId, aadSecret,
+                virtualMachine.manager().environment()));
         }
     }
 

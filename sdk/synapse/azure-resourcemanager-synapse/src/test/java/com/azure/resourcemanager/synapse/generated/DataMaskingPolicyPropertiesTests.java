@@ -12,20 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DataMaskingPolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataMaskingPolicyProperties model =
-            BinaryData
-                .fromString(
-                    "{\"dataMaskingState\":\"Disabled\",\"exemptPrincipals\":\"cvpa\",\"applicationPrincipals\":\"sreuzvxurisjnh\",\"maskingLevel\":\"txifqj\"}")
-                .toObject(DataMaskingPolicyProperties.class);
+        DataMaskingPolicyProperties model = BinaryData.fromString(
+            "{\"dataMaskingState\":\"Disabled\",\"exemptPrincipals\":\"cvpa\",\"applicationPrincipals\":\"sreuzvxurisjnh\",\"maskingLevel\":\"txifqj\"}")
+            .toObject(DataMaskingPolicyProperties.class);
         Assertions.assertEquals(DataMaskingState.DISABLED, model.dataMaskingState());
         Assertions.assertEquals("cvpa", model.exemptPrincipals());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataMaskingPolicyProperties model =
-            new DataMaskingPolicyProperties()
-                .withDataMaskingState(DataMaskingState.DISABLED)
+        DataMaskingPolicyProperties model
+            = new DataMaskingPolicyProperties().withDataMaskingState(DataMaskingState.DISABLED)
                 .withExemptPrincipals("cvpa");
         model = BinaryData.fromObject(model).toObject(DataMaskingPolicyProperties.class);
         Assertions.assertEquals(DataMaskingState.DISABLED, model.dataMaskingState());

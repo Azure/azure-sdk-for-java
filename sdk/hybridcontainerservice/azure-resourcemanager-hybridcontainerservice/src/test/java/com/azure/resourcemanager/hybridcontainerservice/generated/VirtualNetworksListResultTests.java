@@ -52,13 +52,16 @@ public final class VirtualNetworksListResultTests {
                 .withProperties(new VirtualNetworkProperties()
                     .withInfraVnetProfile(new VirtualNetworkPropertiesInfraVnetProfile()
                         .withHci(new VirtualNetworkPropertiesInfraVnetProfileHci().withMocGroup("iswac")
-                            .withMocLocation("gdkz").withMocVnetName("wkfvhqcrailvp")))
+                            .withMocLocation("gdkz")
+                            .withMocVnetName("wkfvhqcrailvp")))
                     .withVipPool(Arrays.asList(
                         new VirtualNetworkPropertiesVipPoolItem().withEndIp("uflrwd").withStartIp("dlxyjrxs"),
                         new VirtualNetworkPropertiesVipPoolItem().withEndIp("afcnih").withStartIp("qapnedgfbcv")))
                     .withVmipPool(
                         Arrays.asList(new VirtualNetworkPropertiesVmipPoolItem().withEndIp("vpk").withStartIp("dcvd")))
-                    .withDnsServers(Arrays.asList("ood")).withGateway("tbobz").withIpAddressPrefix("pcjwv")
+                    .withDnsServers(Arrays.asList("ood"))
+                    .withGateway("tbobz")
+                    .withIpAddressPrefix("pcjwv")
                     .withVlanId(2011097883))
                 .withExtendedLocation(
                     new VirtualNetworkExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("i")),
@@ -67,7 +70,8 @@ public final class VirtualNetworksListResultTests {
                 .withProperties(new VirtualNetworkProperties()
                     .withInfraVnetProfile(new VirtualNetworkPropertiesInfraVnetProfile()
                         .withHci(new VirtualNetworkPropertiesInfraVnetProfileHci().withMocGroup("ysmocmbqfqvmkcxo")
-                            .withMocLocation("pvhelxprg").withMocVnetName("atddc")))
+                            .withMocLocation("pvhelxprg")
+                            .withMocVnetName("atddc")))
                     .withVipPool(Arrays.asList(
                         new VirtualNetworkPropertiesVipPoolItem().withEndIp("uejrjxgc").withStartIp("ibrhosxsdqr"),
                         new VirtualNetworkPropertiesVipPoolItem().withEndIp("o").withStartIp("i"),
@@ -77,10 +81,13 @@ public final class VirtualNetworksListResultTests {
                             .withStartIp("xpbtgiwbwo"),
                         new VirtualNetworkPropertiesVmipPoolItem().withEndIp("washr").withStartIp("tkcnqxwb"),
                         new VirtualNetworkPropertiesVmipPoolItem().withEndIp("kulpiujwaasi").withStartIp("i")))
-                    .withDnsServers(Arrays.asList("yuq", "rpqlp", "wcciuqgbdbu")).withGateway("uvfbtkuwh")
-                    .withIpAddressPrefix("hykojoxafnndlpic").withVlanId(171305753))
-                .withExtendedLocation(new VirtualNetworkExtendedLocation()
-                    .withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("xywsuws"))))
+                    .withDnsServers(Arrays.asList("yuq", "rpqlp", "wcciuqgbdbu"))
+                    .withGateway("uvfbtkuwh")
+                    .withIpAddressPrefix("hykojoxafnndlpic")
+                    .withVlanId(171305753))
+                .withExtendedLocation(
+                    new VirtualNetworkExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION)
+                        .withName("xywsuws"))))
             .withNextLink("torzih");
         model = BinaryData.fromObject(model).toObject(VirtualNetworksListResult.class);
         Assertions.assertEquals("dggkzzlvmbmpa", model.value().get(0).location());

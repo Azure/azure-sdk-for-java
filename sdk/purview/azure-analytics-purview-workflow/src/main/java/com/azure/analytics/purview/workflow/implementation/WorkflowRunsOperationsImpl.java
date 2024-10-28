@@ -43,8 +43,8 @@ public final class WorkflowRunsOperationsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowRunsOperationsImpl(PurviewWorkflowClientImpl client) {
-        this.service =
-                RestProxy.create(WorkflowRunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(WorkflowRunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,86 +56,45 @@ public final class WorkflowRunsOperationsImpl {
     @ServiceInterface(name = "PurviewWorkflowWorkf")
     public interface WorkflowRunsService {
         @Get("/workflowruns/{workflowRunId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> get(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("workflowRunId") String workflowRunId,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> get(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("workflowRunId") String workflowRunId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/workflowruns/{workflowRunId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> getSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("workflowRunId") String workflowRunId,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<BinaryData> getSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("workflowRunId") String workflowRunId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/workflowruns/{workflowRunId}/cancel")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> cancel(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("workflowRunId") String workflowRunId,
-                @BodyParam("application/json") BinaryData runCancelReply,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> cancel(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("workflowRunId") String workflowRunId,
+            @BodyParam("application/json") BinaryData runCancelReply, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/workflowruns/{workflowRunId}/cancel")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<Void> cancelSync(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("workflowRunId") String workflowRunId,
-                @BodyParam("application/json") BinaryData runCancelReply,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Response<Void> cancelSync(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("workflowRunId") String workflowRunId, @BodyParam("application/json") BinaryData runCancelReply,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -178,15 +137,8 @@ public final class WorkflowRunsOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(String workflowRunId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
-                                workflowRunId,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(),
+            this.client.getServiceVersion().getVersion(), workflowRunId, accept, requestOptions, context));
     }
 
     /**
@@ -229,13 +181,8 @@ public final class WorkflowRunsOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String workflowRunId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
-                workflowRunId,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.getSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(), workflowRunId,
+            accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -259,19 +206,12 @@ public final class WorkflowRunsOperationsImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelWithResponseAsync(
-            String workflowRunId, BinaryData runCancelReply, RequestOptions requestOptions) {
+    public Mono<Response<Void>> cancelWithResponseAsync(String workflowRunId, BinaryData runCancelReply,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.cancel(
-                                this.client.getEndpoint(),
-                                this.client.getServiceVersion().getVersion(),
-                                workflowRunId,
-                                runCancelReply,
-                                accept,
-                                requestOptions,
-                                context));
+            context -> service.cancel(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+                workflowRunId, runCancelReply, accept, requestOptions, context));
     }
 
     /**
@@ -295,16 +235,10 @@ public final class WorkflowRunsOperationsImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelWithResponse(
-            String workflowRunId, BinaryData runCancelReply, RequestOptions requestOptions) {
+    public Response<Void> cancelWithResponse(String workflowRunId, BinaryData runCancelReply,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelSync(
-                this.client.getEndpoint(),
-                this.client.getServiceVersion().getVersion(),
-                workflowRunId,
-                runCancelReply,
-                accept,
-                requestOptions,
-                Context.NONE);
+        return service.cancelSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
+            workflowRunId, runCancelReply, accept, requestOptions, Context.NONE);
     }
 }

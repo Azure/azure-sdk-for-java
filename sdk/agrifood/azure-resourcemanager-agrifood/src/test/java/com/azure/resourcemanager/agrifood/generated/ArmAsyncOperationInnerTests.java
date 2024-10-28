@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 public final class ArmAsyncOperationInnerTests {
     @Test
     public void testDeserialize() {
-        ArmAsyncOperationInner model =
-            BinaryData.fromString("{\"status\":\"hb\"}").toObject(ArmAsyncOperationInner.class);
+        ArmAsyncOperationInner model
+            = BinaryData.fromString("{\"status\":\"hb\"}").toObject(ArmAsyncOperationInner.class);
         Assertions.assertEquals("hb", model.status());
     }
 

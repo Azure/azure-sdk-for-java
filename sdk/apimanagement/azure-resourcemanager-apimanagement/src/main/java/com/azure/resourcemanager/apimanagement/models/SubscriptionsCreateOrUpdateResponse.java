@@ -21,12 +21,8 @@ public final class SubscriptionsCreateOrUpdateResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public SubscriptionsCreateOrUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        SubscriptionContractInner value,
-        SubscriptionsCreateOrUpdateHeaders headers) {
+    public SubscriptionsCreateOrUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        SubscriptionContractInner value, SubscriptionsCreateOrUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

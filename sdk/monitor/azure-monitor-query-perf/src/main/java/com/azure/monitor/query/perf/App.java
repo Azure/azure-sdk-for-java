@@ -26,9 +26,10 @@ public class App {
      * @param args Arguments to the performance tests.
      */
     public static void main(String[] args) {
-        PerfStressProgram.run(new Class<?>[]{LogsQueryTest.class,
-                LogsBatchQueryTest.class,
-                LogsQueryAsModelTest.class,
-                MetricsQueryTest.class}, args);
+        PerfStressProgram.run(new Class<?>[] {
+            LogsQueryTest.class,
+            LogsBatchQueryTest.class,
+            LogsQueryAsModelTest.class,
+            MetricsQueryTest.class }, args);
     }
 }

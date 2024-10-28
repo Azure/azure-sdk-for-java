@@ -182,11 +182,13 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The ExtendedSqlPoolBlobAuditingPolicy definition stages. */
     interface DefinitionStages {
         /** The first stage of the ExtendedSqlPoolBlobAuditingPolicy definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the ExtendedSqlPoolBlobAuditingPolicy definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -199,21 +201,16 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             WithCreate withExistingSqlPool(String resourceGroupName, String workspaceName, String sqlPoolName);
         }
+
         /**
          * The stage of the ExtendedSqlPoolBlobAuditingPolicy definition which contains all the minimum required
          * properties for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithPredicateExpression,
-                DefinitionStages.WithState,
-                DefinitionStages.WithStorageEndpoint,
-                DefinitionStages.WithStorageAccountAccessKey,
-                DefinitionStages.WithRetentionDays,
-                DefinitionStages.WithAuditActionsAndGroups,
-                DefinitionStages.WithStorageAccountSubscriptionId,
-                DefinitionStages.WithIsStorageSecondaryKeyInUse,
-                DefinitionStages.WithIsAzureMonitorTargetEnabled,
-                DefinitionStages.WithQueueDelayMs {
+        interface WithCreate extends DefinitionStages.WithPredicateExpression, DefinitionStages.WithState,
+            DefinitionStages.WithStorageEndpoint, DefinitionStages.WithStorageAccountAccessKey,
+            DefinitionStages.WithRetentionDays, DefinitionStages.WithAuditActionsAndGroups,
+            DefinitionStages.WithStorageAccountSubscriptionId, DefinitionStages.WithIsStorageSecondaryKeyInUse,
+            DefinitionStages.WithIsAzureMonitorTargetEnabled, DefinitionStages.WithQueueDelayMs {
             /**
              * Executes the create request.
              *
@@ -229,6 +226,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             ExtendedSqlPoolBlobAuditingPolicy create(Context context);
         }
+
         /** The stage of the ExtendedSqlPoolBlobAuditingPolicy definition allowing to specify predicateExpression. */
         interface WithPredicateExpression {
             /**
@@ -239,6 +237,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             WithCreate withPredicateExpression(String predicateExpression);
         }
+
         /** The stage of the ExtendedSqlPoolBlobAuditingPolicy definition allowing to specify state. */
         interface WithState {
             /**
@@ -251,6 +250,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             WithCreate withState(BlobAuditingPolicyState state);
         }
+
         /** The stage of the ExtendedSqlPoolBlobAuditingPolicy definition allowing to specify storageEndpoint. */
         interface WithStorageEndpoint {
             /**
@@ -265,6 +265,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             WithCreate withStorageEndpoint(String storageEndpoint);
         }
+
         /**
          * The stage of the ExtendedSqlPoolBlobAuditingPolicy definition allowing to specify storageAccountAccessKey.
          */
@@ -289,6 +290,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             WithCreate withStorageAccountAccessKey(String storageAccountAccessKey);
         }
+
         /** The stage of the ExtendedSqlPoolBlobAuditingPolicy definition allowing to specify retentionDays. */
         interface WithRetentionDays {
             /**
@@ -300,6 +302,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             WithCreate withRetentionDays(Integer retentionDays);
         }
+
         /** The stage of the ExtendedSqlPoolBlobAuditingPolicy definition allowing to specify auditActionsAndGroups. */
         interface WithAuditActionsAndGroups {
             /**
@@ -384,6 +387,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             WithCreate withAuditActionsAndGroups(List<String> auditActionsAndGroups);
         }
+
         /**
          * The stage of the ExtendedSqlPoolBlobAuditingPolicy definition allowing to specify
          * storageAccountSubscriptionId.
@@ -397,6 +401,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             WithCreate withStorageAccountSubscriptionId(UUID storageAccountSubscriptionId);
         }
+
         /**
          * The stage of the ExtendedSqlPoolBlobAuditingPolicy definition allowing to specify isStorageSecondaryKeyInUse.
          */
@@ -411,6 +416,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             WithCreate withIsStorageSecondaryKeyInUse(Boolean isStorageSecondaryKeyInUse);
         }
+
         /**
          * The stage of the ExtendedSqlPoolBlobAuditingPolicy definition allowing to specify
          * isAzureMonitorTargetEnabled.
@@ -447,6 +453,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             WithCreate withIsAzureMonitorTargetEnabled(Boolean isAzureMonitorTargetEnabled);
         }
+
         /** The stage of the ExtendedSqlPoolBlobAuditingPolicy definition allowing to specify queueDelayMs. */
         interface WithQueueDelayMs {
             /**
@@ -461,6 +468,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
             WithCreate withQueueDelayMs(Integer queueDelayMs);
         }
     }
+
     /**
      * Begins update for the ExtendedSqlPoolBlobAuditingPolicy resource.
      *
@@ -469,17 +477,11 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
     ExtendedSqlPoolBlobAuditingPolicy.Update update();
 
     /** The template for ExtendedSqlPoolBlobAuditingPolicy update. */
-    interface Update
-        extends UpdateStages.WithPredicateExpression,
-            UpdateStages.WithState,
-            UpdateStages.WithStorageEndpoint,
-            UpdateStages.WithStorageAccountAccessKey,
-            UpdateStages.WithRetentionDays,
-            UpdateStages.WithAuditActionsAndGroups,
-            UpdateStages.WithStorageAccountSubscriptionId,
-            UpdateStages.WithIsStorageSecondaryKeyInUse,
-            UpdateStages.WithIsAzureMonitorTargetEnabled,
-            UpdateStages.WithQueueDelayMs {
+    interface Update extends UpdateStages.WithPredicateExpression, UpdateStages.WithState,
+        UpdateStages.WithStorageEndpoint, UpdateStages.WithStorageAccountAccessKey, UpdateStages.WithRetentionDays,
+        UpdateStages.WithAuditActionsAndGroups, UpdateStages.WithStorageAccountSubscriptionId,
+        UpdateStages.WithIsStorageSecondaryKeyInUse, UpdateStages.WithIsAzureMonitorTargetEnabled,
+        UpdateStages.WithQueueDelayMs {
         /**
          * Executes the update request.
          *
@@ -495,6 +497,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
          */
         ExtendedSqlPoolBlobAuditingPolicy apply(Context context);
     }
+
     /** The ExtendedSqlPoolBlobAuditingPolicy update stages. */
     interface UpdateStages {
         /** The stage of the ExtendedSqlPoolBlobAuditingPolicy update allowing to specify predicateExpression. */
@@ -507,6 +510,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             Update withPredicateExpression(String predicateExpression);
         }
+
         /** The stage of the ExtendedSqlPoolBlobAuditingPolicy update allowing to specify state. */
         interface WithState {
             /**
@@ -519,6 +523,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             Update withState(BlobAuditingPolicyState state);
         }
+
         /** The stage of the ExtendedSqlPoolBlobAuditingPolicy update allowing to specify storageEndpoint. */
         interface WithStorageEndpoint {
             /**
@@ -533,6 +538,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             Update withStorageEndpoint(String storageEndpoint);
         }
+
         /** The stage of the ExtendedSqlPoolBlobAuditingPolicy update allowing to specify storageAccountAccessKey. */
         interface WithStorageAccountAccessKey {
             /**
@@ -555,6 +561,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             Update withStorageAccountAccessKey(String storageAccountAccessKey);
         }
+
         /** The stage of the ExtendedSqlPoolBlobAuditingPolicy update allowing to specify retentionDays. */
         interface WithRetentionDays {
             /**
@@ -566,6 +573,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             Update withRetentionDays(Integer retentionDays);
         }
+
         /** The stage of the ExtendedSqlPoolBlobAuditingPolicy update allowing to specify auditActionsAndGroups. */
         interface WithAuditActionsAndGroups {
             /**
@@ -650,6 +658,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             Update withAuditActionsAndGroups(List<String> auditActionsAndGroups);
         }
+
         /**
          * The stage of the ExtendedSqlPoolBlobAuditingPolicy update allowing to specify storageAccountSubscriptionId.
          */
@@ -662,6 +671,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             Update withStorageAccountSubscriptionId(UUID storageAccountSubscriptionId);
         }
+
         /** The stage of the ExtendedSqlPoolBlobAuditingPolicy update allowing to specify isStorageSecondaryKeyInUse. */
         interface WithIsStorageSecondaryKeyInUse {
             /**
@@ -674,6 +684,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             Update withIsStorageSecondaryKeyInUse(Boolean isStorageSecondaryKeyInUse);
         }
+
         /**
          * The stage of the ExtendedSqlPoolBlobAuditingPolicy update allowing to specify isAzureMonitorTargetEnabled.
          */
@@ -709,6 +720,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
              */
             Update withIsAzureMonitorTargetEnabled(Boolean isAzureMonitorTargetEnabled);
         }
+
         /** The stage of the ExtendedSqlPoolBlobAuditingPolicy update allowing to specify queueDelayMs. */
         interface WithQueueDelayMs {
             /**
@@ -723,6 +735,7 @@ public interface ExtendedSqlPoolBlobAuditingPolicy {
             Update withQueueDelayMs(Integer queueDelayMs);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

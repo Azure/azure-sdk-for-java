@@ -329,8 +329,8 @@ public final class FluxConfigurationProperties {
      * @param configurationProtectedSettings the configurationProtectedSettings value to set.
      * @return the FluxConfigurationProperties object itself.
      */
-    public FluxConfigurationProperties withConfigurationProtectedSettings(
-        Map<String, String> configurationProtectedSettings) {
+    public FluxConfigurationProperties
+        withConfigurationProtectedSettings(Map<String, String> configurationProtectedSettings) {
         this.configurationProtectedSettings = configurationProtectedSettings;
         return this;
     }
@@ -470,14 +470,11 @@ public final class FluxConfigurationProperties {
             azureBlob().validate();
         }
         if (kustomizations() != null) {
-            kustomizations()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            kustomizations().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());

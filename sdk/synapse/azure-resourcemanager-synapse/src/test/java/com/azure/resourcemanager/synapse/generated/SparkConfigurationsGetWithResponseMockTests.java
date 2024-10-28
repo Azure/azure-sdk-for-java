@@ -30,40 +30,28 @@ public final class SparkConfigurationsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"vavucg\",\"configs\":{\"qpmnu\":\"ua\",\"wuzdmh\":\"zhrchx\"},\"annotations\":[\"vivjm\",\"mlitqdsj\"],\"notes\":\"dvisco\",\"createdBy\":\"xbriifefn\",\"created\":\"2021-04-05T15:00:08Z\",\"configMergeRule\":{\"eailwdqmqf\":\"qoemwsi\",\"kd\":\"deotmfx\",\"gnamkuuyiu\":\"g\",\"hdcfm\":\"uafixlxicwgp\"}},\"etag\":\"cfasfodropal\",\"id\":\"ngtwyuskwgq\",\"name\":\"ntaumd\",\"type\":\"cjlvkrkegtyc\"}";
+        String responseStr
+            = "{\"properties\":{\"description\":\"vavucg\",\"configs\":{\"qpmnu\":\"ua\",\"wuzdmh\":\"zhrchx\"},\"annotations\":[\"vivjm\",\"mlitqdsj\"],\"notes\":\"dvisco\",\"createdBy\":\"xbriifefn\",\"created\":\"2021-04-05T15:00:08Z\",\"configMergeRule\":{\"eailwdqmqf\":\"qoemwsi\",\"kd\":\"deotmfx\",\"gnamkuuyiu\":\"g\",\"hdcfm\":\"uafixlxicwgp\"}},\"etag\":\"cfasfodropal\",\"id\":\"ngtwyuskwgq\",\"name\":\"ntaumd\",\"type\":\"cjlvkrkegtyc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SparkConfigurationResource response =
-            manager
-                .sparkConfigurations()
-                .getWithResponse("tonvhgnhtmeplhb", "jba", "mumm", com.azure.core.util.Context.NONE)
-                .getValue();
+        SparkConfigurationResource response = manager.sparkConfigurations()
+            .getWithResponse("tonvhgnhtmeplhb", "jba", "mumm", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("vavucg", response.description());
         Assertions.assertEquals("ua", response.configs().get("qpmnu"));

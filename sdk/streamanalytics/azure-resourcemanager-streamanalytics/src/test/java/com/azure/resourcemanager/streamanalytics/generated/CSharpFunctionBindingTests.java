@@ -24,7 +24,9 @@ public final class CSharpFunctionBindingTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CSharpFunctionBinding model = new CSharpFunctionBinding().withDllPath("sqfsubcgjbirxb")
-            .withClassProperty("bsrfbj").withMethod("twss").withUpdateMode(UpdateMode.REFRESHABLE);
+            .withClassProperty("bsrfbj")
+            .withMethod("twss")
+            .withUpdateMode(UpdateMode.REFRESHABLE);
         model = BinaryData.fromObject(model).toObject(CSharpFunctionBinding.class);
         Assertions.assertEquals("sqfsubcgjbirxb", model.dllPath());
         Assertions.assertEquals("bsrfbj", model.classProperty());

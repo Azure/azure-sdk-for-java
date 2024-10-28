@@ -44,9 +44,10 @@ public final class NetworkServiceDesignVersionsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NetworkServiceDesignVersion response = manager.networkServiceDesignVersions()
             .getWithResponse("ujdjltymkmvg", "ihywartspph", "ixkykxd", "sj", com.azure.core.util.Context.NONE)

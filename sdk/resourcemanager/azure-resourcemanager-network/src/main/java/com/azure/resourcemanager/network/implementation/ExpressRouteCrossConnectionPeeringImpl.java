@@ -17,21 +17,15 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 
-class ExpressRouteCrossConnectionPeeringImpl
-    extends CreatableUpdatableImpl<
-        ExpressRouteCrossConnectionPeering,
-        ExpressRouteCrossConnectionPeeringInner,
-        ExpressRouteCrossConnectionPeeringImpl>
-    implements ExpressRouteCrossConnectionPeering,
-        ExpressRouteCrossConnectionPeering.Definition,
-        ExpressRouteCrossConnectionPeering.Update {
+class ExpressRouteCrossConnectionPeeringImpl extends
+    CreatableUpdatableImpl<ExpressRouteCrossConnectionPeering, ExpressRouteCrossConnectionPeeringInner, ExpressRouteCrossConnectionPeeringImpl>
+    implements ExpressRouteCrossConnectionPeering, ExpressRouteCrossConnectionPeering.Definition,
+    ExpressRouteCrossConnectionPeering.Update {
     private final ExpressRouteCrossConnectionPeeringsClient client;
     private final ExpressRouteCrossConnection parent;
 
-    ExpressRouteCrossConnectionPeeringImpl(
-        ExpressRouteCrossConnectionImpl parent,
-        ExpressRouteCrossConnectionPeeringInner innerObject,
-        ExpressRoutePeeringType type) {
+    ExpressRouteCrossConnectionPeeringImpl(ExpressRouteCrossConnectionImpl parent,
+        ExpressRouteCrossConnectionPeeringInner innerObject, ExpressRoutePeeringType type) {
         super(type.toString(), innerObject);
         this.client = parent.manager().serviceClient().getExpressRouteCrossConnectionPeerings();
         this.parent = parent;
@@ -127,15 +121,12 @@ class ExpressRouteCrossConnectionPeeringImpl
 
     @Override
     public Mono<ExpressRouteCrossConnectionPeering> createResourceAsync() {
-        return this
-            .client
-            .createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), innerModel())
-            .map(
-                innerModel -> {
-                    ExpressRouteCrossConnectionPeeringImpl.this.setInner(innerModel);
-                    parent.refresh();
-                    return ExpressRouteCrossConnectionPeeringImpl.this;
-                });
+        return this.client.createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), innerModel())
+            .map(innerModel -> {
+                ExpressRouteCrossConnectionPeeringImpl.this.setInner(innerModel);
+                parent.refresh();
+                return ExpressRouteCrossConnectionPeeringImpl.this;
+            });
     }
 
     // Getters

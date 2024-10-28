@@ -12,41 +12,41 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public final class SupportedFormatsTests extends DocumentTranslationClientTestBase {
-    @Test    
-    public void testGetDocumentsFormats() {        
+    @Test
+    public void testGetDocumentsFormats() {
         // method invocation
         SupportedFileFormats response = getDocumentTranslationClient().getSupportedFormats(FileFormatType.DOCUMENT);
-        
+
         // response assertion
         assertNotNull(response);
-        
+
         List<FileFormat> responseValue = response.getValue();
-        assertTrue(!responseValue.isEmpty(), "The supported documents should be greater than 0");            
-        
+        assertTrue(!responseValue.isEmpty(), "The supported documents should be greater than 0");
+
         for (FileFormat fileFormat : responseValue) {
             assertNotNull(fileFormat.getFormat());
             assertNotNull(fileFormat.getFileExtensions());
             assertNotNull(fileFormat.getContentTypes());
-            assertNotNull(fileFormat.getType());  
+            assertNotNull(fileFormat.getType());
         }
     }
-    
+
     @Test
-    public void testGetGlossariesFormats() {        
+    public void testGetGlossariesFormats() {
         // method invocation
         SupportedFileFormats response = getDocumentTranslationClient().getSupportedFormats(FileFormatType.GLOSSARY);
-        
+
         // response assertion
         assertNotNull(response);
-        
+
         List<FileFormat> responseValue = response.getValue();
-        assertTrue(!responseValue.isEmpty(), "The supported documents should be greater than 0");            
-        
+        assertTrue(!responseValue.isEmpty(), "The supported documents should be greater than 0");
+
         for (FileFormat fileFormat : responseValue) {
             assertNotNull(fileFormat.getFormat());
             assertNotNull(fileFormat.getFileExtensions());
             assertNotNull(fileFormat.getContentTypes());
-            assertNotNull(fileFormat.getType());  
+            assertNotNull(fileFormat.getType());
         }
     }
 }

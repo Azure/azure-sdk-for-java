@@ -201,8 +201,8 @@ public final class ContentKeyPolicyPlayReadyPlayRight {
      * @param digitalVideoOnlyContentRestriction the digitalVideoOnlyContentRestriction value to set.
      * @return the ContentKeyPolicyPlayReadyPlayRight object itself.
      */
-    public ContentKeyPolicyPlayReadyPlayRight withDigitalVideoOnlyContentRestriction(
-        boolean digitalVideoOnlyContentRestriction) {
+    public ContentKeyPolicyPlayReadyPlayRight
+        withDigitalVideoOnlyContentRestriction(boolean digitalVideoOnlyContentRestriction) {
         this.digitalVideoOnlyContentRestriction = digitalVideoOnlyContentRestriction;
         return this;
     }
@@ -392,11 +392,9 @@ public final class ContentKeyPolicyPlayReadyPlayRight {
             explicitAnalogTelevisionOutputRestriction().validate();
         }
         if (allowPassingVideoContentToUnknownOutput() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property allowPassingVideoContentToUnknownOutput in model"
-                            + " ContentKeyPolicyPlayReadyPlayRight"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property allowPassingVideoContentToUnknownOutput in model"
+                    + " ContentKeyPolicyPlayReadyPlayRight"));
         }
     }
 

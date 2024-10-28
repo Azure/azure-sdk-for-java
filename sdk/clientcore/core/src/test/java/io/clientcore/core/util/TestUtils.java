@@ -62,7 +62,7 @@ public final class TestUtils {
      * @param actualLength Amount of bytes to compare in the actual array.
      */
     public static void assertArraysEqual(byte[] expected, int expectedOffset, int expectedLength, byte[] actual,
-                                         int actualLength) {
+        int actualLength) {
 
         if (!Objects.equals(ByteBuffer.wrap(expected, expectedOffset, expectedLength),
             ByteBuffer.wrap(actual, 0, actualLength))) {

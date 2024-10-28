@@ -20,13 +20,8 @@ import java.util.UUID;
  *
  * @param <FluentModelT> the fluent model type
  */
-public abstract class ExecutableImpl<FluentModelT extends Indexable>
-        extends
-        IndexableImpl
-        implements
-        TaskGroup.HasTaskGroup,
-        Executable<FluentModelT>,
-        ExecuteTask.Executor<FluentModelT> {
+public abstract class ExecutableImpl<FluentModelT extends Indexable> extends IndexableImpl
+    implements TaskGroup.HasTaskGroup, Executable<FluentModelT>, ExecuteTask.Executor<FluentModelT> {
     /**
      * The group of tasks to the produces this result and it's dependencies results.
      */
@@ -212,7 +207,6 @@ public abstract class ExecutableImpl<FluentModelT extends Indexable>
     public FluentModelT execute() {
         return executeAsync().block();
     }
-
 
     @Override
     public Mono<Void> afterPostRunAsync(boolean isGroupFaulted) {

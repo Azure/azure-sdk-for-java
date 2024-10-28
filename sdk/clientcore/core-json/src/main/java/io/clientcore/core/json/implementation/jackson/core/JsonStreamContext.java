@@ -19,8 +19,7 @@ import io.clientcore.core.json.implementation.jackson.core.io.ContentReference;
  * example, output within Array context can differ from that of
  * Object context.
  */
-public abstract class JsonStreamContext
-{
+public abstract class JsonStreamContext {
     // // // Type constants used internally
     // // // (but exposed publicly as of 2.12 as possibly needed)
 
@@ -59,7 +58,8 @@ public abstract class JsonStreamContext
     /**********************************************************
      */
 
-    protected JsonStreamContext() { }
+    protected JsonStreamContext() {
+    }
 
     /**
      * Copy constructor used by sub-classes for creating copies for
@@ -100,7 +100,9 @@ public abstract class JsonStreamContext
      *
      * @return {@code True} if this context represents an Array; {@code false} otherwise
      */
-    public final boolean inArray() { return _type == TYPE_ARRAY; }
+    public final boolean inArray() {
+        return _type == TYPE_ARRAY;
+    }
 
     /**
      * Method that returns true if this context is a Root context;
@@ -109,7 +111,9 @@ public abstract class JsonStreamContext
      *
      * @return {@code True} if this context represents a sequence of Root values; {@code false} otherwise
      */
-    public final boolean inRoot() { return _type == TYPE_ROOT; }
+    public final boolean inRoot() {
+        return _type == TYPE_ROOT;
+    }
 
     /**
      * Method that returns true if this context is an Object context;
@@ -117,7 +121,9 @@ public abstract class JsonStreamContext
      *
      * @return {@code True} if this context represents an Object; {@code false} otherwise
      */
-    public final boolean inObject() { return _type == TYPE_OBJECT; }
+    public final boolean inObject() {
+        return _type == TYPE_OBJECT;
+    }
 
     /**
      * @return Type description String
@@ -127,9 +133,14 @@ public abstract class JsonStreamContext
     @Deprecated // since 2.8
     public final String getTypeDesc() {
         switch (_type) {
-        case TYPE_ROOT: return "ROOT";
-        case TYPE_ARRAY: return "ARRAY";
-        case TYPE_OBJECT: return "OBJECT";
+            case TYPE_ROOT:
+                return "ROOT";
+
+            case TYPE_ARRAY:
+                return "ARRAY";
+
+            case TYPE_OBJECT:
+                return "OBJECT";
         }
         return "?";
     }
@@ -145,9 +156,14 @@ public abstract class JsonStreamContext
      */
     public String typeDesc() {
         switch (_type) {
-        case TYPE_ROOT: return "root";
-        case TYPE_ARRAY: return "Array";
-        case TYPE_OBJECT: return "Object";
+            case TYPE_ROOT:
+                return "root";
+
+            case TYPE_ARRAY:
+                return "Array";
+
+            case TYPE_OBJECT:
+                return "Object";
         }
         return "?";
     }
@@ -155,12 +171,16 @@ public abstract class JsonStreamContext
     /**
      * @return Number of entries that are complete and started.
      */
-    public final int getEntryCount() { return _index + 1; }
+    public final int getEntryCount() {
+        return _index + 1;
+    }
 
     /**
      * @return Index of the currently processed entry, if any
      */
-    public final int getCurrentIndex() { return (_index < 0) ? 0 : _index; }
+    public final int getCurrentIndex() {
+        return (_index < 0) ? 0 : _index;
+    }
 
     /**
      * Method that may be called to verify whether this context has valid index:
@@ -171,7 +191,9 @@ public abstract class JsonStreamContext
      *
      * @since 2.9
      */
-    public boolean hasCurrentIndex() { return _index >= 0; }
+    public boolean hasCurrentIndex() {
+        return _index >= 0;
+    }
 
     /**
      * Method that may be called to check if this context is either:
@@ -216,7 +238,9 @@ public abstract class JsonStreamContext
      *
      * @since 2.9
      */
-    public boolean hasCurrentName() { return getCurrentName() != null; }
+    public boolean hasCurrentName() {
+        return getCurrentName() != null;
+    }
 
     /**
      * Method for accessing currently active value being used by data-binding
@@ -245,7 +269,8 @@ public abstract class JsonStreamContext
      *
      * @since 2.5
      */
-    public void setCurrentValue(Object v) { }
+    public void setCurrentValue(Object v) {
+    }
 
     /**
      * Factory method for constructing a {@link JsonPointer} that points to the current
@@ -318,27 +343,29 @@ public abstract class JsonStreamContext
     public String toString() {
         StringBuilder sb = new StringBuilder(64);
         switch (_type) {
-        case TYPE_ROOT:
-            sb.append("/");
-            break;
-        case TYPE_ARRAY:
-            sb.append('[');
-            sb.append(getCurrentIndex());
-            sb.append(']');
-            break;
-        case TYPE_OBJECT:
-        default:
-            sb.append('{');
-            String currentName = getCurrentName();
-            if (currentName != null) {
-                sb.append('"');
-                CharTypes.appendQuoted(sb, currentName);
-                sb.append('"');
-            } else {
-                sb.append('?');
-            }
-            sb.append('}');
-            break;
+            case TYPE_ROOT:
+                sb.append("/");
+                break;
+
+            case TYPE_ARRAY:
+                sb.append('[');
+                sb.append(getCurrentIndex());
+                sb.append(']');
+                break;
+
+            case TYPE_OBJECT:
+            default:
+                sb.append('{');
+                String currentName = getCurrentName();
+                if (currentName != null) {
+                    sb.append('"');
+                    CharTypes.appendQuoted(sb, currentName);
+                    sb.append('"');
+                } else {
+                    sb.append('?');
+                }
+                sb.append('}');
+                break;
         }
         return sb.toString();
     }

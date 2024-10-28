@@ -30,8 +30,10 @@ public class ContainerRegistryTokenService implements TokenCredential {
     private final AuthenticationsImpl authenticationsImpl;
     private final boolean isAnonymousAccess;
     private static final ClientLogger LOGGER = new ClientLogger(ContainerRegistryTokenService.class);
-    private static final Mono<AccessToken> ANONYMOUS_REFRESH_TOKEN = Mono.just(new AccessToken(null, OffsetDateTime.MAX));
+    private static final Mono<AccessToken> ANONYMOUS_REFRESH_TOKEN
+        = Mono.just(new AccessToken(null, OffsetDateTime.MAX));
     private final AtomicReference<String> lastAccessToken = new AtomicReference<>();
+
     /**
      * Creates an instance of AccessTokenCache with default scheme "Bearer".
      *
@@ -39,7 +41,7 @@ public class ContainerRegistryTokenService implements TokenCredential {
      * @param client AzureContainerRegistryImpl instance.
      */
     public ContainerRegistryTokenService(TokenCredential aadTokenCredential, ContainerRegistryAudience audience,
-                                         AzureContainerRegistryImpl client) {
+        AzureContainerRegistryImpl client) {
         this.authenticationsImpl = client.getAuthentications();
 
         if (aadTokenCredential != null) {
@@ -65,27 +67,30 @@ public class ContainerRegistryTokenService implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         if (!(request instanceof ContainerRegistryTokenRequestContext)) {
-            return monoError(LOGGER, new IllegalArgumentException("tokenRequestContext is not of the type ContainerRegistryTokenRequestContext"));
+            return monoError(LOGGER, new IllegalArgumentException(
+                "tokenRequestContext is not of the type ContainerRegistryTokenRequestContext"));
         }
 
-        ContainerRegistryTokenRequestContext crRequest =
-            (ContainerRegistryTokenRequestContext) request;
+        ContainerRegistryTokenRequestContext crRequest = (ContainerRegistryTokenRequestContext) request;
 
-        Mono<AccessToken> getRefreshToken = isAnonymousAccess  ? ANONYMOUS_REFRESH_TOKEN : refreshTokenCache.getToken(crRequest, true);
+        Mono<AccessToken> getRefreshToken
+            = isAnonymousAccess ? ANONYMOUS_REFRESH_TOKEN : refreshTokenCache.getToken(crRequest, true);
         TokenGrantType grantType = isAnonymousAccess ? TokenGrantType.PASSWORD : TokenGrantType.REFRESH_TOKEN;
 
-        return getRefreshToken.flatMap(refreshToken -> authenticationsImpl
-                    .exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(crRequest.getServiceName(), crRequest.getScope(), refreshToken.getToken(), grantType, Context.NONE))
-                .map(this::toAccessToken);
+        return getRefreshToken
+            .flatMap(refreshToken -> authenticationsImpl.exchangeAcrRefreshTokenForAcrAccessTokenWithResponseAsync(
+                crRequest.getServiceName(), crRequest.getScope(), refreshToken.getToken(), grantType, Context.NONE))
+            .map(this::toAccessToken);
     }
 
     public AccessToken getTokenSync(TokenRequestContext tokenRequestContext) {
         if (!(tokenRequestContext instanceof ContainerRegistryTokenRequestContext)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("tokenRequestContext is not of the type ContainerRegistryTokenRequestContext"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "tokenRequestContext is not of the type ContainerRegistryTokenRequestContext"));
         }
 
-        ContainerRegistryTokenRequestContext requestContext =
-            (ContainerRegistryTokenRequestContext) tokenRequestContext;
+        ContainerRegistryTokenRequestContext requestContext
+            = (ContainerRegistryTokenRequestContext) tokenRequestContext;
 
         String refreshTokenString = null;
         TokenGrantType grantType = isAnonymousAccess ? TokenGrantType.PASSWORD : TokenGrantType.REFRESH_TOKEN;
@@ -94,8 +99,8 @@ public class ContainerRegistryTokenService implements TokenCredential {
             refreshTokenString = refreshToken.getToken();
         }
 
-        return toAccessToken(authenticationsImpl
-            .exchangeAcrRefreshTokenForAcrAccessTokenWithResponse(requestContext.getServiceName(), requestContext.getScope(), refreshTokenString, grantType, Context.NONE));
+        return toAccessToken(authenticationsImpl.exchangeAcrRefreshTokenForAcrAccessTokenWithResponse(
+            requestContext.getServiceName(), requestContext.getScope(), refreshTokenString, grantType, Context.NONE));
     }
 
     private AccessToken toAccessToken(Response<AcrAccessToken> response) {

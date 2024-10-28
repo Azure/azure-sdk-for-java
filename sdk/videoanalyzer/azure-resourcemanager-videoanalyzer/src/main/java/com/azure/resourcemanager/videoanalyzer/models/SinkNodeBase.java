@@ -19,7 +19,7 @@ import java.util.List;
     property = "@type",
     defaultImpl = SinkNodeBase.class)
 @JsonTypeName("#Microsoft.VideoAnalyzer.SinkNodeBase")
-@JsonSubTypes({@JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.VideoSink", value = VideoSink.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.VideoSink", value = VideoSink.class) })
 @Fluent
 public class SinkNodeBase extends NodeBase {
     /*
@@ -67,9 +67,8 @@ public class SinkNodeBase extends NodeBase {
     public void validate() {
         super.validate();
         if (inputs() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property inputs in model SinkNodeBase"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property inputs in model SinkNodeBase"));
         } else {
             inputs().forEach(e -> e.validate());
         }

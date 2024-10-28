@@ -10,10 +10,8 @@ import com.azure.resourcemanager.deploymentmanager.models.Message;
 public final class MessageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Message model =
-            BinaryData
-                .fromString("{\"timeStamp\":\"2021-06-14T21:05:42Z\",\"message\":\"uxh\"}")
-                .toObject(Message.class);
+        Message model = BinaryData.fromString("{\"timeStamp\":\"2021-06-14T21:05:42Z\",\"message\":\"uxh\"}")
+            .toObject(Message.class);
     }
 
     @org.junit.jupiter.api.Test

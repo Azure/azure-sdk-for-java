@@ -227,11 +227,8 @@ public interface Lab {
     LabInner innerModel();
 
     /** The entirety of the Lab definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The Lab definition stages. */
@@ -274,16 +271,11 @@ public interface Lab {
          * The stage of the Lab definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithLabStorageType,
-                DefinitionStages.WithMandatoryArtifactsResourceIdsLinux,
-                DefinitionStages.WithMandatoryArtifactsResourceIdsWindows,
-                DefinitionStages.WithPremiumDataDisks,
-                DefinitionStages.WithEnvironmentPermission,
-                DefinitionStages.WithAnnouncement,
-                DefinitionStages.WithSupport,
-                DefinitionStages.WithExtendedProperties {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithLabStorageType,
+            DefinitionStages.WithMandatoryArtifactsResourceIdsLinux,
+            DefinitionStages.WithMandatoryArtifactsResourceIdsWindows, DefinitionStages.WithPremiumDataDisks,
+            DefinitionStages.WithEnvironmentPermission, DefinitionStages.WithAnnouncement, DefinitionStages.WithSupport,
+            DefinitionStages.WithExtendedProperties {
             /**
              * Executes the create request.
              *
@@ -537,8 +529,8 @@ public interface Lab {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body for generating an upload URI along with {@link Response}.
      */
-    Response<GenerateUploadUriResponse> generateUploadUriWithResponse(
-        GenerateUploadUriParameter generateUploadUriParameter, Context context);
+    Response<GenerateUploadUriResponse>
+        generateUploadUriWithResponse(GenerateUploadUriParameter generateUploadUriParameter, Context context);
 
     /**
      * Generate a URI for uploading custom disk images to a Lab.

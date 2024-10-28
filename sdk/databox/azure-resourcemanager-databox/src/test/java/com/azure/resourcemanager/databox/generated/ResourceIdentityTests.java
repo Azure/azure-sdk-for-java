@@ -14,20 +14,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"m\",\"principalId\":\"yvshxmz\",\"tenantId\":\"bzoggigrx\",\"userAssignedIdentities\":{\"udwtiukbl\":{\"principalId\":\"vjxxjnsp\",\"clientId\":\"ptkoenkoukn\"}}}")
-                .toObject(ResourceIdentity.class);
+        ResourceIdentity model = BinaryData.fromString(
+            "{\"type\":\"m\",\"principalId\":\"yvshxmz\",\"tenantId\":\"bzoggigrx\",\"userAssignedIdentities\":{\"udwtiukbl\":{\"principalId\":\"vjxxjnsp\",\"clientId\":\"ptkoenkoukn\"}}}")
+            .toObject(ResourceIdentity.class);
         Assertions.assertEquals("m", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceIdentity model =
-            new ResourceIdentity()
-                .withType("m")
-                .withUserAssignedIdentities(mapOf("udwtiukbl", new UserAssignedIdentity()));
+        ResourceIdentity model = new ResourceIdentity().withType("m")
+            .withUserAssignedIdentities(mapOf("udwtiukbl", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ResourceIdentity.class);
         Assertions.assertEquals("m", model.type());
     }

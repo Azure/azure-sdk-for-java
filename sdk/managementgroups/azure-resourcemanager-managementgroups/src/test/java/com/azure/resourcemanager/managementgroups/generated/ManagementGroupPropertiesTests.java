@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagementGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagementGroupProperties model =
-            BinaryData
-                .fromString(
-                    "{\"tenantId\":\"ilzyd\",\"displayName\":\"o\",\"details\":{\"version\":2010120941,\"updatedTime\":\"2021-04-29T07:45:55Z\",\"updatedBy\":\"inpm\",\"parent\":{\"id\":\"aqwi\",\"name\":\"sprozvcput\",\"displayName\":\"jvwmfda\"},\"path\":[{\"name\":\"dvpjhulsuuvmk\",\"displayName\":\"zkrwfn\"}],\"managementGroupAncestors\":[\"djpslw\",\"jdpvwryo\",\"psoacctazakljl\"],\"managementGroupAncestorsChain\":[{\"name\":\"ryffdfdosy\",\"displayName\":\"xpaojakhmsbz\"},{\"name\":\"crzevdphlx\",\"displayName\":\"lthqtrgqjbp\"},{\"name\":\"fsinzgvfcjrwzoxx\",\"displayName\":\"felluwfzitonpe\"}]},\"children\":[{\"type\":\"/subscriptions\",\"id\":\"lxofpdvhpfxxypin\",\"name\":\"mayhuybbkpodepoo\",\"displayName\":\"nuvamiheogna\",\"children\":[]},{\"type\":\"/subscriptions\",\"id\":\"eotusivyevc\",\"name\":\"qi\",\"displayName\":\"hungbwjzrnf\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"pemvtzfkufubljof\",\"name\":\"eofjaeqjh\",\"displayName\":\"b\",\"children\":[]}]}")
-                .toObject(ManagementGroupProperties.class);
+        ManagementGroupProperties model = BinaryData.fromString(
+            "{\"tenantId\":\"ilzyd\",\"displayName\":\"o\",\"details\":{\"version\":2010120941,\"updatedTime\":\"2021-04-29T07:45:55Z\",\"updatedBy\":\"inpm\",\"parent\":{\"id\":\"aqwi\",\"name\":\"sprozvcput\",\"displayName\":\"jvwmfda\"},\"path\":[{\"name\":\"dvpjhulsuuvmk\",\"displayName\":\"zkrwfn\"}],\"managementGroupAncestors\":[\"djpslw\",\"jdpvwryo\",\"psoacctazakljl\"],\"managementGroupAncestorsChain\":[{\"name\":\"ryffdfdosy\",\"displayName\":\"xpaojakhmsbz\"},{\"name\":\"crzevdphlx\",\"displayName\":\"lthqtrgqjbp\"},{\"name\":\"fsinzgvfcjrwzoxx\",\"displayName\":\"felluwfzitonpe\"}]},\"children\":[{\"type\":\"/subscriptions\",\"id\":\"lxofpdvhpfxxypin\",\"name\":\"mayhuybbkpodepoo\",\"displayName\":\"nuvamiheogna\",\"children\":[]},{\"type\":\"/subscriptions\",\"id\":\"eotusivyevc\",\"name\":\"qi\",\"displayName\":\"hungbwjzrnf\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"pemvtzfkufubljof\",\"name\":\"eofjaeqjh\",\"displayName\":\"b\",\"children\":[]}]}")
+            .toObject(ManagementGroupProperties.class);
         Assertions.assertEquals("ilzyd", model.tenantId());
         Assertions.assertEquals("o", model.displayName());
         Assertions.assertEquals(2010120941, model.details().version());
@@ -44,57 +42,35 @@ public final class ManagementGroupPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementGroupProperties model =
-            new ManagementGroupProperties()
-                .withTenantId("ilzyd")
-                .withDisplayName("o")
-                .withDetails(
-                    new ManagementGroupDetails()
-                        .withVersion(2010120941)
-                        .withUpdatedTime(OffsetDateTime.parse("2021-04-29T07:45:55Z"))
-                        .withUpdatedBy("inpm")
-                        .withParent(
-                            new ParentGroupInfo().withId("aqwi").withName("sprozvcput").withDisplayName("jvwmfda"))
-                        .withPath(
-                            Arrays
-                                .asList(
-                                    new ManagementGroupPathElement()
-                                        .withName("dvpjhulsuuvmk")
-                                        .withDisplayName("zkrwfn")))
-                        .withManagementGroupAncestors(Arrays.asList("djpslw", "jdpvwryo", "psoacctazakljl"))
-                        .withManagementGroupAncestorsChain(
-                            Arrays
-                                .asList(
-                                    new ManagementGroupPathElement()
-                                        .withName("ryffdfdosy")
-                                        .withDisplayName("xpaojakhmsbz"),
-                                    new ManagementGroupPathElement()
-                                        .withName("crzevdphlx")
-                                        .withDisplayName("lthqtrgqjbp"),
-                                    new ManagementGroupPathElement()
-                                        .withName("fsinzgvfcjrwzoxx")
-                                        .withDisplayName("felluwfzitonpe"))))
-                .withChildren(
-                    Arrays
-                        .asList(
-                            new ManagementGroupChildInfo()
-                                .withType(ManagementGroupChildType.SUBSCRIPTIONS)
-                                .withId("lxofpdvhpfxxypin")
-                                .withName("mayhuybbkpodepoo")
-                                .withDisplayName("nuvamiheogna")
-                                .withChildren(Arrays.asList()),
-                            new ManagementGroupChildInfo()
-                                .withType(ManagementGroupChildType.SUBSCRIPTIONS)
-                                .withId("eotusivyevc")
-                                .withName("qi")
-                                .withDisplayName("hungbwjzrnf")
-                                .withChildren(Arrays.asList()),
-                            new ManagementGroupChildInfo()
-                                .withType(ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS)
-                                .withId("pemvtzfkufubljof")
-                                .withName("eofjaeqjh")
-                                .withDisplayName("b")
-                                .withChildren(Arrays.asList())));
+        ManagementGroupProperties model = new ManagementGroupProperties().withTenantId("ilzyd")
+            .withDisplayName("o")
+            .withDetails(new ManagementGroupDetails().withVersion(2010120941)
+                .withUpdatedTime(OffsetDateTime.parse("2021-04-29T07:45:55Z"))
+                .withUpdatedBy("inpm")
+                .withParent(new ParentGroupInfo().withId("aqwi").withName("sprozvcput").withDisplayName("jvwmfda"))
+                .withPath(
+                    Arrays.asList(new ManagementGroupPathElement().withName("dvpjhulsuuvmk").withDisplayName("zkrwfn")))
+                .withManagementGroupAncestors(Arrays.asList("djpslw", "jdpvwryo", "psoacctazakljl"))
+                .withManagementGroupAncestorsChain(Arrays.asList(
+                    new ManagementGroupPathElement().withName("ryffdfdosy").withDisplayName("xpaojakhmsbz"),
+                    new ManagementGroupPathElement().withName("crzevdphlx").withDisplayName("lthqtrgqjbp"),
+                    new ManagementGroupPathElement().withName("fsinzgvfcjrwzoxx").withDisplayName("felluwfzitonpe"))))
+            .withChildren(Arrays.asList(
+                new ManagementGroupChildInfo().withType(ManagementGroupChildType.SUBSCRIPTIONS)
+                    .withId("lxofpdvhpfxxypin")
+                    .withName("mayhuybbkpodepoo")
+                    .withDisplayName("nuvamiheogna")
+                    .withChildren(Arrays.asList()),
+                new ManagementGroupChildInfo().withType(ManagementGroupChildType.SUBSCRIPTIONS)
+                    .withId("eotusivyevc")
+                    .withName("qi")
+                    .withDisplayName("hungbwjzrnf")
+                    .withChildren(Arrays.asList()),
+                new ManagementGroupChildInfo().withType(ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS)
+                    .withId("pemvtzfkufubljof")
+                    .withName("eofjaeqjh")
+                    .withDisplayName("b")
+                    .withChildren(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(ManagementGroupProperties.class);
         Assertions.assertEquals("ilzyd", model.tenantId());
         Assertions.assertEquals("o", model.displayName());

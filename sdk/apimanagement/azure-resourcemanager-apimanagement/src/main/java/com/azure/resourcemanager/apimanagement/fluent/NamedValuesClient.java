@@ -54,14 +54,8 @@ public interface NamedValuesClient {
      * @return paged NamedValue list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NamedValueContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean isKeyVaultRefreshFailed,
-        Context context);
+    PagedIterable<NamedValueContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Boolean isKeyVaultRefreshFailed, Context context);
 
     /**
      * Gets the entity state (Etag) version of the named value specified by its identifier.
@@ -76,8 +70,8 @@ public interface NamedValuesClient {
      * @return the entity state (Etag) version of the named value specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamedValuesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String namedValueId, Context context);
+    NamedValuesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String namedValueId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the named value specified by its identifier.
@@ -105,8 +99,8 @@ public interface NamedValuesClient {
      * @return the details of the named value specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamedValuesGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String namedValueId, Context context);
+    NamedValuesGetResponse getWithResponse(String resourceGroupName, String serviceName, String namedValueId,
+        Context context);
 
     /**
      * Gets the details of the named value specified by its identifier.
@@ -154,12 +148,8 @@ public interface NamedValuesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NamedValueContractInner>, NamedValueContractInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String namedValueId,
-        NamedValueCreateContract parameters,
-        String ifMatch,
-        Context context);
+        String resourceGroupName, String serviceName, String namedValueId, NamedValueCreateContract parameters,
+        String ifMatch, Context context);
 
     /**
      * Creates or updates named value.
@@ -174,8 +164,8 @@ public interface NamedValuesClient {
      * @return namedValue details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamedValueContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String namedValueId, NamedValueCreateContract parameters);
+    NamedValueContractInner createOrUpdate(String resourceGroupName, String serviceName, String namedValueId,
+        NamedValueCreateContract parameters);
 
     /**
      * Creates or updates named value.
@@ -192,13 +182,8 @@ public interface NamedValuesClient {
      * @return namedValue details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamedValueContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String namedValueId,
-        NamedValueCreateContract parameters,
-        String ifMatch,
-        Context context);
+    NamedValueContractInner createOrUpdate(String resourceGroupName, String serviceName, String namedValueId,
+        NamedValueCreateContract parameters, String ifMatch, Context context);
 
     /**
      * Updates the specific named value.
@@ -215,12 +200,8 @@ public interface NamedValuesClient {
      * @return the {@link SyncPoller} for polling of namedValue details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NamedValueContractInner>, NamedValueContractInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String namedValueId,
-        String ifMatch,
-        NamedValueUpdateParameters parameters);
+    SyncPoller<PollResult<NamedValueContractInner>, NamedValueContractInner> beginUpdate(String resourceGroupName,
+        String serviceName, String namedValueId, String ifMatch, NamedValueUpdateParameters parameters);
 
     /**
      * Updates the specific named value.
@@ -238,12 +219,8 @@ public interface NamedValuesClient {
      * @return the {@link SyncPoller} for polling of namedValue details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NamedValueContractInner>, NamedValueContractInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String namedValueId,
-        String ifMatch,
-        NamedValueUpdateParameters parameters,
+    SyncPoller<PollResult<NamedValueContractInner>, NamedValueContractInner> beginUpdate(String resourceGroupName,
+        String serviceName, String namedValueId, String ifMatch, NamedValueUpdateParameters parameters,
         Context context);
 
     /**
@@ -261,11 +238,7 @@ public interface NamedValuesClient {
      * @return namedValue details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamedValueContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String namedValueId,
-        String ifMatch,
+    NamedValueContractInner update(String resourceGroupName, String serviceName, String namedValueId, String ifMatch,
         NamedValueUpdateParameters parameters);
 
     /**
@@ -284,13 +257,8 @@ public interface NamedValuesClient {
      * @return namedValue details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamedValueContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String namedValueId,
-        String ifMatch,
-        NamedValueUpdateParameters parameters,
-        Context context);
+    NamedValueContractInner update(String resourceGroupName, String serviceName, String namedValueId, String ifMatch,
+        NamedValueUpdateParameters parameters, Context context);
 
     /**
      * Deletes specific named value from the API Management service instance.
@@ -307,8 +275,8 @@ public interface NamedValuesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String namedValueId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String namedValueId, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific named value from the API Management service instance.
@@ -338,8 +306,8 @@ public interface NamedValuesClient {
      * @return the secret of the named value specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamedValuesListValueResponse listValueWithResponse(
-        String resourceGroupName, String serviceName, String namedValueId, Context context);
+    NamedValuesListValueResponse listValueWithResponse(String resourceGroupName, String serviceName,
+        String namedValueId, Context context);
 
     /**
      * Gets the secret of the named value specified by its identifier.
@@ -367,8 +335,8 @@ public interface NamedValuesClient {
      * @return the {@link SyncPoller} for polling of namedValue details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NamedValueContractInner>, NamedValueContractInner> beginRefreshSecret(
-        String resourceGroupName, String serviceName, String namedValueId);
+    SyncPoller<PollResult<NamedValueContractInner>, NamedValueContractInner>
+        beginRefreshSecret(String resourceGroupName, String serviceName, String namedValueId);
 
     /**
      * Refresh the secret of the named value specified by its identifier.
@@ -383,8 +351,8 @@ public interface NamedValuesClient {
      * @return the {@link SyncPoller} for polling of namedValue details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NamedValueContractInner>, NamedValueContractInner> beginRefreshSecret(
-        String resourceGroupName, String serviceName, String namedValueId, Context context);
+    SyncPoller<PollResult<NamedValueContractInner>, NamedValueContractInner>
+        beginRefreshSecret(String resourceGroupName, String serviceName, String namedValueId, Context context);
 
     /**
      * Refresh the secret of the named value specified by its identifier.
@@ -413,6 +381,6 @@ public interface NamedValuesClient {
      * @return namedValue details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamedValueContractInner refreshSecret(
-        String resourceGroupName, String serviceName, String namedValueId, Context context);
+    NamedValueContractInner refreshSecret(String resourceGroupName, String serviceName, String namedValueId,
+        Context context);
 }

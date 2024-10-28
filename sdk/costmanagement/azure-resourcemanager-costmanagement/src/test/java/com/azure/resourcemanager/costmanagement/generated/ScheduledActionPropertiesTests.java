@@ -21,11 +21,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduledActionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduledActionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"nrvgoupmfiibfgg\",\"fileDestination\":{\"fileFormats\":[\"Csv\",\"Csv\"]},\"notification\":{\"to\":[\"wxkvtkkgll\",\"wjygvjayvblmhvk\",\"uhbxvvy\"],\"language\":\"s\",\"message\":\"byrqufeg\",\"regionalFormat\":\"vwz\",\"subject\":\"bnhlmc\"},\"notificationEmail\":\"p\",\"schedule\":{\"frequency\":\"Daily\",\"hourOfDay\":1262930280,\"daysOfWeek\":[\"Thursday\",\"Wednesday\"],\"weeksOfMonth\":[\"Fourth\",\"First\"],\"dayOfMonth\":283160638,\"startDate\":\"2021-08-25T00:52:30Z\",\"endDate\":\"2021-02-16T12:45:58Z\"},\"scope\":\"ijejvegrhbpn\",\"status\":\"Enabled\",\"viewId\":\"xexccbdreaxhcexd\"}")
-                .toObject(ScheduledActionProperties.class);
+        ScheduledActionProperties model = BinaryData.fromString(
+            "{\"displayName\":\"nrvgoupmfiibfgg\",\"fileDestination\":{\"fileFormats\":[\"Csv\",\"Csv\"]},\"notification\":{\"to\":[\"wxkvtkkgll\",\"wjygvjayvblmhvk\",\"uhbxvvy\"],\"language\":\"s\",\"message\":\"byrqufeg\",\"regionalFormat\":\"vwz\",\"subject\":\"bnhlmc\"},\"notificationEmail\":\"p\",\"schedule\":{\"frequency\":\"Daily\",\"hourOfDay\":1262930280,\"daysOfWeek\":[\"Thursday\",\"Wednesday\"],\"weeksOfMonth\":[\"Fourth\",\"First\"],\"dayOfMonth\":283160638,\"startDate\":\"2021-08-25T00:52:30Z\",\"endDate\":\"2021-02-16T12:45:58Z\"},\"scope\":\"ijejvegrhbpn\",\"status\":\"Enabled\",\"viewId\":\"xexccbdreaxhcexd\"}")
+            .toObject(ScheduledActionProperties.class);
         Assertions.assertEquals("nrvgoupmfiibfgg", model.displayName());
         Assertions.assertEquals(FileFormat.CSV, model.fileDestination().fileFormats().get(0));
         Assertions.assertEquals("wxkvtkkgll", model.notification().to().get(0));
@@ -48,31 +46,25 @@ public final class ScheduledActionPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduledActionProperties model =
-            new ScheduledActionProperties()
-                .withDisplayName("nrvgoupmfiibfgg")
-                .withFileDestination(
-                    new FileDestination().withFileFormats(Arrays.asList(FileFormat.CSV, FileFormat.CSV)))
-                .withNotification(
-                    new NotificationProperties()
-                        .withTo(Arrays.asList("wxkvtkkgll", "wjygvjayvblmhvk", "uhbxvvy"))
-                        .withLanguage("s")
-                        .withMessage("byrqufeg")
-                        .withRegionalFormat("vwz")
-                        .withSubject("bnhlmc"))
-                .withNotificationEmail("p")
-                .withSchedule(
-                    new ScheduleProperties()
-                        .withFrequency(ScheduleFrequency.DAILY)
-                        .withHourOfDay(1262930280)
-                        .withDaysOfWeek(Arrays.asList(DaysOfWeek.THURSDAY, DaysOfWeek.WEDNESDAY))
-                        .withWeeksOfMonth(Arrays.asList(WeeksOfMonth.FOURTH, WeeksOfMonth.FIRST))
-                        .withDayOfMonth(283160638)
-                        .withStartDate(OffsetDateTime.parse("2021-08-25T00:52:30Z"))
-                        .withEndDate(OffsetDateTime.parse("2021-02-16T12:45:58Z")))
-                .withScope("ijejvegrhbpn")
-                .withStatus(ScheduledActionStatus.ENABLED)
-                .withViewId("xexccbdreaxhcexd");
+        ScheduledActionProperties model = new ScheduledActionProperties().withDisplayName("nrvgoupmfiibfgg")
+            .withFileDestination(new FileDestination().withFileFormats(Arrays.asList(FileFormat.CSV, FileFormat.CSV)))
+            .withNotification(
+                new NotificationProperties().withTo(Arrays.asList("wxkvtkkgll", "wjygvjayvblmhvk", "uhbxvvy"))
+                    .withLanguage("s")
+                    .withMessage("byrqufeg")
+                    .withRegionalFormat("vwz")
+                    .withSubject("bnhlmc"))
+            .withNotificationEmail("p")
+            .withSchedule(new ScheduleProperties().withFrequency(ScheduleFrequency.DAILY)
+                .withHourOfDay(1262930280)
+                .withDaysOfWeek(Arrays.asList(DaysOfWeek.THURSDAY, DaysOfWeek.WEDNESDAY))
+                .withWeeksOfMonth(Arrays.asList(WeeksOfMonth.FOURTH, WeeksOfMonth.FIRST))
+                .withDayOfMonth(283160638)
+                .withStartDate(OffsetDateTime.parse("2021-08-25T00:52:30Z"))
+                .withEndDate(OffsetDateTime.parse("2021-02-16T12:45:58Z")))
+            .withScope("ijejvegrhbpn")
+            .withStatus(ScheduledActionStatus.ENABLED)
+            .withViewId("xexccbdreaxhcexd");
         model = BinaryData.fromObject(model).toObject(ScheduledActionProperties.class);
         Assertions.assertEquals("nrvgoupmfiibfgg", model.displayName());
         Assertions.assertEquals(FileFormat.CSV, model.fileDestination().fileFormats().get(0));

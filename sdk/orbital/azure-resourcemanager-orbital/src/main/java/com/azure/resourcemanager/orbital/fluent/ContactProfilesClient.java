@@ -28,8 +28,8 @@ public interface ContactProfilesClient {
      * @return the specified contact Profile in a specified resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContactProfileInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String contactProfileName, Context context);
+    Response<ContactProfileInner> getByResourceGroupWithResponse(String resourceGroupName, String contactProfileName,
+        Context context);
 
     /**
      * Gets the specified contact Profile in a specified resource group.
@@ -57,8 +57,8 @@ public interface ContactProfilesClient {
      *     of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginCreateOrUpdate(
-        String resourceGroupName, String contactProfileName, ContactProfileInner parameters);
+    SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginCreateOrUpdate(String resourceGroupName,
+        String contactProfileName, ContactProfileInner parameters);
 
     /**
      * Creates or updates a contact profile.
@@ -74,8 +74,8 @@ public interface ContactProfilesClient {
      *     of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginCreateOrUpdate(
-        String resourceGroupName, String contactProfileName, ContactProfileInner parameters, Context context);
+    SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginCreateOrUpdate(String resourceGroupName,
+        String contactProfileName, ContactProfileInner parameters, Context context);
 
     /**
      * Creates or updates a contact profile.
@@ -90,8 +90,8 @@ public interface ContactProfilesClient {
      *     scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContactProfileInner createOrUpdate(
-        String resourceGroupName, String contactProfileName, ContactProfileInner parameters);
+    ContactProfileInner createOrUpdate(String resourceGroupName, String contactProfileName,
+        ContactProfileInner parameters);
 
     /**
      * Creates or updates a contact profile.
@@ -107,8 +107,8 @@ public interface ContactProfilesClient {
      *     scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContactProfileInner createOrUpdate(
-        String resourceGroupName, String contactProfileName, ContactProfileInner parameters, Context context);
+    ContactProfileInner createOrUpdate(String resourceGroupName, String contactProfileName,
+        ContactProfileInner parameters, Context context);
 
     /**
      * Deletes a specified contact profile resource.
@@ -135,8 +135,8 @@ public interface ContactProfilesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String contactProfileName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String contactProfileName,
+        Context context);
 
     /**
      * Deletes a specified contact profile resource.
@@ -176,8 +176,8 @@ public interface ContactProfilesClient {
      *     of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTags(
-        String resourceGroupName, String contactProfileName, TagsObject parameters);
+    SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTags(String resourceGroupName,
+        String contactProfileName, TagsObject parameters);
 
     /**
      * Updates the specified contact profile tags.
@@ -193,8 +193,8 @@ public interface ContactProfilesClient {
      *     of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTags(
-        String resourceGroupName, String contactProfileName, TagsObject parameters, Context context);
+    SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTags(String resourceGroupName,
+        String contactProfileName, TagsObject parameters, Context context);
 
     /**
      * Updates the specified contact profile tags.
@@ -225,8 +225,8 @@ public interface ContactProfilesClient {
      *     scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContactProfileInner updateTags(
-        String resourceGroupName, String contactProfileName, TagsObject parameters, Context context);
+    ContactProfileInner updateTags(String resourceGroupName, String contactProfileName, TagsObject parameters,
+        Context context);
 
     /**
      * Returns list of contact profiles by Subscription.

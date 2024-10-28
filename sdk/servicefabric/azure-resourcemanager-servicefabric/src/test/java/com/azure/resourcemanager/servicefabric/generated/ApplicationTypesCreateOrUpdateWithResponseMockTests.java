@@ -46,13 +46,17 @@ public final class ApplicationTypesCreateOrUpdateWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ServiceFabricManager manager = ServiceFabricManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ServiceFabricManager manager = ServiceFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ApplicationTypeResource response
-            = manager.applicationTypes().define("zh").withExistingCluster("zronasxift", "zq").withRegion("onnxkrlgnyhm")
-                .withTags(mapOf("thrrgh", "xkk", "gf", "jbdhqxvc")).create();
+        ApplicationTypeResource response = manager.applicationTypes()
+            .define("zh")
+            .withExistingCluster("zronasxift", "zq")
+            .withRegion("onnxkrlgnyhm")
+            .withTags(mapOf("thrrgh", "xkk", "gf", "jbdhqxvc"))
+            .create();
 
         Assertions.assertEquals("sewgioilqukr", response.location());
         Assertions.assertEquals("tqmieox", response.tags().get("rgguf"));

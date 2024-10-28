@@ -42,8 +42,8 @@ public interface FarmBeatsModelsClient {
      * @return farmBeats resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FarmBeatsInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, Context context);
+    Response<FarmBeatsInner> getByResourceGroupWithResponse(String resourceGroupName, String farmBeatsResourceName,
+        Context context);
 
     /**
      * Create or update FarmBeats resource.
@@ -72,8 +72,8 @@ public interface FarmBeatsModelsClient {
      * @return farmBeats ARM Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FarmBeatsInner> createOrUpdateWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, FarmBeatsInner body, Context context);
+    Response<FarmBeatsInner> createOrUpdateWithResponse(String resourceGroupName, String farmBeatsResourceName,
+        FarmBeatsInner body, Context context);
 
     /**
      * Update a FarmBeats resource.
@@ -87,8 +87,8 @@ public interface FarmBeatsModelsClient {
      * @return the {@link SyncPoller} for polling of farmBeats ARM Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FarmBeatsInner>, FarmBeatsInner> beginUpdate(
-        String resourceGroupName, String farmBeatsResourceName, FarmBeatsUpdateRequestModel body);
+    SyncPoller<PollResult<FarmBeatsInner>, FarmBeatsInner> beginUpdate(String resourceGroupName,
+        String farmBeatsResourceName, FarmBeatsUpdateRequestModel body);
 
     /**
      * Update a FarmBeats resource.
@@ -103,8 +103,8 @@ public interface FarmBeatsModelsClient {
      * @return the {@link SyncPoller} for polling of farmBeats ARM Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FarmBeatsInner>, FarmBeatsInner> beginUpdate(
-        String resourceGroupName, String farmBeatsResourceName, FarmBeatsUpdateRequestModel body, Context context);
+    SyncPoller<PollResult<FarmBeatsInner>, FarmBeatsInner> beginUpdate(String resourceGroupName,
+        String farmBeatsResourceName, FarmBeatsUpdateRequestModel body, Context context);
 
     /**
      * Update a FarmBeats resource.
@@ -133,8 +133,8 @@ public interface FarmBeatsModelsClient {
      * @return farmBeats ARM Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FarmBeatsInner update(
-        String resourceGroupName, String farmBeatsResourceName, FarmBeatsUpdateRequestModel body, Context context);
+    FarmBeatsInner update(String resourceGroupName, String farmBeatsResourceName, FarmBeatsUpdateRequestModel body,
+        Context context);
 
     /**
      * Delete a FarmBeats resource.
@@ -215,8 +215,8 @@ public interface FarmBeatsModelsClient {
      *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FarmBeatsInner> listByResourceGroup(
-        String resourceGroupName, Integer maxPageSize, String skipToken, Context context);
+    PagedIterable<FarmBeatsInner> listByResourceGroup(String resourceGroupName, Integer maxPageSize, String skipToken,
+        Context context);
 
     /**
      * Get operationResults for a FarmBeats resource.
@@ -230,8 +230,8 @@ public interface FarmBeatsModelsClient {
      * @return operationResults for a FarmBeats resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ArmAsyncOperationInner getOperationResult(
-        String resourceGroupName, String farmBeatsResourceName, String operationResultsId);
+    ArmAsyncOperationInner getOperationResult(String resourceGroupName, String farmBeatsResourceName,
+        String operationResultsId);
 
     /**
      * Get operationResults for a FarmBeats resource.
@@ -246,6 +246,6 @@ public interface FarmBeatsModelsClient {
      * @return operationResults for a FarmBeats resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ArmAsyncOperationInner> getOperationResultWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String operationResultsId, Context context);
+    Response<ArmAsyncOperationInner> getOperationResultWithResponse(String resourceGroupName,
+        String farmBeatsResourceName, String operationResultsId, Context context);
 }

@@ -41,7 +41,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
     }
 
     private Mono<Void> sendMessage() {
-        int total =  options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
+        int total = options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
 
         List<Message> messages = new ArrayList<>();
         for (int i = 0; i < total; ++i) {
@@ -56,8 +56,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
     @Override
     public Mono<Void> setupAsync() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
-        return super.setupAsync()
-            .then(sendMessage());
+        return super.setupAsync().then(sendMessage());
     }
 
     @Override
@@ -82,6 +81,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
                     synchronousSink.error(new RuntimeException("Error. Should have received some messages."));
                 }
                 synchronousSink.complete();
-            }).then();
+            })
+            .then();
     }
 }

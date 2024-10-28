@@ -23,7 +23,8 @@ public final class RolePropertiesExternalIdentityTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RolePropertiesExternalIdentity model = new RolePropertiesExternalIdentity().withObjectId("vvnchrkcc")
-            .withPrincipalType(PrincipalType.USER).withTenantId("zjuqkhrsaj");
+            .withPrincipalType(PrincipalType.USER)
+            .withTenantId("zjuqkhrsaj");
         model = BinaryData.fromObject(model).toObject(RolePropertiesExternalIdentity.class);
         Assertions.assertEquals("vvnchrkcc", model.objectId());
         Assertions.assertEquals(PrincipalType.USER, model.principalType());

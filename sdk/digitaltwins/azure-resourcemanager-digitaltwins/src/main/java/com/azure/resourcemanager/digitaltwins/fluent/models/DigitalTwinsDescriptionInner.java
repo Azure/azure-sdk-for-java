@@ -108,8 +108,8 @@ public final class DigitalTwinsDescriptionInner extends DigitalTwinsResource {
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the DigitalTwinsDescriptionInner object itself.
      */
-    public DigitalTwinsDescriptionInner withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public DigitalTwinsDescriptionInner
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DigitalTwinsProperties();
         }

@@ -12,10 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class RecommendationUsageDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecommendationUsageDetails model =
-            BinaryData
-                .fromString("{\"usageGrain\":\"Daily\",\"charges\":[]}")
-                .toObject(RecommendationUsageDetails.class);
+        RecommendationUsageDetails model = BinaryData.fromString("{\"usageGrain\":\"Daily\",\"charges\":[]}")
+            .toObject(RecommendationUsageDetails.class);
         Assertions.assertEquals(Grain.DAILY, model.usageGrain());
     }
 

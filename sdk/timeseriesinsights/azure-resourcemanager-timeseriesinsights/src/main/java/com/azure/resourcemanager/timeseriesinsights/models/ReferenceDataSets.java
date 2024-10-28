@@ -23,8 +23,8 @@ public interface ReferenceDataSets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the reference data set with the specified name in the specified environment along with {@link Response}.
      */
-    Response<ReferenceDataSetResource> getWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context);
+    Response<ReferenceDataSetResource> getWithResponse(String resourceGroupName, String environmentName,
+        String referenceDataSetName, Context context);
 
     /**
      * Gets the reference data set with the specified name in the specified environment.
@@ -56,8 +56,8 @@ public interface ReferenceDataSets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String referenceDataSetName,
+        Context context);
 
     /**
      * Deletes the reference data set with the specified name in the specified subscription, resource group, and
@@ -87,8 +87,8 @@ public interface ReferenceDataSets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Reference Data Sets operation along with {@link Response}.
      */
-    Response<ReferenceDataSetListResponse> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context);
+    Response<ReferenceDataSetListResponse> listByEnvironmentWithResponse(String resourceGroupName,
+        String environmentName, Context context);
 
     /**
      * Lists all the available reference data sets associated with the subscription and within the specified resource

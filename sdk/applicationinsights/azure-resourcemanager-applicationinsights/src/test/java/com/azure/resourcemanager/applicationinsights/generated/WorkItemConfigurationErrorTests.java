@@ -10,11 +10,9 @@ import com.azure.resourcemanager.applicationinsights.models.WorkItemConfiguratio
 public final class WorkItemConfigurationErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkItemConfigurationError model =
-            BinaryData
-                .fromString(
-                    "{\"innererror\":{\"diagnosticcontext\":\"txgcpodgmaajr\",\"time\":\"2021-07-18T09:47:03Z\"}}")
-                .toObject(WorkItemConfigurationError.class);
+        WorkItemConfigurationError model = BinaryData
+            .fromString("{\"innererror\":{\"diagnosticcontext\":\"txgcpodgmaajr\",\"time\":\"2021-07-18T09:47:03Z\"}}")
+            .toObject(WorkItemConfigurationError.class);
     }
 
     @org.junit.jupiter.api.Test

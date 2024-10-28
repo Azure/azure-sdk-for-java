@@ -56,10 +56,8 @@ public final class VideoSequenceAbsoluteTimeMarkers extends TimeSequenceBase {
     public void validate() {
         super.validate();
         if (ranges() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ranges in model VideoSequenceAbsoluteTimeMarkers"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ranges in model VideoSequenceAbsoluteTimeMarkers"));
         }
     }
 

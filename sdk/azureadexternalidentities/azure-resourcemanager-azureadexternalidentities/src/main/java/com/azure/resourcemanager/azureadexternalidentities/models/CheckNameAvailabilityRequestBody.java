@@ -80,16 +80,12 @@ public final class CheckNameAvailabilityRequestBody {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model CheckNameAvailabilityRequestBody"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model CheckNameAvailabilityRequestBody"));
         }
         if (countryCode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property countryCode in model CheckNameAvailabilityRequestBody"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property countryCode in model CheckNameAvailabilityRequestBody"));
         }
     }
 

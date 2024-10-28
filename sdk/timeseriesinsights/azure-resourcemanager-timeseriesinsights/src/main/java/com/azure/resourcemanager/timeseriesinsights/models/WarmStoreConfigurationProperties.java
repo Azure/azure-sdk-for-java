@@ -55,10 +55,8 @@ public final class WarmStoreConfigurationProperties {
      */
     public void validate() {
         if (dataRetention() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataRetention in model WarmStoreConfigurationProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property dataRetention in model WarmStoreConfigurationProperties"));
         }
     }
 

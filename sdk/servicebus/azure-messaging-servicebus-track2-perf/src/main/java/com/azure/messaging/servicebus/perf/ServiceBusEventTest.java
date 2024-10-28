@@ -25,7 +25,6 @@ public class ServiceBusEventTest<TOptions extends ServiceBusStressOptions> exten
     final ServiceBusSenderClient sender;
     final ServiceBusReceiverAsyncClient receiverAsync;
 
-
     /**
      * Creates an instance of performance test.
      *
@@ -47,8 +46,7 @@ public class ServiceBusEventTest<TOptions extends ServiceBusStressOptions> exten
                 String.format("Environment variable %s must be set", AZURE_SERVICEBUS_QUEUE_NAME)));
         }
 
-        processor = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
+        processor = new ServiceBusClientBuilder().connectionString(connectionString)
             .processor()
             .queueName(queueName)
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
@@ -62,14 +60,12 @@ public class ServiceBusEventTest<TOptions extends ServiceBusStressOptions> exten
             })
             .buildProcessorClient();
 
-        sender = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
+        sender = new ServiceBusClientBuilder().connectionString(connectionString)
             .sender()
             .queueName(queueName)
             .buildClient();
 
-        receiverAsync = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
+        receiverAsync = new ServiceBusClientBuilder().connectionString(connectionString)
             .receiver()
             .queueName(queueName)
             .buildAsyncClient();
@@ -79,7 +75,8 @@ public class ServiceBusEventTest<TOptions extends ServiceBusStressOptions> exten
     public Mono<Void> globalSetupAsync() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
         for (int i = 0; i < TOTAL_MESSAGE_MULTIPLIER; i++) {
-            List<ServiceBusMessage> messages = ServiceBusTestUtil.geMessagesToSend(options.getMessagesSizeBytesToSend(), options.getMessagesToSend());
+            List<ServiceBusMessage> messages = ServiceBusTestUtil.geMessagesToSend(options.getMessagesSizeBytesToSend(),
+                options.getMessagesToSend());
             sender.sendMessages(messages);
         }
         return Mono.empty();

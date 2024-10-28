@@ -40,8 +40,8 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
      * @param client the instance of the service client containing this operation class.
      */
     PolicyDescriptionsClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy.create(PolicyDescriptionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PolicyDescriptionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,20 +52,14 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientP")
     public interface PolicyDescriptionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyDescriptions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/policyDescriptions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PolicyDescriptionCollectionInner>> listByService(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("scope") PolicyScopeContract scope,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PolicyDescriptionCollectionInner>> listByService(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("scope") PolicyScopeContract scope, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -81,13 +75,11 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyDescriptionCollectionInner>> listByServiceWithResponseAsync(
-        String resourceGroupName, String serviceName, PolicyScopeContract scope) {
+    private Mono<Response<PolicyDescriptionCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
+        String serviceName, PolicyScopeContract scope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -97,25 +89,13 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByService(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            scope,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName,
+                scope, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -133,13 +113,11 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PolicyDescriptionCollectionInner>> listByServiceWithResponseAsync(
-        String resourceGroupName, String serviceName, PolicyScopeContract scope, Context context) {
+    private Mono<Response<PolicyDescriptionCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
+        String serviceName, PolicyScopeContract scope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -149,23 +127,13 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByService(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                scope,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName, scope,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -198,8 +166,8 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
      * @return descriptions of API Management policies along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyDescriptionCollectionInner> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, PolicyScopeContract scope, Context context) {
+    public Response<PolicyDescriptionCollectionInner> listByServiceWithResponse(String resourceGroupName,
+        String serviceName, PolicyScopeContract scope, Context context) {
         return listByServiceWithResponseAsync(resourceGroupName, serviceName, scope, context).block();
     }
 

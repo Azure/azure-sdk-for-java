@@ -127,16 +127,14 @@ public class ConnectivityCheckImpl extends ExecutableImpl<ConnectivityCheck>
 
     @Override
     public Mono<ConnectivityCheck> executeWorkAsync() {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getNetworkWatchers()
             .checkConnectivityAsync(parent.resourceGroupName(), parent.name(), parameters)
-            .map(
-                connectivityInformation -> {
-                    ConnectivityCheckImpl.this.result = connectivityInformation;
-                    return ConnectivityCheckImpl.this;
-                });
+            .map(connectivityInformation -> {
+                ConnectivityCheckImpl.this.result = connectivityInformation;
+                return ConnectivityCheckImpl.this;
+            });
     }
 }

@@ -1539,7 +1539,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
     @Test
     public void encryptionUploadISOverwriteFails() {
-        assertThrows(BlobStorageException.class, () -> ebc.upload(DATA.getDefaultBinaryData()));
+        assertThrows(BlobStorageException.class, () -> ebc.upload(DATA.getDefaultInputStream()));
     }
 
     @Test
@@ -1602,7 +1602,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         byte[] randomData = getRandomByteArray(Constants.KB);
         ByteArrayInputStream input = new ByteArrayInputStream(randomData);
 
-        ebc.upload(input);
+        ebc.upload(input, true);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         ebc.downloadStream(stream);
 

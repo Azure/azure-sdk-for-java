@@ -14,35 +14,23 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkResourcesListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkResourcesList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"wska\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"tzlcuiywgqywgn\",\"name\":\"rvynhzgpph\",\"type\":\"cgyncocpecf\"},{\"properties\":{\"groupId\":\"mcoo\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"lzevgbmqjqab\",\"name\":\"y\",\"type\":\"mivkwlzuvcc\"}],\"nextLink\":\"nfnbacfionlebxe\"}")
-                .toObject(PrivateLinkResourcesList.class);
+        PrivateLinkResourcesList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"groupId\":\"wska\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"tzlcuiywgqywgn\",\"name\":\"rvynhzgpph\",\"type\":\"cgyncocpecf\"},{\"properties\":{\"groupId\":\"mcoo\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"lzevgbmqjqab\",\"name\":\"y\",\"type\":\"mivkwlzuvcc\"}],\"nextLink\":\"nfnbacfionlebxe\"}")
+            .toObject(PrivateLinkResourcesList.class);
         Assertions.assertEquals("wska", model.value().get(0).properties().groupId());
         Assertions.assertEquals("nfnbacfionlebxe", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkResourcesList model =
-            new PrivateLinkResourcesList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new GroupIdInformationInner()
-                                .withProperties(
-                                    new GroupIdInformationProperties()
-                                        .withGroupId("wska")
-                                        .withRequiredMembers(Arrays.asList())
-                                        .withRequiredZoneNames(Arrays.asList())),
-                            new GroupIdInformationInner()
-                                .withProperties(
-                                    new GroupIdInformationProperties()
-                                        .withGroupId("mcoo")
-                                        .withRequiredMembers(Arrays.asList())
-                                        .withRequiredZoneNames(Arrays.asList()))))
-                .withNextLink("nfnbacfionlebxe");
+        PrivateLinkResourcesList model = new PrivateLinkResourcesList().withValue(Arrays.asList(
+            new GroupIdInformationInner().withProperties(new GroupIdInformationProperties().withGroupId("wska")
+                .withRequiredMembers(Arrays.asList())
+                .withRequiredZoneNames(Arrays.asList())),
+            new GroupIdInformationInner().withProperties(new GroupIdInformationProperties().withGroupId("mcoo")
+                .withRequiredMembers(Arrays.asList())
+                .withRequiredZoneNames(Arrays.asList()))))
+            .withNextLink("nfnbacfionlebxe");
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourcesList.class);
         Assertions.assertEquals("wska", model.value().get(0).properties().groupId());
         Assertions.assertEquals("nfnbacfionlebxe", model.nextLink());

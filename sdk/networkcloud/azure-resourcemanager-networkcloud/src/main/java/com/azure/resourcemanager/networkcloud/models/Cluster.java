@@ -286,16 +286,10 @@ public interface Cluster {
     ClusterInner innerModel();
 
     /** The entirety of the Cluster definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithAggregatorOrSingleRackDefinition,
-            DefinitionStages.WithClusterType,
-            DefinitionStages.WithClusterVersion,
-            DefinitionStages.WithNetworkFabricId,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithExtendedLocation,
+        DefinitionStages.WithAggregatorOrSingleRackDefinition, DefinitionStages.WithClusterType,
+        DefinitionStages.WithClusterVersion, DefinitionStages.WithNetworkFabricId, DefinitionStages.WithCreate {
     }
 
     /** The Cluster definition stages. */
@@ -405,14 +399,10 @@ public interface Cluster {
          * The stage of the Cluster definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithAnalyticsWorkspaceId,
-                DefinitionStages.WithClusterLocation,
-                DefinitionStages.WithClusterServicePrincipal,
-                DefinitionStages.WithComputeDeploymentThreshold,
-                DefinitionStages.WithComputeRackDefinitions,
-                DefinitionStages.WithManagedResourceGroupConfiguration {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAnalyticsWorkspaceId,
+            DefinitionStages.WithClusterLocation, DefinitionStages.WithClusterServicePrincipal,
+            DefinitionStages.WithComputeDeploymentThreshold, DefinitionStages.WithComputeRackDefinitions,
+            DefinitionStages.WithManagedResourceGroupConfiguration {
             /**
              * Executes the create request.
              *
@@ -538,13 +528,9 @@ public interface Cluster {
     Cluster.Update update();
 
     /** The template for Cluster update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithAggregatorOrSingleRackDefinition,
-            UpdateStages.WithClusterLocation,
-            UpdateStages.WithClusterServicePrincipal,
-            UpdateStages.WithComputeDeploymentThreshold,
-            UpdateStages.WithComputeRackDefinitions {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithAggregatorOrSingleRackDefinition,
+        UpdateStages.WithClusterLocation, UpdateStages.WithClusterServicePrincipal,
+        UpdateStages.WithComputeDeploymentThreshold, UpdateStages.WithComputeRackDefinitions {
         /**
          * Executes the update request.
          *

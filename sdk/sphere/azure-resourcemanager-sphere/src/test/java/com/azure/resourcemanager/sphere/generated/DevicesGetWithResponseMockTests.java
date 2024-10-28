@@ -44,12 +44,15 @@ public final class DevicesGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Device response = manager.devices().getWithResponse("slthaq", "x", "smwutwbdsrezpd", "hneuyowqkd", "ytisibir",
-            com.azure.core.util.Context.NONE).getValue();
+        Device response = manager.devices()
+            .getWithResponse("slthaq", "x", "smwutwbdsrezpd", "hneuyowqkd", "ytisibir",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("ikpzimejza", response.properties().deviceId());
     }

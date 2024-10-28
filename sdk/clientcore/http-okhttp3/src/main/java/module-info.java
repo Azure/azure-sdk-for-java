@@ -10,8 +10,7 @@ module io.clientcore.http.okhttp3 {
 
     exports io.clientcore.http.okhttp3;
 
-    provides io.clientcore.core.http.client.HttpClientProvider
-        with io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
+    provides io.clientcore.core.http.client.HttpClientProvider with io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 
     uses io.clientcore.core.http.client.HttpClientProvider;
 }

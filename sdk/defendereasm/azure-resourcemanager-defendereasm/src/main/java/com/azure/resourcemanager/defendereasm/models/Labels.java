@@ -48,8 +48,8 @@ public interface Labels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return label details along with {@link Response}.
      */
-    Response<LabelResource> getByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, String labelName, Context context);
+    Response<LabelResource> getByWorkspaceWithResponse(String resourceGroupName, String workspaceName, String labelName,
+        Context context);
 
     /**
      * Returns a label in the given workspace.
@@ -90,12 +90,8 @@ public interface Labels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return label details.
      */
-    LabelResource createAndUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String labelName,
-        LabelResourceInner labelResource,
-        Context context);
+    LabelResource createAndUpdate(String resourceGroupName, String workspaceName, String labelName,
+        LabelResourceInner labelResource, Context context);
 
     /**
      * Update a Label.
@@ -110,12 +106,8 @@ public interface Labels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return label details along with {@link Response}.
      */
-    Response<LabelResource> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String labelName,
-        LabelPatchResource labelPatchResource,
-        Context context);
+    Response<LabelResource> updateWithResponse(String resourceGroupName, String workspaceName, String labelName,
+        LabelPatchResource labelPatchResource, Context context);
 
     /**
      * Update a Label.

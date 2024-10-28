@@ -18,8 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ClipTime")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.AbsoluteClipTime", value = AbsoluteClipTime.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.UtcClipTime", value = UtcClipTime.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.Media.UtcClipTime", value = UtcClipTime.class) })
 @Immutable
 public class ClipTime {
     /** Creates an instance of ClipTime class. */

@@ -113,9 +113,8 @@ public final class CmdkeySetup extends CustomSetupBase {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerTypeProperties in model CmdkeySetup"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerTypeProperties in model CmdkeySetup"));
         } else {
             innerTypeProperties().validate();
         }

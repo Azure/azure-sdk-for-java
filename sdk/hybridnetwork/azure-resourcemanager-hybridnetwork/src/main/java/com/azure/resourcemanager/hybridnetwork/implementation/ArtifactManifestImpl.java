@@ -96,14 +96,18 @@ public final class ArtifactManifestImpl
     }
 
     public ArtifactManifest create() {
-        this.innerObject = serviceManager.serviceClient().getArtifactManifests().createOrUpdate(resourceGroupName,
-            publisherName, artifactStoreName, artifactManifestName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactManifests()
+            .createOrUpdate(resourceGroupName, publisherName, artifactStoreName, artifactManifestName,
+                this.innerModel(), Context.NONE);
         return this;
     }
 
     public ArtifactManifest create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getArtifactManifests().createOrUpdate(resourceGroupName,
-            publisherName, artifactStoreName, artifactManifestName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactManifests()
+            .createOrUpdate(resourceGroupName, publisherName, artifactStoreName, artifactManifestName,
+                this.innerModel(), context);
         return this;
     }
 
@@ -119,14 +123,20 @@ public final class ArtifactManifestImpl
     }
 
     public ArtifactManifest apply() {
-        this.innerObject = serviceManager.serviceClient().getArtifactManifests().updateWithResponse(resourceGroupName,
-            publisherName, artifactStoreName, artifactManifestName, updateParameters, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactManifests()
+            .updateWithResponse(resourceGroupName, publisherName, artifactStoreName, artifactManifestName,
+                updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ArtifactManifest apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getArtifactManifests().updateWithResponse(resourceGroupName,
-            publisherName, artifactStoreName, artifactManifestName, updateParameters, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactManifests()
+            .updateWithResponse(resourceGroupName, publisherName, artifactStoreName, artifactManifestName,
+                updateParameters, context)
+            .getValue();
         return this;
     }
 
@@ -141,37 +151,41 @@ public final class ArtifactManifestImpl
     }
 
     public ArtifactManifest refresh() {
-        this.innerObject = serviceManager.serviceClient().getArtifactManifests()
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactManifests()
             .getWithResponse(resourceGroupName, publisherName, artifactStoreName, artifactManifestName, Context.NONE)
             .getValue();
         return this;
     }
 
     public ArtifactManifest refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getArtifactManifests()
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactManifests()
             .getWithResponse(resourceGroupName, publisherName, artifactStoreName, artifactManifestName, context)
             .getValue();
         return this;
     }
 
     public Response<ArtifactAccessCredential> listCredentialWithResponse(Context context) {
-        return serviceManager.artifactManifests().listCredentialWithResponse(resourceGroupName, publisherName,
-            artifactStoreName, artifactManifestName, context);
+        return serviceManager.artifactManifests()
+            .listCredentialWithResponse(resourceGroupName, publisherName, artifactStoreName, artifactManifestName,
+                context);
     }
 
     public ArtifactAccessCredential listCredential() {
-        return serviceManager.artifactManifests().listCredential(resourceGroupName, publisherName, artifactStoreName,
-            artifactManifestName);
+        return serviceManager.artifactManifests()
+            .listCredential(resourceGroupName, publisherName, artifactStoreName, artifactManifestName);
     }
 
     public ArtifactManifestUpdateState updateState(ArtifactManifestUpdateStateInner parameters) {
-        return serviceManager.artifactManifests().updateState(resourceGroupName, publisherName, artifactStoreName,
-            artifactManifestName, parameters);
+        return serviceManager.artifactManifests()
+            .updateState(resourceGroupName, publisherName, artifactStoreName, artifactManifestName, parameters);
     }
 
     public ArtifactManifestUpdateState updateState(ArtifactManifestUpdateStateInner parameters, Context context) {
-        return serviceManager.artifactManifests().updateState(resourceGroupName, publisherName, artifactStoreName,
-            artifactManifestName, parameters, context);
+        return serviceManager.artifactManifests()
+            .updateState(resourceGroupName, publisherName, artifactStoreName, artifactManifestName, parameters,
+                context);
     }
 
     public ArtifactManifestImpl withRegion(Region location) {

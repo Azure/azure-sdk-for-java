@@ -130,8 +130,8 @@ public final class PortalSettingsContractProperties {
      * @param userRegistration the userRegistration value to set.
      * @return the PortalSettingsContractProperties object itself.
      */
-    public PortalSettingsContractProperties withUserRegistration(
-        RegistrationDelegationSettingsProperties userRegistration) {
+    public PortalSettingsContractProperties
+        withUserRegistration(RegistrationDelegationSettingsProperties userRegistration) {
         this.userRegistration = userRegistration;
         return this;
     }

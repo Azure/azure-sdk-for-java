@@ -203,6 +203,13 @@ public class Configs {
     public static final String PREVENT_INVALID_ID_CHARS_VARIABLE = "COSMOS_PREVENT_INVALID_ID_CHARS";
     public static final boolean DEFAULT_PREVENT_INVALID_ID_CHARS = false;
 
+    // Config of CodingErrorAction on charset decoder for malformed input
+    public static final String CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT = "COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT";
+    public static final String DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT = StringUtils.EMPTY;
+
+    // Config of CodingErrorAction on charset decoder for unmapped character
+    public static final String CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER = "COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER";
+    public static final String DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER = StringUtils.EMPTY;
 
     // Metrics
     // Samples:
@@ -789,5 +796,21 @@ public class Configs {
         }
 
         return DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS;
+    }
+
+    public static String getCharsetDecoderErrorActionOnMalformedInput() {
+        return System.getProperty(
+                CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT)),
+                    DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT));
+    }
+
+    public static String getCharsetDecoderErrorActionOnUnmappedCharacter() {
+        return System.getProperty(
+                CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER)),
+                    DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER));
     }
 }

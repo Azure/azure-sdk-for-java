@@ -37,8 +37,8 @@ public class IpExtendedCommunityPatchableProperties {
      * @param ipExtendedCommunityRules the ipExtendedCommunityRules value to set.
      * @return the IpExtendedCommunityPatchableProperties object itself.
      */
-    public IpExtendedCommunityPatchableProperties withIpExtendedCommunityRules(
-        List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
+    public IpExtendedCommunityPatchableProperties
+        withIpExtendedCommunityRules(List<IpExtendedCommunityRule> ipExtendedCommunityRules) {
         this.ipExtendedCommunityRules = ipExtendedCommunityRules;
         return this;
     }
@@ -50,11 +50,9 @@ public class IpExtendedCommunityPatchableProperties {
      */
     public void validate() {
         if (ipExtendedCommunityRules() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ipExtendedCommunityRules in model"
-                            + " IpExtendedCommunityPatchableProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ipExtendedCommunityRules in model"
+                    + " IpExtendedCommunityPatchableProperties"));
         } else {
             ipExtendedCommunityRules().forEach(e -> e.validate());
         }

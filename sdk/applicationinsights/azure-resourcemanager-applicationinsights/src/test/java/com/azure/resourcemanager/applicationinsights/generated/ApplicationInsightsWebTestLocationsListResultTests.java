@@ -12,23 +12,17 @@ import java.util.Arrays;
 public final class ApplicationInsightsWebTestLocationsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsWebTestLocationsListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"DisplayName\":\"vtpgvdfgiotkf\",\"Tag\":\"tqxln\"},{\"DisplayName\":\"lefgugnxk\",\"Tag\":\"dqmidtt\"},{\"DisplayName\":\"rvqdra\",\"Tag\":\"jybige\"}]}")
-                .toObject(ApplicationInsightsWebTestLocationsListResult.class);
+        ApplicationInsightsWebTestLocationsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"DisplayName\":\"vtpgvdfgiotkf\",\"Tag\":\"tqxln\"},{\"DisplayName\":\"lefgugnxk\",\"Tag\":\"dqmidtt\"},{\"DisplayName\":\"rvqdra\",\"Tag\":\"jybige\"}]}")
+            .toObject(ApplicationInsightsWebTestLocationsListResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationInsightsWebTestLocationsListResult model =
-            new ApplicationInsightsWebTestLocationsListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ApplicationInsightsComponentWebTestLocationInner(),
-                            new ApplicationInsightsComponentWebTestLocationInner(),
-                            new ApplicationInsightsComponentWebTestLocationInner()));
+        ApplicationInsightsWebTestLocationsListResult model = new ApplicationInsightsWebTestLocationsListResult()
+            .withValue(Arrays.asList(new ApplicationInsightsComponentWebTestLocationInner(),
+                new ApplicationInsightsComponentWebTestLocationInner(),
+                new ApplicationInsightsComponentWebTestLocationInner()));
         model = BinaryData.fromObject(model).toObject(ApplicationInsightsWebTestLocationsListResult.class);
     }
 }

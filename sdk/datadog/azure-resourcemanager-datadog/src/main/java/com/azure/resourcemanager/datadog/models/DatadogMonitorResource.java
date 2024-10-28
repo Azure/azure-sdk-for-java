@@ -107,11 +107,8 @@ public interface DatadogMonitorResource {
     DatadogMonitorResourceInner innerModel();
 
     /** The entirety of the DatadogMonitorResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The DatadogMonitorResource definition stages. */
@@ -154,11 +151,8 @@ public interface DatadogMonitorResource {
          * The stage of the DatadogMonitorResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithProperties,
-                DefinitionStages.WithIdentity {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku,
+            DefinitionStages.WithProperties, DefinitionStages.WithIdentity {
             /**
              * Executes the create request.
              *

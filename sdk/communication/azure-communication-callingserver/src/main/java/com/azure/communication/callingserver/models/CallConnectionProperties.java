@@ -29,10 +29,11 @@ public final class CallConnectionProperties {
     private final URI callbackUri;
 
     static {
-        CallConnectionPropertiesConstructorProxy.setAccessor(
-            new CallConnectionPropertiesConstructorProxy.CallConnectionPropertiesConstructorAccessor() {
+        CallConnectionPropertiesConstructorProxy
+            .setAccessor(new CallConnectionPropertiesConstructorProxy.CallConnectionPropertiesConstructorAccessor() {
                 @Override
-                public CallConnectionProperties create(CallConnectionPropertiesInternal internalHeaders) throws URISyntaxException {
+                public CallConnectionProperties create(CallConnectionPropertiesInternal internalHeaders)
+                    throws URISyntaxException {
                     return new CallConnectionProperties(internalHeaders);
                 }
             });
@@ -58,12 +59,17 @@ public final class CallConnectionProperties {
      * @param callConnectionPropertiesInternal The internal response of callConnectionProperties
      * @throws URISyntaxException exception of invalid URI.
      */
-    CallConnectionProperties(CallConnectionPropertiesInternal callConnectionPropertiesInternal) throws URISyntaxException {
+    CallConnectionProperties(CallConnectionPropertiesInternal callConnectionPropertiesInternal)
+        throws URISyntaxException {
         this.callConnectionId = callConnectionPropertiesInternal.getCallConnectionId();
         this.source = CallSourceConverter.convert(callConnectionPropertiesInternal.getSource());
         this.serverCallId = callConnectionPropertiesInternal.getServerCallId();
-        this.targets = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
-        this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
+        this.targets = callConnectionPropertiesInternal.getTargets()
+            .stream()
+            .map(CommunicationIdentifierConverter::convert)
+            .collect(Collectors.toList());
+        this.callConnectionState
+            = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
         this.subject = callConnectionPropertiesInternal.getSubject();
         this.callbackUri = new URI(callConnectionPropertiesInternal.getCallbackUri());
     }

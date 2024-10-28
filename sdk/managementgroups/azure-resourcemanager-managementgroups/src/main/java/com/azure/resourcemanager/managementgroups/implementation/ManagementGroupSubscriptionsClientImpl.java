@@ -46,10 +46,8 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
      * @param client the instance of the service client containing this operation class.
      */
     ManagementGroupSubscriptionsClientImpl(ManagementGroupsApiImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ManagementGroupSubscriptionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ManagementGroupSubscriptionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,66 +58,48 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
     @Host("{$host}")
     @ServiceInterface(name = "ManagementGroupsApiM")
     public interface ManagementGroupSubscriptionsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/providers/Microsoft.Management/managementGroups/{groupId}/subscriptions/{subscriptionId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionUnderManagementGroupInner>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Cache-Control") String cacheControl,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SubscriptionUnderManagementGroupInner>> create(@HostParam("$host") String endpoint,
+            @PathParam("groupId") String groupId, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Cache-Control") String cacheControl,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/providers/Microsoft.Management/managementGroups/{groupId}/subscriptions/{subscriptionId}")
-        @ExpectedResponses({200, 204})
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Cache-Control") String cacheControl,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @PathParam("groupId") String groupId,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Cache-Control") String cacheControl, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Management/managementGroups/{groupId}/subscriptions/{subscriptionId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionUnderManagementGroupInner>> getSubscription(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Cache-Control") String cacheControl,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SubscriptionUnderManagementGroupInner>> getSubscription(@HostParam("$host") String endpoint,
+            @PathParam("groupId") String groupId, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Cache-Control") String cacheControl,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Management/managementGroups/{groupId}/subscriptions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListSubscriptionUnderManagementGroup>> getSubscriptionsUnderManagementGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("groupId") String groupId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skiptoken") String skiptoken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("groupId") String groupId,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$skiptoken") String skiptoken,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListSubscriptionUnderManagementGroup>> getSubscriptionsUnderManagementGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -136,13 +116,11 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SubscriptionUnderManagementGroupInner>> createWithResponseAsync(
-        String groupId, String subscriptionId, String cacheControl) {
+    private Mono<Response<SubscriptionUnderManagementGroupInner>> createWithResponseAsync(String groupId,
+        String subscriptionId, String cacheControl) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -152,17 +130,8 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            groupId,
-                            subscriptionId,
-                            this.client.getApiVersion(),
-                            cacheControl,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), groupId, subscriptionId,
+                this.client.getApiVersion(), cacheControl, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -181,13 +150,11 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SubscriptionUnderManagementGroupInner>> createWithResponseAsync(
-        String groupId, String subscriptionId, String cacheControl, Context context) {
+    private Mono<Response<SubscriptionUnderManagementGroupInner>> createWithResponseAsync(String groupId,
+        String subscriptionId, String cacheControl, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -197,15 +164,8 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                groupId,
-                subscriptionId,
-                this.client.getApiVersion(),
-                cacheControl,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), groupId, subscriptionId, this.client.getApiVersion(),
+            cacheControl, accept, context);
     }
 
     /**
@@ -239,8 +199,8 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
      * @return the details of subscription under management group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionUnderManagementGroupInner> createWithResponse(
-        String groupId, String subscriptionId, String cacheControl, Context context) {
+    public Response<SubscriptionUnderManagementGroupInner> createWithResponse(String groupId, String subscriptionId,
+        String cacheControl, Context context) {
         return createWithResponseAsync(groupId, subscriptionId, cacheControl, context).block();
     }
 
@@ -275,10 +235,8 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String groupId, String subscriptionId, String cacheControl) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -288,17 +246,8 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            groupId,
-                            subscriptionId,
-                            this.client.getApiVersion(),
-                            cacheControl,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), groupId, subscriptionId,
+                this.client.getApiVersion(), cacheControl, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -316,13 +265,11 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String groupId, String subscriptionId, String cacheControl, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String groupId, String subscriptionId, String cacheControl,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -332,15 +279,8 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                groupId,
-                subscriptionId,
-                this.client.getApiVersion(),
-                cacheControl,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), groupId, subscriptionId, this.client.getApiVersion(),
+            cacheControl, accept, context);
     }
 
     /**
@@ -373,8 +313,8 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String groupId, String subscriptionId, String cacheControl, Context context) {
+    public Response<Void> deleteWithResponse(String groupId, String subscriptionId, String cacheControl,
+        Context context) {
         return deleteWithResponseAsync(groupId, subscriptionId, cacheControl, context).block();
     }
 
@@ -407,13 +347,11 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SubscriptionUnderManagementGroupInner>> getSubscriptionWithResponseAsync(
-        String groupId, String subscriptionId, String cacheControl) {
+    private Mono<Response<SubscriptionUnderManagementGroupInner>> getSubscriptionWithResponseAsync(String groupId,
+        String subscriptionId, String cacheControl) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -423,17 +361,8 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getSubscription(
-                            this.client.getEndpoint(),
-                            groupId,
-                            subscriptionId,
-                            this.client.getApiVersion(),
-                            cacheControl,
-                            accept,
-                            context))
+            .withContext(context -> service.getSubscription(this.client.getEndpoint(), groupId, subscriptionId,
+                this.client.getApiVersion(), cacheControl, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -452,13 +381,11 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SubscriptionUnderManagementGroupInner>> getSubscriptionWithResponseAsync(
-        String groupId, String subscriptionId, String cacheControl, Context context) {
+    private Mono<Response<SubscriptionUnderManagementGroupInner>> getSubscriptionWithResponseAsync(String groupId,
+        String subscriptionId, String cacheControl, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -468,15 +395,8 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getSubscription(
-                this.client.getEndpoint(),
-                groupId,
-                subscriptionId,
-                this.client.getApiVersion(),
-                cacheControl,
-                accept,
-                context);
+        return service.getSubscription(this.client.getEndpoint(), groupId, subscriptionId, this.client.getApiVersion(),
+            cacheControl, accept, context);
     }
 
     /**
@@ -510,8 +430,8 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
      * @return the details of subscription under management group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionUnderManagementGroupInner> getSubscriptionWithResponse(
-        String groupId, String subscriptionId, String cacheControl, Context context) {
+    public Response<SubscriptionUnderManagementGroupInner> getSubscriptionWithResponse(String groupId,
+        String subscriptionId, String cacheControl, Context context) {
         return getSubscriptionWithResponseAsync(groupId, subscriptionId, cacheControl, context).block();
     }
 
@@ -548,35 +468,18 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
     private Mono<PagedResponse<SubscriptionUnderManagementGroupInner>>
         getSubscriptionsUnderManagementGroupSinglePageAsync(String groupId, String skiptoken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getSubscriptionsUnderManagementGroup(
-                            this.client.getEndpoint(),
-                            groupId,
-                            this.client.getApiVersion(),
-                            skiptoken,
-                            accept,
-                            context))
-            .<PagedResponse<SubscriptionUnderManagementGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.getSubscriptionsUnderManagementGroup(this.client.getEndpoint(), groupId,
+                this.client.getApiVersion(), skiptoken, accept, context))
+            .<PagedResponse<SubscriptionUnderManagementGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -598,10 +501,8 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
     private Mono<PagedResponse<SubscriptionUnderManagementGroupInner>>
         getSubscriptionsUnderManagementGroupSinglePageAsync(String groupId, String skiptoken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
@@ -609,17 +510,10 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .getSubscriptionsUnderManagementGroup(
-                this.client.getEndpoint(), groupId, this.client.getApiVersion(), skiptoken, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .getSubscriptionsUnderManagementGroup(this.client.getEndpoint(), groupId, this.client.getApiVersion(),
+                skiptoken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -635,10 +529,9 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
      * @return the details of all subscriptions under management group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SubscriptionUnderManagementGroupInner> getSubscriptionsUnderManagementGroupAsync(
-        String groupId, String skiptoken) {
-        return new PagedFlux<>(
-            () -> getSubscriptionsUnderManagementGroupSinglePageAsync(groupId, skiptoken),
+    private PagedFlux<SubscriptionUnderManagementGroupInner> getSubscriptionsUnderManagementGroupAsync(String groupId,
+        String skiptoken) {
+        return new PagedFlux<>(() -> getSubscriptionsUnderManagementGroupSinglePageAsync(groupId, skiptoken),
             nextLink -> getSubscriptionsUnderManagementGroupNextSinglePageAsync(nextLink));
     }
 
@@ -654,8 +547,7 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SubscriptionUnderManagementGroupInner> getSubscriptionsUnderManagementGroupAsync(String groupId) {
         final String skiptoken = null;
-        return new PagedFlux<>(
-            () -> getSubscriptionsUnderManagementGroupSinglePageAsync(groupId, skiptoken),
+        return new PagedFlux<>(() -> getSubscriptionsUnderManagementGroupSinglePageAsync(groupId, skiptoken),
             nextLink -> getSubscriptionsUnderManagementGroupNextSinglePageAsync(nextLink));
     }
 
@@ -673,10 +565,9 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
      * @return the details of all subscriptions under management group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SubscriptionUnderManagementGroupInner> getSubscriptionsUnderManagementGroupAsync(
-        String groupId, String skiptoken, Context context) {
-        return new PagedFlux<>(
-            () -> getSubscriptionsUnderManagementGroupSinglePageAsync(groupId, skiptoken, context),
+    private PagedFlux<SubscriptionUnderManagementGroupInner> getSubscriptionsUnderManagementGroupAsync(String groupId,
+        String skiptoken, Context context) {
+        return new PagedFlux<>(() -> getSubscriptionsUnderManagementGroupSinglePageAsync(groupId, skiptoken, context),
             nextLink -> getSubscriptionsUnderManagementGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -709,8 +600,8 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
      * @return the details of all subscriptions under management group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SubscriptionUnderManagementGroupInner> getSubscriptionsUnderManagementGroup(
-        String groupId, String skiptoken, Context context) {
+    public PagedIterable<SubscriptionUnderManagementGroupInner> getSubscriptionsUnderManagementGroup(String groupId,
+        String skiptoken, Context context) {
         return new PagedIterable<>(getSubscriptionsUnderManagementGroupAsync(groupId, skiptoken, context));
     }
 
@@ -732,26 +623,15 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getSubscriptionsUnderManagementGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SubscriptionUnderManagementGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.getSubscriptionsUnderManagementGroupNext(nextLink,
+                this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SubscriptionUnderManagementGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -774,23 +654,13 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getSubscriptionsUnderManagementGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.getSubscriptionsUnderManagementGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

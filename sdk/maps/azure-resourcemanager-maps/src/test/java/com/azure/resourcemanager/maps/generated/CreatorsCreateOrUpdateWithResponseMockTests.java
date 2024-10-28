@@ -33,44 +33,32 @@ public final class CreatorsCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"wlycoduhpkxkg\",\"storageUnits\":1081662268},\"location\":\"re\",\"tags\":{\"ubeddg\":\"jxqugjhky\"},\"id\":\"sofwqmzqalkrmnji\",\"name\":\"pxacqqudfn\",\"type\":\"yxbaaabjyvayf\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"wlycoduhpkxkg\",\"storageUnits\":1081662268},\"location\":\"re\",\"tags\":{\"ubeddg\":\"jxqugjhky\"},\"id\":\"sofwqmzqalkrmnji\",\"name\":\"pxacqqudfn\",\"type\":\"yxbaaabjyvayf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureMapsManager manager =
-            AzureMapsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureMapsManager manager = AzureMapsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Creator response =
-            manager
-                .creators()
-                .define("fcktqumiekke")
-                .withRegion("jhdgqggebdunyga")
-                .withExistingAccount("tx", "tcs")
-                .withProperties(new CreatorProperties().withStorageUnits(533136991))
-                .withTags(mapOf("fatpxllrxcyjmoa", "db"))
-                .create();
+        Creator response = manager.creators()
+            .define("fcktqumiekke")
+            .withRegion("jhdgqggebdunyga")
+            .withExistingAccount("tx", "tcs")
+            .withProperties(new CreatorProperties().withStorageUnits(533136991))
+            .withTags(mapOf("fatpxllrxcyjmoa", "db"))
+            .create();
 
         Assertions.assertEquals("re", response.location());
         Assertions.assertEquals("jxqugjhky", response.tags().get("ubeddg"));

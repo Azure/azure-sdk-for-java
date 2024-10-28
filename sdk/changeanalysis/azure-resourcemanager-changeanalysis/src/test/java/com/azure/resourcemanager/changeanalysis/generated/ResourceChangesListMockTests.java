@@ -32,49 +32,32 @@ public final class ResourceChangesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"resourceId\":\"nddhsgcbacph\",\"timeStamp\":\"2021-06-02T10:50:15Z\",\"initiatedByList\":[\"ynqgoulzndlikwyq\",\"gfgibm\"],\"changeType\":\"Add\",\"propertyChanges\":[]},\"id\":\"eqsrxybzqqedqyt\",\"name\":\"ciqfou\",\"type\":\"lmmnkzsmodmglo\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"resourceId\":\"nddhsgcbacph\",\"timeStamp\":\"2021-06-02T10:50:15Z\",\"initiatedByList\":[\"ynqgoulzndlikwyq\",\"gfgibm\"],\"changeType\":\"Add\",\"propertyChanges\":[]},\"id\":\"eqsrxybzqqedqyt\",\"name\":\"ciqfou\",\"type\":\"lmmnkzsmodmglo\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureChangeAnalysisManager manager =
-            AzureChangeAnalysisManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureChangeAnalysisManager manager = AzureChangeAnalysisManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Change> response =
-            manager
-                .resourceChanges()
-                .list(
-                    "wcukjfkgiawxk",
-                    OffsetDateTime.parse("2021-07-19T16:49:27Z"),
-                    OffsetDateTime.parse("2021-05-21T20:11:19Z"),
-                    "plwckbas",
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<Change> response = manager.resourceChanges()
+            .list("wcukjfkgiawxk", OffsetDateTime.parse("2021-07-19T16:49:27Z"),
+                OffsetDateTime.parse("2021-05-21T20:11:19Z"), "plwckbas", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("nddhsgcbacph", response.iterator().next().properties().resourceId());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-06-02T10:50:15Z"), response.iterator().next().properties().timestamp());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-02T10:50:15Z"),
+            response.iterator().next().properties().timestamp());
         Assertions.assertEquals("ynqgoulzndlikwyq", response.iterator().next().properties().initiatedByList().get(0));
         Assertions.assertEquals(ChangeType.ADD, response.iterator().next().properties().changeType());
     }

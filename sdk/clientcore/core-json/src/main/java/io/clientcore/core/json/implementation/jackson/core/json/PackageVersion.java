@@ -11,8 +11,8 @@ import io.clientcore.core.json.implementation.jackson.core.util.VersionUtil;
  * pom.xml.
  */
 public final class PackageVersion implements Versioned {
-    public final static Version VERSION = VersionUtil.parseVersion(
-        "2.13.2", "io.clientcore.core.json.implementation.jackson.core", "jackson-core");
+    public final static Version VERSION
+        = VersionUtil.parseVersion("2.13.2", "io.clientcore.core.json.implementation.jackson.core", "jackson-core");
 
     @Override
     public Version version() {

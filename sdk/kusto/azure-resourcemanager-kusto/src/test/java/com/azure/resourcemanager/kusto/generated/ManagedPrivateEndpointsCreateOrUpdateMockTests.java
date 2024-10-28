@@ -30,45 +30,33 @@ public final class ManagedPrivateEndpointsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"privateLinkResourceId\":\"wskondcbrwimuvqe\",\"privateLinkResourceRegion\":\"so\",\"groupId\":\"yrrleaesinuqt\",\"requestMessage\":\"qobbpihehcec\",\"provisioningState\":\"Succeeded\"},\"id\":\"qbr\",\"name\":\"bbmpxdlvykfre\",\"type\":\"crse\"}";
+        String responseStr
+            = "{\"properties\":{\"privateLinkResourceId\":\"wskondcbrwimuvqe\",\"privateLinkResourceRegion\":\"so\",\"groupId\":\"yrrleaesinuqt\",\"requestMessage\":\"qobbpihehcec\",\"provisioningState\":\"Succeeded\"},\"id\":\"qbr\",\"name\":\"bbmpxdlvykfre\",\"type\":\"crse\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        KustoManager manager =
-            KustoManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        KustoManager manager = KustoManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ManagedPrivateEndpoint response =
-            manager
-                .managedPrivateEndpoints()
-                .define("jcitdigsxcdglj")
-                .withExistingCluster("pzhz", "tk")
-                .withPrivateLinkResourceId("keuachtomf")
-                .withPrivateLinkResourceRegion("ytswfp")
-                .withGroupId("mdgycxn")
-                .withRequestMessage("kwhqj")
-                .create();
+        ManagedPrivateEndpoint response = manager.managedPrivateEndpoints()
+            .define("jcitdigsxcdglj")
+            .withExistingCluster("pzhz", "tk")
+            .withPrivateLinkResourceId("keuachtomf")
+            .withPrivateLinkResourceRegion("ytswfp")
+            .withGroupId("mdgycxn")
+            .withRequestMessage("kwhqj")
+            .create();
 
         Assertions.assertEquals("wskondcbrwimuvqe", response.privateLinkResourceId());
         Assertions.assertEquals("so", response.privateLinkResourceRegion());

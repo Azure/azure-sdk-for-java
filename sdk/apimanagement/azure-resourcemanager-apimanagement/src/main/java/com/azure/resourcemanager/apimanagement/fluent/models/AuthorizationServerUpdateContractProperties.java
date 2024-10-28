@@ -154,8 +154,8 @@ public final class AuthorizationServerUpdateContractProperties extends Authoriza
      * @param clientRegistrationEndpoint the clientRegistrationEndpoint value to set.
      * @return the AuthorizationServerUpdateContractProperties object itself.
      */
-    public AuthorizationServerUpdateContractProperties withClientRegistrationEndpoint(
-        String clientRegistrationEndpoint) {
+    public AuthorizationServerUpdateContractProperties
+        withClientRegistrationEndpoint(String clientRegistrationEndpoint) {
         this.clientRegistrationEndpoint = clientRegistrationEndpoint;
         return this;
     }
@@ -253,24 +253,24 @@ public final class AuthorizationServerUpdateContractProperties extends Authoriza
 
     /** {@inheritDoc} */
     @Override
-    public AuthorizationServerUpdateContractProperties withAuthorizationMethods(
-        List<AuthorizationMethod> authorizationMethods) {
+    public AuthorizationServerUpdateContractProperties
+        withAuthorizationMethods(List<AuthorizationMethod> authorizationMethods) {
         super.withAuthorizationMethods(authorizationMethods);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AuthorizationServerUpdateContractProperties withClientAuthenticationMethod(
-        List<ClientAuthenticationMethod> clientAuthenticationMethod) {
+    public AuthorizationServerUpdateContractProperties
+        withClientAuthenticationMethod(List<ClientAuthenticationMethod> clientAuthenticationMethod) {
         super.withClientAuthenticationMethod(clientAuthenticationMethod);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AuthorizationServerUpdateContractProperties withTokenBodyParameters(
-        List<TokenBodyParameterContract> tokenBodyParameters) {
+    public AuthorizationServerUpdateContractProperties
+        withTokenBodyParameters(List<TokenBodyParameterContract> tokenBodyParameters) {
         super.withTokenBodyParameters(tokenBodyParameters);
         return this;
     }
@@ -298,8 +298,8 @@ public final class AuthorizationServerUpdateContractProperties extends Authoriza
 
     /** {@inheritDoc} */
     @Override
-    public AuthorizationServerUpdateContractProperties withBearerTokenSendingMethods(
-        List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
+    public AuthorizationServerUpdateContractProperties
+        withBearerTokenSendingMethods(List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
         super.withBearerTokenSendingMethods(bearerTokenSendingMethods);
         return this;
     }

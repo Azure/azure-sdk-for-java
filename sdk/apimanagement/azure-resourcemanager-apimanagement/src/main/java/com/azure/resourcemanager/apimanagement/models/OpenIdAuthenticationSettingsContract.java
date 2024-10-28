@@ -62,8 +62,8 @@ public final class OpenIdAuthenticationSettingsContract {
      * @param bearerTokenSendingMethods the bearerTokenSendingMethods value to set.
      * @return the OpenIdAuthenticationSettingsContract object itself.
      */
-    public OpenIdAuthenticationSettingsContract withBearerTokenSendingMethods(
-        List<BearerTokenSendingMethods> bearerTokenSendingMethods) {
+    public OpenIdAuthenticationSettingsContract
+        withBearerTokenSendingMethods(List<BearerTokenSendingMethods> bearerTokenSendingMethods) {
         this.bearerTokenSendingMethods = bearerTokenSendingMethods;
         return this;
     }

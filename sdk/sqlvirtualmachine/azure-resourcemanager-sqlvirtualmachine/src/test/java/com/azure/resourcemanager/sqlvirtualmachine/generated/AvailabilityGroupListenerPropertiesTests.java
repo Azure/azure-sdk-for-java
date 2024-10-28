@@ -21,123 +21,104 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailabilityGroupListenerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailabilityGroupListenerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"s\",\"availabilityGroupName\":\"cmpoyfdkfogkny\",\"loadBalancerConfigurations\":[{\"privateIpAddress\":{\"ipAddress\":\"ddeqsrdeupewnwre\",\"subnetResourceId\":\"jzyflu\"},\"publicIpAddressResourceId\":\"rh\",\"loadBalancerResourceId\":\"fcqhsmyurkd\",\"probePort\":337855308,\"sqlVirtualMachineInstances\":[\"ekuksjtx\"]},{\"privateIpAddress\":{\"ipAddress\":\"dmpa\",\"subnetResourceId\":\"ryuanzwuxzdxtay\"},\"publicIpAddressResourceId\":\"hmwhfpmrqo\",\"loadBalancerResourceId\":\"tu\",\"probePort\":1941399376,\"sqlVirtualMachineInstances\":[\"rtihfxtijbpz\",\"gnwzsymglzufc\"]}],\"multiSubnetIpConfigurations\":[{\"privateIpAddress\":{\"ipAddress\":\"hdbihan\",\"subnetResourceId\":\"hfcbjysa\"},\"sqlVirtualMachineInstance\":\"ithxqhabifpi\"},{\"privateIpAddress\":{\"ipAddress\":\"wczbys\",\"subnetResourceId\":\"pqxu\"},\"sqlVirtualMachineInstance\":\"ivyqniwbybrkxvd\"}],\"createDefaultAvailabilityGroupIfNotExist\":true,\"port\":850212440,\"availabilityGroupConfiguration\":{\"replicas\":[{\"sqlVirtualMachineInstanceId\":\"ukxgaud\",\"role\":\"SECONDARY\",\"commit\":\"SYNCHRONOUS_COMMIT\",\"failover\":\"AUTOMATIC\",\"readableSecondary\":\"NO\"},{\"sqlVirtualMachineInstanceId\":\"ejhkry\",\"role\":\"SECONDARY\",\"commit\":\"SYNCHRONOUS_COMMIT\",\"failover\":\"AUTOMATIC\",\"readableSecondary\":\"NO\"}]}}")
-                .toObject(AvailabilityGroupListenerProperties.class);
+        AvailabilityGroupListenerProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"s\",\"availabilityGroupName\":\"cmpoyfdkfogkny\",\"loadBalancerConfigurations\":[{\"privateIpAddress\":{\"ipAddress\":\"ddeqsrdeupewnwre\",\"subnetResourceId\":\"jzyflu\"},\"publicIpAddressResourceId\":\"rh\",\"loadBalancerResourceId\":\"fcqhsmyurkd\",\"probePort\":337855308,\"sqlVirtualMachineInstances\":[\"ekuksjtx\"]},{\"privateIpAddress\":{\"ipAddress\":\"dmpa\",\"subnetResourceId\":\"ryuanzwuxzdxtay\"},\"publicIpAddressResourceId\":\"hmwhfpmrqo\",\"loadBalancerResourceId\":\"tu\",\"probePort\":1941399376,\"sqlVirtualMachineInstances\":[\"rtihfxtijbpz\",\"gnwzsymglzufc\"]}],\"multiSubnetIpConfigurations\":[{\"privateIpAddress\":{\"ipAddress\":\"hdbihan\",\"subnetResourceId\":\"hfcbjysa\"},\"sqlVirtualMachineInstance\":\"ithxqhabifpi\"},{\"privateIpAddress\":{\"ipAddress\":\"wczbys\",\"subnetResourceId\":\"pqxu\"},\"sqlVirtualMachineInstance\":\"ivyqniwbybrkxvd\"}],\"createDefaultAvailabilityGroupIfNotExist\":true,\"port\":850212440,\"availabilityGroupConfiguration\":{\"replicas\":[{\"sqlVirtualMachineInstanceId\":\"ukxgaud\",\"role\":\"SECONDARY\",\"commit\":\"SYNCHRONOUS_COMMIT\",\"failover\":\"AUTOMATIC\",\"readableSecondary\":\"NO\"},{\"sqlVirtualMachineInstanceId\":\"ejhkry\",\"role\":\"SECONDARY\",\"commit\":\"SYNCHRONOUS_COMMIT\",\"failover\":\"AUTOMATIC\",\"readableSecondary\":\"NO\"}]}}")
+            .toObject(AvailabilityGroupListenerProperties.class);
         Assertions.assertEquals("cmpoyfdkfogkny", model.availabilityGroupName());
-        Assertions
-            .assertEquals("ddeqsrdeupewnwre", model.loadBalancerConfigurations().get(0).privateIpAddress().ipAddress());
-        Assertions
-            .assertEquals("jzyflu", model.loadBalancerConfigurations().get(0).privateIpAddress().subnetResourceId());
+        Assertions.assertEquals("ddeqsrdeupewnwre",
+            model.loadBalancerConfigurations().get(0).privateIpAddress().ipAddress());
+        Assertions.assertEquals("jzyflu",
+            model.loadBalancerConfigurations().get(0).privateIpAddress().subnetResourceId());
         Assertions.assertEquals("rh", model.loadBalancerConfigurations().get(0).publicIpAddressResourceId());
         Assertions.assertEquals("fcqhsmyurkd", model.loadBalancerConfigurations().get(0).loadBalancerResourceId());
         Assertions.assertEquals(337855308, model.loadBalancerConfigurations().get(0).probePort());
-        Assertions
-            .assertEquals("ekuksjtx", model.loadBalancerConfigurations().get(0).sqlVirtualMachineInstances().get(0));
+        Assertions.assertEquals("ekuksjtx",
+            model.loadBalancerConfigurations().get(0).sqlVirtualMachineInstances().get(0));
         Assertions.assertEquals("hdbihan", model.multiSubnetIpConfigurations().get(0).privateIpAddress().ipAddress());
-        Assertions
-            .assertEquals("hfcbjysa", model.multiSubnetIpConfigurations().get(0).privateIpAddress().subnetResourceId());
+        Assertions.assertEquals("hfcbjysa",
+            model.multiSubnetIpConfigurations().get(0).privateIpAddress().subnetResourceId());
         Assertions.assertEquals("ithxqhabifpi", model.multiSubnetIpConfigurations().get(0).sqlVirtualMachineInstance());
         Assertions.assertEquals(true, model.createDefaultAvailabilityGroupIfNotExist());
         Assertions.assertEquals(850212440, model.port());
-        Assertions
-            .assertEquals(
-                "ukxgaud", model.availabilityGroupConfiguration().replicas().get(0).sqlVirtualMachineInstanceId());
+        Assertions.assertEquals("ukxgaud",
+            model.availabilityGroupConfiguration().replicas().get(0).sqlVirtualMachineInstanceId());
         Assertions.assertEquals(Role.SECONDARY, model.availabilityGroupConfiguration().replicas().get(0).role());
-        Assertions
-            .assertEquals(Commit.SYNCHRONOUS_COMMIT, model.availabilityGroupConfiguration().replicas().get(0).commit());
-        Assertions
-            .assertEquals(Failover.AUTOMATIC, model.availabilityGroupConfiguration().replicas().get(0).failover());
-        Assertions
-            .assertEquals(
-                ReadableSecondary.NO, model.availabilityGroupConfiguration().replicas().get(0).readableSecondary());
+        Assertions.assertEquals(Commit.SYNCHRONOUS_COMMIT,
+            model.availabilityGroupConfiguration().replicas().get(0).commit());
+        Assertions.assertEquals(Failover.AUTOMATIC,
+            model.availabilityGroupConfiguration().replicas().get(0).failover());
+        Assertions.assertEquals(ReadableSecondary.NO,
+            model.availabilityGroupConfiguration().replicas().get(0).readableSecondary());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailabilityGroupListenerProperties model =
-            new AvailabilityGroupListenerProperties()
-                .withAvailabilityGroupName("cmpoyfdkfogkny")
+        AvailabilityGroupListenerProperties model
+            = new AvailabilityGroupListenerProperties().withAvailabilityGroupName("cmpoyfdkfogkny")
                 .withLoadBalancerConfigurations(
                     Arrays
                         .asList(
                             new LoadBalancerConfiguration()
-                                .withPrivateIpAddress(
-                                    new PrivateIpAddress()
-                                        .withIpAddress("ddeqsrdeupewnwre")
-                                        .withSubnetResourceId("jzyflu"))
+                                .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("ddeqsrdeupewnwre")
+                                    .withSubnetResourceId("jzyflu"))
                                 .withPublicIpAddressResourceId("rh")
                                 .withLoadBalancerResourceId("fcqhsmyurkd")
                                 .withProbePort(337855308)
                                 .withSqlVirtualMachineInstances(Arrays.asList("ekuksjtx")),
                             new LoadBalancerConfiguration()
-                                .withPrivateIpAddress(
-                                    new PrivateIpAddress()
-                                        .withIpAddress("dmpa")
-                                        .withSubnetResourceId("ryuanzwuxzdxtay"))
+                                .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("dmpa")
+                                    .withSubnetResourceId("ryuanzwuxzdxtay"))
                                 .withPublicIpAddressResourceId("hmwhfpmrqo")
                                 .withLoadBalancerResourceId("tu")
                                 .withProbePort(1941399376)
                                 .withSqlVirtualMachineInstances(Arrays.asList("rtihfxtijbpz", "gnwzsymglzufc"))))
-                .withMultiSubnetIpConfigurations(
-                    Arrays
-                        .asList(
-                            new MultiSubnetIpConfiguration()
-                                .withPrivateIpAddress(
-                                    new PrivateIpAddress().withIpAddress("hdbihan").withSubnetResourceId("hfcbjysa"))
-                                .withSqlVirtualMachineInstance("ithxqhabifpi"),
-                            new MultiSubnetIpConfiguration()
-                                .withPrivateIpAddress(
-                                    new PrivateIpAddress().withIpAddress("wczbys").withSubnetResourceId("pqxu"))
-                                .withSqlVirtualMachineInstance("ivyqniwbybrkxvd")))
+                .withMultiSubnetIpConfigurations(Arrays.asList(
+                    new MultiSubnetIpConfiguration()
+                        .withPrivateIpAddress(
+                            new PrivateIpAddress().withIpAddress("hdbihan").withSubnetResourceId("hfcbjysa"))
+                        .withSqlVirtualMachineInstance("ithxqhabifpi"),
+                    new MultiSubnetIpConfiguration()
+                        .withPrivateIpAddress(
+                            new PrivateIpAddress().withIpAddress("wczbys").withSubnetResourceId("pqxu"))
+                        .withSqlVirtualMachineInstance("ivyqniwbybrkxvd")))
                 .withCreateDefaultAvailabilityGroupIfNotExist(true)
                 .withPort(850212440)
-                .withAvailabilityGroupConfiguration(
-                    new AgConfiguration()
-                        .withReplicas(
-                            Arrays
-                                .asList(
-                                    new AgReplica()
-                                        .withSqlVirtualMachineInstanceId("ukxgaud")
-                                        .withRole(Role.SECONDARY)
-                                        .withCommit(Commit.SYNCHRONOUS_COMMIT)
-                                        .withFailover(Failover.AUTOMATIC)
-                                        .withReadableSecondary(ReadableSecondary.NO),
-                                    new AgReplica()
-                                        .withSqlVirtualMachineInstanceId("ejhkry")
-                                        .withRole(Role.SECONDARY)
-                                        .withCommit(Commit.SYNCHRONOUS_COMMIT)
-                                        .withFailover(Failover.AUTOMATIC)
-                                        .withReadableSecondary(ReadableSecondary.NO))));
+                .withAvailabilityGroupConfiguration(new AgConfiguration().withReplicas(Arrays.asList(
+                    new AgReplica().withSqlVirtualMachineInstanceId("ukxgaud")
+                        .withRole(Role.SECONDARY)
+                        .withCommit(Commit.SYNCHRONOUS_COMMIT)
+                        .withFailover(Failover.AUTOMATIC)
+                        .withReadableSecondary(ReadableSecondary.NO),
+                    new AgReplica().withSqlVirtualMachineInstanceId("ejhkry")
+                        .withRole(Role.SECONDARY)
+                        .withCommit(Commit.SYNCHRONOUS_COMMIT)
+                        .withFailover(Failover.AUTOMATIC)
+                        .withReadableSecondary(ReadableSecondary.NO))));
         model = BinaryData.fromObject(model).toObject(AvailabilityGroupListenerProperties.class);
         Assertions.assertEquals("cmpoyfdkfogkny", model.availabilityGroupName());
-        Assertions
-            .assertEquals("ddeqsrdeupewnwre", model.loadBalancerConfigurations().get(0).privateIpAddress().ipAddress());
-        Assertions
-            .assertEquals("jzyflu", model.loadBalancerConfigurations().get(0).privateIpAddress().subnetResourceId());
+        Assertions.assertEquals("ddeqsrdeupewnwre",
+            model.loadBalancerConfigurations().get(0).privateIpAddress().ipAddress());
+        Assertions.assertEquals("jzyflu",
+            model.loadBalancerConfigurations().get(0).privateIpAddress().subnetResourceId());
         Assertions.assertEquals("rh", model.loadBalancerConfigurations().get(0).publicIpAddressResourceId());
         Assertions.assertEquals("fcqhsmyurkd", model.loadBalancerConfigurations().get(0).loadBalancerResourceId());
         Assertions.assertEquals(337855308, model.loadBalancerConfigurations().get(0).probePort());
-        Assertions
-            .assertEquals("ekuksjtx", model.loadBalancerConfigurations().get(0).sqlVirtualMachineInstances().get(0));
+        Assertions.assertEquals("ekuksjtx",
+            model.loadBalancerConfigurations().get(0).sqlVirtualMachineInstances().get(0));
         Assertions.assertEquals("hdbihan", model.multiSubnetIpConfigurations().get(0).privateIpAddress().ipAddress());
-        Assertions
-            .assertEquals("hfcbjysa", model.multiSubnetIpConfigurations().get(0).privateIpAddress().subnetResourceId());
+        Assertions.assertEquals("hfcbjysa",
+            model.multiSubnetIpConfigurations().get(0).privateIpAddress().subnetResourceId());
         Assertions.assertEquals("ithxqhabifpi", model.multiSubnetIpConfigurations().get(0).sqlVirtualMachineInstance());
         Assertions.assertEquals(true, model.createDefaultAvailabilityGroupIfNotExist());
         Assertions.assertEquals(850212440, model.port());
-        Assertions
-            .assertEquals(
-                "ukxgaud", model.availabilityGroupConfiguration().replicas().get(0).sqlVirtualMachineInstanceId());
+        Assertions.assertEquals("ukxgaud",
+            model.availabilityGroupConfiguration().replicas().get(0).sqlVirtualMachineInstanceId());
         Assertions.assertEquals(Role.SECONDARY, model.availabilityGroupConfiguration().replicas().get(0).role());
-        Assertions
-            .assertEquals(Commit.SYNCHRONOUS_COMMIT, model.availabilityGroupConfiguration().replicas().get(0).commit());
-        Assertions
-            .assertEquals(Failover.AUTOMATIC, model.availabilityGroupConfiguration().replicas().get(0).failover());
-        Assertions
-            .assertEquals(
-                ReadableSecondary.NO, model.availabilityGroupConfiguration().replicas().get(0).readableSecondary());
+        Assertions.assertEquals(Commit.SYNCHRONOUS_COMMIT,
+            model.availabilityGroupConfiguration().replicas().get(0).commit());
+        Assertions.assertEquals(Failover.AUTOMATIC,
+            model.availabilityGroupConfiguration().replicas().get(0).failover());
+        Assertions.assertEquals(ReadableSecondary.NO,
+            model.availabilityGroupConfiguration().replicas().get(0).readableSecondary());
     }
 }

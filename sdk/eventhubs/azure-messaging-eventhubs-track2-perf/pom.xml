@@ -18,6 +18,7 @@
   <properties>
     <perf.test.mainClass>com.azure.messaging.eventhubs.perf.App</perf.test.mainClass>
     <jacoco.skip>true</jacoco.skip>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

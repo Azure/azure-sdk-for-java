@@ -13,8 +13,8 @@ public final class DataConnectionImpl implements DataConnection {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    DataConnectionImpl(
-        DataConnectionInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    DataConnectionImpl(DataConnectionInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

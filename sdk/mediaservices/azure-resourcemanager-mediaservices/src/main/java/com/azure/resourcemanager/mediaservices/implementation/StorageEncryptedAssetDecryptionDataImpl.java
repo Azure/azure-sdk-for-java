@@ -15,8 +15,7 @@ public final class StorageEncryptedAssetDecryptionDataImpl implements StorageEnc
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    StorageEncryptedAssetDecryptionDataImpl(
-        StorageEncryptedAssetDecryptionDataInner innerObject,
+    StorageEncryptedAssetDecryptionDataImpl(StorageEncryptedAssetDecryptionDataInner innerObject,
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

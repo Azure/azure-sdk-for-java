@@ -12,10 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class TimeSeriesIdPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TimeSeriesIdProperty model =
-            BinaryData
-                .fromString("{\"name\":\"tgzfbishcbkh\",\"type\":\"String\"}")
-                .toObject(TimeSeriesIdProperty.class);
+        TimeSeriesIdProperty model = BinaryData.fromString("{\"name\":\"tgzfbishcbkh\",\"type\":\"String\"}")
+            .toObject(TimeSeriesIdProperty.class);
         Assertions.assertEquals("tgzfbishcbkh", model.name());
         Assertions.assertEquals(PropertyType.STRING, model.type());
     }

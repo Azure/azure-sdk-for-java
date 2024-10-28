@@ -31,39 +31,27 @@ public final class PrivateEndpointConnectionsDeleteMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"qagynoipr\",\"name\":\"calincryqxz\",\"status\":\"InProgress\",\"properties\":\"dataibmq\",\"startTime\":\"2021-05-30T20:40:28Z\",\"endTime\":\"2021-11-06T06:39:58Z\",\"percentComplete\":94.34178}";
+        String responseStr
+            = "{\"id\":\"qagynoipr\",\"name\":\"calincryqxz\",\"status\":\"InProgress\",\"properties\":\"dataibmq\",\"startTime\":\"2021-05-30T20:40:28Z\",\"endTime\":\"2021-11-06T06:39:58Z\",\"percentComplete\":94.34178}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationResource response =
-            manager
-                .privateEndpointConnections()
-                .delete("fcmfcn", "jajqmatxjt", "elnzqgxxgfbbmt", com.azure.core.util.Context.NONE);
+        OperationResource response = manager.privateEndpointConnections()
+            .delete("fcmfcn", "jajqmatxjt", "elnzqgxxgfbbmt", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("qagynoipr", response.id());
         Assertions.assertEquals("calincryqxz", response.name());

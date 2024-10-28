@@ -32,8 +32,8 @@ public interface QuotaByPeriodKeysClient {
      *     service instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QuotaCounterContractInner> getWithResponse(
-        String resourceGroupName, String serviceName, String quotaCounterKey, String quotaPeriodKey, Context context);
+    Response<QuotaCounterContractInner> getWithResponse(String resourceGroupName, String serviceName,
+        String quotaCounterKey, String quotaPeriodKey, Context context);
 
     /**
      * Gets the value of the quota counter associated with the counter-key in the policy for the specific period in
@@ -53,8 +53,8 @@ public interface QuotaByPeriodKeysClient {
      *     service instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QuotaCounterContractInner get(
-        String resourceGroupName, String serviceName, String quotaCounterKey, String quotaPeriodKey);
+    QuotaCounterContractInner get(String resourceGroupName, String serviceName, String quotaCounterKey,
+        String quotaPeriodKey);
 
     /**
      * Updates an existing quota counter value in the specified service instance.
@@ -74,13 +74,8 @@ public interface QuotaByPeriodKeysClient {
      * @return quota counter details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QuotaCounterContractInner> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String quotaCounterKey,
-        String quotaPeriodKey,
-        QuotaCounterValueUpdateContract parameters,
-        Context context);
+    Response<QuotaCounterContractInner> updateWithResponse(String resourceGroupName, String serviceName,
+        String quotaCounterKey, String quotaPeriodKey, QuotaCounterValueUpdateContract parameters, Context context);
 
     /**
      * Updates an existing quota counter value in the specified service instance.
@@ -99,10 +94,6 @@ public interface QuotaByPeriodKeysClient {
      * @return quota counter details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QuotaCounterContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String quotaCounterKey,
-        String quotaPeriodKey,
-        QuotaCounterValueUpdateContract parameters);
+    QuotaCounterContractInner update(String resourceGroupName, String serviceName, String quotaCounterKey,
+        String quotaPeriodKey, QuotaCounterValueUpdateContract parameters);
 }

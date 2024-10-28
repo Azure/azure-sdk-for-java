@@ -46,12 +46,13 @@ public final class DeploymentsListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Deployment> response = manager.deployments().list("zqhof", "rmaequ", "ah", "icslfaoq",
-            "piyylhalnswhccsp", com.azure.core.util.Context.NONE);
+        PagedIterable<Deployment> response = manager.deployments()
+            .list("zqhof", "rmaequ", "ah", "icslfaoq", "piyylhalnswhccsp", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("ivwitqscywugg", response.iterator().next().properties().title());
         Assertions.assertEquals("luhczbw", response.iterator().next().properties().description());

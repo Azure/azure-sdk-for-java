@@ -21,12 +21,8 @@ public final class IdentityProvidersCreateOrUpdateResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public IdentityProvidersCreateOrUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        IdentityProviderContractInner value,
-        IdentityProvidersCreateOrUpdateHeaders headers) {
+    public IdentityProvidersCreateOrUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        IdentityProviderContractInner value, IdentityProvidersCreateOrUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

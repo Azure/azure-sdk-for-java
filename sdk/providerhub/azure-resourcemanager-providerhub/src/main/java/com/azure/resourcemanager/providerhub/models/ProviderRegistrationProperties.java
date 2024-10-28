@@ -16,8 +16,8 @@ public final class ProviderRegistrationProperties extends ProviderRegistrationPr
 
     /** {@inheritDoc} */
     @Override
-    public ProviderRegistrationProperties withProviderHubMetadata(
-        ProviderRegistrationPropertiesProviderHubMetadata providerHubMetadata) {
+    public ProviderRegistrationProperties
+        withProviderHubMetadata(ProviderRegistrationPropertiesProviderHubMetadata providerHubMetadata) {
         super.withProviderHubMetadata(providerHubMetadata);
         return this;
     }
@@ -32,24 +32,23 @@ public final class ProviderRegistrationProperties extends ProviderRegistrationPr
     /** {@inheritDoc} */
     @Override
     public ProviderRegistrationProperties withSubscriptionLifecycleNotificationSpecifications(
-        ProviderRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications
-            subscriptionLifecycleNotificationSpecifications) {
+        ProviderRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications subscriptionLifecycleNotificationSpecifications) {
         super.withSubscriptionLifecycleNotificationSpecifications(subscriptionLifecycleNotificationSpecifications);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ProviderRegistrationProperties withProviderAuthentication(
-        ResourceProviderManifestPropertiesProviderAuthentication providerAuthentication) {
+    public ProviderRegistrationProperties
+        withProviderAuthentication(ResourceProviderManifestPropertiesProviderAuthentication providerAuthentication) {
         super.withProviderAuthentication(providerAuthentication);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ProviderRegistrationProperties withProviderAuthorizations(
-        List<ResourceProviderAuthorization> providerAuthorizations) {
+    public ProviderRegistrationProperties
+        withProviderAuthorizations(List<ResourceProviderAuthorization> providerAuthorizations) {
         super.withProviderAuthorizations(providerAuthorizations);
         return this;
     }
@@ -84,16 +83,16 @@ public final class ProviderRegistrationProperties extends ProviderRegistrationPr
 
     /** {@inheritDoc} */
     @Override
-    public ProviderRegistrationProperties withFeaturesRule(
-        ResourceProviderManifestPropertiesFeaturesRule featuresRule) {
+    public ProviderRegistrationProperties
+        withFeaturesRule(ResourceProviderManifestPropertiesFeaturesRule featuresRule) {
         super.withFeaturesRule(featuresRule);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ProviderRegistrationProperties withRequestHeaderOptions(
-        ResourceProviderManifestPropertiesRequestHeaderOptions requestHeaderOptions) {
+    public ProviderRegistrationProperties
+        withRequestHeaderOptions(ResourceProviderManifestPropertiesRequestHeaderOptions requestHeaderOptions) {
         super.withRequestHeaderOptions(requestHeaderOptions);
         return this;
     }

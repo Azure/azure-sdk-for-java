@@ -20,12 +20,8 @@ public final class IdentityProvidersGetEntityTagResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public IdentityProvidersGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
-        IdentityProvidersGetEntityTagHeaders headers) {
+    public IdentityProvidersGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        Void value, IdentityProvidersGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

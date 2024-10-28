@@ -101,22 +101,16 @@ public final class ForecastComparisonExpression {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ForecastComparisonExpression"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ForecastComparisonExpression"));
         }
         if (operator() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property operator in model ForecastComparisonExpression"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property operator in model ForecastComparisonExpression"));
         }
         if (values() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property values in model ForecastComparisonExpression"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property values in model ForecastComparisonExpression"));
         }
     }
 

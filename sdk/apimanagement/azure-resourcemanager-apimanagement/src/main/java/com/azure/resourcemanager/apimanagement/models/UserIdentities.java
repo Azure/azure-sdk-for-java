@@ -34,6 +34,6 @@ public interface UserIdentities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Users Identity list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<UserIdentityContract> list(
-        String resourceGroupName, String serviceName, String userId, Context context);
+    PagedIterable<UserIdentityContract> list(String resourceGroupName, String serviceName, String userId,
+        Context context);
 }

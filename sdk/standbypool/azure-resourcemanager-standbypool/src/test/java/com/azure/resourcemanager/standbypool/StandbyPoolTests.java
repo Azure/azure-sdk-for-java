@@ -106,13 +106,13 @@ public class StandbyPoolTests extends TestProxyTestBase {
 
             // Create virtual network and virtual machine scale set
             virtualNetwork = this.computeManager.networkManager()
-                    .networks()
-                    .define("vmssvnet")
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(resourceGroupName)
-                    .withAddressSpace("10.0.0.0/27")
-                    .withSubnet("default", "10.0.0.0/27")
-                    .create();
+                .networks()
+                .define("vmssvnet")
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroupName)
+                .withAddressSpace("10.0.0.0/27")
+                .withSubnet("default", "10.0.0.0/27")
+                .create();
 
             virtualMachineScaleSet = computeManager.virtualMachineScaleSets()
                     .define("vmss")
@@ -132,20 +132,21 @@ public class StandbyPoolTests extends TestProxyTestBase {
 
             // create standby virtual machine pool
             standbyVirtualMachinePool = standbyPoolManager.standbyVirtualMachinePools()
-                    .define(poolName)
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(resourceGroupName)
-                    .withProperties(new StandbyVirtualMachinePoolResourceProperties()
-                            .withAttachedVirtualMachineScaleSetId(virtualMachineScaleSet.id())
-                            .withVirtualMachineState(VirtualMachineState.DEALLOCATED)
-                            .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile()
-                                    .withMaxReadyCapacity(3L)
-                                    .withMinReadyCapacity(1L)))
-                    .create();
+                .define(poolName)
+                .withRegion(REGION)
+                .withExistingResourceGroup(resourceGroupName)
+                .withProperties(new StandbyVirtualMachinePoolResourceProperties()
+                    .withAttachedVirtualMachineScaleSetId(virtualMachineScaleSet.id())
+                    .withVirtualMachineState(VirtualMachineState.DEALLOCATED)
+                    .withElasticityProfile(new StandbyVirtualMachinePoolElasticityProfile().withMaxReadyCapacity(3L)
+                        .withMinReadyCapacity(1L)))
+                .create();
             // @embedmeEnd
             standbyVirtualMachinePool.refresh();
             Assertions.assertEquals(poolName, standbyVirtualMachinePool.name());
-            Assertions.assertTrue(standbyPoolManager.standbyVirtualMachinePools().listByResourceGroup(resourceGroupName).stream().count() > 0);
+            Assertions.assertTrue(
+                standbyPoolManager.standbyVirtualMachinePools().listByResourceGroup(resourceGroupName).stream().count()
+                    > 0);
         } finally {
             if (standbyVirtualMachinePool != null) {
                 standbyPoolManager.standbyVirtualMachinePools().deleteById(standbyVirtualMachinePool.id());
@@ -178,7 +179,8 @@ public class StandbyPoolTests extends TestProxyTestBase {
             dos.write(rsaPublicKey.getPublicExponent().toByteArray());
             dos.writeInt(rsaPublicKey.getModulus().toByteArray().length);
             dos.write(rsaPublicKey.getModulus().toByteArray());
-            String publicKeyEncoded = new String(Base64.getEncoder().encode(byteOs.toByteArray()), StandardCharsets.US_ASCII);
+            String publicKeyEncoded
+                = new String(Base64.getEncoder().encode(byteOs.toByteArray()), StandardCharsets.US_ASCII);
             sshPublicKey = "ssh-rsa " + publicKeyEncoded;
         } catch (NoSuchAlgorithmException | IOException e) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("failed to generate ssh key", e));

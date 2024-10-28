@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.sql.samples;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
@@ -56,7 +55,8 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
             // Create a SQL Server with system assigned managed service identity.
             System.out.println("Creating a SQL Server with system assigned managed service identity");
 
-            SqlServer sqlServer = azureResourceManager.sqlServers().define(sqlServerName)
+            SqlServer sqlServer = azureResourceManager.sqlServers()
+                .define(sqlServerName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withAdministratorLogin(administratorLogin)
@@ -70,17 +70,19 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
             // Create an Azure Key Vault and set the access policies.
             System.out.println("Creating an Azure Key Vault and set the access policies");
 
-            Vault vault = azureResourceManager.vaults().define(vaultName)
+            Vault vault = azureResourceManager.vaults()
+                .define(vaultName)
                 .withRegion(Region.US_EAST)
                 .withExistingResourceGroup(rgName)
                 .defineAccessPolicy()
-                    .forObjectId(sqlServer.systemAssignedManagedServiceIdentityPrincipalId())
-                    .allowKeyPermissions(KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY, KeyPermissions.GET, KeyPermissions.LIST)
-                    .attach()
+                .forObjectId(sqlServer.systemAssignedManagedServiceIdentityPrincipalId())
+                .allowKeyPermissions(KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY, KeyPermissions.GET,
+                    KeyPermissions.LIST)
+                .attach()
                 .defineAccessPolicy()
-                    .forServicePrincipal(objectId)
-                    .allowKeyAllPermissions()
-                    .attach()
+                .forServicePrincipal(objectId)
+                .allowKeyAllPermissions()
+                .attach()
                 .withSku(SkuName.PREMIUM)
                 .create();
 
@@ -93,7 +95,8 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
                 }
             }
 
-            Key keyBundle = vault.keys().define(keyName)
+            Key keyBundle = vault.keys()
+                .define(keyName)
                 .withKeyTypeToCreate(KeyType.RSA_HSM)
                 .withKeyOperations(keyOperations)
                 .create();
@@ -105,15 +108,12 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
             String keyUri = keyBundle.getJsonWebKey().getId();
 
             // Work around for SQL server key name must be formatted as "vault_key_version"
-            String serverKeyName = String.format("%s_%s_%s", vaultName, keyName,
-                keyUri.substring(keyUri.lastIndexOf("/") + 1));
+            String serverKeyName
+                = String.format("%s_%s_%s", vaultName, keyName, keyUri.substring(keyUri.lastIndexOf("/") + 1));
 
-            SqlServerKey sqlServerKey = sqlServer.serverKeys().define()
-                .withAzureKeyVaultKey(keyUri)
-                .create();
+            SqlServerKey sqlServerKey = sqlServer.serverKeys().define().withAzureKeyVaultKey(keyUri).create();
 
             Utils.print(sqlServerKey);
-
 
             // Validate key exists by getting key
             System.out.println("Validating key exists by getting the key");
@@ -121,7 +121,6 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
             sqlServerKey = sqlServer.serverKeys().get(serverKeyName);
 
             Utils.print(sqlServerKey);
-
 
             // Validate key exists by listing keys
             System.out.println("Validating key exists by listing keys");
@@ -131,12 +130,10 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
                 Utils.print(item);
             }
 
-
             // Delete key
             System.out.println("Deleting the key");
 
             azureResourceManager.sqlServers().serverKeys().deleteBySqlServer(rgName, sqlServerName, serverKeyName);
-
 
             // Delete the SQL Server.
             System.out.println("Deleting a Sql Server");
@@ -165,8 +162,7 @@ public class ManageSqlServerKeysWithAzureKeyVaultKey {
                 .build();
             final Configuration configuration = Configuration.getGlobalConfiguration();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

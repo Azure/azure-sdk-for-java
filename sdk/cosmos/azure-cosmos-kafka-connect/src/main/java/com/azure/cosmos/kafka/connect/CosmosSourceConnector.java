@@ -53,7 +53,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.kafka.connect.implementation.CosmosContainerUtils.validateContainers;
+import static com.azure.cosmos.kafka.connect.implementation.CosmosContainerUtils.validateDatabaseAndContainers;
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateCosmosAccountAuthConfig;
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateThroughputControlConfig;
 
@@ -79,8 +79,10 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
         this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
         this.cosmosClient = CosmosClientStore.getCosmosClient(this.config.getAccountConfig(), connectorName);
         CosmosSourceContainersConfig containersConfig = this.config.getContainersConfig();
-        validateContainers(containersConfig.getIncludedContainers(),
-            this.cosmosClient, containersConfig.getDatabaseName());
+        validateDatabaseAndContainers(
+            containersConfig.getIncludedContainers(),
+            this.cosmosClient,
+            containersConfig.getDatabaseName());
 
         // IMPORTANT: sequence matters
         this.kafkaOffsetStorageReader = new MetadataKafkaStorageManager(this.context().offsetStorageReader());

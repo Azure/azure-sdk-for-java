@@ -24,9 +24,11 @@ public final class DataTypeUpdateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataTypeUpdate model = new DataTypeUpdate().withProperties(
-            new DataTypeUpdateProperties().withState(DataTypeState.STOPPED).withStorageOutputRetention(825029486)
-                .withDatabaseCacheRetention(2070328561).withDatabaseRetention(1007558597));
+        DataTypeUpdate model
+            = new DataTypeUpdate().withProperties(new DataTypeUpdateProperties().withState(DataTypeState.STOPPED)
+                .withStorageOutputRetention(825029486)
+                .withDatabaseCacheRetention(2070328561)
+                .withDatabaseRetention(1007558597));
         model = BinaryData.fromObject(model).toObject(DataTypeUpdate.class);
         Assertions.assertEquals(DataTypeState.STOPPED, model.properties().state());
         Assertions.assertEquals(825029486, model.properties().storageOutputRetention());

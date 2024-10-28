@@ -13,7 +13,8 @@ import java.util.List;
 /** SSH configuration. */
 @Fluent
 public final class SshConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SshConfiguration.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SshConfiguration.class);
 
     /*
      * List of source IP ranges to allow SSH connection from. The default value
@@ -81,10 +82,8 @@ public final class SshConfiguration {
      */
     public void validate() {
         if (userAccountSettings() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property userAccountSettings in model SshConfiguration"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property userAccountSettings in model SshConfiguration"));
         } else {
             userAccountSettings().validate();
         }

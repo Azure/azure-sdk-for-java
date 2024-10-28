@@ -21,8 +21,8 @@ public interface Authorizations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Authorization list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AuthorizationContract> listByAuthorizationProvider(
-        String resourceGroupName, String serviceName, String authorizationProviderId);
+    PagedIterable<AuthorizationContract> listByAuthorizationProvider(String resourceGroupName, String serviceName,
+        String authorizationProviderId);
 
     /**
      * Lists a collection of authorization providers defined within a authorization provider.
@@ -42,14 +42,8 @@ public interface Authorizations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Authorization list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AuthorizationContract> listByAuthorizationProvider(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<AuthorizationContract> listByAuthorizationProvider(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the details of the authorization specified by its identifier.
@@ -64,12 +58,8 @@ public interface Authorizations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the authorization specified by its identifier.
      */
-    Response<AuthorizationContract> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        Context context);
+    Response<AuthorizationContract> getWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, Context context);
 
     /**
      * Gets the details of the authorization specified by its identifier.
@@ -83,8 +73,8 @@ public interface Authorizations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the authorization specified by its identifier.
      */
-    AuthorizationContract get(
-        String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId);
+    AuthorizationContract get(String resourceGroupName, String serviceName, String authorizationProviderId,
+        String authorizationId);
 
     /**
      * Deletes specific Authorization from the Authorization provider.
@@ -101,13 +91,8 @@ public interface Authorizations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String authorizationProviderId,
+        String authorizationId, String ifMatch, Context context);
 
     /**
      * Deletes specific Authorization from the Authorization provider.
@@ -122,11 +107,7 @@ public interface Authorizations {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
+    void delete(String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId,
         String ifMatch);
 
     /**
@@ -143,13 +124,9 @@ public interface Authorizations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    AuthorizationsConfirmConsentCodeResponse confirmConsentCodeWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationConfirmConsentCodeRequestContract parameters,
-        Context context);
+    AuthorizationsConfirmConsentCodeResponse confirmConsentCodeWithResponse(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId,
+        AuthorizationConfirmConsentCodeRequestContract parameters, Context context);
 
     /**
      * Confirm valid consent code to suppress Authorizations anti-phishing page.
@@ -163,12 +140,8 @@ public interface Authorizations {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void confirmConsentCode(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        AuthorizationConfirmConsentCodeRequestContract parameters);
+    void confirmConsentCode(String resourceGroupName, String serviceName, String authorizationProviderId,
+        String authorizationId, AuthorizationConfirmConsentCodeRequestContract parameters);
 
     /**
      * Gets the details of the authorization specified by its identifier.

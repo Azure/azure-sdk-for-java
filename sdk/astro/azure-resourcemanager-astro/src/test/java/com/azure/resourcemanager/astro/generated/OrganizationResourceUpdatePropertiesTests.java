@@ -39,16 +39,22 @@ public final class OrganizationResourceUpdatePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrganizationResourceUpdateProperties model
-            = new OrganizationResourceUpdateProperties()
-                .withUser(new LiftrBaseUserDetailsUpdate().withFirstName("pphrcgynco").withLastName("ecfvmm")
-                    .withEmailAddress("ofsx").withUpn("evgbmqjq").withPhoneNumber("c"))
-                .withPartnerOrganizationProperties(
-                    new LiftrBaseDataPartnerOrganizationPropertiesUpdate().withOrganizationId("ivkwlzuvccfwnfnb")
-                        .withWorkspaceId("fionl").withOrganizationName("x").withWorkspaceName("qgtz")
-                        .withSingleSignOnProperties(new LiftrBaseSingleSignOnProperties()
-                            .withSingleSignOnState(SingleSignOnStates.DISABLE).withEnterpriseAppId("bqqwxrj")
-                            .withSingleSignOnUrl("al").withAadDomains(Arrays.asList("sub", "snjampmng", "zscxaqwo"))));
+        OrganizationResourceUpdateProperties model = new OrganizationResourceUpdateProperties()
+            .withUser(new LiftrBaseUserDetailsUpdate().withFirstName("pphrcgynco")
+                .withLastName("ecfvmm")
+                .withEmailAddress("ofsx")
+                .withUpn("evgbmqjq")
+                .withPhoneNumber("c"))
+            .withPartnerOrganizationProperties(
+                new LiftrBaseDataPartnerOrganizationPropertiesUpdate().withOrganizationId("ivkwlzuvccfwnfnb")
+                    .withWorkspaceId("fionl")
+                    .withOrganizationName("x")
+                    .withWorkspaceName("qgtz")
+                    .withSingleSignOnProperties(
+                        new LiftrBaseSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.DISABLE)
+                            .withEnterpriseAppId("bqqwxrj")
+                            .withSingleSignOnUrl("al")
+                            .withAadDomains(Arrays.asList("sub", "snjampmng", "zscxaqwo"))));
         model = BinaryData.fromObject(model).toObject(OrganizationResourceUpdateProperties.class);
         Assertions.assertEquals("pphrcgynco", model.user().firstName());
         Assertions.assertEquals("ecfvmm", model.user().lastName());

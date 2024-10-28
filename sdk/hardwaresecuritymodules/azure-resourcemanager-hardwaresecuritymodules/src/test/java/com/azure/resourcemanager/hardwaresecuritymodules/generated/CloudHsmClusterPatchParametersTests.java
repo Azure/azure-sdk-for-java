@@ -37,7 +37,8 @@ public final class CloudHsmClusterPatchParametersTests {
         CloudHsmClusterPatchParameters model
             = new CloudHsmClusterPatchParameters().withTags(mapOf("a", "ljjgpbtoqcjmkl"))
                 .withSku(new CloudHsmClusterSku().withFamily(CloudHsmClusterSkuFamily.B)
-                    .withName(CloudHsmClusterSkuName.STANDARD_B10).withCapacity(1933596999))
+                    .withName(CloudHsmClusterSkuName.STANDARD_B10)
+                    .withCapacity(1933596999))
                 .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
                     .withUserAssignedIdentities(mapOf("kudjkrlkhb", new UserAssignedIdentity(), "epgzgqexz",
                         new UserAssignedIdentity(), "xscpaierhhbc", new UserAssignedIdentity())))

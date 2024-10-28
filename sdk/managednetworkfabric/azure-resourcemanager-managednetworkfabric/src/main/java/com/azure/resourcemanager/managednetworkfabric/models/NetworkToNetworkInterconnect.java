@@ -137,11 +137,8 @@ public interface NetworkToNetworkInterconnect {
     NetworkToNetworkInterconnectInner innerModel();
 
     /** The entirety of the NetworkToNetworkInterconnect definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithUseOptionB,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithUseOptionB, DefinitionStages.WithCreate {
     }
 
     /** The NetworkToNetworkInterconnect definition stages. */
@@ -178,16 +175,11 @@ public interface NetworkToNetworkInterconnect {
          * The stage of the NetworkToNetworkInterconnect definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithNniType,
-                DefinitionStages.WithIsManagementType,
-                DefinitionStages.WithLayer2Configuration,
-                DefinitionStages.WithOptionBLayer3Configuration,
-                DefinitionStages.WithNpbStaticRouteConfiguration,
-                DefinitionStages.WithImportRoutePolicy,
-                DefinitionStages.WithExportRoutePolicy,
-                DefinitionStages.WithEgressAclId,
-                DefinitionStages.WithIngressAclId {
+        interface WithCreate extends DefinitionStages.WithNniType, DefinitionStages.WithIsManagementType,
+            DefinitionStages.WithLayer2Configuration, DefinitionStages.WithOptionBLayer3Configuration,
+            DefinitionStages.WithNpbStaticRouteConfiguration, DefinitionStages.WithImportRoutePolicy,
+            DefinitionStages.WithExportRoutePolicy, DefinitionStages.WithEgressAclId,
+            DefinitionStages.WithIngressAclId {
             /**
              * Executes the create request.
              *
@@ -314,14 +306,9 @@ public interface NetworkToNetworkInterconnect {
     NetworkToNetworkInterconnect.Update update();
 
     /** The template for NetworkToNetworkInterconnect update. */
-    interface Update
-        extends UpdateStages.WithLayer2Configuration,
-            UpdateStages.WithOptionBLayer3Configuration,
-            UpdateStages.WithNpbStaticRouteConfiguration,
-            UpdateStages.WithImportRoutePolicy,
-            UpdateStages.WithExportRoutePolicy,
-            UpdateStages.WithEgressAclId,
-            UpdateStages.WithIngressAclId {
+    interface Update extends UpdateStages.WithLayer2Configuration, UpdateStages.WithOptionBLayer3Configuration,
+        UpdateStages.WithNpbStaticRouteConfiguration, UpdateStages.WithImportRoutePolicy,
+        UpdateStages.WithExportRoutePolicy, UpdateStages.WithEgressAclId, UpdateStages.WithIngressAclId {
         /**
          * Executes the update request.
          *
@@ -458,8 +445,8 @@ public interface NetworkToNetworkInterconnect {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(
-        UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateNpbStaticRouteBfdAdministrativeState(UpdateAdministrativeState body,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.

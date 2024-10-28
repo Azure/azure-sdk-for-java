@@ -387,8 +387,8 @@ public final class SqlVirtualMachineInner extends Resource {
      * @param keyVaultCredentialSettings the keyVaultCredentialSettings value to set.
      * @return the SqlVirtualMachineInner object itself.
      */
-    public SqlVirtualMachineInner withKeyVaultCredentialSettings(
-        KeyVaultCredentialSettings keyVaultCredentialSettings) {
+    public SqlVirtualMachineInner
+        withKeyVaultCredentialSettings(KeyVaultCredentialSettings keyVaultCredentialSettings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SqlVirtualMachineProperties();
         }
@@ -435,8 +435,8 @@ public final class SqlVirtualMachineInner extends Resource {
      * @param storageConfigurationSettings the storageConfigurationSettings value to set.
      * @return the SqlVirtualMachineInner object itself.
      */
-    public SqlVirtualMachineInner withStorageConfigurationSettings(
-        StorageConfigurationSettings storageConfigurationSettings) {
+    public SqlVirtualMachineInner
+        withStorageConfigurationSettings(StorageConfigurationSettings storageConfigurationSettings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SqlVirtualMachineProperties();
         }

@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -176,6 +177,9 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -183,8 +187,10 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeStringField("createdDateTime",
             this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
-        jsonWriter.writeStringField("lastUpdatedDateTime", this.lastUpdatedDateTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
+        jsonWriter.writeStringField("lastUpdatedDateTime",
+            this.lastUpdatedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdatedDateTime));
         jsonWriter.writeStringField("modelName", this.modelName);
         jsonWriter.writeJsonField("attributes", this.attributes);
         return jsonWriter.writeEndObject();
@@ -212,11 +218,11 @@ public final class ModelInfo implements JsonSerializable<ModelInfo> {
                 } else if ("status".equals(fieldName)) {
                     deserializedModelInfo.status = ModelStatus.fromString(reader.getString());
                 } else if ("createdDateTime".equals(fieldName)) {
-                    deserializedModelInfo.createdDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedModelInfo.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("lastUpdatedDateTime".equals(fieldName)) {
-                    deserializedModelInfo.lastUpdatedDateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedModelInfo.lastUpdatedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("modelName".equals(fieldName)) {
                     deserializedModelInfo.modelName = reader.getString();
                 } else if ("attributes".equals(fieldName)) {

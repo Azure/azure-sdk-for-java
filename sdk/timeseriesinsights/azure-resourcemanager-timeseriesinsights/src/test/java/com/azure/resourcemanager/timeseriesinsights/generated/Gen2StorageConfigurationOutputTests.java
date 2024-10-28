@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class Gen2StorageConfigurationOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Gen2StorageConfigurationOutput model =
-            BinaryData
-                .fromString("{\"accountName\":\"buhfmvfaxkffeiit\"}")
-                .toObject(Gen2StorageConfigurationOutput.class);
+        Gen2StorageConfigurationOutput model = BinaryData.fromString("{\"accountName\":\"buhfmvfaxkffeiit\"}")
+            .toObject(Gen2StorageConfigurationOutput.class);
         Assertions.assertEquals("buhfmvfaxkffeiit", model.accountName());
     }
 

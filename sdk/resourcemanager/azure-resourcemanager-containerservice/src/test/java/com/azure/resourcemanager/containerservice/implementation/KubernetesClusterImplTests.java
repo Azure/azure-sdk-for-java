@@ -19,17 +19,8 @@ public class KubernetesClusterImplTests {
         // npe test for KubernetesClusterImpl if inner model's properties are null
 
         // exclude those which do rest calls
-        Set<String> excludeMethods = new HashSet<>(Arrays.asList(
-            "beginCreateAgentPool",
-            "stopAsync",
-            "stop",
-            "start",
-            "startAsync",
-            "adminKubeConfigs",
-            "adminKubeConfigContent",
-            "userKubeConfigs",
-            "userKubeConfigContent"
-        ));
+        Set<String> excludeMethods = new HashSet<>(Arrays.asList("beginCreateAgentPool", "stopAsync", "stop", "start",
+            "startAsync", "adminKubeConfigs", "adminKubeConfigContent", "userKubeConfigs", "userKubeConfigContent"));
 
         ManagedClusterInner inner = new ManagedClusterInner();
         KubernetesCluster cluster = new KubernetesClusterImpl("testCluster", inner, null);

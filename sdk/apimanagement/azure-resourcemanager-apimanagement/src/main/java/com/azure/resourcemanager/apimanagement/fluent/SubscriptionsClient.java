@@ -59,8 +59,8 @@ public interface SubscriptionsClient {
      * @return paged Subscriptions list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SubscriptionContractInner> list(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<SubscriptionContractInner> list(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the apimanagement subscription specified by its identifier.
@@ -76,8 +76,8 @@ public interface SubscriptionsClient {
      * @return the entity state (Etag) version of the apimanagement subscription specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SubscriptionsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String sid, Context context);
+    SubscriptionsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String sid,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the apimanagement subscription specified by its identifier.
@@ -144,14 +144,8 @@ public interface SubscriptionsClient {
      * @return subscription details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SubscriptionsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String sid,
-        SubscriptionCreateParameters parameters,
-        Boolean notify,
-        String ifMatch,
-        AppType appType,
+    SubscriptionsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String sid, SubscriptionCreateParameters parameters, Boolean notify, String ifMatch, AppType appType,
         Context context);
 
     /**
@@ -168,8 +162,8 @@ public interface SubscriptionsClient {
      * @return subscription details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SubscriptionContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String sid, SubscriptionCreateParameters parameters);
+    SubscriptionContractInner createOrUpdate(String resourceGroupName, String serviceName, String sid,
+        SubscriptionCreateParameters parameters);
 
     /**
      * Updates the details of a subscription specified by its identifier.
@@ -192,15 +186,8 @@ public interface SubscriptionsClient {
      * @return subscription details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SubscriptionsUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String sid,
-        String ifMatch,
-        SubscriptionUpdateParameters parameters,
-        Boolean notify,
-        AppType appType,
-        Context context);
+    SubscriptionsUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String sid,
+        String ifMatch, SubscriptionUpdateParameters parameters, Boolean notify, AppType appType, Context context);
 
     /**
      * Updates the details of a subscription specified by its identifier.
@@ -218,11 +205,7 @@ public interface SubscriptionsClient {
      * @return subscription details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SubscriptionContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String sid,
-        String ifMatch,
+    SubscriptionContractInner update(String resourceGroupName, String serviceName, String sid, String ifMatch,
         SubscriptionUpdateParameters parameters);
 
     /**
@@ -241,8 +224,8 @@ public interface SubscriptionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String sid, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String sid, String ifMatch,
+        Context context);
 
     /**
      * Deletes the specified subscription.
@@ -274,8 +257,8 @@ public interface SubscriptionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> regeneratePrimaryKeyWithResponse(
-        String resourceGroupName, String serviceName, String sid, Context context);
+    Response<Void> regeneratePrimaryKeyWithResponse(String resourceGroupName, String serviceName, String sid,
+        Context context);
 
     /**
      * Regenerates primary key of existing subscription of the API Management service instance.
@@ -305,8 +288,8 @@ public interface SubscriptionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> regenerateSecondaryKeyWithResponse(
-        String resourceGroupName, String serviceName, String sid, Context context);
+    Response<Void> regenerateSecondaryKeyWithResponse(String resourceGroupName, String serviceName, String sid,
+        Context context);
 
     /**
      * Regenerates secondary key of existing subscription of the API Management service instance.
@@ -336,8 +319,8 @@ public interface SubscriptionsClient {
      * @return the specified Subscription keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SubscriptionsListSecretsResponse listSecretsWithResponse(
-        String resourceGroupName, String serviceName, String sid, Context context);
+    SubscriptionsListSecretsResponse listSecretsWithResponse(String resourceGroupName, String serviceName, String sid,
+        Context context);
 
     /**
      * Gets the specified Subscription keys.

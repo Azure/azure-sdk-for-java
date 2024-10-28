@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SandboxCustomImageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SandboxCustomImageInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"skfc\",\"requirementsFileContent\":\"qumiek\",\"provisioningState\":\"Failed\"},\"id\":\"zikhl\",\"name\":\"fjhdg\",\"type\":\"gge\"}")
-                .toObject(SandboxCustomImageInner.class);
+        SandboxCustomImageInner model = BinaryData.fromString(
+            "{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"skfc\",\"requirementsFileContent\":\"qumiek\",\"provisioningState\":\"Failed\"},\"id\":\"zikhl\",\"name\":\"fjhdg\",\"type\":\"gge\"}")
+            .toObject(SandboxCustomImageInner.class);
         Assertions.assertEquals(Language.PYTHON, model.language());
         Assertions.assertEquals("skfc", model.languageVersion());
         Assertions.assertEquals("qumiek", model.requirementsFileContent());
@@ -24,11 +22,9 @@ public final class SandboxCustomImageInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SandboxCustomImageInner model =
-            new SandboxCustomImageInner()
-                .withLanguage(Language.PYTHON)
-                .withLanguageVersion("skfc")
-                .withRequirementsFileContent("qumiek");
+        SandboxCustomImageInner model = new SandboxCustomImageInner().withLanguage(Language.PYTHON)
+            .withLanguageVersion("skfc")
+            .withRequirementsFileContent("qumiek");
         model = BinaryData.fromObject(model).toObject(SandboxCustomImageInner.class);
         Assertions.assertEquals(Language.PYTHON, model.language());
         Assertions.assertEquals("skfc", model.languageVersion());

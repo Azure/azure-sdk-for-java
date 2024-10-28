@@ -19,8 +19,8 @@ public final class GalleryImagesImpl implements GalleryImages {
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    public GalleryImagesImpl(
-        GalleryImagesClient innerClient, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    public GalleryImagesImpl(GalleryImagesClient innerClient,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -30,16 +30,10 @@ public final class GalleryImagesImpl implements GalleryImages {
         return Utils.mapPage(inner, inner1 -> new GalleryImageImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<GalleryImage> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
-        PagedIterable<GalleryImageInner> inner =
-            this.serviceClient().list(resourceGroupName, labName, expand, filter, top, orderby, context);
+    public PagedIterable<GalleryImage> list(String resourceGroupName, String labName, String expand, String filter,
+        Integer top, String orderby, Context context) {
+        PagedIterable<GalleryImageInner> inner
+            = this.serviceClient().list(resourceGroupName, labName, expand, filter, top, orderby, context);
         return Utils.mapPage(inner, inner1 -> new GalleryImageImpl(inner1, this.manager()));
     }
 

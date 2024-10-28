@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AmlCompute")
 @Fluent
 public final class AmlCompute extends Compute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmlCompute.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AmlCompute.class);
 
     /*
      * AML Compute properties

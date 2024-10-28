@@ -24,10 +24,11 @@ public final class NetworkFunctionApplicationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkFunctionApplication model = new NetworkFunctionApplication().withName("agr").withDependsOnProfile(
-            new DependsOnProfile().withInstallDependsOn(Arrays.asList("teusqczkvyklxu", "yja", "fmmfblcqcu"))
-                .withUninstallDependsOn(Arrays.asList("qibrtalme", "ttwgdsl", "xih", "rmooizqse"))
-                .withUpdateDependsOn(Arrays.asList("iut", "xapzhyrpet")));
+        NetworkFunctionApplication model = new NetworkFunctionApplication().withName("agr")
+            .withDependsOnProfile(
+                new DependsOnProfile().withInstallDependsOn(Arrays.asList("teusqczkvyklxu", "yja", "fmmfblcqcu"))
+                    .withUninstallDependsOn(Arrays.asList("qibrtalme", "ttwgdsl", "xih", "rmooizqse"))
+                    .withUpdateDependsOn(Arrays.asList("iut", "xapzhyrpet")));
         model = BinaryData.fromObject(model).toObject(NetworkFunctionApplication.class);
         Assertions.assertEquals("agr", model.name());
         Assertions.assertEquals("teusqczkvyklxu", model.dependsOnProfile().installDependsOn().get(0));

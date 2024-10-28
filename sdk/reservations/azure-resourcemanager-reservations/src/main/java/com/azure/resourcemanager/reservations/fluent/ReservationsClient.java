@@ -36,8 +36,8 @@ public interface ReservationsClient {
      *     eligibilities.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AvailableScopePropertiesInner>, AvailableScopePropertiesInner> beginAvailableScopes(
-        String reservationOrderId, String reservationId, AvailableScopeRequest body);
+    SyncPoller<PollResult<AvailableScopePropertiesInner>, AvailableScopePropertiesInner>
+        beginAvailableScopes(String reservationOrderId, String reservationId, AvailableScopeRequest body);
 
     /**
      * Get Available Scopes for `Reservation`.
@@ -72,8 +72,8 @@ public interface ReservationsClient {
      * @return the response of available scope api containing scopes and their eligibilities.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailableScopePropertiesInner availableScopes(
-        String reservationOrderId, String reservationId, AvailableScopeRequest body);
+    AvailableScopePropertiesInner availableScopes(String reservationOrderId, String reservationId,
+        AvailableScopeRequest body);
 
     /**
      * Get Available Scopes for `Reservation`.
@@ -90,8 +90,8 @@ public interface ReservationsClient {
      * @return the response of available scope api containing scopes and their eligibilities.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailableScopePropertiesInner availableScopes(
-        String reservationOrderId, String reservationId, AvailableScopeRequest body, Context context);
+    AvailableScopePropertiesInner availableScopes(String reservationOrderId, String reservationId,
+        AvailableScopeRequest body, Context context);
 
     /**
      * Split the `Reservation`.
@@ -106,8 +106,8 @@ public interface ReservationsClient {
      * @return the {@link SyncPoller} for polling of array of ReservationResponse.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>> beginSplit(
-        String reservationOrderId, SplitRequest body);
+    SyncPoller<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>>
+        beginSplit(String reservationOrderId, SplitRequest body);
 
     /**
      * Split the `Reservation`.
@@ -123,8 +123,8 @@ public interface ReservationsClient {
      * @return the {@link SyncPoller} for polling of array of ReservationResponse.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>> beginSplit(
-        String reservationOrderId, SplitRequest body, Context context);
+    SyncPoller<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>>
+        beginSplit(String reservationOrderId, SplitRequest body, Context context);
 
     /**
      * Split the `Reservation`.
@@ -171,8 +171,8 @@ public interface ReservationsClient {
      * @return the {@link SyncPoller} for polling of array of ReservationResponse.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>> beginMerge(
-        String reservationOrderId, MergeRequest body);
+    SyncPoller<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>>
+        beginMerge(String reservationOrderId, MergeRequest body);
 
     /**
      * Merges two `Reservation`s.
@@ -189,8 +189,8 @@ public interface ReservationsClient {
      * @return the {@link SyncPoller} for polling of array of ReservationResponse.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>> beginMerge(
-        String reservationOrderId, MergeRequest body, Context context);
+    SyncPoller<PollResult<List<ReservationResponseInner>>, List<ReservationResponseInner>>
+        beginMerge(String reservationOrderId, MergeRequest body, Context context);
 
     /**
      * Merges two `Reservation`s.
@@ -269,8 +269,8 @@ public interface ReservationsClient {
      * @return specific `Reservation` details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReservationResponseInner> getWithResponse(
-        String reservationOrderId, String reservationId, String expand, Context context);
+    Response<ReservationResponseInner> getWithResponse(String reservationOrderId, String reservationId, String expand,
+        Context context);
 
     /**
      * Get `Reservation` details.
@@ -301,8 +301,8 @@ public interface ReservationsClient {
      * @return the {@link SyncPoller} for polling of the definition of the reservation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReservationResponseInner>, ReservationResponseInner> beginUpdate(
-        String reservationOrderId, String reservationId, PatchModel parameters);
+    SyncPoller<PollResult<ReservationResponseInner>, ReservationResponseInner> beginUpdate(String reservationOrderId,
+        String reservationId, PatchModel parameters);
 
     /**
      * Updates a `Reservation`.
@@ -319,8 +319,8 @@ public interface ReservationsClient {
      * @return the {@link SyncPoller} for polling of the definition of the reservation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReservationResponseInner>, ReservationResponseInner> beginUpdate(
-        String reservationOrderId, String reservationId, PatchModel parameters, Context context);
+    SyncPoller<PollResult<ReservationResponseInner>, ReservationResponseInner> beginUpdate(String reservationOrderId,
+        String reservationId, PatchModel parameters, Context context);
 
     /**
      * Updates a `Reservation`.
@@ -353,8 +353,8 @@ public interface ReservationsClient {
      * @return the definition of the reservation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReservationResponseInner update(
-        String reservationOrderId, String reservationId, PatchModel parameters, Context context);
+    ReservationResponseInner update(String reservationOrderId, String reservationId, PatchModel parameters,
+        Context context);
 
     /**
      * Archive a `Reservation`.
@@ -445,8 +445,8 @@ public interface ReservationsClient {
      * @return list of `Reservation`s as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReservationResponseInner> listRevisions(
-        String reservationOrderId, String reservationId, Context context);
+    PagedIterable<ReservationResponseInner> listRevisions(String reservationOrderId, String reservationId,
+        Context context);
 
     /**
      * List the reservations and the roll up counts of reservations group by provisioning states that the user has
@@ -483,12 +483,6 @@ public interface ReservationsClient {
      *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReservationResponseInner> listAll(
-        String filter,
-        String orderby,
-        String refreshSummary,
-        Float skiptoken,
-        String selectedState,
-        Float take,
-        Context context);
+    PagedIterable<ReservationResponseInner> listAll(String filter, String orderby, String refreshSummary,
+        Float skiptoken, String selectedState, Float take, Context context);
 }

@@ -114,8 +114,8 @@ public final class StatementActionProperties {
      * @param ipExtendedCommunityProperties the ipExtendedCommunityProperties value to set.
      * @return the StatementActionProperties object itself.
      */
-    public StatementActionProperties withIpExtendedCommunityProperties(
-        ActionIpExtendedCommunityProperties ipExtendedCommunityProperties) {
+    public StatementActionProperties
+        withIpExtendedCommunityProperties(ActionIpExtendedCommunityProperties ipExtendedCommunityProperties) {
         this.ipExtendedCommunityProperties = ipExtendedCommunityProperties;
         return this;
     }
@@ -127,10 +127,8 @@ public final class StatementActionProperties {
      */
     public void validate() {
         if (actionType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property actionType in model StatementActionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property actionType in model StatementActionProperties"));
         }
         if (ipCommunityProperties() != null) {
             ipCommunityProperties().validate();

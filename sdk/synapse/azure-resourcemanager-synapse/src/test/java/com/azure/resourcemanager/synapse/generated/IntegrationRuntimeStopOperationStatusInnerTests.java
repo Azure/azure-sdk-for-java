@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeStopOperationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeStopOperationStatusInner model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"InProgress\",\"name\":\"usxjbaqehg\",\"properties\":\"dataohzjqatucoigeb\",\"error\":\"cnwfepbnwgfmxjg\"}")
-                .toObject(IntegrationRuntimeStopOperationStatusInner.class);
+        IntegrationRuntimeStopOperationStatusInner model = BinaryData.fromString(
+            "{\"status\":\"InProgress\",\"name\":\"usxjbaqehg\",\"properties\":\"dataohzjqatucoigeb\",\"error\":\"cnwfepbnwgfmxjg\"}")
+            .toObject(IntegrationRuntimeStopOperationStatusInner.class);
         Assertions.assertEquals(WorkspaceStatus.IN_PROGRESS, model.status());
         Assertions.assertEquals("usxjbaqehg", model.name());
         Assertions.assertEquals("cnwfepbnwgfmxjg", model.error());
@@ -24,9 +22,8 @@ public final class IntegrationRuntimeStopOperationStatusInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeStopOperationStatusInner model =
-            new IntegrationRuntimeStopOperationStatusInner()
-                .withStatus(WorkspaceStatus.IN_PROGRESS)
+        IntegrationRuntimeStopOperationStatusInner model
+            = new IntegrationRuntimeStopOperationStatusInner().withStatus(WorkspaceStatus.IN_PROGRESS)
                 .withName("usxjbaqehg")
                 .withProperties("dataohzjqatucoigeb")
                 .withError("cnwfepbnwgfmxjg");

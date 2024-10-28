@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
 public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
     @Test
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void canUseMultipleIPConfigs() throws Exception {
         String networkName = generateRandomResourceName("net", 15);
         String[] nicNames = new String[3];
@@ -49,60 +49,52 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             nicNames[i] = generateRandomResourceName("nic", 15);
         }
 
-        Network network =
-            networkManager
-                .networks()
-                .define(networkName)
+        Network network = networkManager.networks()
+            .define(networkName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/27")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .withSubnet("subnet2", "10.0.0.16/28")
+            .create();
+
+        List<Creatable<NetworkInterface>> nicDefinitions = Arrays.asList(
+            // 0 - NIC that starts with one IP config and ends with two
+            (Creatable<NetworkInterface>) (networkManager.networkInterfaces()
+                .define(nicNames[0])
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
-                .withAddressSpace("10.0.0.0/27")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .withSubnet("subnet2", "10.0.0.16/28")
-                .create();
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("subnet1")
+                .withPrimaryPrivateIPAddressDynamic()),
 
-        List<Creatable<NetworkInterface>> nicDefinitions =
-            Arrays
-                .asList(
-                    // 0 - NIC that starts with one IP config and ends with two
-                    (Creatable<NetworkInterface>)
-                        (networkManager
-                            .networkInterfaces()
-                            .define(nicNames[0])
-                            .withRegion(Region.US_EAST)
-                            .withNewResourceGroup(rgName)
-                            .withExistingPrimaryNetwork(network)
-                            .withSubnet("subnet1")
-                            .withPrimaryPrivateIPAddressDynamic()),
+            // 1 - NIC that starts with two IP configs and ends with one
+            networkManager.networkInterfaces()
+                .define(nicNames[1])
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("subnet1")
+                .withPrimaryPrivateIPAddressDynamic()
+                .defineSecondaryIPConfiguration("nicip2")
+                .withExistingNetwork(network)
+                .withSubnet("subnet1")
+                .withPrivateIpAddressDynamic()
+                .attach(),
 
-                    // 1 - NIC that starts with two IP configs and ends with one
-                    networkManager
-                        .networkInterfaces()
-                        .define(nicNames[1])
-                        .withRegion(Region.US_EAST)
-                        .withNewResourceGroup(rgName)
-                        .withExistingPrimaryNetwork(network)
-                        .withSubnet("subnet1")
-                        .withPrimaryPrivateIPAddressDynamic()
-                        .defineSecondaryIPConfiguration("nicip2")
-                        .withExistingNetwork(network)
-                        .withSubnet("subnet1")
-                        .withPrivateIpAddressDynamic()
-                        .attach(),
-
-                    // 2 - NIC that starts with two IP configs and ends with two
-                    networkManager
-                        .networkInterfaces()
-                        .define(nicNames[2])
-                        .withRegion(Region.US_EAST)
-                        .withNewResourceGroup(rgName)
-                        .withExistingPrimaryNetwork(network)
-                        .withSubnet("subnet1")
-                        .withPrimaryPrivateIPAddressDynamic()
-                        .defineSecondaryIPConfiguration("nicip2")
-                        .withExistingNetwork(network)
-                        .withSubnet("subnet1")
-                        .withPrivateIpAddressDynamic()
-                        .attach());
+            // 2 - NIC that starts with two IP configs and ends with two
+            networkManager.networkInterfaces()
+                .define(nicNames[2])
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withExistingPrimaryNetwork(network)
+                .withSubnet("subnet1")
+                .withPrimaryPrivateIPAddressDynamic()
+                .defineSecondaryIPConfiguration("nicip2")
+                .withExistingNetwork(network)
+                .withSubnet("subnet1")
+                .withPrivateIpAddressDynamic()
+                .attach());
 
         // Create the NICs in parallel
         CreatedResources<NetworkInterface> createdNics = networkManager.networkInterfaces().create(nicDefinitions);
@@ -155,42 +147,36 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
         nic = null;
 
-        List<Mono<NetworkInterface>> nicUpdates =
-            Arrays
-                .asList(
-                    // Update NIC0
-                    nics[0]
-                        .update()
-                        .defineSecondaryIPConfiguration("nicip2")
-                        .withExistingNetwork(network)
-                        .withSubnet("subnet1")
-                        .withPrivateIpAddressDynamic()
-                        .attach()
-                        .applyAsync(),
+        List<Mono<NetworkInterface>> nicUpdates = Arrays.asList(
+            // Update NIC0
+            nics[0].update()
+                .defineSecondaryIPConfiguration("nicip2")
+                .withExistingNetwork(network)
+                .withSubnet("subnet1")
+                .withPrivateIpAddressDynamic()
+                .attach()
+                .applyAsync(),
 
-                    // Update NIC2
-                    nics[1]
-                        .update()
-                        .withoutIPConfiguration("nicip2")
-                        .updateIPConfiguration("primary")
-                        .withSubnet("subnet2")
-                        .parent()
-                        .applyAsync(),
+            // Update NIC2
+            nics[1].update()
+                .withoutIPConfiguration("nicip2")
+                .updateIPConfiguration("primary")
+                .withSubnet("subnet2")
+                .parent()
+                .applyAsync(),
 
-                    // Update NIC3
-                    nics[2]
-                        .update()
-                        .withoutIPConfiguration("nicip2")
-                        .defineSecondaryIPConfiguration("nicip3")
-                        .withExistingNetwork(network)
-                        .withSubnet("subnet1")
-                        .withPrivateIpAddressDynamic()
-                        .attach()
-                        .applyAsync());
+            // Update NIC3
+            nics[2].update()
+                .withoutIPConfiguration("nicip2")
+                .defineSecondaryIPConfiguration("nicip3")
+                .withExistingNetwork(network)
+                .withSubnet("subnet1")
+                .withPrivateIpAddressDynamic()
+                .attach()
+                .applyAsync());
 
-        List<NetworkInterface> updatedNics =
-            Flux
-                .mergeDelayError(32, (Mono<NetworkInterface>[]) nicUpdates.toArray(new Mono[0]))
+        List<NetworkInterface> updatedNics
+            = Flux.mergeDelayError(32, (Mono<NetworkInterface>[]) nicUpdates.toArray(new Mono[0]))
                 .collectList()
                 .block();
 
@@ -250,58 +236,45 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         Creatable<ResourceGroup> resourceGroupCreatable = resourceGroups.define(rgName).withRegion(Region.US_EAST);
 
         final String vnetName = "vnet1212";
-        Creatable<Network> networkCreatable =
-            networks
-                .define(vnetName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(resourceGroupCreatable)
-                .withAddressSpace("10.0.0.0/28");
+        Creatable<Network> networkCreatable = networks.define(vnetName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(resourceGroupCreatable)
+            .withAddressSpace("10.0.0.0/28");
 
         // Prepare a batch of nics
         //
         final String nic1Name = "nic1";
-        Creatable<NetworkInterface> networkInterface1Creatable =
-            networkInterfaces
-                .define(nic1Name)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(resourceGroupCreatable)
-                .withNewPrimaryNetwork(networkCreatable)
-                .withPrimaryPrivateIPAddressStatic("10.0.0.5");
+        Creatable<NetworkInterface> networkInterface1Creatable = networkInterfaces.define(nic1Name)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(resourceGroupCreatable)
+            .withNewPrimaryNetwork(networkCreatable)
+            .withPrimaryPrivateIPAddressStatic("10.0.0.5");
 
         final String nic2Name = "nic2";
-        Creatable<NetworkInterface> networkInterface2Creatable =
-            networkInterfaces
-                .define(nic2Name)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(resourceGroupCreatable)
-                .withNewPrimaryNetwork(networkCreatable)
-                .withPrimaryPrivateIPAddressStatic("10.0.0.6");
+        Creatable<NetworkInterface> networkInterface2Creatable = networkInterfaces.define(nic2Name)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(resourceGroupCreatable)
+            .withNewPrimaryNetwork(networkCreatable)
+            .withPrimaryPrivateIPAddressStatic("10.0.0.6");
 
         final String nic3Name = "nic3";
-        Creatable<NetworkInterface> networkInterface3Creatable =
-            networkInterfaces
-                .define(nic3Name)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(resourceGroupCreatable)
-                .withNewPrimaryNetwork(networkCreatable)
-                .withPrimaryPrivateIPAddressStatic("10.0.0.7");
+        Creatable<NetworkInterface> networkInterface3Creatable = networkInterfaces.define(nic3Name)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(resourceGroupCreatable)
+            .withNewPrimaryNetwork(networkCreatable)
+            .withPrimaryPrivateIPAddressStatic("10.0.0.7");
 
         final String nic4Name = "nic4";
-        Creatable<NetworkInterface> networkInterface4Creatable =
-            networkInterfaces
-                .define(nic4Name)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(resourceGroupCreatable)
-                .withNewPrimaryNetwork(networkCreatable)
-                .withPrimaryPrivateIPAddressStatic("10.0.0.8");
+        Creatable<NetworkInterface> networkInterface4Creatable = networkInterfaces.define(nic4Name)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(resourceGroupCreatable)
+            .withNewPrimaryNetwork(networkCreatable)
+            .withPrimaryPrivateIPAddressStatic("10.0.0.8");
 
         @SuppressWarnings("unchecked")
-        Collection<NetworkInterface> batchNics =
-            networkInterfaces
-                .create(
-                    networkInterface1Creatable,
-                    networkInterface2Creatable,
-                    networkInterface3Creatable,
+        Collection<NetworkInterface> batchNics
+            = networkInterfaces
+                .create(networkInterface1Creatable, networkInterface2Creatable, networkInterface3Creatable,
                     networkInterface4Creatable)
                 .values();
 
@@ -326,23 +299,23 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
     @Test
     public void canCreateNicWithApplicationSecurityGroup() {
-        Network network =
-            networkManager
-                .networks()
-                .define("vnet1")
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withAddressSpace("10.0.0.0/27")
-                .withSubnet("subnet1", "10.0.0.0/28")
-                .withSubnet("subnet2", "10.0.0.16/28")
-                .create();
+        Network network = networkManager.networks()
+            .define("vnet1")
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/27")
+            .withSubnet("subnet1", "10.0.0.0/28")
+            .withSubnet("subnet2", "10.0.0.16/28")
+            .create();
 
-        ApplicationSecurityGroup asg1 = networkManager.applicationSecurityGroups().define("asg1")
+        ApplicationSecurityGroup asg1 = networkManager.applicationSecurityGroups()
+            .define("asg1")
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
             .create();
 
-        NetworkInterface nic = networkManager.networkInterfaces().define("nic1")
+        NetworkInterface nic = networkManager.networkInterfaces()
+            .define("nic1")
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
             .withExistingPrimaryNetwork(network)
@@ -351,11 +324,13 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .withExistingApplicationSecurityGroup(asg1)
             .create();
 
-        List<ApplicationSecurityGroup> applicationSecurityGroups = nic.primaryIPConfiguration().listAssociatedApplicationSecurityGroups();
+        List<ApplicationSecurityGroup> applicationSecurityGroups
+            = nic.primaryIPConfiguration().listAssociatedApplicationSecurityGroups();
         Assertions.assertEquals(1, applicationSecurityGroups.size());
         Assertions.assertEquals("asg1", applicationSecurityGroups.iterator().next().name());
 
-        ApplicationSecurityGroup asg2 = networkManager.applicationSecurityGroups().define("asg2")
+        ApplicationSecurityGroup asg2 = networkManager.applicationSecurityGroups()
+            .define("asg2")
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
             .create();
@@ -364,31 +339,33 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .withoutApplicationSecurityGroup(asg1.name())
             .withExistingApplicationSecurityGroup(asg2)
             .defineSecondaryIPConfiguration("nicip2")
-                .withExistingNetwork(network)
-                .withSubnet("subnet1")
-                .withPrivateIpAddressDynamic()
-                .attach()
+            .withExistingNetwork(network)
+            .withSubnet("subnet1")
+            .withPrivateIpAddressDynamic()
+            .attach()
             .apply();
 
         applicationSecurityGroups = nic.primaryIPConfiguration().listAssociatedApplicationSecurityGroups();
         Assertions.assertEquals(1, applicationSecurityGroups.size());
         Assertions.assertEquals("asg2", applicationSecurityGroups.iterator().next().name());
 
-        nic.update()
-            .withoutApplicationSecurityGroup(asg1.name())
-            .withExistingApplicationSecurityGroup(asg1)
-            .apply();
+        nic.update().withoutApplicationSecurityGroup(asg1.name()).withExistingApplicationSecurityGroup(asg1).apply();
 
-        Assertions.assertEquals(2, nic.ipConfigurations().get("nicip2").innerModel().applicationSecurityGroups().size());
-        Assertions.assertEquals(
-            new HashSet<>(Arrays.asList("asg1", "asg2")),
-            nic.ipConfigurations().get("nicip2").innerModel().applicationSecurityGroups().stream().map(inner -> ResourceUtils.nameFromResourceId(inner.id())).collect(Collectors.toSet()));
+        Assertions.assertEquals(2,
+            nic.ipConfigurations().get("nicip2").innerModel().applicationSecurityGroups().size());
+        Assertions.assertEquals(new HashSet<>(Arrays.asList("asg1", "asg2")),
+            nic.ipConfigurations()
+                .get("nicip2")
+                .innerModel()
+                .applicationSecurityGroups()
+                .stream()
+                .map(inner -> ResourceUtils.nameFromResourceId(inner.id()))
+                .collect(Collectors.toSet()));
         if (!isPlaybackMode()) {
             // avoid concurrent request in playback
             applicationSecurityGroups = nic.ipConfigurations().get("nicip2").listAssociatedApplicationSecurityGroups();
             Assertions.assertEquals(2, applicationSecurityGroups.size());
-            Assertions.assertEquals(
-                new HashSet<>(Arrays.asList("asg1", "asg2")),
+            Assertions.assertEquals(new HashSet<>(Arrays.asList("asg1", "asg2")),
                 applicationSecurityGroups.stream().map(ApplicationSecurityGroup::name).collect(Collectors.toSet()));
         }
     }
@@ -397,8 +374,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
     @Disabled("Deadlock from CountDownLatch")
     public void canDeleteNetworkWithServiceCallBack() {
         String vnetName = generateRandomResourceName("vnet", 15);
-        networkManager
-            .networks()
+        networkManager.networks()
             .define(vnetName)
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgName)
@@ -414,15 +390,10 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         // TODO: Fix deadlock
         final CountDownLatch latch = new CountDownLatch(1);
         final AtomicInteger counter = new AtomicInteger(0);
-        networkManager
-            .networks()
-            .deleteByResourceGroupAsync(rgName, vnetName)
-            .doOnSuccess(
-                aVoid -> {
-                    counter.incrementAndGet();
-                    latch.countDown();
-                })
-            .doOnError(throwable -> latch.countDown());
+        networkManager.networks().deleteByResourceGroupAsync(rgName, vnetName).doOnSuccess(aVoid -> {
+            counter.incrementAndGet();
+            latch.countDown();
+        }).doOnError(throwable -> latch.countDown());
 
         try {
             latch.await();
@@ -450,7 +421,8 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         Assertions.assertTrue(CoreUtils.isNullOrEmpty(subnet.addressPrefixes()));
 
         // update withAddressPrefixes
-        network.update().updateSubnet(subnetName)
+        network.update()
+            .updateSubnet(subnetName)
             .withAddressPrefixes(Arrays.asList("10.0.0.8/29", "10.0.0.16/29"))
             .parent()
             .apply();
@@ -463,10 +435,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         Assertions.assertNull(subnet.addressPrefix());
 
         // update withAddressPrefix
-        network.update().updateSubnet(subnetName)
-            .withAddressPrefix("10.0.0.0/29")
-            .parent()
-            .apply();
+        network.update().updateSubnet(subnetName).withAddressPrefix("10.0.0.0/29").parent().apply();
 
         network.refresh();
         subnet = network.subnets().get(subnetName);
@@ -509,7 +478,8 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         Assertions.assertTrue(availableIps.isEmpty());
 
         // define a new subnet with address prefixes
-        network.update().defineSubnet(subnet2Name)
+        network.update()
+            .defineSubnet(subnet2Name)
             .withAddressPrefixes(Arrays.asList("10.0.0.8/29", "10.0.0.16/29"))
             .attach()
             .apply();
@@ -546,9 +516,8 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         String subnetName = "subnet1";
         String subnet2Name = "subnet2";
 
-        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName)
-            .withRegion(Region.US_EAST)
-            .create();
+        ResourceGroup resourceGroup
+            = resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
 
         NatGatewayInner gateway1 = createNatGateway();
 
@@ -558,9 +527,9 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .withExistingResourceGroup(resourceGroup)
             .withAddressSpace("10.0.0.0/16")
             .defineSubnet(subnetName)
-                .withAddressPrefix("10.0.0.0/24")
-                .withExistingNatGateway(gateway1.id())
-                .attach()
+            .withAddressPrefix("10.0.0.0/24")
+            .withExistingNatGateway(gateway1.id())
+            .attach()
             .create();
 
         Subnet subnet = network.subnets().get(subnetName);
@@ -570,12 +539,12 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
         network.update()
             .updateSubnet(subnetName)
-                .withExistingNatGateway(gateway2.id())
-                .parent()
+            .withExistingNatGateway(gateway2.id())
+            .parent()
             .defineSubnet(subnet2Name)
-                .withAddressPrefix("10.0.1.0/24")
-                .withExistingNatGateway(gateway2.id())
-                .attach()
+            .withAddressPrefix("10.0.1.0/24")
+            .withExistingNatGateway(gateway2.id())
+            .attach()
             .apply();
 
         subnet = network.subnets().get(subnetName);
@@ -607,31 +576,39 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .withNewPrimaryPublicIPAddress()
             .withPrimaryPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
             .defineSecondaryIPConfiguration("secondary1")
-                .withExistingNetwork(vnet)
-                .withSubnet(subnetName)
-                .withPrivateIpAddressDynamic()
-                .withNewPublicIpAddress()
-                .withPublicIPAddressDeleteOptions(DeleteOptions.DETACH)
-                .attach()
+            .withExistingNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrivateIpAddressDynamic()
+            .withNewPublicIpAddress()
+            .withPublicIPAddressDeleteOptions(DeleteOptions.DETACH)
+            .attach()
             .defineSecondaryIPConfiguration("secondary2")
-                .withExistingNetwork(vnet)
-                .withSubnet(subnetName)
-                .withPrivateIpAddressDynamic()
-                .withNewPublicIpAddress()
-                .withPublicIPAddressDeleteOptions(DeleteOptions.DETACH)
-                .attach()
+            .withExistingNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrivateIpAddressDynamic()
+            .withNewPublicIpAddress()
+            .withPublicIPAddressDeleteOptions(DeleteOptions.DETACH)
+            .attach()
             .create();
 
         nic.refresh();
-        Assertions.assertEquals(DeleteOptions.DELETE, nic.primaryIPConfiguration().innerModel().publicIpAddress().deleteOption());
-        Assertions.assertEquals(DeleteOptions.DETACH, nic.ipConfigurations().get("secondary1").innerModel().publicIpAddress().deleteOption());
-        Assertions.assertEquals(DeleteOptions.DETACH, nic.ipConfigurations().get("secondary2").innerModel().publicIpAddress().deleteOption());
+        Assertions.assertEquals(DeleteOptions.DELETE,
+            nic.primaryIPConfiguration().innerModel().publicIpAddress().deleteOption());
+        Assertions.assertEquals(DeleteOptions.DETACH,
+            nic.ipConfigurations().get("secondary1").innerModel().publicIpAddress().deleteOption());
+        Assertions.assertEquals(DeleteOptions.DETACH,
+            nic.ipConfigurations().get("secondary2").innerModel().publicIpAddress().deleteOption());
 
         String existingPrimaryIpAddressId = nic.primaryIPConfiguration().publicIpAddressId();
-        nic.update().withNewPrimaryPublicIPAddress().withPrimaryPublicIPAddressDeleteOptions(DeleteOptions.DETACH).apply();
+        nic.update()
+            .withNewPrimaryPublicIPAddress()
+            .withPrimaryPublicIPAddressDeleteOptions(DeleteOptions.DETACH)
+            .apply();
         nic.refresh();
-        Assertions.assertFalse(existingPrimaryIpAddressId.equalsIgnoreCase(nic.primaryIPConfiguration().publicIpAddressId()));
-        Assertions.assertEquals(DeleteOptions.DETACH, nic.primaryIPConfiguration().innerModel().publicIpAddress().deleteOption());
+        Assertions
+            .assertFalse(existingPrimaryIpAddressId.equalsIgnoreCase(nic.primaryIPConfiguration().publicIpAddressId()));
+        Assertions.assertEquals(DeleteOptions.DETACH,
+            nic.primaryIPConfiguration().innerModel().publicIpAddress().deleteOption());
 
         String existingSecondary1IpAddressId = nic.ipConfigurations().get("secondary1").publicIpAddressId();
         nic.update()
@@ -652,23 +629,23 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .attach()
             .apply();
         nic.refresh();
-        Assertions.assertFalse(existingSecondary1IpAddressId.equalsIgnoreCase(nic.ipConfigurations().get("secondary1").publicIpAddressId()));
-        Assertions.assertEquals(DeleteOptions.DELETE, nic.primaryIPConfiguration().innerModel().publicIpAddress().deleteOption());
-        Assertions.assertEquals(DeleteOptions.DELETE, nic.ipConfigurations().get("secondary1").innerModel().publicIpAddress().deleteOption());
-        Assertions.assertEquals(DeleteOptions.DELETE, nic.ipConfigurations().get("secondary2").innerModel().publicIpAddress().deleteOption());
-        Assertions.assertEquals(DeleteOptions.DELETE, nic.ipConfigurations().get("secondary3").innerModel().publicIpAddress().deleteOption());
+        Assertions.assertFalse(existingSecondary1IpAddressId
+            .equalsIgnoreCase(nic.ipConfigurations().get("secondary1").publicIpAddressId()));
+        Assertions.assertEquals(DeleteOptions.DELETE,
+            nic.primaryIPConfiguration().innerModel().publicIpAddress().deleteOption());
+        Assertions.assertEquals(DeleteOptions.DELETE,
+            nic.ipConfigurations().get("secondary1").innerModel().publicIpAddress().deleteOption());
+        Assertions.assertEquals(DeleteOptions.DELETE,
+            nic.ipConfigurations().get("secondary2").innerModel().publicIpAddress().deleteOption());
+        Assertions.assertEquals(DeleteOptions.DELETE,
+            nic.ipConfigurations().get("secondary3").innerModel().publicIpAddress().deleteOption());
     }
 
     private NatGatewayInner createNatGateway() {
         String natGatewayName = generateRandomResourceName("natgw", 10);
         return networkManager.serviceClient()
             .getNatGateways()
-            .createOrUpdate(
-                rgName,
-                natGatewayName,
-                new NatGatewayInner()
-                    .withLocation(Region.US_EAST.toString())
-                    .withSku(new NatGatewaySku().withName(NatGatewaySkuName.STANDARD))
-            );
+            .createOrUpdate(rgName, natGatewayName, new NatGatewayInner().withLocation(Region.US_EAST.toString())
+                .withSku(new NatGatewaySku().withName(NatGatewaySkuName.STANDARD)));
     }
 }

@@ -42,24 +42,14 @@ public class GenericResourceTest extends ResourceManagerTestProxyTestBase {
 
     protected String rgName = "";
     protected final Region region = Region.US_EAST;
-    private final String policyRule = "{\"if\":{\"not\":{\"field\":\"location\",\"in\":[\"southcentralus\",\"eastus\"]}},\"then\":{\"effect\":\"deny\"}}";
+    private final String policyRule
+        = "{\"if\":{\"not\":{\"field\":\"location\",\"in\":[\"southcentralus\",\"eastus\"]}},\"then\":{\"effect\":\"deny\"}}";
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -94,19 +84,18 @@ public class GenericResourceTest extends ResourceManagerTestProxyTestBase {
         pool = pool.refresh();
         Assertions.assertEquals(poolName, pool.name());
 
-        pool.update()
-            .withTag("keyInSpaceTest", "value")
-            .apply();
+        pool.update().withTag("keyInSpaceTest", "value").apply();
         Assertions.assertEquals(poolName, pool.name());
         Assertions.assertTrue(pool.tags().containsKey("keyInSpaceTest"));
 
         // status code 405
-//        Assertions.assertTrue(azureResourceManager.genericResources().checkExistenceById(poolId));
+        //        Assertions.assertTrue(azureResourceManager.genericResources().checkExistenceById(poolId));
 
         // policy assignment
         String policyName = generateRandomResourceName("policy", 15);
         String assignmentName = generateRandomResourceName("assign", 15);
-        PolicyDefinition definition = azureResourceManager.policyDefinitions().define(policyName)
+        PolicyDefinition definition = azureResourceManager.policyDefinitions()
+            .define(policyName)
             .withPolicyRuleJson(policyRule)
             .withPolicyType(PolicyType.CUSTOM)
             .withDisplayName(policyName)
@@ -126,8 +115,7 @@ public class GenericResourceTest extends ResourceManagerTestProxyTestBase {
         // tags
         Map<String, String> tags = new HashMap<>();
         tags.put("myTagKey", "myTagValue");
-        azureResourceManager.tagOperations()
-            .updateTags(pool, tags);
+        azureResourceManager.tagOperations().updateTags(pool, tags);
 
         pool = pool.refresh();
         Assertions.assertTrue(pool.tags().containsKey("myTagKey"));
@@ -142,14 +130,16 @@ public class GenericResourceTest extends ResourceManagerTestProxyTestBase {
         String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
         String vnetLinkName = generateRandomResourceName("pdvnl", 15);
 
-        Network network = azureResourceManager.networks().define(vnetName)
+        Network network = azureResourceManager.networks()
+            .define(vnetName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withAddressSpace("10.0.0.0/28")
             .withSubnet("subnetA", "10.0.0.0/29")
             .create();
 
-        PrivateDnsZone pdz = azureResourceManager.privateDnsZones().define(topLevelDomain)
+        PrivateDnsZone pdz = azureResourceManager.privateDnsZones()
+            .define(topLevelDomain)
             .withExistingResourceGroup(rgName)
             .defineVirtualNetworkLink(vnetLinkName)
             .disableAutoRegistration()
@@ -175,8 +165,7 @@ public class GenericResourceTest extends ResourceManagerTestProxyTestBase {
             .withMinTlsVersion(SupportedTlsVersions.ONE_ONE)
             .create();
 
-        SiteConfigResourceInner configInner = azureResourceManager
-            .webApps()
+        SiteConfigResourceInner configInner = azureResourceManager.webApps()
             .manager()
             .serviceClient()
             .getWebApps()
@@ -189,8 +178,7 @@ public class GenericResourceTest extends ResourceManagerTestProxyTestBase {
     private SqlElasticPool ensureElasticPoolWithSpace() {
         String sqlServerName = generateRandomResourceName("JMonitorSql-", 18);
 
-        SqlServer sqlServer = azureResourceManager
-            .sqlServers()
+        SqlServer sqlServer = azureResourceManager.sqlServers()
             .define(sqlServerName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
@@ -199,10 +187,7 @@ public class GenericResourceTest extends ResourceManagerTestProxyTestBase {
             .create();
 
         // white space in pool name
-        SqlElasticPool pool = sqlServer.elasticPools()
-            .define("name with space")
-            .withBasicPool()
-            .create();
+        SqlElasticPool pool = sqlServer.elasticPools().define("name with space").withBasicPool().create();
         return pool;
     }
 }

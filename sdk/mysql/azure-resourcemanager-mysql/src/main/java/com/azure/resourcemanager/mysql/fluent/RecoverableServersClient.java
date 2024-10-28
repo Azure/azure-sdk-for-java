@@ -37,6 +37,6 @@ public interface RecoverableServersClient {
      * @return a recoverable MySQL Server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecoverableServerResourceInner> getWithResponse(
-        String resourceGroupName, String serverName, Context context);
+    Response<RecoverableServerResourceInner> getWithResponse(String resourceGroupName, String serverName,
+        Context context);
 }

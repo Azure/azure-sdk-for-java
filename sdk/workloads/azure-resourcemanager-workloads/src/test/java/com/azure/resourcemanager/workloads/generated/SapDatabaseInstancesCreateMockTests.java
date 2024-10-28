@@ -32,43 +32,31 @@ public final class SapDatabaseInstancesCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"subnet\":\"vbmqzbqq\",\"databaseSid\":\"aj\",\"databaseType\":\"wxacevehj\",\"ipAddress\":\"yxoaf\",\"loadBalancerDetails\":{\"id\":\"qltfaey\"},\"vmDetails\":[],\"status\":\"Starting\",\"provisioningState\":\"Succeeded\",\"errors\":{}},\"location\":\"pghriypoqeyhl\",\"tags\":{\"qdsmexiit\":\"kprlpyznuc\",\"stgnl\":\"fuxtyasiibmiybnn\",\"vmqfoud\":\"hnmgixhcm\"},\"id\":\"rhc\",\"name\":\"yyprotwyp\",\"type\":\"ndm\"}";
+        String responseStr
+            = "{\"properties\":{\"subnet\":\"vbmqzbqq\",\"databaseSid\":\"aj\",\"databaseType\":\"wxacevehj\",\"ipAddress\":\"yxoaf\",\"loadBalancerDetails\":{\"id\":\"qltfaey\"},\"vmDetails\":[],\"status\":\"Starting\",\"provisioningState\":\"Succeeded\",\"errors\":{}},\"location\":\"pghriypoqeyhl\",\"tags\":{\"qdsmexiit\":\"kprlpyznuc\",\"stgnl\":\"fuxtyasiibmiybnn\",\"vmqfoud\":\"hnmgixhcm\"},\"id\":\"rhc\",\"name\":\"yyprotwyp\",\"type\":\"ndm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        WorkloadsManager manager =
-            WorkloadsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        WorkloadsManager manager = WorkloadsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SapDatabaseInstance response =
-            manager
-                .sapDatabaseInstances()
-                .define("fuojrngif")
-                .withRegion("phojeevyhy")
-                .withExistingSapVirtualInstance("ouau", "rjtloq")
-                .withTags(mapOf("mfg", "zfczbg"))
-                .create();
+        SapDatabaseInstance response = manager.sapDatabaseInstances()
+            .define("fuojrngif")
+            .withRegion("phojeevyhy")
+            .withExistingSapVirtualInstance("ouau", "rjtloq")
+            .withTags(mapOf("mfg", "zfczbg"))
+            .create();
 
         Assertions.assertEquals("pghriypoqeyhl", response.location());
         Assertions.assertEquals("kprlpyznuc", response.tags().get("qdsmexiit"));

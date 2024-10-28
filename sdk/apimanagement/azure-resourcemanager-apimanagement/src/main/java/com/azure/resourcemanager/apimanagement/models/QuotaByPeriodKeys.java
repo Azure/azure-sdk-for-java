@@ -27,8 +27,8 @@ public interface QuotaByPeriodKeys {
      * @return the value of the quota counter associated with the counter-key in the policy for the specific period in
      *     service instance along with {@link Response}.
      */
-    Response<QuotaCounterContract> getWithResponse(
-        String resourceGroupName, String serviceName, String quotaCounterKey, String quotaPeriodKey, Context context);
+    Response<QuotaCounterContract> getWithResponse(String resourceGroupName, String serviceName, String quotaCounterKey,
+        String quotaPeriodKey, Context context);
 
     /**
      * Gets the value of the quota counter associated with the counter-key in the policy for the specific period in
@@ -47,8 +47,8 @@ public interface QuotaByPeriodKeys {
      * @return the value of the quota counter associated with the counter-key in the policy for the specific period in
      *     service instance.
      */
-    QuotaCounterContract get(
-        String resourceGroupName, String serviceName, String quotaCounterKey, String quotaPeriodKey);
+    QuotaCounterContract get(String resourceGroupName, String serviceName, String quotaCounterKey,
+        String quotaPeriodKey);
 
     /**
      * Updates an existing quota counter value in the specified service instance.
@@ -67,13 +67,8 @@ public interface QuotaByPeriodKeys {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota counter details along with {@link Response}.
      */
-    Response<QuotaCounterContract> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String quotaCounterKey,
-        String quotaPeriodKey,
-        QuotaCounterValueUpdateContract parameters,
-        Context context);
+    Response<QuotaCounterContract> updateWithResponse(String resourceGroupName, String serviceName,
+        String quotaCounterKey, String quotaPeriodKey, QuotaCounterValueUpdateContract parameters, Context context);
 
     /**
      * Updates an existing quota counter value in the specified service instance.
@@ -91,10 +86,6 @@ public interface QuotaByPeriodKeys {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota counter details.
      */
-    QuotaCounterContract update(
-        String resourceGroupName,
-        String serviceName,
-        String quotaCounterKey,
-        String quotaPeriodKey,
-        QuotaCounterValueUpdateContract parameters);
+    QuotaCounterContract update(String resourceGroupName, String serviceName, String quotaCounterKey,
+        String quotaPeriodKey, QuotaCounterValueUpdateContract parameters);
 }

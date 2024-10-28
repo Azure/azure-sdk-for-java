@@ -18,9 +18,7 @@ import io.clientcore.core.json.implementation.jackson.core.io.ContentReference;
  * Instead if would make sense to explicitly implementing equality checks
  * using specific criteria caller desires.
  */
-public class JsonLocation
-    implements java.io.Serializable
-{
+public class JsonLocation implements java.io.Serializable {
     private static final long serialVersionUID = 2L; // in 2.13
 
     /**
@@ -36,8 +34,7 @@ public class JsonLocation
      * NOTE: before 2.9, Location was given as String "N/A"; with 2.9 it was
      * removed so that source should be indicated as "UNKNOWN".
      */
-    public final static JsonLocation NA = new JsonLocation(ContentReference.unknown(),
-            -1L, -1L, -1, -1);
+    public final static JsonLocation NA = new JsonLocation(ContentReference.unknown(), -1L, -1L, -1, -1);
 
     protected final long _totalBytes;
     protected final long _totalChars;
@@ -67,15 +64,11 @@ public class JsonLocation
     /**********************************************************************
      */
 
-    public JsonLocation(ContentReference contentRef, long totalChars,
-            int lineNr, int colNr)
-    {
+    public JsonLocation(ContentReference contentRef, long totalChars, int lineNr, int colNr) {
         this(contentRef, -1L, totalChars, lineNr, colNr);
     }
 
-    public JsonLocation(ContentReference contentRef, long totalBytes, long totalChars,
-            int lineNr, int columnNr)
-    {
+    public JsonLocation(ContentReference contentRef, long totalBytes, long totalChars, int lineNr, int columnNr) {
         // 14-Mar-2021, tatu: Defensive programming, but also for convenience...
         if (contentRef == null) {
             contentRef = ContentReference.unknown();
@@ -93,8 +86,7 @@ public class JsonLocation
     }
 
     @Deprecated // since 2.13
-    public JsonLocation(Object srcRef, long totalBytes, long totalChars,
-            int lineNr, int columnNr) {
+    public JsonLocation(Object srcRef, long totalBytes, long totalChars, int lineNr, int columnNr) {
         this(_wrap(srcRef), totalBytes, totalChars, lineNr, columnNr);
     }
 
@@ -150,7 +142,9 @@ public class JsonLocation
      *
      * @return Line number of the location (1-based), if available; {@code -1} if not.
      */
-    public int getLineNr() { return _lineNr; }
+    public int getLineNr() {
+        return _lineNr;
+    }
 
     /**
      * Access for getting column position of this location, if available.
@@ -158,19 +152,25 @@ public class JsonLocation
      *
      * @return Column position of the location (1-based), if available; {@code -1} if not.
      */
-    public int getColumnNr() { return _columnNr; }
+    public int getColumnNr() {
+        return _columnNr;
+    }
 
     /**
      * @return Character offset within underlying stream, reader or writer,
      *   if available; {@code -1} if not.
      */
-    public long getCharOffset() { return _totalChars; }
+    public long getCharOffset() {
+        return _totalChars;
+    }
 
     /**
      * @return Byte offset within underlying stream, reader or writer,
      *   if available; {@code -1} if not.
      */
-    public long getByteOffset() { return _totalBytes; }
+    public long getByteOffset() {
+        return _totalBytes;
+    }
 
     /**
      * Accessor for getting a textual description of source reference
@@ -208,8 +208,7 @@ public class JsonLocation
     }
 
     // @since 2.13
-    public StringBuilder appendOffsetDescription(StringBuilder sb)
-    {
+    public StringBuilder appendOffsetDescription(StringBuilder sb) {
         // 04-Apr-2021, tatu: [core#694] For binary content, we have no line
         //    number or column position indicators; try using what we do have
         //    (if anything)
@@ -259,8 +258,7 @@ public class JsonLocation
      */
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int hash = (_contentReference == null) ? 1 : 2;
         hash ^= _lineNr;
         hash += _columnNr;
@@ -270,15 +268,18 @@ public class JsonLocation
     }
 
     @Override
-    public boolean equals(Object other)
-    {
-        if (other == this) return true;
-        if (other == null) return false;
-        if (!(other instanceof JsonLocation)) return false;
+    public boolean equals(Object other) {
+        if (other == this)
+            return true;
+        if (other == null)
+            return false;
+        if (!(other instanceof JsonLocation))
+            return false;
         JsonLocation otherLoc = (JsonLocation) other;
 
         if (_contentReference == null) {
-            if (otherLoc._contentReference != null) return false;
+            if (otherLoc._contentReference != null)
+                return false;
         } else if (!_contentReference.equals(otherLoc._contentReference)) {
             return false;
         }
@@ -286,20 +287,13 @@ public class JsonLocation
         return (_lineNr == otherLoc._lineNr)
             && (_columnNr == otherLoc._columnNr)
             && (_totalChars == otherLoc._totalChars)
-            && (_totalBytes == otherLoc._totalBytes)
-            ;
+            && (_totalBytes == otherLoc._totalBytes);
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         final String srcDesc = sourceDescription();
-        StringBuilder sb = new StringBuilder(40 + srcDesc.length())
-                .append("[Source: ")
-                .append(srcDesc)
-                .append("; ");
-        return appendOffsetDescription(sb)
-                .append(']')
-                .toString();
+        StringBuilder sb = new StringBuilder(40 + srcDesc.length()).append("[Source: ").append(srcDesc).append("; ");
+        return appendOffsetDescription(sb).append(']').toString();
     }
 }

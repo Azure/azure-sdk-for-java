@@ -10,9 +10,8 @@ import com.azure.resourcemanager.networkcloud.fluent.models.StorageApplianceSkuP
 public final class StorageApplianceSkuPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageApplianceSkuProperties model =
-            BinaryData
-                .fromString("{\"capacityGB\":6206470742211540343,\"model\":\"geivsiykzkdncj\"}")
+        StorageApplianceSkuProperties model
+            = BinaryData.fromString("{\"capacityGB\":6206470742211540343,\"model\":\"geivsiykzkdncj\"}")
                 .toObject(StorageApplianceSkuProperties.class);
     }
 

@@ -20,37 +20,28 @@ public final class SqlPoolMaintenanceWindowsImpl implements SqlPoolMaintenanceWi
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public SqlPoolMaintenanceWindowsImpl(
-        SqlPoolMaintenanceWindowsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public SqlPoolMaintenanceWindowsImpl(SqlPoolMaintenanceWindowsClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<MaintenanceWindows> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        Context context) {
-        Response<MaintenanceWindowsInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, context);
+    public Response<MaintenanceWindows> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String maintenanceWindowName, Context context) {
+        Response<MaintenanceWindowsInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MaintenanceWindowsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public MaintenanceWindows get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowName) {
-        MaintenanceWindowsInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName);
+    public MaintenanceWindows get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowName) {
+        MaintenanceWindowsInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName);
         if (inner != null) {
             return new MaintenanceWindowsImpl(inner, this.manager());
         } else {
@@ -58,27 +49,16 @@ public final class SqlPoolMaintenanceWindowsImpl implements SqlPoolMaintenanceWi
         }
     }
 
-    public Response<Void> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters,
-        Context context) {
-        return this
-            .serviceClient()
-            .createOrUpdateWithResponse(
-                resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters, context);
+    public Response<Void> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowName, MaintenanceWindowsInner parameters, Context context) {
+        return this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName,
+                parameters, context);
     }
 
-    public void createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters) {
-        this
-            .serviceClient()
+    public void createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowName, MaintenanceWindowsInner parameters) {
+        this.serviceClient()
             .createOrUpdate(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters);
     }
 

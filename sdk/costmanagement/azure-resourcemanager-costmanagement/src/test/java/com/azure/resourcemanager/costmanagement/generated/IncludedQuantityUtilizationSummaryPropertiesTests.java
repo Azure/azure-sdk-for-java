@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class IncludedQuantityUtilizationSummaryPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IncludedQuantityUtilizationSummaryProperties model =
-            BinaryData
-                .fromString(
-                    "{\"armSkuName\":\"fcluyov\",\"benefitId\":\"nbkfezzxscy\",\"benefitOrderId\":\"zdgiruj\",\"benefitType\":\"IncludedQuantity\",\"usageDate\":\"2021-07-16T17:20:22Z\"}")
-                .toObject(IncludedQuantityUtilizationSummaryProperties.class);
+        IncludedQuantityUtilizationSummaryProperties model = BinaryData.fromString(
+            "{\"armSkuName\":\"fcluyov\",\"benefitId\":\"nbkfezzxscy\",\"benefitOrderId\":\"zdgiruj\",\"benefitType\":\"IncludedQuantity\",\"usageDate\":\"2021-07-16T17:20:22Z\"}")
+            .toObject(IncludedQuantityUtilizationSummaryProperties.class);
         Assertions.assertEquals(BenefitKind.INCLUDED_QUANTITY, model.benefitType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IncludedQuantityUtilizationSummaryProperties model =
-            new IncludedQuantityUtilizationSummaryProperties().withBenefitType(BenefitKind.INCLUDED_QUANTITY);
+        IncludedQuantityUtilizationSummaryProperties model
+            = new IncludedQuantityUtilizationSummaryProperties().withBenefitType(BenefitKind.INCLUDED_QUANTITY);
         model = BinaryData.fromObject(model).toObject(IncludedQuantityUtilizationSummaryProperties.class);
         Assertions.assertEquals(BenefitKind.INCLUDED_QUANTITY, model.benefitType());
     }

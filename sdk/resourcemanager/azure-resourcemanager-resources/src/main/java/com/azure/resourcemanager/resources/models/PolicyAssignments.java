@@ -15,12 +15,9 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
  * Entry point to policy assignment management API.
  */
 @Fluent
-public interface PolicyAssignments extends
-        SupportsListing<PolicyAssignment>,
-        SupportsListingByResourceGroup<PolicyAssignment>,
-        SupportsGettingById<PolicyAssignment>,
-        SupportsCreating<PolicyAssignment.DefinitionStages.Blank>,
-        SupportsDeletingById {
+public interface PolicyAssignments extends SupportsListing<PolicyAssignment>,
+    SupportsListingByResourceGroup<PolicyAssignment>, SupportsGettingById<PolicyAssignment>,
+    SupportsCreating<PolicyAssignment.DefinitionStages.Blank>, SupportsDeletingById {
     /**
      * List policy assignments of the resource.
      *

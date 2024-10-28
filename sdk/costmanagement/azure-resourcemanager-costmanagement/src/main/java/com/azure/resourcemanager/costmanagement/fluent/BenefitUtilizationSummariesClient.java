@@ -40,8 +40,8 @@ public interface BenefitUtilizationSummariesClient {
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BenefitUtilizationSummaryInner> listByBillingAccountId(
-        String billingAccountId, GrainParameter grainParameter, String filter, Context context);
+    PagedIterable<BenefitUtilizationSummaryInner> listByBillingAccountId(String billingAccountId,
+        GrainParameter grainParameter, String filter, Context context);
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
@@ -54,8 +54,8 @@ public interface BenefitUtilizationSummariesClient {
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BenefitUtilizationSummaryInner> listByBillingProfileId(
-        String billingAccountId, String billingProfileId);
+    PagedIterable<BenefitUtilizationSummaryInner> listByBillingProfileId(String billingAccountId,
+        String billingProfileId);
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
@@ -71,12 +71,8 @@ public interface BenefitUtilizationSummariesClient {
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BenefitUtilizationSummaryInner> listByBillingProfileId(
-        String billingAccountId,
-        String billingProfileId,
-        GrainParameter grainParameter,
-        String filter,
-        Context context);
+    PagedIterable<BenefitUtilizationSummaryInner> listByBillingProfileId(String billingAccountId,
+        String billingProfileId, GrainParameter grainParameter, String filter, Context context);
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
@@ -103,8 +99,8 @@ public interface BenefitUtilizationSummariesClient {
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BenefitUtilizationSummaryInner> listBySavingsPlanOrder(
-        String savingsPlanOrderId, String filter, GrainParameter grainParameter, Context context);
+    PagedIterable<BenefitUtilizationSummaryInner> listBySavingsPlanOrder(String savingsPlanOrderId, String filter,
+        GrainParameter grainParameter, Context context);
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
@@ -133,6 +129,6 @@ public interface BenefitUtilizationSummariesClient {
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BenefitUtilizationSummaryInner> listBySavingsPlanId(
-        String savingsPlanOrderId, String savingsPlanId, String filter, GrainParameter grainParameter, Context context);
+    PagedIterable<BenefitUtilizationSummaryInner> listBySavingsPlanId(String savingsPlanOrderId, String savingsPlanId,
+        String filter, GrainParameter grainParameter, Context context);
 }
