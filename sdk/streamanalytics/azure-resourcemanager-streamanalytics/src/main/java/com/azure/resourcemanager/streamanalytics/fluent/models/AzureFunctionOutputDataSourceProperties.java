@@ -5,44 +5,44 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties that are associated with an Azure Function output.
  */
 @Fluent
-public final class AzureFunctionOutputDataSourceProperties {
+public final class AzureFunctionOutputDataSourceProperties
+    implements JsonSerializable<AzureFunctionOutputDataSourceProperties> {
     /*
      * The name of your Azure Functions app.
      */
-    @JsonProperty(value = "functionAppName")
     private String functionAppName;
 
     /*
      * The name of the function in your Azure Functions app.
      */
-    @JsonProperty(value = "functionName")
     private String functionName;
 
     /*
-     * If you want to use an Azure Function from another subscription, you can do so by providing the key to access
-     * your function.
+     * If you want to use an Azure Function from another subscription, you can do so by providing the key to access your
+     * function.
      */
-    @JsonProperty(value = "apiKey")
     private String apiKey;
 
     /*
-     * A property that lets you set the maximum size for each output batch that's sent to your Azure function. The
-     * input unit is in bytes. By default, this value is 262,144 bytes (256 KB).
+     * A property that lets you set the maximum size for each output batch that's sent to your Azure function. The input
+     * unit is in bytes. By default, this value is 262,144 bytes (256 KB).
      */
-    @JsonProperty(value = "maxBatchSize")
     private Float maxBatchSize;
 
     /*
      * A property that lets you specify the maximum number of events in each batch that's sent to Azure Functions. The
      * default value is 100.
      */
-    @JsonProperty(value = "maxBatchCount")
     private Float maxBatchCount;
 
     /**
@@ -114,8 +114,8 @@ public final class AzureFunctionOutputDataSourceProperties {
     }
 
     /**
-     * Get the maxBatchSize property: A property that lets you set the maximum size for each output batch that's sent
-     * to your Azure function. The input unit is in bytes. By default, this value is 262,144 bytes (256 KB).
+     * Get the maxBatchSize property: A property that lets you set the maximum size for each output batch that's sent to
+     * your Azure function. The input unit is in bytes. By default, this value is 262,144 bytes (256 KB).
      * 
      * @return the maxBatchSize value.
      */
@@ -124,8 +124,8 @@ public final class AzureFunctionOutputDataSourceProperties {
     }
 
     /**
-     * Set the maxBatchSize property: A property that lets you set the maximum size for each output batch that's sent
-     * to your Azure function. The input unit is in bytes. By default, this value is 262,144 bytes (256 KB).
+     * Set the maxBatchSize property: A property that lets you set the maximum size for each output batch that's sent to
+     * your Azure function. The input unit is in bytes. By default, this value is 262,144 bytes (256 KB).
      * 
      * @param maxBatchSize the maxBatchSize value to set.
      * @return the AzureFunctionOutputDataSourceProperties object itself.
@@ -163,5 +163,56 @@ public final class AzureFunctionOutputDataSourceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("functionAppName", this.functionAppName);
+        jsonWriter.writeStringField("functionName", this.functionName);
+        jsonWriter.writeStringField("apiKey", this.apiKey);
+        jsonWriter.writeNumberField("maxBatchSize", this.maxBatchSize);
+        jsonWriter.writeNumberField("maxBatchCount", this.maxBatchCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFunctionOutputDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFunctionOutputDataSourceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureFunctionOutputDataSourceProperties.
+     */
+    public static AzureFunctionOutputDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFunctionOutputDataSourceProperties deserializedAzureFunctionOutputDataSourceProperties
+                = new AzureFunctionOutputDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("functionAppName".equals(fieldName)) {
+                    deserializedAzureFunctionOutputDataSourceProperties.functionAppName = reader.getString();
+                } else if ("functionName".equals(fieldName)) {
+                    deserializedAzureFunctionOutputDataSourceProperties.functionName = reader.getString();
+                } else if ("apiKey".equals(fieldName)) {
+                    deserializedAzureFunctionOutputDataSourceProperties.apiKey = reader.getString();
+                } else if ("maxBatchSize".equals(fieldName)) {
+                    deserializedAzureFunctionOutputDataSourceProperties.maxBatchSize
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("maxBatchCount".equals(fieldName)) {
+                    deserializedAzureFunctionOutputDataSourceProperties.maxBatchCount
+                        = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFunctionOutputDataSourceProperties;
+        });
     }
 }
