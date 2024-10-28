@@ -37,11 +37,9 @@ public class PaloAltoNetworksNgfwManagerTests extends TestProxyTestBase {
 
         resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile)
-            .withDefaultSubscription();
+            .authenticate(credential, profile).withDefaultSubscription();
 
-        paloAltoNetworksNgfwManager = PaloAltoNetworksNgfwManager
-            .configure()
+        paloAltoNetworksNgfwManager = PaloAltoNetworksNgfwManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
