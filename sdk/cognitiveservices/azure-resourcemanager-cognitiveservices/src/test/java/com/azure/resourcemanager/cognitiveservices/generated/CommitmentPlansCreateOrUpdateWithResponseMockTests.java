@@ -6,11 +6,9 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.CommitmentPlanInner;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPeriod;
@@ -19,39 +17,22 @@ import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlanProperti
 import com.azure.resourcemanager.cognitiveservices.models.HostingModel;
 import com.azure.resourcemanager.cognitiveservices.models.Sku;
 import com.azure.resourcemanager.cognitiveservices.models.SkuTier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class CommitmentPlansCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"etag\":\"d\",\"kind\":\"fmjnnawtqa\",\"sku\":{\"name\":\"xuckpggqoweyir\",\"tier\":\"Basic\",\"size\":\"sn\",\"family\":\"fl\",\"capacity\":1354932365},\"tags\":{\"qxpxiwfcngjsaa\":\"zruwn\",\"kv\":\"iixtmkzj\",\"ra\":\"irhgfgrwsdp\",\"ctctbrxkjz\":\"zvzbglbyv\"},\"location\":\"gxffmshkwf\",\"properties\":{\"provisioningState\":\"Moving\",\"commitmentPlanGuid\":\"xwopdbydpizqa\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"pxbiygnugjknfs\",\"current\":{\"tier\":\"ttuxuuyilflqoiqu\",\"count\":1236082259,\"quota\":{\"quantity\":9110473532568054590,\"unit\":\"hvsujztc\"},\"startDate\":\"tqjtwhauu\",\"endDate\":\"prnjletlxsmr\"},\"autoRenew\":false,\"next\":{\"tier\":\"ifamowazi\",\"count\":1993625091,\"quota\":{\"quantity\":2469643417462156405,\"unit\":\"dvpiwh\"},\"startDate\":\"szdtmaajquh\",\"endDate\":\"ylr\"},\"last\":{\"tier\":\"ty\",\"count\":406894378,\"quota\":{\"quantity\":351680433091190997,\"unit\":\"ps\"},\"startDate\":\"hckfkyjpmspbps\",\"endDate\":\"fppyogtieyujtvcz\"},\"provisioningIssues\":[\"yxrxmunj\"]},\"id\":\"xvglnkvxlxp\",\"name\":\"glqivbgkcv\",\"type\":\"hpzvuqdflvoniyp\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         CognitiveServicesManager manager = CognitiveServicesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
@@ -95,6 +76,7 @@ public final class CommitmentPlansCreateOrUpdateWithResponseMockTests {
         Assertions.assertEquals(1993625091, response.properties().next().count());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

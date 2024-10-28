@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-/** Samples for CommitmentPlans CreateOrUpdateAssociation. */
+/**
+ * Samples for CommitmentPlans CreateOrUpdateAssociation.
+ */
 public final class CommitmentPlansCreateOrUpdateAssociationSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/CreateSharedCommitmentPlanAssociation.json
+     * x-ms-original-file:
+     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/
+     * CreateSharedCommitmentPlanAssociation.json
      */
     /**
      * Sample code: PutCommitmentPlan.
-     *
+     * 
      * @param manager Entry point to CognitiveServicesManager.
      */
     public static void putCommitmentPlan(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager
-            .commitmentPlans()
+        manager.commitmentPlans()
             .defineAssociation("commitmentPlanAssociationName")
             .withExistingCommitmentPlan("resourceGroupName", "commitmentPlanName")
             .withAccountId(
