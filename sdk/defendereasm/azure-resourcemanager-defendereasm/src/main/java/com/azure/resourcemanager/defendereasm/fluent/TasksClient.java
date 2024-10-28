@@ -25,8 +25,8 @@ public interface TasksClient {
      * @return task details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TaskResourceInner> getByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, String taskId, Context context);
+    Response<TaskResourceInner> getByWorkspaceWithResponse(String resourceGroupName, String workspaceName,
+        String taskId, Context context);
 
     /**
      * Returns a task in the given workspace.

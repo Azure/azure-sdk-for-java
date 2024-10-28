@@ -16,8 +16,7 @@ public final class KustoPoolPrivateLinkResourcesImpl implements KustoPoolPrivate
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    KustoPoolPrivateLinkResourcesImpl(
-        KustoPoolPrivateLinkResourcesInner innerObject,
+    KustoPoolPrivateLinkResourcesImpl(KustoPoolPrivateLinkResourcesInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

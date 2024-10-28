@@ -31,7 +31,8 @@ public final class ApplicationTypeVersionResourceListTests {
                     "pclhocohslk", "hl", "ffeii"))
                 .withAppPackageUrl("sllr"),
             new ApplicationTypeVersionResourceInner().withLocation("ajdeyeamdphaga")
-                .withTags(mapOf("ow", "uxwgipwho", "injep", "gshwankixz")).withAppPackageUrl("kpoc"),
+                .withTags(mapOf("ow", "uxwgipwho", "injep", "gshwankixz"))
+                .withAppPackageUrl("kpoc"),
             new ApplicationTypeVersionResourceInner().withLocation("tcxsenhwlrs")
                 .withTags(mapOf("qdqgbi", "zpwv", "fcivfsnkym", "ylihkaetckt", "jf", "ctq", "fuwutttxf", "ebrjcxe"))
                 .withAppPackageUrl("qhgyxzkonocukok"),

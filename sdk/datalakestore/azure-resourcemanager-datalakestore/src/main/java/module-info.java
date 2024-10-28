@@ -10,10 +10,6 @@ module com.azure.resourcemanager.datalakestore {
     exports com.azure.resourcemanager.datalakestore.fluent.models;
     exports com.azure.resourcemanager.datalakestore.models;
 
-    opens com.azure.resourcemanager.datalakestore.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.datalakestore.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.datalakestore.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.datalakestore.models to com.azure.core;
 }

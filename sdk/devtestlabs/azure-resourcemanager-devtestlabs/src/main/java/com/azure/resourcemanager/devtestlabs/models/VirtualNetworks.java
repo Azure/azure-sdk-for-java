@@ -37,14 +37,8 @@ public interface VirtualNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<VirtualNetwork> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<VirtualNetwork> list(String resourceGroupName, String labName, String expand, String filter,
+        Integer top, String orderby, Context context);
 
     /**
      * Get virtual network.
@@ -59,8 +53,8 @@ public interface VirtualNetworks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual network along with {@link Response}.
      */
-    Response<VirtualNetwork> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<VirtualNetwork> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context);
 
     /**
      * Get virtual network.

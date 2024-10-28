@@ -30,9 +30,11 @@ public final class SimplePrivateEndpointConnectionTests {
     public void testSerialize() throws Exception {
         SimplePrivateEndpointConnection model = new SimplePrivateEndpointConnection()
             .withPrivateEndpoint(new PrivateEndpointProperty().withId("pazlobcufpdz"))
-            .withGroupIds(Arrays.asList("t", "qqjnqgl")).withPrivateLinkServiceConnectionState(
+            .withGroupIds(Arrays.asList("t", "qqjnqgl"))
+            .withPrivateLinkServiceConnectionState(
                 new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                    .withDescription("foooj").withActionsRequired("ifsqesaagdfmg"));
+                    .withDescription("foooj")
+                    .withActionsRequired("ifsqesaagdfmg"));
         model = BinaryData.fromObject(model).toObject(SimplePrivateEndpointConnection.class);
         Assertions.assertEquals("pazlobcufpdz", model.privateEndpoint().id());
         Assertions.assertEquals("t", model.groupIds().get(0));

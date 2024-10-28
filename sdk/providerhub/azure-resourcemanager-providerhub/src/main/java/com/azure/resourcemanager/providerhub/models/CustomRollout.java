@@ -45,17 +45,16 @@ public interface CustomRollout {
     CustomRolloutInner innerModel();
 
     /** The entirety of the CustomRollout definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
+
     /** The CustomRollout definition stages. */
     interface DefinitionStages {
         /** The first stage of the CustomRollout definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the CustomRollout definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -66,6 +65,7 @@ public interface CustomRollout {
              */
             WithProperties withExistingProviderRegistration(String providerNamespace);
         }
+
         /** The stage of the CustomRollout definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -76,6 +76,7 @@ public interface CustomRollout {
              */
             WithCreate withProperties(CustomRolloutProperties properties);
         }
+
         /**
          * The stage of the CustomRollout definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
@@ -97,6 +98,7 @@ public interface CustomRollout {
             CustomRollout create(Context context);
         }
     }
+
     /**
      * Begins update for the CustomRollout resource.
      *
@@ -121,6 +123,7 @@ public interface CustomRollout {
          */
         CustomRollout apply(Context context);
     }
+
     /** The CustomRollout update stages. */
     interface UpdateStages {
         /** The stage of the CustomRollout update allowing to specify properties. */
@@ -134,6 +137,7 @@ public interface CustomRollout {
             Update withProperties(CustomRolloutProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

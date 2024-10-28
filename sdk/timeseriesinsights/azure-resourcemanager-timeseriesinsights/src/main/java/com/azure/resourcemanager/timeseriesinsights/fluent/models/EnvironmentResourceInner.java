@@ -28,8 +28,7 @@ import java.util.Map;
 @JsonTypeName("EnvironmentResource")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Gen1", value = Gen1EnvironmentResource.class),
-    @JsonSubTypes.Type(name = "Gen2", value = Gen2EnvironmentResource.class)
-})
+    @JsonSubTypes.Type(name = "Gen2", value = Gen2EnvironmentResource.class) })
 @Fluent
 public class EnvironmentResourceInner extends Resource {
     /*
@@ -86,9 +85,8 @@ public class EnvironmentResourceInner extends Resource {
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model EnvironmentResourceInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sku in model EnvironmentResourceInner"));
         } else {
             sku().validate();
         }

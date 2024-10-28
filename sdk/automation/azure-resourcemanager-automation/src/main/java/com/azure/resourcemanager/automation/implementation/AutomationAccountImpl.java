@@ -97,12 +97,9 @@ public final class AutomationAccountImpl
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -154,22 +151,18 @@ public final class AutomationAccountImpl
     }
 
     public AutomationAccount create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutomationAccounts()
-                .createOrUpdateWithResponse(resourceGroupName, automationAccountName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutomationAccounts()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, createParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AutomationAccount create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutomationAccounts()
-                .createOrUpdateWithResponse(resourceGroupName, automationAccountName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutomationAccounts()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, createParameters, context)
+            .getValue();
         return this;
     }
 
@@ -186,50 +179,42 @@ public final class AutomationAccountImpl
     }
 
     public AutomationAccount apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutomationAccounts()
-                .updateWithResponse(resourceGroupName, automationAccountName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutomationAccounts()
+            .updateWithResponse(resourceGroupName, automationAccountName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AutomationAccount apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutomationAccounts()
-                .updateWithResponse(resourceGroupName, automationAccountName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutomationAccounts()
+            .updateWithResponse(resourceGroupName, automationAccountName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    AutomationAccountImpl(
-        AutomationAccountInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    AutomationAccountImpl(AutomationAccountInner innerObject,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automationAccounts");
     }
 
     public AutomationAccount refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutomationAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, automationAccountName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutomationAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, automationAccountName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AutomationAccount refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutomationAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, automationAccountName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutomationAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, automationAccountName, context)
+            .getValue();
         return this;
     }
 

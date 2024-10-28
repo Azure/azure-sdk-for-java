@@ -127,7 +127,7 @@ Please refer to the service documentation for a conceptual discussion of [docume
 Executes an asynchronous batch translation request. The method requires an Azure Blob storage account with storage containers for your source and translated documents.
 
 ```java startDocumentTranslation
-SyncPoller<TranslationStatus, Void> response
+SyncPoller<TranslationStatus, TranslationStatus> response
     = documentTranslationClient
         .beginStartTranslation(
             new StartTranslationDetails(Arrays.asList(new BatchRequest(
@@ -173,7 +173,7 @@ DocumentTranslationClient documentTranslationClient = new DocumentTranslationCli
     .credential(new AzureKeyCredential("{key}"))
     .buildClient();
        
-SyncPoller<TranslationStatus, Void> response
+SyncPoller<TranslationStatus, TranslationStatus> response
     = documentTranslationClient
         .beginStartTranslation(
             new StartTranslationDetails(Arrays.asList(new BatchRequest(
@@ -207,7 +207,7 @@ Please refer to the service documentation for a conceptual discussion of [cancel
 Gets a list and the status of all translation jobs submitted by the user (associated with the resource).
 
 ```java GetTranslationsStatus
-SyncPoller<TranslationStatus, Void> response = documentTranslationClient
+SyncPoller<TranslationStatus, TranslationStatus> response = documentTranslationClient
         .beginStartTranslation(
                 new StartTranslationDetails(Arrays.asList(new BatchRequest(
                         new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")
@@ -244,7 +244,7 @@ Please refer to the service documentation for a conceptual discussion of [getTra
 Request a summary of the status for a specific translation job. The response includes the overall job status and the status for documents that are being translated as part of that job.
 
 ```java GetTranslationStatus
-SyncPoller<TranslationStatus, Void> response
+SyncPoller<TranslationStatus, TranslationStatus> response
     = documentTranslationClient
         .beginStartTranslation(
             new StartTranslationDetails(Arrays.asList(new BatchRequest(
@@ -278,7 +278,7 @@ Please refer to the service documentation for a conceptual discussion of [getTra
 Gets the status for all documents in a translation job.
 
 ```java GetDocumentsStatus
-SyncPoller<TranslationStatus, Void> response = documentTranslationClient
+SyncPoller<TranslationStatus, TranslationStatus> response = documentTranslationClient
         .beginStartTranslation(
                 new StartTranslationDetails(Arrays.asList(new BatchRequest(
                         new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")
@@ -327,7 +327,7 @@ Please refer to the service documentation for a conceptual discussion of [getDoc
 Request the status for a specific document in a job.
 
 ```java GetDocumentStatus
-SyncPoller<TranslationStatus, Void> response = documentTranslationClient
+SyncPoller<TranslationStatus, TranslationStatus> response = documentTranslationClient
         .beginStartTranslation(
                 new StartTranslationDetails(Arrays.asList(new BatchRequest(
                         new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")

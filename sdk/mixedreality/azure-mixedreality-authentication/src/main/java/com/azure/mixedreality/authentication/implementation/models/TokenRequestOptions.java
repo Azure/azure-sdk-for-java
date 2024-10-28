@@ -21,7 +21,8 @@ public final class TokenRequestOptions implements JsonSerializable<TokenRequestO
     private String clientRequestId;
 
     /** Creates an instance of TokenRequestOptions class. */
-    public TokenRequestOptions() {}
+    public TokenRequestOptions() {
+    }
 
     /**
      * Get the clientRequestId property: The client request correlation vector, which should be set to a new value for
@@ -61,21 +62,20 @@ public final class TokenRequestOptions implements JsonSerializable<TokenRequestO
      * @throws IOException If an error occurs while reading the TokenRequestOptions.
      */
     public static TokenRequestOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    TokenRequestOptions deserializedTokenRequestOptions = new TokenRequestOptions();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            TokenRequestOptions deserializedTokenRequestOptions = new TokenRequestOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("clientRequestId".equals(fieldName)) {
-                            deserializedTokenRequestOptions.clientRequestId = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("clientRequestId".equals(fieldName)) {
+                    deserializedTokenRequestOptions.clientRequestId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedTokenRequestOptions;
-                });
+            return deserializedTokenRequestOptions;
+        });
     }
 }

@@ -35,8 +35,8 @@ public class ResourceTypeExtensionOptions {
      * @param resourceCreationBegin the resourceCreationBegin value to set.
      * @return the ResourceTypeExtensionOptions object itself.
      */
-    public ResourceTypeExtensionOptions withResourceCreationBegin(
-        ResourceTypeExtensionOptionsResourceCreationBegin resourceCreationBegin) {
+    public ResourceTypeExtensionOptions
+        withResourceCreationBegin(ResourceTypeExtensionOptionsResourceCreationBegin resourceCreationBegin) {
         this.resourceCreationBegin = resourceCreationBegin;
         return this;
     }

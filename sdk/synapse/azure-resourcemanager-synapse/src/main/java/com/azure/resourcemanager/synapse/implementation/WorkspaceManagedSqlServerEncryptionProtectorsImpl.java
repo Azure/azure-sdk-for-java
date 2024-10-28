@@ -17,8 +17,8 @@ import com.azure.resourcemanager.synapse.models.WorkspaceManagedSqlServerEncrypt
 
 public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
     implements WorkspaceManagedSqlServerEncryptionProtectors {
-    private static final ClientLogger LOGGER =
-        new ClientLogger(WorkspaceManagedSqlServerEncryptionProtectorsImpl.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(WorkspaceManagedSqlServerEncryptionProtectorsImpl.class);
 
     private final WorkspaceManagedSqlServerEncryptionProtectorsClient innerClient;
 
@@ -31,28 +31,22 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
         this.serviceManager = serviceManager;
     }
 
-    public Response<EncryptionProtector> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        EncryptionProtectorName encryptionProtectorName,
-        Context context) {
-        Response<EncryptionProtectorInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, encryptionProtectorName, context);
+    public Response<EncryptionProtector> getWithResponse(String resourceGroupName, String workspaceName,
+        EncryptionProtectorName encryptionProtectorName, Context context) {
+        Response<EncryptionProtectorInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, encryptionProtectorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EncryptionProtectorImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public EncryptionProtector get(
-        String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName) {
-        EncryptionProtectorInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, encryptionProtectorName);
+    public EncryptionProtector get(String resourceGroupName, String workspaceName,
+        EncryptionProtectorName encryptionProtectorName) {
+        EncryptionProtectorInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, encryptionProtectorName);
         if (inner != null) {
             return new EncryptionProtectorImpl(inner, this.manager());
         } else {
@@ -66,81 +60,60 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
     }
 
     public PagedIterable<EncryptionProtector> list(String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<EncryptionProtectorInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, context);
+        PagedIterable<EncryptionProtectorInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, context);
         return Utils.mapPage(inner, inner1 -> new EncryptionProtectorImpl(inner1, this.manager()));
     }
 
-    public void revalidate(
-        String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName) {
+    public void revalidate(String resourceGroupName, String workspaceName,
+        EncryptionProtectorName encryptionProtectorName) {
         this.serviceClient().revalidate(resourceGroupName, workspaceName, encryptionProtectorName);
     }
 
-    public void revalidate(
-        String resourceGroupName,
-        String workspaceName,
-        EncryptionProtectorName encryptionProtectorName,
-        Context context) {
+    public void revalidate(String resourceGroupName, String workspaceName,
+        EncryptionProtectorName encryptionProtectorName, Context context) {
         this.serviceClient().revalidate(resourceGroupName, workspaceName, encryptionProtectorName, context);
     }
 
     public EncryptionProtector getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String encryptionProtectorNameLocal = Utils.getValueFromIdByName(id, "encryptionProtector");
         if (encryptionProtectorNameLocal == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'encryptionProtector'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'encryptionProtector'.", id)));
         }
-        EncryptionProtectorName encryptionProtectorName =
-            EncryptionProtectorName.fromString(encryptionProtectorNameLocal);
+        EncryptionProtectorName encryptionProtectorName
+            = EncryptionProtectorName.fromString(encryptionProtectorNameLocal);
         return this.getWithResponse(resourceGroupName, workspaceName, encryptionProtectorName, Context.NONE).getValue();
     }
 
     public Response<EncryptionProtector> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String encryptionProtectorNameLocal = Utils.getValueFromIdByName(id, "encryptionProtector");
         if (encryptionProtectorNameLocal == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'encryptionProtector'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'encryptionProtector'.", id)));
         }
-        EncryptionProtectorName encryptionProtectorName =
-            EncryptionProtectorName.fromString(encryptionProtectorNameLocal);
+        EncryptionProtectorName encryptionProtectorName
+            = EncryptionProtectorName.fromString(encryptionProtectorNameLocal);
         return this.getWithResponse(resourceGroupName, workspaceName, encryptionProtectorName, context);
     }
 

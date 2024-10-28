@@ -82,8 +82,8 @@ public final class SingleScopeBenefitRecommendationProperties extends BenefitRec
 
     /** {@inheritDoc} */
     @Override
-    public SingleScopeBenefitRecommendationProperties withRecommendationDetails(
-        AllSavingsBenefitDetails recommendationDetails) {
+    public SingleScopeBenefitRecommendationProperties
+        withRecommendationDetails(AllSavingsBenefitDetails recommendationDetails) {
         super.withRecommendationDetails(recommendationDetails);
         return this;
     }

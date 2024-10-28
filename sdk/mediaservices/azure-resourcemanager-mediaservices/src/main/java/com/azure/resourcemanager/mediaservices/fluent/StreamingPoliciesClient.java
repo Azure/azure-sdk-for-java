@@ -46,8 +46,8 @@ public interface StreamingPoliciesClient {
      * @return a collection of StreamingPolicy items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StreamingPolicyInner> list(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context);
+    PagedIterable<StreamingPolicyInner> list(String resourceGroupName, String accountName, String filter, Integer top,
+        String orderby, Context context);
 
     /**
      * Get a Streaming Policy
@@ -64,8 +64,8 @@ public interface StreamingPoliciesClient {
      * @return the details of a Streaming Policy in the Media Services account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StreamingPolicyInner> getWithResponse(
-        String resourceGroupName, String accountName, String streamingPolicyName, Context context);
+    Response<StreamingPolicyInner> getWithResponse(String resourceGroupName, String accountName,
+        String streamingPolicyName, Context context);
 
     /**
      * Get a Streaming Policy
@@ -99,12 +99,8 @@ public interface StreamingPoliciesClient {
      * @return a Streaming Policy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StreamingPolicyInner> createWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String streamingPolicyName,
-        StreamingPolicyInner parameters,
-        Context context);
+    Response<StreamingPolicyInner> createWithResponse(String resourceGroupName, String accountName,
+        String streamingPolicyName, StreamingPolicyInner parameters, Context context);
 
     /**
      * Create a Streaming Policy
@@ -121,8 +117,8 @@ public interface StreamingPoliciesClient {
      * @return a Streaming Policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    StreamingPolicyInner create(
-        String resourceGroupName, String accountName, String streamingPolicyName, StreamingPolicyInner parameters);
+    StreamingPolicyInner create(String resourceGroupName, String accountName, String streamingPolicyName,
+        StreamingPolicyInner parameters);
 
     /**
      * Delete a Streaming Policy
@@ -139,8 +135,8 @@ public interface StreamingPoliciesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String streamingPolicyName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String streamingPolicyName,
+        Context context);
 
     /**
      * Delete a Streaming Policy

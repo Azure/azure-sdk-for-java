@@ -10,10 +10,6 @@ module com.azure.resourcemanager.storagepool {
     exports com.azure.resourcemanager.storagepool.fluent.models;
     exports com.azure.resourcemanager.storagepool.models;
 
-    opens com.azure.resourcemanager.storagepool.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.storagepool.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.storagepool.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.storagepool.models to com.azure.core;
 }

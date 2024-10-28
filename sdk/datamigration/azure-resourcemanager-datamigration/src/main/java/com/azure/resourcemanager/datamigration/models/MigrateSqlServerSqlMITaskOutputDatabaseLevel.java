@@ -5,72 +5,88 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The MigrateSqlServerSqlMITaskOutputDatabaseLevel model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("DatabaseLevelOutput")
+/**
+ * The MigrateSqlServerSqlMITaskOutputDatabaseLevel model.
+ */
 @Immutable
 public final class MigrateSqlServerSqlMITaskOutputDatabaseLevel extends MigrateSqlServerSqlMITaskOutput {
     /*
+     * Result type
+     */
+    private String resultType = "DatabaseLevelOutput";
+
+    /*
      * Name of the database
      */
-    @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
     /*
      * Size of the database in megabytes
      */
-    @JsonProperty(value = "sizeMB", access = JsonProperty.Access.WRITE_ONLY)
     private Double sizeMB;
 
     /*
      * Current state of migration
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationState state;
 
     /*
      * Current stage of migration
      */
-    @JsonProperty(value = "stage", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseMigrationStage stage;
 
     /*
      * Migration start time
      */
-    @JsonProperty(value = "startedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startedOn;
 
     /*
      * Migration end time
      */
-    @JsonProperty(value = "endedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endedOn;
 
     /*
      * Migration progress message
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Migration exceptions and warnings
      */
-    @JsonProperty(value = "exceptionsAndWarnings", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> exceptionsAndWarnings;
 
-    /** Creates an instance of MigrateSqlServerSqlMITaskOutputDatabaseLevel class. */
+    /*
+     * Result identifier
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MigrateSqlServerSqlMITaskOutputDatabaseLevel class.
+     */
     public MigrateSqlServerSqlMITaskOutputDatabaseLevel() {
     }
 
     /**
+     * Get the resultType property: Result type.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the databaseName property: Name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -79,7 +95,7 @@ public final class MigrateSqlServerSqlMITaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the sizeMB property: Size of the database in megabytes.
-     *
+     * 
      * @return the sizeMB value.
      */
     public Double sizeMB() {
@@ -88,7 +104,7 @@ public final class MigrateSqlServerSqlMITaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the state property: Current state of migration.
-     *
+     * 
      * @return the state value.
      */
     public MigrationState state() {
@@ -97,7 +113,7 @@ public final class MigrateSqlServerSqlMITaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the stage property: Current stage of migration.
-     *
+     * 
      * @return the stage value.
      */
     public DatabaseMigrationStage stage() {
@@ -106,7 +122,7 @@ public final class MigrateSqlServerSqlMITaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the startedOn property: Migration start time.
-     *
+     * 
      * @return the startedOn value.
      */
     public OffsetDateTime startedOn() {
@@ -115,7 +131,7 @@ public final class MigrateSqlServerSqlMITaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the endedOn property: Migration end time.
-     *
+     * 
      * @return the endedOn value.
      */
     public OffsetDateTime endedOn() {
@@ -124,7 +140,7 @@ public final class MigrateSqlServerSqlMITaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the message property: Migration progress message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -133,7 +149,7 @@ public final class MigrateSqlServerSqlMITaskOutputDatabaseLevel extends MigrateS
 
     /**
      * Get the exceptionsAndWarnings property: Migration exceptions and warnings.
-     *
+     * 
      * @return the exceptionsAndWarnings value.
      */
     public List<ReportableException> exceptionsAndWarnings() {
@@ -141,15 +157,87 @@ public final class MigrateSqlServerSqlMITaskOutputDatabaseLevel extends MigrateS
     }
 
     /**
+     * Get the id property: Result identifier.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (exceptionsAndWarnings() != null) {
             exceptionsAndWarnings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateSqlServerSqlMITaskOutputDatabaseLevel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateSqlServerSqlMITaskOutputDatabaseLevel if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrateSqlServerSqlMITaskOutputDatabaseLevel.
+     */
+    public static MigrateSqlServerSqlMITaskOutputDatabaseLevel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateSqlServerSqlMITaskOutputDatabaseLevel deserializedMigrateSqlServerSqlMITaskOutputDatabaseLevel
+                = new MigrateSqlServerSqlMITaskOutputDatabaseLevel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputDatabaseLevel.id = reader.getString();
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputDatabaseLevel.resultType = reader.getString();
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputDatabaseLevel.databaseName = reader.getString();
+                } else if ("sizeMB".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputDatabaseLevel.sizeMB
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("state".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputDatabaseLevel.state
+                        = MigrationState.fromString(reader.getString());
+                } else if ("stage".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputDatabaseLevel.stage
+                        = DatabaseMigrationStage.fromString(reader.getString());
+                } else if ("startedOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputDatabaseLevel.startedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endedOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputDatabaseLevel.endedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("message".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputDatabaseLevel.message = reader.getString();
+                } else if ("exceptionsAndWarnings".equals(fieldName)) {
+                    List<ReportableException> exceptionsAndWarnings
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedMigrateSqlServerSqlMITaskOutputDatabaseLevel.exceptionsAndWarnings
+                        = exceptionsAndWarnings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateSqlServerSqlMITaskOutputDatabaseLevel;
+        });
     }
 }

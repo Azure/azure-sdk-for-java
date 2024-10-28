@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"qglhq\",\"isDataAction\":false,\"display\":{\"provider\":\"oo\",\"resource\":\"wifsq\",\"operation\":\"aagdfmg\",\"description\":\"lhjxr\"}}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"qglhq\",\"isDataAction\":false,\"display\":{\"provider\":\"oo\",\"resource\":\"wifsq\",\"operation\":\"aagdfmg\",\"description\":\"lhjxr\"}}")
+            .toObject(OperationInner.class);
         Assertions.assertEquals("qglhq", model.name());
         Assertions.assertEquals(false, model.isDataAction());
         Assertions.assertEquals("oo", model.display().provider());
@@ -27,16 +25,12 @@ public final class OperationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationInner model =
-            new OperationInner()
-                .withName("qglhq")
-                .withIsDataAction(false)
-                .withDisplay(
-                    new OperationDisplay()
-                        .withProvider("oo")
-                        .withResource("wifsq")
-                        .withOperation("aagdfmg")
-                        .withDescription("lhjxr"));
+        OperationInner model = new OperationInner().withName("qglhq")
+            .withIsDataAction(false)
+            .withDisplay(new OperationDisplay().withProvider("oo")
+                .withResource("wifsq")
+                .withOperation("aagdfmg")
+                .withDescription("lhjxr"));
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
         Assertions.assertEquals("qglhq", model.name());
         Assertions.assertEquals(false, model.isDataAction());

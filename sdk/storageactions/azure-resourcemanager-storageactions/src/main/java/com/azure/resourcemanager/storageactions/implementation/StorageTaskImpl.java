@@ -89,14 +89,16 @@ public final class StorageTaskImpl implements StorageTask, StorageTask.Definitio
     }
 
     public StorageTask create() {
-        this.innerObject = serviceManager.serviceClient().getStorageTasks().create(resourceGroupName, storageTaskName,
-            this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageTasks()
+            .create(resourceGroupName, storageTaskName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public StorageTask create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getStorageTasks().create(resourceGroupName, storageTaskName,
-            this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageTasks()
+            .create(resourceGroupName, storageTaskName, this.innerModel(), context);
         return this;
     }
 
@@ -112,14 +114,16 @@ public final class StorageTaskImpl implements StorageTask, StorageTask.Definitio
     }
 
     public StorageTask apply() {
-        this.innerObject = serviceManager.serviceClient().getStorageTasks().update(resourceGroupName, storageTaskName,
-            updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageTasks()
+            .update(resourceGroupName, storageTaskName, updateParameters, Context.NONE);
         return this;
     }
 
     public StorageTask apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getStorageTasks().update(resourceGroupName, storageTaskName,
-            updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageTasks()
+            .update(resourceGroupName, storageTaskName, updateParameters, context);
         return this;
     }
 
@@ -132,14 +136,18 @@ public final class StorageTaskImpl implements StorageTask, StorageTask.Definitio
     }
 
     public StorageTask refresh() {
-        this.innerObject = serviceManager.serviceClient().getStorageTasks()
-            .getByResourceGroupWithResponse(resourceGroupName, storageTaskName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageTasks()
+            .getByResourceGroupWithResponse(resourceGroupName, storageTaskName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public StorageTask refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getStorageTasks()
-            .getByResourceGroupWithResponse(resourceGroupName, storageTaskName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getStorageTasks()
+            .getByResourceGroupWithResponse(resourceGroupName, storageTaskName, context)
+            .getValue();
         return this;
     }
 

@@ -20,12 +20,8 @@ public final class BackendsUpdateResponse extends ResponseBase<BackendsUpdateHea
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public BackendsUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        BackendContractInner value,
-        BackendsUpdateHeaders headers) {
+    public BackendsUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        BackendContractInner value, BackendsUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

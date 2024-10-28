@@ -10,10 +10,8 @@ import com.azure.resourcemanager.hanaonazure.models.HardwareProfile;
 public final class HardwareProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HardwareProfile model =
-            BinaryData
-                .fromString("{\"hardwareType\":\"Cisco_UCS\",\"hanaInstanceSize\":\"S384xxm\"}")
-                .toObject(HardwareProfile.class);
+        HardwareProfile model = BinaryData.fromString("{\"hardwareType\":\"Cisco_UCS\",\"hanaInstanceSize\":\"S144\"}")
+            .toObject(HardwareProfile.class);
     }
 
     @org.junit.jupiter.api.Test

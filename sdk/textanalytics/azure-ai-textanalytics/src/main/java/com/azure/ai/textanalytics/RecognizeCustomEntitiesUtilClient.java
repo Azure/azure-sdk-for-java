@@ -103,46 +103,35 @@ class RecognizeCustomEntitiesUtilClient {
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             final String displayName = options.getDisplayName();
 
-            return new PollerFlux<>(
-                DEFAULT_POLL_INTERVAL,
-                activationOperation(
-                    service.submitJobWithResponseAsync(
-                        new AnalyzeTextJobsInput()
-                            .setDisplayName(displayName)
-                            .setAnalysisInput(
-                                new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
-                            .setTasks(Arrays.asList(
-                                new CustomEntitiesLROTask().setParameters(
-                                    new CustomEntitiesTaskParameters()
-                                        .setStringIndexType(finalStringIndexType)
-                                        .setProjectName(projectName)
-                                        .setDeploymentName(deploymentName)
-                                        .setLoggingOptOut(finalLoggingOptOut)))),
-                        finalContext)
-                        .map(responseBase -> {
-                            final RecognizeCustomEntitiesOperationDetail operationDetail =
-                                new RecognizeCustomEntitiesOperationDetail();
-                            RecognizeCustomEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
-                                parseOperationId(responseBase.getDeserializedHeaders().getOperationLocation()));
-                            return operationDetail;
-                        })),
-                pollingOperationTextJob(
-                    operationId -> service.jobStatusWithResponseAsync(operationId,
-                        finalIncludeStatistics, null, null, finalContext)),
-                cancelOperationTextJob(
-                    operationId -> service.cancelJobWithResponseAsync(operationId, finalContext)),
-                fetchingOperationTextJob(
-                    operationId -> Mono.just(getRecognizeCustomEntitiesPagedFlux(operationId, null, null,
-                        finalIncludeStatistics, finalContext)))
-            );
+            return new PollerFlux<>(DEFAULT_POLL_INTERVAL,
+                activationOperation(service.submitJobWithResponseAsync(new AnalyzeTextJobsInput()
+                    .setDisplayName(displayName)
+                    .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
+                    .setTasks(Arrays.asList(new CustomEntitiesLROTask()
+                        .setParameters(new CustomEntitiesTaskParameters().setStringIndexType(finalStringIndexType)
+                            .setProjectName(projectName)
+                            .setDeploymentName(deploymentName)
+                            .setLoggingOptOut(finalLoggingOptOut)))),
+                    finalContext).map(responseBase -> {
+                        final RecognizeCustomEntitiesOperationDetail operationDetail
+                            = new RecognizeCustomEntitiesOperationDetail();
+                        RecognizeCustomEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
+                            parseOperationId(responseBase.getDeserializedHeaders().getOperationLocation()));
+                        return operationDetail;
+                    })),
+                pollingOperationTextJob(operationId -> service.jobStatusWithResponseAsync(operationId,
+                    finalIncludeStatistics, null, null, finalContext)),
+                cancelOperationTextJob(operationId -> service.cancelJobWithResponseAsync(operationId, finalContext)),
+                fetchingOperationTextJob(operationId -> Mono.just(getRecognizeCustomEntitiesPagedFlux(operationId, null,
+                    null, finalIncludeStatistics, finalContext))));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
     }
 
     SyncPoller<RecognizeCustomEntitiesOperationDetail, RecognizeCustomEntitiesPagedIterable>
-        recognizeCustomEntitiesPagedIterable(Iterable<TextDocumentInput> documents,
-            String projectName, String deploymentName, RecognizeCustomEntitiesOptions options, Context context) {
+        recognizeCustomEntitiesPagedIterable(Iterable<TextDocumentInput> documents, String projectName,
+            String deploymentName, RecognizeCustomEntitiesOptions options, Context context) {
         try {
             throwIfTargetServiceVersionFound(this.serviceVersion,
                 Arrays.asList(TextAnalyticsServiceVersion.V3_0, TextAnalyticsServiceVersion.V3_1),
@@ -156,41 +145,35 @@ class RecognizeCustomEntitiesUtilClient {
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final String displayName = options.getDisplayName();
 
-            final CustomEntitiesLROTask task = new CustomEntitiesLROTask().setParameters(
-                new CustomEntitiesTaskParameters()
-                    .setStringIndexType(finalStringIndexType)
+            final CustomEntitiesLROTask task = new CustomEntitiesLROTask()
+                .setParameters(new CustomEntitiesTaskParameters().setStringIndexType(finalStringIndexType)
                     .setProjectName(projectName)
                     .setDeploymentName(deploymentName)
                     .setLoggingOptOut(finalLoggingOptOut));
 
-            return SyncPoller.createPoller(
-                DEFAULT_POLL_INTERVAL,
+            return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
                 cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     activationOperationSync(documents, task, displayName, finalContext).apply(cxt)),
                 pollingOperationTextJobSync(operationId -> service.jobStatusWithResponse(operationId,
                     finalIncludeStatistics, null, null, finalContext)),
                 cancelOperationTextJobSync(operationId -> service.cancelJobWithResponse(operationId, finalContext)),
-                fetchingOperationSync(
-                    operationId -> getRecognizeCustomEntitiesPagedIterable(operationId, null, null,
-                        finalIncludeStatistics, finalContext)));
+                fetchingOperationSync(operationId -> getRecognizeCustomEntitiesPagedIterable(operationId, null, null,
+                    finalIncludeStatistics, finalContext)));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
     }
 
-    RecognizeCustomEntitiesPagedFlux getRecognizeCustomEntitiesPagedFlux(
-        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
-        return new RecognizeCustomEntitiesPagedFlux(
-            () -> (continuationToken, pageSize) ->
-                getPagedResult(continuationToken, operationId, top, skip, showStats, context).flux());
+    RecognizeCustomEntitiesPagedFlux getRecognizeCustomEntitiesPagedFlux(UUID operationId, Integer top, Integer skip,
+        boolean showStats, Context context) {
+        return new RecognizeCustomEntitiesPagedFlux(() -> (continuationToken,
+            pageSize) -> getPagedResult(continuationToken, operationId, top, skip, showStats, context).flux());
     }
 
-    RecognizeCustomEntitiesPagedIterable getRecognizeCustomEntitiesPagedIterable(
-        UUID operationId, Integer top, Integer skip, boolean showStats, Context context) {
-        return new RecognizeCustomEntitiesPagedIterable(
-            () -> (continuationToken, pageSize) ->
-                getPagedResultSync(continuationToken, operationId, top, skip, showStats, context)
-        );
+    RecognizeCustomEntitiesPagedIterable getRecognizeCustomEntitiesPagedIterable(UUID operationId, Integer top,
+        Integer skip, boolean showStats, Context context) {
+        return new RecognizeCustomEntitiesPagedIterable(() -> (continuationToken,
+            pageSize) -> getPagedResultSync(continuationToken, operationId, top, skip, showStats, context));
     }
 
     Mono<PagedResponse<RecognizeCustomEntitiesResultCollection>> getPagedResult(String continuationToken,
@@ -221,50 +204,45 @@ class RecognizeCustomEntitiesUtilClient {
         return toCustomEntitiesPagedResponse(service.jobStatusWithResponse(operationId, showStats, top, skip, context));
     }
 
-    private PagedResponse<RecognizeCustomEntitiesResultCollection> toCustomEntitiesPagedResponse(
-        Response<AnalyzeTextJobState> response) {
+    private PagedResponse<RecognizeCustomEntitiesResultCollection>
+        toCustomEntitiesPagedResponse(Response<AnalyzeTextJobState> response) {
 
         final AnalyzeTextJobState jobState = response.getValue();
         final List<AnalyzeTextLROResult> lroResults = jobState.getTasks().getItems();
 
         CustomEntityRecognitionLROResult customEntityLROResult = (CustomEntityRecognitionLROResult) lroResults.get(0);
         final CustomEntitiesResult customEntitiesResult = customEntityLROResult.getResults();
-        final RecognizeCustomEntitiesResultCollection recognizeCustomEntitiesResultCollection =
-            toRecognizeCustomEntitiesResultCollection(customEntitiesResult);
+        final RecognizeCustomEntitiesResultCollection recognizeCustomEntitiesResultCollection
+            = toRecognizeCustomEntitiesResultCollection(customEntitiesResult);
         final RequestStatistics requestStatistics = customEntitiesResult.getStatistics();
         if (requestStatistics != null) {
             final TextDocumentBatchStatistics batchStatistic = new TextDocumentBatchStatistics(
                 requestStatistics.getDocumentsCount(), requestStatistics.getValidDocumentsCount(),
-                requestStatistics.getErroneousDocumentsCount(), requestStatistics.getTransactionsCount()
-            );
-            RecognizeCustomEntitiesResultCollectionPropertiesHelper.setStatistics(
-                recognizeCustomEntitiesResultCollection, batchStatistic);
+                requestStatistics.getErroneousDocumentsCount(), requestStatistics.getTransactionsCount());
+            RecognizeCustomEntitiesResultCollectionPropertiesHelper
+                .setStatistics(recognizeCustomEntitiesResultCollection, batchStatistic);
         }
 
         final List<Error> errors = jobState.getErrors();
 
         if (!CoreUtils.isNullOrEmpty(errors)) {
-            final TextAnalyticsException textAnalyticsException = new TextAnalyticsException(
-                "Recognize custom entities operation failed", null, null);
-            final IterableStream<com.azure.ai.textanalytics.models.TextAnalyticsError> textAnalyticsErrors =
-                IterableStream.of(errors.stream().map(Utility::toTextAnalyticsError).collect(Collectors.toList()));
+            final TextAnalyticsException textAnalyticsException
+                = new TextAnalyticsException("Recognize custom entities operation failed", null, null);
+            final IterableStream<com.azure.ai.textanalytics.models.TextAnalyticsError> textAnalyticsErrors
+                = IterableStream.of(errors.stream().map(Utility::toTextAnalyticsError).collect(Collectors.toList()));
             TextAnalyticsExceptionPropertiesHelper.setErrors(textAnalyticsException, textAnalyticsErrors);
             throw LOGGER.logExceptionAsError(textAnalyticsException);
         }
 
-        return new PagedResponseBase<Void, RecognizeCustomEntitiesResultCollection>(
-            response.getRequest(),
-            response.getStatusCode(),
-            response.getHeaders(),
-            Arrays.asList(recognizeCustomEntitiesResultCollection),
-            jobState.getNextLink(),
-            null);
+        return new PagedResponseBase<Void, RecognizeCustomEntitiesResultCollection>(response.getRequest(),
+            response.getStatusCode(), response.getHeaders(), Arrays.asList(recognizeCustomEntitiesResultCollection),
+            jobState.getNextLink(), null);
     }
 
     // Activation operation
-    private Function<PollingContext<RecognizeCustomEntitiesOperationDetail>,
-        Mono<RecognizeCustomEntitiesOperationDetail>> activationOperation(
-        Mono<RecognizeCustomEntitiesOperationDetail> operationResult) {
+    private
+        Function<PollingContext<RecognizeCustomEntitiesOperationDetail>, Mono<RecognizeCustomEntitiesOperationDetail>>
+        activationOperation(Mono<RecognizeCustomEntitiesOperationDetail> operationResult) {
         return pollingContext -> {
             try {
                 return operationResult.onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
@@ -278,16 +256,11 @@ class RecognizeCustomEntitiesUtilClient {
         activationOperationSync(Iterable<TextDocumentInput> documents, AnalyzeTextLROTask task, String displayName,
             Context context) {
         return pollingContext -> {
-            final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse =
-                service.submitJobWithResponse(
-                    new AnalyzeTextJobsInput()
-                        .setDisplayName(displayName)
-                        .setAnalysisInput(new MultiLanguageAnalysisInput()
-                            .setDocuments(toMultiLanguageInput(documents)))
-                        .setTasks(Arrays.asList(task)),
-                    context);
-            final RecognizeCustomEntitiesOperationDetail operationDetail =
-                new RecognizeCustomEntitiesOperationDetail();
+            final ResponseBase<AnalyzeTextsSubmitJobHeaders, Void> analyzeResponse
+                = service.submitJobWithResponse(new AnalyzeTextJobsInput().setDisplayName(displayName)
+                    .setAnalysisInput(new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents)))
+                    .setTasks(Arrays.asList(task)), context);
+            final RecognizeCustomEntitiesOperationDetail operationDetail = new RecognizeCustomEntitiesOperationDetail();
             RecognizeCustomEntitiesOperationDetailPropertiesHelper.setOperationId(operationDetail,
                 parseOperationId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
             return operationDetail;
@@ -295,17 +268,17 @@ class RecognizeCustomEntitiesUtilClient {
     }
 
     // Polling operation
-    private Function<PollingContext<RecognizeCustomEntitiesOperationDetail>,
-        Mono<PollResponse<RecognizeCustomEntitiesOperationDetail>>> pollingOperationTextJob(
-            Function<UUID, Mono<Response<AnalyzeTextJobState>>> pollingFunction) {
+    private
+        Function<PollingContext<RecognizeCustomEntitiesOperationDetail>, Mono<PollResponse<RecognizeCustomEntitiesOperationDetail>>>
+        pollingOperationTextJob(Function<UUID, Mono<Response<AnalyzeTextJobState>>> pollingFunction) {
         return pollingContext -> {
             try {
-                final PollResponse<RecognizeCustomEntitiesOperationDetail> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
+                final PollResponse<RecognizeCustomEntitiesOperationDetail> operationResultPollResponse
+                    = pollingContext.getLatestResponse();
                 final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
                 return pollingFunction.apply(operationId)
-                    .flatMap(modelResponse ->
-                        Mono.just(processAnalyzeTextModelResponse(modelResponse, operationResultPollResponse)))
+                    .flatMap(modelResponse -> Mono
+                        .just(processAnalyzeTextModelResponse(modelResponse, operationResultPollResponse)))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
@@ -313,21 +286,20 @@ class RecognizeCustomEntitiesUtilClient {
         };
     }
 
-    private Function<PollingContext<RecognizeCustomEntitiesOperationDetail>,
-        PollResponse<RecognizeCustomEntitiesOperationDetail>> pollingOperationTextJobSync(
-        Function<UUID, Response<AnalyzeTextJobState>> pollingFunction) {
+    private
+        Function<PollingContext<RecognizeCustomEntitiesOperationDetail>, PollResponse<RecognizeCustomEntitiesOperationDetail>>
+        pollingOperationTextJobSync(Function<UUID, Response<AnalyzeTextJobState>> pollingFunction) {
         return pollingContext -> {
-            final PollResponse<RecognizeCustomEntitiesOperationDetail> operationResultPollResponse =
-                pollingContext.getLatestResponse();
+            final PollResponse<RecognizeCustomEntitiesOperationDetail> operationResultPollResponse
+                = pollingContext.getLatestResponse();
             final UUID operationId = UUID.fromString(operationResultPollResponse.getValue().getOperationId());
             return processAnalyzeTextModelResponse(pollingFunction.apply(operationId), operationResultPollResponse);
         };
     }
 
     // Fetching operation
-    private Function<PollingContext<RecognizeCustomEntitiesOperationDetail>,
-        Mono<RecognizeCustomEntitiesPagedFlux>> fetchingOperationTextJob(
-            Function<UUID, Mono<RecognizeCustomEntitiesPagedFlux>> fetchingFunction) {
+    private Function<PollingContext<RecognizeCustomEntitiesOperationDetail>, Mono<RecognizeCustomEntitiesPagedFlux>>
+        fetchingOperationTextJob(Function<UUID, Mono<RecognizeCustomEntitiesPagedFlux>> fetchingFunction) {
         return pollingContext -> {
             try {
                 final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
@@ -338,9 +310,8 @@ class RecognizeCustomEntitiesUtilClient {
         };
     }
 
-    private Function<PollingContext<RecognizeCustomEntitiesOperationDetail>,
-        RecognizeCustomEntitiesPagedIterable> fetchingOperationSync(
-        final Function<UUID, RecognizeCustomEntitiesPagedIterable> fetchingFunction) {
+    private Function<PollingContext<RecognizeCustomEntitiesOperationDetail>, RecognizeCustomEntitiesPagedIterable>
+        fetchingOperationSync(final Function<UUID, RecognizeCustomEntitiesPagedIterable> fetchingFunction) {
         return pollingContext -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getLatestResponse().getValue().getOperationId());
             return fetchingFunction.apply(resultUuid);
@@ -348,35 +319,32 @@ class RecognizeCustomEntitiesUtilClient {
     }
 
     // Cancel operation
-    private BiFunction<PollingContext<RecognizeCustomEntitiesOperationDetail>,
-        PollResponse<RecognizeCustomEntitiesOperationDetail>,
-        Mono<RecognizeCustomEntitiesOperationDetail>> cancelOperationTextJob(
-        Function<UUID, Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>>> cancelFunction) {
+    private
+        BiFunction<PollingContext<RecognizeCustomEntitiesOperationDetail>, PollResponse<RecognizeCustomEntitiesOperationDetail>, Mono<RecognizeCustomEntitiesOperationDetail>>
+        cancelOperationTextJob(Function<UUID, Mono<ResponseBase<AnalyzeTextsCancelJobHeaders, Void>>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
             try {
-                return cancelFunction.apply(resultUuid)
-                    .map(cancelJobResponse -> {
-                        final RecognizeCustomEntitiesOperationDetail operationResult =
-                            new RecognizeCustomEntitiesOperationDetail();
-                        RecognizeCustomEntitiesOperationDetailPropertiesHelper.setOperationId(operationResult,
-                            parseOperationId(cancelJobResponse.getDeserializedHeaders().getOperationLocation()));
-                        return operationResult;
-                    }).onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+                return cancelFunction.apply(resultUuid).map(cancelJobResponse -> {
+                    final RecognizeCustomEntitiesOperationDetail operationResult
+                        = new RecognizeCustomEntitiesOperationDetail();
+                    RecognizeCustomEntitiesOperationDetailPropertiesHelper.setOperationId(operationResult,
+                        parseOperationId(cancelJobResponse.getDeserializedHeaders().getOperationLocation()));
+                    return operationResult;
+                }).onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(LOGGER, ex);
             }
         };
     }
 
-    private BiFunction<PollingContext<RecognizeCustomEntitiesOperationDetail>,
-        PollResponse<RecognizeCustomEntitiesOperationDetail>, RecognizeCustomEntitiesOperationDetail>
+    private
+        BiFunction<PollingContext<RecognizeCustomEntitiesOperationDetail>, PollResponse<RecognizeCustomEntitiesOperationDetail>, RecognizeCustomEntitiesOperationDetail>
         cancelOperationTextJobSync(Function<UUID, ResponseBase<AnalyzeTextsCancelJobHeaders, Void>> cancelFunction) {
         return (activationResponse, pollingContext) -> {
             final UUID resultUuid = UUID.fromString(pollingContext.getValue().getOperationId());
             ResponseBase<AnalyzeTextsCancelJobHeaders, Void> cancelJobResponse = cancelFunction.apply(resultUuid);
-            final RecognizeCustomEntitiesOperationDetail operationResult =
-                new RecognizeCustomEntitiesOperationDetail();
+            final RecognizeCustomEntitiesOperationDetail operationResult = new RecognizeCustomEntitiesOperationDetail();
             RecognizeCustomEntitiesOperationDetailPropertiesHelper.setOperationId(operationResult,
                 parseOperationId(cancelJobResponse.getDeserializedHeaders().getOperationLocation()));
             return operationResult;
@@ -395,22 +363,22 @@ class RecognizeCustomEntitiesUtilClient {
         } else if (CANCELLED.equals(state)) {
             status = LongRunningOperationStatus.USER_CANCELLED;
         } else {
-            status = LongRunningOperationStatus.fromString(
-                analyzeOperationResultResponse.getValue().getStatus().toString(), true);
+            status = LongRunningOperationStatus
+                .fromString(analyzeOperationResultResponse.getValue().getStatus().toString(), true);
         }
         RecognizeCustomEntitiesOperationDetailPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getDisplayName());
         RecognizeCustomEntitiesOperationDetailPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getCreatedDateTime());
-        RecognizeCustomEntitiesOperationDetailPropertiesHelper.setLastModifiedAt(
-            operationResultPollResponse.getValue(), analyzeOperationResultResponse.getValue().getLastUpdatedDateTime());
+        RecognizeCustomEntitiesOperationDetailPropertiesHelper.setLastModifiedAt(operationResultPollResponse.getValue(),
+            analyzeOperationResultResponse.getValue().getLastUpdatedDateTime());
         RecognizeCustomEntitiesOperationDetailPropertiesHelper.setExpiresAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getExpirationDateTime());
         return new PollResponse<>(status, operationResultPollResponse.getValue());
     }
 
-    private RecognizeCustomEntitiesOptions getNotNullRecognizeCustomEntitiesOptions(
-        RecognizeCustomEntitiesOptions options) {
+    private RecognizeCustomEntitiesOptions
+        getNotNullRecognizeCustomEntitiesOptions(RecognizeCustomEntitiesOptions options) {
         return options == null ? new RecognizeCustomEntitiesOptions() : options;
     }
 }

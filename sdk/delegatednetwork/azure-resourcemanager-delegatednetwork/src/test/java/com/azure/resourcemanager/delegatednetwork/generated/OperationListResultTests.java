@@ -10,11 +10,9 @@ import com.azure.resourcemanager.delegatednetwork.models.OperationListResult;
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"esnzwde\",\"isDataAction\":false,\"display\":{\"provider\":\"rxzdmohctbqvudwx\",\"resource\":\"dnvowg\",\"operation\":\"jugwdkcglhsl\",\"description\":\"jdyggdtji\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"fqweykhmene\",\"isDataAction\":false,\"display\":{\"provider\":\"fwhybcibvy\",\"resource\":\"c\",\"operation\":\"tynnaamdectehfi\",\"description\":\"cj\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"zrkgqhcjrefovg\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"vjsllrmvvdfw\",\"isDataAction\":true,\"display\":{\"provider\":\"pulexxbczw\",\"resource\":\"uwiqzb\",\"operation\":\"vsovmyokac\",\"description\":\"kwlhzdo\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"lb\",\"isDataAction\":true,\"display\":{\"provider\":\"rkcciwwzjuqk\",\"resource\":\"sa\",\"operation\":\"wkuofoskghsauu\",\"description\":\"jmvxie\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"yjr\"}")
+            .toObject(OperationListResult.class);
     }
 
     @org.junit.jupiter.api.Test

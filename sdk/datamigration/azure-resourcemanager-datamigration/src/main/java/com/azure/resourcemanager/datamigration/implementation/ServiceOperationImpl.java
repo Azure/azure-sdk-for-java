@@ -13,8 +13,7 @@ public final class ServiceOperationImpl implements ServiceOperation {
 
     private final com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager;
 
-    ServiceOperationImpl(
-        ServiceOperationInner innerObject,
+    ServiceOperationImpl(ServiceOperationInner innerObject,
         com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -6,19 +6,22 @@ package com.azure.resourcemanager.datamigration.generated;
 
 import com.azure.resourcemanager.datamigration.models.ServiceSku;
 
-/** Samples for Services CreateOrUpdate. */
+/**
+ * Samples for Services CreateOrUpdate.
+ */
 public final class ServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Services_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/
+     * Services_CreateOrUpdate.json
      */
     /**
      * Sample code: Services_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void servicesCreateOrUpdate(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        manager
-            .services()
+        manager.services()
             .define("DmsSdkService")
             .withRegion("southcentralus")
             .withExistingResourceGroup("DmsSdkRg")

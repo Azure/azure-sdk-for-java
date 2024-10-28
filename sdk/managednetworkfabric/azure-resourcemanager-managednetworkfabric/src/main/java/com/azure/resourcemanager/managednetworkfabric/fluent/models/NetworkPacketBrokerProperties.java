@@ -126,10 +126,8 @@ public final class NetworkPacketBrokerProperties {
      */
     public void validate() {
         if (networkFabricId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkFabricId in model NetworkPacketBrokerProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkFabricId in model NetworkPacketBrokerProperties"));
         }
     }
 

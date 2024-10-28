@@ -30,36 +30,26 @@ public final class RestorableDroppedSqlPoolsListByWorkspaceMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"location\":\"benqlamwmg\",\"properties\":{\"databaseName\":\"yxflnbcpjstbh\",\"edition\":\"hcucsqsnx\",\"maxSizeBytes\":\"xufeapd\",\"serviceLevelObjective\":\"zyvbsuadulpodk\",\"elasticPoolName\":\"p\",\"creationDate\":\"2021-03-27T03:25:44Z\",\"deletionDate\":\"2021-07-26T00:19:22Z\",\"earliestRestoreDate\":\"2021-03-23T08:11:33Z\"},\"id\":\"hjdqltdeluqr\",\"name\":\"jadhfztl\",\"type\":\"aysrkgzky\"}]}";
+        String responseStr
+            = "{\"value\":[{\"location\":\"benqlamwmg\",\"properties\":{\"databaseName\":\"yxflnbcpjstbh\",\"edition\":\"hcucsqsnx\",\"maxSizeBytes\":\"xufeapd\",\"serviceLevelObjective\":\"zyvbsuadulpodk\",\"elasticPoolName\":\"p\",\"creationDate\":\"2021-03-27T03:25:44Z\",\"deletionDate\":\"2021-07-26T00:19:22Z\",\"earliestRestoreDate\":\"2021-03-23T08:11:33Z\"},\"id\":\"hjdqltdeluqr\",\"name\":\"jadhfztl\",\"type\":\"aysrkgzky\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<RestorableDroppedSqlPool> response =
-            manager.restorableDroppedSqlPools().listByWorkspace("unomir", "p", com.azure.core.util.Context.NONE);
+        PagedIterable<RestorableDroppedSqlPool> response
+            = manager.restorableDroppedSqlPools().listByWorkspace("unomir", "p", com.azure.core.util.Context.NONE);
     }
 }

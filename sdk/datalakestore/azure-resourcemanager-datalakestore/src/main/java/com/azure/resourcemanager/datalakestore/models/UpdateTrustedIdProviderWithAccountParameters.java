@@ -6,31 +6,38 @@ package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakestore.fluent.models.UpdateTrustedIdProviderProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters used to update a trusted identity provider while updating a Data Lake Store account. */
+/**
+ * The parameters used to update a trusted identity provider while updating a Data Lake Store account.
+ */
 @Fluent
-public final class UpdateTrustedIdProviderWithAccountParameters {
+public final class UpdateTrustedIdProviderWithAccountParameters
+    implements JsonSerializable<UpdateTrustedIdProviderWithAccountParameters> {
     /*
      * The unique name of the trusted identity provider to update.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The trusted identity provider properties to use when updating a trusted identity provider.
      */
-    @JsonProperty(value = "properties")
     private UpdateTrustedIdProviderProperties innerProperties;
 
-    /** Creates an instance of UpdateTrustedIdProviderWithAccountParameters class. */
+    /**
+     * Creates an instance of UpdateTrustedIdProviderWithAccountParameters class.
+     */
     public UpdateTrustedIdProviderWithAccountParameters() {
     }
 
     /**
      * Get the name property: The unique name of the trusted identity provider to update.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +46,7 @@ public final class UpdateTrustedIdProviderWithAccountParameters {
 
     /**
      * Set the name property: The unique name of the trusted identity provider to update.
-     *
+     * 
      * @param name the name value to set.
      * @return the UpdateTrustedIdProviderWithAccountParameters object itself.
      */
@@ -51,7 +58,7 @@ public final class UpdateTrustedIdProviderWithAccountParameters {
     /**
      * Get the innerProperties property: The trusted identity provider properties to use when updating a trusted
      * identity provider.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UpdateTrustedIdProviderProperties innerProperties() {
@@ -60,7 +67,7 @@ public final class UpdateTrustedIdProviderWithAccountParameters {
 
     /**
      * Get the idProvider property: The URL of this trusted identity provider.
-     *
+     * 
      * @return the idProvider value.
      */
     public String idProvider() {
@@ -69,7 +76,7 @@ public final class UpdateTrustedIdProviderWithAccountParameters {
 
     /**
      * Set the idProvider property: The URL of this trusted identity provider.
-     *
+     * 
      * @param idProvider the idProvider value to set.
      * @return the UpdateTrustedIdProviderWithAccountParameters object itself.
      */
@@ -83,15 +90,14 @@ public final class UpdateTrustedIdProviderWithAccountParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model UpdateTrustedIdProviderWithAccountParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model UpdateTrustedIdProviderWithAccountParameters"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -99,4 +105,46 @@ public final class UpdateTrustedIdProviderWithAccountParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UpdateTrustedIdProviderWithAccountParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateTrustedIdProviderWithAccountParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateTrustedIdProviderWithAccountParameters if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpdateTrustedIdProviderWithAccountParameters.
+     */
+    public static UpdateTrustedIdProviderWithAccountParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateTrustedIdProviderWithAccountParameters deserializedUpdateTrustedIdProviderWithAccountParameters
+                = new UpdateTrustedIdProviderWithAccountParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedUpdateTrustedIdProviderWithAccountParameters.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUpdateTrustedIdProviderWithAccountParameters.innerProperties
+                        = UpdateTrustedIdProviderProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateTrustedIdProviderWithAccountParameters;
+        });
+    }
 }

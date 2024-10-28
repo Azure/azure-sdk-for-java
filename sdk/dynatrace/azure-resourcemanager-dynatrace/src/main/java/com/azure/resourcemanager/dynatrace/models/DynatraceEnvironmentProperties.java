@@ -114,8 +114,8 @@ public final class DynatraceEnvironmentProperties {
      * @param singleSignOnProperties the singleSignOnProperties value to set.
      * @return the DynatraceEnvironmentProperties object itself.
      */
-    public DynatraceEnvironmentProperties withSingleSignOnProperties(
-        DynatraceSingleSignOnProperties singleSignOnProperties) {
+    public DynatraceEnvironmentProperties
+        withSingleSignOnProperties(DynatraceSingleSignOnProperties singleSignOnProperties) {
         this.singleSignOnProperties = singleSignOnProperties;
         return this;
     }

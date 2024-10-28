@@ -16,8 +16,8 @@ public final class AssociateTrafficFiltersImpl implements AssociateTrafficFilter
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    public AssociateTrafficFiltersImpl(
-        AssociateTrafficFiltersClient innerClient, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    public AssociateTrafficFiltersImpl(AssociateTrafficFiltersClient innerClient,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

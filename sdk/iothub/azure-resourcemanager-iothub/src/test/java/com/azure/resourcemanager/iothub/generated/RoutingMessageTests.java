@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RoutingMessageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoutingMessage model =
-            BinaryData
-                .fromString(
-                    "{\"body\":\"aolps\",\"appProperties\":{\"d\":\"lfmmdnbbglzpswi\",\"bzmnvdfznud\":\"cwyhzdxssa\",\"xzb\":\"od\"},\"systemProperties\":{\"hxsrzdzucersc\":\"lylpstdb\",\"iwjmygtdssls\":\"ntnev\",\"emwabnet\":\"tmweriofzpyq\"}}")
-                .toObject(RoutingMessage.class);
+        RoutingMessage model = BinaryData.fromString(
+            "{\"body\":\"aolps\",\"appProperties\":{\"d\":\"lfmmdnbbglzpswi\",\"bzmnvdfznud\":\"cwyhzdxssa\",\"xzb\":\"od\"},\"systemProperties\":{\"hxsrzdzucersc\":\"lylpstdb\",\"iwjmygtdssls\":\"ntnev\",\"emwabnet\":\"tmweriofzpyq\"}}")
+            .toObject(RoutingMessage.class);
         Assertions.assertEquals("aolps", model.body());
         Assertions.assertEquals("lfmmdnbbglzpswi", model.appProperties().get("d"));
         Assertions.assertEquals("lylpstdb", model.systemProperties().get("hxsrzdzucersc"));
@@ -25,12 +23,10 @@ public final class RoutingMessageTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutingMessage model =
-            new RoutingMessage()
-                .withBody("aolps")
-                .withAppProperties(mapOf("d", "lfmmdnbbglzpswi", "bzmnvdfznud", "cwyhzdxssa", "xzb", "od"))
-                .withSystemProperties(
-                    mapOf("hxsrzdzucersc", "lylpstdb", "iwjmygtdssls", "ntnev", "emwabnet", "tmweriofzpyq"));
+        RoutingMessage model = new RoutingMessage().withBody("aolps")
+            .withAppProperties(mapOf("d", "lfmmdnbbglzpswi", "bzmnvdfznud", "cwyhzdxssa", "xzb", "od"))
+            .withSystemProperties(
+                mapOf("hxsrzdzucersc", "lylpstdb", "iwjmygtdssls", "ntnev", "emwabnet", "tmweriofzpyq"));
         model = BinaryData.fromObject(model).toObject(RoutingMessage.class);
         Assertions.assertEquals("aolps", model.body());
         Assertions.assertEquals("lfmmdnbbglzpswi", model.appProperties().get("d"));

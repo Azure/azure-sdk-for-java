@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The download phase. */
+/**
+ * The download phase.
+ */
 public final class DownloadPhase extends ExpandableStringEnum<DownloadPhase> {
-    /** Static value Unknown for DownloadPhase. */
+    /**
+     * Static value Unknown for DownloadPhase.
+     */
     public static final DownloadPhase UNKNOWN = fromString("Unknown");
 
-    /** Static value Initializing for DownloadPhase. */
+    /**
+     * Static value Initializing for DownloadPhase.
+     */
     public static final DownloadPhase INITIALIZING = fromString("Initializing");
 
-    /** Static value Downloading for DownloadPhase. */
+    /**
+     * Static value Downloading for DownloadPhase.
+     */
     public static final DownloadPhase DOWNLOADING = fromString("Downloading");
 
-    /** Static value Verifying for DownloadPhase. */
+    /**
+     * Static value Verifying for DownloadPhase.
+     */
     public static final DownloadPhase VERIFYING = fromString("Verifying");
 
     /**
      * Creates a new instance of DownloadPhase value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class DownloadPhase extends ExpandableStringEnum<DownloadPhase> {
 
     /**
      * Creates or finds a DownloadPhase from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DownloadPhase.
      */
-    @JsonCreator
     public static DownloadPhase fromString(String name) {
         return fromString(name, DownloadPhase.class);
     }
 
     /**
      * Gets known DownloadPhase values.
-     *
+     * 
      * @return known DownloadPhase values.
      */
     public static Collection<DownloadPhase> values() {

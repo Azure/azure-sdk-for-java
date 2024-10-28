@@ -23,8 +23,7 @@ public final class ExtensionImpl implements Extension {
 
     private final com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager;
 
-    ExtensionImpl(
-        ExtensionInner innerObject,
+    ExtensionImpl(ExtensionInner innerObject,
         com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

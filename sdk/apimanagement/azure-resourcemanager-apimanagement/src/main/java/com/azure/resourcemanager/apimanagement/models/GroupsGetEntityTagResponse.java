@@ -19,8 +19,8 @@ public final class GroupsGetEntityTagResponse extends ResponseBase<GroupsGetEnti
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public GroupsGetEntityTagResponse(
-        HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, GroupsGetEntityTagHeaders headers) {
+    public GroupsGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
+        GroupsGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

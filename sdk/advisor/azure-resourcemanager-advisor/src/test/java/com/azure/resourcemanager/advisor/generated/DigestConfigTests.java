@@ -14,35 +14,31 @@ import org.junit.jupiter.api.Assertions;
 public final class DigestConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DigestConfig model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"vwryoqpso\",\"actionGroupResourceId\":\"ctazakljlahbcryf\",\"frequency\":1389039399,\"categories\":[\"Performance\",\"Performance\"],\"language\":\"expa\",\"state\":\"Disabled\"}")
-                .toObject(DigestConfig.class);
-        Assertions.assertEquals("vwryoqpso", model.name());
-        Assertions.assertEquals("ctazakljlahbcryf", model.actionGroupResourceId());
-        Assertions.assertEquals(1389039399, model.frequency());
-        Assertions.assertEquals(Category.PERFORMANCE, model.categories().get(0));
-        Assertions.assertEquals("expa", model.language());
-        Assertions.assertEquals(DigestConfigState.DISABLED, model.state());
+        DigestConfig model = BinaryData.fromString(
+            "{\"name\":\"qi\",\"actionGroupResourceId\":\"hungbwjzrnf\",\"frequency\":1847576577,\"categories\":[\"OperationalExcellence\"],\"language\":\"emv\",\"state\":\"Active\"}")
+            .toObject(DigestConfig.class);
+        Assertions.assertEquals("qi", model.name());
+        Assertions.assertEquals("hungbwjzrnf", model.actionGroupResourceId());
+        Assertions.assertEquals(1847576577, model.frequency());
+        Assertions.assertEquals(Category.OPERATIONAL_EXCELLENCE, model.categories().get(0));
+        Assertions.assertEquals("emv", model.language());
+        Assertions.assertEquals(DigestConfigState.ACTIVE, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DigestConfig model =
-            new DigestConfig()
-                .withName("vwryoqpso")
-                .withActionGroupResourceId("ctazakljlahbcryf")
-                .withFrequency(1389039399)
-                .withCategories(Arrays.asList(Category.PERFORMANCE, Category.PERFORMANCE))
-                .withLanguage("expa")
-                .withState(DigestConfigState.DISABLED);
+        DigestConfig model = new DigestConfig().withName("qi")
+            .withActionGroupResourceId("hungbwjzrnf")
+            .withFrequency(1847576577)
+            .withCategories(Arrays.asList(Category.OPERATIONAL_EXCELLENCE))
+            .withLanguage("emv")
+            .withState(DigestConfigState.ACTIVE);
         model = BinaryData.fromObject(model).toObject(DigestConfig.class);
-        Assertions.assertEquals("vwryoqpso", model.name());
-        Assertions.assertEquals("ctazakljlahbcryf", model.actionGroupResourceId());
-        Assertions.assertEquals(1389039399, model.frequency());
-        Assertions.assertEquals(Category.PERFORMANCE, model.categories().get(0));
-        Assertions.assertEquals("expa", model.language());
-        Assertions.assertEquals(DigestConfigState.DISABLED, model.state());
+        Assertions.assertEquals("qi", model.name());
+        Assertions.assertEquals("hungbwjzrnf", model.actionGroupResourceId());
+        Assertions.assertEquals(1847576577, model.frequency());
+        Assertions.assertEquals(Category.OPERATIONAL_EXCELLENCE, model.categories().get(0));
+        Assertions.assertEquals("emv", model.language());
+        Assertions.assertEquals(DigestConfigState.ACTIVE, model.state());
     }
 }

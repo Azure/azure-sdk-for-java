@@ -13,32 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricSpecification model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ienjbdlwtgr\",\"displayName\":\"djpjumasxazjpq\",\"displayDescription\":\"gual\",\"unit\":\"xxhejjzzvd\",\"aggregationType\":\"gwdslfhotwm\",\"metricFilterPattern\":\"npwlbjnpg\",\"dimensions\":[{\"name\":\"adehxnltyfsopp\",\"displayName\":\"uesnzwdejbavo\"},{\"name\":\"zdmohctbqvu\",\"displayName\":\"xdn\"},{\"name\":\"vo\",\"displayName\":\"ujjugwdkcglh\"},{\"name\":\"azjdyggd\",\"displayName\":\"ixhbkuofqweykhm\"}]}")
-                .toObject(MetricSpecification.class);
-        Assertions.assertEquals("djpjumasxazjpq", model.displayName());
-        Assertions.assertEquals("gual", model.displayDescription());
-        Assertions.assertEquals("uesnzwdejbavo", model.dimensions().get(0).displayName());
+        MetricSpecification model = BinaryData.fromString(
+            "{\"name\":\"vvdfwatkpnpul\",\"displayName\":\"xbczwtruwiqz\",\"displayDescription\":\"j\",\"unit\":\"ovm\",\"aggregationType\":\"kacspkw\",\"metricFilterPattern\":\"zdobpxjmflbvvnch\",\"dimensions\":[{\"name\":\"iwwzjuqk\",\"displayName\":\"sa\"}]}")
+            .toObject(MetricSpecification.class);
+        Assertions.assertEquals("xbczwtruwiqz", model.displayName());
+        Assertions.assertEquals("j", model.displayDescription());
+        Assertions.assertEquals("sa", model.dimensions().get(0).displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricSpecification model =
-            new MetricSpecification()
-                .withDisplayName("djpjumasxazjpq")
-                .withDisplayDescription("gual")
-                .withDimensions(
-                    Arrays
-                        .asList(
-                            new MetricSpecificationDimensionsItem().withDisplayName("uesnzwdejbavo"),
-                            new MetricSpecificationDimensionsItem().withDisplayName("xdn"),
-                            new MetricSpecificationDimensionsItem().withDisplayName("ujjugwdkcglh"),
-                            new MetricSpecificationDimensionsItem().withDisplayName("ixhbkuofqweykhm")));
+        MetricSpecification model = new MetricSpecification().withDisplayName("xbczwtruwiqz")
+            .withDisplayDescription("j")
+            .withDimensions(Arrays.asList(new MetricSpecificationDimensionsItem().withDisplayName("sa")));
         model = BinaryData.fromObject(model).toObject(MetricSpecification.class);
-        Assertions.assertEquals("djpjumasxazjpq", model.displayName());
-        Assertions.assertEquals("gual", model.displayDescription());
-        Assertions.assertEquals("uesnzwdejbavo", model.dimensions().get(0).displayName());
+        Assertions.assertEquals("xbczwtruwiqz", model.displayName());
+        Assertions.assertEquals("j", model.displayDescription());
+        Assertions.assertEquals("sa", model.dimensions().get(0).displayName());
     }
 }

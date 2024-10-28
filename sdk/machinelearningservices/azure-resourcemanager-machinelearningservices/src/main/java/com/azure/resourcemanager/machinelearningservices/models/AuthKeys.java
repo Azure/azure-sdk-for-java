@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The AuthKeys model. */
 @Fluent
 public class AuthKeys {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthKeys.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AuthKeys.class);
 
     /*
      * The primary key.

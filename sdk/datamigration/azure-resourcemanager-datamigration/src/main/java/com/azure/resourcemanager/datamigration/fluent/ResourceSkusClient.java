@@ -10,13 +10,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.datamigration.fluent.models.ResourceSkuInner;
 
-/** An instance of this class provides access to all the operations defined in ResourceSkusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceSkusClient.
+ */
 public interface ResourceSkusClient {
     /**
      * Get supported SKUs
-     *
-     * <p>The skus action returns the list of SKUs that DMS supports.
-     *
+     * 
+     * The skus action returns the list of SKUs that DMS supports.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the DMS List SKUs operation response as paginated response with {@link PagedIterable}.
@@ -26,9 +28,9 @@ public interface ResourceSkusClient {
 
     /**
      * Get supported SKUs
-     *
-     * <p>The skus action returns the list of SKUs that DMS supports.
-     *
+     * 
+     * The skus action returns the list of SKUs that DMS supports.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

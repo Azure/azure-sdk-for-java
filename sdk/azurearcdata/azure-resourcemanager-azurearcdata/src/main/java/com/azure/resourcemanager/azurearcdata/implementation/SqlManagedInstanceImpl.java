@@ -95,20 +95,16 @@ public final class SqlManagedInstanceImpl
     }
 
     public SqlManagedInstance create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlManagedInstances()
-                .create(resourceGroupName, sqlManagedInstanceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlManagedInstances()
+            .create(resourceGroupName, sqlManagedInstanceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SqlManagedInstance create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlManagedInstances()
-                .create(resourceGroupName, sqlManagedInstanceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlManagedInstances()
+            .create(resourceGroupName, sqlManagedInstanceName, this.innerModel(), context);
         return this;
     }
 
@@ -124,51 +120,43 @@ public final class SqlManagedInstanceImpl
     }
 
     public SqlManagedInstance apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlManagedInstances()
-                .updateWithResponse(resourceGroupName, sqlManagedInstanceName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlManagedInstances()
+            .updateWithResponse(resourceGroupName, sqlManagedInstanceName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SqlManagedInstance apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlManagedInstances()
-                .updateWithResponse(resourceGroupName, sqlManagedInstanceName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlManagedInstances()
+            .updateWithResponse(resourceGroupName, sqlManagedInstanceName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    SqlManagedInstanceImpl(
-        SqlManagedInstanceInner innerObject,
+    SqlManagedInstanceImpl(SqlManagedInstanceInner innerObject,
         com.azure.resourcemanager.azurearcdata.AzureArcDataManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.sqlManagedInstanceName = Utils.getValueFromIdByName(innerObject.id(), "sqlManagedInstances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.sqlManagedInstanceName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sqlManagedInstances");
     }
 
     public SqlManagedInstance refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlManagedInstances()
-                .getByResourceGroupWithResponse(resourceGroupName, sqlManagedInstanceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlManagedInstances()
+            .getByResourceGroupWithResponse(resourceGroupName, sqlManagedInstanceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SqlManagedInstance refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlManagedInstances()
-                .getByResourceGroupWithResponse(resourceGroupName, sqlManagedInstanceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlManagedInstances()
+            .getByResourceGroupWithResponse(resourceGroupName, sqlManagedInstanceName, context)
+            .getValue();
         return this;
     }
 

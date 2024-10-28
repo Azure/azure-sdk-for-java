@@ -70,11 +70,13 @@ public interface IpFirewallRuleInfo {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The IpFirewallRuleInfo definition stages. */
     interface DefinitionStages {
         /** The first stage of the IpFirewallRuleInfo definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the IpFirewallRuleInfo definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -86,6 +88,7 @@ public interface IpFirewallRuleInfo {
              */
             WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
+
         /**
          * The stage of the IpFirewallRuleInfo definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -106,6 +109,7 @@ public interface IpFirewallRuleInfo {
              */
             IpFirewallRuleInfo create(Context context);
         }
+
         /** The stage of the IpFirewallRuleInfo definition allowing to specify endIpAddress. */
         interface WithEndIpAddress {
             /**
@@ -118,6 +122,7 @@ public interface IpFirewallRuleInfo {
              */
             WithCreate withEndIpAddress(String endIpAddress);
         }
+
         /** The stage of the IpFirewallRuleInfo definition allowing to specify startIpAddress. */
         interface WithStartIpAddress {
             /**
@@ -129,6 +134,7 @@ public interface IpFirewallRuleInfo {
             WithCreate withStartIpAddress(String startIpAddress);
         }
     }
+
     /**
      * Begins update for the IpFirewallRuleInfo resource.
      *
@@ -153,6 +159,7 @@ public interface IpFirewallRuleInfo {
          */
         IpFirewallRuleInfo apply(Context context);
     }
+
     /** The IpFirewallRuleInfo update stages. */
     interface UpdateStages {
         /** The stage of the IpFirewallRuleInfo update allowing to specify endIpAddress. */
@@ -167,6 +174,7 @@ public interface IpFirewallRuleInfo {
              */
             Update withEndIpAddress(String endIpAddress);
         }
+
         /** The stage of the IpFirewallRuleInfo update allowing to specify startIpAddress. */
         interface WithStartIpAddress {
             /**
@@ -178,6 +186,7 @@ public interface IpFirewallRuleInfo {
             Update withStartIpAddress(String startIpAddress);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

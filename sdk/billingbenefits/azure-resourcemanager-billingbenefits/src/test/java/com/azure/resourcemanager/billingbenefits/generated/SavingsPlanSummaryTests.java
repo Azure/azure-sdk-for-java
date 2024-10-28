@@ -11,11 +11,9 @@ import com.azure.resourcemanager.billingbenefits.models.SavingsPlanSummaryCount;
 public final class SavingsPlanSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SavingsPlanSummary model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"wtiukbldn\",\"value\":{\"succeededCount\":64.59211,\"failedCount\":96.508446,\"expiringCount\":62.192535,\"expiredCount\":65.49128,\"pendingCount\":4.9401464,\"cancelledCount\":99.802826,\"processingCount\":20.08384,\"noBenefitCount\":53.660904,\"warningCount\":14.958477}}")
-                .toObject(SavingsPlanSummary.class);
+        SavingsPlanSummary model = BinaryData.fromString(
+            "{\"name\":\"nfnbacfionlebxe\",\"value\":{\"succeededCount\":69.87356,\"failedCount\":43.81237,\"expiringCount\":73.682335,\"expiredCount\":39.55062,\"pendingCount\":19.734276,\"cancelledCount\":82.048965,\"processingCount\":99.41283,\"noBenefitCount\":50.453197,\"warningCount\":7.9074564}}")
+            .toObject(SavingsPlanSummary.class);
     }
 
     @org.junit.jupiter.api.Test

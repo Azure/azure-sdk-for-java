@@ -52,9 +52,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolWorkloadGroupsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(SqlPoolWorkloadGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SqlPoolWorkloadGroupsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,82 +64,56 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolWorkloadGroupsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadGroupInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("workloadGroupName") String workloadGroupName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<WorkloadGroupInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("workloadGroupName") String workloadGroupName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("workloadGroupName") String workloadGroupName,
+            @BodyParam("application/json") WorkloadGroupInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("workloadGroupName") String workloadGroupName,
-            @BodyParam("application/json") WorkloadGroupInner parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("workloadGroupName") String workloadGroupName,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups/{workloadGroupName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("workloadGroupName") String workloadGroupName,
-            Context context);
+        Mono<Response<WorkloadGroupListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/workloadGroups")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadGroupListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkloadGroupListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<WorkloadGroupListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -158,19 +131,15 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return a Sql pool's workload group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkloadGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
+    private Mono<Response<WorkloadGroupInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -189,19 +158,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            workloadGroupName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -221,19 +179,15 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return a Sql pool's workload group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkloadGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context) {
+    private Mono<Response<WorkloadGroupInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -252,17 +206,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                workloadGroupName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, workloadGroupName, accept, context);
     }
 
     /**
@@ -280,8 +225,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return a Sql pool's workload group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkloadGroupInner> getAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
+    private Mono<WorkloadGroupInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -302,8 +247,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return a Sql pool's workload group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkloadGroupInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context) {
+    public Response<WorkloadGroupInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, context).block();
     }
 
@@ -322,8 +267,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return a Sql pool's workload group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadGroupInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
+    public WorkloadGroupInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName) {
         return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, Context.NONE)
             .getValue();
     }
@@ -345,23 +290,15 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String workloadGroupName, WorkloadGroupInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -385,20 +322,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            workloadGroupName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, sqlPoolName, workloadGroupName,
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -420,24 +346,16 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String workloadGroupName, WorkloadGroupInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -461,18 +379,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                workloadGroupName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters, accept, context);
     }
 
     /**
@@ -492,22 +400,12 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
+        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
         WorkloadGroupInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters);
-        return this
-            .client
-            .<WorkloadGroupInner, WorkloadGroupInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                WorkloadGroupInner.class,
-                WorkloadGroupInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
+            sqlPoolName, workloadGroupName, parameters);
+        return this.client.<WorkloadGroupInner, WorkloadGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            WorkloadGroupInner.class, WorkloadGroupInner.class, this.client.getContext());
     }
 
     /**
@@ -528,20 +426,13 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters,
-        Context context) {
+        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        WorkloadGroupInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters, context);
-        return this
-            .client
-            .<WorkloadGroupInner, WorkloadGroupInner>getLroResult(
-                mono, this.client.getHttpPipeline(), WorkloadGroupInner.class, WorkloadGroupInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
+            sqlPoolName, workloadGroupName, parameters, context);
+        return this.client.<WorkloadGroupInner, WorkloadGroupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            WorkloadGroupInner.class, WorkloadGroupInner.class, context);
     }
 
     /**
@@ -560,12 +451,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return the {@link SyncPoller} for polling of workload group operations for a sql pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters) {
+    public SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String workloadGroupName, WorkloadGroupInner parameters) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters)
             .getSyncPoller();
@@ -588,16 +475,12 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return the {@link SyncPoller} for polling of workload group operations for a sql pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters,
+    public SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String workloadGroupName, WorkloadGroupInner parameters,
         Context context) {
         return this
-            .beginCreateOrUpdateAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters, context)
+            .beginCreateOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters,
+                context)
             .getSyncPoller();
     }
 
@@ -617,12 +500,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return workload group operations for a sql pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkloadGroupInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters) {
+    private Mono<WorkloadGroupInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, WorkloadGroupInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -645,17 +524,10 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return workload group operations for a sql pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkloadGroupInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<WorkloadGroupInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, WorkloadGroupInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -674,12 +546,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return workload group operations for a sql pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadGroupInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters) {
+    public WorkloadGroupInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, WorkloadGroupInner parameters) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters)
             .block();
     }
@@ -701,16 +569,10 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return workload group operations for a sql pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadGroupInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters, context)
-            .block();
+    public WorkloadGroupInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, WorkloadGroupInner parameters, Context context) {
+        return createOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, parameters,
+            context).block();
     }
 
     /**
@@ -728,19 +590,15 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -759,17 +617,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         final String apiVersion = "2021-06-01";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            workloadGroupName,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -789,19 +638,15 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -819,16 +664,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         }
         final String apiVersion = "2021-06-01";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                workloadGroupName,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, workloadGroupName, context);
     }
 
     /**
@@ -846,14 +683,12 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -872,14 +707,13 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -897,8 +731,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName) {
         return this.beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName).getSyncPoller();
     }
 
@@ -918,10 +752,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, context)
             .getSyncPoller();
     }
 
@@ -940,10 +773,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -963,10 +795,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, Context context) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1003,8 +834,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context) {
+    public void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        Context context) {
         deleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, context).block();
     }
 
@@ -1023,19 +854,15 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkloadGroupInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private Mono<PagedResponse<WorkloadGroupInner>> listSinglePageAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1050,27 +877,10 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            accept,
-                            context))
-            .<PagedResponse<WorkloadGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, accept, context))
+            .<PagedResponse<WorkloadGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1090,19 +900,15 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<WorkloadGroupInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    private Mono<PagedResponse<WorkloadGroupInner>> listSinglePageAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1118,24 +924,10 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, sqlPoolName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1152,10 +944,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return list of Sql pool's workload groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkloadGroupInner> listAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName),
+    private PagedFlux<WorkloadGroupInner> listAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -1174,10 +965,9 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return list of Sql pool's workload groups as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<WorkloadGroupInner> listAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, context),
+    private PagedFlux<WorkloadGroupInner> listAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -1214,8 +1004,8 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
      * @return list of Sql pool's workload groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<WorkloadGroupInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    public PagedIterable<WorkloadGroupInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, sqlPoolName, context));
     }
 
@@ -1235,23 +1025,13 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<WorkloadGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<WorkloadGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1272,23 +1052,13 @@ public final class SqlPoolWorkloadGroupsClientImpl implements SqlPoolWorkloadGro
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

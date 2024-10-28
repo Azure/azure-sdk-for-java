@@ -6,6 +6,8 @@ package com.azure.messaging.eventhubs.stress.util;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
@@ -23,15 +25,24 @@ import java.time.Duration;
  * Utility class for EventHubs stress tests.
  */
 public final class TestUtils {
-    private static final byte[] PAYLOAD = "this is a circular payload that is used to fill up the message".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] PAYLOAD
+        = "this is a circular payload that is used to fill up the message".getBytes(StandardCharsets.UTF_8);
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
 
     public static EventProcessorClientBuilder getProcessorBuilder(ScenarioOptions options, int prefetchCount) {
-        return new EventProcessorClientBuilder()
-            .prefetchCount(prefetchCount == 0 ? 1 : prefetchCount)
-            .consumerGroup(options.getEventHubsConsumerGroup())
-            .connectionString(options.getEventHubsConnectionString(), options.getEventHubsEventHubName())
-            .checkpointStore(new BlobCheckpointStore(getContainerClient(options)));
+        final EventProcessorClientBuilder builder
+            = new EventProcessorClientBuilder().prefetchCount(prefetchCount == 0 ? 1 : prefetchCount)
+                .consumerGroup(options.getEventHubsConsumerGroup())
+                .connectionString(options.getEventHubsConnectionString(), options.getEventHubsEventHubName())
+                .checkpointStore(new BlobCheckpointStore(getContainerClient(options)));
+
+        if (options.useV2Stack()) {
+            Configuration configuration
+                = new ConfigurationBuilder().putProperty("com.azure.messaging.eventhubs.v2", "true").build();
+
+            builder.configuration(configuration);
+        }
+        return builder;
     }
 
     public static BinaryData createMessagePayload(int messageSize) {
@@ -43,15 +54,24 @@ public final class TestUtils {
     }
 
     public static EventHubClientBuilder getBuilder(ScenarioOptions options) {
-        return new EventHubClientBuilder()
-            .connectionString(options.getEventHubsConnectionString())
-            .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(5)))
-            .eventHubName(options.getEventHubsEventHubName());
+        final EventHubClientBuilder builder
+            = new EventHubClientBuilder().connectionString(options.getEventHubsConnectionString())
+                .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(5)))
+                .eventHubName(options.getEventHubsEventHubName())
+                .transportType(options.getAmqpTransportType());
+
+        if (options.useV2Stack()) {
+            Configuration configuration
+                = new ConfigurationBuilder().putProperty("com.azure.messaging.eventhubs.v2", "true").build();
+
+            builder.configuration(configuration);
+        }
+
+        return builder;
     }
 
     private static BlobContainerAsyncClient getContainerClient(ScenarioOptions options) {
-        return new BlobContainerClientBuilder()
-            .connectionString(options.getStorageConnectionString())
+        return new BlobContainerClientBuilder().connectionString(options.getStorageConnectionString())
             .containerName(options.getStorageContainerName())
             .buildAsyncClient();
     }
@@ -72,8 +92,7 @@ public final class TestUtils {
         String eventHubConnStr = options.getEventHubsConnectionString();
         String eventHub = options.getEventHubsEventHubName();
         String consumerGroup = options.getEventHubsConsumerGroup();
-        BlobContainerClient containerClient = new BlobContainerClientBuilder()
-            .connectionString(storageConnStr)
+        BlobContainerClient containerClient = new BlobContainerClientBuilder().connectionString(storageConnStr)
             .containerName(containerName)
             .buildClient();
 
@@ -81,8 +100,7 @@ public final class TestUtils {
         try {
             for (BlobItem blob : blobs) {
                 String namespace = eventHubConnStr.substring(0, eventHubConnStr.indexOf("/"));
-                if (blob.getName().contains(String.format("%s/%s/%s",
-                    namespace, eventHub, consumerGroup))) {
+                if (blob.getName().contains(String.format("%s/%s/%s", namespace, eventHub, consumerGroup))) {
                     BlobClient blobClient = containerClient.getBlobClient(blob.getName());
                     blobClient.delete();
                     LOGGER.info("Blob deleted: {}, {}", blob.getName(), blob.getMetadata());

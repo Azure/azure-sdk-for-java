@@ -20,21 +20,18 @@ public final class DataMaskingPoliciesImpl implements DataMaskingPolicies {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public DataMaskingPoliciesImpl(
-        DataMaskingPoliciesClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public DataMaskingPoliciesImpl(DataMaskingPoliciesClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<DataMaskingPolicy> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        Response<DataMaskingPolicyInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context);
+    public Response<DataMaskingPolicy> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
+        Response<DataMaskingPolicyInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DataMaskingPolicyImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,25 +50,18 @@ public final class DataMaskingPoliciesImpl implements DataMaskingPolicies {
     public DataMaskingPolicy getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, sqlPoolName, Context.NONE).getValue();
     }
@@ -79,25 +69,18 @@ public final class DataMaskingPoliciesImpl implements DataMaskingPolicies {
     public Response<DataMaskingPolicy> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context);
     }

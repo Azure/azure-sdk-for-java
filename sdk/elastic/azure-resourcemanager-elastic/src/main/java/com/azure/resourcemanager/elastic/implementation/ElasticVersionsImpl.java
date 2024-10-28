@@ -19,20 +19,20 @@ public final class ElasticVersionsImpl implements ElasticVersions {
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    public ElasticVersionsImpl(
-        ElasticVersionsClient innerClient, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    public ElasticVersionsImpl(ElasticVersionsClient innerClient,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ElasticVersionListFormat> list(String region) {
         PagedIterable<ElasticVersionListFormatInner> inner = this.serviceClient().list(region);
-        return Utils.mapPage(inner, inner1 -> new ElasticVersionListFormatImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ElasticVersionListFormatImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ElasticVersionListFormat> list(String region, Context context) {
         PagedIterable<ElasticVersionListFormatInner> inner = this.serviceClient().list(region, context);
-        return Utils.mapPage(inner, inner1 -> new ElasticVersionListFormatImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ElasticVersionListFormatImpl(inner1, this.manager()));
     }
 
     private ElasticVersionsClient serviceClient() {

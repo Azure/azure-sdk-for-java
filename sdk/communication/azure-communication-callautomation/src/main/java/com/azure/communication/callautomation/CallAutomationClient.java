@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation;
 
-
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
@@ -67,8 +66,7 @@ public final class CallAutomationClient {
      * @return Result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResult createCall(CallInvite targetParticipant,
-                                       String callbackUrl) {
+    public CreateCallResult createCall(CallInvite targetParticipant, String callbackUrl) {
         return callAutomationAsyncClient.createCall(targetParticipant, callbackUrl).block();
     }
 
@@ -82,8 +80,7 @@ public final class CallAutomationClient {
      * @return Result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateCallResult createGroupCall(List<CommunicationIdentifier> targetParticipants,
-                                            String callbackUrl) {
+    public CreateCallResult createGroupCall(List<CommunicationIdentifier> targetParticipants, String callbackUrl) {
         return callAutomationAsyncClient.createGroupCall(targetParticipants, callbackUrl).block();
     }
 
@@ -111,7 +108,8 @@ public final class CallAutomationClient {
      * @return Response with result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateCallResult> createGroupCallWithResponse(CreateGroupCallOptions createGroupCallOptions, Context context) {
+    public Response<CreateCallResult> createGroupCallWithResponse(CreateGroupCallOptions createGroupCallOptions,
+        Context context) {
         return callAutomationAsyncClient.createGroupCallWithResponseInternal(createGroupCallOptions, context).block();
     }
 

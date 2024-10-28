@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class GitHubOAuthPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GitHubOAuthProperties model =
-            BinaryData.fromString("{\"username\":\"wvukx\"}").toObject(GitHubOAuthProperties.class);
+        GitHubOAuthProperties model
+            = BinaryData.fromString("{\"username\":\"wvukx\"}").toObject(GitHubOAuthProperties.class);
         Assertions.assertEquals("wvukx", model.username());
     }
 

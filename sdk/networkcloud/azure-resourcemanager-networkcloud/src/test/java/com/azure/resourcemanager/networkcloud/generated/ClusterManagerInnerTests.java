@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterManagerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterManagerInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"analyticsWorkspaceId\":\"bxzpuzycisp\",\"availabilityZones\":[\"ahmgkbrp\",\"y\",\"hibnuqqkpika\",\"rgvtqag\"],\"clusterVersions\":[{\"supportExpiryDate\":\"nhijggmebfsi\",\"targetClusterVersion\":\"butr\"},{\"supportExpiryDate\":\"pnazzm\",\"targetClusterVersion\":\"runmp\"}],\"detailedStatus\":\"UpdateFailed\",\"detailedStatusMessage\":\"bh\",\"fabricControllerId\":\"bnlankxmyskpb\",\"managedResourceGroupConfiguration\":{\"location\":\"btkcxywnytnrsyn\",\"name\":\"idybyxczf\"},\"managerExtendedLocation\":{\"name\":\"haaxdbabphl\",\"type\":\"rqlfktsthsucocmn\"},\"provisioningState\":\"Canceled\",\"vmSize\":\"t\"},\"location\":\"twwrqp\",\"tags\":{\"xibxujwbhqwalm\":\"ckzywbiexzfeyue\",\"ux\":\"zyoxaepdkzjan\",\"zt\":\"hdwbavxbniwdjs\"},\"id\":\"dbpgnxytxhp\",\"name\":\"xbzpfzab\",\"type\":\"lcuhxwtctyqiklb\"}")
-                .toObject(ClusterManagerInner.class);
+        ClusterManagerInner model = BinaryData.fromString(
+            "{\"properties\":{\"analyticsWorkspaceId\":\"bxzpuzycisp\",\"availabilityZones\":[\"ahmgkbrp\",\"y\",\"hibnuqqkpika\",\"rgvtqag\"],\"clusterVersions\":[{\"supportExpiryDate\":\"nhijggmebfsi\",\"targetClusterVersion\":\"butr\"},{\"supportExpiryDate\":\"pnazzm\",\"targetClusterVersion\":\"runmp\"}],\"detailedStatus\":\"UpdateFailed\",\"detailedStatusMessage\":\"bh\",\"fabricControllerId\":\"bnlankxmyskpb\",\"managedResourceGroupConfiguration\":{\"location\":\"btkcxywnytnrsyn\",\"name\":\"idybyxczf\"},\"managerExtendedLocation\":{\"name\":\"haaxdbabphl\",\"type\":\"rqlfktsthsucocmn\"},\"provisioningState\":\"Canceled\",\"vmSize\":\"t\"},\"location\":\"twwrqp\",\"tags\":{\"xibxujwbhqwalm\":\"ckzywbiexzfeyue\",\"ux\":\"zyoxaepdkzjan\",\"zt\":\"hdwbavxbniwdjs\"},\"id\":\"dbpgnxytxhp\",\"name\":\"xbzpfzab\",\"type\":\"lcuhxwtctyqiklb\"}")
+            .toObject(ClusterManagerInner.class);
         Assertions.assertEquals("twwrqp", model.location());
         Assertions.assertEquals("ckzywbiexzfeyue", model.tags().get("xibxujwbhqwalm"));
         Assertions.assertEquals("bxzpuzycisp", model.analyticsWorkspaceId());
@@ -32,16 +30,14 @@ public final class ClusterManagerInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterManagerInner model =
-            new ClusterManagerInner()
-                .withLocation("twwrqp")
-                .withTags(mapOf("xibxujwbhqwalm", "ckzywbiexzfeyue", "ux", "zyoxaepdkzjan", "zt", "hdwbavxbniwdjs"))
-                .withAnalyticsWorkspaceId("bxzpuzycisp")
-                .withAvailabilityZones(Arrays.asList("ahmgkbrp", "y", "hibnuqqkpika", "rgvtqag"))
-                .withFabricControllerId("bnlankxmyskpb")
-                .withManagedResourceGroupConfiguration(
-                    new ManagedResourceGroupConfiguration().withLocation("btkcxywnytnrsyn").withName("idybyxczf"))
-                .withVmSize("t");
+        ClusterManagerInner model = new ClusterManagerInner().withLocation("twwrqp")
+            .withTags(mapOf("xibxujwbhqwalm", "ckzywbiexzfeyue", "ux", "zyoxaepdkzjan", "zt", "hdwbavxbniwdjs"))
+            .withAnalyticsWorkspaceId("bxzpuzycisp")
+            .withAvailabilityZones(Arrays.asList("ahmgkbrp", "y", "hibnuqqkpika", "rgvtqag"))
+            .withFabricControllerId("bnlankxmyskpb")
+            .withManagedResourceGroupConfiguration(
+                new ManagedResourceGroupConfiguration().withLocation("btkcxywnytnrsyn").withName("idybyxczf"))
+            .withVmSize("t");
         model = BinaryData.fromObject(model).toObject(ClusterManagerInner.class);
         Assertions.assertEquals("twwrqp", model.location());
         Assertions.assertEquals("ckzywbiexzfeyue", model.tags().get("xibxujwbhqwalm"));

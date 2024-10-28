@@ -31,37 +31,27 @@ public final class SchemasGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"metadata\":{\"requestId\":\"lg\",\"resultType\":\"txd\",\"total\":7982443333722102241,\"top\":2221953429879798985,\"id\":\"zvlnsnnjz\",\"coreSummaries\":[{\"status\":\"olpy\",\"numberOfDocuments\":117086894031994632},{\"status\":\"xqzragp\",\"numberOfDocuments\":5124334742263421163},{\"status\":\"t\",\"numberOfDocuments\":5064204054792112038},{\"status\":\"a\",\"numberOfDocuments\":1817616718311848555}],\"status\":\"jchcsrlzknmzla\",\"startTime\":\"2021-01-20T21:47:05Z\",\"lastUpdated\":\"2021-11-08T10:57:25Z\",\"eTag\":\"vnphc\",\"sort\":[{\"name\":\"pjhmqrhvthl\",\"order\":\"desc\"}],\"requestTime\":1106480050332233961,\"aggregatedValueField\":\"mlzzhzdtxetlgyd\",\"aggregatedGroupingFields\":\"qvlnnpxybafiqgea\",\"sum\":3246800772078835427,\"max\":7730272397217059241,\"schema\":{\"name\":\"klbyulidwcw\",\"version\":1795651624}},\"value\":[{\"name\":\"o\",\"displayName\":\"hj\",\"type\":\"wgdnqzbr\",\"indexed\":true,\"stored\":true,\"facet\":false,\"ownerType\":[\"zmtksjci\",\"digsxcdgl\"]}]}";
+        String responseStr
+            = "{\"metadata\":{\"requestId\":\"lg\",\"resultType\":\"txd\",\"total\":7982443333722102241,\"top\":2221953429879798985,\"id\":\"zvlnsnnjz\",\"coreSummaries\":[{\"status\":\"olpy\",\"numberOfDocuments\":117086894031994632},{\"status\":\"xqzragp\",\"numberOfDocuments\":5124334742263421163},{\"status\":\"t\",\"numberOfDocuments\":5064204054792112038},{\"status\":\"a\",\"numberOfDocuments\":1817616718311848555}],\"status\":\"jchcsrlzknmzla\",\"startTime\":\"2021-01-20T21:47:05Z\",\"lastUpdated\":\"2021-11-08T10:57:25Z\",\"eTag\":\"vnphc\",\"sort\":[{\"name\":\"pjhmqrhvthl\",\"order\":\"desc\"}],\"requestTime\":1106480050332233961,\"aggregatedValueField\":\"mlzzhzdtxetlgyd\",\"aggregatedGroupingFields\":\"qvlnnpxybafiqgea\",\"sum\":3246800772078835427,\"max\":7730272397217059241,\"schema\":{\"name\":\"klbyulidwcw\",\"version\":1795651624}},\"value\":[{\"name\":\"o\",\"displayName\":\"hj\",\"type\":\"wgdnqzbr\",\"indexed\":true,\"stored\":true,\"facet\":false,\"ownerType\":[\"zmtksjci\",\"digsxcdgl\"]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SearchGetSchemaResponse response =
-            manager.schemas().getWithResponse("cdxfzzzwyjafitl", "guyn", com.azure.core.util.Context.NONE).getValue();
+        SearchGetSchemaResponse response
+            = manager.schemas().getWithResponse("cdxfzzzwyjafitl", "guyn", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals("lg", response.metadata().searchId());
         Assertions.assertEquals("txd", response.metadata().resultType());

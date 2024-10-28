@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RecommendedSensitivityLabelUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecommendedSensitivityLabelUpdateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"op\":\"enable\",\"schema\":\"qunyowxwlmdjr\",\"table\":\"vfgbvfvpdboda\",\"column\":\"izsjqlhkrr\"}")
-                .toObject(RecommendedSensitivityLabelUpdateProperties.class);
+        RecommendedSensitivityLabelUpdateProperties model = BinaryData.fromString(
+            "{\"op\":\"enable\",\"schema\":\"qunyowxwlmdjr\",\"table\":\"vfgbvfvpdboda\",\"column\":\"izsjqlhkrr\"}")
+            .toObject(RecommendedSensitivityLabelUpdateProperties.class);
         Assertions.assertEquals(RecommendedSensitivityLabelUpdateKind.ENABLE, model.op());
         Assertions.assertEquals("qunyowxwlmdjr", model.schema());
         Assertions.assertEquals("vfgbvfvpdboda", model.table());
@@ -25,9 +23,8 @@ public final class RecommendedSensitivityLabelUpdatePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecommendedSensitivityLabelUpdateProperties model =
-            new RecommendedSensitivityLabelUpdateProperties()
-                .withOp(RecommendedSensitivityLabelUpdateKind.ENABLE)
+        RecommendedSensitivityLabelUpdateProperties model
+            = new RecommendedSensitivityLabelUpdateProperties().withOp(RecommendedSensitivityLabelUpdateKind.ENABLE)
                 .withSchema("qunyowxwlmdjr")
                 .withTable("vfgbvfvpdboda")
                 .withColumn("izsjqlhkrr");

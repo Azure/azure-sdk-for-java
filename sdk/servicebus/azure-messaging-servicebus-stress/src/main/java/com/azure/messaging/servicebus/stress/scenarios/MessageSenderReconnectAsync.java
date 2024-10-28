@@ -56,28 +56,23 @@ public class MessageSenderReconnectAsync extends ServiceBusScenario {
         span.setAttribute(AttributeKey.longKey("batchSize"), batchSize);
     }
 
-
     private Mono<Void> singleRun() {
-        return Mono.using(
-            () -> getSenderBuilder(options, false).buildAsyncClient(),
-            client -> singleSend(client),
+        return Mono.using(() -> getSenderBuilder(options, false).buildAsyncClient(), client -> singleSend(client),
             ServiceBusSenderAsyncClient::close);
     }
+
     private Mono<Void> singleSend(ServiceBusSenderAsyncClient client) {
-        return client.createMessageBatch()
-            .flatMap(b -> {
-                for (int i = 0; i < batchSize; i ++) {
-                    if (!b.tryAddMessage(new ServiceBusMessage(messagePayload))) {
-                        telemetryHelper.recordError("batch is full", "createBatch");
-                        break;
-                    }
+        return client.createMessageBatch().flatMap(b -> {
+            for (int i = 0; i < batchSize; i++) {
+                if (!b.tryAddMessage(new ServiceBusMessage(messagePayload))) {
+                    telemetryHelper.recordError("batch is full", "createBatch");
+                    break;
                 }
-                return client.sendMessages(b);
-            })
-            .onErrorResume(e -> {
-                telemetryHelper.recordError(e, "create and send batch");
-                return Mono.empty();
-            })
-            .doOnCancel(() -> telemetryHelper.recordError("cancelled", "create and send batch"));
+            }
+            return client.sendMessages(b);
+        }).onErrorResume(e -> {
+            telemetryHelper.recordError(e, "create and send batch");
+            return Mono.empty();
+        }).doOnCancel(() -> telemetryHelper.recordError("cancelled", "create and send batch"));
     }
 }

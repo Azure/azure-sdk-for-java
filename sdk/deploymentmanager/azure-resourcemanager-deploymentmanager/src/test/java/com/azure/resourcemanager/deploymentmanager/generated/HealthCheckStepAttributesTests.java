@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HealthCheckStepAttributesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HealthCheckStepAttributes model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"HealthCheckStepAttributes\",\"waitDuration\":\"qzrnkcqvyxlwhz\",\"maxElasticDuration\":\"icohoqqnwvl\",\"healthyStateDuration\":\"yav\"}")
-                .toObject(HealthCheckStepAttributes.class);
+        HealthCheckStepAttributes model = BinaryData.fromString(
+            "{\"type\":\"HealthCheckStepAttributes\",\"waitDuration\":\"qzrnkcqvyxlwhz\",\"maxElasticDuration\":\"icohoqqnwvl\",\"healthyStateDuration\":\"yav\"}")
+            .toObject(HealthCheckStepAttributes.class);
         Assertions.assertEquals("qzrnkcqvyxlwhz", model.waitDuration());
         Assertions.assertEquals("icohoqqnwvl", model.maxElasticDuration());
         Assertions.assertEquals("yav", model.healthyStateDuration());
@@ -23,11 +21,9 @@ public final class HealthCheckStepAttributesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HealthCheckStepAttributes model =
-            new HealthCheckStepAttributes()
-                .withWaitDuration("qzrnkcqvyxlwhz")
-                .withMaxElasticDuration("icohoqqnwvl")
-                .withHealthyStateDuration("yav");
+        HealthCheckStepAttributes model = new HealthCheckStepAttributes().withWaitDuration("qzrnkcqvyxlwhz")
+            .withMaxElasticDuration("icohoqqnwvl")
+            .withHealthyStateDuration("yav");
         model = BinaryData.fromObject(model).toObject(HealthCheckStepAttributes.class);
         Assertions.assertEquals("qzrnkcqvyxlwhz", model.waitDuration());
         Assertions.assertEquals("icohoqqnwvl", model.maxElasticDuration());

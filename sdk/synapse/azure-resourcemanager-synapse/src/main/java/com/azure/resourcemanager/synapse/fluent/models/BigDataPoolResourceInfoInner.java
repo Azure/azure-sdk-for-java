@@ -245,8 +245,8 @@ public final class BigDataPoolResourceInfoInner extends Resource {
      * @param dynamicExecutorAllocation the dynamicExecutorAllocation value to set.
      * @return the BigDataPoolResourceInfoInner object itself.
      */
-    public BigDataPoolResourceInfoInner withDynamicExecutorAllocation(
-        DynamicExecutorAllocation dynamicExecutorAllocation) {
+    public BigDataPoolResourceInfoInner
+        withDynamicExecutorAllocation(DynamicExecutorAllocation dynamicExecutorAllocation) {
         if (this.innerProperties() == null) {
             this.innerProperties = new BigDataPoolResourceProperties();
         }

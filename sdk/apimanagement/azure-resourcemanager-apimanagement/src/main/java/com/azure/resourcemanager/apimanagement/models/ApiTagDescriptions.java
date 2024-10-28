@@ -45,14 +45,8 @@ public interface ApiTagDescriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged TagDescription list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<TagDescriptionContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<TagDescriptionContract> listByService(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -69,8 +63,8 @@ public interface ApiTagDescriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state version of the tag specified by its identifier.
      */
-    ApiTagDescriptionsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, Context context);
+    ApiTagDescriptionsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String tagDescriptionId, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -102,8 +96,8 @@ public interface ApiTagDescriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tag description in scope of API.
      */
-    Response<TagDescriptionContract> getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String tagDescriptionId, Context context);
+    Response<TagDescriptionContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String tagDescriptionId, Context context);
 
     /**
      * Get Tag description in scope of API.
@@ -138,13 +132,8 @@ public interface ApiTagDescriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String tagDescriptionId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String tagDescriptionId, String ifMatch, Context context);
 
     /**
      * Delete tag description for the Api.

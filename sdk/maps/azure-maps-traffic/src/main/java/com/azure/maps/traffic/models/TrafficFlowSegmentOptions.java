@@ -41,7 +41,7 @@ public final class TrafficFlowSegmentOptions {
     public TrafficFlowSegmentStyle getTrafficFlowSegmentStyle() {
         return style;
     }
- 
+
     /**
      * Sets TrafficFlowTileStyle
      * @param trafficFlowSegmentStyle The style to be used to render the tile.
@@ -69,7 +69,7 @@ public final class TrafficFlowSegmentOptions {
         this.zoom = zoom;
         return this;
     }
-    
+
     /**
      * get coordinates
      * @return GeoPosition
@@ -87,7 +87,7 @@ public final class TrafficFlowSegmentOptions {
         this.coordinates = coordinates;
         return this;
     }
- 
+
     /**
      * gets unit
      * @return SpeedUnit

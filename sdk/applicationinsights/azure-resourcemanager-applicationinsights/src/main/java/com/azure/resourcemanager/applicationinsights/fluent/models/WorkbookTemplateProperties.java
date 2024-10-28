@@ -162,28 +162,21 @@ public final class WorkbookTemplateProperties {
      */
     public void validate() {
         if (templateData() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property templateData in model WorkbookTemplateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property templateData in model WorkbookTemplateProperties"));
         }
         if (galleries() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property galleries in model WorkbookTemplateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property galleries in model WorkbookTemplateProperties"));
         } else {
             galleries().forEach(e -> e.validate());
         }
         if (localized() != null) {
-            localized()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.forEach(e1 -> e1.validate());
-                        }
-                    });
+            localized().values().forEach(e -> {
+                if (e != null) {
+                    e.forEach(e1 -> e1.validate());
+                }
+            });
         }
     }
 

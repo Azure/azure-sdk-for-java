@@ -51,8 +51,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @param client the instance of the service client containing this operation class.
      */
     ExtensionsClientImpl(AgriFoodManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ExtensionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ExtensionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,98 +63,76 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
     @Host("{$host}")
     @ServiceInterface(name = "AgriFoodManagementCl")
     private interface ExtensionsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
-                + "/farmBeats/{farmBeatsResourceName}/extensions/{extensionId}")
-        @ExpectedResponses({201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
+            + "/farmBeats/{farmBeatsResourceName}/extensions/{extensionId}")
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExtensionInner>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ExtensionInner>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("farmBeatsResourceName") String farmBeatsResourceName,
-            @PathParam("extensionId") String extensionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("extensionId") String extensionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
-                + "/farmBeats/{farmBeatsResourceName}/extensions/{extensionId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
+            + "/farmBeats/{farmBeatsResourceName}/extensions/{extensionId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExtensionInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ExtensionInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("farmBeatsResourceName") String farmBeatsResourceName,
-            @PathParam("extensionId") String extensionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("extensionId") String extensionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
-                + "/farmBeats/{farmBeatsResourceName}/extensions/{extensionId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
+            + "/farmBeats/{farmBeatsResourceName}/extensions/{extensionId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExtensionInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ExtensionInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("farmBeatsResourceName") String farmBeatsResourceName,
-            @PathParam("extensionId") String extensionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("extensionId") String extensionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
-                + "/farmBeats/{farmBeatsResourceName}/extensions/{extensionId}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
+            + "/farmBeats/{farmBeatsResourceName}/extensions/{extensionId}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("farmBeatsResourceName") String farmBeatsResourceName,
-            @PathParam("extensionId") String extensionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("extensionId") String extensionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
-                + "/farmBeats/{farmBeatsResourceName}/extensions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
+            + "/farmBeats/{farmBeatsResourceName}/extensions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExtensionListResponse>> listByFarmBeats(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ExtensionListResponse>> listByFarmBeats(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("farmBeatsResourceName") String farmBeatsResourceName,
             @QueryParam("api-version") String apiVersion,
             @QueryParam(value = "extensionIds", multipleQueryParams = true) List<String> extensionIds,
             @QueryParam(value = "extensionCategories", multipleQueryParams = true) List<String> extensionCategories,
-            @QueryParam("$maxPageSize") Integer maxPageSize,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("$maxPageSize") Integer maxPageSize, @QueryParam("$skipToken") String skipToken,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExtensionListResponse>> listByFarmBeatsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -169,19 +147,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return extension resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExtensionInner>> createWithResponseAsync(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId) {
+    private Mono<Response<ExtensionInner>> createWithResponseAsync(String resourceGroupName,
+        String farmBeatsResourceName, String extensionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -196,18 +170,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            farmBeatsResourceName,
-                            extensionId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, farmBeatsResourceName, extensionId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -224,19 +188,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return extension resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExtensionInner>> createWithResponseAsync(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId, Context context) {
+    private Mono<Response<ExtensionInner>> createWithResponseAsync(String resourceGroupName,
+        String farmBeatsResourceName, String extensionId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -251,16 +211,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                farmBeatsResourceName,
-                extensionId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            farmBeatsResourceName, extensionId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -275,8 +227,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return extension resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExtensionInner> createAsync(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId) {
+    private Mono<ExtensionInner> createAsync(String resourceGroupName, String farmBeatsResourceName,
+        String extensionId) {
         return createWithResponseAsync(resourceGroupName, farmBeatsResourceName, extensionId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -310,8 +262,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return extension resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExtensionInner> createWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId, Context context) {
+    public Response<ExtensionInner> createWithResponse(String resourceGroupName, String farmBeatsResourceName,
+        String extensionId, Context context) {
         return createWithResponseAsync(resourceGroupName, farmBeatsResourceName, extensionId, context).block();
     }
 
@@ -328,19 +280,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExtensionInner>> getWithResponseAsync(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId) {
+    private Mono<Response<ExtensionInner>> getWithResponseAsync(String resourceGroupName, String farmBeatsResourceName,
+        String extensionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -355,18 +303,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            farmBeatsResourceName,
-                            extensionId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, farmBeatsResourceName, extensionId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -384,19 +322,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExtensionInner>> getWithResponseAsync(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId, Context context) {
+    private Mono<Response<ExtensionInner>> getWithResponseAsync(String resourceGroupName, String farmBeatsResourceName,
+        String extensionId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -411,16 +345,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                farmBeatsResourceName,
-                extensionId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            farmBeatsResourceName, extensionId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -469,8 +395,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return installed extension details by extension id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExtensionInner> getWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId, Context context) {
+    public Response<ExtensionInner> getWithResponse(String resourceGroupName, String farmBeatsResourceName,
+        String extensionId, Context context) {
         return getWithResponseAsync(resourceGroupName, farmBeatsResourceName, extensionId, context).block();
     }
 
@@ -486,19 +412,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return extension resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExtensionInner>> updateWithResponseAsync(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId) {
+    private Mono<Response<ExtensionInner>> updateWithResponseAsync(String resourceGroupName,
+        String farmBeatsResourceName, String extensionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -513,18 +435,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            farmBeatsResourceName,
-                            extensionId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, farmBeatsResourceName, extensionId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -541,19 +453,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return extension resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExtensionInner>> updateWithResponseAsync(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId, Context context) {
+    private Mono<Response<ExtensionInner>> updateWithResponseAsync(String resourceGroupName,
+        String farmBeatsResourceName, String extensionId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -568,16 +476,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                farmBeatsResourceName,
-                extensionId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            farmBeatsResourceName, extensionId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -592,8 +492,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return extension resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ExtensionInner> updateAsync(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId) {
+    private Mono<ExtensionInner> updateAsync(String resourceGroupName, String farmBeatsResourceName,
+        String extensionId) {
         return updateWithResponseAsync(resourceGroupName, farmBeatsResourceName, extensionId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -627,8 +527,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return extension resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExtensionInner> updateWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId, Context context) {
+    public Response<ExtensionInner> updateWithResponse(String resourceGroupName, String farmBeatsResourceName,
+        String extensionId, Context context) {
         return updateWithResponseAsync(resourceGroupName, farmBeatsResourceName, extensionId, context).block();
     }
 
@@ -644,19 +544,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String farmBeatsResourceName,
+        String extensionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -671,18 +567,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            farmBeatsResourceName,
-                            extensionId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, farmBeatsResourceName, extensionId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -699,19 +585,15 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String farmBeatsResourceName,
+        String extensionId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -726,16 +608,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                farmBeatsResourceName,
-                extensionId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            farmBeatsResourceName, extensionId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -783,8 +657,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String farmBeatsResourceName, String extensionId,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, farmBeatsResourceName, extensionId, context).block();
     }
 
@@ -803,24 +677,16 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return installed extensions details along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExtensionInner>> listByFarmBeatsSinglePageAsync(
-        String resourceGroupName,
-        String farmBeatsResourceName,
-        List<String> extensionIds,
-        List<String> extensionCategories,
-        Integer maxPageSize,
+    private Mono<PagedResponse<ExtensionInner>> listByFarmBeatsSinglePageAsync(String resourceGroupName,
+        String farmBeatsResourceName, List<String> extensionIds, List<String> extensionCategories, Integer maxPageSize,
         String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -831,39 +697,18 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
                 .error(new IllegalArgumentException("Parameter farmBeatsResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        List<String> extensionIdsConverted =
-            (extensionIds == null)
-                ? new ArrayList<>()
-                : extensionIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> extensionCategoriesConverted =
-            (extensionCategories == null)
-                ? new ArrayList<>()
-                : extensionCategories.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> extensionIdsConverted = (extensionIds == null)
+            ? new ArrayList<>()
+            : extensionIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> extensionCategoriesConverted = (extensionCategories == null)
+            ? new ArrayList<>()
+            : extensionCategories.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByFarmBeats(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            farmBeatsResourceName,
-                            this.client.getApiVersion(),
-                            extensionIdsConverted,
-                            extensionCategoriesConverted,
-                            maxPageSize,
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<ExtensionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByFarmBeats(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, farmBeatsResourceName, this.client.getApiVersion(), extensionIdsConverted,
+                extensionCategoriesConverted, maxPageSize, skipToken, accept, context))
+            .<PagedResponse<ExtensionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -883,25 +728,16 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return installed extensions details along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExtensionInner>> listByFarmBeatsSinglePageAsync(
-        String resourceGroupName,
-        String farmBeatsResourceName,
-        List<String> extensionIds,
-        List<String> extensionCategories,
-        Integer maxPageSize,
-        String skipToken,
-        Context context) {
+    private Mono<PagedResponse<ExtensionInner>> listByFarmBeatsSinglePageAsync(String resourceGroupName,
+        String farmBeatsResourceName, List<String> extensionIds, List<String> extensionCategories, Integer maxPageSize,
+        String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -912,37 +748,19 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
                 .error(new IllegalArgumentException("Parameter farmBeatsResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
-        List<String> extensionIdsConverted =
-            (extensionIds == null)
-                ? new ArrayList<>()
-                : extensionIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        List<String> extensionCategoriesConverted =
-            (extensionCategories == null)
-                ? new ArrayList<>()
-                : extensionCategories.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> extensionIdsConverted = (extensionIds == null)
+            ? new ArrayList<>()
+            : extensionIds.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        List<String> extensionCategoriesConverted = (extensionCategories == null)
+            ? new ArrayList<>()
+            : extensionCategories.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         context = this.client.mergeContext(context);
         return service
-            .listByFarmBeats(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                farmBeatsResourceName,
-                this.client.getApiVersion(),
-                extensionIdsConverted,
-                extensionCategoriesConverted,
-                maxPageSize,
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByFarmBeats(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                farmBeatsResourceName, this.client.getApiVersion(), extensionIdsConverted, extensionCategoriesConverted,
+                maxPageSize, skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -960,22 +778,10 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return installed extensions details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExtensionInner> listByFarmBeatsAsync(
-        String resourceGroupName,
-        String farmBeatsResourceName,
-        List<String> extensionIds,
-        List<String> extensionCategories,
-        Integer maxPageSize,
-        String skipToken) {
-        return new PagedFlux<>(
-            () ->
-                listByFarmBeatsSinglePageAsync(
-                    resourceGroupName,
-                    farmBeatsResourceName,
-                    extensionIds,
-                    extensionCategories,
-                    maxPageSize,
-                    skipToken),
+    private PagedFlux<ExtensionInner> listByFarmBeatsAsync(String resourceGroupName, String farmBeatsResourceName,
+        List<String> extensionIds, List<String> extensionCategories, Integer maxPageSize, String skipToken) {
+        return new PagedFlux<>(() -> listByFarmBeatsSinglePageAsync(resourceGroupName, farmBeatsResourceName,
+            extensionIds, extensionCategories, maxPageSize, skipToken),
             nextLink -> listByFarmBeatsNextSinglePageAsync(nextLink));
     }
 
@@ -995,15 +801,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         final List<String> extensionCategories = null;
         final Integer maxPageSize = null;
         final String skipToken = null;
-        return new PagedFlux<>(
-            () ->
-                listByFarmBeatsSinglePageAsync(
-                    resourceGroupName,
-                    farmBeatsResourceName,
-                    extensionIds,
-                    extensionCategories,
-                    maxPageSize,
-                    skipToken),
+        return new PagedFlux<>(() -> listByFarmBeatsSinglePageAsync(resourceGroupName, farmBeatsResourceName,
+            extensionIds, extensionCategories, maxPageSize, skipToken),
             nextLink -> listByFarmBeatsNextSinglePageAsync(nextLink));
     }
 
@@ -1023,24 +822,12 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return installed extensions details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExtensionInner> listByFarmBeatsAsync(
-        String resourceGroupName,
-        String farmBeatsResourceName,
-        List<String> extensionIds,
-        List<String> extensionCategories,
-        Integer maxPageSize,
-        String skipToken,
+    private PagedFlux<ExtensionInner> listByFarmBeatsAsync(String resourceGroupName, String farmBeatsResourceName,
+        List<String> extensionIds, List<String> extensionCategories, Integer maxPageSize, String skipToken,
         Context context) {
         return new PagedFlux<>(
-            () ->
-                listByFarmBeatsSinglePageAsync(
-                    resourceGroupName,
-                    farmBeatsResourceName,
-                    extensionIds,
-                    extensionCategories,
-                    maxPageSize,
-                    skipToken,
-                    context),
+            () -> listByFarmBeatsSinglePageAsync(resourceGroupName, farmBeatsResourceName, extensionIds,
+                extensionCategories, maxPageSize, skipToken, context),
             nextLink -> listByFarmBeatsNextSinglePageAsync(nextLink, context));
     }
 
@@ -1060,9 +847,8 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
         final List<String> extensionCategories = null;
         final Integer maxPageSize = null;
         final String skipToken = null;
-        return new PagedIterable<>(
-            listByFarmBeatsAsync(
-                resourceGroupName, farmBeatsResourceName, extensionIds, extensionCategories, maxPageSize, skipToken));
+        return new PagedIterable<>(listByFarmBeatsAsync(resourceGroupName, farmBeatsResourceName, extensionIds,
+            extensionCategories, maxPageSize, skipToken));
     }
 
     /**
@@ -1081,23 +867,11 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
      * @return installed extensions details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExtensionInner> listByFarmBeats(
-        String resourceGroupName,
-        String farmBeatsResourceName,
-        List<String> extensionIds,
-        List<String> extensionCategories,
-        Integer maxPageSize,
-        String skipToken,
+    public PagedIterable<ExtensionInner> listByFarmBeats(String resourceGroupName, String farmBeatsResourceName,
+        List<String> extensionIds, List<String> extensionCategories, Integer maxPageSize, String skipToken,
         Context context) {
-        return new PagedIterable<>(
-            listByFarmBeatsAsync(
-                resourceGroupName,
-                farmBeatsResourceName,
-                extensionIds,
-                extensionCategories,
-                maxPageSize,
-                skipToken,
-                context));
+        return new PagedIterable<>(listByFarmBeatsAsync(resourceGroupName, farmBeatsResourceName, extensionIds,
+            extensionCategories, maxPageSize, skipToken, context));
     }
 
     /**
@@ -1117,23 +891,14 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByFarmBeatsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ExtensionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ExtensionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1155,23 +920,13 @@ public final class ExtensionsClientImpl implements ExtensionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByFarmBeatsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByFarmBeatsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

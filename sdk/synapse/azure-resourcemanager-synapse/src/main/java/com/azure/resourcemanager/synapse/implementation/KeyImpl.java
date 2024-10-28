@@ -58,22 +58,18 @@ public final class KeyImpl implements Key, Key.Definition, Key.Update {
     }
 
     public Key create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKeys()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, keyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKeys()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, keyName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Key create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKeys()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, keyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKeys()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, keyName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -88,22 +84,18 @@ public final class KeyImpl implements Key, Key.Definition, Key.Update {
     }
 
     public Key apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKeys()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, keyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKeys()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, keyName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Key apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKeys()
-                .createOrUpdateWithResponse(resourceGroupName, workspaceName, keyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKeys()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, keyName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -116,22 +108,18 @@ public final class KeyImpl implements Key, Key.Definition, Key.Update {
     }
 
     public Key refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKeys()
-                .getWithResponse(resourceGroupName, workspaceName, keyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKeys()
+            .getWithResponse(resourceGroupName, workspaceName, keyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Key refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKeys()
-                .getWithResponse(resourceGroupName, workspaceName, keyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKeys()
+            .getWithResponse(resourceGroupName, workspaceName, keyName, context)
+            .getValue();
         return this;
     }
 

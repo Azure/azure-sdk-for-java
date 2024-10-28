@@ -11,11 +11,9 @@ import com.azure.resourcemanager.cognitiveservices.models.OperationDisplay;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"nbtkcxywnytnr\",\"isDataAction\":true,\"display\":{\"provider\":\"idybyxczf\",\"resource\":\"haaxdbabphl\",\"operation\":\"qlfktsths\",\"description\":\"ocmnyyazttbtwwrq\"},\"origin\":\"system\",\"actionType\":\"Internal\"}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"nbtkcxywnytnr\",\"isDataAction\":true,\"display\":{\"provider\":\"idybyxczf\",\"resource\":\"haaxdbabphl\",\"operation\":\"qlfktsths\",\"description\":\"ocmnyyazttbtwwrq\"},\"origin\":\"system\",\"actionType\":\"Internal\"}")
+            .toObject(OperationInner.class);
     }
 
     @org.junit.jupiter.api.Test

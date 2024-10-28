@@ -74,14 +74,16 @@ public final class VaultSettingImpl implements VaultSetting, VaultSetting.Defini
     }
 
     public VaultSetting create() {
-        this.innerObject = serviceManager.serviceClient().getReplicationVaultSettings().create(resourceName,
-            resourceGroupName, vaultSettingName, createInput, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationVaultSettings()
+            .create(resourceName, resourceGroupName, vaultSettingName, createInput, Context.NONE);
         return this;
     }
 
     public VaultSetting create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getReplicationVaultSettings().create(resourceName,
-            resourceGroupName, vaultSettingName, createInput, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationVaultSettings()
+            .create(resourceName, resourceGroupName, vaultSettingName, createInput, context);
         return this;
     }
 
@@ -94,14 +96,18 @@ public final class VaultSettingImpl implements VaultSetting, VaultSetting.Defini
     }
 
     public VaultSetting refresh() {
-        this.innerObject = serviceManager.serviceClient().getReplicationVaultSettings()
-            .getWithResponse(resourceName, resourceGroupName, vaultSettingName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationVaultSettings()
+            .getWithResponse(resourceName, resourceGroupName, vaultSettingName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VaultSetting refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getReplicationVaultSettings()
-            .getWithResponse(resourceName, resourceGroupName, vaultSettingName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationVaultSettings()
+            .getWithResponse(resourceName, resourceGroupName, vaultSettingName, context)
+            .getValue();
         return this;
     }
 

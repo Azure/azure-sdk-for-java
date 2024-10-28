@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class ScaleSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScaleSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ScaleSettings.class);
 
     /*
      * Manual scale settings for the cluster.

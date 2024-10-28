@@ -62,8 +62,8 @@ public final class SapLandscapeMonitorPropertiesGrouping {
      * @param sapApplication the sapApplication value to set.
      * @return the SapLandscapeMonitorPropertiesGrouping object itself.
      */
-    public SapLandscapeMonitorPropertiesGrouping withSapApplication(
-        List<SapLandscapeMonitorSidMapping> sapApplication) {
+    public SapLandscapeMonitorPropertiesGrouping
+        withSapApplication(List<SapLandscapeMonitorSidMapping> sapApplication) {
         this.sapApplication = sapApplication;
         return this;
     }

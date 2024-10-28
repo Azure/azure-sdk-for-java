@@ -83,8 +83,8 @@ public final class CustomerManagedKeyEncryptionKeyIdentity {
      * @param userAssignedIdentityResourceId the userAssignedIdentityResourceId value to set.
      * @return the CustomerManagedKeyEncryptionKeyIdentity object itself.
      */
-    public CustomerManagedKeyEncryptionKeyIdentity withUserAssignedIdentityResourceId(
-        String userAssignedIdentityResourceId) {
+    public CustomerManagedKeyEncryptionKeyIdentity
+        withUserAssignedIdentityResourceId(String userAssignedIdentityResourceId) {
         this.userAssignedIdentityResourceId = userAssignedIdentityResourceId;
         return this;
     }

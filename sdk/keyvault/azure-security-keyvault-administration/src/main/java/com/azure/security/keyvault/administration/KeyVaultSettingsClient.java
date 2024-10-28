@@ -180,8 +180,8 @@ public final class KeyVaultSettingsClient {
                 settingValue = Boolean.toString(setting.asBoolean());
             }
 
-            return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(
-                implClient.updateSetting(vaultUrl, setting.getName(), settingValue));
+            return KeyVaultSettingsAsyncClient
+                .transformToKeyVaultSetting(implClient.updateSetting(vaultUrl, setting.getName(), settingValue));
         } catch (RuntimeException e) {
             throw LOGGER.logExceptionAsError(e);
         }
@@ -224,8 +224,8 @@ public final class KeyVaultSettingsClient {
                 settingValue = Boolean.toString(setting.asBoolean());
             }
 
-            Response<Setting> response =
-                implClient.updateSettingWithResponse(vaultUrl, setting.getName(), settingValue, context);
+            Response<Setting> response
+                = implClient.updateSettingWithResponse(vaultUrl, setting.getName(), settingValue, context);
 
             return new SimpleResponse<>(response,
                 KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(response.getValue()));
@@ -329,8 +329,10 @@ public final class KeyVaultSettingsClient {
         List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
 
         try {
-            implClient.getSettings(vaultUrl).getSettings()
-                .forEach(setting -> keyVaultSettings.add(KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(setting)));
+            implClient.getSettings(vaultUrl)
+                .getSettings()
+                .forEach(
+                    setting -> keyVaultSettings.add(KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(setting)));
 
             return new KeyVaultGetSettingsResult(keyVaultSettings);
         } catch (RuntimeException e) {
@@ -374,9 +376,10 @@ public final class KeyVaultSettingsClient {
             Response<SettingsListResult> response = implClient.getSettingsWithResponse(vaultUrl, context);
             List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
 
-            response.getValue().getSettings()
-                .forEach(setting ->
-                    keyVaultSettings.add(KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(setting)));
+            response.getValue()
+                .getSettings()
+                .forEach(
+                    setting -> keyVaultSettings.add(KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(setting)));
 
             return new SimpleResponse<>(response, new KeyVaultGetSettingsResult(keyVaultSettings));
         } catch (RuntimeException e) {

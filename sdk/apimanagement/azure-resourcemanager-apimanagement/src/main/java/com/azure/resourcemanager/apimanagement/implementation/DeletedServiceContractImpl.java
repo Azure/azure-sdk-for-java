@@ -13,8 +13,7 @@ public final class DeletedServiceContractImpl implements DeletedServiceContract 
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    DeletedServiceContractImpl(
-        DeletedServiceContractInner innerObject,
+    DeletedServiceContractImpl(DeletedServiceContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

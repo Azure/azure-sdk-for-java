@@ -13,19 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class TagsUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagsUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"jjukyrdnqodxah\":\"emeluclv\",\"qnvzoqgyipemch\":\"xhqf\",\"lghwzhome\":\"avsczuejdtxp\"}}")
-                .toObject(TagsUpdate.class);
+        TagsUpdate model = BinaryData.fromString(
+            "{\"tags\":{\"jjukyrdnqodxah\":\"emeluclv\",\"qnvzoqgyipemch\":\"xhqf\",\"lghwzhome\":\"avsczuejdtxp\"}}")
+            .toObject(TagsUpdate.class);
         Assertions.assertEquals("emeluclv", model.tags().get("jjukyrdnqodxah"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagsUpdate model =
-            new TagsUpdate()
-                .withTags(mapOf("jjukyrdnqodxah", "emeluclv", "qnvzoqgyipemch", "xhqf", "lghwzhome", "avsczuejdtxp"));
+        TagsUpdate model = new TagsUpdate()
+            .withTags(mapOf("jjukyrdnqodxah", "emeluclv", "qnvzoqgyipemch", "xhqf", "lghwzhome", "avsczuejdtxp"));
         model = BinaryData.fromObject(model).toObject(TagsUpdate.class);
         Assertions.assertEquals("emeluclv", model.tags().get("jjukyrdnqodxah"));
     }

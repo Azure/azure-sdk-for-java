@@ -24,8 +24,10 @@ public final class PodEventTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PodEvent model = new PodEvent().withType(PodEventType.NORMAL).withReason("otftpvjzbexilz")
-            .withMessage("fqqnvwpmqtaruo").withLastSeenTime(OffsetDateTime.parse("2021-11-17T10:48:03Z"));
+        PodEvent model = new PodEvent().withType(PodEventType.NORMAL)
+            .withReason("otftpvjzbexilz")
+            .withMessage("fqqnvwpmqtaruo")
+            .withLastSeenTime(OffsetDateTime.parse("2021-11-17T10:48:03Z"));
         model = BinaryData.fromObject(model).toObject(PodEvent.class);
         Assertions.assertEquals(PodEventType.NORMAL, model.type());
         Assertions.assertEquals("otftpvjzbexilz", model.reason());

@@ -14,14 +14,15 @@ import com.azure.resourcemanager.batchai.models.Operations;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 
     private final com.azure.resourcemanager.batchai.BatchAIManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.batchai.BatchAIManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.batchai.BatchAIManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

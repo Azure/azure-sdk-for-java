@@ -5,60 +5,67 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.AdvancedSchedule;
 import com.azure.resourcemanager.automation.models.ScheduleFrequency;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The parameters supplied to the create or update schedule operation. */
+/**
+ * The parameters supplied to the create or update schedule operation.
+ */
 @Fluent
-public final class ScheduleCreateOrUpdateProperties {
+public final class ScheduleCreateOrUpdateProperties implements JsonSerializable<ScheduleCreateOrUpdateProperties> {
     /*
      * Gets or sets the description of the schedule.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Gets or sets the start time of the schedule.
      */
-    @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
      * Gets or sets the end time of the schedule.
      */
-    @JsonProperty(value = "expiryTime")
     private OffsetDateTime expiryTime;
 
     /*
      * Gets or sets the interval of the schedule.
      */
-    @JsonProperty(value = "interval")
     private Object interval;
 
     /*
      * Gets or sets the frequency of the schedule.
      */
-    @JsonProperty(value = "frequency", required = true)
     private ScheduleFrequency frequency;
 
     /*
      * Gets or sets the time zone of the schedule.
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * Gets or sets the AdvancedSchedule.
      */
-    @JsonProperty(value = "advancedSchedule")
     private AdvancedSchedule advancedSchedule;
 
     /**
+     * Creates an instance of ScheduleCreateOrUpdateProperties class.
+     */
+    public ScheduleCreateOrUpdateProperties() {
+    }
+
+    /**
      * Get the description property: Gets or sets the description of the schedule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -67,7 +74,7 @@ public final class ScheduleCreateOrUpdateProperties {
 
     /**
      * Set the description property: Gets or sets the description of the schedule.
-     *
+     * 
      * @param description the description value to set.
      * @return the ScheduleCreateOrUpdateProperties object itself.
      */
@@ -78,7 +85,7 @@ public final class ScheduleCreateOrUpdateProperties {
 
     /**
      * Get the startTime property: Gets or sets the start time of the schedule.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -87,7 +94,7 @@ public final class ScheduleCreateOrUpdateProperties {
 
     /**
      * Set the startTime property: Gets or sets the start time of the schedule.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the ScheduleCreateOrUpdateProperties object itself.
      */
@@ -98,7 +105,7 @@ public final class ScheduleCreateOrUpdateProperties {
 
     /**
      * Get the expiryTime property: Gets or sets the end time of the schedule.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -107,7 +114,7 @@ public final class ScheduleCreateOrUpdateProperties {
 
     /**
      * Set the expiryTime property: Gets or sets the end time of the schedule.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the ScheduleCreateOrUpdateProperties object itself.
      */
@@ -118,7 +125,7 @@ public final class ScheduleCreateOrUpdateProperties {
 
     /**
      * Get the interval property: Gets or sets the interval of the schedule.
-     *
+     * 
      * @return the interval value.
      */
     public Object interval() {
@@ -127,7 +134,7 @@ public final class ScheduleCreateOrUpdateProperties {
 
     /**
      * Set the interval property: Gets or sets the interval of the schedule.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the ScheduleCreateOrUpdateProperties object itself.
      */
@@ -138,7 +145,7 @@ public final class ScheduleCreateOrUpdateProperties {
 
     /**
      * Get the frequency property: Gets or sets the frequency of the schedule.
-     *
+     * 
      * @return the frequency value.
      */
     public ScheduleFrequency frequency() {
@@ -147,7 +154,7 @@ public final class ScheduleCreateOrUpdateProperties {
 
     /**
      * Set the frequency property: Gets or sets the frequency of the schedule.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the ScheduleCreateOrUpdateProperties object itself.
      */
@@ -158,7 +165,7 @@ public final class ScheduleCreateOrUpdateProperties {
 
     /**
      * Get the timeZone property: Gets or sets the time zone of the schedule.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -167,7 +174,7 @@ public final class ScheduleCreateOrUpdateProperties {
 
     /**
      * Set the timeZone property: Gets or sets the time zone of the schedule.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the ScheduleCreateOrUpdateProperties object itself.
      */
@@ -178,7 +185,7 @@ public final class ScheduleCreateOrUpdateProperties {
 
     /**
      * Get the advancedSchedule property: Gets or sets the AdvancedSchedule.
-     *
+     * 
      * @return the advancedSchedule value.
      */
     public AdvancedSchedule advancedSchedule() {
@@ -187,7 +194,7 @@ public final class ScheduleCreateOrUpdateProperties {
 
     /**
      * Set the advancedSchedule property: Gets or sets the AdvancedSchedule.
-     *
+     * 
      * @param advancedSchedule the advancedSchedule value to set.
      * @return the ScheduleCreateOrUpdateProperties object itself.
      */
@@ -198,21 +205,19 @@ public final class ScheduleCreateOrUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (startTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property startTime in model ScheduleCreateOrUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property startTime in model ScheduleCreateOrUpdateProperties"));
         }
         if (frequency() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property frequency in model ScheduleCreateOrUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property frequency in model ScheduleCreateOrUpdateProperties"));
         }
         if (advancedSchedule() != null) {
             advancedSchedule().validate();
@@ -220,4 +225,65 @@ public final class ScheduleCreateOrUpdateProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScheduleCreateOrUpdateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("expiryTime",
+            this.expiryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryTime));
+        jsonWriter.writeUntypedField("interval", this.interval);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeJsonField("advancedSchedule", this.advancedSchedule);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleCreateOrUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleCreateOrUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduleCreateOrUpdateProperties.
+     */
+    public static ScheduleCreateOrUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleCreateOrUpdateProperties deserializedScheduleCreateOrUpdateProperties
+                = new ScheduleCreateOrUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedScheduleCreateOrUpdateProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("frequency".equals(fieldName)) {
+                    deserializedScheduleCreateOrUpdateProperties.frequency
+                        = ScheduleFrequency.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedScheduleCreateOrUpdateProperties.description = reader.getString();
+                } else if ("expiryTime".equals(fieldName)) {
+                    deserializedScheduleCreateOrUpdateProperties.expiryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("interval".equals(fieldName)) {
+                    deserializedScheduleCreateOrUpdateProperties.interval = reader.readUntyped();
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedScheduleCreateOrUpdateProperties.timeZone = reader.getString();
+                } else if ("advancedSchedule".equals(fieldName)) {
+                    deserializedScheduleCreateOrUpdateProperties.advancedSchedule = AdvancedSchedule.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleCreateOrUpdateProperties;
+        });
+    }
 }

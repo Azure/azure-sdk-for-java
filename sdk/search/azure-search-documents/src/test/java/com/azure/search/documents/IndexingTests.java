@@ -4,7 +4,7 @@ package com.azure.search.documents;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoPoint;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Context;
@@ -72,7 +72,7 @@ public class IndexingTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupClass() {
-        TestBase.setupClass();
+        TestProxyTestBase.setupClass();
 
         if (TEST_MODE == TestMode.PLAYBACK) {
             return;
@@ -164,12 +164,9 @@ public class IndexingTests extends SearchTestBase {
 
         String isbn = getRandomDocumentKey();
         List<Book> books = new ArrayList<>();
-        books.add(new Book()
-            .ISBN(isbn)
+        books.add(new Book().ISBN(isbn)
             .title("Lord of the Rings")
-            .author(new Author()
-                .firstName("J.R.R")
-                .lastName("Tolkien")));
+            .author(new Author().firstName("J.R.R").lastName("Tolkien")));
 
         List<IndexingResult> result = client.uploadDocuments(books).getResults();
         assertIndexActionSucceeded(isbn, result.get(0), 201);
@@ -186,12 +183,9 @@ public class IndexingTests extends SearchTestBase {
 
         String isbn = getRandomDocumentKey();
         List<Book> books = new ArrayList<>();
-        books.add(new Book()
-            .ISBN(isbn)
+        books.add(new Book().ISBN(isbn)
             .title("Lord of the Rings")
-            .author(new Author()
-                .firstName("J.R.R")
-                .lastName("Tolkien")));
+            .author(new Author().firstName("J.R.R").lastName("Tolkien")));
 
         StepVerifier.create(asyncClient.uploadDocuments(books))
             .assertNext(result -> assertIndexActionSucceeded(isbn, result.getResults().get(0), 201))
@@ -214,8 +208,8 @@ public class IndexingTests extends SearchTestBase {
 
         waitForIndexing();
 
-        IndexDocumentsBatch<Hotel> deleteBatch = new IndexDocumentsBatch<Hotel>()
-            .addDeleteActions("HotelId", Arrays.asList(hotel1Key, hotel2Key));
+        IndexDocumentsBatch<Hotel> deleteBatch
+            = new IndexDocumentsBatch<Hotel>().addDeleteActions("HotelId", Arrays.asList(hotel1Key, hotel2Key));
 
         IndexDocumentsResult documentIndexResult = client.indexDocuments(deleteBatch);
 
@@ -241,16 +235,14 @@ public class IndexingTests extends SearchTestBase {
 
         waitForIndexing();
 
-        IndexDocumentsBatch<Hotel> deleteBatch = new IndexDocumentsBatch<Hotel>()
-            .addDeleteActions("HotelId", Arrays.asList(hotel1Key, hotel2Key));
+        IndexDocumentsBatch<Hotel> deleteBatch
+            = new IndexDocumentsBatch<Hotel>().addDeleteActions("HotelId", Arrays.asList(hotel1Key, hotel2Key));
 
-        StepVerifier.create(asyncClient.indexDocuments(deleteBatch))
-            .assertNext(result -> {
-                assertEquals(2, result.getResults().size());
-                assertIndexActionSucceeded(hotel1Key, result.getResults().get(0), 200);
-                assertIndexActionSucceeded(hotel2Key, result.getResults().get(1), 200);
-            })
-            .verifyComplete();
+        StepVerifier.create(asyncClient.indexDocuments(deleteBatch)).assertNext(result -> {
+            assertEquals(2, result.getResults().size());
+            assertIndexActionSucceeded(hotel1Key, result.getResults().get(0), 200);
+            assertIndexActionSucceeded(hotel2Key, result.getResults().get(1), 200);
+        }).verifyComplete();
     }
 
     @Test
@@ -263,9 +255,7 @@ public class IndexingTests extends SearchTestBase {
         SearchClient client = getClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
-        Hotel hotel = new Hotel()
-            .hotelId(hotelId)
-            .category("Luxury");
+        Hotel hotel = new Hotel().hotelId(hotelId).category("Luxury");
         List<Hotel> hotels = Collections.singletonList(hotel);
 
         client.uploadDocuments(hotels);
@@ -288,9 +278,7 @@ public class IndexingTests extends SearchTestBase {
         SearchAsyncClient asyncClient = getAsyncClient(HOTEL_INDEX_NAME);
 
         String hotelId = getRandomDocumentKey();
-        Hotel hotel = new Hotel()
-            .hotelId(hotelId)
-            .category("Luxury");
+        Hotel hotel = new Hotel().hotelId(hotelId).category("Luxury");
         List<Hotel> hotels = Collections.singletonList(hotel);
 
         asyncClient.uploadDocuments(hotels).block();
@@ -298,12 +286,10 @@ public class IndexingTests extends SearchTestBase {
 
         hotel.category("ignored");
 
-        StepVerifier.create(asyncClient.deleteDocuments(hotels))
-            .assertNext(result -> {
-                assertEquals(1, result.getResults().size());
-                assertIndexActionSucceeded(hotelId, result.getResults().get(0), 200);
-            })
-            .verifyComplete();
+        StepVerifier.create(asyncClient.deleteDocuments(hotels)).assertNext(result -> {
+            assertEquals(1, result.getResults().size());
+            assertIndexActionSucceeded(hotelId, result.getResults().get(0), 200);
+        }).verifyComplete();
     }
 
     @Test
@@ -352,12 +338,10 @@ public class IndexingTests extends SearchTestBase {
 
         searchDocument.put("Category", "ignored");
 
-        StepVerifier.create(asyncClient.deleteDocuments(docs))
-            .assertNext(result -> {
-                assertEquals(1, result.getResults().size());
-                assertIndexActionSucceeded(hotelId, result.getResults().get(0), 200);
-            })
-            .verifyComplete();
+        StepVerifier.create(asyncClient.deleteDocuments(docs)).assertNext(result -> {
+            assertEquals(1, result.getResults().size());
+            assertIndexActionSucceeded(hotelId, result.getResults().get(0), 200);
+        }).verifyComplete();
     }
 
     @Test
@@ -378,12 +362,12 @@ public class IndexingTests extends SearchTestBase {
         Hotel nonExistingHotel = prepareStaticallyTypedHotel("nonExistingHotel"); // merging with a non-existing document
         Hotel randomHotel = prepareStaticallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>()
-            .addUploadActions(Collections.singletonList(hotel1))
-            .addDeleteActions(Collections.singletonList(randomHotel))
-            .addMergeActions(Collections.singletonList(nonExistingHotel))
-            .addMergeOrUploadActions(Collections.singletonList(hotel3))
-            .addUploadActions(Collections.singletonList(hotel2));
+        IndexDocumentsBatch<Hotel> batch
+            = new IndexDocumentsBatch<Hotel>().addUploadActions(Collections.singletonList(hotel1))
+                .addDeleteActions(Collections.singletonList(randomHotel))
+                .addMergeActions(Collections.singletonList(nonExistingHotel))
+                .addMergeOrUploadActions(Collections.singletonList(hotel3))
+                .addUploadActions(Collections.singletonList(hotel2));
 
         IndexBatchException ex = assertThrows(IndexBatchException.class, () -> client.indexDocumentsWithResponse(batch,
             new IndexDocumentsOptions().setThrowOnAnyError(true), Context.NONE));
@@ -421,15 +405,15 @@ public class IndexingTests extends SearchTestBase {
         Hotel nonExistingHotel = prepareStaticallyTypedHotel("nonExistingHotel"); // merging with a non-existing document
         Hotel randomHotel = prepareStaticallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>()
-            .addUploadActions(Collections.singletonList(hotel1))
-            .addDeleteActions(Collections.singletonList(randomHotel))
-            .addMergeActions(Collections.singletonList(nonExistingHotel))
-            .addMergeOrUploadActions(Collections.singletonList(hotel3))
-            .addUploadActions(Collections.singletonList(hotel2));
+        IndexDocumentsBatch<Hotel> batch
+            = new IndexDocumentsBatch<Hotel>().addUploadActions(Collections.singletonList(hotel1))
+                .addDeleteActions(Collections.singletonList(randomHotel))
+                .addMergeActions(Collections.singletonList(nonExistingHotel))
+                .addMergeOrUploadActions(Collections.singletonList(hotel3))
+                .addUploadActions(Collections.singletonList(hotel2));
 
-        StepVerifier.create(asyncClient.indexDocumentsWithResponse(batch,
-                new IndexDocumentsOptions().setThrowOnAnyError(true)))
+        StepVerifier
+            .create(asyncClient.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(true)))
             .verifyErrorSatisfies(throwable -> {
                 IndexBatchException ex = assertInstanceOf(IndexBatchException.class, throwable);
 
@@ -449,7 +433,6 @@ public class IndexingTests extends SearchTestBase {
         }
     }
 
-
     @Test
     @LiveOnly
     public void canIndexDynamicDocumentsNotThrowSync() {
@@ -468,12 +451,12 @@ public class IndexingTests extends SearchTestBase {
         SearchDocument nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
         SearchDocument randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexDocumentsBatch<SearchDocument> batch = new IndexDocumentsBatch<SearchDocument>()
-            .addUploadActions(Collections.singletonList(hotel1))
-            .addDeleteActions(Collections.singletonList(randomHotel))
-            .addMergeActions(Collections.singletonList(nonExistingHotel))
-            .addMergeOrUploadActions(Collections.singletonList(hotel3))
-            .addUploadActions(Collections.singletonList(hotel2));
+        IndexDocumentsBatch<SearchDocument> batch
+            = new IndexDocumentsBatch<SearchDocument>().addUploadActions(Collections.singletonList(hotel1))
+                .addDeleteActions(Collections.singletonList(randomHotel))
+                .addMergeActions(Collections.singletonList(nonExistingHotel))
+                .addMergeOrUploadActions(Collections.singletonList(hotel3))
+                .addUploadActions(Collections.singletonList(hotel2));
 
         Response<IndexDocumentsResult> resultResponse = client.indexDocumentsWithResponse(batch,
             new IndexDocumentsOptions().setThrowOnAnyError(false), Context.NONE);
@@ -509,15 +492,16 @@ public class IndexingTests extends SearchTestBase {
         SearchDocument nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
         SearchDocument randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexDocumentsBatch<SearchDocument> batch = new IndexDocumentsBatch<SearchDocument>()
-            .addUploadActions(Collections.singletonList(hotel1))
-            .addDeleteActions(Collections.singletonList(randomHotel))
-            .addMergeActions(Collections.singletonList(nonExistingHotel))
-            .addMergeOrUploadActions(Collections.singletonList(hotel3))
-            .addUploadActions(Collections.singletonList(hotel2));
+        IndexDocumentsBatch<SearchDocument> batch
+            = new IndexDocumentsBatch<SearchDocument>().addUploadActions(Collections.singletonList(hotel1))
+                .addDeleteActions(Collections.singletonList(randomHotel))
+                .addMergeActions(Collections.singletonList(nonExistingHotel))
+                .addMergeOrUploadActions(Collections.singletonList(hotel3))
+                .addUploadActions(Collections.singletonList(hotel2));
 
-        StepVerifier.create(asyncClient.indexDocumentsWithResponse(batch,
-                new IndexDocumentsOptions().setThrowOnAnyError(false)))
+        StepVerifier
+            .create(
+                asyncClient.indexDocumentsWithResponse(batch, new IndexDocumentsOptions().setThrowOnAnyError(false)))
             .assertNext(resultResponse -> {
                 List<IndexingResult> results = resultResponse.getValue().getResults();
                 assertEquals(resultResponse.getStatusCode(), 207);
@@ -553,12 +537,12 @@ public class IndexingTests extends SearchTestBase {
         SearchDocument nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
         SearchDocument randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexDocumentsBatch<SearchDocument> batch = new IndexDocumentsBatch<SearchDocument>()
-            .addUploadActions(Collections.singletonList(hotel1))
-            .addDeleteActions(Collections.singletonList(randomHotel))
-            .addMergeActions(Collections.singletonList(nonExistingHotel))
-            .addMergeOrUploadActions(Collections.singletonList(hotel3))
-            .addUploadActions(Collections.singletonList(hotel2));
+        IndexDocumentsBatch<SearchDocument> batch
+            = new IndexDocumentsBatch<SearchDocument>().addUploadActions(Collections.singletonList(hotel1))
+                .addDeleteActions(Collections.singletonList(randomHotel))
+                .addMergeActions(Collections.singletonList(nonExistingHotel))
+                .addMergeOrUploadActions(Collections.singletonList(hotel3))
+                .addUploadActions(Collections.singletonList(hotel2));
 
         IndexBatchException ex = assertThrows(IndexBatchException.class, () -> client.indexDocuments(batch));
         List<IndexingResult> results = ex.getIndexingResults();
@@ -594,26 +578,25 @@ public class IndexingTests extends SearchTestBase {
         SearchDocument nonExistingHotel = prepareDynamicallyTypedHotel("nonExistingHotel"); // deleting a non existing document
         SearchDocument randomHotel = prepareDynamicallyTypedHotel("randomId"); // deleting a non existing document
 
-        IndexDocumentsBatch<SearchDocument> batch = new IndexDocumentsBatch<SearchDocument>()
-            .addUploadActions(Collections.singletonList(hotel1))
-            .addDeleteActions(Collections.singletonList(randomHotel))
-            .addMergeActions(Collections.singletonList(nonExistingHotel))
-            .addMergeOrUploadActions(Collections.singletonList(hotel3))
-            .addUploadActions(Collections.singletonList(hotel2));
+        IndexDocumentsBatch<SearchDocument> batch
+            = new IndexDocumentsBatch<SearchDocument>().addUploadActions(Collections.singletonList(hotel1))
+                .addDeleteActions(Collections.singletonList(randomHotel))
+                .addMergeActions(Collections.singletonList(nonExistingHotel))
+                .addMergeOrUploadActions(Collections.singletonList(hotel3))
+                .addUploadActions(Collections.singletonList(hotel2));
 
-        StepVerifier.create(asyncClient.indexDocuments(batch))
-            .verifyErrorSatisfies(throwable -> {
-                IndexBatchException ex = assertInstanceOf(IndexBatchException.class, throwable);
+        StepVerifier.create(asyncClient.indexDocuments(batch)).verifyErrorSatisfies(throwable -> {
+            IndexBatchException ex = assertInstanceOf(IndexBatchException.class, throwable);
 
-                List<IndexingResult> results = ex.getIndexingResults();
-                assertEquals(results.size(), batch.getActions().size());
+            List<IndexingResult> results = ex.getIndexingResults();
+            assertEquals(results.size(), batch.getActions().size());
 
-                assertSuccessfulIndexResult(results.get(0), hotel1Id, 201);
-                assertSuccessfulIndexResult(results.get(1), "randomId", 200);
-                assertFailedIndexResult(results.get(2), "nonExistingHotel", 404);
-                assertSuccessfulIndexResult(results.get(3), hotel3Id, 201);
-                assertSuccessfulIndexResult(results.get(4), hotel2Id, 201);
-            });
+            assertSuccessfulIndexResult(results.get(0), hotel1Id, 201);
+            assertSuccessfulIndexResult(results.get(1), "randomId", 200);
+            assertFailedIndexResult(results.get(2), "nonExistingHotel", 404);
+            assertSuccessfulIndexResult(results.get(3), hotel3Id, 201);
+            assertSuccessfulIndexResult(results.get(4), hotel2Id, 201);
+        });
 
         for (SearchDocument hotel : Arrays.asList(hotel1, hotel2, hotel3)) {
             getAndValidateDocumentAsync(asyncClient, hotel.get("HotelId").toString(), SearchDocument.class, hotel,
@@ -637,8 +620,8 @@ public class IndexingTests extends SearchTestBase {
         List<SearchDocument> docs = Collections.singletonList(new SearchDocument());
 
         StepVerifier.create(asyncClient.uploadDocuments(docs))
-            .verifyErrorSatisfies(throwable -> verifyHttpResponseError(throwable, HttpURLConnection.HTTP_BAD_REQUEST,
-                null));
+            .verifyErrorSatisfies(
+                throwable -> verifyHttpResponseError(throwable, HttpURLConnection.HTTP_BAD_REQUEST, null));
     }
 
     @Test
@@ -678,8 +661,8 @@ public class IndexingTests extends SearchTestBase {
 
         OffsetDateTime utcTime = OffsetDateTime.of(LocalDateTime.of(2010, 1, 1, 0, 0, 0), ZoneOffset.UTC);
         // UTC-8
-        OffsetDateTime utcTimeMinusEight = OffsetDateTime.of(LocalDateTime.of(2010, 1, 1, 0, 0, 0),
-            ZoneOffset.ofHours(-8));
+        OffsetDateTime utcTimeMinusEight
+            = OffsetDateTime.of(LocalDateTime.of(2010, 1, 1, 0, 0, 0), ZoneOffset.ofHours(-8));
 
         String isbn1 = getRandomDocumentKey();
         Map<String, Object> book1 = new HashMap<>();
@@ -699,8 +682,9 @@ public class IndexingTests extends SearchTestBase {
 
         // Azure AI Search normalizes to UTC, so we compare instants
         SearchDocument actualBook2 = client.getDocument(isbn2, SearchDocument.class);
-        assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC)
-            .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), actualBook2.get("PublishDate"));
+        assertEquals(
+            utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
+            actualBook2.get("PublishDate"));
     }
 
     @Test
@@ -709,8 +693,8 @@ public class IndexingTests extends SearchTestBase {
 
         OffsetDateTime utcTime = OffsetDateTime.of(LocalDateTime.of(2010, 1, 1, 0, 0, 0), ZoneOffset.UTC);
         // UTC-8
-        OffsetDateTime utcTimeMinusEight = OffsetDateTime.of(LocalDateTime.of(2010, 1, 1, 0, 0, 0),
-            ZoneOffset.ofHours(-8));
+        OffsetDateTime utcTimeMinusEight
+            = OffsetDateTime.of(LocalDateTime.of(2010, 1, 1, 0, 0, 0), ZoneOffset.ofHours(-8));
 
         String isbn1 = getRandomDocumentKey();
         SearchDocument book1 = new SearchDocument();
@@ -725,14 +709,14 @@ public class IndexingTests extends SearchTestBase {
         asyncClient.uploadDocuments(Arrays.asList(book1, book2)).block();
         waitForIndexing();
 
-        getAndValidateDocumentAsync(asyncClient, isbn1, SearchDocument.class, book1,
-            (expected, actual) -> assertEquals(utcTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
-                actual.get("PublishDate")));
+        getAndValidateDocumentAsync(asyncClient, isbn1, SearchDocument.class, book1, (expected,
+            actual) -> assertEquals(utcTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), actual.get("PublishDate")));
 
         // Azure AI Search normalizes to UTC, so we compare instants
         getAndValidateDocumentAsync(asyncClient, isbn2, SearchDocument.class, book2,
-            (expected, actual) -> assertEquals(utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC)
-                .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), actual.get("PublishDate")));
+            (expected, actual) -> assertEquals(
+                utcTimeMinusEight.withOffsetSameInstant(ZoneOffset.UTC).format(DateTimeFormatter.ISO_OFFSET_DATE_TIME),
+                actual.get("PublishDate")));
     }
 
     @Test
@@ -742,16 +726,10 @@ public class IndexingTests extends SearchTestBase {
         String isbn1 = getRandomDocumentKey();
         String isbn2 = getRandomDocumentKey();
         List<Book> books = Arrays.asList(
-            new Book()
-                .ISBN(isbn1)
-                .publishDate(OffsetDateTime.of(
-                    LocalDateTime.of(2010, 1, 1, 0, 0, 0),
-                    ZoneOffset.UTC)),
-            new Book()
-                .ISBN(isbn2)
-                .publishDate(OffsetDateTime.of(
-                    LocalDateTime.of(2010, 1, 1, 0, 0, 0),
-                    ZoneOffset.ofHours(-8))));
+            new Book().ISBN(isbn1)
+                .publishDate(OffsetDateTime.of(LocalDateTime.of(2010, 1, 1, 0, 0, 0), ZoneOffset.UTC)),
+            new Book().ISBN(isbn2)
+                .publishDate(OffsetDateTime.of(LocalDateTime.of(2010, 1, 1, 0, 0, 0), ZoneOffset.ofHours(-8))));
 
         client.uploadDocuments(books);
 
@@ -771,16 +749,10 @@ public class IndexingTests extends SearchTestBase {
         String isbn1 = getRandomDocumentKey();
         String isbn2 = getRandomDocumentKey();
         List<Book> books = Arrays.asList(
-            new Book()
-                .ISBN(isbn1)
-                .publishDate(OffsetDateTime.of(
-                    LocalDateTime.of(2010, 1, 1, 0, 0, 0),
-                    ZoneOffset.UTC)),
-            new Book()
-                .ISBN(isbn2)
-                .publishDate(OffsetDateTime.of(
-                    LocalDateTime.of(2010, 1, 1, 0, 0, 0),
-                    ZoneOffset.ofHours(-8))));
+            new Book().ISBN(isbn1)
+                .publishDate(OffsetDateTime.of(LocalDateTime.of(2010, 1, 1, 0, 0, 0), ZoneOffset.UTC)),
+            new Book().ISBN(isbn2)
+                .publishDate(OffsetDateTime.of(LocalDateTime.of(2010, 1, 1, 0, 0, 0), ZoneOffset.ofHours(-8))));
 
         asyncClient.uploadDocuments(books).block();
 
@@ -998,20 +970,16 @@ public class IndexingTests extends SearchTestBase {
         String hotel3Id = getRandomDocumentKey();
         String hotel4Id = getRandomDocumentKey();
 
-        List<Hotel> hotelsToUpload = Arrays.asList(
-            new Hotel().hotelId(hotel1Id),
-            new Hotel().hotelId(hotel2Id));
+        List<Hotel> hotelsToUpload = Arrays.asList(new Hotel().hotelId(hotel1Id), new Hotel().hotelId(hotel2Id));
 
         List<Hotel> hotelsToMerge = Collections.singletonList(new Hotel().hotelId(hotel1Id).rating(5));
 
-        List<Hotel> hotelsToMergeOrUpload = Arrays.asList(
-            new Hotel().hotelId(hotel3Id).rating(4),
-            new Hotel().hotelId(hotel4Id).rating(1));
+        List<Hotel> hotelsToMergeOrUpload
+            = Arrays.asList(new Hotel().hotelId(hotel3Id).rating(4), new Hotel().hotelId(hotel4Id).rating(1));
 
         List<Hotel> hotelsToDelete = Collections.singletonList(new Hotel().hotelId(hotel4Id));
 
-        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>()
-            .addUploadActions(hotelsToUpload)
+        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>().addUploadActions(hotelsToUpload)
             .addMergeOrUploadActions(hotelsToMergeOrUpload);
 
         validateIndexResponseSync(client.uploadDocumentsWithResponse(hotelsToUpload, null, Context.NONE), 2);
@@ -1040,20 +1008,16 @@ public class IndexingTests extends SearchTestBase {
         String hotel3Id = getRandomDocumentKey();
         String hotel4Id = getRandomDocumentKey();
 
-        List<Hotel> hotelsToUpload = Arrays.asList(
-            new Hotel().hotelId(hotel1Id),
-            new Hotel().hotelId(hotel2Id));
+        List<Hotel> hotelsToUpload = Arrays.asList(new Hotel().hotelId(hotel1Id), new Hotel().hotelId(hotel2Id));
 
         List<Hotel> hotelsToMerge = Collections.singletonList(new Hotel().hotelId(hotel1Id).rating(5));
 
-        List<Hotel> hotelsToMergeOrUpload = Arrays.asList(
-            new Hotel().hotelId(hotel3Id).rating(4),
-            new Hotel().hotelId(hotel4Id).rating(1));
+        List<Hotel> hotelsToMergeOrUpload
+            = Arrays.asList(new Hotel().hotelId(hotel3Id).rating(4), new Hotel().hotelId(hotel4Id).rating(1));
 
         List<Hotel> hotelsToDelete = Collections.singletonList(new Hotel().hotelId(hotel4Id));
 
-        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>()
-            .addUploadActions(hotelsToUpload)
+        IndexDocumentsBatch<Hotel> batch = new IndexDocumentsBatch<Hotel>().addUploadActions(hotelsToUpload)
             .addMergeOrUploadActions(hotelsToMergeOrUpload);
 
         validateIndexResponseAsync(asyncClient.uploadDocumentsWithResponse(hotelsToUpload, null), 2);
@@ -1091,39 +1055,32 @@ public class IndexingTests extends SearchTestBase {
 
     private static void validateIndexResponseAsync(Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse,
         int resultCount) {
-        StepVerifier.create(indexDocumentsWithResponse)
-            .assertNext(response -> {
-                assertEquals(200, response.getStatusCode());
-                assertEquals(resultCount, response.getValue().getResults().size());
-            })
-            .verifyComplete();
+        StepVerifier.create(indexDocumentsWithResponse).assertNext(response -> {
+            assertEquals(200, response.getStatusCode());
+            assertEquals(resultCount, response.getValue().getResults().size());
+        }).verifyComplete();
     }
 
-    @SuppressWarnings({"UseOfObsoleteDateTimeApi"})
+    @SuppressWarnings({ "UseOfObsoleteDateTimeApi" })
     static Hotel prepareStaticallyTypedHotel(String hotelId) {
-        return new Hotel()
-            .hotelId(hotelId)
+        return new Hotel().hotelId(hotelId)
             .hotelName("Fancy Stay")
-            .description("Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.")
-            .descriptionFr("Meilleur hôtel en ville si vous aimez les hôtels de luxe. Ils ont une magnifique piscine à débordement, un spa et un concierge très utile. L'emplacement est parfait – en plein centre, à proximité de toutes les attractions touristiques. Nous recommandons fortement cet hôtel.")
+            .description(
+                "Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.")
+            .descriptionFr(
+                "Meilleur hôtel en ville si vous aimez les hôtels de luxe. Ils ont une magnifique piscine à débordement, un spa et un concierge très utile. L'emplacement est parfait – en plein centre, à proximité de toutes les attractions touristiques. Nous recommandons fortement cet hôtel.")
             .category("Luxury")
-            .tags(Arrays.asList("pool",
-                "view",
-                "wifi",
-                "concierge"))
+            .tags(Arrays.asList("pool", "view", "wifi", "concierge"))
             .parkingIncluded(false)
             .smokingAllowed(false)
             .lastRenovationDate(parseDate("2010-06-27T00:00:00Z"))
             .rating(5)
             .location(new GeoPoint(-122.131577, 47.678581))
-            .address(
-                new HotelAddress()
-                    .streetAddress("1 Microsoft Way")
-                    .city("Redmond")
-                    .stateProvince("Washington")
-                    .postalCode("98052")
-                    .country("United States")
-            );
+            .address(new HotelAddress().streetAddress("1 Microsoft Way")
+                .city("Redmond")
+                .stateProvince("Washington")
+                .postalCode("98052")
+                .country("United States"));
     }
 
     SearchDocument prepareDynamicallyTypedHotel(String hotelId) {
@@ -1166,7 +1123,8 @@ public class IndexingTests extends SearchTestBase {
         SearchDocument hotel = new SearchDocument();
         hotel.put("HotelId", hotelId);
         hotel.put("HotelName", "Fancy Stay Hotel");
-        hotel.put("Description", "Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.");
+        hotel.put("Description",
+            "Best hotel in town if you like luxury hotels. They have an amazing infinity pool, a spa, and a really helpful concierge. The location is perfect -- right downtown, close to all the tourist attractions. We highly recommend this hotel.");
         hotel.put("Description_fr", null);
         hotel.put("Address", address);
         hotel.put("Location", null);
@@ -1201,14 +1159,13 @@ public class IndexingTests extends SearchTestBase {
         assertEquals(expectedStatusCode, result.getStatusCode());
     }
 
-    @SuppressWarnings({"UseOfObsoleteDateTimeApi", "deprecation"})
+    @SuppressWarnings({ "UseOfObsoleteDateTimeApi", "deprecation" })
     List<Hotel> getBoundaryValues() {
         Date maxEpoch = Date.from(Instant.ofEpochMilli(253402300799000L));
         Date minEpoch = Date.from(Instant.ofEpochMilli(-2208988800000L));
         return Arrays.asList(
             // Minimum values
-            new Hotel()
-                .hotelId(getRandomDocumentKey())
+            new Hotel().hotelId(getRandomDocumentKey())
                 .category("")
                 .lastRenovationDate(new Date(minEpoch.getYear(), minEpoch.getMonth(), minEpoch.getDate(),
                     minEpoch.getHours(), minEpoch.getMinutes(), minEpoch.getSeconds()))
@@ -1219,8 +1176,7 @@ public class IndexingTests extends SearchTestBase {
                 .address(new HotelAddress())
                 .rooms(Collections.singletonList(new HotelRoom().baseRate(Double.MIN_VALUE))),
             // Maximum values
-            new Hotel()
-                .hotelId(getRandomDocumentKey())
+            new Hotel().hotelId(getRandomDocumentKey())
                 .category("test")   // No meaningful string max since there is no length limit (other than payload size or term length).
                 .lastRenovationDate(new Date(maxEpoch.getYear(), maxEpoch.getMonth(), maxEpoch.getDate(),
                     maxEpoch.getHours(), maxEpoch.getMinutes(), maxEpoch.getSeconds()))
@@ -1231,8 +1187,7 @@ public class IndexingTests extends SearchTestBase {
                 .address(new HotelAddress().city("Maximum"))
                 .rooms(Collections.singletonList(new HotelRoom().baseRate(Double.MAX_VALUE))),
             // Other boundary values #1
-            new Hotel()
-                .hotelId(getRandomDocumentKey())
+            new Hotel().hotelId(getRandomDocumentKey())
                 .category(null)
                 .lastRenovationDate(null)
                 .location(new GeoPoint(0.0, 0.0))     // Equator, meridian
@@ -1242,32 +1197,30 @@ public class IndexingTests extends SearchTestBase {
                 .address(new HotelAddress().city("Maximum"))
                 .rooms(Collections.singletonList(new HotelRoom().baseRate(Double.NEGATIVE_INFINITY))),
             // Other boundary values #2
-            new Hotel()
-                .hotelId(getRandomDocumentKey())
+            new Hotel().hotelId(getRandomDocumentKey())
                 .location(null)
                 .tags(Collections.emptyList())
                 .rooms(Collections.singletonList(new HotelRoom().baseRate(Double.POSITIVE_INFINITY))),
             // Other boundary values #3
-            new Hotel()
-                .hotelId(getRandomDocumentKey())
+            new Hotel().hotelId(getRandomDocumentKey())
                 .tags(Collections.emptyList())
                 .rooms(Collections.singletonList(new HotelRoom().baseRate(Double.NaN))),
             // Other boundary values #4
-            new Hotel()
-                .hotelId(getRandomDocumentKey())
+            new Hotel().hotelId(getRandomDocumentKey())
                 .category(null)
                 .tags(Collections.emptyList())
                 .rooms(Collections.emptyList()));
     }
 
-    @SuppressWarnings({"UseOfObsoleteDateTimeApi"})
+    @SuppressWarnings({ "UseOfObsoleteDateTimeApi" })
     private static Hotel canMergeStaticallyTypedDocumentsOriginal(String key) {
         // Define hotels
-        return new Hotel()
-            .hotelId(key)
+        return new Hotel().hotelId(key)
             .hotelName("Secret Point Motel")
-            .description("The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
-            .descriptionFr("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .description(
+                "The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
+            .descriptionFr(
+                "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
             .category("Boutique")
             .tags(Arrays.asList("pool", "air conditioning", "concierge"))
             .parkingIncluded(false)
@@ -1275,38 +1228,33 @@ public class IndexingTests extends SearchTestBase {
             .lastRenovationDate(parseDate("2010-06-27T00:00:00Z"))
             .rating(4)
             .location(new GeoPoint(-73.975403, 40.760586))
-            .address(new HotelAddress()
-                .streetAddress("677 5th Ave")
+            .address(new HotelAddress().streetAddress("677 5th Ave")
                 .city("New York")
                 .stateProvince("NY")
                 .country("USA")
                 .postalCode("10022"))
             .rooms(Arrays.asList(
-                new HotelRoom()
-                    .description("Budget Room, 1 Queen Bed (Cityside)")
+                new HotelRoom().description("Budget Room, 1 Queen Bed (Cityside)")
                     .descriptionFr("Chambre Économique, 1 grand lit (côté ville)")
                     .type("Budget Room")
                     .baseRate(9.69)
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(new String[]{"vcr/dvd"}),
-                new HotelRoom()
-                    .description("Budget Room, 1 King Bed (Mountain View)")
+                    .tags(new String[] { "vcr/dvd" }),
+                new HotelRoom().description("Budget Room, 1 King Bed (Mountain View)")
                     .descriptionFr("Chambre Économique, 1 très grand lit (Mountain View)")
                     .type("Budget Room")
                     .baseRate(8.09)
                     .bedOptions("1 King Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(new String[]{"vcr/dvd", "jacuzzi tub"})
-            ));
+                    .tags(new String[] { "vcr/dvd", "jacuzzi tub" })));
     }
 
     private static Hotel canMergeStaticallyTypedDocumentsUpdated(String key) {
         // Update category, tags, parking included, rating, and rooms. Erase description, last renovation date, location and address.
-        return new Hotel()
-            .hotelId(key)
+        return new Hotel().hotelId(key)
             .hotelName("Secret Point Motel")
             .description(null)
             .category("Economy")
@@ -1316,25 +1264,23 @@ public class IndexingTests extends SearchTestBase {
             .rating(3)
             //.location(null)
             .address(new HotelAddress())
-            .rooms(Collections.singletonList(
-                new HotelRoom()
-                    .description(null)
-                    .type("Budget Room")
-                    .baseRate(10.5)
-                    .bedOptions("1 Queen Bed")
-                    .sleepsCount(2)
-                    .tags(new String[]{"vcr/dvd", "balcony"})
-            ));
+            .rooms(Collections.singletonList(new HotelRoom().description(null)
+                .type("Budget Room")
+                .baseRate(10.5)
+                .bedOptions("1 Queen Bed")
+                .sleepsCount(2)
+                .tags(new String[] { "vcr/dvd", "balcony" })));
     }
 
-    @SuppressWarnings({"UseOfObsoleteDateTimeApi"})
+    @SuppressWarnings({ "UseOfObsoleteDateTimeApi" })
     private static Hotel canMergeStaticallyTypedDocumentsExpected(String key) {
         // Fields whose values get updated are updated, and whose values get erased remain the same.
-        return new Hotel()
-            .hotelId(key)
+        return new Hotel().hotelId(key)
             .hotelName("Secret Point Motel")
-            .description("The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
-            .descriptionFr("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .description(
+                "The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
+            .descriptionFr(
+                "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
             .category("Economy")
             .tags(Arrays.asList("pool", "air conditioning"))
             .parkingIncluded(true)
@@ -1342,30 +1288,27 @@ public class IndexingTests extends SearchTestBase {
             .lastRenovationDate(parseDate("2010-06-27T00:00:00Z"))
             .rating(3)
             .location(new GeoPoint(-73.975403, 40.760586))
-            .address(new HotelAddress()
-                .streetAddress("677 5th Ave")
+            .address(new HotelAddress().streetAddress("677 5th Ave")
                 .city("New York")
                 .stateProvince("NY")
                 .country("USA")
                 .postalCode("10022"))
-            .rooms(Collections.singletonList(
-                new HotelRoom()
-                    .description(null)
-                    .type("Budget Room")
-                    .baseRate(10.5)
-                    .bedOptions("1 Queen Bed")
-                    .sleepsCount(2)
-                    .tags(new String[]{"vcr/dvd", "balcony"})
-            ));
+            .rooms(Collections.singletonList(new HotelRoom().description(null)
+                .type("Budget Room")
+                .baseRate(10.5)
+                .bedOptions("1 Queen Bed")
+                .sleepsCount(2)
+                .tags(new String[] { "vcr/dvd", "balcony" })));
     }
 
-    @SuppressWarnings({"UseOfObsoleteDateTimeApi"})
+    @SuppressWarnings({ "UseOfObsoleteDateTimeApi" })
     private static LoudHotel canSetExplicitNullsInStaticallyTypedDocumentOriginal(String key) {
-        return new LoudHotel()
-            .HOTELID(key)
+        return new LoudHotel().HOTELID(key)
             .HOTELNAME("Secret Point Motel")
-            .DESCRIPTION("The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
-            .DESCRIPTIONFRENCH("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .DESCRIPTION(
+                "The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.")
+            .DESCRIPTIONFRENCH(
+                "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
             .CATEGORY("Boutique")
             .TAGS(Arrays.asList("pool", "air conditioning", "concierge"))
             .PARKINGINCLUDED(false)
@@ -1373,38 +1316,33 @@ public class IndexingTests extends SearchTestBase {
             .LASTRENOVATIONDATE(parseDate("1970-01-18T05:00:00Z"))
             .RATING(4)
             .LOCATION(new GeoPoint(-73.975403, 40.760586))
-            .ADDRESS(new HotelAddress()
-                .streetAddress("677 5th Ave")
+            .ADDRESS(new HotelAddress().streetAddress("677 5th Ave")
                 .city("New York")
                 .stateProvince("NY")
                 .country("USA")
-                .postalCode("10022")
-            ).ROOMS(Arrays.asList(
-                new HotelRoom()
-                    .description("Budget Room, 1 Queen Bed (Cityside)")
+                .postalCode("10022"))
+            .ROOMS(Arrays.asList(
+                new HotelRoom().description("Budget Room, 1 Queen Bed (Cityside)")
                     .descriptionFr("Chambre Économique, 1 grand lit (côté ville)")
                     .type("Budget Room")
                     .baseRate(9.69)
                     .bedOptions("1 Queen Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(new String[]{"vcr/dvd"}),
-                new HotelRoom()
-                    .description("Budget Room, 1 King Bed (Mountain View)")
+                    .tags(new String[] { "vcr/dvd" }),
+                new HotelRoom().description("Budget Room, 1 King Bed (Mountain View)")
                     .descriptionFr("Chambre Économique, 1 très grand lit (Mountain View)")
                     .type("Budget Room")
                     .baseRate(8.09)
                     .bedOptions("1 King Bed")
                     .sleepsCount(2)
                     .smokingAllowed(true)
-                    .tags(new String[]{"vcr/dvd", "jacuzzi tub"})
-            ));
+                    .tags(new String[] { "vcr/dvd", "jacuzzi tub" })));
     }
 
-    @SuppressWarnings({"UseOfObsoleteDateTimeApi"})
+    @SuppressWarnings({ "UseOfObsoleteDateTimeApi" })
     private static LoudHotel canSetExplicitNullsInStaticallyTypedDocumentUpdated(String key) {
-        return new LoudHotel()
-            .HOTELID(key)
+        return new LoudHotel().HOTELID(key)
             .DESCRIPTION(null)  // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
             .CATEGORY(null)     // This property doesn't have JsonInclude.Include.ALWAYS, so this should have no effect.
             .TAGS(Arrays.asList("pool", "air conditioning"))
@@ -1413,23 +1351,20 @@ public class IndexingTests extends SearchTestBase {
             .RATING(3)
             //.LOCATION(null)     // This property has JsonInclude.Include.ALWAYS, so this will null out the field.
             .ADDRESS(new HotelAddress())
-            .ROOMS(Collections.singletonList(
-                new HotelRoom()
-                    .description(null)
-                    .type("Budget Room")
-                    .baseRate(10.5)
-                    .smokingAllowed(false)
-                    .tags(new String[]{"vcr/dvd", "balcony"})
-            ));
+            .ROOMS(Collections.singletonList(new HotelRoom().description(null)
+                .type("Budget Room")
+                .baseRate(10.5)
+                .smokingAllowed(false)
+                .tags(new String[] { "vcr/dvd", "balcony" })));
     }
 
-    @SuppressWarnings({"UseOfObsoleteDateTimeApi"})
+    @SuppressWarnings({ "UseOfObsoleteDateTimeApi" })
     private static LoudHotel canSetExplicitNullsInStaticallyTypedDocumentExpected(String key) {
-        return new LoudHotel()
-            .HOTELID(key)
+        return new LoudHotel().HOTELID(key)
             .HOTELNAME("Secret Point Motel")
             .DESCRIPTION(null)
-            .DESCRIPTIONFRENCH("L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
+            .DESCRIPTIONFRENCH(
+                "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.")
             .CATEGORY("Boutique")
             .TAGS(Arrays.asList("pool", "air conditioning"))
             .PARKINGINCLUDED(true)
@@ -1437,33 +1372,32 @@ public class IndexingTests extends SearchTestBase {
             .LASTRENOVATIONDATE(parseDate("1970-01-18T05:00:00Z"))
             .RATING(3)
             //.LOCATION(null)
-            .ADDRESS(new HotelAddress()
-                .streetAddress("677 5th Ave")
+            .ADDRESS(new HotelAddress().streetAddress("677 5th Ave")
                 .city("New York")
                 .stateProvince("NY")
                 .country("USA")
-                .postalCode("10022")
-            ).ROOMS(Collections.singletonList(
+                .postalCode("10022"))
+            .ROOMS(Collections.singletonList(
                 // Regardless of NullValueHandling, this should look like the merged doc with unspecified fields as null
                 // because we don't support partial updates for complex collections.
-                new HotelRoom()
-                    .description(null)
+                new HotelRoom().description(null)
                     .descriptionFr(null)
                     .type("Budget Room")
                     .baseRate(10.5)
                     .bedOptions(null)
                     .sleepsCount(null)
                     .smokingAllowed(false)
-                    .tags(new String[]{"vcr/dvd", "balcony"})
-            ));
+                    .tags(new String[] { "vcr/dvd", "balcony" })));
     }
 
     private static SearchDocument canMergeDynamicDocumentsOriginal(String key) {
         SearchDocument originalDoc = new SearchDocument();
         originalDoc.put("HotelId", key);
         originalDoc.put("HotelName", "Secret Point Motel");
-        originalDoc.put("Description", "The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.");
-        originalDoc.put("Description_fr", "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.");
+        originalDoc.put("Description",
+            "The hotel is ideally located on the main commercial artery of the city in the heart of New York. A few minutes away is Time's Square and the historic centre of the city, as well as other places of interest that make New York one of America's most attractive and cosmopolitan cities.");
+        originalDoc.put("Description_fr",
+            "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.");
         originalDoc.put("Category", "Boutique");
         originalDoc.put("Tags", Arrays.asList("pool", "air conditioning", "concierge"));
         originalDoc.put("ParkingIncluded", false);
@@ -1535,7 +1469,8 @@ public class IndexingTests extends SearchTestBase {
         expectedDoc.put("HotelId", key);
         expectedDoc.put("HotelName", "Secret Point Motel");
         expectedDoc.put("Description", null);
-        expectedDoc.put("Description_fr", "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.");
+        expectedDoc.put("Description_fr",
+            "L'hôtel est idéalement situé sur la principale artère commerciale de la ville en plein cœur de New York. A quelques minutes se trouve la place du temps et le centre historique de la ville, ainsi que d'autres lieux d'intérêt qui font de New York l'une des villes les plus attractives et cosmopolites de l'Amérique.");
         expectedDoc.put("Category", "Economy");
         expectedDoc.put("Tags", Arrays.asList("pool", "air conditioning"));
         expectedDoc.put("ParkingIncluded", true);

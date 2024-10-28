@@ -45,15 +45,15 @@ public final class GlobalRulestacksListSecurityServicesWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SecurityServicesResponse response
-            = manager
-                .globalRulestacks().listSecurityServicesWithResponse("uslvyjtcvuwkasi",
-                    SecurityServicesTypeEnum.ANTI_VIRUS, "esfuught", 1326845225, com.azure.core.util.Context.NONE)
-                .getValue();
+        SecurityServicesResponse response = manager.globalRulestacks()
+            .listSecurityServicesWithResponse("uslvyjtcvuwkasi", SecurityServicesTypeEnum.ANTI_VIRUS, "esfuught",
+                1326845225, com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("ecjxe", response.value().type());
         Assertions.assertEquals("tuhxuicb", response.value().entry().get(0).name());

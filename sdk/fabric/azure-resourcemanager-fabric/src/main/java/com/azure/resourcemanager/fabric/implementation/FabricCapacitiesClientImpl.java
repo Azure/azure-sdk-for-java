@@ -59,25 +59,25 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     /**
      * The service client containing this operation class.
      */
-    private final FabricClientImpl client;
+    private final FabricManagementClientImpl client;
 
     /**
      * Initializes an instance of FabricCapacitiesClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    FabricCapacitiesClientImpl(FabricClientImpl client) {
+    FabricCapacitiesClientImpl(FabricManagementClientImpl client) {
         this.service
             = RestProxy.create(FabricCapacitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for FabricClientFabricCapacities to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for FabricManagementClientFabricCapacities to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "FabricClientFabricCa")
+    @ServiceInterface(name = "FabricManagementClie")
     public interface FabricCapacitiesService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Fabric/capacities/{capacityName}")

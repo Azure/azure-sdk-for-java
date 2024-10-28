@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of the policy metadata, excluding properties containing large strings. */
+/**
+ * The properties of the policy metadata, excluding properties containing large strings.
+ */
 @Immutable
-public class PolicyMetadataSlimProperties {
+public class PolicyMetadataSlimProperties implements JsonSerializable<PolicyMetadataSlimProperties> {
     /*
      * The policy metadata identifier.
      */
-    @JsonProperty(value = "metadataId", access = JsonProperty.Access.WRITE_ONLY)
     private String metadataId;
 
     /*
      * The category of the policy metadata.
      */
-    @JsonProperty(value = "category", access = JsonProperty.Access.WRITE_ONLY)
     private String category;
 
     /*
      * The title of the policy metadata.
      */
-    @JsonProperty(value = "title", access = JsonProperty.Access.WRITE_ONLY)
     private String title;
 
     /*
      * The owner of the policy metadata.
      */
-    @JsonProperty(value = "owner", access = JsonProperty.Access.WRITE_ONLY)
     private String owner;
 
     /*
      * Url for getting additional content about the resource metadata.
      */
-    @JsonProperty(value = "additionalContentUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String additionalContentUrl;
 
     /*
      * Additional metadata.
      */
-    @JsonProperty(value = "metadata", access = JsonProperty.Access.WRITE_ONLY)
     private Object metadata;
 
-    /** Creates an instance of PolicyMetadataSlimProperties class. */
+    /**
+     * Creates an instance of PolicyMetadataSlimProperties class.
+     */
     public PolicyMetadataSlimProperties() {
     }
 
     /**
      * Get the metadataId property: The policy metadata identifier.
-     *
+     * 
      * @return the metadataId value.
      */
     public String metadataId() {
@@ -60,8 +62,19 @@ public class PolicyMetadataSlimProperties {
     }
 
     /**
+     * Set the metadataId property: The policy metadata identifier.
+     * 
+     * @param metadataId the metadataId value to set.
+     * @return the PolicyMetadataSlimProperties object itself.
+     */
+    PolicyMetadataSlimProperties withMetadataId(String metadataId) {
+        this.metadataId = metadataId;
+        return this;
+    }
+
+    /**
      * Get the category property: The category of the policy metadata.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -69,8 +82,19 @@ public class PolicyMetadataSlimProperties {
     }
 
     /**
+     * Set the category property: The category of the policy metadata.
+     * 
+     * @param category the category value to set.
+     * @return the PolicyMetadataSlimProperties object itself.
+     */
+    PolicyMetadataSlimProperties withCategory(String category) {
+        this.category = category;
+        return this;
+    }
+
+    /**
      * Get the title property: The title of the policy metadata.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -78,8 +102,19 @@ public class PolicyMetadataSlimProperties {
     }
 
     /**
+     * Set the title property: The title of the policy metadata.
+     * 
+     * @param title the title value to set.
+     * @return the PolicyMetadataSlimProperties object itself.
+     */
+    PolicyMetadataSlimProperties withTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    /**
      * Get the owner property: The owner of the policy metadata.
-     *
+     * 
      * @return the owner value.
      */
     public String owner() {
@@ -87,8 +122,19 @@ public class PolicyMetadataSlimProperties {
     }
 
     /**
+     * Set the owner property: The owner of the policy metadata.
+     * 
+     * @param owner the owner value to set.
+     * @return the PolicyMetadataSlimProperties object itself.
+     */
+    PolicyMetadataSlimProperties withOwner(String owner) {
+        this.owner = owner;
+        return this;
+    }
+
+    /**
      * Get the additionalContentUrl property: Url for getting additional content about the resource metadata.
-     *
+     * 
      * @return the additionalContentUrl value.
      */
     public String additionalContentUrl() {
@@ -96,8 +142,19 @@ public class PolicyMetadataSlimProperties {
     }
 
     /**
+     * Set the additionalContentUrl property: Url for getting additional content about the resource metadata.
+     * 
+     * @param additionalContentUrl the additionalContentUrl value to set.
+     * @return the PolicyMetadataSlimProperties object itself.
+     */
+    PolicyMetadataSlimProperties withAdditionalContentUrl(String additionalContentUrl) {
+        this.additionalContentUrl = additionalContentUrl;
+        return this;
+    }
+
+    /**
      * Get the metadata property: Additional metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -105,10 +162,66 @@ public class PolicyMetadataSlimProperties {
     }
 
     /**
+     * Set the metadata property: Additional metadata.
+     * 
+     * @param metadata the metadata value to set.
+     * @return the PolicyMetadataSlimProperties object itself.
+     */
+    PolicyMetadataSlimProperties withMetadata(Object metadata) {
+        this.metadata = metadata;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyMetadataSlimProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyMetadataSlimProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyMetadataSlimProperties.
+     */
+    public static PolicyMetadataSlimProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyMetadataSlimProperties deserializedPolicyMetadataSlimProperties = new PolicyMetadataSlimProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadataId".equals(fieldName)) {
+                    deserializedPolicyMetadataSlimProperties.metadataId = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedPolicyMetadataSlimProperties.category = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedPolicyMetadataSlimProperties.title = reader.getString();
+                } else if ("owner".equals(fieldName)) {
+                    deserializedPolicyMetadataSlimProperties.owner = reader.getString();
+                } else if ("additionalContentUrl".equals(fieldName)) {
+                    deserializedPolicyMetadataSlimProperties.additionalContentUrl = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedPolicyMetadataSlimProperties.metadata = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyMetadataSlimProperties;
+        });
     }
 }

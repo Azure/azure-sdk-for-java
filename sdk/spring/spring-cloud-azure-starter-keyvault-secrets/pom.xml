@@ -33,6 +33,7 @@
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
+    <spotless.skip>true</spotless.skip>
   </properties>
 
   <licenses>
@@ -93,7 +94,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.8.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.9.0</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
     </dependency>
   </dependencies>
 

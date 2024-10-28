@@ -18,7 +18,9 @@ public enum FormRecognizerServiceVersion implements ServiceVersion {
      * Service version {@code v2.1}.
      */
     V2_1("v2.1");
+
     private final String version;
+
     FormRecognizerServiceVersion(String version) {
         this.version = version;
     }

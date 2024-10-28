@@ -172,8 +172,8 @@ public interface EndpointResource {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the endpoint access credentials to the resource along with {@link Response}.
      */
-    Response<EndpointAccessResource> listCredentialsWithResponse(
-        Long expiresin, ListCredentialsRequest listCredentialsRequest, Context context);
+    Response<EndpointAccessResource> listCredentialsWithResponse(Long expiresin,
+        ListCredentialsRequest listCredentialsRequest, Context context);
 
     /**
      * Gets the endpoint access credentials to the resource.
@@ -195,8 +195,8 @@ public interface EndpointResource {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ingress gateway endpoint credentials along with {@link Response}.
      */
-    Response<IngressGatewayResource> listIngressGatewayCredentialsWithResponse(
-        Long expiresin, ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest, Context context);
+    Response<IngressGatewayResource> listIngressGatewayCredentialsWithResponse(Long expiresin,
+        ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest, Context context);
 
     /**
      * Gets the ingress gateway endpoint credentials.
@@ -217,8 +217,8 @@ public interface EndpointResource {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed Proxy along with {@link Response}.
      */
-    Response<ManagedProxyResource> listManagedProxyDetailsWithResponse(
-        ManagedProxyRequest managedProxyRequest, Context context);
+    Response<ManagedProxyResource> listManagedProxyDetailsWithResponse(ManagedProxyRequest managedProxyRequest,
+        Context context);
 
     /**
      * Fetches the managed proxy details.

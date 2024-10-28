@@ -19,11 +19,7 @@ public final class CertificatesGetEntityTagResponse extends ResponseBase<Certifi
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public CertificatesGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
+    public CertificatesGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
         CertificatesGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

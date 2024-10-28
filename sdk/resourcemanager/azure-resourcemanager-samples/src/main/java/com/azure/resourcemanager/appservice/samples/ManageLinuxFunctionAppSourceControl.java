@@ -16,7 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.time.Duration;
 
@@ -28,7 +28,8 @@ import java.time.Duration;
  */
 public class ManageLinuxFunctionAppSourceControl {
 
-    private static final String FUNCTION_APP_PACKAGE_URL = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip";
+    private static final String FUNCTION_APP_PACKAGE_URL
+        = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-appservice/src/test/resources/java-functions.zip";
     private static final long TIMEOUT_IN_SECONDS = 5 * 60;
 
     /**
@@ -37,15 +38,15 @@ public class ManageLinuxFunctionAppSourceControl {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final String suffix         = ".azurewebsites.net";
-        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
-        final String app2Name       = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
-        final String app1Url        = app1Name + suffix;
-        final String app2Url        = app2Name + suffix;
-        final String plan1Name      = Utils.randomResourceName(azureResourceManager, "plan1-", 20);
-        final String plan2Name      = Utils.randomResourceName(azureResourceManager, "plan2-", 20);
-        final String storage1Name   = Utils.randomResourceName(azureResourceManager, "storage1", 20);
-        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
+        final String suffix = ".azurewebsites.net";
+        final String app1Name = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app2Name = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
+        final String app1Url = app1Name + suffix;
+        final String app2Url = app2Name + suffix;
+        final String plan1Name = Utils.randomResourceName(azureResourceManager, "plan1-", 20);
+        final String plan2Name = Utils.randomResourceName(azureResourceManager, "plan2-", 20);
+        final String storage1Name = Utils.randomResourceName(azureResourceManager, "storage1", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
 
         try {
 
@@ -54,15 +55,16 @@ public class ManageLinuxFunctionAppSourceControl {
 
             System.out.println("Creating function app " + app1Name + " in resource group " + rgName + "...");
 
-            FunctionApp app1 = azureResourceManager.functionApps().define(app1Name)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rgName)
-                    .withNewLinuxAppServicePlan(plan1Name, PricingTier.STANDARD_S1)
-                    .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
-                    .withNewStorageAccount(storage1Name, StorageAccountSkuType.STANDARD_LRS)
-                    .withHttpsOnly(true)
-                    .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
-                    .create();
+            FunctionApp app1 = azureResourceManager.functionApps()
+                .define(app1Name)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .withNewLinuxAppServicePlan(plan1Name, PricingTier.STANDARD_S1)
+                .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
+                .withNewStorageAccount(storage1Name, StorageAccountSkuType.STANDARD_LRS)
+                .withHttpsOnly(true)
+                .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
+                .create();
 
             System.out.println("Created function app " + app1.name());
             Utils.print(app1);
@@ -85,21 +87,22 @@ public class ManageLinuxFunctionAppSourceControl {
             System.out.println("Response is " + Utils.sendGetRequest("https://" + app1UrlFunction));
             // response would be "Hello, ..."
 
-
             //============================================================
             // Create a function app with a new consumption plan, configure as run from a package
 
             System.out.println("Creating function app " + app2Name + " in resource group " + rgName + "...");
 
-            FunctionApp app2 = azureResourceManager.functionApps().define(app2Name)
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(rgName)
-                    .withNewLinuxConsumptionPlan(plan2Name)
-                    .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
-                    .withExistingStorageAccount(azureResourceManager.storageAccounts().getByResourceGroup(rgName, storage1Name))
-                    .withHttpsOnly(true)
-                    .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
-                    .create();
+            FunctionApp app2 = azureResourceManager.functionApps()
+                .define(app2Name)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .withNewLinuxConsumptionPlan(plan2Name)
+                .withBuiltInImage(FunctionRuntimeStack.JAVA_8)
+                .withExistingStorageAccount(
+                    azureResourceManager.storageAccounts().getByResourceGroup(rgName, storage1Name))
+                .withHttpsOnly(true)
+                .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
+                .create();
 
             System.out.println("Created function app " + app2.name());
             Utils.print(app2);
@@ -151,8 +154,7 @@ public class ManageLinuxFunctionAppSourceControl {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

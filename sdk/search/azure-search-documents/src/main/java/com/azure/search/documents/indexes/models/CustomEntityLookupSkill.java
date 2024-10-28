@@ -11,8 +11,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * A skill looks for text from a custom, user-defined list of words and phrases.

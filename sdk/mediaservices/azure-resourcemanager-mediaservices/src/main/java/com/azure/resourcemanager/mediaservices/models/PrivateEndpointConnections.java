@@ -23,8 +23,8 @@ public interface PrivateEndpointConnections {
      * @return list of private endpoint connection associated with the specified storage account along with {@link
      *     Response}.
      */
-    Response<PrivateEndpointConnectionListResult> listWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<PrivateEndpointConnectionListResult> listWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * List private endpoint connections.
@@ -54,8 +54,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a private endpoint connection along with {@link Response}.
      */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName, String accountName, String name, Context context);
+    Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String accountName, String name,
+        Context context);
 
     /**
      * Get private endpoint connection.

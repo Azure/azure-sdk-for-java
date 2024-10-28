@@ -141,8 +141,8 @@ public final class EmailTemplateUpdateParameterProperties {
      * @param parameters the parameters value to set.
      * @return the EmailTemplateUpdateParameterProperties object itself.
      */
-    public EmailTemplateUpdateParameterProperties withParameters(
-        List<EmailTemplateParametersContractProperties> parameters) {
+    public EmailTemplateUpdateParameterProperties
+        withParameters(List<EmailTemplateParametersContractProperties> parameters) {
         this.parameters = parameters;
         return this;
     }

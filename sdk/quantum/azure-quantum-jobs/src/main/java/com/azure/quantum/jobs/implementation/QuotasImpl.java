@@ -52,24 +52,19 @@ public final class QuotasImpl {
     @Host("{$host}")
     @ServiceInterface(name = "QuantumClientQuotas")
     private interface QuotasService {
-        @Get(
-                "/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Quantum/workspaces/{workspaceName}/quotas")
-        @ExpectedResponses({200})
+        @Get("/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Quantum/workspaces/{workspaceName}/quotas")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(RestErrorException.class)
-        Mono<Response<QuotaList>> list(
-                @HostParam("$host") String host,
-                @PathParam("subscriptionId") String subscriptionId,
-                @PathParam("resourceGroupName") String resourceGroupName,
-                @PathParam("workspaceName") String workspaceName,
-                @HeaderParam("Accept") String accept);
+        Mono<Response<QuotaList>> list(@HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(RestErrorException.class)
-        Mono<Response<QuotaList>> listNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("$host") String host,
-                @HeaderParam("Accept") String accept);
+        Mono<Response<QuotaList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String host, @HeaderParam("Accept") String accept);
     }
 
     /**
@@ -82,21 +77,11 @@ public final class QuotasImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<Quota>> listSinglePageAsync() {
         final String accept = "application/json";
-        return service.list(
-                        this.client.getHost(),
-                        this.client.getSubscriptionId(),
-                        this.client.getResourceGroupName(),
-                        this.client.getWorkspaceName(),
-                        accept)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return service
+            .list(this.client.getHost(), this.client.getSubscriptionId(), this.client.getResourceGroupName(),
+                this.client.getWorkspaceName(), accept)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -136,14 +121,7 @@ public final class QuotasImpl {
     public Mono<PagedResponse<Quota>> listNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return service.listNext(nextLink, this.client.getHost(), accept)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 }

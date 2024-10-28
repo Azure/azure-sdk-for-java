@@ -30,8 +30,8 @@ public interface ProductWikisClient {
      * @return the entity state (Etag) version of the Wiki for a Product specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductWikisGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String productId, Context context);
+    ProductWikisGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String productId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Wiki for a Product specified by its identifier.
@@ -59,8 +59,8 @@ public interface ProductWikisClient {
      * @return the details of the Wiki for a Product specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductWikisGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String productId, Context context);
+    ProductWikisGetResponse getWithResponse(String resourceGroupName, String serviceName, String productId,
+        Context context);
 
     /**
      * Gets the details of the Wiki for a Product specified by its identifier.
@@ -91,13 +91,8 @@ public interface ProductWikisClient {
      * @return wiki properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductWikisCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        WikiContractInner parameters,
-        String ifMatch,
-        Context context);
+    ProductWikisCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String productId, WikiContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates a new Wiki for a Product or updates an existing one.
@@ -112,8 +107,8 @@ public interface ProductWikisClient {
      * @return wiki properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WikiContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String productId, WikiContractInner parameters);
+    WikiContractInner createOrUpdate(String resourceGroupName, String serviceName, String productId,
+        WikiContractInner parameters);
 
     /**
      * Updates the details of the Wiki for a Product specified by its identifier.
@@ -131,13 +126,8 @@ public interface ProductWikisClient {
      * @return wiki properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductWikisUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String ifMatch,
-        WikiUpdateContract parameters,
-        Context context);
+    ProductWikisUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String productId,
+        String ifMatch, WikiUpdateContract parameters, Context context);
 
     /**
      * Updates the details of the Wiki for a Product specified by its identifier.
@@ -154,8 +144,8 @@ public interface ProductWikisClient {
      * @return wiki properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WikiContractInner update(
-        String resourceGroupName, String serviceName, String productId, String ifMatch, WikiUpdateContract parameters);
+    WikiContractInner update(String resourceGroupName, String serviceName, String productId, String ifMatch,
+        WikiUpdateContract parameters);
 
     /**
      * Deletes the specified Wiki from a Product.
@@ -172,8 +162,8 @@ public interface ProductWikisClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String productId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String productId, String ifMatch,
+        Context context);
 
     /**
      * Deletes the specified Wiki from a Product.

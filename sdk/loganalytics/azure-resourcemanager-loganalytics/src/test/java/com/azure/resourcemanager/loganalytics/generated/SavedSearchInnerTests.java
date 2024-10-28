@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SavedSearchInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SavedSearchInner model =
-            BinaryData
-                .fromString(
-                    "{\"etag\":\"taruoujmkcj\",\"properties\":{\"category\":\"wqytjrybnwjewgdr\",\"displayName\":\"ervnaenqpehi\",\"query\":\"doy\",\"functionAlias\":\"ifthnz\",\"functionParameters\":\"dslgnayqigynduh\",\"version\":2967009412675959083,\"tags\":[{\"name\":\"thuma\",\"value\":\"olbgycduiertgccy\"},{\"name\":\"vaolpsslqlf\",\"value\":\"mdnbbglzpswiy\"},{\"name\":\"mcwyhzdxssadb\",\"value\":\"mnvdfzn\"},{\"name\":\"daodvxzbncblyl\",\"value\":\"stdbhhxsrzdzu\"}]},\"id\":\"erscdntne\",\"name\":\"fiwjmygtdssls\",\"type\":\"tmweriofzpyq\"}")
-                .toObject(SavedSearchInner.class);
+        SavedSearchInner model = BinaryData.fromString(
+            "{\"etag\":\"taruoujmkcj\",\"properties\":{\"category\":\"wqytjrybnwjewgdr\",\"displayName\":\"ervnaenqpehi\",\"query\":\"doy\",\"functionAlias\":\"ifthnz\",\"functionParameters\":\"dslgnayqigynduh\",\"version\":2967009412675959083,\"tags\":[{\"name\":\"thuma\",\"value\":\"olbgycduiertgccy\"},{\"name\":\"vaolpsslqlf\",\"value\":\"mdnbbglzpswiy\"},{\"name\":\"mcwyhzdxssadb\",\"value\":\"mnvdfzn\"},{\"name\":\"daodvxzbncblyl\",\"value\":\"stdbhhxsrzdzu\"}]},\"id\":\"erscdntne\",\"name\":\"fiwjmygtdssls\",\"type\":\"tmweriofzpyq\"}")
+            .toObject(SavedSearchInner.class);
         Assertions.assertEquals("taruoujmkcj", model.etag());
         Assertions.assertEquals("wqytjrybnwjewgdr", model.category());
         Assertions.assertEquals("ervnaenqpehi", model.displayName());
@@ -31,22 +29,17 @@ public final class SavedSearchInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SavedSearchInner model =
-            new SavedSearchInner()
-                .withEtag("taruoujmkcj")
-                .withCategory("wqytjrybnwjewgdr")
-                .withDisplayName("ervnaenqpehi")
-                .withQuery("doy")
-                .withFunctionAlias("ifthnz")
-                .withFunctionParameters("dslgnayqigynduh")
-                .withVersion(2967009412675959083L)
-                .withTags(
-                    Arrays
-                        .asList(
-                            new Tag().withName("thuma").withValue("olbgycduiertgccy"),
-                            new Tag().withName("vaolpsslqlf").withValue("mdnbbglzpswiy"),
-                            new Tag().withName("mcwyhzdxssadb").withValue("mnvdfzn"),
-                            new Tag().withName("daodvxzbncblyl").withValue("stdbhhxsrzdzu")));
+        SavedSearchInner model = new SavedSearchInner().withEtag("taruoujmkcj")
+            .withCategory("wqytjrybnwjewgdr")
+            .withDisplayName("ervnaenqpehi")
+            .withQuery("doy")
+            .withFunctionAlias("ifthnz")
+            .withFunctionParameters("dslgnayqigynduh")
+            .withVersion(2967009412675959083L)
+            .withTags(Arrays.asList(new Tag().withName("thuma").withValue("olbgycduiertgccy"),
+                new Tag().withName("vaolpsslqlf").withValue("mdnbbglzpswiy"),
+                new Tag().withName("mcwyhzdxssadb").withValue("mnvdfzn"),
+                new Tag().withName("daodvxzbncblyl").withValue("stdbhhxsrzdzu")));
         model = BinaryData.fromObject(model).toObject(SavedSearchInner.class);
         Assertions.assertEquals("taruoujmkcj", model.etag());
         Assertions.assertEquals("wqytjrybnwjewgdr", model.category());

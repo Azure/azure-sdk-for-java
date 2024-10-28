@@ -85,11 +85,12 @@ public final class ConfigurationBuilder {
     public ConfigurationBuilder(ConfigurationSource source, ConfigurationSource systemPropertiesConfigurationSource,
         ConfigurationSource environmentConfigurationSource) {
         Objects.requireNonNull(source, "'source' cannot be null");
-        Objects.requireNonNull(systemPropertiesConfigurationSource, "'systemPropertiesConfigurationSource' cannot be null");
+        Objects.requireNonNull(systemPropertiesConfigurationSource,
+            "'systemPropertiesConfigurationSource' cannot be null");
         Objects.requireNonNull(environmentConfigurationSource, "'environmentConfigurationSource' cannot be null");
         this.mutableSource = new MutableConfigurationSource(source);
-        this.environmentConfiguration = new EnvironmentConfiguration(systemPropertiesConfigurationSource,
-            environmentConfigurationSource);
+        this.environmentConfiguration
+            = new EnvironmentConfiguration(systemPropertiesConfigurationSource, environmentConfigurationSource);
     }
 
     /**
@@ -241,9 +242,8 @@ public final class ConfigurationBuilder {
 
         @Override
         public Map<String, String> getProperties(String source) {
-            Map<String, String> original = originalSource == null
-                ? Collections.emptyMap()
-                : originalSource.getProperties(source);
+            Map<String, String> original
+                = originalSource == null ? Collections.emptyMap() : originalSource.getProperties(source);
             if (additionalConfigurations == null) {
                 return original;
             }
@@ -265,7 +265,8 @@ public final class ConfigurationBuilder {
         }
 
         private static boolean hasPrefix(String key, String prefix) {
-            return prefix == null || key.startsWith(prefix) && key.length() > prefix.length() && key.charAt(prefix.length()) == '.';
+            return prefix == null
+                || key.startsWith(prefix) && key.length() > prefix.length() && key.charAt(prefix.length()) == '.';
         }
     }
 }

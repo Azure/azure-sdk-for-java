@@ -308,8 +308,10 @@ public final class NetworkFunctionDefinitionVersionsClientImpl implements Networ
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String publisherName,
         String networkFunctionDefinitionGroupName, String networkFunctionDefinitionVersionName) {
-        return this.beginDeleteAsync(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
-            networkFunctionDefinitionVersionName).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName)
+            .getSyncPoller();
     }
 
     /**
@@ -329,8 +331,10 @@ public final class NetworkFunctionDefinitionVersionsClientImpl implements Networ
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String publisherName,
         String networkFunctionDefinitionGroupName, String networkFunctionDefinitionVersionName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
-            networkFunctionDefinitionVersionName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -593,8 +597,10 @@ public final class NetworkFunctionDefinitionVersionsClientImpl implements Networ
     public SyncPoller<PollResult<NetworkFunctionDefinitionVersionInner>, NetworkFunctionDefinitionVersionInner>
         beginCreateOrUpdate(String resourceGroupName, String publisherName, String networkFunctionDefinitionGroupName,
             String networkFunctionDefinitionVersionName, NetworkFunctionDefinitionVersionInner parameters) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
-            networkFunctionDefinitionVersionName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -617,8 +623,10 @@ public final class NetworkFunctionDefinitionVersionsClientImpl implements Networ
         beginCreateOrUpdate(String resourceGroupName, String publisherName, String networkFunctionDefinitionGroupName,
             String networkFunctionDefinitionVersionName, NetworkFunctionDefinitionVersionInner parameters,
             Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
-            networkFunctionDefinitionVersionName, parameters, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1406,8 +1414,10 @@ public final class NetworkFunctionDefinitionVersionsClientImpl implements Networ
         SyncPoller<PollResult<NetworkFunctionDefinitionVersionUpdateStateInner>, NetworkFunctionDefinitionVersionUpdateStateInner>
         beginUpdateState(String resourceGroupName, String publisherName, String networkFunctionDefinitionGroupName,
             String networkFunctionDefinitionVersionName, NetworkFunctionDefinitionVersionUpdateStateInner parameters) {
-        return this.beginUpdateStateAsync(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
-            networkFunctionDefinitionVersionName, parameters).getSyncPoller();
+        return this
+            .beginUpdateStateAsync(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -1432,8 +1442,10 @@ public final class NetworkFunctionDefinitionVersionsClientImpl implements Networ
         beginUpdateState(String resourceGroupName, String publisherName, String networkFunctionDefinitionGroupName,
             String networkFunctionDefinitionVersionName, NetworkFunctionDefinitionVersionUpdateStateInner parameters,
             Context context) {
-        return this.beginUpdateStateAsync(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
-            networkFunctionDefinitionVersionName, parameters, context).getSyncPoller();
+        return this
+            .beginUpdateStateAsync(resourceGroupName, publisherName, networkFunctionDefinitionGroupName,
+                networkFunctionDefinitionVersionName, parameters, context)
+            .getSyncPoller();
     }
 
     /**

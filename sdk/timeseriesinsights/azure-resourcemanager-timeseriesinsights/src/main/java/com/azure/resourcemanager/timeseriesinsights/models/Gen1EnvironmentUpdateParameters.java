@@ -115,8 +115,8 @@ public final class Gen1EnvironmentUpdateParameters extends EnvironmentUpdatePara
      * @param storageLimitExceededBehavior the storageLimitExceededBehavior value to set.
      * @return the Gen1EnvironmentUpdateParameters object itself.
      */
-    public Gen1EnvironmentUpdateParameters withStorageLimitExceededBehavior(
-        StorageLimitExceededBehavior storageLimitExceededBehavior) {
+    public Gen1EnvironmentUpdateParameters
+        withStorageLimitExceededBehavior(StorageLimitExceededBehavior storageLimitExceededBehavior) {
         if (this.innerProperties() == null) {
             this.innerProperties = new Gen1EnvironmentMutableProperties();
         }

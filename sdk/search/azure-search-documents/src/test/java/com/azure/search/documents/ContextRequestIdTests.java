@@ -44,8 +44,7 @@ public class ContextRequestIdTests {
     public void searchClient() {
         String expectedRequestId = CoreUtils.randomUuid().toString();
 
-        SearchClient client = new SearchClientBuilder()
-            .indexName("index")
+        SearchClient client = new SearchClientBuilder().indexName("index")
             .endpoint("https://test.search.windows.net")
             .credential(new MockTokenCredential())
             .retryPolicy(RETRY_POLICY)
@@ -62,8 +61,7 @@ public class ContextRequestIdTests {
     public void searchAsyncClient() {
         String expectedRequestId = CoreUtils.randomUuid().toString();
 
-        SearchAsyncClient client = new SearchClientBuilder()
-            .indexName("index")
+        SearchAsyncClient client = new SearchClientBuilder().indexName("index")
             .endpoint("https://test.search.windows.net")
             .credential(new MockTokenCredential())
             .retryPolicy(RETRY_POLICY)
@@ -80,8 +78,7 @@ public class ContextRequestIdTests {
     public void searchIndexClient() {
         String expectedRequestId = CoreUtils.randomUuid().toString();
 
-        SearchIndexClient client = new SearchIndexClientBuilder()
-            .endpoint("https://test.search.windows.net")
+        SearchIndexClient client = new SearchIndexClientBuilder().endpoint("https://test.search.windows.net")
             .credential(new MockTokenCredential())
             .retryPolicy(RETRY_POLICY)
             .httpClient(new RequestIdVerifyingHttpClient(expectedRequestId))
@@ -97,8 +94,7 @@ public class ContextRequestIdTests {
     public void searchIndexAsyncClient() {
         String expectedRequestId = CoreUtils.randomUuid().toString();
 
-        SearchIndexAsyncClient client = new SearchIndexClientBuilder()
-            .endpoint("https://test.search.windows.net")
+        SearchIndexAsyncClient client = new SearchIndexClientBuilder().endpoint("https://test.search.windows.net")
             .credential(new MockTokenCredential())
             .retryPolicy(RETRY_POLICY)
             .httpClient(new RequestIdVerifyingHttpClient(expectedRequestId))
@@ -114,8 +110,7 @@ public class ContextRequestIdTests {
     public void searchIndexerClient() {
         String expectedRequestId = CoreUtils.randomUuid().toString();
 
-        SearchIndexerClient client = new SearchIndexerClientBuilder()
-            .endpoint("https://test.search.windows.net")
+        SearchIndexerClient client = new SearchIndexerClientBuilder().endpoint("https://test.search.windows.net")
             .credential(new MockTokenCredential())
             .retryPolicy(RETRY_POLICY)
             .httpClient(new RequestIdVerifyingHttpClient(expectedRequestId))
@@ -131,8 +126,7 @@ public class ContextRequestIdTests {
     public void searchIndexerAsyncClient() {
         String expectedRequestId = CoreUtils.randomUuid().toString();
 
-        SearchIndexerAsyncClient client = new SearchIndexerClientBuilder()
-            .endpoint("https://test.search.windows.net")
+        SearchIndexerAsyncClient client = new SearchIndexerClientBuilder().endpoint("https://test.search.windows.net")
             .credential(new MockTokenCredential())
             .retryPolicy(RETRY_POLICY)
             .httpClient(new RequestIdVerifyingHttpClient(expectedRequestId))
@@ -154,11 +148,10 @@ public class ContextRequestIdTests {
     }
 
     private static void verifyAsync(Mono<?> requestMono, String expectedRequestId) {
-        StepVerifier.create(requestMono)
-            .verifyErrorSatisfies(throwable -> {
-                RuntimeException ex = assertInstanceOf(RuntimeException.class, throwable);
-                assertEquals(expectedRequestId, ex.getMessage());
-            });
+        StepVerifier.create(requestMono).verifyErrorSatisfies(throwable -> {
+            RuntimeException ex = assertInstanceOf(RuntimeException.class, throwable);
+            assertEquals(expectedRequestId, ex.getMessage());
+        });
     }
 
     private static final class RequestIdVerifyingHttpClient implements HttpClient {

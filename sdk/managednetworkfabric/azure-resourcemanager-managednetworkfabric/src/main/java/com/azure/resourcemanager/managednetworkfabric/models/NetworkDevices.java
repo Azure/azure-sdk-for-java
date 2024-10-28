@@ -23,8 +23,8 @@ public interface NetworkDevices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Network Device resource details along with {@link Response}.
      */
-    Response<NetworkDevice> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkDeviceName, Context context);
+    Response<NetworkDevice> getByResourceGroupWithResponse(String resourceGroupName, String networkDeviceName,
+        Context context);
 
     /**
      * Gets a Network Device.
@@ -131,8 +131,8 @@ public interface NetworkDevices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate reboot(
-        String resourceGroupName, String networkDeviceName, RebootProperties body);
+    CommonPostActionResponseForStateUpdate reboot(String resourceGroupName, String networkDeviceName,
+        RebootProperties body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -148,8 +148,8 @@ public interface NetworkDevices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate reboot(
-        String resourceGroupName, String networkDeviceName, RebootProperties body, Context context);
+    CommonPostActionResponseForStateUpdate reboot(String resourceGroupName, String networkDeviceName,
+        RebootProperties body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -178,8 +178,8 @@ public interface NetworkDevices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate refreshConfiguration(
-        String resourceGroupName, String networkDeviceName, Context context);
+    CommonPostActionResponseForStateUpdate refreshConfiguration(String resourceGroupName, String networkDeviceName,
+        Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -194,8 +194,8 @@ public interface NetworkDevices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName, String networkDeviceName,
+        UpdateDeviceAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -211,8 +211,8 @@ public interface NetworkDevices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate updateAdministrativeState(
-        String resourceGroupName, String networkDeviceName, UpdateDeviceAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdate updateAdministrativeState(String resourceGroupName, String networkDeviceName,
+        UpdateDeviceAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -227,8 +227,8 @@ public interface NetworkDevices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate upgrade(
-        String resourceGroupName, String networkDeviceName, UpdateVersion body);
+    CommonPostActionResponseForStateUpdate upgrade(String resourceGroupName, String networkDeviceName,
+        UpdateVersion body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -244,8 +244,8 @@ public interface NetworkDevices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return common response for the state updates.
      */
-    CommonPostActionResponseForStateUpdate upgrade(
-        String resourceGroupName, String networkDeviceName, UpdateVersion body, Context context);
+    CommonPostActionResponseForStateUpdate upgrade(String resourceGroupName, String networkDeviceName,
+        UpdateVersion body, Context context);
 
     /**
      * Gets a Network Device.

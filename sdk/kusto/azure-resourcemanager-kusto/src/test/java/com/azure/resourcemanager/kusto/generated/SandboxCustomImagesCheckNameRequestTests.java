@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SandboxCustomImagesCheckNameRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SandboxCustomImagesCheckNameRequest model =
-            BinaryData.fromString("{\"name\":\"varmywdmj\"}").toObject(SandboxCustomImagesCheckNameRequest.class);
+        SandboxCustomImagesCheckNameRequest model
+            = BinaryData.fromString("{\"name\":\"varmywdmj\"}").toObject(SandboxCustomImagesCheckNameRequest.class);
         Assertions.assertEquals("varmywdmj", model.name());
     }
 

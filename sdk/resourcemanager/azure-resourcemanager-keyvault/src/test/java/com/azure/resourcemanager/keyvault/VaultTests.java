@@ -27,37 +27,35 @@ public class VaultTests extends KeyVaultManagementTest {
         // Create user service principal
         String sp = generateRandomResourceName("sp", 20);
         String us = generateRandomResourceName("us", 20);
-        ServicePrincipal servicePrincipal =
-            authorizationManager.servicePrincipals().define(sp).withNewApplication().create();
+        ServicePrincipal servicePrincipal
+            = authorizationManager.servicePrincipals().define(sp).withNewApplication().create();
 
-        ActiveDirectoryUser user =
-            authorizationManager.users().define(us).withEmailAlias(us).withPassword(password()).create();
+        ActiveDirectoryUser user
+            = authorizationManager.users().define(us).withEmailAlias(us).withPassword(password()).create();
 
         try {
             // CREATE
-            Vault vault =
-                keyVaultManager
-                    .vaults()
-                    .define(vaultName)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rgName)
-                    .defineAccessPolicy()
-                    .forServicePrincipal(sp)
-                    .allowKeyPermissions(KeyPermissions.LIST)
-                    .allowSecretAllPermissions()
-                    .allowCertificatePermissions(CertificatePermissions.GET)
-                    .attach()
-                    .defineAccessPolicy()
-                    .forUser(us)
-                    .allowKeyAllPermissions()
-                    .allowSecretAllPermissions()
-                    .allowCertificatePermissions(
-                        CertificatePermissions.GET, CertificatePermissions.LIST, CertificatePermissions.CREATE)
-                    .attach()
-                    // .withBypass(NetworkRuleBypassOptions.AZURE_SERVICES)
-                    .withAccessFromAzureServices()
-                    .withAccessFromIpAddress("0.0.0.0/0")
-                    .create();
+            Vault vault = keyVaultManager.vaults()
+                .define(vaultName)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .defineAccessPolicy()
+                .forServicePrincipal(sp)
+                .allowKeyPermissions(KeyPermissions.LIST)
+                .allowSecretAllPermissions()
+                .allowCertificatePermissions(CertificatePermissions.GET)
+                .attach()
+                .defineAccessPolicy()
+                .forUser(us)
+                .allowKeyAllPermissions()
+                .allowSecretAllPermissions()
+                .allowCertificatePermissions(CertificatePermissions.GET, CertificatePermissions.LIST,
+                    CertificatePermissions.CREATE)
+                .attach()
+                // .withBypass(NetworkRuleBypassOptions.AZURE_SERVICES)
+                .withAccessFromAzureServices()
+                .withAccessFromIpAddress("0.0.0.0/0")
+                .create();
             Assertions.assertNotNull(vault);
             //Assertions.assertFalse(vault.softDeleteEnabled());
             Assertions.assertEquals(vault.networkRuleSet().bypass(), NetworkRuleBypassOptions.AZURE_SERVICES);
@@ -67,14 +65,11 @@ public class VaultTests extends KeyVaultManagementTest {
             Assertions.assertNotNull(vault);
             for (AccessPolicy policy : vault.accessPolicies()) {
                 if (policy.objectId().equals(servicePrincipal.id())) {
-                    Assertions
-                        .assertArrayEquals(
-                            new KeyPermissions[] {KeyPermissions.LIST}, policy.permissions().keys().toArray());
+                    Assertions.assertArrayEquals(new KeyPermissions[] { KeyPermissions.LIST },
+                        policy.permissions().keys().toArray());
                     Assertions.assertEquals(SecretPermissions.values().size(), policy.permissions().secrets().size());
-                    Assertions
-                        .assertArrayEquals(
-                            new CertificatePermissions[] {CertificatePermissions.GET},
-                            policy.permissions().certificates().toArray());
+                    Assertions.assertArrayEquals(new CertificatePermissions[] { CertificatePermissions.GET },
+                        policy.permissions().certificates().toArray());
                 }
                 if (policy.objectId().equals(user.id())) {
                     Assertions.assertEquals(KeyPermissions.values().size(), policy.permissions().keys().size());
@@ -92,8 +87,7 @@ public class VaultTests extends KeyVaultManagementTest {
             }
             Assertions.assertNotNull(vault);
             // UPDATE
-            vault
-                .update()
+            vault.update()
                 .updateAccessPolicy(servicePrincipal.id())
                 .allowKeyAllPermissions()
                 .disallowSecretAllPermissions()
@@ -105,9 +99,8 @@ public class VaultTests extends KeyVaultManagementTest {
                 if (policy.objectId().equals(servicePrincipal.id())) {
                     Assertions.assertEquals(KeyPermissions.values().size(), policy.permissions().keys().size());
                     Assertions.assertEquals(0, policy.permissions().secrets().size());
-                    Assertions
-                        .assertEquals(
-                            CertificatePermissions.values().size(), policy.permissions().certificates().size());
+                    Assertions.assertEquals(CertificatePermissions.values().size(),
+                        policy.permissions().certificates().size());
                 }
             }
 
@@ -121,8 +114,10 @@ public class VaultTests extends KeyVaultManagementTest {
         }
     }
 
-    @Test void canCRUDVaultWithRbac() {
-        Vault vault = keyVaultManager.vaults().define(vaultName)
+    @Test
+    void canCRUDVaultWithRbac() {
+        Vault vault = keyVaultManager.vaults()
+            .define(vaultName)
             .withRegion(Region.US_WEST)
             .withNewResourceGroup(rgName)
             .withRoleBasedAccessControl()
@@ -130,9 +125,7 @@ public class VaultTests extends KeyVaultManagementTest {
 
         Assertions.assertTrue(vault.roleBasedAccessControlEnabled());
 
-        vault.update()
-            .withoutRoleBasedAccessControl()
-            .apply();
+        vault.update().withoutRoleBasedAccessControl().apply();
 
         Assertions.assertFalse(vault.roleBasedAccessControlEnabled());
     }
@@ -142,34 +135,32 @@ public class VaultTests extends KeyVaultManagementTest {
         // Create user service principal
         String sp = generateRandomResourceName("sp", 20);
         String us = generateRandomResourceName("us", 20);
-        ServicePrincipal servicePrincipal =
-            authorizationManager.servicePrincipals().define(sp).withNewApplication().create();
+        ServicePrincipal servicePrincipal
+            = authorizationManager.servicePrincipals().define(sp).withNewApplication().create();
 
-        ActiveDirectoryUser user =
-            authorizationManager.users().define(us).withEmailAlias(us).withPassword(password()).create();
+        ActiveDirectoryUser user
+            = authorizationManager.users().define(us).withEmailAlias(us).withPassword(password()).create();
 
         try {
             // CREATE
-            Vault vault =
-                keyVaultManager
-                    .vaults()
-                    .define(vaultName)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rgName)
-                    .defineAccessPolicy()
-                    .forServicePrincipal(sp)
-                    .allowKeyPermissions(KeyPermissions.LIST)
-                    .allowSecretAllPermissions()
-                    .allowCertificatePermissions(CertificatePermissions.GET)
-                    .attach()
-                    .defineAccessPolicy()
-                    .forUser(us)
-                    .allowKeyAllPermissions()
-                    .allowSecretAllPermissions()
-                    .allowCertificatePermissions(
-                        CertificatePermissions.GET, CertificatePermissions.LIST, CertificatePermissions.CREATE)
-                    .attach()
-                    .create();
+            Vault vault = keyVaultManager.vaults()
+                .define(vaultName)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .defineAccessPolicy()
+                .forServicePrincipal(sp)
+                .allowKeyPermissions(KeyPermissions.LIST)
+                .allowSecretAllPermissions()
+                .allowCertificatePermissions(CertificatePermissions.GET)
+                .attach()
+                .defineAccessPolicy()
+                .forUser(us)
+                .allowKeyAllPermissions()
+                .allowSecretAllPermissions()
+                .allowCertificatePermissions(CertificatePermissions.GET, CertificatePermissions.LIST,
+                    CertificatePermissions.CREATE)
+                .attach()
+                .create();
             Assertions.assertNotNull(vault);
             //Assertions.assertFalse(vault.softDeleteEnabled());
             // GET
@@ -177,14 +168,11 @@ public class VaultTests extends KeyVaultManagementTest {
             Assertions.assertNotNull(vault);
             for (AccessPolicy policy : vault.accessPolicies()) {
                 if (policy.objectId().equals(servicePrincipal.id())) {
-                    Assertions
-                        .assertArrayEquals(
-                            new KeyPermissions[] {KeyPermissions.LIST}, policy.permissions().keys().toArray());
+                    Assertions.assertArrayEquals(new KeyPermissions[] { KeyPermissions.LIST },
+                        policy.permissions().keys().toArray());
                     Assertions.assertEquals(SecretPermissions.values().size(), policy.permissions().secrets().size());
-                    Assertions
-                        .assertArrayEquals(
-                            new CertificatePermissions[] {CertificatePermissions.GET},
-                            policy.permissions().certificates().toArray());
+                    Assertions.assertArrayEquals(new CertificatePermissions[] { CertificatePermissions.GET },
+                        policy.permissions().certificates().toArray());
                 }
                 if (policy.objectId().equals(user.id())) {
                     Assertions.assertEquals(KeyPermissions.values().size(), policy.permissions().keys().size());
@@ -193,8 +181,8 @@ public class VaultTests extends KeyVaultManagementTest {
                 }
             }
             // LIST
-            PagedIterable<Vault> vaults =
-                new PagedIterable<>(keyVaultManager.vaults().listByResourceGroupAsync(rgName));
+            PagedIterable<Vault> vaults
+                = new PagedIterable<>(keyVaultManager.vaults().listByResourceGroupAsync(rgName));
             for (Vault v : vaults) {
                 if (vaultName.equals(v.name())) {
                     vault = v;
@@ -203,8 +191,7 @@ public class VaultTests extends KeyVaultManagementTest {
             }
             Assertions.assertNotNull(vault);
             // UPDATE
-            vault
-                .update()
+            vault.update()
                 .updateAccessPolicy(servicePrincipal.id())
                 .allowKeyAllPermissions()
                 .disallowSecretAllPermissions()
@@ -216,9 +203,8 @@ public class VaultTests extends KeyVaultManagementTest {
                 if (policy.objectId().equals(servicePrincipal.id())) {
                     Assertions.assertEquals(KeyPermissions.values().size(), policy.permissions().keys().size());
                     Assertions.assertEquals(0, policy.permissions().secrets().size());
-                    Assertions
-                        .assertEquals(
-                            CertificatePermissions.values().size(), policy.permissions().certificates().size());
+                    Assertions.assertEquals(CertificatePermissions.values().size(),
+                        policy.permissions().certificates().size());
                 }
             }
 
@@ -238,33 +224,31 @@ public class VaultTests extends KeyVaultManagementTest {
         String sp = generateRandomResourceName("sp", 20);
         String us = generateRandomResourceName("us", 20);
 
-        ServicePrincipal servicePrincipal =
-            authorizationManager.servicePrincipals().define(sp).withNewApplication().create();
+        ServicePrincipal servicePrincipal
+            = authorizationManager.servicePrincipals().define(sp).withNewApplication().create();
 
-        ActiveDirectoryUser user =
-            authorizationManager.users().define(us).withEmailAlias(us).withPassword(password()).create();
+        ActiveDirectoryUser user
+            = authorizationManager.users().define(us).withEmailAlias(us).withPassword(password()).create();
 
         try {
-            Vault vault =
-                keyVaultManager
-                    .vaults()
-                    .define(otherVaultName)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rgName)
-                    .defineAccessPolicy()
-                    .forServicePrincipal(sp)
-                    .allowKeyPermissions(KeyPermissions.LIST)
-                    .allowSecretAllPermissions()
-                    .allowCertificatePermissions(CertificatePermissions.GET)
-                    .attach()
-                    .defineAccessPolicy()
-                    .forUser(us)
-                    .allowKeyAllPermissions()
-                    .allowSecretAllPermissions()
-                    .allowCertificatePermissions(
-                        CertificatePermissions.GET, CertificatePermissions.LIST, CertificatePermissions.CREATE)
-                    .attach()
-                    .create();
+            Vault vault = keyVaultManager.vaults()
+                .define(otherVaultName)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .defineAccessPolicy()
+                .forServicePrincipal(sp)
+                .allowKeyPermissions(KeyPermissions.LIST)
+                .allowSecretAllPermissions()
+                .allowCertificatePermissions(CertificatePermissions.GET)
+                .attach()
+                .defineAccessPolicy()
+                .forUser(us)
+                .allowKeyAllPermissions()
+                .allowSecretAllPermissions()
+                .allowCertificatePermissions(CertificatePermissions.GET, CertificatePermissions.LIST,
+                    CertificatePermissions.CREATE)
+                .attach()
+                .create();
             Assertions.assertTrue(vault.softDeleteEnabled());
 
             keyVaultManager.vaults().deleteByResourceGroup(rgName, otherVaultName);
@@ -285,7 +269,8 @@ public class VaultTests extends KeyVaultManagementTest {
 
     @Test
     public void canDisablePublicNetworkAccess() {
-        Vault vault = keyVaultManager.vaults().define(vaultName)
+        Vault vault = keyVaultManager.vaults()
+            .define(vaultName)
             .withRegion(Region.US_WEST)
             .withNewResourceGroup(rgName)
             .withEmptyAccessPolicy()
@@ -293,14 +278,14 @@ public class VaultTests extends KeyVaultManagementTest {
             .create();
 
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, vault.publicNetworkAccess());
-        Assertions.assertEquals(PublicNetworkAccess.DISABLED, keyVaultManager.vaults().getById(vault.id()).publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED,
+            keyVaultManager.vaults().getById(vault.id()).publicNetworkAccess());
 
-        vault.update()
-            .enablePublicNetworkAccess()
-            .apply();
+        vault.update().enablePublicNetworkAccess().apply();
 
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, vault.publicNetworkAccess());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, keyVaultManager.vaults().getById(vault.id()).publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED,
+            keyVaultManager.vaults().getById(vault.id()).publicNetworkAccess());
     }
 
     private void assertVaultDeleted(String name, String location) {

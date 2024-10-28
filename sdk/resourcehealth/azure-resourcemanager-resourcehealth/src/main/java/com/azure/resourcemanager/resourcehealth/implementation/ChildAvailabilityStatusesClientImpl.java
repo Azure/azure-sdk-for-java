@@ -44,10 +44,8 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
      * @param client the instance of the service client containing this operation class.
      */
     ChildAvailabilityStatusesClientImpl(MicrosoftResourceHealthImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ChildAvailabilityStatusesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ChildAvailabilityStatusesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,41 +56,31 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftResourceHea")
     public interface ChildAvailabilityStatusesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.ResourceHealth/childAvailabilityStatuses/current")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailabilityStatusInner>> getByResource(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AvailabilityStatusInner>> getByResource(@HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$expand") String expand, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.ResourceHealth/childAvailabilityStatuses")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AvailabilityStatusListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AvailabilityStatusListResult>> list(@HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$expand") String expand, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AvailabilityStatusListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -111,30 +99,19 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AvailabilityStatusInner>> getByResourceWithResponseAsync(
-        String resourceUri, String filter, String expand) {
+    private Mono<Response<AvailabilityStatusInner>> getByResourceWithResponseAsync(String resourceUri, String filter,
+        String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResource(
-                            this.client.getEndpoint(),
-                            resourceUri,
-                            this.client.getApiVersion(),
-                            filter,
-                            expand,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResource(this.client.getEndpoint(), resourceUri,
+                this.client.getApiVersion(), filter, expand, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -155,22 +132,19 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AvailabilityStatusInner>> getByResourceWithResponseAsync(
-        String resourceUri, String filter, String expand, Context context) {
+    private Mono<Response<AvailabilityStatusInner>> getByResourceWithResponseAsync(String resourceUri, String filter,
+        String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResource(
-                this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), filter, expand, accept, context);
+        return service.getByResource(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), filter,
+            expand, accept, context);
     }
 
     /**
@@ -208,8 +182,8 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
      * @return current availability status for a single resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AvailabilityStatusInner> getByResourceWithResponse(
-        String resourceUri, String filter, String expand, Context context) {
+    public Response<AvailabilityStatusInner> getByResourceWithResponse(String resourceUri, String filter, String expand,
+        Context context) {
         return getByResourceWithResponseAsync(resourceUri, filter, expand, context).block();
     }
 
@@ -248,39 +222,21 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailabilityStatusInner>> listSinglePageAsync(
-        String resourceUri, String filter, String expand) {
+    private Mono<PagedResponse<AvailabilityStatusInner>> listSinglePageAsync(String resourceUri, String filter,
+        String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceUri,
-                            this.client.getApiVersion(),
-                            filter,
-                            expand,
-                            accept,
-                            context))
-            .<PagedResponse<AvailabilityStatusInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(),
+                filter, expand, accept, context))
+            .<PagedResponse<AvailabilityStatusInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -302,13 +258,11 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AvailabilityStatusInner>> listSinglePageAsync(
-        String resourceUri, String filter, String expand, Context context) {
+    private Mono<PagedResponse<AvailabilityStatusInner>> listSinglePageAsync(String resourceUri, String filter,
+        String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -317,15 +271,8 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), filter, expand, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -345,8 +292,8 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AvailabilityStatusInner> listAsync(String resourceUri, String filter, String expand) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceUri, filter, expand), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, filter, expand),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -365,8 +312,8 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
     private PagedFlux<AvailabilityStatusInner> listAsync(String resourceUri) {
         final String filter = null;
         final String expand = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceUri, filter, expand), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, filter, expand),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -386,10 +333,9 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
      * @return the List availabilityStatus operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AvailabilityStatusInner> listAsync(
-        String resourceUri, String filter, String expand, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceUri, filter, expand, context),
+    private PagedFlux<AvailabilityStatusInner> listAsync(String resourceUri, String filter, String expand,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, filter, expand, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -429,8 +375,8 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
      * @return the List availabilityStatus operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AvailabilityStatusInner> list(
-        String resourceUri, String filter, String expand, Context context) {
+    public PagedIterable<AvailabilityStatusInner> list(String resourceUri, String filter, String expand,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceUri, filter, expand, context));
     }
 
@@ -451,23 +397,13 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AvailabilityStatusInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<AvailabilityStatusInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -489,23 +425,13 @@ public final class ChildAvailabilityStatusesClientImpl implements ChildAvailabil
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

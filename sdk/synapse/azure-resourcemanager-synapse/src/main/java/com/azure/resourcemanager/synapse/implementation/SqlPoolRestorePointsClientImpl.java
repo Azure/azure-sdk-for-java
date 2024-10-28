@@ -53,9 +53,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolRestorePointsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(SqlPoolRestorePointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SqlPoolRestorePointsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,81 +65,56 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolRestorePointsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RestorePointListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RestorePointListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("sqlPoolName") String sqlPoolName,
             @BodyParam("application/json") CreateSqlPoolRestorePointDefinition parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints/{restorePointName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints/{restorePointName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RestorePointInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("restorePointName") String restorePointName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RestorePointInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("restorePointName") String restorePointName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints/{restorePointName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints/{restorePointName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("restorePointName") String restorePointName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("restorePointName") String restorePointName,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RestorePointListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RestorePointListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -157,19 +131,15 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return sQL pool backup information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RestorePointInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private Mono<PagedResponse<RestorePointInner>> listSinglePageAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -184,27 +154,10 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            accept,
-                            context))
-            .<PagedResponse<RestorePointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, accept, context))
+            .<PagedResponse<RestorePointInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -223,19 +176,15 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return sQL pool backup information along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RestorePointInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    private Mono<PagedResponse<RestorePointInner>> listSinglePageAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -251,24 +200,10 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, sqlPoolName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -286,8 +221,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RestorePointInner> listAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -306,10 +240,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return sQL pool backup information as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RestorePointInner> listAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, context),
+    private PagedFlux<RestorePointInner> listAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -346,8 +279,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return sQL pool backup information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RestorePointInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    public PagedIterable<RestorePointInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, sqlPoolName, context));
     }
 
@@ -364,22 +297,15 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, CreateSqlPoolRestorePointDefinition parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -400,18 +326,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            parameters,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, workspaceName, sqlPoolName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -429,23 +345,15 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return database restore points along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, CreateSqlPoolRestorePointDefinition parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -465,17 +373,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, parameters, accept, context);
     }
 
     /**
@@ -491,21 +390,12 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return the {@link PollerFlux} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, parameters);
-        return this
-            .client
-            .<RestorePointInner, RestorePointInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                RestorePointInner.class,
-                RestorePointInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, CreateSqlPoolRestorePointDefinition parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, parameters);
+        return this.client.<RestorePointInner, RestorePointInner>getLroResult(mono, this.client.getHttpPipeline(),
+            RestorePointInner.class, RestorePointInner.class, this.client.getContext());
     }
 
     /**
@@ -522,19 +412,13 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return the {@link PollerFlux} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters,
-        Context context) {
+    private PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, CreateSqlPoolRestorePointDefinition parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, parameters, context);
-        return this
-            .client
-            .<RestorePointInner, RestorePointInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RestorePointInner.class, RestorePointInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, parameters, context);
+        return this.client.<RestorePointInner, RestorePointInner>getLroResult(mono, this.client.getHttpPipeline(),
+            RestorePointInner.class, RestorePointInner.class, context);
     }
 
     /**
@@ -550,11 +434,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return the {@link SyncPoller} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters) {
+    public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(String resourceGroupName,
+        String workspaceName, String sqlPoolName, CreateSqlPoolRestorePointDefinition parameters) {
         return this.beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, parameters).getSyncPoller();
     }
 
@@ -572,14 +453,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return the {@link SyncPoller} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters,
-        Context context) {
-        return this
-            .beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, parameters, context)
+    public SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(String resourceGroupName,
+        String workspaceName, String sqlPoolName, CreateSqlPoolRestorePointDefinition parameters, Context context) {
+        return this.beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, parameters, context)
             .getSyncPoller();
     }
 
@@ -596,13 +472,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return database restore points on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RestorePointInner> createAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    private Mono<RestorePointInner> createAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
         CreateSqlPoolRestorePointDefinition parameters) {
-        return beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, parameters)
-            .last()
+        return beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -620,14 +492,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return database restore points on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RestorePointInner> createAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, parameters, context)
-            .last()
+    private Mono<RestorePointInner> createAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        CreateSqlPoolRestorePointDefinition parameters, Context context) {
+        return beginCreateAsync(resourceGroupName, workspaceName, sqlPoolName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -644,10 +511,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return database restore points.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RestorePointInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    public RestorePointInner create(String resourceGroupName, String workspaceName, String sqlPoolName,
         CreateSqlPoolRestorePointDefinition parameters) {
         return createAsync(resourceGroupName, workspaceName, sqlPoolName, parameters).block();
     }
@@ -666,12 +530,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return database restore points.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RestorePointInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters,
-        Context context) {
+    public RestorePointInner create(String resourceGroupName, String workspaceName, String sqlPoolName,
+        CreateSqlPoolRestorePointDefinition parameters, Context context) {
         return createAsync(resourceGroupName, workspaceName, sqlPoolName, parameters, context).block();
     }
 
@@ -688,19 +548,15 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return a restore point along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RestorePointInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
+    private Mono<Response<RestorePointInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String restorePointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -719,19 +575,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            restorePointName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, restorePointName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -749,19 +594,15 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return a restore point along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RestorePointInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context) {
+    private Mono<Response<RestorePointInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String restorePointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -780,17 +621,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                restorePointName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, restorePointName, accept, context);
     }
 
     /**
@@ -806,8 +638,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return a restore point on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RestorePointInner> getAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
+    private Mono<RestorePointInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String restorePointName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, restorePointName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -826,8 +658,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return a restore point along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RestorePointInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context) {
+    public Response<RestorePointInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String restorePointName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, restorePointName, context).block();
     }
 
@@ -844,8 +676,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return a restore point.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RestorePointInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
+    public RestorePointInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String restorePointName) {
         return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, restorePointName, Context.NONE)
             .getValue();
     }
@@ -863,19 +695,15 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String restorePointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -894,17 +722,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
         final String apiVersion = "2021-06-01";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            restorePointName,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, workspaceName, sqlPoolName, restorePointName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -922,19 +741,15 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String restorePointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -952,16 +767,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
         }
         final String apiVersion = "2021-06-01";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                restorePointName,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, restorePointName, context);
     }
 
     /**
@@ -977,8 +784,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String restorePointName) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, restorePointName)
             .flatMap(ignored -> Mono.empty());
     }
@@ -997,8 +804,8 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String restorePointName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, restorePointName, context)
             .block();
     }
@@ -1036,23 +843,13 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RestorePointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<RestorePointInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1074,23 +871,13 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

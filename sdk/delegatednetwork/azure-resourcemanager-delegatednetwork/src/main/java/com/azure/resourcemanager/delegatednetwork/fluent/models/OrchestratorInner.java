@@ -5,29 +5,51 @@
 package com.azure.resourcemanager.delegatednetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.delegatednetwork.models.OrchestratorIdentity;
 import com.azure.resourcemanager.delegatednetwork.models.OrchestratorKind;
 import com.azure.resourcemanager.delegatednetwork.models.OrchestratorResource;
 import com.azure.resourcemanager.delegatednetwork.models.OrchestratorResourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Represents an instance of a orchestrator. */
+/**
+ * Represents an instance of a orchestrator.
+ */
 @Fluent
 public final class OrchestratorInner extends OrchestratorResource {
     /*
      * Properties of the provision operation request.
      */
-    @JsonProperty(value = "properties")
     private OrchestratorResourceProperties properties;
 
-    /** Creates an instance of OrchestratorInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of OrchestratorInner class.
+     */
     public OrchestratorInner() {
     }
 
     /**
      * Get the properties property: Properties of the provision operation request.
-     *
+     * 
      * @return the properties value.
      */
     public OrchestratorResourceProperties properties() {
@@ -36,7 +58,7 @@ public final class OrchestratorInner extends OrchestratorResource {
 
     /**
      * Set the properties property: Properties of the provision operation request.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OrchestratorInner object itself.
      */
@@ -45,28 +67,66 @@ public final class OrchestratorInner extends OrchestratorResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrchestratorInner withKind(OrchestratorKind kind) {
         super.withKind(kind);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrchestratorInner withIdentity(OrchestratorIdentity identity) {
         super.withIdentity(identity);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrchestratorInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrchestratorInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -75,14 +135,78 @@ public final class OrchestratorInner extends OrchestratorResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (properties() != null) {
             properties().validate();
         }
+        if (kind() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property kind in model OrchestratorInner"));
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrchestratorInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeStringField("kind", kind() == null ? null : kind().toString());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", identity());
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrchestratorInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrchestratorInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OrchestratorInner.
+     */
+    public static OrchestratorInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrchestratorInner deserializedOrchestratorInner = new OrchestratorInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOrchestratorInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOrchestratorInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedOrchestratorInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedOrchestratorInner.withLocation(reader.getString());
+                } else if ("kind".equals(fieldName)) {
+                    deserializedOrchestratorInner.withKind(OrchestratorKind.fromString(reader.getString()));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedOrchestratorInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedOrchestratorInner.withIdentity(OrchestratorIdentity.fromJson(reader));
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOrchestratorInner.properties = OrchestratorResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrchestratorInner;
+        });
     }
 }

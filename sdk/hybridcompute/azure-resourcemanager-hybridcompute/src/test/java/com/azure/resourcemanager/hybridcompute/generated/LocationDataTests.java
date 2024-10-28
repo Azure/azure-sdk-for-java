@@ -13,24 +13,24 @@ public final class LocationDataTests {
     public void testDeserialize() throws Exception {
         LocationData model = BinaryData
             .fromString(
-                "{\"name\":\"ojnxqbzvdd\",\"city\":\"wndeicbtwnp\",\"district\":\"oqvuhr\",\"countryOrRegion\":\"f\"}")
+                "{\"name\":\"obnbdxkqpxokaj\",\"city\":\"npime\",\"district\":\"stxgc\",\"countryOrRegion\":\"dg\"}")
             .toObject(LocationData.class);
-        Assertions.assertEquals("ojnxqbzvdd", model.name());
-        Assertions.assertEquals("wndeicbtwnp", model.city());
-        Assertions.assertEquals("oqvuhr", model.district());
-        Assertions.assertEquals("f", model.countryOrRegion());
+        Assertions.assertEquals("obnbdxkqpxokaj", model.name());
+        Assertions.assertEquals("npime", model.city());
+        Assertions.assertEquals("stxgc", model.district());
+        Assertions.assertEquals("dg", model.countryOrRegion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LocationData model = new LocationData().withName("ojnxqbzvdd")
-            .withCity("wndeicbtwnp")
-            .withDistrict("oqvuhr")
-            .withCountryOrRegion("f");
+        LocationData model = new LocationData().withName("obnbdxkqpxokaj")
+            .withCity("npime")
+            .withDistrict("stxgc")
+            .withCountryOrRegion("dg");
         model = BinaryData.fromObject(model).toObject(LocationData.class);
-        Assertions.assertEquals("ojnxqbzvdd", model.name());
-        Assertions.assertEquals("wndeicbtwnp", model.city());
-        Assertions.assertEquals("oqvuhr", model.district());
-        Assertions.assertEquals("f", model.countryOrRegion());
+        Assertions.assertEquals("obnbdxkqpxokaj", model.name());
+        Assertions.assertEquals("npime", model.city());
+        Assertions.assertEquals("stxgc", model.district());
+        Assertions.assertEquals("dg", model.countryOrRegion());
     }
 }

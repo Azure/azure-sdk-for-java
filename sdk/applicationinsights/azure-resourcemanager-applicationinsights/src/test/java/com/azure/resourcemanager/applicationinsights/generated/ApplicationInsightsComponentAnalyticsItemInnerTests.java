@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationInsightsComponentAnalyticsItemInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentAnalyticsItemInner model =
-            BinaryData
-                .fromString(
-                    "{\"Id\":\"okacspk\",\"Name\":\"hzdobpxjmflbvvnc\",\"Content\":\"kcciwwzjuqkhr\",\"Version\":\"jiwkuofoskghsau\",\"Scope\":\"user\",\"Type\":\"none\",\"TimeCreated\":\"xieduugidyjrr\",\"TimeModified\":\"y\",\"Properties\":{\"functionAlias\":\"v\"}}")
-                .toObject(ApplicationInsightsComponentAnalyticsItemInner.class);
+        ApplicationInsightsComponentAnalyticsItemInner model = BinaryData.fromString(
+            "{\"Id\":\"okacspk\",\"Name\":\"hzdobpxjmflbvvnc\",\"Content\":\"kcciwwzjuqkhr\",\"Version\":\"jiwkuofoskghsau\",\"Scope\":\"user\",\"Type\":\"none\",\"TimeCreated\":\"xieduugidyjrr\",\"TimeModified\":\"y\",\"Properties\":{\"functionAlias\":\"v\"}}")
+            .toObject(ApplicationInsightsComponentAnalyticsItemInner.class);
         Assertions.assertEquals("okacspk", model.id());
         Assertions.assertEquals("hzdobpxjmflbvvnc", model.name());
         Assertions.assertEquals("kcciwwzjuqkhr", model.content());
@@ -29,9 +27,8 @@ public final class ApplicationInsightsComponentAnalyticsItemInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationInsightsComponentAnalyticsItemInner model =
-            new ApplicationInsightsComponentAnalyticsItemInner()
-                .withId("okacspk")
+        ApplicationInsightsComponentAnalyticsItemInner model
+            = new ApplicationInsightsComponentAnalyticsItemInner().withId("okacspk")
                 .withName("hzdobpxjmflbvvnc")
                 .withContent("kcciwwzjuqkhr")
                 .withScope(ItemScope.USER)

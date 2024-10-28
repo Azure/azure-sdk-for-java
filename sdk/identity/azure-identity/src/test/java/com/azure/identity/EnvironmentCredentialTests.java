@@ -14,18 +14,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
-
 public class EnvironmentCredentialTests {
     @Test
     public void testCreateEnvironmentClientSecretCredential() {
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
-            .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
-            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz"));
+        Configuration configuration = TestUtils
+            .createTestConfiguration(new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
+                .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
+                .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz"));
 
-        EnvironmentCredential credential = new EnvironmentCredentialBuilder()
-            .configuration(configuration)
-            .build();
+        EnvironmentCredential credential = new EnvironmentCredentialBuilder().configuration(configuration).build();
 
         // authentication will fail client-id=foo, but should be able to create ClientSecretCredential
         StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default")))
@@ -34,7 +31,6 @@ public class EnvironmentCredentialTests {
                 Assertions.assertFalse(message != null
                     && message.contains("Cannot create any credentials with the current environment variables"));
             });
-
 
         // Validate Sync flow.
         Exception e = Assertions.assertThrows(Exception.class,
@@ -47,15 +43,13 @@ public class EnvironmentCredentialTests {
 
     @Test
     public void testCreateEnvironmentClientCertificateCredential() {
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
-            .put(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, "bar")
-            .put(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD, "password")
-            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz"));
+        Configuration configuration = TestUtils
+            .createTestConfiguration(new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
+                .put(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, "bar")
+                .put(Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD, "password")
+                .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz"));
 
-        EnvironmentCredential credential = new EnvironmentCredentialBuilder()
-            .configuration(configuration)
-            .build();
+        EnvironmentCredential credential = new EnvironmentCredentialBuilder().configuration(configuration).build();
 
         // authentication will fail client-id=foo, but should be able to create ClientCertificateCredential
         StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default")))
@@ -76,14 +70,12 @@ public class EnvironmentCredentialTests {
 
     @Test
     public void testCreateEnvironmentUserPasswordCredential() {
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
-            .put(Configuration.PROPERTY_AZURE_USERNAME, "bar")
-            .put(Configuration.PROPERTY_AZURE_PASSWORD, "baz"));
+        Configuration configuration = TestUtils
+            .createTestConfiguration(new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
+                .put(Configuration.PROPERTY_AZURE_USERNAME, "bar")
+                .put(Configuration.PROPERTY_AZURE_PASSWORD, "baz"));
 
-        EnvironmentCredential credential = new EnvironmentCredentialBuilder()
-            .configuration(configuration)
-            .build();
+        EnvironmentCredential credential = new EnvironmentCredentialBuilder().configuration(configuration).build();
 
         // authentication will fail client-id=foo, but should be able to create UsernamePasswordCredential
         StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("qux/.default")))
@@ -105,18 +97,16 @@ public class EnvironmentCredentialTests {
     @Test
     public void testInvalidAdditionalTenant() {
         // setup
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
-            .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
-            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz")
-            .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, "RANDOM"));
+        Configuration configuration = TestUtils
+            .createTestConfiguration(new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
+                .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
+                .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz")
+                .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, "RANDOM"));
 
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
-            .setTenantId("newTenant");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        EnvironmentCredential credential = new EnvironmentCredentialBuilder()
-            .configuration(configuration)
-            .build();
+        EnvironmentCredential credential = new EnvironmentCredentialBuilder().configuration(configuration).build();
 
         StepVerifier.create(credential.getToken(request))
             .verifyErrorMatches(e -> e instanceof ClientAuthenticationException
@@ -126,17 +116,15 @@ public class EnvironmentCredentialTests {
     @Test
     public void testInvalidMultiTenantAuth() {
         // setup
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
-            .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
-            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz"));
+        Configuration configuration = TestUtils
+            .createTestConfiguration(new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
+                .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
+                .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz"));
 
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
-            .setTenantId("newTenant");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        EnvironmentCredential credential = new EnvironmentCredentialBuilder()
-            .configuration(configuration)
-            .build();
+        EnvironmentCredential credential = new EnvironmentCredentialBuilder().configuration(configuration).build();
         StepVerifier.create(credential.getToken(request))
             .verifyErrorMatches(e -> e instanceof ClientAuthenticationException
                 && (e.getMessage().startsWith("The current credential is not configured to")));
@@ -145,19 +133,16 @@ public class EnvironmentCredentialTests {
     @Test
     public void testValidMultiTenantAuth() {
         // setup
-        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
-            .put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
-            .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
-            .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz")
-            .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, "*"));
+        Configuration configuration = TestUtils
+            .createTestConfiguration(new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_CLIENT_ID, "foo")
+                .put(Configuration.PROPERTY_AZURE_CLIENT_SECRET, "bar")
+                .put(Configuration.PROPERTY_AZURE_TENANT_ID, "baz")
+                .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, "*"));
 
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
-            .setTenantId("newTenant");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        EnvironmentCredential credential = new EnvironmentCredentialBuilder()
-            .configuration(configuration)
-            .build();
-        StepVerifier.create(credential.getToken(request))
-            .verifyError(MsalServiceException.class);
+        EnvironmentCredential credential = new EnvironmentCredentialBuilder().configuration(configuration).build();
+        StepVerifier.create(credential.getToken(request)).verifyError(MsalServiceException.class);
     }
 }

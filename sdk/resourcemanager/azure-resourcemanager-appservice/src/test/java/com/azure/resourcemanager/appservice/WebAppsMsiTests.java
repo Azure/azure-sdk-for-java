@@ -53,19 +53,17 @@ public class WebAppsMsiTests extends AppServiceTest {
     @Test
     public void canCRUDWebAppWithMsi() throws Exception {
         // Create with new app service plan
-        WebApp webApp =
-            appServiceManager
-                .webApps()
-                .define(webappName1)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName1)
-                .withNewWindowsPlan(PricingTier.BASIC_B1)
-                .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2019)
-                .withSystemAssignedManagedServiceIdentity()
-                .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
-                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
-                .create();
+        WebApp webApp = appServiceManager.webApps()
+            .define(webappName1)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName1)
+            .withNewWindowsPlan(PricingTier.BASIC_B1)
+            .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2019)
+            .withSystemAssignedManagedServiceIdentity()
+            .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
+            .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+            .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
+            .create();
         Assertions.assertNotNull(webApp);
         Assertions.assertEquals(Region.US_WEST, webApp.region());
         AppServicePlan plan = appServiceManager.appServicePlans().getById(webApp.appServicePlanId());
@@ -98,50 +96,44 @@ public class WebAppsMsiTests extends AppServiceTest {
 
         // Prepare a definition for yet-to-be-created resource group
         //
-        Creatable<ResourceGroup> creatableRG =
-            resourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST);
+        Creatable<ResourceGroup> creatableRG
+            = resourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST);
 
         // Create an "User Assigned (External) MSI" residing in the above RG and assign reader access to the virtual
         // network
         //
-        final Identity createdIdentity =
-            msiManager
-                .identities()
-                .define(identityName1)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(creatableRG)
-                .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
-                .create();
+        final Identity createdIdentity = msiManager.identities()
+            .define(identityName1)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(creatableRG)
+            .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
+            .create();
 
         // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the
         // resource group
         // it resides
         //
-        Creatable<Identity> creatableIdentity =
-            msiManager
-                .identities()
-                .define(identityName2)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(creatableRG)
-                .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
+        Creatable<Identity> creatableIdentity = msiManager.identities()
+            .define(identityName2)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(creatableRG)
+            .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
 
         // Create with new app service plan
-        WebApp webApp =
-            appServiceManager
-                .webApps()
-                .define(webappName1)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName1)
-                .withNewWindowsPlan(PricingTier.BASIC_B1)
-                .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2019)
-                .withSystemAssignedManagedServiceIdentity()
-                .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
-                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
-                .withUserAssignedManagedServiceIdentity()
-                .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
-                .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
-                .create();
+        WebApp webApp = appServiceManager.webApps()
+            .define(webappName1)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName1)
+            .withNewWindowsPlan(PricingTier.BASIC_B1)
+            .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2019)
+            .withSystemAssignedManagedServiceIdentity()
+            .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
+            .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+            .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
+            .withUserAssignedManagedServiceIdentity()
+            .withNewUserAssignedManagedServiceIdentity(creatableIdentity)
+            .withExistingUserAssignedManagedServiceIdentity(createdIdentity)
+            .create();
         Assertions.assertNotNull(webApp);
         Assertions.assertEquals(Region.US_WEST, webApp.region());
         AppServicePlan plan = appServiceManager.appServicePlans().getById(webApp.appServicePlanId());
@@ -171,22 +163,22 @@ public class WebAppsMsiTests extends AppServiceTest {
         }
     }
 
-//    private static void enableFtps(WebApp webApp) {
-//        webApp.manager().resourceManager().genericResources().define("ftp")
-//            .withRegion(webApp.regionName())
-//            .withExistingResourceGroup(webApp.resourceGroupName())
-//            .withResourceType("basicPublishingCredentialsPolicies")
-//            .withProviderNamespace("Microsoft.Web")
-//            .withoutPlan()
-//            .withParentResourcePath("sites/" + webApp.name())
-//            .withApiVersion("2018-11-01")
-//            .withProperties(new CsmPublishingCredentialsPoliciesEntityProperties().withAllow(true))
-//            .create();
-//
-//        webApp.update()
-//            .withFtpsState(FtpsState.FTPS_ONLY)
-//            .apply();
-//    }
+    //    private static void enableFtps(WebApp webApp) {
+    //        webApp.manager().resourceManager().genericResources().define("ftp")
+    //            .withRegion(webApp.regionName())
+    //            .withExistingResourceGroup(webApp.resourceGroupName())
+    //            .withResourceType("basicPublishingCredentialsPolicies")
+    //            .withProviderNamespace("Microsoft.Web")
+    //            .withoutPlan()
+    //            .withParentResourcePath("sites/" + webApp.name())
+    //            .withApiVersion("2018-11-01")
+    //            .withProperties(new CsmPublishingCredentialsPoliciesEntityProperties().withAllow(true))
+    //            .create();
+    //
+    //        webApp.update()
+    //            .withFtpsState(FtpsState.FTPS_ONLY)
+    //            .apply();
+    //    }
 
     private static boolean setContainsValue(Set<String> stringSet, String value) {
         boolean found = false;

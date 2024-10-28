@@ -43,12 +43,14 @@ public final class ComponentsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Component response = manager.components()
-            .getWithResponse("y", "ruuuybnch", "szizoyuelyetndnb", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("y", "ruuuybnch", "szizoyuelyetndnb", com.azure.core.util.Context.NONE)
+            .getValue();
 
     }
 }

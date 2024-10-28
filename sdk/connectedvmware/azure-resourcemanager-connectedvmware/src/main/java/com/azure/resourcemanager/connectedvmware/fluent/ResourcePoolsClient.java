@@ -29,8 +29,8 @@ public interface ResourcePoolsClient {
      * @return the {@link SyncPoller} for polling of define the resourcePool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ResourcePoolInner>, ResourcePoolInner> beginCreate(
-        String resourceGroupName, String resourcePoolName);
+    SyncPoller<PollResult<ResourcePoolInner>, ResourcePoolInner> beginCreate(String resourceGroupName,
+        String resourcePoolName);
 
     /**
      * Implements resourcePool PUT method.
@@ -47,8 +47,8 @@ public interface ResourcePoolsClient {
      * @return the {@link SyncPoller} for polling of define the resourcePool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ResourcePoolInner>, ResourcePoolInner> beginCreate(
-        String resourceGroupName, String resourcePoolName, ResourcePoolInner body, Context context);
+    SyncPoller<PollResult<ResourcePoolInner>, ResourcePoolInner> beginCreate(String resourceGroupName,
+        String resourcePoolName, ResourcePoolInner body, Context context);
 
     /**
      * Implements resourcePool PUT method.
@@ -80,8 +80,8 @@ public interface ResourcePoolsClient {
      * @return define the resourcePool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourcePoolInner create(
-        String resourceGroupName, String resourcePoolName, ResourcePoolInner body, Context context);
+    ResourcePoolInner create(String resourceGroupName, String resourcePoolName, ResourcePoolInner body,
+        Context context);
 
     /**
      * Gets a resourcePool.
@@ -97,8 +97,8 @@ public interface ResourcePoolsClient {
      * @return define the resourcePool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourcePoolInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourcePoolName, Context context);
+    Response<ResourcePoolInner> getByResourceGroupWithResponse(String resourceGroupName, String resourcePoolName,
+        Context context);
 
     /**
      * Gets a resourcePool.
@@ -130,8 +130,8 @@ public interface ResourcePoolsClient {
      * @return define the resourcePool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourcePoolInner> updateWithResponse(
-        String resourceGroupName, String resourcePoolName, ResourcePatch body, Context context);
+    Response<ResourcePoolInner> updateWithResponse(String resourceGroupName, String resourcePoolName,
+        ResourcePatch body, Context context);
 
     /**
      * Updates a resourcePool.
@@ -178,8 +178,8 @@ public interface ResourcePoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourcePoolName, Boolean force, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourcePoolName, Boolean force,
+        Context context);
 
     /**
      * Deletes an resourcePool.

@@ -5,73 +5,77 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorTenantId;
 import com.azure.resourcemanager.securityinsights.models.PollingFrequency;
 import com.azure.resourcemanager.securityinsights.models.TiTaxiiDataConnectorDataTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Threat Intelligence TAXII data connector properties. */
+/**
+ * Threat Intelligence TAXII data connector properties.
+ */
 @Fluent
 public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId {
     /*
      * The workspace id.
      */
-    @JsonProperty(value = "workspaceId")
     private String workspaceId;
 
     /*
      * The friendly name for the TAXII server.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The API root for the TAXII server.
      */
-    @JsonProperty(value = "taxiiServer")
     private String taxiiServer;
 
     /*
      * The collection id of the TAXII server.
      */
-    @JsonProperty(value = "collectionId")
     private String collectionId;
 
     /*
      * The userName for the TAXII server.
      */
-    @JsonProperty(value = "userName")
     private String username;
 
     /*
      * The password for the TAXII server.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * The lookback period for the TAXII server.
      */
-    @JsonProperty(value = "taxiiLookbackPeriod")
     private OffsetDateTime taxiiLookbackPeriod;
 
     /*
      * The polling frequency for the TAXII server.
      */
-    @JsonProperty(value = "pollingFrequency", required = true)
     private PollingFrequency pollingFrequency;
 
     /*
      * The available data types for Threat Intelligence TAXII data connector.
      */
-    @JsonProperty(value = "dataTypes", required = true)
     private TiTaxiiDataConnectorDataTypes dataTypes;
 
     /**
+     * Creates an instance of TiTaxiiDataConnectorProperties class.
+     */
+    public TiTaxiiDataConnectorProperties() {
+    }
+
+    /**
      * Get the workspaceId property: The workspace id.
-     *
+     * 
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -80,7 +84,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Set the workspaceId property: The workspace id.
-     *
+     * 
      * @param workspaceId the workspaceId value to set.
      * @return the TiTaxiiDataConnectorProperties object itself.
      */
@@ -91,7 +95,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Get the friendlyName property: The friendly name for the TAXII server.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -100,7 +104,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Set the friendlyName property: The friendly name for the TAXII server.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the TiTaxiiDataConnectorProperties object itself.
      */
@@ -111,7 +115,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Get the taxiiServer property: The API root for the TAXII server.
-     *
+     * 
      * @return the taxiiServer value.
      */
     public String taxiiServer() {
@@ -120,7 +124,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Set the taxiiServer property: The API root for the TAXII server.
-     *
+     * 
      * @param taxiiServer the taxiiServer value to set.
      * @return the TiTaxiiDataConnectorProperties object itself.
      */
@@ -131,7 +135,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Get the collectionId property: The collection id of the TAXII server.
-     *
+     * 
      * @return the collectionId value.
      */
     public String collectionId() {
@@ -140,7 +144,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Set the collectionId property: The collection id of the TAXII server.
-     *
+     * 
      * @param collectionId the collectionId value to set.
      * @return the TiTaxiiDataConnectorProperties object itself.
      */
@@ -151,7 +155,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Get the username property: The userName for the TAXII server.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -160,7 +164,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Set the username property: The userName for the TAXII server.
-     *
+     * 
      * @param username the username value to set.
      * @return the TiTaxiiDataConnectorProperties object itself.
      */
@@ -171,7 +175,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Get the password property: The password for the TAXII server.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -180,7 +184,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Set the password property: The password for the TAXII server.
-     *
+     * 
      * @param password the password value to set.
      * @return the TiTaxiiDataConnectorProperties object itself.
      */
@@ -191,7 +195,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Get the taxiiLookbackPeriod property: The lookback period for the TAXII server.
-     *
+     * 
      * @return the taxiiLookbackPeriod value.
      */
     public OffsetDateTime taxiiLookbackPeriod() {
@@ -200,7 +204,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Set the taxiiLookbackPeriod property: The lookback period for the TAXII server.
-     *
+     * 
      * @param taxiiLookbackPeriod the taxiiLookbackPeriod value to set.
      * @return the TiTaxiiDataConnectorProperties object itself.
      */
@@ -211,7 +215,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Get the pollingFrequency property: The polling frequency for the TAXII server.
-     *
+     * 
      * @return the pollingFrequency value.
      */
     public PollingFrequency pollingFrequency() {
@@ -220,7 +224,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Set the pollingFrequency property: The polling frequency for the TAXII server.
-     *
+     * 
      * @param pollingFrequency the pollingFrequency value to set.
      * @return the TiTaxiiDataConnectorProperties object itself.
      */
@@ -231,7 +235,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Get the dataTypes property: The available data types for Threat Intelligence TAXII data connector.
-     *
+     * 
      * @return the dataTypes value.
      */
     public TiTaxiiDataConnectorDataTypes dataTypes() {
@@ -240,7 +244,7 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Set the dataTypes property: The available data types for Threat Intelligence TAXII data connector.
-     *
+     * 
      * @param dataTypes the dataTypes value to set.
      * @return the TiTaxiiDataConnectorProperties object itself.
      */
@@ -249,7 +253,9 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TiTaxiiDataConnectorProperties withTenantId(String tenantId) {
         super.withTenantId(tenantId);
@@ -258,27 +264,101 @@ public final class TiTaxiiDataConnectorProperties extends DataConnectorTenantId 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (pollingFrequency() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property pollingFrequency in model TiTaxiiDataConnectorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property pollingFrequency in model TiTaxiiDataConnectorProperties"));
         }
         if (dataTypes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataTypes in model TiTaxiiDataConnectorProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataTypes in model TiTaxiiDataConnectorProperties"));
         } else {
             dataTypes().validate();
+        }
+        if (tenantId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property tenantId in model TiTaxiiDataConnectorProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TiTaxiiDataConnectorProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", tenantId());
+        jsonWriter.writeStringField("pollingFrequency",
+            this.pollingFrequency == null ? null : this.pollingFrequency.toString());
+        jsonWriter.writeJsonField("dataTypes", this.dataTypes);
+        jsonWriter.writeStringField("workspaceId", this.workspaceId);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("taxiiServer", this.taxiiServer);
+        jsonWriter.writeStringField("collectionId", this.collectionId);
+        jsonWriter.writeStringField("userName", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("taxiiLookbackPeriod",
+            this.taxiiLookbackPeriod == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.taxiiLookbackPeriod));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TiTaxiiDataConnectorProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TiTaxiiDataConnectorProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TiTaxiiDataConnectorProperties.
+     */
+    public static TiTaxiiDataConnectorProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TiTaxiiDataConnectorProperties deserializedTiTaxiiDataConnectorProperties
+                = new TiTaxiiDataConnectorProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnectorProperties.withTenantId(reader.getString());
+                } else if ("pollingFrequency".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnectorProperties.pollingFrequency
+                        = PollingFrequency.fromString(reader.getString());
+                } else if ("dataTypes".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnectorProperties.dataTypes
+                        = TiTaxiiDataConnectorDataTypes.fromJson(reader);
+                } else if ("workspaceId".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnectorProperties.workspaceId = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnectorProperties.friendlyName = reader.getString();
+                } else if ("taxiiServer".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnectorProperties.taxiiServer = reader.getString();
+                } else if ("collectionId".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnectorProperties.collectionId = reader.getString();
+                } else if ("userName".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnectorProperties.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnectorProperties.password = reader.getString();
+                } else if ("taxiiLookbackPeriod".equals(fieldName)) {
+                    deserializedTiTaxiiDataConnectorProperties.taxiiLookbackPeriod = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTiTaxiiDataConnectorProperties;
+        });
+    }
 }

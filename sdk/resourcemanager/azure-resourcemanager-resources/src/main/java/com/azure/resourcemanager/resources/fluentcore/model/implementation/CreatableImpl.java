@@ -14,13 +14,10 @@ import reactor.core.publisher.Mono;
  * @param <InnerModelT> the model inner type that the fluent model type wraps
  * @param <FluentModelImplT> the fluent model implementation type
  */
-public abstract class CreatableImpl<
-        FluentModelT  extends Indexable,
-        InnerModelT,
-        FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
-        extends
-        CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT> {
+public abstract class CreatableImpl<FluentModelT extends Indexable, InnerModelT, FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
+    extends CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT> {
     private final ClientLogger logger = new ClientLogger(getClass());
+
     /**
      * Creates a CreatableImpl.
      *

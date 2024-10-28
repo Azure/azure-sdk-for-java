@@ -13,8 +13,7 @@ public final class NotificationContractImpl implements NotificationContract {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    NotificationContractImpl(
-        NotificationContractInner innerObject,
+    NotificationContractImpl(NotificationContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

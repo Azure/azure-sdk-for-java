@@ -153,14 +153,12 @@ public final class NotificationProperties {
      */
     public void validate() {
         if (to() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property to in model NotificationProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property to in model NotificationProperties"));
         }
         if (subject() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property subject in model NotificationProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property subject in model NotificationProperties"));
         }
     }
 

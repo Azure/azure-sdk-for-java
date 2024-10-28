@@ -66,9 +66,8 @@ public final class PolicyModelInner extends ProxyResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model PolicyModelInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model PolicyModelInner"));
         } else {
             properties().validate();
         }

@@ -19,32 +19,22 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<TagResourceContract> listByTags(String resourceGroupName, String serviceName, String apiId) {
-        PagedIterable<TagResourceContractInner> inner =
-            this.serviceClient().listByTags(resourceGroupName, serviceName, apiId);
+        PagedIterable<TagResourceContractInner> inner
+            = this.serviceClient().listByTags(resourceGroupName, serviceName, apiId);
         return Utils.mapPage(inner, inner1 -> new TagResourceContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<TagResourceContract> listByTags(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean includeNotTaggedOperations,
-        Context context) {
-        PagedIterable<TagResourceContractInner> inner =
-            this
-                .serviceClient()
-                .listByTags(
-                    resourceGroupName, serviceName, apiId, filter, top, skip, includeNotTaggedOperations, context);
+    public PagedIterable<TagResourceContract> listByTags(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Boolean includeNotTaggedOperations, Context context) {
+        PagedIterable<TagResourceContractInner> inner = this.serviceClient()
+            .listByTags(resourceGroupName, serviceName, apiId, filter, top, skip, includeNotTaggedOperations, context);
         return Utils.mapPage(inner, inner1 -> new TagResourceContractImpl(inner1, this.manager()));
     }
 

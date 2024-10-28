@@ -44,12 +44,14 @@ public final class ManagedPrivateEndpointsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        DashboardManager manager = DashboardManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        DashboardManager manager = DashboardManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ManagedPrivateEndpointModel response = manager.managedPrivateEndpoints()
-            .getWithResponse("nermcl", "plpho", "uscrpabgyepsb", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("nermcl", "plpho", "uscrpabgyepsb", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("eyvjusrtslhspkde", response.location());
         Assertions.assertEquals("ofmxagkvtmelmqkr", response.tags().get("ahvljuaha"));

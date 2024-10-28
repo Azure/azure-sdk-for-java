@@ -75,16 +75,12 @@ public final class AuthorizedGroundstation {
      */
     public void validate() {
         if (groundStation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property groundStation in model AuthorizedGroundstation"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property groundStation in model AuthorizedGroundstation"));
         }
         if (expirationDate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property expirationDate in model AuthorizedGroundstation"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property expirationDate in model AuthorizedGroundstation"));
         }
     }
 

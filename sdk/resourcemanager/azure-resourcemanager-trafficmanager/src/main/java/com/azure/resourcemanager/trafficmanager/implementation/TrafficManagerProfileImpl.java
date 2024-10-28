@@ -88,19 +88,18 @@ class TrafficManagerProfileImpl
 
     @Override
     public Mono<TrafficManagerProfile> refreshAsync() {
-        return super
-            .refreshAsync()
-            .map(
-                trafficManagerProfile -> {
-                    TrafficManagerProfileImpl impl = (TrafficManagerProfileImpl) trafficManagerProfile;
-                    impl.endpoints.refresh();
-                    return impl;
-                });
+        return super.refreshAsync().map(trafficManagerProfile -> {
+            TrafficManagerProfileImpl impl = (TrafficManagerProfileImpl) trafficManagerProfile;
+            impl.endpoints.refresh();
+            return impl;
+        });
     }
 
     @Override
     protected Mono<ProfileInner> getInnerAsync() {
-        return this.manager().serviceClient().getProfiles()
+        return this.manager()
+            .serviceClient()
+            .getProfiles()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -231,8 +230,7 @@ class TrafficManagerProfileImpl
 
     @Override
     public Mono<TrafficManagerProfile> createResourceAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getProfiles()
             .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
@@ -246,20 +244,13 @@ class TrafficManagerProfileImpl
         // method. We cannot update the routing method of the profile until existing endpoints contains the properties
         // required for the new routing method.
         final ProfilesClient innerCollection = this.manager().serviceClient().getProfiles();
-        return this
-            .endpoints
-            .commitAndGetAllAsync()
-            .flatMap(
-                endpoints -> {
-                    innerModel().withEndpoints(this.endpoints.allEndpointsInners());
-                    return innerCollection
-                        .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
-                        .map(
-                            profileInner -> {
-                                this.setInner(profileInner);
-                                return this;
-                            });
-                });
+        return this.endpoints.commitAndGetAllAsync().flatMap(endpoints -> {
+            innerModel().withEndpoints(this.endpoints.allEndpointsInners());
+            return innerCollection.createOrUpdateAsync(resourceGroupName(), name(), innerModel()).map(profileInner -> {
+                this.setInner(profileInner);
+                return this;
+            });
+        });
     }
 
     @Override

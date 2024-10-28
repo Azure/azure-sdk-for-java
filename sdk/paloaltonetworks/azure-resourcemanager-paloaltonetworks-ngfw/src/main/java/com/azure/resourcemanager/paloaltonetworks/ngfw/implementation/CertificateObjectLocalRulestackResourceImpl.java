@@ -83,13 +83,15 @@ public final class CertificateObjectLocalRulestackResourceImpl implements Certif
     }
 
     public CertificateObjectLocalRulestackResource create() {
-        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificateObjectLocalRulestacks()
             .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CertificateObjectLocalRulestackResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificateObjectLocalRulestacks()
             .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), context);
         return this;
     }
@@ -106,13 +108,15 @@ public final class CertificateObjectLocalRulestackResourceImpl implements Certif
     }
 
     public CertificateObjectLocalRulestackResource apply() {
-        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificateObjectLocalRulestacks()
             .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CertificateObjectLocalRulestackResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificateObjectLocalRulestacks()
             .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), context);
         return this;
     }
@@ -127,14 +131,18 @@ public final class CertificateObjectLocalRulestackResourceImpl implements Certif
     }
 
     public CertificateObjectLocalRulestackResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
-            .getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificateObjectLocalRulestacks()
+            .getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CertificateObjectLocalRulestackResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getCertificateObjectLocalRulestacks()
-            .getWithResponse(resourceGroupName, localRulestackName, name, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificateObjectLocalRulestacks()
+            .getWithResponse(resourceGroupName, localRulestackName, name, context)
+            .getValue();
         return this;
     }
 

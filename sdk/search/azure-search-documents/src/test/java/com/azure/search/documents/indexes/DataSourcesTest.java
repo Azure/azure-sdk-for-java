@@ -23,8 +23,8 @@ public class DataSourcesTest {
         // check utility method with minimal overloads
         SearchIndexerDataSourceConnection expected = new SearchIndexerDataSourceConnection("sql",
             SearchIndexerDataSourceType.AZURE_SQL, "connectionString", new SearchIndexerDataContainer("table"));
-        SearchIndexerDataSourceConnection actual = SearchIndexerDataSources.createFromAzureSql(
-            "sql", "connectionString", "table");
+        SearchIndexerDataSourceConnection actual
+            = SearchIndexerDataSources.createFromAzureSql("sql", "connectionString", "table");
 
         TestHelpers.assertObjectEquals(expected, actual, false, "etag");
     }
@@ -33,10 +33,9 @@ public class DataSourcesTest {
     public void canCreateStorageBlobDataSource() {
         // check utility method with minimal overloads
         SearchIndexerDataSourceConnection expected = new SearchIndexerDataSourceConnection("storageBlob",
-            SearchIndexerDataSourceType.AZURE_BLOB, "connectionString",
-            new SearchIndexerDataContainer("container"));
-        SearchIndexerDataSourceConnection actual = SearchIndexerDataSources.createFromAzureBlobStorage(
-            "storageBlob", "connectionString", "container");
+            SearchIndexerDataSourceType.AZURE_BLOB, "connectionString", new SearchIndexerDataContainer("container"));
+        SearchIndexerDataSourceConnection actual
+            = SearchIndexerDataSources.createFromAzureBlobStorage("storageBlob", "connectionString", "container");
 
         TestHelpers.assertObjectEquals(expected, actual, false, "etag");
     }
@@ -45,10 +44,9 @@ public class DataSourcesTest {
     public void canCreateStorageTableDataSource() {
         // check utility method with minimal overloads
         SearchIndexerDataSourceConnection expected = new SearchIndexerDataSourceConnection("storageTable",
-            SearchIndexerDataSourceType.AZURE_TABLE, "connectionString",
-            new SearchIndexerDataContainer("table"));
-        SearchIndexerDataSourceConnection actual = SearchIndexerDataSources.createFromAzureTableStorage(
-            "storageTable", "connectionString", "table");
+            SearchIndexerDataSourceType.AZURE_TABLE, "connectionString", new SearchIndexerDataContainer("table"));
+        SearchIndexerDataSourceConnection actual
+            = SearchIndexerDataSources.createFromAzureTableStorage("storageTable", "connectionString", "table");
 
         TestHelpers.assertObjectEquals(expected, actual, false, "etag");
     }
@@ -57,10 +55,10 @@ public class DataSourcesTest {
     public void canCreateCosmosDataSource() {
         // check utility method overloads
         SearchIndexerDataSourceConnection expected = new SearchIndexerDataSourceConnection("cosmos",
-            SearchIndexerDataSourceType.COSMOS_DB, "connectionString",
-            new SearchIndexerDataContainer("collection"));
+            SearchIndexerDataSourceType.COSMOS_DB, "connectionString", new SearchIndexerDataContainer("collection"));
 
-        SearchIndexerDataSourceConnection actual = SearchIndexerDataSources.createFromCosmos("cosmos", "connectionString", "collection", false);
+        SearchIndexerDataSourceConnection actual
+            = SearchIndexerDataSources.createFromCosmos("cosmos", "connectionString", "collection", false);
 
         TestHelpers.assertObjectEquals(expected, actual, false, "etag");
     }
@@ -70,10 +68,10 @@ public class DataSourcesTest {
         // check utility method with minimal overloads
         SearchIndexerDataSourceConnection expected = new SearchIndexerDataSourceConnection("cosmos",
             SearchIndexerDataSourceType.COSMOS_DB, "connectionString", new SearchIndexerDataContainer("collection"))
-            .setDataChangeDetectionPolicy(new HighWaterMarkChangeDetectionPolicy("_ts"));
+                .setDataChangeDetectionPolicy(new HighWaterMarkChangeDetectionPolicy("_ts"));
 
-        SearchIndexerDataSourceConnection actual = SearchIndexerDataSources.createFromCosmos("cosmos",
-            "connectionString", "collection");
+        SearchIndexerDataSourceConnection actual
+            = SearchIndexerDataSources.createFromCosmos("cosmos", "connectionString", "collection");
 
         TestHelpers.assertObjectEquals(expected, actual, false, "etag");
     }

@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerCallbackUrlInner;
 import com.azure.resourcemanager.logic.models.GetCallbackUrlParameters;
 
-/** An instance of this class provides access to all the operations defined in WorkflowVersionTriggersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowVersionTriggersClient.
+ */
 public interface WorkflowVersionTriggersClient {
     /**
      * Get the callback url for a trigger of a workflow version.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.
@@ -28,17 +30,12 @@ public interface WorkflowVersionTriggersClient {
      * @return the callback url for a trigger of a workflow version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowTriggerCallbackUrlInner> listCallbackUrlWithResponse(
-        String resourceGroupName,
-        String workflowName,
-        String versionId,
-        String triggerName,
-        GetCallbackUrlParameters parameters,
-        Context context);
+    Response<WorkflowTriggerCallbackUrlInner> listCallbackUrlWithResponse(String resourceGroupName, String workflowName,
+        String versionId, String triggerName, GetCallbackUrlParameters parameters, Context context);
 
     /**
      * Get the callback url for a trigger of a workflow version.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.
@@ -49,6 +46,6 @@ public interface WorkflowVersionTriggersClient {
      * @return the callback url for a trigger of a workflow version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkflowTriggerCallbackUrlInner listCallbackUrl(
-        String resourceGroupName, String workflowName, String versionId, String triggerName);
+    WorkflowTriggerCallbackUrlInner listCallbackUrl(String resourceGroupName, String workflowName, String versionId,
+        String triggerName);
 }

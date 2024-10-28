@@ -17,8 +17,7 @@ public final class SolutionPropertiesListImpl implements SolutionPropertiesList 
 
     private final com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager;
 
-    SolutionPropertiesListImpl(
-        SolutionPropertiesListInner innerObject,
+    SolutionPropertiesListImpl(SolutionPropertiesListInner innerObject,
         com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,8 @@ public final class SolutionPropertiesListImpl implements SolutionPropertiesList 
     public List<Solution> value() {
         List<SolutionInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new SolutionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new SolutionImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

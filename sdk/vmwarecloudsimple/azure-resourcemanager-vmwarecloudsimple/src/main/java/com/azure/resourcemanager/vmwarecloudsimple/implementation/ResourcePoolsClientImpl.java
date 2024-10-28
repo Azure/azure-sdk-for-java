@@ -30,22 +30,28 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.ResourcePoolInn
 import com.azure.resourcemanager.vmwarecloudsimple.models.ResourcePoolsListResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourcePoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourcePoolsClient.
+ */
 public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourcePoolsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final VMwareCloudSimpleImpl client;
 
     /**
      * Initializes an instance of ResourcePoolsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourcePoolsClientImpl(VMwareCloudSimpleImpl client) {
-        this.service =
-            RestProxy.create(ResourcePoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourcePoolsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,74 +62,56 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
     @Host("{$host}")
     @ServiceInterface(name = "VMwareCloudSimpleRes")
     public interface ResourcePoolsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds"
-                + "/{pcName}/resourcePools")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/resourcePools")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourcePoolsListResponse>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("regionId") String regionId,
-            @PathParam("pcName") String pcName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<ResourcePoolsListResponse>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("regionId") String regionId,
+            @PathParam("pcName") String pcName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds/{pcName}/resourcePools/{resourcePoolName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ResourcePoolInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("regionId") String regionId, @PathParam("pcName") String pcName,
+            @PathParam("resourcePoolName") String resourcePoolName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.VMwareCloudSimple/locations/{regionId}/privateClouds"
-                + "/{pcName}/resourcePools/{resourcePoolName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ResourcePoolInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("regionId") String regionId,
-            @PathParam("pcName") String pcName,
-            @PathParam("resourcePoolName") String resourcePoolName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ResourcePoolsListResponse>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Implements get of resource pools list
-     *
-     * <p>Returns list of resource pools in region for private cloud.
-     *
+     * 
+     * Returns list of resource pools in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource pools response model along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of resource pools response model along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourcePoolInner>> listSinglePageAsync(String regionId, String pcName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (regionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter regionId is required and cannot be null."));
@@ -133,57 +121,37 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            regionId,
-                            pcName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ResourcePoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), regionId,
+                pcName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ResourcePoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements get of resource pools list
-     *
-     * <p>Returns list of resource pools in region for private cloud.
-     *
+     * 
+     * Returns list of resource pools in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource pools response model along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of resource pools response model along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ResourcePoolInner>> listSinglePageAsync(
-        String regionId, String pcName, Context context) {
+    private Mono<PagedResponse<ResourcePoolInner>> listSinglePageAsync(String regionId, String pcName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (regionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter regionId is required and cannot be null."));
@@ -194,30 +162,17 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                regionId,
-                pcName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), regionId, pcName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Implements get of resource pools list
-     *
-     * <p>Returns list of resource pools in region for private cloud.
-     *
+     * 
+     * Returns list of resource pools in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,15 +182,15 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourcePoolInner> listAsync(String regionId, String pcName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(regionId, pcName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(regionId, pcName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Implements get of resource pools list
-     *
-     * <p>Returns list of resource pools in region for private cloud.
-     *
+     * 
+     * Returns list of resource pools in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param context The context to associate with this operation.
@@ -246,16 +201,15 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourcePoolInner> listAsync(String regionId, String pcName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(regionId, pcName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(regionId, pcName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Implements get of resource pools list
-     *
-     * <p>Returns list of resource pools in region for private cloud.
-     *
+     * 
+     * Returns list of resource pools in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -270,9 +224,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements get of resource pools list
-     *
-     * <p>Returns list of resource pools in region for private cloud.
-     *
+     * 
+     * Returns list of resource pools in region for private cloud.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param context The context to associate with this operation.
@@ -288,9 +242,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements get of resource pool
-     *
-     * <p>Returns resource pool templates by its name.
-     *
+     * 
+     * Returns resource pool templates by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param resourcePoolName resource pool id (vsphereId).
@@ -300,19 +254,15 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
      * @return resource pool model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourcePoolInner>> getWithResponseAsync(
-        String regionId, String pcName, String resourcePoolName) {
+    private Mono<Response<ResourcePoolInner>> getWithResponseAsync(String regionId, String pcName,
+        String resourcePoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (regionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter regionId is required and cannot be null."));
@@ -326,26 +276,16 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            regionId,
-                            pcName,
-                            resourcePoolName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), regionId, pcName, resourcePoolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements get of resource pool
-     *
-     * <p>Returns resource pool templates by its name.
-     *
+     * 
+     * Returns resource pool templates by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param resourcePoolName resource pool id (vsphereId).
@@ -356,19 +296,15 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
      * @return resource pool model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ResourcePoolInner>> getWithResponseAsync(
-        String regionId, String pcName, String resourcePoolName, Context context) {
+    private Mono<Response<ResourcePoolInner>> getWithResponseAsync(String regionId, String pcName,
+        String resourcePoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (regionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter regionId is required and cannot be null."));
@@ -382,23 +318,15 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                regionId,
-                pcName,
-                resourcePoolName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            regionId, pcName, resourcePoolName, accept, context);
     }
 
     /**
      * Implements get of resource pool
-     *
-     * <p>Returns resource pool templates by its name.
-     *
+     * 
+     * Returns resource pool templates by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param resourcePoolName resource pool id (vsphereId).
@@ -415,9 +343,9 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Implements get of resource pool
-     *
-     * <p>Returns resource pool templates by its name.
-     *
+     * 
+     * Returns resource pool templates by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param resourcePoolName resource pool id (vsphereId).
@@ -428,16 +356,16 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
      * @return resource pool model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ResourcePoolInner> getWithResponse(
-        String regionId, String pcName, String resourcePoolName, Context context) {
+    public Response<ResourcePoolInner> getWithResponse(String regionId, String pcName, String resourcePoolName,
+        Context context) {
         return getWithResponseAsync(regionId, pcName, resourcePoolName, context).block();
     }
 
     /**
      * Implements get of resource pool
-     *
-     * <p>Returns resource pool templates by its name.
-     *
+     * 
+     * Returns resource pool templates by its name.
+     * 
      * @param regionId The region Id (westus, eastus).
      * @param pcName The private cloud name.
      * @param resourcePoolName resource pool id (vsphereId).
@@ -453,14 +381,13 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource pools response model along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of resource pools response model along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourcePoolInner>> listNextSinglePageAsync(String nextLink) {
@@ -468,37 +395,26 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ResourcePoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ResourcePoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource pools response model along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of resource pools response model along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourcePoolInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -506,23 +422,13 @@ public final class ResourcePoolsClientImpl implements ResourcePoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

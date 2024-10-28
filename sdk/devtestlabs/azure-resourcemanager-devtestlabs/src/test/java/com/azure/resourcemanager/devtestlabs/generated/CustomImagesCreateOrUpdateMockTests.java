@@ -43,62 +43,46 @@ public final class CustomImagesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"vm\":{\"sourceVmId\":\"gqphrgfnzhctmjts\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepApplied\"},\"linuxOsInfo\":{\"linuxOsState\":\"NonDeprovisioned\"}},\"vhd\":{\"imageName\":\"arpzeqacdldtzm\",\"sysPrep\":false,\"osType\":\"Linux\"},\"description\":\"cpczshnuqnd\",\"author\":\"zupfkhuytuszxhm\",\"creationDate\":\"2021-10-02T12:20:25Z\",\"managedImageId\":\"egw\",\"managedSnapshotId\":\"ukvzwydwttha\",\"dataDiskStorageInfo\":[{\"lun\":\"skjivbsshajqfuk\",\"storageType\":\"Standard\"},{\"lun\":\"pgeumilh\",\"storageType\":\"Premium\"},{\"lun\":\"rdexyio\",\"storageType\":\"Premium\"}],\"customImagePlan\":{\"id\":\"nbdbzsxcwqqr\",\"publisher\":\"pcbbprtugav\",\"offer\":\"bcyksivmfogd\"},\"isPlanAuthorized\":true,\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"gmbawvifdxk\"},\"location\":\"cifhocjxwkl\",\"tags\":{\"xxvir\":\"rvtxvcmufunlc\",\"rquv\":\"eyngjg\"},\"id\":\"ygg\",\"name\":\"pmcrdcuelj\",\"type\":\"iahxmfqryarvs\"}";
+        String responseStr
+            = "{\"properties\":{\"vm\":{\"sourceVmId\":\"gqphrgfnzhctmjts\",\"windowsOsInfo\":{\"windowsOsState\":\"SysprepApplied\"},\"linuxOsInfo\":{\"linuxOsState\":\"NonDeprovisioned\"}},\"vhd\":{\"imageName\":\"arpzeqacdldtzm\",\"sysPrep\":false,\"osType\":\"Linux\"},\"description\":\"cpczshnuqnd\",\"author\":\"zupfkhuytuszxhm\",\"creationDate\":\"2021-10-02T12:20:25Z\",\"managedImageId\":\"egw\",\"managedSnapshotId\":\"ukvzwydwttha\",\"dataDiskStorageInfo\":[{\"lun\":\"skjivbsshajqfuk\",\"storageType\":\"Standard\"},{\"lun\":\"pgeumilh\",\"storageType\":\"Premium\"},{\"lun\":\"rdexyio\",\"storageType\":\"Premium\"}],\"customImagePlan\":{\"id\":\"nbdbzsxcwqqr\",\"publisher\":\"pcbbprtugav\",\"offer\":\"bcyksivmfogd\"},\"isPlanAuthorized\":true,\"provisioningState\":\"Succeeded\",\"uniqueIdentifier\":\"gmbawvifdxk\"},\"location\":\"cifhocjxwkl\",\"tags\":{\"xxvir\":\"rvtxvcmufunlc\",\"rquv\":\"eyngjg\"},\"id\":\"ygg\",\"name\":\"pmcrdcuelj\",\"type\":\"iahxmfqryarvs\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CustomImage response =
-            manager
-                .customImages()
-                .define("jrr")
-                .withRegion("lj")
-                .withExistingLab("hmtybkcgsuthhll", "mwynefxexlfciatx")
-                .withTags(mapOf("jpbi", "vume", "leqirccjclykcgxv", "nzpphepife", "punettepdjxq", "pjlvczuoda"))
-                .withVm(
-                    new CustomImagePropertiesFromVm()
-                        .withSourceVmId("dskjhhxdlaj")
-                        .withWindowsOsInfo(new WindowsOsInfo().withWindowsOsState(WindowsOsState.SYSPREP_APPLIED))
-                        .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_APPLIED)))
-                .withVhd(
-                    new CustomImagePropertiesCustom()
-                        .withImageName("lxlhuavkrm")
-                        .withSysPrep(true)
-                        .withOsType(CustomImageOsType.NONE))
-                .withDescription("mkxettcsloj")
-                .withAuthor("qid")
-                .withManagedImageId("qxjhqxcsqhtkbtnq")
-                .withManagedSnapshotId("ngldmbiipsn")
-                .withDataDiskStorageInfo(
-                    Arrays.asList(new DataDiskStorageTypeInfo().withLun("qkzn").withStorageType(StorageType.PREMIUM)))
-                .withCustomImagePlan(
-                    new CustomImagePropertiesFromPlan().withId("xricctkwmuqq").withPublisher("jxeiy").withOffer("esrw"))
-                .withIsPlanAuthorized(false)
-                .create();
+        CustomImage response = manager.customImages()
+            .define("jrr")
+            .withRegion("lj")
+            .withExistingLab("hmtybkcgsuthhll", "mwynefxexlfciatx")
+            .withTags(mapOf("jpbi", "vume", "leqirccjclykcgxv", "nzpphepife", "punettepdjxq", "pjlvczuoda"))
+            .withVm(new CustomImagePropertiesFromVm().withSourceVmId("dskjhhxdlaj")
+                .withWindowsOsInfo(new WindowsOsInfo().withWindowsOsState(WindowsOsState.SYSPREP_APPLIED))
+                .withLinuxOsInfo(new LinuxOsInfo().withLinuxOsState(LinuxOsState.DEPROVISION_APPLIED)))
+            .withVhd(new CustomImagePropertiesCustom().withImageName("lxlhuavkrm")
+                .withSysPrep(true)
+                .withOsType(CustomImageOsType.NONE))
+            .withDescription("mkxettcsloj")
+            .withAuthor("qid")
+            .withManagedImageId("qxjhqxcsqhtkbtnq")
+            .withManagedSnapshotId("ngldmbiipsn")
+            .withDataDiskStorageInfo(
+                Arrays.asList(new DataDiskStorageTypeInfo().withLun("qkzn").withStorageType(StorageType.PREMIUM)))
+            .withCustomImagePlan(
+                new CustomImagePropertiesFromPlan().withId("xricctkwmuqq").withPublisher("jxeiy").withOffer("esrw"))
+            .withIsPlanAuthorized(false)
+            .create();
 
         Assertions.assertEquals("cifhocjxwkl", response.location());
         Assertions.assertEquals("rvtxvcmufunlc", response.tags().get("xxvir"));

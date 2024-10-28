@@ -24,8 +24,8 @@ public interface SqlPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool properties along with {@link Response}.
      */
-    Response<SqlPool> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    Response<SqlPool> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Get SQL pool
@@ -179,12 +179,8 @@ public interface SqlPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> renameWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        ResourceMoveDefinition parameters,
-        Context context);
+    Response<Void> renameWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        ResourceMoveDefinition parameters, Context context);
 
     /**
      * Rename a SQL pool

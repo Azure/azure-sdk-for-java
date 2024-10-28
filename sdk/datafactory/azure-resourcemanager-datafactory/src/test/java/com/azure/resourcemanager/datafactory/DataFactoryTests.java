@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -38,7 +38,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class DataFactoryTests extends TestBase {
+public class DataFactoryTests extends TestProxyTestBase {
 
     private static final Random RANDOM = new Random();
 
@@ -51,11 +51,11 @@ public class DataFactoryTests extends TestBase {
     @Test
     @LiveOnly
     public void dataFactoryTest() {
-        StorageManager storageManager = StorageManager
-            .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+        StorageManager storageManager = StorageManager.authenticate(new AzurePowerShellCredentialBuilder().build(),
+            new AzureProfile(AzureEnvironment.AZURE));
 
-        DataFactoryManager manager = DataFactoryManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -63,38 +63,39 @@ public class DataFactoryTests extends TestBase {
         if (testEnv) {
             resourceGroup = testResourceGroup;
         } else {
-            storageManager.resourceManager().resourceGroups().define(resourceGroup)
-                .withRegion(REGION)
-                .create();
+            storageManager.resourceManager().resourceGroups().define(resourceGroup).withRegion(REGION).create();
         }
 
         try {
             // @embedmeStart
             // storage account
-            StorageAccount storageAccount = storageManager.storageAccounts().define(STORAGE_ACCOUNT)
+            StorageAccount storageAccount = storageManager.storageAccounts()
+                .define(STORAGE_ACCOUNT)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
             final String storageAccountKey = storageAccount.getKeys().iterator().next().value();
-            final String connectionString = getStorageConnectionString(STORAGE_ACCOUNT, storageAccountKey, storageManager.environment());
+            final String connectionString
+                = getStorageConnectionString(STORAGE_ACCOUNT, storageAccountKey, storageManager.environment());
 
             // container
             final String containerName = "adf";
-            storageManager.blobContainers().defineContainer(containerName)
+            storageManager.blobContainers()
+                .defineContainer(containerName)
                 .withExistingStorageAccount(resourceGroup, STORAGE_ACCOUNT)
                 .withPublicAccess(PublicAccess.NONE)
                 .create();
 
             // blob as input
-            BlobClient blobClient = new BlobClientBuilder()
-                .connectionString(connectionString)
+            BlobClient blobClient = new BlobClientBuilder().connectionString(connectionString)
                 .containerName(containerName)
                 .blobName("input/data.txt")
                 .buildClient();
             blobClient.upload(BinaryData.fromString("data"));
 
             // data factory
-            Factory dataFactory = manager.factories().define(DATA_FACTORY)
+            Factory dataFactory = manager.factories()
+                .define(DATA_FACTORY)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
@@ -105,15 +106,16 @@ public class DataFactoryTests extends TestBase {
             connectionStringProperty.put("value", connectionString);
 
             final String linkedServiceName = "LinkedService";
-            manager.linkedServices().define(linkedServiceName)
+            manager.linkedServices()
+                .define(linkedServiceName)
                 .withExistingFactory(resourceGroup, DATA_FACTORY)
-                .withProperties(new AzureStorageLinkedService()
-                    .withConnectionString(connectionStringProperty))
+                .withProperties(new AzureStorageLinkedService().withConnectionString(connectionStringProperty))
                 .create();
 
             // input dataset
             final String inputDatasetName = "InputDataset";
-            manager.datasets().define(inputDatasetName)
+            manager.datasets()
+                .define(inputDatasetName)
                 .withExistingFactory(resourceGroup, DATA_FACTORY)
                 .withProperties(new AzureBlobDataset()
                     .withLinkedServiceName(new LinkedServiceReference().withReferenceName(linkedServiceName))
@@ -124,7 +126,8 @@ public class DataFactoryTests extends TestBase {
 
             // output dataset
             final String outputDatasetName = "OutputDataset";
-            manager.datasets().define(outputDatasetName)
+            manager.datasets()
+                .define(outputDatasetName)
                 .withExistingFactory(resourceGroup, DATA_FACTORY)
                 .withProperties(new AzureBlobDataset()
                     .withLinkedServiceName(new LinkedServiceReference().withReferenceName(linkedServiceName))
@@ -134,14 +137,15 @@ public class DataFactoryTests extends TestBase {
                 .create();
 
             // pipeline
-            PipelineResource pipeline = manager.pipelines().define("CopyBlobPipeline")
+            PipelineResource pipeline = manager.pipelines()
+                .define("CopyBlobPipeline")
                 .withExistingFactory(resourceGroup, DATA_FACTORY)
-                .withActivities(Collections.singletonList(new CopyActivity()
-                    .withName("CopyBlob")
+                .withActivities(Collections.singletonList(new CopyActivity().withName("CopyBlob")
                     .withSource(new BlobSource())
                     .withSink(new BlobSink())
                     .withInputs(Collections.singletonList(new DatasetReference().withReferenceName(inputDatasetName)))
-                    .withOutputs(Collections.singletonList(new DatasetReference().withReferenceName(outputDatasetName)))))
+                    .withOutputs(
+                        Collections.singletonList(new DatasetReference().withReferenceName(outputDatasetName)))))
                 .create();
 
             // run pipeline
@@ -175,7 +179,7 @@ public class DataFactoryTests extends TestBase {
     }
 
     private static String getStorageConnectionString(String accountName, String accountKey,
-                                                     AzureEnvironment environment) {
+        AzureEnvironment environment) {
         if (environment == null || environment.getStorageEndpointSuffix() == null) {
             environment = AzureEnvironment.AZURE;
         }

@@ -21,11 +21,9 @@ import org.junit.jupiter.api.Assertions;
 public final class Gen2EnvironmentResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Gen2EnvironmentResource model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"Gen2\",\"properties\":{\"timeSeriesIdProperties\":[{\"name\":\"pxtt\",\"type\":\"String\"},{\"name\":\"bnlankxmyskpb\",\"type\":\"String\"}],\"storageConfiguration\":{\"accountName\":\"btkcxywnytnrsyn\"},\"warmStoreConfiguration\":{\"dataRetention\":\"PT96H34M54S\"},\"dataAccessId\":\"987697ad-7913-431f-901a-e1c10deeb0b0\",\"dataAccessFqdn\":\"by\",\"status\":{},\"provisioningState\":\"Updating\",\"creationTime\":\"2021-04-19T03:11:49Z\"},\"sku\":{\"name\":\"S2\",\"capacity\":384139525},\"location\":\"dbabp\",\"tags\":{\"yazttbtwwrqpue\":\"rqlfktsthsucocmn\",\"xibxujwbhqwalm\":\"ckzywbiexzfeyue\",\"ux\":\"zyoxaepdkzjan\",\"zt\":\"hdwbavxbniwdjs\"},\"id\":\"dbpgnxytxhp\",\"name\":\"xbzpfzab\",\"type\":\"lcuhxwtctyqiklb\"}")
-                .toObject(Gen2EnvironmentResource.class);
+        Gen2EnvironmentResource model = BinaryData.fromString(
+            "{\"kind\":\"Gen2\",\"properties\":{\"timeSeriesIdProperties\":[{\"name\":\"pxtt\",\"type\":\"String\"},{\"name\":\"bnlankxmyskpb\",\"type\":\"String\"}],\"storageConfiguration\":{\"accountName\":\"btkcxywnytnrsyn\"},\"warmStoreConfiguration\":{\"dataRetention\":\"PT96H34M54S\"},\"dataAccessId\":\"987697ad-7913-431f-901a-e1c10deeb0b0\",\"dataAccessFqdn\":\"by\",\"status\":{},\"provisioningState\":\"Updating\",\"creationTime\":\"2021-04-19T03:11:49Z\"},\"sku\":{\"name\":\"S2\",\"capacity\":384139525},\"location\":\"dbabp\",\"tags\":{\"yazttbtwwrqpue\":\"rqlfktsthsucocmn\",\"xibxujwbhqwalm\":\"ckzywbiexzfeyue\",\"ux\":\"zyoxaepdkzjan\",\"zt\":\"hdwbavxbniwdjs\"},\"id\":\"dbpgnxytxhp\",\"name\":\"xbzpfzab\",\"type\":\"lcuhxwtctyqiklb\"}")
+            .toObject(Gen2EnvironmentResource.class);
         Assertions.assertEquals("dbabp", model.location());
         Assertions.assertEquals("rqlfktsthsucocmn", model.tags().get("yazttbtwwrqpue"));
         Assertions.assertEquals(SkuName.S2, model.sku().name());
@@ -38,28 +36,16 @@ public final class Gen2EnvironmentResourceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Gen2EnvironmentResource model =
-            new Gen2EnvironmentResource()
-                .withLocation("dbabp")
-                .withTags(
-                    mapOf(
-                        "yazttbtwwrqpue",
-                        "rqlfktsthsucocmn",
-                        "xibxujwbhqwalm",
-                        "ckzywbiexzfeyue",
-                        "ux",
-                        "zyoxaepdkzjan",
-                        "zt",
-                        "hdwbavxbniwdjs"))
-                .withSku(new Sku().withName(SkuName.S2).withCapacity(384139525))
-                .withTimeSeriesIdProperties(
-                    Arrays
-                        .asList(
-                            new TimeSeriesIdProperty().withName("pxtt").withType(PropertyType.STRING),
-                            new TimeSeriesIdProperty().withName("bnlankxmyskpb").withType(PropertyType.STRING)))
-                .withStorageConfiguration(new Gen2StorageConfigurationOutput().withAccountName("btkcxywnytnrsyn"))
-                .withWarmStoreConfiguration(
-                    new WarmStoreConfigurationProperties().withDataRetention(Duration.parse("PT96H34M54S")));
+        Gen2EnvironmentResource model = new Gen2EnvironmentResource().withLocation("dbabp")
+            .withTags(mapOf("yazttbtwwrqpue", "rqlfktsthsucocmn", "xibxujwbhqwalm", "ckzywbiexzfeyue", "ux",
+                "zyoxaepdkzjan", "zt", "hdwbavxbniwdjs"))
+            .withSku(new Sku().withName(SkuName.S2).withCapacity(384139525))
+            .withTimeSeriesIdProperties(
+                Arrays.asList(new TimeSeriesIdProperty().withName("pxtt").withType(PropertyType.STRING),
+                    new TimeSeriesIdProperty().withName("bnlankxmyskpb").withType(PropertyType.STRING)))
+            .withStorageConfiguration(new Gen2StorageConfigurationOutput().withAccountName("btkcxywnytnrsyn"))
+            .withWarmStoreConfiguration(
+                new WarmStoreConfigurationProperties().withDataRetention(Duration.parse("PT96H34M54S")));
         model = BinaryData.fromObject(model).toObject(Gen2EnvironmentResource.class);
         Assertions.assertEquals("dbabp", model.location());
         Assertions.assertEquals("rqlfktsthsucocmn", model.tags().get("yazttbtwwrqpue"));

@@ -3,22 +3,38 @@
 
 package com.azure.ai.personalizer.testmodels;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 
-public class Context {
-    @JsonGetter
-    public CurrentFeatures getFeatures() {
+import java.io.IOException;
+
+import static com.azure.ai.personalizer.TestUtils.deserializationHelper;
+
+public class Context implements JsonSerializable<Context> {
+    CurrentFeatures currentFeatures;
+
+    public CurrentFeatures getCurrentFeatures() {
         return currentFeatures;
     }
 
-    @JsonSetter
     public Context setCurrentFeatures(CurrentFeatures currentFeatures) {
         this.currentFeatures = currentFeatures;
         return this;
     }
 
-    @JsonProperty
-    CurrentFeatures currentFeatures;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject().writeJsonField("currentFeatures", currentFeatures).writeEndObject();
+    }
+
+    public static Context fromJson(JsonReader jsonReader) throws IOException {
+        return deserializationHelper(jsonReader, Context::new, (reader, fieldName, context) -> {
+            if ("currentFeatures".equals(fieldName)) {
+                context.currentFeatures = CurrentFeatures.fromJson(reader);
+            } else {
+                reader.skipChildren();
+            }
+        });
+    }
 }

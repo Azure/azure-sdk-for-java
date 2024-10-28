@@ -5,22 +5,49 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Daily recurrence object. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "recurrenceType")
-@JsonTypeName("Daily")
+/**
+ * Daily recurrence object.
+ */
 @Fluent
 public final class DailyRecurrence extends Recurrence {
-    /** {@inheritDoc} */
+    /*
+     * Specifies when the recurrence should be applied.
+     */
+    private RecurrenceType recurrenceType = RecurrenceType.DAILY;
+
+    /**
+     * Creates an instance of DailyRecurrence class.
+     */
+    public DailyRecurrence() {
+    }
+
+    /**
+     * Get the recurrenceType property: Specifies when the recurrence should be applied.
+     * 
+     * @return the recurrenceType value.
+     */
+    @Override
+    public RecurrenceType recurrenceType() {
+        return this.recurrenceType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DailyRecurrence withStartTime(String startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DailyRecurrence withEndTime(String endTime) {
         super.withEndTime(endTime);
@@ -29,11 +56,53 @@ public final class DailyRecurrence extends Recurrence {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime", startTime());
+        jsonWriter.writeStringField("endTime", endTime());
+        jsonWriter.writeStringField("recurrenceType",
+            this.recurrenceType == null ? null : this.recurrenceType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DailyRecurrence from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DailyRecurrence if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DailyRecurrence.
+     */
+    public static DailyRecurrence fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DailyRecurrence deserializedDailyRecurrence = new DailyRecurrence();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedDailyRecurrence.withStartTime(reader.getString());
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedDailyRecurrence.withEndTime(reader.getString());
+                } else if ("recurrenceType".equals(fieldName)) {
+                    deserializedDailyRecurrence.recurrenceType = RecurrenceType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDailyRecurrence;
+        });
     }
 }

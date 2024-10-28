@@ -41,12 +41,14 @@ public final class ApiDefinitionsDeleteWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.apiDefinitions().deleteWithResponse("lrcoolsttpki", "kkbnu", "rywvtylbfpn", "urdoi", "iithtywu",
-            "xcbihw", com.azure.core.util.Context.NONE);
+        manager.apiDefinitions()
+            .deleteWithResponse("lrcoolsttpki", "kkbnu", "rywvtylbfpn", "urdoi", "iithtywu", "xcbihw",
+                com.azure.core.util.Context.NONE);
 
     }
 }

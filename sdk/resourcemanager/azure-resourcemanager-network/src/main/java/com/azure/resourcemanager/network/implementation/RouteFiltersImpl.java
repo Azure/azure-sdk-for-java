@@ -10,9 +10,8 @@ import com.azure.resourcemanager.network.models.RouteFilters;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for RouteFilters. */
-public class RouteFiltersImpl
-    extends TopLevelModifiableResourcesImpl<
-        RouteFilter, RouteFilterImpl, RouteFilterInner, RouteFiltersClient, NetworkManager>
+public class RouteFiltersImpl extends
+    TopLevelModifiableResourcesImpl<RouteFilter, RouteFilterImpl, RouteFilterInner, RouteFiltersClient, NetworkManager>
     implements RouteFilters {
 
     public RouteFiltersImpl(final NetworkManager networkManager) {

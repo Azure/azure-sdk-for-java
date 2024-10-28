@@ -58,7 +58,8 @@ final class AutoDispositionLockRenew extends FluxOperator<ServiceBusReceivedMess
     @Override
     public void subscribe(CoreSubscriber<? super ServiceBusReceivedMessage> actual) {
         Objects.requireNonNull(actual, "'actual' cannot be null.");
-        source.subscribe(new Subscriber(logger, client, enableAutoDisposition, enableAutoLockRenew, dispositionLock, actual));
+        source.subscribe(
+            new Subscriber(logger, client, enableAutoDisposition, enableAutoLockRenew, dispositionLock, actual));
     }
 
     private static final class Subscriber extends BaseSubscriber<ServiceBusReceivedMessage> {
@@ -70,7 +71,8 @@ final class AutoDispositionLockRenew extends FluxOperator<ServiceBusReceivedMess
         private final CoreSubscriber<? super ServiceBusReceivedMessage> downstream;
 
         Subscriber(ClientLogger logger, ServiceBusReceiverAsyncClient client, boolean enableAutoDisposition,
-            boolean enableAutoLockRenew, Semaphore dispositionLock, CoreSubscriber<? super ServiceBusReceivedMessage> downstream) {
+            boolean enableAutoLockRenew, Semaphore dispositionLock,
+            CoreSubscriber<? super ServiceBusReceivedMessage> downstream) {
             this.logger = logger;
             this.client = client;
             this.enableAutoDisposition = enableAutoDisposition;
@@ -87,13 +89,12 @@ final class AutoDispositionLockRenew extends FluxOperator<ServiceBusReceivedMess
 
         @Override
         protected void hookOnNext(ServiceBusReceivedMessage message) {
-            final Disposable lockRenewDisposable = enableAutoLockRenew ? client.beginLockRenewal(message) : Disposables.disposed();
+            final Disposable lockRenewDisposable
+                = enableAutoLockRenew ? client.beginLockRenewal(message) : Disposables.disposed();
 
             final String seqNumber = message != null ? String.valueOf(message.getSequenceNumber()) : "n/a";
 
-            logger.atVerbose()
-                .addKeyValue(SEQUENCE_NUMBER_KEY, seqNumber)
-                .log("onNext: Passing message downstream.");
+            logger.atVerbose().addKeyValue(SEQUENCE_NUMBER_KEY, seqNumber).log("onNext: Passing message downstream.");
 
             if (enableAutoDisposition) {
                 try {
@@ -140,9 +141,7 @@ final class AutoDispositionLockRenew extends FluxOperator<ServiceBusReceivedMess
                     // the disposition-ed message and returns an error.
                     lockRenewDisposable.dispose();
                 }
-                logger.atVerbose()
-                    .addKeyValue(SEQUENCE_NUMBER_KEY, seqNumber)
-                    .log("onNext: Finished.");
+                logger.atVerbose().addKeyValue(SEQUENCE_NUMBER_KEY, seqNumber).log("onNext: Finished.");
                 //
                 // Finally, Note_1, Note_2, Note_3 and Note_4 explains why the entire auto-XX features are flawed and
                 // that we want to deprecate and simplify it by aligning with other language's (e.g. .NET) low level
@@ -182,7 +181,8 @@ final class AutoDispositionLockRenew extends FluxOperator<ServiceBusReceivedMess
             } catch (Exception e) {
                 logger.atWarning()
                     .addKeyValue(SEQUENCE_NUMBER_KEY, seqNumber)
-                    .log("Unable to '{}' message, cancelling the message streaming.", isComplete ? "Complete" : "Abandon", e);
+                    .log("Unable to '{}' message, cancelling the message streaming.",
+                        isComplete ? "Complete" : "Abandon", e);
                 upstream().cancel();
                 onError(e);
             }

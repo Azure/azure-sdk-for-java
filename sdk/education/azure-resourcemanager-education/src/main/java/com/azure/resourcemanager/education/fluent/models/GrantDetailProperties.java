@@ -5,57 +5,60 @@
 package com.azure.resourcemanager.education.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.education.models.GrantStatus;
 import com.azure.resourcemanager.education.models.GrantType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Grant detail properties. */
+/**
+ * Grant detail properties.
+ */
 @Immutable
-public final class GrantDetailProperties {
+public final class GrantDetailProperties implements JsonSerializable<GrantDetailProperties> {
     /*
      * Offer Cap
      */
-    @JsonProperty(value = "offerCap", access = JsonProperty.Access.WRITE_ONLY)
     private Amount offerCap;
 
     /*
      * Grant Effective Date
      */
-    @JsonProperty(value = "effectiveDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime effectiveDate;
 
     /*
      * Grant Offer Type
      */
-    @JsonProperty(value = "offerType", access = JsonProperty.Access.WRITE_ONLY)
     private GrantType offerType;
 
     /*
      * Expiration Date
      */
-    @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationDate;
 
     /*
      * Grant status
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private GrantStatus status;
 
     /*
      * allocated budget
      */
-    @JsonProperty(value = "allocatedBudget", access = JsonProperty.Access.WRITE_ONLY)
     private Amount allocatedBudget;
 
-    /** Creates an instance of GrantDetailProperties class. */
+    /**
+     * Creates an instance of GrantDetailProperties class.
+     */
     public GrantDetailProperties() {
     }
 
     /**
      * Get the offerCap property: Offer Cap.
-     *
+     * 
      * @return the offerCap value.
      */
     public Amount offerCap() {
@@ -64,7 +67,7 @@ public final class GrantDetailProperties {
 
     /**
      * Get the effectiveDate property: Grant Effective Date.
-     *
+     * 
      * @return the effectiveDate value.
      */
     public OffsetDateTime effectiveDate() {
@@ -73,7 +76,7 @@ public final class GrantDetailProperties {
 
     /**
      * Get the offerType property: Grant Offer Type.
-     *
+     * 
      * @return the offerType value.
      */
     public GrantType offerType() {
@@ -82,7 +85,7 @@ public final class GrantDetailProperties {
 
     /**
      * Get the expirationDate property: Expiration Date.
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -91,7 +94,7 @@ public final class GrantDetailProperties {
 
     /**
      * Get the status property: Grant status.
-     *
+     * 
      * @return the status value.
      */
     public GrantStatus status() {
@@ -100,7 +103,7 @@ public final class GrantDetailProperties {
 
     /**
      * Get the allocatedBudget property: allocated budget.
-     *
+     * 
      * @return the allocatedBudget value.
      */
     public Amount allocatedBudget() {
@@ -109,7 +112,7 @@ public final class GrantDetailProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -119,5 +122,52 @@ public final class GrantDetailProperties {
         if (allocatedBudget() != null) {
             allocatedBudget().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GrantDetailProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GrantDetailProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GrantDetailProperties.
+     */
+    public static GrantDetailProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GrantDetailProperties deserializedGrantDetailProperties = new GrantDetailProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("offerCap".equals(fieldName)) {
+                    deserializedGrantDetailProperties.offerCap = Amount.fromJson(reader);
+                } else if ("effectiveDate".equals(fieldName)) {
+                    deserializedGrantDetailProperties.effectiveDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("offerType".equals(fieldName)) {
+                    deserializedGrantDetailProperties.offerType = GrantType.fromString(reader.getString());
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedGrantDetailProperties.expirationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedGrantDetailProperties.status = GrantStatus.fromString(reader.getString());
+                } else if ("allocatedBudget".equals(fieldName)) {
+                    deserializedGrantDetailProperties.allocatedBudget = Amount.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGrantDetailProperties;
+        });
     }
 }

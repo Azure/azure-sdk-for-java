@@ -10,11 +10,9 @@ import com.azure.resourcemanager.apimanagement.models.ContentTypeCollection;
 public final class ContentTypeCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentTypeCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"id\":\"kl\",\"name\":\"etatlakf\",\"description\":\"ixwgiksbbvtooxrp\",\"schema\":\"datawp\",\"version\":\"hgjtnhtukfaci\"},\"id\":\"mbf\",\"name\":\"tumeezbxvqxb\",\"type\":\"uvwc\"}],\"nextLink\":\"sgomtmjz\"}")
-                .toObject(ContentTypeCollection.class);
+        ContentTypeCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"id\":\"kl\",\"name\":\"etatlakf\",\"description\":\"ixwgiksbbvtooxrp\",\"schema\":\"datawp\",\"version\":\"hgjtnhtukfaci\"},\"id\":\"mbf\",\"name\":\"tumeezbxvqxb\",\"type\":\"uvwc\"}],\"nextLink\":\"sgomtmjz\"}")
+            .toObject(ContentTypeCollection.class);
     }
 
     @org.junit.jupiter.api.Test

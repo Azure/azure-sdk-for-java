@@ -6,6 +6,7 @@ The Azure AI Face service provides AI algorithms that detect, recognize, and ana
 - Liveness detection
 - Face recognition
   - Face verification ("one-to-one" matching)
+  - Face identification ("one-to-many" matching)
 - Find similar faces
 - Group faces
 
@@ -47,6 +48,7 @@ Azure AI Face supports both [multi-service][azure_cognitive_service_account] and
 
 In order to interact with the Face service, you will need to create an instance of a client class,
 [FaceAsyncClient][face_client_async] or [FaceClient][face_client] by using [FaceClientBuilder][face_client_builder].
+[FaceAdministrationAsyncClient][face_administration_client_async] or [FaceAdministrationClient][face_administration_client] by using [FaceAdministrationClientBuilder][face_administration_client_builder].
 [FaceSessionAsyncClient][face_session_client_async] or [FaceSessionClient][face_session_client] by using [FaceSessionClientBuilder][face_session_client_builder].
 
 An **endpoint** and **credential** are necessary to instantiate the client object.
@@ -305,6 +307,9 @@ For details on contributing to this repository, see the [contributing guide](htt
 [face_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceAsyncClient.java
 [face_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceClient.java
 [face_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceClientBuilder.java
+[face_administration_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/administration/FaceAdministrationAsyncClient.java
+[face_administration_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/administration/FaceAdministrationClient.java
+[face_administration_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/administration/FaceAdministrationClientBuilder.java
 [face_session_client_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionAsyncClient.java
 [face_session_client]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionClient.java
 [face_session_client_builder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/face/azure-ai-vision-face/src/main/java/com/azure/ai/vision/face/FaceSessionClientBuilder.java

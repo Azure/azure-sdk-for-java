@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class L2NetworkInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L2NetworkInner model =
-            BinaryData
-                .fromString(
-                    "{\"extendedLocation\":{\"name\":\"zikhl\",\"type\":\"fjhdg\"},\"properties\":{\"associatedResourceIds\":[\"ebdunyg\",\"eqidbqfatpx\",\"lr\"],\"clusterId\":\"yjmoadsu\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"ywdmjsjqbjh\",\"hybridAksClustersAssociatedIds\":[\"xrwlyc\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"p\",\"l2IsolationDomainId\":\"xkgymareqnajxqu\",\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"cubeddgssofw\",\"mzqa\",\"krmnjijpxacqqud\"]},\"location\":\"byxbaaabjy\",\"tags\":{\"evfdnwnwm\":\"ffimrzrtuzqogsex\",\"i\":\"wzsyyceuzs\",\"thzvaytdwkqbrqu\":\"judpfrxt\",\"xiilivpdtiirqt\":\"paxh\"},\"id\":\"qoaxoruzfgs\",\"name\":\"uyfxrxxleptramxj\",\"type\":\"zwl\"}")
-                .toObject(L2NetworkInner.class);
+        L2NetworkInner model = BinaryData.fromString(
+            "{\"extendedLocation\":{\"name\":\"zikhl\",\"type\":\"fjhdg\"},\"properties\":{\"associatedResourceIds\":[\"ebdunyg\",\"eqidbqfatpx\",\"lr\"],\"clusterId\":\"yjmoadsu\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"ywdmjsjqbjh\",\"hybridAksClustersAssociatedIds\":[\"xrwlyc\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"p\",\"l2IsolationDomainId\":\"xkgymareqnajxqu\",\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"cubeddgssofw\",\"mzqa\",\"krmnjijpxacqqud\"]},\"location\":\"byxbaaabjy\",\"tags\":{\"evfdnwnwm\":\"ffimrzrtuzqogsex\",\"i\":\"wzsyyceuzs\",\"thzvaytdwkqbrqu\":\"judpfrxt\",\"xiilivpdtiirqt\":\"paxh\"},\"id\":\"qoaxoruzfgs\",\"name\":\"uyfxrxxleptramxj\",\"type\":\"zwl\"}")
+            .toObject(L2NetworkInner.class);
         Assertions.assertEquals("byxbaaabjy", model.location());
         Assertions.assertEquals("ffimrzrtuzqogsex", model.tags().get("evfdnwnwm"));
         Assertions.assertEquals("zikhl", model.extendedLocation().name());
@@ -31,23 +29,13 @@ public final class L2NetworkInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L2NetworkInner model =
-            new L2NetworkInner()
-                .withLocation("byxbaaabjy")
-                .withTags(
-                    mapOf(
-                        "evfdnwnwm",
-                        "ffimrzrtuzqogsex",
-                        "i",
-                        "wzsyyceuzs",
-                        "thzvaytdwkqbrqu",
-                        "judpfrxt",
-                        "xiilivpdtiirqt",
-                        "paxh"))
-                .withExtendedLocation(new ExtendedLocation().withName("zikhl").withType("fjhdg"))
-                .withHybridAksPluginType(HybridAksPluginType.DPDK)
-                .withInterfaceName("p")
-                .withL2IsolationDomainId("xkgymareqnajxqu");
+        L2NetworkInner model = new L2NetworkInner().withLocation("byxbaaabjy")
+            .withTags(mapOf("evfdnwnwm", "ffimrzrtuzqogsex", "i", "wzsyyceuzs", "thzvaytdwkqbrqu", "judpfrxt",
+                "xiilivpdtiirqt", "paxh"))
+            .withExtendedLocation(new ExtendedLocation().withName("zikhl").withType("fjhdg"))
+            .withHybridAksPluginType(HybridAksPluginType.DPDK)
+            .withInterfaceName("p")
+            .withL2IsolationDomainId("xkgymareqnajxqu");
         model = BinaryData.fromObject(model).toObject(L2NetworkInner.class);
         Assertions.assertEquals("byxbaaabjy", model.location());
         Assertions.assertEquals("ffimrzrtuzqogsex", model.tags().get("evfdnwnwm"));

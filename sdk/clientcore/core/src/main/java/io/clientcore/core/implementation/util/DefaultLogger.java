@@ -115,12 +115,16 @@ public final class DefaultLogger {
         switch (level) {
             case VERBOSE:
                 return DEBUG;
+
             case INFORMATIONAL:
                 return INFO;
+
             case WARNING:
                 return WARN;
+
             case ERROR:
                 return ERROR;
+
             default:
                 // not possible
                 return NOTSET;

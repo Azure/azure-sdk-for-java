@@ -32,46 +32,28 @@ public final class SchedulesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"zzdzzqjmuezayov\",\"weeklyRecurrence\":{\"weekdays\":[\"lotokh\",\"vwta\"],\"time\":\"kcqwwxwjyofgwh\"},\"dailyRecurrence\":{\"time\":\"tlwljssmcts\"},\"hourlyRecurrence\":{\"minute\":1476698814},\"timeZoneId\":\"wolgisubxbt\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":2067090364,\"webhookUrl\":\"ij\",\"emailRecipient\":\"kw\",\"notificationLocale\":\"fksxqce\"},\"createdDate\":\"2021-10-21T17:51:03Z\",\"targetResourceId\":\"xgnmqvzvluyq\",\"provisioningState\":\"ios\",\"uniqueIdentifier\":\"cyvaifppuacvfy\"},\"location\":\"owpsfxt\",\"tags\":{\"hpvtyqftteh\":\"soy\",\"kfvvdshxcde\":\"pboujs\",\"xcgjtf\":\"suenyg\"},\"id\":\"nquktrfnslnlrxs\",\"name\":\"ylt\",\"type\":\"wntfmtbgwjdxwna\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"zzdzzqjmuezayov\",\"weeklyRecurrence\":{\"weekdays\":[\"lotokh\",\"vwta\"],\"time\":\"kcqwwxwjyofgwh\"},\"dailyRecurrence\":{\"time\":\"tlwljssmcts\"},\"hourlyRecurrence\":{\"minute\":1476698814},\"timeZoneId\":\"wolgisubxbt\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":2067090364,\"webhookUrl\":\"ij\",\"emailRecipient\":\"kw\",\"notificationLocale\":\"fksxqce\"},\"createdDate\":\"2021-10-21T17:51:03Z\",\"targetResourceId\":\"xgnmqvzvluyq\",\"provisioningState\":\"ios\",\"uniqueIdentifier\":\"cyvaifppuacvfy\"},\"location\":\"owpsfxt\",\"tags\":{\"hpvtyqftteh\":\"soy\",\"kfvvdshxcde\":\"pboujs\",\"xcgjtf\":\"suenyg\"},\"id\":\"nquktrfnslnlrxs\",\"name\":\"ylt\",\"type\":\"wntfmtbgwjdxwna\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Schedule> response =
-            manager
-                .schedules()
-                .list(
-                    "sgzlrqhb",
-                    "nq",
-                    "gdxwbsfpyxx",
-                    "jlf",
-                    1758860426,
-                    "cominxojjluxx",
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<Schedule> response = manager.schedules()
+            .list("sgzlrqhb", "nq", "gdxwbsfpyxx", "jlf", 1758860426, "cominxojjluxx",
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("owpsfxt", response.iterator().next().location());
         Assertions.assertEquals("soy", response.iterator().next().tags().get("hpvtyqftteh"));

@@ -33,48 +33,36 @@ public final class VirtualNetworksCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"uuid\":\"h\",\"vCenterId\":\"ndnelqkaadlknw\",\"moRefId\":\"anniyopetxivcnr\",\"inventoryItemId\":\"xnucaephblkwqp\",\"moName\":\"vbqsdt\",\"customResourceName\":\"bctvivuzqym\",\"statuses\":[{\"type\":\"o\",\"status\":\"gitsqh\",\"reason\":\"b\",\"message\":\"cdb\",\"severity\":\"fzndscxmxeatkd\",\"lastUpdatedAt\":\"2021-06-16T10:55:30Z\"}],\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"type\":\"yibqbnao\",\"name\":\"jrmkuhmaxljalf\"},\"kind\":\"jmobca\",\"location\":\"cd\",\"tags\":{\"jjzr\":\"qcwgaxfgvaknokz\",\"x\":\"tixldzyyfytpqs\"},\"id\":\"mmpuj\",\"name\":\"vyqlkjuvsmbmslzo\",\"type\":\"ovwzdbpqvybefg\"}";
+        String responseStr
+            = "{\"properties\":{\"uuid\":\"h\",\"vCenterId\":\"ndnelqkaadlknw\",\"moRefId\":\"anniyopetxivcnr\",\"inventoryItemId\":\"xnucaephblkwqp\",\"moName\":\"vbqsdt\",\"customResourceName\":\"bctvivuzqym\",\"statuses\":[{\"type\":\"o\",\"status\":\"gitsqh\",\"reason\":\"b\",\"message\":\"cdb\",\"severity\":\"fzndscxmxeatkd\",\"lastUpdatedAt\":\"2021-06-16T10:55:30Z\"}],\"provisioningState\":\"Succeeded\"},\"extendedLocation\":{\"type\":\"yibqbnao\",\"name\":\"jrmkuhmaxljalf\"},\"kind\":\"jmobca\",\"location\":\"cd\",\"tags\":{\"jjzr\":\"qcwgaxfgvaknokz\",\"x\":\"tixldzyyfytpqs\"},\"id\":\"mmpuj\",\"name\":\"vyqlkjuvsmbmslzo\",\"type\":\"ovwzdbpqvybefg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ConnectedVMwareManager manager =
-            ConnectedVMwareManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ConnectedVMwareManager manager = ConnectedVMwareManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        VirtualNetwork response =
-            manager
-                .virtualNetworks()
-                .define("udqll")
-                .withRegion("l")
-                .withExistingResourceGroup("pnwy")
-                .withTags(mapOf("gvfltgvdihoynkr", "oithg"))
-                .withExtendedLocation(new ExtendedLocation().withType("fdfa").withName("yzyzeyuu"))
-                .withKind("ds")
-                .withVCenterId("huxiqhzlraymez")
-                .withMoRefId("skihmxrfd")
-                .withInventoryItemId("jrednwyysh")
-                .create();
+        VirtualNetwork response = manager.virtualNetworks()
+            .define("udqll")
+            .withRegion("l")
+            .withExistingResourceGroup("pnwy")
+            .withTags(mapOf("gvfltgvdihoynkr", "oithg"))
+            .withExtendedLocation(new ExtendedLocation().withType("fdfa").withName("yzyzeyuu"))
+            .withKind("ds")
+            .withVCenterId("huxiqhzlraymez")
+            .withMoRefId("skihmxrfd")
+            .withInventoryItemId("jrednwyysh")
+            .create();
 
         Assertions.assertEquals("cd", response.location());
         Assertions.assertEquals("qcwgaxfgvaknokz", response.tags().get("jjzr"));

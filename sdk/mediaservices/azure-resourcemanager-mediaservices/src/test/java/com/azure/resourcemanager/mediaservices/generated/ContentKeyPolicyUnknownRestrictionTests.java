@@ -10,9 +10,8 @@ import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyUnknownRes
 public final class ContentKeyPolicyUnknownRestrictionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentKeyPolicyUnknownRestriction model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.ContentKeyPolicyUnknownRestriction\"}")
+        ContentKeyPolicyUnknownRestriction model
+            = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.ContentKeyPolicyUnknownRestriction\"}")
                 .toObject(ContentKeyPolicyUnknownRestriction.class);
     }
 

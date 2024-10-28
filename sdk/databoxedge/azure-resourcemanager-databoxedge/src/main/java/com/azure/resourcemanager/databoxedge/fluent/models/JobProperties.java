@@ -5,71 +5,71 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.JobType;
 import com.azure.resourcemanager.databoxedge.models.UpdateDownloadProgress;
 import com.azure.resourcemanager.databoxedge.models.UpdateInstallProgress;
 import com.azure.resourcemanager.databoxedge.models.UpdateOperationStage;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties for the job. */
+/**
+ * The properties for the job.
+ */
 @Fluent
-public final class JobProperties {
+public final class JobProperties implements JsonSerializable<JobProperties> {
     /*
      * The type of the job.
      */
-    @JsonProperty(value = "jobType", access = JsonProperty.Access.WRITE_ONLY)
     private JobType jobType;
 
     /*
      * Current stage of the update operation.
      */
-    @JsonProperty(value = "currentStage", access = JsonProperty.Access.WRITE_ONLY)
     private UpdateOperationStage currentStage;
 
     /*
      * The download progress.
      */
-    @JsonProperty(value = "downloadProgress", access = JsonProperty.Access.WRITE_ONLY)
     private UpdateDownloadProgress downloadProgress;
 
     /*
      * The install progress.
      */
-    @JsonProperty(value = "installProgress", access = JsonProperty.Access.WRITE_ONLY)
     private UpdateInstallProgress installProgress;
 
     /*
      * Total number of errors encountered during the refresh process.
      */
-    @JsonProperty(value = "totalRefreshErrors", access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalRefreshErrors;
 
     /*
      * Local share/remote container relative path to the error manifest file of the refresh.
      */
-    @JsonProperty(value = "errorManifestFile", access = JsonProperty.Access.WRITE_ONLY)
     private String errorManifestFile;
 
     /*
      * ARM ID of the entity that was refreshed.
      */
-    @JsonProperty(value = "refreshedEntityId", access = JsonProperty.Access.WRITE_ONLY)
     private String refreshedEntityId;
 
     /*
      * If only subfolders need to be refreshed, then the subfolder path inside the share or container. (The path is
      * empty if there are no subfolders.)
      */
-    @JsonProperty(value = "folder")
     private String folder;
 
-    /** Creates an instance of JobProperties class. */
+    /**
+     * Creates an instance of JobProperties class.
+     */
     public JobProperties() {
     }
 
     /**
      * Get the jobType property: The type of the job.
-     *
+     * 
      * @return the jobType value.
      */
     public JobType jobType() {
@@ -78,7 +78,7 @@ public final class JobProperties {
 
     /**
      * Get the currentStage property: Current stage of the update operation.
-     *
+     * 
      * @return the currentStage value.
      */
     public UpdateOperationStage currentStage() {
@@ -87,7 +87,7 @@ public final class JobProperties {
 
     /**
      * Get the downloadProgress property: The download progress.
-     *
+     * 
      * @return the downloadProgress value.
      */
     public UpdateDownloadProgress downloadProgress() {
@@ -96,7 +96,7 @@ public final class JobProperties {
 
     /**
      * Get the installProgress property: The install progress.
-     *
+     * 
      * @return the installProgress value.
      */
     public UpdateInstallProgress installProgress() {
@@ -105,7 +105,7 @@ public final class JobProperties {
 
     /**
      * Get the totalRefreshErrors property: Total number of errors encountered during the refresh process.
-     *
+     * 
      * @return the totalRefreshErrors value.
      */
     public Integer totalRefreshErrors() {
@@ -115,7 +115,7 @@ public final class JobProperties {
     /**
      * Get the errorManifestFile property: Local share/remote container relative path to the error manifest file of the
      * refresh.
-     *
+     * 
      * @return the errorManifestFile value.
      */
     public String errorManifestFile() {
@@ -124,7 +124,7 @@ public final class JobProperties {
 
     /**
      * Get the refreshedEntityId property: ARM ID of the entity that was refreshed.
-     *
+     * 
      * @return the refreshedEntityId value.
      */
     public String refreshedEntityId() {
@@ -134,7 +134,7 @@ public final class JobProperties {
     /**
      * Get the folder property: If only subfolders need to be refreshed, then the subfolder path inside the share or
      * container. (The path is empty if there are no subfolders.).
-     *
+     * 
      * @return the folder value.
      */
     public String folder() {
@@ -144,7 +144,7 @@ public final class JobProperties {
     /**
      * Set the folder property: If only subfolders need to be refreshed, then the subfolder path inside the share or
      * container. (The path is empty if there are no subfolders.).
-     *
+     * 
      * @param folder the folder value to set.
      * @return the JobProperties object itself.
      */
@@ -155,7 +155,7 @@ public final class JobProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -165,5 +165,55 @@ public final class JobProperties {
         if (installProgress() != null) {
             installProgress().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("folder", this.folder);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobProperties.
+     */
+    public static JobProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobProperties deserializedJobProperties = new JobProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobType".equals(fieldName)) {
+                    deserializedJobProperties.jobType = JobType.fromString(reader.getString());
+                } else if ("currentStage".equals(fieldName)) {
+                    deserializedJobProperties.currentStage = UpdateOperationStage.fromString(reader.getString());
+                } else if ("downloadProgress".equals(fieldName)) {
+                    deserializedJobProperties.downloadProgress = UpdateDownloadProgress.fromJson(reader);
+                } else if ("installProgress".equals(fieldName)) {
+                    deserializedJobProperties.installProgress = UpdateInstallProgress.fromJson(reader);
+                } else if ("totalRefreshErrors".equals(fieldName)) {
+                    deserializedJobProperties.totalRefreshErrors = reader.getNullable(JsonReader::getInt);
+                } else if ("errorManifestFile".equals(fieldName)) {
+                    deserializedJobProperties.errorManifestFile = reader.getString();
+                } else if ("refreshedEntityId".equals(fieldName)) {
+                    deserializedJobProperties.refreshedEntityId = reader.getString();
+                } else if ("folder".equals(fieldName)) {
+                    deserializedJobProperties.folder = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobProperties;
+        });
     }
 }

@@ -14,8 +14,7 @@ import io.clientcore.core.json.implementation.jackson.core.JsonParser;
  *
  * @since 2.6
  */
-public class TokenFilter
-{
+public class TokenFilter {
 
     /**
      * Enumeration that controls how TokenFilter return values are interpreted.
@@ -56,7 +55,8 @@ public class TokenFilter
 
     // Life-cycle
 
-    protected TokenFilter() { }
+    protected TokenFilter() {
+    }
 
     /*
     /**********************************************************
@@ -124,7 +124,8 @@ public class TokenFilter
      * in cases where filter other that {@link #INCLUDE_ALL} was returned.
      * This occurs when {@link JsonGenerator#writeEndObject()} is called.
      */
-    public void filterFinishObject() { }
+    public void filterFinishObject() {
+    }
 
     /**
      * Method called to indicate that output of non-filtered Array (one that may
@@ -132,7 +133,8 @@ public class TokenFilter
      * in cases where filter other that {@link #INCLUDE_ALL} was returned.
      * This occurs when {@link JsonGenerator#writeEndArray()} is called.
      */
-    public void filterFinishArray() { }
+    public void filterFinishArray() {
+    }
 
     /*
     /**********************************************************

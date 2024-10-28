@@ -159,14 +159,7 @@ public final class AliasesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAlias>> createWithResponseAsync(SearchAlias alias, RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), xMsClientRequestId,
-            this.client.getApiVersion(), accept, alias, context));
+        return FluxUtil.withContext(context -> createWithResponseAsync(alias, requestOptions, context));
     }
 
     /**
@@ -439,15 +432,8 @@ public final class AliasesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAlias>> createOrUpdateWithResponseAsync(String aliasName, SearchAlias alias,
         String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
-        final String prefer = "return=representation";
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), aliasName,
-            xMsClientRequestId, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), accept, alias, context));
+        return FluxUtil.withContext(context -> createOrUpdateWithResponseAsync(aliasName, alias, ifMatch, ifNoneMatch,
+            requestOptions, context));
     }
 
     /**
@@ -599,14 +585,8 @@ public final class AliasesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String aliasName, String ifMatch, String ifNoneMatch,
         RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), aliasName, xMsClientRequestId,
-            ifMatch, ifNoneMatch, this.client.getApiVersion(), accept, context));
+        return FluxUtil
+            .withContext(context -> deleteWithResponseAsync(aliasName, ifMatch, ifNoneMatch, requestOptions, context));
     }
 
     /**
@@ -743,14 +723,7 @@ public final class AliasesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAlias>> getWithResponseAsync(String aliasName, RequestOptions requestOptions) {
-        final String accept = "application/json; odata.metadata=minimal";
-        UUID xMsClientRequestIdInternal = null;
-        if (requestOptions != null) {
-            xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
-        }
-        UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), aliasName, xMsClientRequestId,
-            this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(aliasName, requestOptions, context));
     }
 
     /**

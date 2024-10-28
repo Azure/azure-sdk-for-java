@@ -81,15 +81,10 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithDirectionAccess<ParentT>,
-            DefinitionStages.WithSourceAddressOrSecurityGroup<ParentT>,
-            DefinitionStages.WithSourcePort<ParentT>,
-            DefinitionStages.WithDestinationAddressOrSecurityGroup<ParentT>,
-            DefinitionStages.WithDestinationPort<ParentT>,
-            DefinitionStages.WithProtocol<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithDirectionAccess<ParentT>, DefinitionStages.WithSourceAddressOrSecurityGroup<ParentT>,
+        DefinitionStages.WithSourcePort<ParentT>, DefinitionStages.WithDestinationAddressOrSecurityGroup<ParentT>,
+        DefinitionStages.WithDestinationPort<ParentT>, DefinitionStages.WithProtocol<ParentT> {
     }
 
     /** Grouping of security rule definition stages applicable as part of a network security group creation. */
@@ -384,14 +379,12 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithDirectionAccess<ParentT>,
-            UpdateDefinitionStages.WithSourceAddressOrSecurityGroup<ParentT>,
-            UpdateDefinitionStages.WithSourcePort<ParentT>,
-            UpdateDefinitionStages.WithDestinationAddressOrSecurityGroup<ParentT>,
-            UpdateDefinitionStages.WithDestinationPort<ParentT>,
-            UpdateDefinitionStages.WithProtocol<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithDirectionAccess<ParentT>,
+        UpdateDefinitionStages.WithSourceAddressOrSecurityGroup<ParentT>,
+        UpdateDefinitionStages.WithSourcePort<ParentT>,
+        UpdateDefinitionStages.WithDestinationAddressOrSecurityGroup<ParentT>,
+        UpdateDefinitionStages.WithDestinationPort<ParentT>, UpdateDefinitionStages.WithProtocol<ParentT>,
+        UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of security rule definition stages applicable as part of a network security group update. */
@@ -666,14 +659,9 @@ public interface NetworkSecurityRule extends HasInnerModel<SecurityRuleInner>, C
     }
 
     /** The entirety of a security rule update as part of a network security group update. */
-    interface Update
-        extends UpdateStages.WithDirectionAccess,
-            UpdateStages.WithSourceAddressOrSecurityGroup,
-            UpdateStages.WithSourcePort,
-            UpdateStages.WithDestinationAddressOrSecurityGroup,
-            UpdateStages.WithDestinationPort,
-            UpdateStages.WithProtocol,
-            Settable<NetworkSecurityGroup.Update> {
+    interface Update extends UpdateStages.WithDirectionAccess, UpdateStages.WithSourceAddressOrSecurityGroup,
+        UpdateStages.WithSourcePort, UpdateStages.WithDestinationAddressOrSecurityGroup,
+        UpdateStages.WithDestinationPort, UpdateStages.WithProtocol, Settable<NetworkSecurityGroup.Update> {
 
         /**
          * Specifies the priority to assign to this security rule.

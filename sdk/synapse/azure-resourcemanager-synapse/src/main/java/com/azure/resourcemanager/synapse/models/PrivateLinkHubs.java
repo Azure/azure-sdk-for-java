@@ -44,8 +44,8 @@ public interface PrivateLinkHubs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a privateLinkHub along with {@link Response}.
      */
-    Response<PrivateLinkHub> getByResourceGroupWithResponse(
-        String resourceGroupName, String privateLinkHubName, Context context);
+    Response<PrivateLinkHub> getByResourceGroupWithResponse(String resourceGroupName, String privateLinkHubName,
+        Context context);
 
     /**
      * Gets a privateLinkHub.

@@ -5,28 +5,105 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Action to be applied. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "actionType",
-    defaultImpl = Action.class)
-@JsonTypeName("Action")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AddActionGroups", value = AddActionGroups.class),
-    @JsonSubTypes.Type(name = "RemoveAllActionGroups", value = RemoveAllActionGroups.class)
-})
+/**
+ * Action to be applied.
+ */
 @Immutable
-public class Action {
+public class Action implements JsonSerializable<Action> {
+    /*
+     * Action that should be applied.
+     */
+    private ActionType actionType = ActionType.fromString("Action");
+
+    /**
+     * Creates an instance of Action class.
+     */
+    public Action() {
+    }
+
+    /**
+     * Get the actionType property: Action that should be applied.
+     * 
+     * @return the actionType value.
+     */
+    public ActionType actionType() {
+        return this.actionType;
+    }
+
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("actionType", this.actionType == null ? null : this.actionType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Action from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Action if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Action.
+     */
+    public static Action fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("actionType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AddActionGroups".equals(discriminatorValue)) {
+                    return AddActionGroups.fromJson(readerToUse.reset());
+                } else if ("RemoveAllActionGroups".equals(discriminatorValue)) {
+                    return RemoveAllActionGroups.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static Action fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Action deserializedAction = new Action();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actionType".equals(fieldName)) {
+                    deserializedAction.actionType = ActionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAction;
+        });
     }
 }

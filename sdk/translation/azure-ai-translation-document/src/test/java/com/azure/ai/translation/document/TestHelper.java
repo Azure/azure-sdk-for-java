@@ -15,9 +15,9 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TestHelper {
-    
-    
-    public static SourceInput createSourceInput(String sourceUrl, DocumentFilter filter, String sourceLanguage, StorageSource storageSource) {
+
+    public static SourceInput createSourceInput(String sourceUrl, DocumentFilter filter, String sourceLanguage,
+        StorageSource storageSource) {
         SourceInput sourceInput = new SourceInput(sourceUrl);
         if (filter != null) {
             sourceInput.setFilter(filter);
@@ -30,10 +30,11 @@ public class TestHelper {
         }
         return sourceInput;
     }
-    
-    public static TargetInput createTargetInput(String targetUrl, String targetLanguageCode, String category, List<Glossary> glossaries, StorageSource storageSource) {
+
+    public static TargetInput createTargetInput(String targetUrl, String targetLanguageCode, String category,
+        List<Glossary> glossaries, StorageSource storageSource) {
         TargetInput targetInput = new TargetInput(targetUrl, targetLanguageCode);
-        if (glossaries != null) {   
+        if (glossaries != null) {
             targetInput.setGlossaries(glossaries);
         }
         if (category != null) {
@@ -41,17 +42,17 @@ public class TestHelper {
         }
         if (storageSource != null) {
             targetInput.setStorageSource(storageSource);
-        }         
+        }
         return targetInput;
     }
-            
-    public static StartTranslationDetails getStartTranslationDetails(BatchRequest... batchRequests) {          
+
+    public static StartTranslationDetails getStartTranslationDetails(BatchRequest... batchRequests) {
         List<BatchRequest> inputs = new ArrayList<>();
-        inputs.addAll(Arrays.asList(batchRequests));        
+        inputs.addAll(Arrays.asList(batchRequests));
 
         StartTranslationDetails startTranslationDetails = new StartTranslationDetails(inputs);
 
-        return  startTranslationDetails;
+        return startTranslationDetails;
     }
-    
+
 }

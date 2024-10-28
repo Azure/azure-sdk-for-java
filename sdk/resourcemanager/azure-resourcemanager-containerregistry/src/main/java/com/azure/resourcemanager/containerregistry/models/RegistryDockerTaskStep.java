@@ -29,19 +29,15 @@ public interface RegistryDockerTaskStep extends HasInnerModel<DockerTaskStep>, R
 
     /** Container interface for all the definitions related to a RegistryDockerTaskStep. */
     interface Definition
-        extends RegistryDockerTaskStep.DefinitionStages.Blank,
-            RegistryDockerTaskStep.DefinitionStages.DockerFilePath,
-            RegistryDockerTaskStep.DefinitionStages.DockerTaskStepAttachable {
+        extends RegistryDockerTaskStep.DefinitionStages.Blank, RegistryDockerTaskStep.DefinitionStages.DockerFilePath,
+        RegistryDockerTaskStep.DefinitionStages.DockerTaskStepAttachable {
     }
 
     /** Container interface for all the updates related to a RegistryDockerTaskStep. */
     interface Update
-        extends RegistryDockerTaskStep.UpdateStages.DockerFilePath,
-            RegistryDockerTaskStep.UpdateStages.ImageNames,
-            RegistryDockerTaskStep.UpdateStages.Push,
-            RegistryDockerTaskStep.UpdateStages.Cache,
-            RegistryDockerTaskStep.UpdateStages.OverridingArgumentUpdate,
-            Settable<RegistryTask.Update> {
+        extends RegistryDockerTaskStep.UpdateStages.DockerFilePath, RegistryDockerTaskStep.UpdateStages.ImageNames,
+        RegistryDockerTaskStep.UpdateStages.Push, RegistryDockerTaskStep.UpdateStages.Cache,
+        RegistryDockerTaskStep.UpdateStages.OverridingArgumentUpdate, Settable<RegistryTask.Update> {
     }
 
     /** Grouping of registry Docker task definition stages. */

@@ -53,8 +53,8 @@ public interface PrivateLinkResourcesOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link resource in workspace along with {@link Response}.
      */
-    Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String workspaceName, String privateLinkResourceName, Context context);
+    Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String workspaceName,
+        String privateLinkResourceName, Context context);
 
     /**
      * Get Private Link Resource

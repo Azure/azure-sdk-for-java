@@ -3,11 +3,12 @@
 
 package com.azure.xml;
 
+import com.azure.xml.implementation.aalto.stax.OutputFactoryImpl;
+
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -20,7 +21,16 @@ import static javax.xml.XMLConstants.DEFAULT_NS_PREFIX;
  */
 @SuppressWarnings("resource")
 public final class XmlWriter implements AutoCloseable {
-    private static final XMLOutputFactory XML_OUTPUT_FACTORY = XMLOutputFactory.newInstance();
+    private static final XMLOutputFactory XML_OUTPUT_FACTORY;
+
+    static {
+        XMLOutputFactory xmlOutputFactory = XMLOutputFactory.newInstance();
+        if ("com.sun.xml.internal.stream.XMLOutputFactoryImpl".equals(xmlOutputFactory.getClass().getName())) {
+            xmlOutputFactory = new OutputFactoryImpl();
+        }
+
+        XML_OUTPUT_FACTORY = xmlOutputFactory;
+    }
 
     private final XMLStreamWriter writer;
 
@@ -38,8 +48,7 @@ public final class XmlWriter implements AutoCloseable {
      */
     public static XmlWriter toStream(OutputStream xml) throws XMLStreamException {
         Objects.requireNonNull(xml, "'xml' cannot be null.");
-        return new XmlWriter(
-            XML_OUTPUT_FACTORY.createXMLStreamWriter(new OutputStreamWriter(xml, StandardCharsets.UTF_8)));
+        return new XmlWriter(XML_OUTPUT_FACTORY.createXMLStreamWriter(xml, StandardCharsets.UTF_8.name()));
     }
 
     /**

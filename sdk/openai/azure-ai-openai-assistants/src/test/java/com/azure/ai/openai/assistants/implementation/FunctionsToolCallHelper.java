@@ -18,24 +18,21 @@ import java.util.Map;
 public class FunctionsToolCallHelper {
 
     public FunctionToolDefinition getFavoriteVacationDestinationDefinition() {
-        return new FunctionToolDefinition(new FunctionDefinition(
-            "getFavoriteVacationDestination",
+        return new FunctionToolDefinition(new FunctionDefinition("getFavoriteVacationDestination",
             BinaryData.fromObject(new FavoriteVacationDestinationParameters()))
-            .setDescription("Retrieves the user's unambiguously preferred location for vacations."));
+                .setDescription("Retrieves the user's unambiguously preferred location for vacations."));
     }
 
     public FunctionToolDefinition getPreferredAirlineForSeasonDefinition() {
-        return new FunctionToolDefinition(new FunctionDefinition(
-                "getPreferredAirlineForSeason",
-                BinaryData.fromObject(new AirlineForSeasonParameters()))
-            .setDescription("Given a season like winter or spring, retrieves the user's preferred airline carrier."));
+        return new FunctionToolDefinition(new FunctionDefinition("getPreferredAirlineForSeason",
+            BinaryData.fromObject(new AirlineForSeasonParameters())).setDescription(
+                "Given a season like winter or spring, retrieves the user's preferred airline carrier."));
     }
 
     public FunctionToolDefinition getAirlinePriceToDestinationForSeasonDefinition() {
-        return new FunctionToolDefinition(new FunctionDefinition(
-                "getAirlinePriceToDestinationForSeason",
-                BinaryData.fromObject(new AirlinePriceFunctionParameters()))
-            .setDescription("Given a desired location, airline, and approximate time of year, retrieves estimated prices."));
+        return new FunctionToolDefinition(new FunctionDefinition("getAirlinePriceToDestinationForSeason",
+            BinaryData.fromObject(new AirlinePriceFunctionParameters())).setDescription(
+                "Given a desired location, airline, and approximate time of year, retrieves estimated prices."));
     }
 
     private static class AirlineForSeasonParameters implements JsonSerializable<AirlineForSeasonParameters> {
@@ -47,9 +44,9 @@ public class FunctionsToolCallHelper {
         AirlineForSeasonParameters() {
             this.properties = new HashMap<>();
 
-            this.properties.put("season", new FunctionEnumParameter(Arrays.asList("winter", "spring", "summer", "fall")));
+            this.properties.put("season",
+                new FunctionEnumParameter(Arrays.asList("winter", "spring", "summer", "fall")));
         }
-
 
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -80,8 +77,10 @@ public class FunctionsToolCallHelper {
             this.properties = new HashMap<>();
 
             this.properties.put("destination", new FunctionStringParameter("A travel destination location."));
-            this.properties.put("airline", new FunctionStringParameter("The name of an airline that flights can be booked on."));
-            this.properties.put("time", new FunctionStringParameter("An approximate time of year at which travel is planned."));
+            this.properties.put("airline",
+                new FunctionStringParameter("The name of an airline that flights can be booked on."));
+            this.properties.put("time",
+                new FunctionStringParameter("An approximate time of year at which travel is planned."));
         }
 
         @Override
@@ -104,7 +103,8 @@ public class FunctionsToolCallHelper {
         }
     }
 
-    private static class FavoriteVacationDestinationParameters implements JsonSerializable<FavoriteVacationDestinationParameters> {
+    private static class FavoriteVacationDestinationParameters
+        implements JsonSerializable<FavoriteVacationDestinationParameters> {
 
         private final String type = "object";
 

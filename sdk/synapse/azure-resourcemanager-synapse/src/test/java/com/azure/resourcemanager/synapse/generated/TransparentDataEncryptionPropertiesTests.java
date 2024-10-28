@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class TransparentDataEncryptionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TransparentDataEncryptionProperties model =
-            BinaryData.fromString("{\"status\":\"Disabled\"}").toObject(TransparentDataEncryptionProperties.class);
+        TransparentDataEncryptionProperties model
+            = BinaryData.fromString("{\"status\":\"Disabled\"}").toObject(TransparentDataEncryptionProperties.class);
         Assertions.assertEquals(TransparentDataEncryptionStatus.DISABLED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransparentDataEncryptionProperties model =
-            new TransparentDataEncryptionProperties().withStatus(TransparentDataEncryptionStatus.DISABLED);
+        TransparentDataEncryptionProperties model
+            = new TransparentDataEncryptionProperties().withStatus(TransparentDataEncryptionStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(TransparentDataEncryptionProperties.class);
         Assertions.assertEquals(TransparentDataEncryptionStatus.DISABLED, model.status());
     }

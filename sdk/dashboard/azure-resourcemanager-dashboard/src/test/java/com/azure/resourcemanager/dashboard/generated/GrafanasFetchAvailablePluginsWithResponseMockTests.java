@@ -44,12 +44,14 @@ public final class GrafanasFetchAvailablePluginsWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        DashboardManager manager = DashboardManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        DashboardManager manager = DashboardManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GrafanaAvailablePluginListResponse response = manager.grafanas()
-            .fetchAvailablePluginsWithResponse("c", "r", com.azure.core.util.Context.NONE).getValue();
+            .fetchAvailablePluginsWithResponse("c", "r", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("zoqftiyqzrnkcqvy", response.nextLink());
     }

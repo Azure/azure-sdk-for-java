@@ -318,8 +318,8 @@ public final class WorkspaceProperties {
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the WorkspaceProperties object itself.
      */
-    public WorkspaceProperties withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public WorkspaceProperties
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }
@@ -377,8 +377,8 @@ public final class WorkspaceProperties {
      * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set.
      * @return the WorkspaceProperties object itself.
      */
-    public WorkspaceProperties withManagedVirtualNetworkSettings(
-        ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+    public WorkspaceProperties
+        withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
         this.managedVirtualNetworkSettings = managedVirtualNetworkSettings;
         return this;
     }
@@ -398,8 +398,8 @@ public final class WorkspaceProperties {
      * @param workspaceRepositoryConfiguration the workspaceRepositoryConfiguration value to set.
      * @return the WorkspaceProperties object itself.
      */
-    public WorkspaceProperties withWorkspaceRepositoryConfiguration(
-        WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
+    public WorkspaceProperties
+        withWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
         this.workspaceRepositoryConfiguration = workspaceRepositoryConfiguration;
         return this;
     }
@@ -468,8 +468,8 @@ public final class WorkspaceProperties {
      * @param cspWorkspaceAdminProperties the cspWorkspaceAdminProperties value to set.
      * @return the WorkspaceProperties object itself.
      */
-    public WorkspaceProperties withCspWorkspaceAdminProperties(
-        CspWorkspaceAdminProperties cspWorkspaceAdminProperties) {
+    public WorkspaceProperties
+        withCspWorkspaceAdminProperties(CspWorkspaceAdminProperties cspWorkspaceAdminProperties) {
         this.cspWorkspaceAdminProperties = cspWorkspaceAdminProperties;
         return this;
     }

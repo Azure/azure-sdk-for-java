@@ -17,7 +17,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AKS")
 @Fluent
 public final class AksComputeSecrets extends ComputeSecretsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AksComputeSecrets.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AksComputeSecrets.class);
 
     /*
      * Content of kubeconfig file that can be used to connect to the Kubernetes

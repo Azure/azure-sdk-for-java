@@ -20,12 +20,8 @@ public final class DiagnosticsUpdateResponse extends ResponseBase<DiagnosticsUpd
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public DiagnosticsUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        DiagnosticContractInner value,
-        DiagnosticsUpdateHeaders headers) {
+    public DiagnosticsUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        DiagnosticContractInner value, DiagnosticsUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

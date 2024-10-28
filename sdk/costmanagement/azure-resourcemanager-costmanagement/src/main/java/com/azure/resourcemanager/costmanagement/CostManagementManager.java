@@ -106,12 +106,10 @@ public final class CostManagementManager {
     private CostManagementManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new CostManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new CostManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -239,8 +237,8 @@ public final class CostManagementManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -260,15 +258,13 @@ public final class CostManagementManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.costmanagement")
                 .append("/")
                 .append("1.0.0-beta.6");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -293,31 +289,21 @@ public final class CostManagementManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new CostManagementManager(httpPipeline, profile, defaultPollInterval);
         }
     }
@@ -401,8 +387,8 @@ public final class CostManagementManager {
      */
     public GenerateReservationDetailsReports generateReservationDetailsReports() {
         if (this.generateReservationDetailsReports == null) {
-            this.generateReservationDetailsReports =
-                new GenerateReservationDetailsReportsImpl(clientObject.getGenerateReservationDetailsReports(), this);
+            this.generateReservationDetailsReports
+                = new GenerateReservationDetailsReportsImpl(clientObject.getGenerateReservationDetailsReports(), this);
         }
         return generateReservationDetailsReports;
     }
@@ -426,8 +412,8 @@ public final class CostManagementManager {
      */
     public GenerateCostDetailsReports generateCostDetailsReports() {
         if (this.generateCostDetailsReports == null) {
-            this.generateCostDetailsReports =
-                new GenerateCostDetailsReportsImpl(clientObject.getGenerateCostDetailsReports(), this);
+            this.generateCostDetailsReports
+                = new GenerateCostDetailsReportsImpl(clientObject.getGenerateCostDetailsReports(), this);
         }
         return generateCostDetailsReports;
     }
@@ -439,8 +425,8 @@ public final class CostManagementManager {
      */
     public GenerateDetailedCostReports generateDetailedCostReports() {
         if (this.generateDetailedCostReports == null) {
-            this.generateDetailedCostReports =
-                new GenerateDetailedCostReportsImpl(clientObject.getGenerateDetailedCostReports(), this);
+            this.generateDetailedCostReports
+                = new GenerateDetailedCostReportsImpl(clientObject.getGenerateDetailedCostReports(), this);
         }
         return generateDetailedCostReports;
     }
@@ -452,9 +438,8 @@ public final class CostManagementManager {
      */
     public GenerateDetailedCostReportOperationResults generateDetailedCostReportOperationResults() {
         if (this.generateDetailedCostReportOperationResults == null) {
-            this.generateDetailedCostReportOperationResults =
-                new GenerateDetailedCostReportOperationResultsImpl(
-                    clientObject.getGenerateDetailedCostReportOperationResults(), this);
+            this.generateDetailedCostReportOperationResults = new GenerateDetailedCostReportOperationResultsImpl(
+                clientObject.getGenerateDetailedCostReportOperationResults(), this);
         }
         return generateDetailedCostReportOperationResults;
     }
@@ -466,9 +451,8 @@ public final class CostManagementManager {
      */
     public GenerateDetailedCostReportOperationStatus generateDetailedCostReportOperationStatus() {
         if (this.generateDetailedCostReportOperationStatus == null) {
-            this.generateDetailedCostReportOperationStatus =
-                new GenerateDetailedCostReportOperationStatusImpl(
-                    clientObject.getGenerateDetailedCostReportOperationStatus(), this);
+            this.generateDetailedCostReportOperationStatus = new GenerateDetailedCostReportOperationStatusImpl(
+                clientObject.getGenerateDetailedCostReportOperationStatus(), this);
         }
         return generateDetailedCostReportOperationStatus;
     }
@@ -504,8 +488,8 @@ public final class CostManagementManager {
      */
     public BenefitRecommendations benefitRecommendations() {
         if (this.benefitRecommendations == null) {
-            this.benefitRecommendations =
-                new BenefitRecommendationsImpl(clientObject.getBenefitRecommendations(), this);
+            this.benefitRecommendations
+                = new BenefitRecommendationsImpl(clientObject.getBenefitRecommendations(), this);
         }
         return benefitRecommendations;
     }
@@ -517,8 +501,8 @@ public final class CostManagementManager {
      */
     public BenefitUtilizationSummaries benefitUtilizationSummaries() {
         if (this.benefitUtilizationSummaries == null) {
-            this.benefitUtilizationSummaries =
-                new BenefitUtilizationSummariesImpl(clientObject.getBenefitUtilizationSummaries(), this);
+            this.benefitUtilizationSummaries
+                = new BenefitUtilizationSummariesImpl(clientObject.getBenefitUtilizationSummaries(), this);
         }
         return benefitUtilizationSummaries;
     }

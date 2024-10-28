@@ -5,23 +5,34 @@
 package com.azure.resourcemanager.dnsresolver.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dnsresolver.fluent.models.ForwardingRulePatchProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Describes a forwarding rule for PATCH operation. */
+/**
+ * Describes a forwarding rule for PATCH operation.
+ */
 @Fluent
-public final class ForwardingRulePatch {
+public final class ForwardingRulePatch implements JsonSerializable<ForwardingRulePatch> {
     /*
      * Updatable properties of the forwarding rule.
      */
-    @JsonProperty(value = "properties")
     private ForwardingRulePatchProperties innerProperties;
 
     /**
+     * Creates an instance of ForwardingRulePatch class.
+     */
+    public ForwardingRulePatch() {
+    }
+
+    /**
      * Get the innerProperties property: Updatable properties of the forwarding rule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ForwardingRulePatchProperties innerProperties() {
@@ -30,7 +41,7 @@ public final class ForwardingRulePatch {
 
     /**
      * Get the targetDnsServers property: DNS servers to forward the DNS query to.
-     *
+     * 
      * @return the targetDnsServers value.
      */
     public List<TargetDnsServer> targetDnsServers() {
@@ -39,7 +50,7 @@ public final class ForwardingRulePatch {
 
     /**
      * Set the targetDnsServers property: DNS servers to forward the DNS query to.
-     *
+     * 
      * @param targetDnsServers the targetDnsServers value to set.
      * @return the ForwardingRulePatch object itself.
      */
@@ -53,7 +64,7 @@ public final class ForwardingRulePatch {
 
     /**
      * Get the metadata property: Metadata attached to the forwarding rule.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -62,7 +73,7 @@ public final class ForwardingRulePatch {
 
     /**
      * Set the metadata property: Metadata attached to the forwarding rule.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the ForwardingRulePatch object itself.
      */
@@ -76,7 +87,7 @@ public final class ForwardingRulePatch {
 
     /**
      * Get the forwardingRuleState property: The state of forwarding rule.
-     *
+     * 
      * @return the forwardingRuleState value.
      */
     public ForwardingRuleState forwardingRuleState() {
@@ -85,7 +96,7 @@ public final class ForwardingRulePatch {
 
     /**
      * Set the forwardingRuleState property: The state of forwarding rule.
-     *
+     * 
      * @param forwardingRuleState the forwardingRuleState value to set.
      * @return the ForwardingRulePatch object itself.
      */
@@ -99,12 +110,48 @@ public final class ForwardingRulePatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ForwardingRulePatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ForwardingRulePatch if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ForwardingRulePatch.
+     */
+    public static ForwardingRulePatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ForwardingRulePatch deserializedForwardingRulePatch = new ForwardingRulePatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedForwardingRulePatch.innerProperties = ForwardingRulePatchProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedForwardingRulePatch;
+        });
     }
 }

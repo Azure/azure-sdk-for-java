@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IpPrefixPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpPrefixPatchProperties model =
-            BinaryData
-                .fromString(
-                    "{\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":7178657558999191056,\"networkPrefix\":\"sbede\",\"condition\":\"GreaterThanOrEqualTo\",\"subnetMaskLength\":\"k\"}],\"annotation\":\"hxvucnu\"}")
-                .toObject(IpPrefixPatchProperties.class);
+        IpPrefixPatchProperties model = BinaryData.fromString(
+            "{\"ipPrefixRules\":[{\"action\":\"Permit\",\"sequenceNumber\":7178657558999191056,\"networkPrefix\":\"sbede\",\"condition\":\"GreaterThanOrEqualTo\",\"subnetMaskLength\":\"k\"}],\"annotation\":\"hxvucnu\"}")
+            .toObject(IpPrefixPatchProperties.class);
         Assertions.assertEquals("hxvucnu", model.annotation());
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipPrefixRules().get(0).action());
         Assertions.assertEquals(7178657558999191056L, model.ipPrefixRules().get(0).sequenceNumber());
@@ -30,18 +28,12 @@ public final class IpPrefixPatchPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpPrefixPatchProperties model =
-            new IpPrefixPatchProperties()
-                .withAnnotation("hxvucnu")
-                .withIpPrefixRules(
-                    Arrays
-                        .asList(
-                            new IpPrefixRule()
-                                .withAction(CommunityActionTypes.PERMIT)
-                                .withSequenceNumber(7178657558999191056L)
-                                .withNetworkPrefix("sbede")
-                                .withCondition(Condition.GREATER_THAN_OR_EQUAL_TO)
-                                .withSubnetMaskLength("k")));
+        IpPrefixPatchProperties model = new IpPrefixPatchProperties().withAnnotation("hxvucnu")
+            .withIpPrefixRules(Arrays.asList(new IpPrefixRule().withAction(CommunityActionTypes.PERMIT)
+                .withSequenceNumber(7178657558999191056L)
+                .withNetworkPrefix("sbede")
+                .withCondition(Condition.GREATER_THAN_OR_EQUAL_TO)
+                .withSubnetMaskLength("k")));
         model = BinaryData.fromObject(model).toObject(IpPrefixPatchProperties.class);
         Assertions.assertEquals("hxvucnu", model.annotation());
         Assertions.assertEquals(CommunityActionTypes.PERMIT, model.ipPrefixRules().get(0).action());

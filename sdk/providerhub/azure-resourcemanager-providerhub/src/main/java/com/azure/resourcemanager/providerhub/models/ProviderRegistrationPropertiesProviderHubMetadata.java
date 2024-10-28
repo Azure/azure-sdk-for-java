@@ -16,16 +16,16 @@ public final class ProviderRegistrationPropertiesProviderHubMetadata extends Pro
 
     /** {@inheritDoc} */
     @Override
-    public ProviderRegistrationPropertiesProviderHubMetadata withProviderAuthorizations(
-        List<ResourceProviderAuthorization> providerAuthorizations) {
+    public ProviderRegistrationPropertiesProviderHubMetadata
+        withProviderAuthorizations(List<ResourceProviderAuthorization> providerAuthorizations) {
         super.withProviderAuthorizations(providerAuthorizations);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ProviderRegistrationPropertiesProviderHubMetadata withProviderAuthentication(
-        ProviderHubMetadataProviderAuthentication providerAuthentication) {
+    public ProviderRegistrationPropertiesProviderHubMetadata
+        withProviderAuthentication(ProviderHubMetadataProviderAuthentication providerAuthentication) {
         super.withProviderAuthentication(providerAuthentication);
         return this;
     }

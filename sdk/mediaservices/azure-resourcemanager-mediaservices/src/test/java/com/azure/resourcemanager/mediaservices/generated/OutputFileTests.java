@@ -12,10 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class OutputFileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OutputFile model =
-            BinaryData
-                .fromString("{\"labels\":[\"lhzdsqtzb\",\"rgnowcjhfgm\",\"ecactx\",\"wotey\"]}")
-                .toObject(OutputFile.class);
+        OutputFile model = BinaryData.fromString("{\"labels\":[\"lhzdsqtzb\",\"rgnowcjhfgm\",\"ecactx\",\"wotey\"]}")
+            .toObject(OutputFile.class);
         Assertions.assertEquals("lhzdsqtzb", model.labels().get(0));
     }
 

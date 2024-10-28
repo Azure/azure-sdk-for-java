@@ -23,8 +23,12 @@ public final class ApplicationTypeVersionsCreateOrUpdateSamples {
      */
     public static void
         putAnApplicationTypeVersion(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applicationTypeVersions().define("1.0").withExistingApplicationType("resRg", "myCluster", "myAppType")
-            .withTags(mapOf()).withAppPackageUrl("http://fakelink.test.com/MyAppType").create();
+        manager.applicationTypeVersions()
+            .define("1.0")
+            .withExistingApplicationType("resRg", "myCluster", "myAppType")
+            .withTags(mapOf())
+            .withAppPackageUrl("http://fakelink.test.com/MyAppType")
+            .create();
     }
 
     // Use "Map.of" if available

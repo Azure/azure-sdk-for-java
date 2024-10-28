@@ -38,8 +38,8 @@ public interface EmailTemplates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all email templates as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EmailTemplateContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<EmailTemplateContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the email template specified by its identifier.
@@ -53,8 +53,8 @@ public interface EmailTemplates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the email template specified by its identifier.
      */
-    EmailTemplatesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, TemplateName templateName, Context context);
+    EmailTemplatesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        TemplateName templateName, Context context);
 
     /**
      * Gets the entity state (Etag) version of the email template specified by its identifier.
@@ -80,8 +80,8 @@ public interface EmailTemplates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the email template specified by its identifier.
      */
-    Response<EmailTemplateContract> getWithResponse(
-        String resourceGroupName, String serviceName, TemplateName templateName, Context context);
+    Response<EmailTemplateContract> getWithResponse(String resourceGroupName, String serviceName,
+        TemplateName templateName, Context context);
 
     /**
      * Gets the details of the email template specified by its identifier.
@@ -110,8 +110,8 @@ public interface EmailTemplates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, TemplateName templateName, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, TemplateName templateName,
+        String ifMatch, Context context);
 
     /**
      * Reset the Email Template to default template provided by the API Management service instance.

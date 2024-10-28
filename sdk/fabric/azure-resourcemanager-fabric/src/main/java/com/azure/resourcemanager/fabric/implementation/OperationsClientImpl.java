@@ -42,25 +42,25 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * The service client containing this operation class.
      */
-    private final FabricClientImpl client;
+    private final FabricManagementClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(FabricClientImpl client) {
+    OperationsClientImpl(FabricManagementClientImpl client) {
         this.service
             = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for FabricClientOperations to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for FabricManagementClientOperations to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "FabricClientOperatio")
+    @ServiceInterface(name = "FabricManagementClie")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Fabric/operations")

@@ -53,15 +53,21 @@ public final class NetworkFunctionsCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetworkFunction response = manager.networkFunctions().define("ic").withRegion("eiookjbsah")
-            .withExistingResourceGroup("qfecjxeygtuhx").withTags(mapOf("slmot", "tpdelqa"))
+        NetworkFunction response = manager.networkFunctions()
+            .define("ic")
+            .withRegion("eiookjbsah")
+            .withExistingResourceGroup("qfecjxeygtuhx")
+            .withTags(mapOf("slmot", "tpdelqa"))
             .withProperties(new NetworkFunctionPropertiesFormat()
                 .withNetworkFunctionDefinitionVersionResourceReference(new DeploymentResourceIdReference())
-                .withNfviType(NfviType.AZURE_CORE).withNfviId("dlfgtdysnaq").withAllowSoftwareUpdate(true)
+                .withNfviType(NfviType.AZURE_CORE)
+                .withNfviId("dlfgtdysnaq")
+                .withAllowSoftwareUpdate(true)
                 .withRoleOverrideValues(Arrays.asList("ctqhamzjrwdk", "zeqyjleziun", "xdfzantkw")))
             .withEtag("gyamlbnseqacjjv")
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)

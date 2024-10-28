@@ -21,16 +21,28 @@ public final class ActivitiesImpl implements Activities {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public ActivitiesImpl(
-        ActivitiesClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public ActivitiesImpl(ActivitiesClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Activity get(
-        String resourceGroupName, String automationAccountName, String moduleName, String activityName) {
-        ActivityInner inner =
-            this.serviceClient().get(resourceGroupName, automationAccountName, moduleName, activityName);
+    public Response<Activity> getWithResponse(String resourceGroupName, String automationAccountName, String moduleName,
+        String activityName, Context context) {
+        Response<ActivityInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, automationAccountName, moduleName, activityName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ActivityImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Activity get(String resourceGroupName, String automationAccountName, String moduleName,
+        String activityName) {
+        ActivityInner inner
+            = this.serviceClient().get(resourceGroupName, automationAccountName, moduleName, activityName);
         if (inner != null) {
             return new ActivityImpl(inner, this.manager());
         } else {
@@ -38,39 +50,18 @@ public final class ActivitiesImpl implements Activities {
         }
     }
 
-    public Response<Activity> getWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String moduleName,
-        String activityName,
-        Context context) {
-        Response<ActivityInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, automationAccountName, moduleName, activityName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ActivityImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<Activity> listByModule(String resourceGroupName, String automationAccountName,
+        String moduleName) {
+        PagedIterable<ActivityInner> inner
+            = this.serviceClient().listByModule(resourceGroupName, automationAccountName, moduleName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ActivityImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Activity> listByModule(
-        String resourceGroupName, String automationAccountName, String moduleName) {
-        PagedIterable<ActivityInner> inner =
-            this.serviceClient().listByModule(resourceGroupName, automationAccountName, moduleName);
-        return Utils.mapPage(inner, inner1 -> new ActivityImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Activity> listByModule(
-        String resourceGroupName, String automationAccountName, String moduleName, Context context) {
-        PagedIterable<ActivityInner> inner =
-            this.serviceClient().listByModule(resourceGroupName, automationAccountName, moduleName, context);
-        return Utils.mapPage(inner, inner1 -> new ActivityImpl(inner1, this.manager()));
+    public PagedIterable<Activity> listByModule(String resourceGroupName, String automationAccountName,
+        String moduleName, Context context) {
+        PagedIterable<ActivityInner> inner
+            = this.serviceClient().listByModule(resourceGroupName, automationAccountName, moduleName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ActivityImpl(inner1, this.manager()));
     }
 
     private ActivitiesClient serviceClient() {

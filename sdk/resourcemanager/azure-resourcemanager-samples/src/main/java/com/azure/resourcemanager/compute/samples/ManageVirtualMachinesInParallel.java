@@ -18,7 +18,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,37 +45,38 @@ public final class ManageVirtualMachinesInParallel {
         final String sshPublicKey = Utils.sshPublicKey();
         try {
             // Create a resource group [Where all resources gets created]
-            ResourceGroup resourceGroup = azureResourceManager.resourceGroups()
-                    .define(rgName)
-                    .withRegion(region)
-                    .create();
+            ResourceGroup resourceGroup
+                = azureResourceManager.resourceGroups().define(rgName).withRegion(region).create();
 
             // Prepare Creatable Network definition [Where all the virtual machines get added to]
-            Creatable<Network> creatableNetwork = azureResourceManager.networks().define(networkName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(resourceGroup)
-                    .withAddressSpace("172.16.0.0/16");
+            Creatable<Network> creatableNetwork = azureResourceManager.networks()
+                .define(networkName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("172.16.0.0/16");
 
             // Prepare Creatable Storage account definition [For storing VMs disk]
-            Creatable<StorageAccount> creatableStorageAccount = azureResourceManager.storageAccounts().define(storageAccountName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(resourceGroup);
+            Creatable<StorageAccount> creatableStorageAccount = azureResourceManager.storageAccounts()
+                .define(storageAccountName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup);
 
             // Prepare a batch of Creatable Virtual Machines definitions
             List<Creatable<VirtualMachine>> creatableVirtualMachines = new ArrayList<>();
 
             for (int i = 0; i < vmCount; i++) {
-                Creatable<VirtualMachine> creatableVirtualMachine = azureResourceManager.virtualMachines().define("VM-" + i)
-                        .withRegion(region)
-                        .withExistingResourceGroup(resourceGroup)
-                        .withNewPrimaryNetwork(creatableNetwork)
-                        .withPrimaryPrivateIPAddressDynamic()
-                        .withoutPrimaryPublicIPAddress()
-                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUsername(userName)
-                        .withSsh(sshPublicKey)
-                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                        .withNewStorageAccount(creatableStorageAccount);
+                Creatable<VirtualMachine> creatableVirtualMachine = azureResourceManager.virtualMachines()
+                    .define("VM-" + i)
+                    .withRegion(region)
+                    .withExistingResourceGroup(resourceGroup)
+                    .withNewPrimaryNetwork(creatableNetwork)
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withoutPrimaryPublicIPAddress()
+                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                    .withRootUsername(userName)
+                    .withSsh(sshPublicKey)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withNewStorageAccount(creatableStorageAccount);
                 creatableVirtualMachines.add(creatableVirtualMachine);
             }
 
@@ -83,7 +84,8 @@ public final class ManageVirtualMachinesInParallel {
             System.out.println("Creating the virtual machines");
             stopwatch.start();
 
-            Collection<VirtualMachine> virtualMachines = azureResourceManager.virtualMachines().create(creatableVirtualMachines).values();
+            Collection<VirtualMachine> virtualMachines
+                = azureResourceManager.virtualMachines().create(creatableVirtualMachines).values();
 
             stopwatch.stop();
             System.out.println("Created virtual machines");
@@ -106,6 +108,7 @@ public final class ManageVirtualMachinesInParallel {
             }
         }
     }
+
     /**
      * Main entry point.
      * @param args the parameters
@@ -121,8 +124,7 @@ public final class ManageVirtualMachinesInParallel {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

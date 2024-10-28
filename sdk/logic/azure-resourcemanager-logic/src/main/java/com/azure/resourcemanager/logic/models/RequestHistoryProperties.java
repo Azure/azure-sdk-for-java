@@ -5,43 +5,49 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** The request history. */
+/**
+ * The request history.
+ */
 @Fluent
-public final class RequestHistoryProperties {
+public final class RequestHistoryProperties implements JsonSerializable<RequestHistoryProperties> {
     /*
      * The time the request started.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The time the request ended.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The request.
      */
-    @JsonProperty(value = "request")
     private Request request;
 
     /*
      * The response.
      */
-    @JsonProperty(value = "response")
     private Response response;
 
-    /** Creates an instance of RequestHistoryProperties class. */
+    /**
+     * Creates an instance of RequestHistoryProperties class.
+     */
     public RequestHistoryProperties() {
     }
 
     /**
      * Get the startTime property: The time the request started.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -50,7 +56,7 @@ public final class RequestHistoryProperties {
 
     /**
      * Set the startTime property: The time the request started.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the RequestHistoryProperties object itself.
      */
@@ -61,7 +67,7 @@ public final class RequestHistoryProperties {
 
     /**
      * Get the endTime property: The time the request ended.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -70,7 +76,7 @@ public final class RequestHistoryProperties {
 
     /**
      * Set the endTime property: The time the request ended.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the RequestHistoryProperties object itself.
      */
@@ -81,7 +87,7 @@ public final class RequestHistoryProperties {
 
     /**
      * Get the request property: The request.
-     *
+     * 
      * @return the request value.
      */
     public Request request() {
@@ -90,7 +96,7 @@ public final class RequestHistoryProperties {
 
     /**
      * Set the request property: The request.
-     *
+     * 
      * @param request the request value to set.
      * @return the RequestHistoryProperties object itself.
      */
@@ -101,7 +107,7 @@ public final class RequestHistoryProperties {
 
     /**
      * Get the response property: The response.
-     *
+     * 
      * @return the response value.
      */
     public Response response() {
@@ -110,7 +116,7 @@ public final class RequestHistoryProperties {
 
     /**
      * Set the response property: The response.
-     *
+     * 
      * @param response the response value to set.
      * @return the RequestHistoryProperties object itself.
      */
@@ -121,7 +127,7 @@ public final class RequestHistoryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -131,5 +137,54 @@ public final class RequestHistoryProperties {
         if (response() != null) {
             response().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeJsonField("request", this.request);
+        jsonWriter.writeJsonField("response", this.response);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RequestHistoryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RequestHistoryProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RequestHistoryProperties.
+     */
+    public static RequestHistoryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RequestHistoryProperties deserializedRequestHistoryProperties = new RequestHistoryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedRequestHistoryProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedRequestHistoryProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("request".equals(fieldName)) {
+                    deserializedRequestHistoryProperties.request = Request.fromJson(reader);
+                } else if ("response".equals(fieldName)) {
+                    deserializedRequestHistoryProperties.response = Response.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRequestHistoryProperties;
+        });
     }
 }

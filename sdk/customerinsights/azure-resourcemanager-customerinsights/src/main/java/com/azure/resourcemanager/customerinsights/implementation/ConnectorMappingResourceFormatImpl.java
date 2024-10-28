@@ -13,10 +13,8 @@ import com.azure.resourcemanager.customerinsights.models.ConnectorTypes;
 import com.azure.resourcemanager.customerinsights.models.EntityTypes;
 import java.time.OffsetDateTime;
 
-public final class ConnectorMappingResourceFormatImpl
-    implements ConnectorMappingResourceFormat,
-        ConnectorMappingResourceFormat.Definition,
-        ConnectorMappingResourceFormat.Update {
+public final class ConnectorMappingResourceFormatImpl implements ConnectorMappingResourceFormat,
+    ConnectorMappingResourceFormat.Definition, ConnectorMappingResourceFormat.Update {
     private ConnectorMappingResourceFormatInner innerObject;
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
@@ -113,8 +111,8 @@ public final class ConnectorMappingResourceFormatImpl
 
     private String mappingName;
 
-    public ConnectorMappingResourceFormatImpl withExistingConnector(
-        String resourceGroupName, String hubName, String connectorName) {
+    public ConnectorMappingResourceFormatImpl withExistingConnector(String resourceGroupName, String hubName,
+        String connectorName) {
         this.resourceGroupName = resourceGroupName;
         this.hubName = hubName;
         this.connectorName = connectorName;
@@ -122,29 +120,25 @@ public final class ConnectorMappingResourceFormatImpl
     }
 
     public ConnectorMappingResourceFormat create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectorMappings()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, hubName, connectorName, mappingName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectorMappings()
+            .createOrUpdateWithResponse(resourceGroupName, hubName, connectorName, mappingName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectorMappingResourceFormat create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectorMappings()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, hubName, connectorName, mappingName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectorMappings()
+            .createOrUpdateWithResponse(resourceGroupName, hubName, connectorName, mappingName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
-    ConnectorMappingResourceFormatImpl(
-        String name, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
+    ConnectorMappingResourceFormatImpl(String name,
+        com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = new ConnectorMappingResourceFormatInner();
         this.serviceManager = serviceManager;
         this.mappingName = name;
@@ -155,55 +149,46 @@ public final class ConnectorMappingResourceFormatImpl
     }
 
     public ConnectorMappingResourceFormat apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectorMappings()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, hubName, connectorName, mappingName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectorMappings()
+            .createOrUpdateWithResponse(resourceGroupName, hubName, connectorName, mappingName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectorMappingResourceFormat apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectorMappings()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, hubName, connectorName, mappingName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectorMappings()
+            .createOrUpdateWithResponse(resourceGroupName, hubName, connectorName, mappingName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
-    ConnectorMappingResourceFormatImpl(
-        ConnectorMappingResourceFormatInner innerObject,
+    ConnectorMappingResourceFormatImpl(ConnectorMappingResourceFormatInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hubName = Utils.getValueFromIdByName(innerObject.id(), "hubs");
-        this.connectorName = Utils.getValueFromIdByName(innerObject.id(), "connectors");
-        this.mappingName = Utils.getValueFromIdByName(innerObject.id(), "mappings");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.hubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hubs");
+        this.connectorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connectors");
+        this.mappingName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "mappings");
     }
 
     public ConnectorMappingResourceFormat refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectorMappings()
-                .getWithResponse(resourceGroupName, hubName, connectorName, mappingName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectorMappings()
+            .getWithResponse(resourceGroupName, hubName, connectorName, mappingName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConnectorMappingResourceFormat refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConnectorMappings()
-                .getWithResponse(resourceGroupName, hubName, connectorName, mappingName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectorMappings()
+            .getWithResponse(resourceGroupName, hubName, connectorName, mappingName, context)
+            .getValue();
         return this;
     }
 

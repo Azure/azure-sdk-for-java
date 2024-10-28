@@ -44,9 +44,8 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
      * @param client the instance of the service client containing this operation class.
      */
     BenefitRecommendationsClientImpl(CostManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(BenefitRecommendationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(BenefitRecommendationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,29 +56,23 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
     public interface BenefitRecommendationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{billingScope}/providers/Microsoft.CostManagement/benefitRecommendations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BenefitRecommendationsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<BenefitRecommendationsListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("$filter") String filter, @QueryParam("$orderby") String orderby,
+            @QueryParam("$expand") String expand, @QueryParam("api-version") String apiVersion,
             @PathParam(value = "billingScope", encoded = true) String billingScope,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BenefitRecommendationsListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -105,40 +98,21 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BenefitRecommendationModelInner>> listSinglePageAsync(
-        String billingScope, String filter, String orderby, String expand) {
+    private Mono<PagedResponse<BenefitRecommendationModelInner>> listSinglePageAsync(String billingScope, String filter,
+        String orderby, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingScope == null) {
             return Mono.error(new IllegalArgumentException("Parameter billingScope is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            filter,
-                            orderby,
-                            expand,
-                            this.client.getApiVersion(),
-                            billingScope,
-                            accept,
-                            context))
-            .<PagedResponse<BenefitRecommendationModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), filter, orderby, expand,
+                this.client.getApiVersion(), billingScope, accept, context))
+            .<PagedResponse<BenefitRecommendationModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -166,13 +140,11 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BenefitRecommendationModelInner>> listSinglePageAsync(
-        String billingScope, String filter, String orderby, String expand, Context context) {
+    private Mono<PagedResponse<BenefitRecommendationModelInner>> listSinglePageAsync(String billingScope, String filter,
+        String orderby, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingScope == null) {
             return Mono.error(new IllegalArgumentException("Parameter billingScope is required and cannot be null."));
@@ -180,24 +152,10 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                filter,
-                orderby,
-                expand,
-                this.client.getApiVersion(),
-                billingScope,
-                accept,
+            .list(this.client.getEndpoint(), filter, orderby, expand, this.client.getApiVersion(), billingScope, accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -222,10 +180,9 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
      * @return result of listing benefit recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BenefitRecommendationModelInner> listAsync(
-        String billingScope, String filter, String orderby, String expand) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(billingScope, filter, orderby, expand),
+    private PagedFlux<BenefitRecommendationModelInner> listAsync(String billingScope, String filter, String orderby,
+        String expand) {
+        return new PagedFlux<>(() -> listSinglePageAsync(billingScope, filter, orderby, expand),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -248,8 +205,7 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
         final String filter = null;
         final String orderby = null;
         final String expand = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(billingScope, filter, orderby, expand),
+        return new PagedFlux<>(() -> listSinglePageAsync(billingScope, filter, orderby, expand),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -276,10 +232,9 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
      * @return result of listing benefit recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BenefitRecommendationModelInner> listAsync(
-        String billingScope, String filter, String orderby, String expand, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(billingScope, filter, orderby, expand, context),
+    private PagedFlux<BenefitRecommendationModelInner> listAsync(String billingScope, String filter, String orderby,
+        String expand, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(billingScope, filter, orderby, expand, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -328,8 +283,8 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
      * @return result of listing benefit recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BenefitRecommendationModelInner> list(
-        String billingScope, String filter, String orderby, String expand, Context context) {
+    public PagedIterable<BenefitRecommendationModelInner> list(String billingScope, String filter, String orderby,
+        String expand, Context context) {
         return new PagedIterable<>(listAsync(billingScope, filter, orderby, expand, context));
     }
 
@@ -350,23 +305,13 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BenefitRecommendationModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<BenefitRecommendationModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -383,29 +328,19 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BenefitRecommendationModelInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<BenefitRecommendationModelInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

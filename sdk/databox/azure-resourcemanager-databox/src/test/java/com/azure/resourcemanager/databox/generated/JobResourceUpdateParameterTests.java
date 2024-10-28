@@ -16,31 +16,20 @@ import org.junit.jupiter.api.Assertions;
 public final class JobResourceUpdateParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobResourceUpdateParameter model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"details\":{}},\"tags\":{\"xqpvfadmw\":\"quhcdhmduala\",\"vgomz\":\"rcrgvx\"},\"identity\":{\"type\":\"isgwbnbbeldawkz\",\"principalId\":\"liourqhak\",\"tenantId\":\"hashsfwxosow\",\"userAssignedIdentities\":{\"vo\":{\"principalId\":\"gicjooxdjeb\",\"clientId\":\"ucww\"},\"otwmcdyt\":{\"principalId\":\"vmeueci\",\"clientId\":\"hzceuojgjrwjue\"},\"qwgxhniskx\":{\"principalId\":\"wit\",\"clientId\":\"rjaw\"}}}}")
-                .toObject(JobResourceUpdateParameter.class);
+        JobResourceUpdateParameter model = BinaryData.fromString(
+            "{\"properties\":{\"details\":{}},\"tags\":{\"xqpvfadmw\":\"quhcdhmduala\",\"vgomz\":\"rcrgvx\"},\"identity\":{\"type\":\"isgwbnbbeldawkz\",\"principalId\":\"liourqhak\",\"tenantId\":\"hashsfwxosow\",\"userAssignedIdentities\":{\"vo\":{\"principalId\":\"gicjooxdjeb\",\"clientId\":\"ucww\"},\"otwmcdyt\":{\"principalId\":\"vmeueci\",\"clientId\":\"hzceuojgjrwjue\"},\"qwgxhniskx\":{\"principalId\":\"wit\",\"clientId\":\"rjaw\"}}}}")
+            .toObject(JobResourceUpdateParameter.class);
         Assertions.assertEquals("quhcdhmduala", model.tags().get("xqpvfadmw"));
         Assertions.assertEquals("isgwbnbbeldawkz", model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobResourceUpdateParameter model =
-            new JobResourceUpdateParameter()
-                .withTags(mapOf("xqpvfadmw", "quhcdhmduala", "vgomz", "rcrgvx"))
-                .withIdentity(
-                    new ResourceIdentity()
-                        .withType("isgwbnbbeldawkz")
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "vo",
-                                new UserAssignedIdentity(),
-                                "otwmcdyt",
-                                new UserAssignedIdentity(),
-                                "qwgxhniskx",
-                                new UserAssignedIdentity())))
+        JobResourceUpdateParameter model
+            = new JobResourceUpdateParameter().withTags(mapOf("xqpvfadmw", "quhcdhmduala", "vgomz", "rcrgvx"))
+                .withIdentity(new ResourceIdentity().withType("isgwbnbbeldawkz")
+                    .withUserAssignedIdentities(mapOf("vo", new UserAssignedIdentity(), "otwmcdyt",
+                        new UserAssignedIdentity(), "qwgxhniskx", new UserAssignedIdentity())))
                 .withDetails(new UpdateJobDetails());
         model = BinaryData.fromObject(model).toObject(JobResourceUpdateParameter.class);
         Assertions.assertEquals("quhcdhmduala", model.tags().get("xqpvfadmw"));

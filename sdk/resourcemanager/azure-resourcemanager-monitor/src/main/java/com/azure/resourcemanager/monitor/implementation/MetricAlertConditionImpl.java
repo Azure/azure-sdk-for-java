@@ -14,24 +14,23 @@ import java.util.ArrayList;
 
 /** Implementation for MetricAlertCondition. */
 class MetricAlertConditionImpl extends MetricAlertConditionBaseImpl<MetricCriteria, MetricAlertConditionImpl>
-    implements MetricAlertCondition,
-        MetricAlertCondition.DefinitionStages,
-        MetricAlertCondition.DefinitionStages.Blank.MetricName<MetricAlert.DefinitionStages.WithCreate>,
-        MetricAlertCondition.DefinitionStages.WithCriteriaOperator<MetricAlert.DefinitionStages.WithCreate>,
-        MetricAlertCondition.DefinitionStages.WithConditionAttach<MetricAlert.DefinitionStages.WithCreate>,
-        MetricAlertCondition.UpdateDefinitionStages,
-        MetricAlertCondition.UpdateDefinitionStages.Blank.MetricName<MetricAlert.Update>,
-        MetricAlertCondition.UpdateDefinitionStages.WithCriteriaOperator<MetricAlert.Update>,
-        MetricAlertCondition.UpdateDefinitionStages.WithConditionAttach<MetricAlert.Update>,
-        MetricAlertCondition.UpdateStages {
+    implements MetricAlertCondition, MetricAlertCondition.DefinitionStages,
+    MetricAlertCondition.DefinitionStages.Blank.MetricName<MetricAlert.DefinitionStages.WithCreate>,
+    MetricAlertCondition.DefinitionStages.WithCriteriaOperator<MetricAlert.DefinitionStages.WithCreate>,
+    MetricAlertCondition.DefinitionStages.WithConditionAttach<MetricAlert.DefinitionStages.WithCreate>,
+    MetricAlertCondition.UpdateDefinitionStages,
+    MetricAlertCondition.UpdateDefinitionStages.Blank.MetricName<MetricAlert.Update>,
+    MetricAlertCondition.UpdateDefinitionStages.WithCriteriaOperator<MetricAlert.Update>,
+    MetricAlertCondition.UpdateDefinitionStages.WithConditionAttach<MetricAlert.Update>,
+    MetricAlertCondition.UpdateStages {
 
     MetricAlertConditionImpl(String name, MetricCriteria innerObject, MetricAlertImpl parent) {
         super(name, innerObject, parent);
     }
 
     @Override
-    public MetricAlertConditionImpl withCondition(
-        MetricAlertRuleTimeAggregation timeAggregation, MetricAlertRuleCondition condition, double threshold) {
+    public MetricAlertConditionImpl withCondition(MetricAlertRuleTimeAggregation timeAggregation,
+        MetricAlertRuleCondition condition, double threshold) {
         this.innerModel().withOperator(Operator.fromString(condition.toString()));
         this.innerModel().withTimeAggregation(AggregationTypeEnum.fromString(timeAggregation.toString()));
         this.innerModel().withThreshold(threshold);

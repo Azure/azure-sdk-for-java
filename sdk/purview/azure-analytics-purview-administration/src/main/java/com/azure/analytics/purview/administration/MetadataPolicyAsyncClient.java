@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewMetadataClient type. */
 @ServiceClient(builder = MetadataPolicyClientBuilder.class, isAsync = true)
 public final class MetadataPolicyAsyncClient {
-    @Generated private final MetadataPoliciesImpl serviceClient;
+    @Generated
+    private final MetadataPoliciesImpl serviceClient;
 
     /**
      * Initializes an instance of MetadataPolicyAsyncClient class.

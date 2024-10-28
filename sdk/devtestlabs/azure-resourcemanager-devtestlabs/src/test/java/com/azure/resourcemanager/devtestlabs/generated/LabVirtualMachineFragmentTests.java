@@ -13,10 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LabVirtualMachineFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LabVirtualMachineFragment model =
-            BinaryData
-                .fromString("{\"tags\":{\"hgbvqtan\":\"hgwydyynfsv\"}}")
-                .toObject(LabVirtualMachineFragment.class);
+        LabVirtualMachineFragment model = BinaryData.fromString("{\"tags\":{\"hgbvqtan\":\"hgwydyynfsv\"}}")
+            .toObject(LabVirtualMachineFragment.class);
         Assertions.assertEquals("hgwydyynfsv", model.tags().get("hgbvqtan"));
     }
 

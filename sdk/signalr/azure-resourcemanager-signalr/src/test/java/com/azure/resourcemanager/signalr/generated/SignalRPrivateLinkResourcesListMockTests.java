@@ -31,53 +31,38 @@ public final class SignalRPrivateLinkResourcesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"groupId\":\"ceakxc\",\"requiredMembers\":[\"oqfyiaseqch\",\"rttzrazisgykiu\",\"mvanbwzo\",\"mnrxxbsojkl\"],\"requiredZoneNames\":[\"mdptys\"],\"shareablePrivateLinkResourceTypes\":[{\"name\":\"gnzxojpslsvj\",\"properties\":{\"description\":\"iufiqwo\",\"groupId\":\"qvapcohhoucq\",\"type\":\"oj\"}},{\"name\":\"x\",\"properties\":{\"description\":\"dcgdzbenribca\",\"groupId\":\"tzqdd\",\"type\":\"wflj\"}},{\"name\":\"namtuatmzw\",\"properties\":{\"description\":\"nc\",\"groupId\":\"jzmizv\",\"type\":\"gat\"}}]},\"id\":\"uvbxngr\",\"name\":\"bwggahtt\",\"type\":\"lswva\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"groupId\":\"ceakxc\",\"requiredMembers\":[\"oqfyiaseqch\",\"rttzrazisgykiu\",\"mvanbwzo\",\"mnrxxbsojkl\"],\"requiredZoneNames\":[\"mdptys\"],\"shareablePrivateLinkResourceTypes\":[{\"name\":\"gnzxojpslsvj\",\"properties\":{\"description\":\"iufiqwo\",\"groupId\":\"qvapcohhoucq\",\"type\":\"oj\"}},{\"name\":\"x\",\"properties\":{\"description\":\"dcgdzbenribca\",\"groupId\":\"tzqdd\",\"type\":\"wflj\"}},{\"name\":\"namtuatmzw\",\"properties\":{\"description\":\"nc\",\"groupId\":\"jzmizv\",\"type\":\"gat\"}}]},\"id\":\"uvbxngr\",\"name\":\"bwggahtt\",\"type\":\"lswva\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SignalRManager manager =
-            SignalRManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SignalRManager manager = SignalRManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PrivateLinkResource> response =
-            manager.signalRPrivateLinkResources().list("hdbvqvwzkjop", "beonrlkwzdq", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateLinkResource> response = manager.signalRPrivateLinkResources()
+            .list("hdbvqvwzkjop", "beonrlkwzdq", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("ceakxc", response.iterator().next().groupId());
         Assertions.assertEquals("oqfyiaseqch", response.iterator().next().requiredMembers().get(0));
         Assertions.assertEquals("mdptys", response.iterator().next().requiredZoneNames().get(0));
-        Assertions
-            .assertEquals("gnzxojpslsvj", response.iterator().next().shareablePrivateLinkResourceTypes().get(0).name());
-        Assertions
-            .assertEquals(
-                "iufiqwo",
-                response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().description());
-        Assertions
-            .assertEquals(
-                "qvapcohhoucq",
-                response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().groupId());
-        Assertions
-            .assertEquals(
-                "oj", response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().type());
+        Assertions.assertEquals("gnzxojpslsvj",
+            response.iterator().next().shareablePrivateLinkResourceTypes().get(0).name());
+        Assertions.assertEquals("iufiqwo",
+            response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().description());
+        Assertions.assertEquals("qvapcohhoucq",
+            response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().groupId());
+        Assertions.assertEquals("oj",
+            response.iterator().next().shareablePrivateLinkResourceTypes().get(0).properties().type());
     }
 }

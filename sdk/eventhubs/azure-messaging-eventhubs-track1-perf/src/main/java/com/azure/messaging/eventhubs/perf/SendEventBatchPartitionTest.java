@@ -57,22 +57,21 @@ public class SendEventBatchPartitionTest extends ServiceBatchTest<EventHubsPerfS
 
     @Override
     public Mono<Void> setupAsync() {
-        return super.setupAsync()
-            .then(Mono.fromCallable(() -> {
-                partitionSender = eventHubClient.createPartitionSender(String.valueOf(options.getPartitionId())).get();
-                eventDataBatch = partitionSender.createBatch(batchOptions);
-                EventData eventData =  EventData.create(Util.generateString(options.getMessageSize())
-                    .getBytes(StandardCharsets.UTF_8));
+        return super.setupAsync().then(Mono.fromCallable(() -> {
+            partitionSender = eventHubClient.createPartitionSender(String.valueOf(options.getPartitionId())).get();
+            eventDataBatch = partitionSender.createBatch(batchOptions);
+            EventData eventData
+                = EventData.create(Util.generateString(options.getMessageSize()).getBytes(StandardCharsets.UTF_8));
 
-                for (int i = 0; i < options.getEvents(); i++) {
-                    if (!eventDataBatch.tryAdd(eventData)) {
-                        throw new Exception(String.format("Batch can only fit %d number of messages with batch "
-                            + "size of %d ", options.getCount(), options.getSize()));
-                    }
+            for (int i = 0; i < options.getEvents(); i++) {
+                if (!eventDataBatch.tryAdd(eventData)) {
+                    throw new Exception(
+                        String.format("Batch can only fit %d number of messages with batch " + "size of %d ",
+                            options.getCount(), options.getSize()));
                 }
-                return 1;
-            }))
-            .then();
+            }
+            return 1;
+        })).then();
     }
 
     @Override

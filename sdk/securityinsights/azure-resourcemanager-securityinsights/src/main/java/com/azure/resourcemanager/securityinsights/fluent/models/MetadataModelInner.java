@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.Kind;
 import com.azure.resourcemanager.securityinsights.models.MetadataAuthor;
 import com.azure.resourcemanager.securityinsights.models.MetadataCategories;
@@ -12,29 +16,98 @@ import com.azure.resourcemanager.securityinsights.models.MetadataDependencies;
 import com.azure.resourcemanager.securityinsights.models.MetadataSource;
 import com.azure.resourcemanager.securityinsights.models.MetadataSupport;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
-/** Metadata resource definition. */
+/**
+ * Metadata resource definition.
+ */
 @Fluent
 public final class MetadataModelInner extends ResourceWithEtag {
     /*
      * Metadata properties
      */
-    @JsonProperty(value = "properties")
     private MetadataProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MetadataModelInner class.
+     */
+    public MetadataModelInner() {
+    }
 
     /**
      * Get the innerProperties property: Metadata properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MetadataProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MetadataModelInner withEtag(String etag) {
         super.withEtag(etag);
@@ -45,7 +118,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
      * Get the contentId property: Static ID for the content. Used to identify dependencies and content from solutions
      * or community. Hard-coded/static for out of the box content and solutions. Dynamic for user-created. This is the
      * resource name.
-     *
+     * 
      * @return the contentId value.
      */
     public String contentId() {
@@ -56,7 +129,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
      * Set the contentId property: Static ID for the content. Used to identify dependencies and content from solutions
      * or community. Hard-coded/static for out of the box content and solutions. Dynamic for user-created. This is the
      * resource name.
-     *
+     * 
      * @param contentId the contentId value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -71,7 +144,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
     /**
      * Get the parentId property: Full parent resource ID of the content item the metadata is for. This is the full
      * resource ID including the scope (subscription and resource group).
-     *
+     * 
      * @return the parentId value.
      */
     public String parentId() {
@@ -81,7 +154,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
     /**
      * Set the parentId property: Full parent resource ID of the content item the metadata is for. This is the full
      * resource ID including the scope (subscription and resource group).
-     *
+     * 
      * @param parentId the parentId value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -97,7 +170,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
      * Get the version property: Version of the content. Default and recommended format is numeric (e.g. 1, 1.0, 1.0.0,
      * 1.0.0.0), following ARM template best practices. Can also be any string, but then we cannot guarantee any version
      * checks.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -108,7 +181,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
      * Set the version property: Version of the content. Default and recommended format is numeric (e.g. 1, 1.0, 1.0.0,
      * 1.0.0.0), following ARM template best practices. Can also be any string, but then we cannot guarantee any version
      * checks.
-     *
+     * 
      * @param version the version value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -122,7 +195,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Get the kind property: The kind of content the metadata is for.
-     *
+     * 
      * @return the kind value.
      */
     public Kind kind() {
@@ -131,7 +204,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Set the kind property: The kind of content the metadata is for.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -145,7 +218,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Get the source property: Source of the content. This is where/how it was created.
-     *
+     * 
      * @return the source value.
      */
     public MetadataSource source() {
@@ -154,7 +227,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Set the source property: Source of the content. This is where/how it was created.
-     *
+     * 
      * @param source the source value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -168,7 +241,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Get the author property: The creator of the content item.
-     *
+     * 
      * @return the author value.
      */
     public MetadataAuthor author() {
@@ -177,7 +250,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Set the author property: The creator of the content item.
-     *
+     * 
      * @param author the author value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -191,7 +264,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Get the support property: Support information for the metadata - type, name, contact information.
-     *
+     * 
      * @return the support value.
      */
     public MetadataSupport support() {
@@ -200,7 +273,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Set the support property: Support information for the metadata - type, name, contact information.
-     *
+     * 
      * @param support the support value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -216,7 +289,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
      * Get the dependencies property: Dependencies for the content item, what other content items it requires to work.
      * Can describe more complex dependencies using a recursive/nested structure. For a single dependency an
      * id/kind/version can be supplied or operator/criteria for complex formats.
-     *
+     * 
      * @return the dependencies value.
      */
     public MetadataDependencies dependencies() {
@@ -227,7 +300,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
      * Set the dependencies property: Dependencies for the content item, what other content items it requires to work.
      * Can describe more complex dependencies using a recursive/nested structure. For a single dependency an
      * id/kind/version can be supplied or operator/criteria for complex formats.
-     *
+     * 
      * @param dependencies the dependencies value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -241,7 +314,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Get the categories property: Categories for the solution content item.
-     *
+     * 
      * @return the categories value.
      */
     public MetadataCategories categories() {
@@ -250,7 +323,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Set the categories property: Categories for the solution content item.
-     *
+     * 
      * @param categories the categories value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -264,7 +337,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Get the providers property: Providers for the solution content item.
-     *
+     * 
      * @return the providers value.
      */
     public List<String> providers() {
@@ -273,7 +346,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Set the providers property: Providers for the solution content item.
-     *
+     * 
      * @param providers the providers value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -287,7 +360,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Get the firstPublishDate property: first publish date solution content item.
-     *
+     * 
      * @return the firstPublishDate value.
      */
     public LocalDate firstPublishDate() {
@@ -296,7 +369,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Set the firstPublishDate property: first publish date solution content item.
-     *
+     * 
      * @param firstPublishDate the firstPublishDate value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -310,7 +383,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Get the lastPublishDate property: last publish date for the solution content item.
-     *
+     * 
      * @return the lastPublishDate value.
      */
     public LocalDate lastPublishDate() {
@@ -319,7 +392,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Set the lastPublishDate property: last publish date for the solution content item.
-     *
+     * 
      * @param lastPublishDate the lastPublishDate value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -333,7 +406,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Get the customVersion property: The custom version of the content. A optional free text.
-     *
+     * 
      * @return the customVersion value.
      */
     public String customVersion() {
@@ -342,7 +415,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Set the customVersion property: The custom version of the content. A optional free text.
-     *
+     * 
      * @param customVersion the customVersion value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -357,7 +430,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
     /**
      * Get the contentSchemaVersion property: Schema version of the content. Can be used to distinguish between
      * different flow based on the schema version.
-     *
+     * 
      * @return the contentSchemaVersion value.
      */
     public String contentSchemaVersion() {
@@ -367,7 +440,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
     /**
      * Set the contentSchemaVersion property: Schema version of the content. Can be used to distinguish between
      * different flow based on the schema version.
-     *
+     * 
      * @param contentSchemaVersion the contentSchemaVersion value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -381,7 +454,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Get the icon property: the icon identifier. this id can later be fetched from the solution template.
-     *
+     * 
      * @return the icon value.
      */
     public String icon() {
@@ -390,7 +463,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Set the icon property: the icon identifier. this id can later be fetched from the solution template.
-     *
+     * 
      * @param icon the icon value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -404,7 +477,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Get the threatAnalysisTactics property: the tactics the resource covers.
-     *
+     * 
      * @return the threatAnalysisTactics value.
      */
     public List<String> threatAnalysisTactics() {
@@ -413,7 +486,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Set the threatAnalysisTactics property: the tactics the resource covers.
-     *
+     * 
      * @param threatAnalysisTactics the threatAnalysisTactics value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -428,7 +501,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
     /**
      * Get the threatAnalysisTechniques property: the techniques the resource covers, these have to be aligned with the
      * tactics being used.
-     *
+     * 
      * @return the threatAnalysisTechniques value.
      */
     public List<String> threatAnalysisTechniques() {
@@ -438,7 +511,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
     /**
      * Set the threatAnalysisTechniques property: the techniques the resource covers, these have to be aligned with the
      * tactics being used.
-     *
+     * 
      * @param threatAnalysisTechniques the threatAnalysisTechniques value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -452,7 +525,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Get the previewImages property: preview image file names. These will be taken from the solution artifacts.
-     *
+     * 
      * @return the previewImages value.
      */
     public List<String> previewImages() {
@@ -461,7 +534,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Set the previewImages property: preview image file names. These will be taken from the solution artifacts.
-     *
+     * 
      * @param previewImages the previewImages value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -476,7 +549,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
     /**
      * Get the previewImagesDark property: preview image file names. These will be taken from the solution artifacts.
      * used for dark theme support.
-     *
+     * 
      * @return the previewImagesDark value.
      */
     public List<String> previewImagesDark() {
@@ -486,7 +559,7 @@ public final class MetadataModelInner extends ResourceWithEtag {
     /**
      * Set the previewImagesDark property: preview image file names. These will be taken from the solution artifacts.
      * used for dark theme support.
-     *
+     * 
      * @param previewImagesDark the previewImagesDark value to set.
      * @return the MetadataModelInner object itself.
      */
@@ -500,14 +573,61 @@ public final class MetadataModelInner extends ResourceWithEtag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetadataModelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataModelInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetadataModelInner.
+     */
+    public static MetadataModelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetadataModelInner deserializedMetadataModelInner = new MetadataModelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMetadataModelInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMetadataModelInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMetadataModelInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedMetadataModelInner.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedMetadataModelInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMetadataModelInner.innerProperties = MetadataProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetadataModelInner;
+        });
     }
 }

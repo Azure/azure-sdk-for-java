@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Definition of usage counter name. */
+/**
+ * Definition of usage counter name.
+ */
 @Fluent
-public final class UsageCounterName {
+public final class UsageCounterName implements JsonSerializable<UsageCounterName> {
     /*
      * Gets or sets the usage counter name.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Gets or sets the localized usage counter name.
      */
-    @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
     /**
+     * Creates an instance of UsageCounterName class.
+     */
+    public UsageCounterName() {
+    }
+
+    /**
      * Get the value property: Gets or sets the usage counter name.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -33,7 +43,7 @@ public final class UsageCounterName {
 
     /**
      * Set the value property: Gets or sets the usage counter name.
-     *
+     * 
      * @param value the value value to set.
      * @return the UsageCounterName object itself.
      */
@@ -44,7 +54,7 @@ public final class UsageCounterName {
 
     /**
      * Get the localizedValue property: Gets or sets the localized usage counter name.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String localizedValue() {
@@ -53,7 +63,7 @@ public final class UsageCounterName {
 
     /**
      * Set the localizedValue property: Gets or sets the localized usage counter name.
-     *
+     * 
      * @param localizedValue the localizedValue value to set.
      * @return the UsageCounterName object itself.
      */
@@ -64,9 +74,48 @@ public final class UsageCounterName {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("localizedValue", this.localizedValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UsageCounterName from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UsageCounterName if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UsageCounterName.
+     */
+    public static UsageCounterName fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UsageCounterName deserializedUsageCounterName = new UsageCounterName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedUsageCounterName.value = reader.getString();
+                } else if ("localizedValue".equals(fieldName)) {
+                    deserializedUsageCounterName.localizedValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsageCounterName;
+        });
     }
 }

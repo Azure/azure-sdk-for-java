@@ -8,7 +8,7 @@ package com.azure.core.credential;
  */
 public class BasicAuthenticationJavadocCodeSnippets {
 
-    public void azureNamedKeyCredenialSasKey() {
+    public void azureNamedKeyCredentialSasKey() {
         // BEGIN: com.azure.core.credential.basicAuthenticationCredential
         BasicAuthenticationCredential basicAuthenticationCredential =
             new BasicAuthenticationCredential("<username>", "<password>");

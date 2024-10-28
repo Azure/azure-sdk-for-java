@@ -11,20 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class FollowerDatabaseDefinitionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FollowerDatabaseDefinitionInner model =
-            BinaryData
-                .fromString(
-                    "{\"clusterResourceId\":\"jelaqacigele\",\"attachedDatabaseConfigurationName\":\"hdbvqvwzkjop\",\"databaseName\":\"eonrlkwzdqybxce\"}")
-                .toObject(FollowerDatabaseDefinitionInner.class);
+        FollowerDatabaseDefinitionInner model = BinaryData.fromString(
+            "{\"clusterResourceId\":\"jelaqacigele\",\"attachedDatabaseConfigurationName\":\"hdbvqvwzkjop\",\"databaseName\":\"eonrlkwzdqybxce\"}")
+            .toObject(FollowerDatabaseDefinitionInner.class);
         Assertions.assertEquals("jelaqacigele", model.kustoPoolResourceId());
         Assertions.assertEquals("hdbvqvwzkjop", model.attachedDatabaseConfigurationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FollowerDatabaseDefinitionInner model =
-            new FollowerDatabaseDefinitionInner()
-                .withKustoPoolResourceId("jelaqacigele")
+        FollowerDatabaseDefinitionInner model
+            = new FollowerDatabaseDefinitionInner().withKustoPoolResourceId("jelaqacigele")
                 .withAttachedDatabaseConfigurationName("hdbvqvwzkjop");
         model = BinaryData.fromObject(model).toObject(FollowerDatabaseDefinitionInner.class);
         Assertions.assertEquals("jelaqacigele", model.kustoPoolResourceId());

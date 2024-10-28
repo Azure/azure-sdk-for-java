@@ -13,17 +13,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ReferenceDataSetUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReferenceDataSetUpdateParameters model =
-            BinaryData
-                .fromString("{\"tags\":{\"scjeypv\":\"tynnaamdectehfi\"}}")
-                .toObject(ReferenceDataSetUpdateParameters.class);
+        ReferenceDataSetUpdateParameters model = BinaryData.fromString("{\"tags\":{\"scjeypv\":\"tynnaamdectehfi\"}}")
+            .toObject(ReferenceDataSetUpdateParameters.class);
         Assertions.assertEquals("tynnaamdectehfi", model.tags().get("scjeypv"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReferenceDataSetUpdateParameters model =
-            new ReferenceDataSetUpdateParameters().withTags(mapOf("scjeypv", "tynnaamdectehfi"));
+        ReferenceDataSetUpdateParameters model
+            = new ReferenceDataSetUpdateParameters().withTags(mapOf("scjeypv", "tynnaamdectehfi"));
         model = BinaryData.fromObject(model).toObject(ReferenceDataSetUpdateParameters.class);
         Assertions.assertEquals("tynnaamdectehfi", model.tags().get("scjeypv"));
     }

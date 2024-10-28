@@ -10,15 +10,14 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 
 /** An immutable client-side representation of an Azure SQL Database import operation request. */
 @Fluent
-public interface SqlDatabaseImportRequest
-    extends HasInnerModel<ImportExistingDatabaseDefinition>, Executable<SqlDatabaseImportExportResponse>, HasParent<SqlDatabase> {
+public interface SqlDatabaseImportRequest extends HasInnerModel<ImportExistingDatabaseDefinition>,
+    Executable<SqlDatabaseImportExportResponse>, HasParent<SqlDatabase> {
 
     /** The entirety of database import operation definition. */
-    interface SqlDatabaseImportRequestDefinition
-        extends SqlDatabaseImportRequest.DefinitionStages.ImportFrom,
-            SqlDatabaseImportRequest.DefinitionStages.WithStorageTypeAndKey,
-            SqlDatabaseImportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword,
-            SqlDatabaseImportRequest.DefinitionStages.WithExecute {
+    interface SqlDatabaseImportRequestDefinition extends SqlDatabaseImportRequest.DefinitionStages.ImportFrom,
+        SqlDatabaseImportRequest.DefinitionStages.WithStorageTypeAndKey,
+        SqlDatabaseImportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword,
+        SqlDatabaseImportRequest.DefinitionStages.WithExecute {
     }
 
     /** Grouping of database import definition stages. */
@@ -37,8 +36,8 @@ public interface SqlDatabaseImportRequest
              * @param fileName the exported database file name
              * @return next definition stage
              */
-            SqlDatabaseImportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword importFrom(
-                StorageAccount storageAccount, String containerName, String fileName);
+            SqlDatabaseImportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword
+                importFrom(StorageAccount storageAccount, String containerName, String fileName);
         }
 
         /** Sets the storage key type and value to use. */
@@ -47,15 +46,15 @@ public interface SqlDatabaseImportRequest
              * @param storageAccessKey the storage access key to use
              * @return next definition stage
              */
-            SqlDatabaseImportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword withStorageAccessKey(
-                String storageAccessKey);
+            SqlDatabaseImportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword
+                withStorageAccessKey(String storageAccessKey);
 
             /**
              * @param sharedAccessKey the shared access key to use; it must be preceded with a "?."
              * @return next definition stage
              */
-            SqlDatabaseImportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword withSharedAccessKey(
-                String sharedAccessKey);
+            SqlDatabaseImportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword
+                withSharedAccessKey(String sharedAccessKey);
         }
 
         /** Sets the authentication type and SQL or Active Directory administrator login and password. */
@@ -65,16 +64,16 @@ public interface SqlDatabaseImportRequest
              * @param administratorPassword the SQL administrator password
              * @return next definition stage
              */
-            SqlDatabaseImportRequest.DefinitionStages.WithExecute withSqlAdministratorLoginAndPassword(
-                String administratorLogin, String administratorPassword);
+            SqlDatabaseImportRequest.DefinitionStages.WithExecute
+                withSqlAdministratorLoginAndPassword(String administratorLogin, String administratorPassword);
 
             /**
              * @param administratorLogin the Active Directory administrator login
              * @param administratorPassword the Active Directory administrator password
              * @return next definition stage
              */
-            SqlDatabaseImportRequest.DefinitionStages.WithExecute withActiveDirectoryLoginAndPassword(
-                String administratorLogin, String administratorPassword);
+            SqlDatabaseImportRequest.DefinitionStages.WithExecute
+                withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword);
         }
 
         /**

@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LibraryResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LibraryResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"name\":\"tmwwi\",\"path\":\"ehfqpofvwbc\",\"containerName\":\"embnkbw\",\"uploadedTimestamp\":\"2021-03-18T02:40:22Z\",\"type\":\"kdi\",\"provisioningStatus\":\"ihebwtsw\",\"creatorId\":\"uwfmduragegizvc\"},\"etag\":\"elisdjub\",\"id\":\"gbqi\",\"name\":\"kxkbsazgakgacyr\",\"type\":\"m\"}")
-                .toObject(LibraryResourceInner.class);
+        LibraryResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"name\":\"tmwwi\",\"path\":\"ehfqpofvwbc\",\"containerName\":\"embnkbw\",\"uploadedTimestamp\":\"2021-03-18T02:40:22Z\",\"type\":\"kdi\",\"provisioningStatus\":\"ihebwtsw\",\"creatorId\":\"uwfmduragegizvc\"},\"etag\":\"elisdjub\",\"id\":\"gbqi\",\"name\":\"kxkbsazgakgacyr\",\"type\":\"m\"}")
+            .toObject(LibraryResourceInner.class);
         Assertions.assertEquals("tmwwi", model.namePropertiesName());
         Assertions.assertEquals("ehfqpofvwbc", model.path());
         Assertions.assertEquals("embnkbw", model.containerName());
@@ -24,12 +22,10 @@ public final class LibraryResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LibraryResourceInner model =
-            new LibraryResourceInner()
-                .withNamePropertiesName("tmwwi")
-                .withPath("ehfqpofvwbc")
-                .withContainerName("embnkbw")
-                .withTypePropertiesType("kdi");
+        LibraryResourceInner model = new LibraryResourceInner().withNamePropertiesName("tmwwi")
+            .withPath("ehfqpofvwbc")
+            .withContainerName("embnkbw")
+            .withTypePropertiesType("kdi");
         model = BinaryData.fromObject(model).toObject(LibraryResourceInner.class);
         Assertions.assertEquals("tmwwi", model.namePropertiesName());
         Assertions.assertEquals("ehfqpofvwbc", model.path());

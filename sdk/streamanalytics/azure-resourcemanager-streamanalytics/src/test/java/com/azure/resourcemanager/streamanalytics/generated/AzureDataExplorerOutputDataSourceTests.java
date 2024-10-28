@@ -24,7 +24,9 @@ public final class AzureDataExplorerOutputDataSourceTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureDataExplorerOutputDataSource model = new AzureDataExplorerOutputDataSource().withCluster("ss")
-            .withDatabase("u").withTable("bdsrez").withAuthenticationMode(AuthenticationMode.USER_TOKEN);
+            .withDatabase("u")
+            .withTable("bdsrez")
+            .withAuthenticationMode(AuthenticationMode.USER_TOKEN);
         model = BinaryData.fromObject(model).toObject(AzureDataExplorerOutputDataSource.class);
         Assertions.assertEquals("ss", model.cluster());
         Assertions.assertEquals("u", model.database());

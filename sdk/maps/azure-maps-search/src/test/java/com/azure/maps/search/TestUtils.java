@@ -6,7 +6,7 @@ package com.azure.maps.search;
 import com.azure.core.http.HttpClient;
 import com.azure.core.models.GeoLineString;
 import com.azure.core.models.GeoObject;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.ReadValueCallback;
@@ -125,12 +125,12 @@ public class TestUtils {
      * @return A stream of HttpClient and service version combinations to test.
      */
     public static Stream<Arguments> getTestParameters() {
-        return TestBase.getHttpClients().flatMap(httpClient -> Arrays.stream(MapsSearchServiceVersion.values())
-            .map(serviceVersion -> Arguments.of(httpClient, serviceVersion)));
+        return TestProxyTestBase.getHttpClients()
+            .flatMap(httpClient -> Arrays.stream(MapsSearchServiceVersion.values())
+                .map(serviceVersion -> Arguments.of(httpClient, serviceVersion)));
     }
 
-    private static <T> T deserialize(String resourceName,
-        ReadValueCallback<JsonReader, T> deserializer) {
+    private static <T> T deserialize(String resourceName, ReadValueCallback<JsonReader, T> deserializer) {
         try (JsonReader jsonReader = JsonProviders.createReader(ClassLoader.getSystemResourceAsStream(resourceName))) {
             return deserializer.read(jsonReader);
         } catch (IOException ex) {

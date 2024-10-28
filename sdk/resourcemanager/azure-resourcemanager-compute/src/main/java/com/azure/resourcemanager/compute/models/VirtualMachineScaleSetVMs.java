@@ -169,20 +169,20 @@ public interface VirtualMachineScaleSetVMs extends SupportsListing<VirtualMachin
      */
     Mono<Void> redeployInstancesAsync(Collection<String> instanceIds);
 
-//    /**
-//     * Updates the version of the installed operating system in the virtual machine instances.
-//     *
-//     * @param instanceIds instance IDs of the virtual machine scale set instances
-//     */
-//    void reimageInstances(Collection<String> instanceIds);
-//
-//    /**
-//     * Updates the version of the installed operating system in the virtual machine instances.
-//     *
-//     * @param instanceIds instance IDs of the virtual machine scale set instances
-//     * @return a representation of the deferred computation of this call.
-//     */
-//    Mono<Void> reimageInstancesAsync(Collection<String> instanceIds);
+    //    /**
+    //     * Updates the version of the installed operating system in the virtual machine instances.
+    //     *
+    //     * @param instanceIds instance IDs of the virtual machine scale set instances
+    //     */
+    //    void reimageInstances(Collection<String> instanceIds);
+    //
+    //    /**
+    //     * Updates the version of the installed operating system in the virtual machine instances.
+    //     *
+    //     * @param instanceIds instance IDs of the virtual machine scale set instances
+    //     * @return a representation of the deferred computation of this call.
+    //     */
+    //    Mono<Void> reimageInstancesAsync(Collection<String> instanceIds);
 
     /**
      * Simulates the eviction of the specified spot virtual machine in the scale set asynchronously. The eviction will

@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** properties for dimension. */
+/**
+ * properties for dimension.
+ */
 @Fluent
-public final class DimensionProperties {
+public final class DimensionProperties implements JsonSerializable<DimensionProperties> {
     /*
      * localized display name of the dimension to customer
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * dimension name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * flag indicating whether this dimension should be included to the customer in Azure Monitor logs (aka Shoebox)
      */
-    @JsonProperty(value = "toBeExportedForCustomer")
     private Boolean toBeExportedForCustomer;
 
-    /** Creates an instance of DimensionProperties class. */
+    /**
+     * Creates an instance of DimensionProperties class.
+     */
     public DimensionProperties() {
     }
 
     /**
      * Get the displayName property: localized display name of the dimension to customer.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -43,7 +48,7 @@ public final class DimensionProperties {
 
     /**
      * Set the displayName property: localized display name of the dimension to customer.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the DimensionProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class DimensionProperties {
 
     /**
      * Get the name property: dimension name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +68,7 @@ public final class DimensionProperties {
 
     /**
      * Set the name property: dimension name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DimensionProperties object itself.
      */
@@ -75,7 +80,7 @@ public final class DimensionProperties {
     /**
      * Get the toBeExportedForCustomer property: flag indicating whether this dimension should be included to the
      * customer in Azure Monitor logs (aka Shoebox).
-     *
+     * 
      * @return the toBeExportedForCustomer value.
      */
     public Boolean toBeExportedForCustomer() {
@@ -85,7 +90,7 @@ public final class DimensionProperties {
     /**
      * Set the toBeExportedForCustomer property: flag indicating whether this dimension should be included to the
      * customer in Azure Monitor logs (aka Shoebox).
-     *
+     * 
      * @param toBeExportedForCustomer the toBeExportedForCustomer value to set.
      * @return the DimensionProperties object itself.
      */
@@ -96,9 +101,52 @@ public final class DimensionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("toBeExportedForCustomer", this.toBeExportedForCustomer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DimensionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DimensionProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DimensionProperties.
+     */
+    public static DimensionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DimensionProperties deserializedDimensionProperties = new DimensionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedDimensionProperties.displayName = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDimensionProperties.name = reader.getString();
+                } else if ("toBeExportedForCustomer".equals(fieldName)) {
+                    deserializedDimensionProperties.toBeExportedForCustomer
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDimensionProperties;
+        });
     }
 }

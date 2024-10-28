@@ -21,10 +21,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public final class IntegrationServiceEnvironmentManagedApiImpl
-    implements IntegrationServiceEnvironmentManagedApi,
-        IntegrationServiceEnvironmentManagedApi.Definition,
-        IntegrationServiceEnvironmentManagedApi.Update {
+public final class IntegrationServiceEnvironmentManagedApiImpl implements IntegrationServiceEnvironmentManagedApi,
+    IntegrationServiceEnvironmentManagedApi.Definition, IntegrationServiceEnvironmentManagedApi.Update {
     private IntegrationServiceEnvironmentManagedApiInner innerObject;
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
@@ -151,33 +149,29 @@ public final class IntegrationServiceEnvironmentManagedApiImpl
 
     private String apiName;
 
-    public IntegrationServiceEnvironmentManagedApiImpl withExistingIntegrationServiceEnvironment(
-        String resourceGroup, String integrationServiceEnvironmentName) {
+    public IntegrationServiceEnvironmentManagedApiImpl withExistingIntegrationServiceEnvironment(String resourceGroup,
+        String integrationServiceEnvironmentName) {
         this.resourceGroup = resourceGroup;
         this.integrationServiceEnvironmentName = integrationServiceEnvironmentName;
         return this;
     }
 
     public IntegrationServiceEnvironmentManagedApi create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationServiceEnvironmentManagedApis()
-                .put(resourceGroup, integrationServiceEnvironmentName, apiName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationServiceEnvironmentManagedApis()
+            .put(resourceGroup, integrationServiceEnvironmentName, apiName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public IntegrationServiceEnvironmentManagedApi create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationServiceEnvironmentManagedApis()
-                .put(resourceGroup, integrationServiceEnvironmentName, apiName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationServiceEnvironmentManagedApis()
+            .put(resourceGroup, integrationServiceEnvironmentName, apiName, this.innerModel(), context);
         return this;
     }
 
-    IntegrationServiceEnvironmentManagedApiImpl(
-        String name, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    IntegrationServiceEnvironmentManagedApiImpl(String name,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = new IntegrationServiceEnvironmentManagedApiInner();
         this.serviceManager = serviceManager;
         this.apiName = name;
@@ -188,51 +182,42 @@ public final class IntegrationServiceEnvironmentManagedApiImpl
     }
 
     public IntegrationServiceEnvironmentManagedApi apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationServiceEnvironmentManagedApis()
-                .put(resourceGroup, integrationServiceEnvironmentName, apiName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationServiceEnvironmentManagedApis()
+            .put(resourceGroup, integrationServiceEnvironmentName, apiName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public IntegrationServiceEnvironmentManagedApi apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationServiceEnvironmentManagedApis()
-                .put(resourceGroup, integrationServiceEnvironmentName, apiName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationServiceEnvironmentManagedApis()
+            .put(resourceGroup, integrationServiceEnvironmentName, apiName, this.innerModel(), context);
         return this;
     }
 
-    IntegrationServiceEnvironmentManagedApiImpl(
-        IntegrationServiceEnvironmentManagedApiInner innerObject,
+    IntegrationServiceEnvironmentManagedApiImpl(IntegrationServiceEnvironmentManagedApiInner innerObject,
         com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroup = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.integrationServiceEnvironmentName =
-            Utils.getValueFromIdByName(innerObject.id(), "integrationServiceEnvironments");
-        this.apiName = Utils.getValueFromIdByName(innerObject.id(), "managedApis");
+        this.resourceGroup = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.integrationServiceEnvironmentName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "integrationServiceEnvironments");
+        this.apiName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "managedApis");
     }
 
     public IntegrationServiceEnvironmentManagedApi refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationServiceEnvironmentManagedApis()
-                .getWithResponse(resourceGroup, integrationServiceEnvironmentName, apiName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationServiceEnvironmentManagedApis()
+            .getWithResponse(resourceGroup, integrationServiceEnvironmentName, apiName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationServiceEnvironmentManagedApi refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationServiceEnvironmentManagedApis()
-                .getWithResponse(resourceGroup, integrationServiceEnvironmentName, apiName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationServiceEnvironmentManagedApis()
+            .getWithResponse(resourceGroup, integrationServiceEnvironmentName, apiName, context)
+            .getValue();
         return this;
     }
 
@@ -251,14 +236,14 @@ public final class IntegrationServiceEnvironmentManagedApiImpl
         return this;
     }
 
-    public IntegrationServiceEnvironmentManagedApiImpl withDeploymentParameters(
-        IntegrationServiceEnvironmentManagedApiDeploymentParameters deploymentParameters) {
+    public IntegrationServiceEnvironmentManagedApiImpl
+        withDeploymentParameters(IntegrationServiceEnvironmentManagedApiDeploymentParameters deploymentParameters) {
         this.innerModel().withDeploymentParameters(deploymentParameters);
         return this;
     }
 
-    public IntegrationServiceEnvironmentManagedApiImpl withIntegrationServiceEnvironment(
-        ResourceReference integrationServiceEnvironment) {
+    public IntegrationServiceEnvironmentManagedApiImpl
+        withIntegrationServiceEnvironment(ResourceReference integrationServiceEnvironment) {
         this.innerModel().withIntegrationServiceEnvironment(integrationServiceEnvironment);
         return this;
     }

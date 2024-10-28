@@ -10,10 +10,8 @@ import com.azure.resourcemanager.appconfiguration.fluent.models.ReplicaPropertie
 public final class ReplicaPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicaProperties model =
-            BinaryData
-                .fromString("{\"endpoint\":\"s\",\"provisioningState\":\"Deleting\"}")
-                .toObject(ReplicaProperties.class);
+        ReplicaProperties model = BinaryData.fromString("{\"endpoint\":\"s\",\"provisioningState\":\"Deleting\"}")
+            .toObject(ReplicaProperties.class);
     }
 
     @org.junit.jupiter.api.Test

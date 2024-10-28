@@ -29,8 +29,8 @@ public interface SqlPoolSensitivityLabelsClient {
      * @return sQL pool sensitivity labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SensitivityLabelInner> listCurrent(
-        String resourceGroupName, String workspaceName, String sqlPoolName);
+    PagedIterable<SensitivityLabelInner> listCurrent(String resourceGroupName, String workspaceName,
+        String sqlPoolName);
 
     /**
      * Gets SQL pool sensitivity labels
@@ -48,8 +48,8 @@ public interface SqlPoolSensitivityLabelsClient {
      * @return sQL pool sensitivity labels as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SensitivityLabelInner> listCurrent(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter, Context context);
+    PagedIterable<SensitivityLabelInner> listCurrent(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String filter, Context context);
 
     /**
      * Update sensitivity labels of a given SQL Pool using an operations batch.
@@ -65,12 +65,8 @@ public interface SqlPoolSensitivityLabelsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SensitivityLabelUpdateList parameters,
-        Context context);
+    Response<Void> updateWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SensitivityLabelUpdateList parameters, Context context);
 
     /**
      * Update sensitivity labels of a given SQL Pool using an operations batch.
@@ -84,8 +80,8 @@ public interface SqlPoolSensitivityLabelsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SensitivityLabelUpdateList parameters);
+    void update(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SensitivityLabelUpdateList parameters);
 
     /**
      * Gets sensitivity labels of a given SQL pool
@@ -101,8 +97,8 @@ public interface SqlPoolSensitivityLabelsClient {
      * @return sensitivity labels of a given SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SensitivityLabelInner> listRecommended(
-        String resourceGroupName, String workspaceName, String sqlPoolName);
+    PagedIterable<SensitivityLabelInner> listRecommended(String resourceGroupName, String workspaceName,
+        String sqlPoolName);
 
     /**
      * Gets sensitivity labels of a given SQL pool
@@ -122,14 +118,8 @@ public interface SqlPoolSensitivityLabelsClient {
      * @return sensitivity labels of a given SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SensitivityLabelInner> listRecommended(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        Boolean includeDisabledRecommendations,
-        String skipToken,
-        String filter,
-        Context context);
+    PagedIterable<SensitivityLabelInner> listRecommended(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Boolean includeDisabledRecommendations, String skipToken, String filter, Context context);
 
     /**
      * Creates or updates the sensitivity label of a given column in a Sql pool.
@@ -148,14 +138,8 @@ public interface SqlPoolSensitivityLabelsClient {
      * @return a sensitivity label along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SensitivityLabelInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelInner parameters,
+    Response<SensitivityLabelInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String columnName, SensitivityLabelInner parameters,
         Context context);
 
     /**
@@ -174,14 +158,8 @@ public interface SqlPoolSensitivityLabelsClient {
      * @return a sensitivity label.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SensitivityLabelInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelInner parameters);
+    SensitivityLabelInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName, SensitivityLabelInner parameters);
 
     /**
      * Deletes the sensitivity label of a given column in a Sql pool.
@@ -199,14 +177,8 @@ public interface SqlPoolSensitivityLabelsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName, Context context);
 
     /**
      * Deletes the sensitivity label of a given column in a Sql pool.
@@ -222,12 +194,7 @@ public interface SqlPoolSensitivityLabelsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
+    void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName,
         String columnName);
 
     /**
@@ -247,14 +214,8 @@ public interface SqlPoolSensitivityLabelsClient {
      * @return the sensitivity label of a given column along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SensitivityLabelInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelSource sensitivityLabelSource,
+    Response<SensitivityLabelInner> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName, SensitivityLabelSource sensitivityLabelSource,
         Context context);
 
     /**
@@ -273,14 +234,8 @@ public interface SqlPoolSensitivityLabelsClient {
      * @return the sensitivity label of a given column.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SensitivityLabelInner get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelSource sensitivityLabelSource);
+    SensitivityLabelInner get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName,
+        String tableName, String columnName, SensitivityLabelSource sensitivityLabelSource);
 
     /**
      * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
@@ -298,14 +253,8 @@ public interface SqlPoolSensitivityLabelsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> enableRecommendationWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context);
+    Response<Void> enableRecommendationWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName, Context context);
 
     /**
      * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
@@ -321,13 +270,8 @@ public interface SqlPoolSensitivityLabelsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void enableRecommendation(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName);
+    void enableRecommendation(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName,
+        String tableName, String columnName);
 
     /**
      * Disables sensitivity recommendations on a given column.
@@ -345,14 +289,8 @@ public interface SqlPoolSensitivityLabelsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> disableRecommendationWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context);
+    Response<Void> disableRecommendationWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName, Context context);
 
     /**
      * Disables sensitivity recommendations on a given column.
@@ -368,11 +306,6 @@ public interface SqlPoolSensitivityLabelsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void disableRecommendation(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName);
+    void disableRecommendation(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName,
+        String tableName, String columnName);
 }

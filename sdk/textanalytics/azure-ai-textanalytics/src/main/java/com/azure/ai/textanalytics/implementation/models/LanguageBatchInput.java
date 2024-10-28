@@ -67,8 +67,8 @@ public final class LanguageBatchInput implements JsonSerializable<LanguageBatchI
                 reader.nextToken();
 
                 if ("documents".equals(fieldName)) {
-                    deserializedLanguageBatchInput.documents =
-                            reader.readArray(reader1 -> LanguageInput.fromJson(reader1));
+                    deserializedLanguageBatchInput.documents
+                        = reader.readArray(reader1 -> LanguageInput.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }

@@ -34,13 +34,12 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         List<String> cancelledIds = createTranslationJobs(1, 1, Status.CANCELLED);
 
         // list translations with filter
-        List<String> cancelledStatusList = Arrays.asList(Status.CANCELLED.toString(),
-                Status.CANCELLING.toString());
+        List<String> cancelledStatusList = Arrays.asList(Status.CANCELLED.toString(), Status.CANCELLING.toString());
         OffsetDateTime testStartTime = LocalDateTime.now(ZoneOffset.UTC).atOffset(ZoneOffset.UTC);
 
         try {
             PagedIterable<TranslationStatus> translationStatusResult = documentTranslationClient
-                    .getTranslationsStatus(null, null, null, cancelledStatusList, testStartTime, null, null);
+                .getTranslationsStatus(null, null, null, cancelledStatusList, testStartTime, null, null);
             for (TranslationStatus translationStatus : translationStatusResult) {
                 String status = translationStatus.getStatus().toString();
                 assertTrue(cancelledStatusList.contains(status));
@@ -62,8 +61,8 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         targetIds.add(allIds.get(0));
 
         try {
-            PagedIterable<TranslationStatus> translationStatusResult = documentTranslationClient
-                    .getTranslationsStatus(null, null, targetIds, null, null, null, null);
+            PagedIterable<TranslationStatus> translationStatusResult
+                = documentTranslationClient.getTranslationsStatus(null, null, targetIds, null, null, null, null);
             for (TranslationStatus translationStatus : translationStatusResult) {
                 String status = translationStatus.getStatus().toString();
                 assertTrue(status.equalsIgnoreCase(Status.SUCCEEDED.toString()));
@@ -89,14 +88,14 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
 
         // list translations with filter
         try {
-            PagedIterable<TranslationStatus> translationStatusResult = documentTranslationClient
-                    .getTranslationsStatus(null, null, null, null, testStartTime, null, null);
+            PagedIterable<TranslationStatus> translationStatusResult
+                = documentTranslationClient.getTranslationsStatus(null, null, null, null, testStartTime, null, null);
             for (TranslationStatus translationStatus : translationStatusResult) {
                 String id = translationStatus.getId();
                 assertTrue(targetIds.contains(id));
                 String createdDateTimeString = translationStatus.getCreatedDateTimeUtc().toString();
-                LocalDateTime createdDateTimeUtc = LocalDateTime.parse(createdDateTimeString,
-                        DateTimeFormatter.ISO_DATE_TIME);
+                LocalDateTime createdDateTimeUtc
+                    = LocalDateTime.parse(createdDateTimeString, DateTimeFormatter.ISO_DATE_TIME);
                 assertTrue(createdDateTimeUtc.isAfter(localTime));
             }
         } catch (Exception e) {
@@ -122,7 +121,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         // add translations with filter
         try {
             PagedIterable<TranslationStatus> translationStatusResult = documentTranslationClient
-                    .getTranslationsStatus(null, null, null, null, startDateTime, endDateTime, null);
+                .getTranslationsStatus(null, null, null, null, startDateTime, endDateTime, null);
             boolean idExists = false;
             for (TranslationStatus translationStatus : translationStatusResult) {
                 String id = translationStatus.getId();
@@ -130,8 +129,8 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
                     idExists = true;
                 }
                 String createdDateTimeString = translationStatus.getCreatedDateTimeUtc().toString();
-                LocalDateTime createdDateTimeUtc = LocalDateTime.parse(createdDateTimeString,
-                        DateTimeFormatter.ISO_DATE_TIME);
+                LocalDateTime createdDateTimeUtc
+                    = LocalDateTime.parse(createdDateTimeString, DateTimeFormatter.ISO_DATE_TIME);
                 assertTrue(createdDateTimeUtc.isBefore(timeStamp));
             }
             assertTrue(idExists);
@@ -154,13 +153,13 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         // add translations with filter
         List<String> orderBy = Arrays.asList("createdDateTimeUtc asc");
         try {
-            PagedIterable<TranslationStatus> translationStatusResult = documentTranslationClient
-                    .getTranslationsStatus(null, null, null, null, startDateTime, null, orderBy);
+            PagedIterable<TranslationStatus> translationStatusResult
+                = documentTranslationClient.getTranslationsStatus(null, null, null, null, startDateTime, null, orderBy);
             LocalDateTime timestamp = LocalDateTime.MIN;
             for (TranslationStatus translationStatus : translationStatusResult) {
                 String createdDateTimeString = translationStatus.getCreatedDateTimeUtc().toString();
-                LocalDateTime createdDateTimeUtc = LocalDateTime.parse(createdDateTimeString,
-                        DateTimeFormatter.ISO_DATE_TIME);
+                LocalDateTime createdDateTimeUtc
+                    = LocalDateTime.parse(createdDateTimeString, DateTimeFormatter.ISO_DATE_TIME);
                 assertTrue(createdDateTimeUtc.isAfter(timestamp) || createdDateTimeUtc.isEqual(timestamp));
                 timestamp = createdDateTimeUtc;
             }
@@ -170,8 +169,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         }
     }
 
-    public List<String> createTranslationJobs(int jobsCount, int docsPerJob,
-            Status jobTerminalStatus) {
+    public List<String> createTranslationJobs(int jobsCount, int docsPerJob, Status jobTerminalStatus) {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         // create source container
         if (jobTerminalStatus.equals(Status.CANCELLED)) {
@@ -192,8 +190,8 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
             targetInputs.add(targetInput);
             BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
 
-            SyncPoller<TranslationStatus, Void> poller = setPlaybackSyncPollerPollInterval(documentTranslationClient
-                .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+            SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
+                documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
             String translationId = poller.poll().getValue().getId();
             translationIds.add(translationId);
@@ -219,8 +217,9 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
                 sleepIfRunningAgainstService(10000);
                 retryCount--;
                 translationStatus = documentTranslationClient.getTranslationStatus(translationId);
-            } while ((translationStatus != null) && (translationStatus.getSummary().getCancelled() > 0)
-                    && (retryCount > 0));
+            } while ((translationStatus != null)
+                && (translationStatus.getSummary().getCancelled() > 0)
+                && (retryCount > 0));
         }
     }
 

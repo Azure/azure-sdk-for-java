@@ -10,11 +10,9 @@ import com.azure.resourcemanager.workloads.models.EnqueueReplicationServerProper
 public final class EnqueueReplicationServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnqueueReplicationServerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"ersVersion\":\"EnqueueReplicator1\",\"instanceNo\":\"qeojnxqbzvddntw\",\"hostname\":\"eic\",\"kernelVersion\":\"w\",\"kernelPatch\":\"zao\",\"ipAddress\":\"uhrhcffcyddgl\",\"health\":\"Unknown\"}")
-                .toObject(EnqueueReplicationServerProperties.class);
+        EnqueueReplicationServerProperties model = BinaryData.fromString(
+            "{\"ersVersion\":\"EnqueueReplicator1\",\"instanceNo\":\"qeojnxqbzvddntw\",\"hostname\":\"eic\",\"kernelVersion\":\"w\",\"kernelPatch\":\"zao\",\"ipAddress\":\"uhrhcffcyddgl\",\"health\":\"Unknown\"}")
+            .toObject(EnqueueReplicationServerProperties.class);
     }
 
     @org.junit.jupiter.api.Test

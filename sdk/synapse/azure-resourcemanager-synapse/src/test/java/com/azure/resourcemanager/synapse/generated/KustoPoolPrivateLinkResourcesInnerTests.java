@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.fluent.models.KustoPoolPrivateLinkResou
 public final class KustoPoolPrivateLinkResourcesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KustoPoolPrivateLinkResourcesInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"groupId\":\"mxhzzysevus\",\"requiredMembers\":[\"zrrryv\",\"imipskdyzatvfuz\",\"aftjvvruxwigsy\"],\"requiredZoneNames\":[\"qdsmjtg\"],\"provisioningState\":\"Moving\"},\"id\":\"gkkileplkcsmkn\",\"name\":\"wtbbaedorvvmqf\",\"type\":\"oygbdgwumgxd\"}")
-                .toObject(KustoPoolPrivateLinkResourcesInner.class);
+        KustoPoolPrivateLinkResourcesInner model = BinaryData.fromString(
+            "{\"properties\":{\"groupId\":\"mxhzzysevus\",\"requiredMembers\":[\"zrrryv\",\"imipskdyzatvfuz\",\"aftjvvruxwigsy\"],\"requiredZoneNames\":[\"qdsmjtg\"],\"provisioningState\":\"Moving\"},\"id\":\"gkkileplkcsmkn\",\"name\":\"wtbbaedorvvmqf\",\"type\":\"oygbdgwumgxd\"}")
+            .toObject(KustoPoolPrivateLinkResourcesInner.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -35,8 +35,7 @@ public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DedicatedSQLminimalTlsSettingsInner>, DedicatedSQLminimalTlsSettingsInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
+        String resourceGroupName, String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
         DedicatedSQLminimalTlsSettingsInner parameters);
 
@@ -57,11 +56,9 @@ public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DedicatedSQLminimalTlsSettingsInner>, DedicatedSQLminimalTlsSettingsInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
+        String resourceGroupName, String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
-        DedicatedSQLminimalTlsSettingsInner parameters,
-        Context context);
+        DedicatedSQLminimalTlsSettingsInner parameters, Context context);
 
     /**
      * Update server's tls settings.
@@ -78,9 +75,7 @@ public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient {
      * @return dedicated Sql Minimal Tls Settings Info.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DedicatedSQLminimalTlsSettingsInner update(
-        String resourceGroupName,
-        String workspaceName,
+    DedicatedSQLminimalTlsSettingsInner update(String resourceGroupName, String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
         DedicatedSQLminimalTlsSettingsInner parameters);
 
@@ -100,12 +95,9 @@ public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient {
      * @return dedicated Sql Minimal Tls Settings Info.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DedicatedSQLminimalTlsSettingsInner update(
-        String resourceGroupName,
-        String workspaceName,
+    DedicatedSQLminimalTlsSettingsInner update(String resourceGroupName, String workspaceName,
         DedicatedSqlMinimalTlsSettingsName dedicatedSQLminimalTlsSettingsName,
-        DedicatedSQLminimalTlsSettingsInner parameters,
-        Context context);
+        DedicatedSQLminimalTlsSettingsInner parameters, Context context);
 
     /**
      * Get server's minimal tls settings.
@@ -122,8 +114,8 @@ public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient {
      * @return workspace managed sql server's minimal tls settings along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DedicatedSQLminimalTlsSettingsInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName, Context context);
+    Response<DedicatedSQLminimalTlsSettingsInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String dedicatedSQLminimalTlsSettingsName, Context context);
 
     /**
      * Get server's minimal tls settings.
@@ -139,8 +131,8 @@ public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient {
      * @return workspace managed sql server's minimal tls settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DedicatedSQLminimalTlsSettingsInner get(
-        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName);
+    DedicatedSQLminimalTlsSettingsInner get(String resourceGroupName, String workspaceName,
+        String dedicatedSQLminimalTlsSettingsName);
 
     /**
      * List workspace server's minimal tls settings.
@@ -173,6 +165,6 @@ public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DedicatedSQLminimalTlsSettingsInner> list(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<DedicatedSQLminimalTlsSettingsInner> list(String resourceGroupName, String workspaceName,
+        Context context);
 }

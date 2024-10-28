@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DataConnectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataConnectionInner model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"DataConnection\",\"location\":\"inbmh\",\"id\":\"jijkgqxnhmbke\",\"name\":\"njaujvaan\",\"type\":\"ggiycwkdtaawxwf\"}")
-                .toObject(DataConnectionInner.class);
+        DataConnectionInner model = BinaryData.fromString(
+            "{\"kind\":\"DataConnection\",\"location\":\"inbmh\",\"id\":\"jijkgqxnhmbke\",\"name\":\"njaujvaan\",\"type\":\"ggiycwkdtaawxwf\"}")
+            .toObject(DataConnectionInner.class);
         Assertions.assertEquals("inbmh", model.location());
     }
 

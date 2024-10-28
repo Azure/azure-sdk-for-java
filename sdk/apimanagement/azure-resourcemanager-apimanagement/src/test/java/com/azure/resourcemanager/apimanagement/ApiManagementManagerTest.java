@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-public class ApiManagementManagerTest extends TestBase {
+public class ApiManagementManagerTest extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_WEST2;
     private String resourceGroupName = "rg" + randomPadding();
@@ -38,13 +38,11 @@ public class ApiManagementManagerTest extends TestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        apiManagementManager = ApiManagementManager
-            .configure()
+        apiManagementManager = ApiManagementManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -55,10 +53,7 @@ public class ApiManagementManagerTest extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -76,8 +71,7 @@ public class ApiManagementManagerTest extends TestBase {
         try {
             String serviceName = "apimService" + randomPadding();
             // @embedmeStart
-            resource = apiManagementManager
-                .apiManagementServices()
+            resource = apiManagementManager.apiManagementServices()
                 .define(serviceName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
@@ -89,7 +83,8 @@ public class ApiManagementManagerTest extends TestBase {
             // @embedmeEnd
             resource.refresh();
             Assertions.assertEquals(resource.name(), serviceName);
-            Assertions.assertEquals(resource.name(), apiManagementManager.apiManagementServices().getById(resource.id()).name());
+            Assertions.assertEquals(resource.name(),
+                apiManagementManager.apiManagementServices().getById(resource.id()).name());
             Assertions.assertTrue(apiManagementManager.apiManagementServices().list().stream().count() > 0);
         } finally {
             if (resource != null) {

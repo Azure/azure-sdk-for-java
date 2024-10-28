@@ -60,14 +60,10 @@ public final class TestUtils {
     }
 
     public static HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertSync()
-            .build();
+        return new AssertingHttpClientBuilder(httpClient).assertSync().build();
     }
 
     public static HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertAsync()
-            .build();
+        return new AssertingHttpClientBuilder(httpClient).assertAsync().build();
     }
 }

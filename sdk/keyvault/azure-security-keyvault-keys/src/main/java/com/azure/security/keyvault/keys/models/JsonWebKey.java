@@ -188,7 +188,8 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * @return the key operations list
      */
     public List<KeyOperation> getKeyOps() {
-        return this.keyOps == null ? Collections.unmodifiableList(new ArrayList<KeyOperation>())
+        return this.keyOps == null
+            ? Collections.unmodifiableList(new ArrayList<KeyOperation>())
             : Collections.unmodifiableList(this.keyOps);
     }
 
@@ -417,7 +418,7 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
     @Override
     public String toString() {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-             JsonWriter writer = JsonProviders.createWriter(baos)) {
+            JsonWriter writer = JsonProviders.createWriter(baos)) {
             this.toJson(writer).flush();
             return baos.toString(StandardCharsets.UTF_8.name());
         } catch (IOException e) {
@@ -520,8 +521,8 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
         try {
             RSAPublicKeySpec publicKeySpec = getRsaPublicKeySpec();
-            KeyFactory factory = provider != null ? KeyFactory.getInstance("RSA", provider)
-                : KeyFactory.getInstance("RSA");
+            KeyFactory factory
+                = provider != null ? KeyFactory.getInstance("RSA", provider) : KeyFactory.getInstance("RSA");
 
             return factory.generatePublic(publicKeySpec);
         } catch (GeneralSecurityException e) {
@@ -540,8 +541,8 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
         try {
             RSAPrivateKeySpec privateKeySpec = getRsaPrivateKeySpec();
-            KeyFactory factory = provider != null ? KeyFactory.getInstance("RSA", provider)
-                : KeyFactory.getInstance("RSA");
+            KeyFactory factory
+                = provider != null ? KeyFactory.getInstance("RSA", provider) : KeyFactory.getInstance("RSA");
 
             return factory.generatePrivate(privateKeySpec);
         } catch (GeneralSecurityException e) {
@@ -553,8 +554,8 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
         // Create public key spec with given point
         try {
             ECPublicKeySpec pubSpec = new ECPublicKeySpec(ecPoint, curveSpec);
-            KeyFactory kf = provider != null ? KeyFactory.getInstance("EC", provider)
-                : KeyFactory.getInstance("EC", "SunEC");
+            KeyFactory kf
+                = provider != null ? KeyFactory.getInstance("EC", provider) : KeyFactory.getInstance("EC", "SunEC");
             return (ECPublicKey) kf.generatePublic(pubSpec);
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException(e);
@@ -564,8 +565,8 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
     private static PrivateKey getEcPrivateKey(byte[] d, ECParameterSpec curveSpec, Provider provider) {
         try {
             ECPrivateKeySpec priSpec = new ECPrivateKeySpec(new BigInteger(1, d), curveSpec);
-            KeyFactory kf = provider != null ? KeyFactory.getInstance("EC", provider)
-                : KeyFactory.getInstance("EC", "SunEC");
+            KeyFactory kf
+                = provider != null ? KeyFactory.getInstance("EC", provider) : KeyFactory.getInstance("EC", "SunEC");
             return (ECPrivateKey) kf.generatePrivate(priSpec);
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException(e);
@@ -617,19 +618,28 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
         if (privateKey != null) {
 
-            key = new JsonWebKey().setKeyType(KeyType.RSA).setN(toByteArray(privateKey.getModulus()))
+            key = new JsonWebKey().setKeyType(KeyType.RSA)
+                .setN(toByteArray(privateKey.getModulus()))
                 .setE(toByteArray(privateKey.getPublicExponent()))
-                .setD(toByteArray(privateKey.getPrivateExponent())).setP(toByteArray(privateKey.getPrimeP()))
-                .setQ(toByteArray(privateKey.getPrimeQ())).setDp(toByteArray(privateKey.getPrimeExponentP()))
+                .setD(toByteArray(privateKey.getPrivateExponent()))
+                .setP(toByteArray(privateKey.getPrimeP()))
+                .setQ(toByteArray(privateKey.getPrimeQ()))
+                .setDp(toByteArray(privateKey.getPrimeExponentP()))
                 .setDq(toByteArray(privateKey.getPrimeExponentQ()))
                 .setQi(toByteArray(privateKey.getCrtCoefficient()));
         } else {
 
             RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 
-            key = new JsonWebKey().setKeyType(KeyType.RSA).setN(toByteArray(publicKey.getModulus()))
-                .setE(toByteArray(publicKey.getPublicExponent())).setD(null).setP(null).setQ(null).setDp(null)
-                .setDq(null).setQi(null);
+            key = new JsonWebKey().setKeyType(KeyType.RSA)
+                .setN(toByteArray(publicKey.getModulus()))
+                .setE(toByteArray(publicKey.getPublicExponent()))
+                .setD(null)
+                .setP(null)
+                .setQ(null)
+                .setDp(null)
+                .setDq(null)
+                .setQi(null);
         }
 
         return key;
@@ -771,8 +781,7 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     public static JsonWebKey fromEc(KeyPair keyPair, Provider provider) {
         ECPublicKey publicKey = (ECPublicKey) keyPair.getPublic();
-        JsonWebKey jsonWebKey = new JsonWebKey()
-            .setKeyType(KeyType.EC)
+        JsonWebKey jsonWebKey = new JsonWebKey().setKeyType(KeyType.EC)
             .setCurveName(getCurveFromKeyPair(keyPair, provider))
             .setX(publicKey.getW().getAffineX().toByteArray())
             .setY(publicKey.getW().getAffineY().toByteArray())
@@ -1115,8 +1124,8 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
         }
     }
 
-    private static final List<KeyCurveName> KNOWN_CURVE_NAMES = Arrays.asList(
-        KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
+    private static final List<KeyCurveName> KNOWN_CURVE_NAMES
+        = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

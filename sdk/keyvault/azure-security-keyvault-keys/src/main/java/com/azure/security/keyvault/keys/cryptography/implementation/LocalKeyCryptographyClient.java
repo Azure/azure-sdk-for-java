@@ -48,17 +48,15 @@ public abstract class LocalKeyCryptographyClient {
     public abstract SignResult sign(SignatureAlgorithm algorithm, byte[] digest, Context context);
 
     public abstract Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
-                                                   Context context);
+        Context context);
 
-    public abstract VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
-                                        Context context);
+    public abstract VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context);
 
     public abstract Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] keyToWrap, Context context);
 
     public abstract WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] keyToWrap, Context context);
 
-    public abstract Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey,
-                                                      Context context);
+    public abstract Mono<UnwrapResult> unwrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context);
 
     public abstract UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context);
 
@@ -67,10 +65,10 @@ public abstract class LocalKeyCryptographyClient {
     public abstract SignResult signData(SignatureAlgorithm algorithm, byte[] data, Context context);
 
     public abstract Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature,
-                                                       Context context);
+        Context context);
 
     public abstract VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature,
-                                            Context context);
+        Context context);
 
     public JsonWebKey getJsonWebKey() {
         return jsonWebKey;

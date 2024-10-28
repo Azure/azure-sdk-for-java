@@ -7,42 +7,37 @@ package com.azure.resourcemanager.networkfunction.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.networkfunction.fluent.models.AzureTrafficCollectorInner;
 import com.azure.resourcemanager.networkfunction.models.AzureTrafficCollectorListResult;
+import com.azure.resourcemanager.networkfunction.models.ResourceReference;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureTrafficCollectorListResultTests {
-    @Test
-    public void testDeserialize() {
-        AzureTrafficCollectorListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"collectorPolicies\":[],\"provisioningState\":\"Failed\"},\"etag\":\"fxti\",\"location\":\"pzvgnwzsymglzufc\",\"tags\":{\"cbjy\":\"ohdbihanufh\",\"ithxqhabifpi\":\"a\"},\"id\":\"xwczbyscnp\",\"name\":\"x\",\"type\":\"hiv\"},{\"properties\":{\"collectorPolicies\":[],\"provisioningState\":\"Succeeded\"},\"etag\":\"br\",\"location\":\"vd\",\"tags\":{\"xgaudccs\":\"grtfwvu\",\"jcny\":\"h\",\"kryhtnapczwlokj\":\"j\"},\"id\":\"emkkvnipjox\",\"name\":\"jnchgej\",\"type\":\"podmailzydehojwy\"}],\"nextLink\":\"uxinpmqnjaq\"}")
-                .toObject(AzureTrafficCollectorListResult.class);
-        Assertions.assertEquals("pzvgnwzsymglzufc", model.value().get(0).location());
-        Assertions.assertEquals("ohdbihanufh", model.value().get(0).tags().get("cbjy"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureTrafficCollectorListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"collectorPolicies\":[{\"id\":\"ihfxtijbpzvgnwzs\"},{\"id\":\"glzufc\"},{\"id\":\"kohdbiha\"}],\"virtualHub\":{\"id\":\"hfcbjysa\"},\"provisioningState\":\"Succeeded\"},\"etag\":\"xqhabi\",\"location\":\"ikxwc\",\"tags\":{\"n\":\"scnpqxuhivy\",\"rkxvdum\":\"wby\"},\"id\":\"grtfwvu\",\"name\":\"xgaudccs\",\"type\":\"h\"},{\"properties\":{\"collectorPolicies\":[{\"id\":\"ejhkry\"},{\"id\":\"napczwlokjy\"},{\"id\":\"kkvnipjox\"},{\"id\":\"nchgej\"}],\"virtualHub\":{\"id\":\"dmailzydehojw\"},\"provisioningState\":\"Deleting\"},\"etag\":\"xinpmqnjaq\",\"location\":\"xj\",\"tags\":{\"gjvw\":\"ozvcput\"},\"id\":\"fdatsc\",\"name\":\"dvpjhulsuuvmk\",\"type\":\"ozkrwfndiodjpslw\"}],\"nextLink\":\"dpvwryoqpsoaccta\"}")
+            .toObject(AzureTrafficCollectorListResult.class);
+        Assertions.assertEquals("ikxwc", model.value().get(0).location());
+        Assertions.assertEquals("scnpqxuhivy", model.value().get(0).tags().get("n"));
     }
 
-    @Test
-    public void testSerialize() {
-        AzureTrafficCollectorListResult model =
-            new AzureTrafficCollectorListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AzureTrafficCollectorInner()
-                                .withLocation("pzvgnwzsymglzufc")
-                                .withTags(mapOf("cbjy", "ohdbihanufh", "ithxqhabifpi", "a")),
-                            new AzureTrafficCollectorInner()
-                                .withLocation("vd")
-                                .withTags(mapOf("xgaudccs", "grtfwvu", "jcny", "h", "kryhtnapczwlokj", "j"))));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureTrafficCollectorListResult model = new AzureTrafficCollectorListResult().withValue(Arrays.asList(
+            new AzureTrafficCollectorInner().withLocation("ikxwc")
+                .withTags(mapOf("n", "scnpqxuhivy", "rkxvdum", "wby"))
+                .withVirtualHub(new ResourceReference()),
+            new AzureTrafficCollectorInner().withLocation("xj")
+                .withTags(mapOf("gjvw", "ozvcput"))
+                .withVirtualHub(new ResourceReference())));
         model = BinaryData.fromObject(model).toObject(AzureTrafficCollectorListResult.class);
-        Assertions.assertEquals("pzvgnwzsymglzufc", model.value().get(0).location());
-        Assertions.assertEquals("ohdbihanufh", model.value().get(0).tags().get("cbjy"));
+        Assertions.assertEquals("ikxwc", model.value().get(0).location());
+        Assertions.assertEquals("scnpqxuhivy", model.value().get(0).tags().get("n"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

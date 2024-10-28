@@ -32,47 +32,35 @@ public final class AvailabilityGroupListenersCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"availabilityGroupName\":\"ihkaetcktvfc\",\"loadBalancerConfigurations\":[],\"multiSubnetIpConfigurations\":[],\"createDefaultAvailabilityGroupIfNotExist\":true,\"port\":5394429,\"availabilityGroupConfiguration\":{\"replicas\":[]}},\"id\":\"hjfbebrjcxe\",\"name\":\"fuwutttxf\",\"type\":\"jrbirphxepcyv\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"availabilityGroupName\":\"ihkaetcktvfc\",\"loadBalancerConfigurations\":[],\"multiSubnetIpConfigurations\":[],\"createDefaultAvailabilityGroupIfNotExist\":true,\"port\":5394429,\"availabilityGroupConfiguration\":{\"replicas\":[]}},\"id\":\"hjfbebrjcxe\",\"name\":\"fuwutttxf\",\"type\":\"jrbirphxepcyv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SqlVirtualMachineManager manager =
-            SqlVirtualMachineManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SqlVirtualMachineManager manager = SqlVirtualMachineManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AvailabilityGroupListener response =
-            manager
-                .availabilityGroupListeners()
-                .define("heun")
-                .withExistingSqlVirtualMachineGroup("qnwvlrya", "w")
-                .withAvailabilityGroupName("oklyaxuconuq")
-                .withLoadBalancerConfigurations(Arrays.asList())
-                .withMultiSubnetIpConfigurations(Arrays.asList())
-                .withCreateDefaultAvailabilityGroupIfNotExist(true)
-                .withPort(1413337127)
-                .withAvailabilityGroupConfiguration(new AgConfiguration().withReplicas(Arrays.asList()))
-                .create();
+        AvailabilityGroupListener response = manager.availabilityGroupListeners()
+            .define("heun")
+            .withExistingSqlVirtualMachineGroup("qnwvlrya", "w")
+            .withAvailabilityGroupName("oklyaxuconuq")
+            .withLoadBalancerConfigurations(Arrays.asList())
+            .withMultiSubnetIpConfigurations(Arrays.asList())
+            .withCreateDefaultAvailabilityGroupIfNotExist(true)
+            .withPort(1413337127)
+            .withAvailabilityGroupConfiguration(new AgConfiguration().withReplicas(Arrays.asList()))
+            .create();
 
         Assertions.assertEquals("ihkaetcktvfc", response.availabilityGroupName());
         Assertions.assertEquals(true, response.createDefaultAvailabilityGroupIfNotExist());

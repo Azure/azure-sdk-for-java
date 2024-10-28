@@ -7,46 +7,55 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.securityinsights.fluent.models.SettingsInner;
 
-/** An immutable client-side representation of Settings. */
+/**
+ * An immutable client-side representation of Settings.
+ */
 public interface Settings {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the etag property: Etag of the azure resource.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
+     * Gets the kind property: The kind of the setting.
+     * 
+     * @return the kind value.
+     */
+    SettingKind kind();
+
+    /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.SettingsInner object.
-     *
+     * 
      * @return the inner object.
      */
     SettingsInner innerModel();

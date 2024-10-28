@@ -18,8 +18,7 @@ public final class IncidentEntitiesResponseImpl implements IncidentEntitiesRespo
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    IncidentEntitiesResponseImpl(
-        IncidentEntitiesResponseInner innerObject,
+    IncidentEntitiesResponseImpl(IncidentEntitiesResponseInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -28,9 +27,8 @@ public final class IncidentEntitiesResponseImpl implements IncidentEntitiesRespo
     public List<Entity> entities() {
         List<EntityInner> inner = this.innerModel().entities();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner.stream().map(inner1 -> new EntityImpl(inner1, this.manager())).collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new EntityImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

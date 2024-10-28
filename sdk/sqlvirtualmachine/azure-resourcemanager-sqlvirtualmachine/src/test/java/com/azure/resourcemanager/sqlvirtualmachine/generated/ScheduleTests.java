@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Schedule model =
-            BinaryData
-                .fromString(
-                    "{\"enable\":false,\"weeklyInterval\":981074224,\"monthlyOccurrence\":586679230,\"dayOfWeek\":\"Wednesday\",\"startTime\":\"ugidyjrr\"}")
-                .toObject(Schedule.class);
+        Schedule model = BinaryData.fromString(
+            "{\"enable\":false,\"weeklyInterval\":981074224,\"monthlyOccurrence\":586679230,\"dayOfWeek\":\"Wednesday\",\"startTime\":\"ugidyjrr\"}")
+            .toObject(Schedule.class);
         Assertions.assertEquals(false, model.enable());
         Assertions.assertEquals(981074224, model.weeklyInterval());
         Assertions.assertEquals(586679230, model.monthlyOccurrence());
@@ -26,13 +24,11 @@ public final class ScheduleTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Schedule model =
-            new Schedule()
-                .withEnable(false)
-                .withWeeklyInterval(981074224)
-                .withMonthlyOccurrence(586679230)
-                .withDayOfWeek(AssessmentDayOfWeek.WEDNESDAY)
-                .withStartTime("ugidyjrr");
+        Schedule model = new Schedule().withEnable(false)
+            .withWeeklyInterval(981074224)
+            .withMonthlyOccurrence(586679230)
+            .withDayOfWeek(AssessmentDayOfWeek.WEDNESDAY)
+            .withStartTime("ugidyjrr");
         model = BinaryData.fromObject(model).toObject(Schedule.class);
         Assertions.assertEquals(false, model.enable());
         Assertions.assertEquals(981074224, model.weeklyInterval());

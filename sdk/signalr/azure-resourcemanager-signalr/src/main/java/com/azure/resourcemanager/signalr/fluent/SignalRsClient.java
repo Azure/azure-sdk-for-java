@@ -32,8 +32,8 @@ public interface SignalRsClient {
      * @return result of the request to check name availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NameAvailabilityInner> checkNameAvailabilityWithResponse(
-        String location, NameAvailabilityParameters parameters, Context context);
+    Response<NameAvailabilityInner> checkNameAvailabilityWithResponse(String location,
+        NameAvailabilityParameters parameters, Context context);
 
     /**
      * Checks that the resource name is valid and is not already in use.
@@ -111,8 +111,8 @@ public interface SignalRsClient {
      * @return the resource and its properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SignalRResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<SignalRResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get the resource and its properties.
@@ -139,8 +139,8 @@ public interface SignalRsClient {
      * @return the {@link SyncPoller} for polling of a class represent a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, SignalRResourceInner parameters);
+    SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, SignalRResourceInner parameters);
 
     /**
      * Create or update a resource.
@@ -155,8 +155,8 @@ public interface SignalRsClient {
      * @return the {@link SyncPoller} for polling of a class represent a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, SignalRResourceInner parameters, Context context);
+    SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, SignalRResourceInner parameters, Context context);
 
     /**
      * Create or update a resource.
@@ -185,8 +185,8 @@ public interface SignalRsClient {
      * @return a class represent a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SignalRResourceInner createOrUpdate(
-        String resourceGroupName, String resourceName, SignalRResourceInner parameters, Context context);
+    SignalRResourceInner createOrUpdate(String resourceGroupName, String resourceName, SignalRResourceInner parameters,
+        Context context);
 
     /**
      * Operation to delete a resource.
@@ -252,8 +252,8 @@ public interface SignalRsClient {
      * @return the {@link SyncPoller} for polling of a class represent a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginUpdate(
-        String resourceGroupName, String resourceName, SignalRResourceInner parameters);
+    SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginUpdate(String resourceGroupName,
+        String resourceName, SignalRResourceInner parameters);
 
     /**
      * Operation to update an exiting resource.
@@ -268,8 +268,8 @@ public interface SignalRsClient {
      * @return the {@link SyncPoller} for polling of a class represent a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginUpdate(
-        String resourceGroupName, String resourceName, SignalRResourceInner parameters, Context context);
+    SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginUpdate(String resourceGroupName,
+        String resourceName, SignalRResourceInner parameters, Context context);
 
     /**
      * Operation to update an exiting resource.
@@ -298,8 +298,8 @@ public interface SignalRsClient {
      * @return a class represent a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SignalRResourceInner update(
-        String resourceGroupName, String resourceName, SignalRResourceInner parameters, Context context);
+    SignalRResourceInner update(String resourceGroupName, String resourceName, SignalRResourceInner parameters,
+        Context context);
 
     /**
      * Get the access keys of the resource.
@@ -340,8 +340,8 @@ public interface SignalRsClient {
      * @return the {@link SyncPoller} for polling of a class represents the access keys of the resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SignalRKeysInner>, SignalRKeysInner> beginRegenerateKey(
-        String resourceGroupName, String resourceName, RegenerateKeyParameters parameters);
+    SyncPoller<PollResult<SignalRKeysInner>, SignalRKeysInner> beginRegenerateKey(String resourceGroupName,
+        String resourceName, RegenerateKeyParameters parameters);
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
@@ -356,8 +356,8 @@ public interface SignalRsClient {
      * @return the {@link SyncPoller} for polling of a class represents the access keys of the resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SignalRKeysInner>, SignalRKeysInner> beginRegenerateKey(
-        String resourceGroupName, String resourceName, RegenerateKeyParameters parameters, Context context);
+    SyncPoller<PollResult<SignalRKeysInner>, SignalRKeysInner> beginRegenerateKey(String resourceGroupName,
+        String resourceName, RegenerateKeyParameters parameters, Context context);
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
@@ -386,8 +386,8 @@ public interface SignalRsClient {
      * @return a class represents the access keys of the resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SignalRKeysInner regenerateKey(
-        String resourceGroupName, String resourceName, RegenerateKeyParameters parameters, Context context);
+    SignalRKeysInner regenerateKey(String resourceGroupName, String resourceName, RegenerateKeyParameters parameters,
+        Context context);
 
     /**
      * List all available skus of the replica resource.
@@ -402,8 +402,8 @@ public interface SignalRsClient {
      * @return the list skus operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuListInner> listReplicaSkusWithResponse(
-        String resourceGroupName, String resourceName, String replicaName, Context context);
+    Response<SkuListInner> listReplicaSkusWithResponse(String resourceGroupName, String resourceName,
+        String replicaName, Context context);
 
     /**
      * List all available skus of the replica resource.

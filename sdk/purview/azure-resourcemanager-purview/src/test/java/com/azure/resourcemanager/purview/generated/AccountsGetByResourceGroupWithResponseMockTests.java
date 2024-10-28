@@ -6,71 +6,40 @@ package com.azure.resourcemanager.purview.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.purview.PurviewManager;
 import com.azure.resourcemanager.purview.models.Account;
 import com.azure.resourcemanager.purview.models.PublicNetworkAccess;
 import com.azure.resourcemanager.purview.models.Type;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AccountsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"cloudConnectors\":{\"awsExternalId\":\"fjhdg\"},\"createdAt\":\"2021-03-08T14:46:14Z\",\"createdBy\":\"bdunygaeqid\",\"createdByObjectId\":\"fatpxllrxcyjmoa\",\"endpoints\":{\"catalog\":\"varmywdmj\",\"guardian\":\"q\",\"scan\":\"hhyxxrw\"},\"friendlyName\":\"co\",\"managedResourceGroupName\":\"hp\",\"managedResources\":{\"eventHubNamespace\":\"gymare\",\"resourceGroup\":\"ajxq\",\"storageAccount\":\"jhkycub\"},\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"fwqmzqalkrmn\"},\"id\":\"i\",\"name\":\"pxacqqudfn\",\"type\":\"yxbaaabjyvayf\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"rtuzqogs\"},\"id\":\"xnevfdnwn\",\"name\":\"mewzsyyc\",\"type\":\"uzsoi\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"frxtrthzvaytdwk\"},\"id\":\"brqubp\",\"name\":\"xhexiilivpdti\",\"type\":\"r\"},{\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"provisioningState\":\"axoruzfgsquy\"},\"id\":\"xrxxlep\",\"name\":\"ramxjezwlwnw\",\"type\":\"uqlcvydy\"}],\"provisioningState\":\"Deleting\",\"publicNetworkAccess\":\"NotSpecified\"},\"sku\":{\"capacity\":1607416981,\"name\":\"Standard\"},\"identity\":{\"principalId\":\"odko\",\"tenantId\":\"bw\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"jvefkdlfoakggkfp\":{\"clientId\":\"msbvdkcrodtjinf\",\"principalId\":\"lfltka\"},\"jervtia\":{\"clientId\":\"ao\",\"principalId\":\"ulpqblylsyxkqjn\"},\"beyvpnqicvinvkjj\":{\"clientId\":\"sdszue\",\"principalId\":\"sbzkf\"}}},\"location\":\"xrbuukzclew\",\"tags\":{\"aztz\":\"lw\",\"yq\":\"ofncckwyfzqwhxxb\"},\"id\":\"xzfe\",\"name\":\"ztppriolxorjalto\",\"type\":\"mncwsobqwcsdb\"}";
 
-        String responseStr =
-            "{\"properties\":{\"cloudConnectors\":{\"awsExternalId\":\"ucnapkteoellwp\"},\"createdAt\":\"2021-07-15T21:53:29Z\",\"createdBy\":\"gpfqbuace\",\"createdByObjectId\":\"zfq\",\"endpoints\":{\"catalog\":\"uaopppcqeq\",\"guardian\":\"lzdahzxctobgbkdm\",\"scan\":\"zpostmgrcfbu\"},\"friendlyName\":\"mfqjhhkxbp\",\"managedResourceGroupName\":\"ymjhxxjyngudivkr\",\"managedResources\":{\"eventHubNamespace\":\"bxqz\",\"resourceGroup\":\"zjf\",\"storageAccount\":\"vjfdx\"},\"privateEndpointConnections\":[],\"provisioningState\":\"Deleting\",\"publicNetworkAccess\":\"NotSpecified\"},\"sku\":{\"capacity\":393815457,\"name\":\"Standard\"},\"identity\":{\"principalId\":\"qmcbxvwvxyslqbhs\",\"tenantId\":\"obl\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"pe\",\"tags\":{\"q\":\"fbkrvrnsvs\",\"rruvwbhsq\":\"ohxcrsbfova\",\"gjb\":\"sub\"},\"id\":\"rxbpyb\",\"name\":\"rfbjf\",\"type\":\"twss\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PurviewManager manager = PurviewManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Account response = manager.accounts()
+            .getByResourceGroupWithResponse("rvimjwosytxitcsk", "cktqumiekkezzi", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        PurviewManager manager =
-            PurviewManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Account response =
-            manager
-                .accounts()
-                .getByResourceGroupWithResponse("n", "wwncwzzhxgk", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("pe", response.location());
-        Assertions.assertEquals("fbkrvrnsvs", response.tags().get("q"));
-        Assertions.assertEquals(Type.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("ymjhxxjyngudivkr", response.managedResourceGroupName());
+        Assertions.assertEquals("xrbuukzclew", response.location());
+        Assertions.assertEquals("lw", response.tags().get("aztz"));
+        Assertions.assertEquals(Type.SYSTEM_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("hp", response.managedResourceGroupName());
         Assertions.assertEquals(PublicNetworkAccess.NOT_SPECIFIED, response.publicNetworkAccess());
     }
 }

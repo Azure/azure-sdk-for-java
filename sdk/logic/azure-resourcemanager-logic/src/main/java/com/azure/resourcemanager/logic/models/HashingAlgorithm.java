@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The signing or hashing algorithm. */
+/**
+ * The signing or hashing algorithm.
+ */
 public final class HashingAlgorithm extends ExpandableStringEnum<HashingAlgorithm> {
-    /** Static value NotSpecified for HashingAlgorithm. */
+    /**
+     * Static value NotSpecified for HashingAlgorithm.
+     */
     public static final HashingAlgorithm NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value None for HashingAlgorithm. */
+    /**
+     * Static value None for HashingAlgorithm.
+     */
     public static final HashingAlgorithm NONE = fromString("None");
 
-    /** Static value MD5 for HashingAlgorithm. */
+    /**
+     * Static value MD5 for HashingAlgorithm.
+     */
     public static final HashingAlgorithm MD5 = fromString("MD5");
 
-    /** Static value SHA1 for HashingAlgorithm. */
+    /**
+     * Static value SHA1 for HashingAlgorithm.
+     */
     public static final HashingAlgorithm SHA1 = fromString("SHA1");
 
-    /** Static value SHA2256 for HashingAlgorithm. */
+    /**
+     * Static value SHA2256 for HashingAlgorithm.
+     */
     public static final HashingAlgorithm SHA2256 = fromString("SHA2256");
 
-    /** Static value SHA2384 for HashingAlgorithm. */
+    /**
+     * Static value SHA2384 for HashingAlgorithm.
+     */
     public static final HashingAlgorithm SHA2384 = fromString("SHA2384");
 
-    /** Static value SHA2512 for HashingAlgorithm. */
+    /**
+     * Static value SHA2512 for HashingAlgorithm.
+     */
     public static final HashingAlgorithm SHA2512 = fromString("SHA2512");
 
     /**
      * Creates a new instance of HashingAlgorithm value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class HashingAlgorithm extends ExpandableStringEnum<HashingAlgorith
 
     /**
      * Creates or finds a HashingAlgorithm from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HashingAlgorithm.
      */
-    @JsonCreator
     public static HashingAlgorithm fromString(String name) {
         return fromString(name, HashingAlgorithm.class);
     }
 
     /**
      * Gets known HashingAlgorithm values.
-     *
+     * 
      * @return known HashingAlgorithm values.
      */
     public static Collection<HashingAlgorithm> values() {

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The EncryptionProperty model. */
 @Fluent
 public final class EncryptionProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionProperty.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EncryptionProperty.class);
 
     /*
      * Indicates whether or not the encryption is enabled for the workspace.
@@ -100,18 +101,15 @@ public final class EncryptionProperty {
      */
     public void validate() {
         if (status() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property status in model EncryptionProperty"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property status in model EncryptionProperty"));
         }
         if (identity() != null) {
             identity().validate();
         }
         if (keyVaultProperties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultProperties in model EncryptionProperty"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyVaultProperties in model EncryptionProperty"));
         } else {
             keyVaultProperties().validate();
         }

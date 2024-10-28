@@ -11,9 +11,9 @@ import com.azure.ai.vision.face.models.FaceRecognitionModel;
 import java.util.List;
 
 public abstract class DetectSyncFunction {
-    public abstract List<FaceDetectionResult> execute(FaceDetectionModel detectionModel, FaceRecognitionModel recognitionModel,
-        boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes, Boolean returnFaceLandmarks, Boolean returnRecognitionModel,
-        Integer faceIdTimeToLive);
+    public abstract List<FaceDetectionResult> execute(FaceDetectionModel detectionModel,
+        FaceRecognitionModel recognitionModel, boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes,
+        Boolean returnFaceLandmarks, Boolean returnRecognitionModel, Integer faceIdTimeToLive);
 
     @Override
     public String toString() {

@@ -13,7 +13,8 @@ public final class MultiLabelClassifyActionResultPropertiesHelper {
 
     private static MultiLabelClassifyActionResultAccessor accessor;
 
-    private MultiLabelClassifyActionResultPropertiesHelper() { }
+    private MultiLabelClassifyActionResultPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link MultiLabelClassifyActionResult}
@@ -29,8 +30,8 @@ public final class MultiLabelClassifyActionResultPropertiesHelper {
      *
      * @param multiLabelClassifyActionResultAccessor The accessor.
      */
-    public static void setAccessor(
-        final MultiLabelClassifyActionResultAccessor multiLabelClassifyActionResultAccessor) {
+    public static void
+        setAccessor(final MultiLabelClassifyActionResultAccessor multiLabelClassifyActionResultAccessor) {
         accessor = multiLabelClassifyActionResultAccessor;
     }
 

@@ -83,9 +83,7 @@ public final class SocketConnection {
      * @return true if the connection can be reused, false otherwise
      */
     boolean canBeReused() {
-        return !socket.isClosed()
-            && !socket.isInputShutdown()
-            && !socket.isOutputShutdown();
+        return !socket.isClosed() && !socket.isInputShutdown() && !socket.isOutputShutdown();
     }
 
     /**
@@ -116,7 +114,8 @@ public final class SocketConnection {
             this.readTimeout = readTimeout;
         }
 
-        @Override public boolean equals(Object other) {
+        @Override
+        public boolean equals(Object other) {
             if (other instanceof SocketConnectionProperties) {
                 SocketConnectionProperties that = (SocketConnectionProperties) other;
                 boolean p = Objects.equals(this.host, that.host)
@@ -130,7 +129,8 @@ public final class SocketConnection {
             return false;
         }
 
-        @Override public int hashCode() {
+        @Override
+        public int hashCode() {
             return Objects.hash(host, port);
         }
 

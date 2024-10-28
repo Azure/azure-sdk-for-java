@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkbookPropertiesUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkbookPropertiesUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"zkoj\",\"serializedData\":\"c\",\"category\":\"foqouicybx\",\"tags\":[\"gszufoxciqopid\"],\"description\":\"mciodhkhazxkhn\",\"revision\":\"onlwntoeg\"}")
-                .toObject(WorkbookPropertiesUpdateParameters.class);
+        WorkbookPropertiesUpdateParameters model = BinaryData.fromString(
+            "{\"displayName\":\"zkoj\",\"serializedData\":\"c\",\"category\":\"foqouicybx\",\"tags\":[\"gszufoxciqopid\"],\"description\":\"mciodhkhazxkhn\",\"revision\":\"onlwntoeg\"}")
+            .toObject(WorkbookPropertiesUpdateParameters.class);
         Assertions.assertEquals("zkoj", model.displayName());
         Assertions.assertEquals("c", model.serializedData());
         Assertions.assertEquals("foqouicybx", model.category());
@@ -27,14 +25,12 @@ public final class WorkbookPropertiesUpdateParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookPropertiesUpdateParameters model =
-            new WorkbookPropertiesUpdateParameters()
-                .withDisplayName("zkoj")
-                .withSerializedData("c")
-                .withCategory("foqouicybx")
-                .withTags(Arrays.asList("gszufoxciqopid"))
-                .withDescription("mciodhkhazxkhn")
-                .withRevision("onlwntoeg");
+        WorkbookPropertiesUpdateParameters model = new WorkbookPropertiesUpdateParameters().withDisplayName("zkoj")
+            .withSerializedData("c")
+            .withCategory("foqouicybx")
+            .withTags(Arrays.asList("gszufoxciqopid"))
+            .withDescription("mciodhkhazxkhn")
+            .withRevision("onlwntoeg");
         model = BinaryData.fromObject(model).toObject(WorkbookPropertiesUpdateParameters.class);
         Assertions.assertEquals("zkoj", model.displayName());
         Assertions.assertEquals("c", model.serializedData());

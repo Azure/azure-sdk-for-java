@@ -92,8 +92,8 @@ public interface Components {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Application Insights component definition along with {@link Response}.
      */
-    Response<ApplicationInsightsComponent> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ApplicationInsightsComponent> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Returns an Application Insights component.
@@ -127,8 +127,8 @@ public interface Components {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response containing operationId for a specific purge action along with {@link Response}.
      */
-    Response<ComponentPurgeResponse> purgeWithResponse(
-        String resourceGroupName, String resourceName, ComponentPurgeBody body, Context context);
+    Response<ComponentPurgeResponse> purgeWithResponse(String resourceGroupName, String resourceName,
+        ComponentPurgeBody body, Context context);
 
     /**
      * Purges data in an Application Insights component by a set of user-defined filters.
@@ -163,8 +163,8 @@ public interface Components {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return status for an ongoing purge operation along with {@link Response}.
      */
-    Response<ComponentPurgeStatusResponse> getPurgeStatusWithResponse(
-        String resourceGroupName, String resourceName, String purgeId, Context context);
+    Response<ComponentPurgeStatusResponse> getPurgeStatusWithResponse(String resourceGroupName, String resourceName,
+        String purgeId, Context context);
 
     /**
      * Get status for an ongoing purge operation.

@@ -21,8 +21,7 @@ public final class CloudServicesNetworksImpl implements CloudServicesNetworks {
 
     private final com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager;
 
-    public CloudServicesNetworksImpl(
-        CloudServicesNetworksClient innerClient,
+    public CloudServicesNetworksImpl(CloudServicesNetworksClient innerClient,
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -44,20 +43,17 @@ public final class CloudServicesNetworksImpl implements CloudServicesNetworks {
     }
 
     public PagedIterable<CloudServicesNetwork> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<CloudServicesNetworkInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        PagedIterable<CloudServicesNetworkInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
         return Utils.mapPage(inner, inner1 -> new CloudServicesNetworkImpl(inner1, this.manager()));
     }
 
-    public Response<CloudServicesNetwork> getByResourceGroupWithResponse(
-        String resourceGroupName, String cloudServicesNetworkName, Context context) {
-        Response<CloudServicesNetworkInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, cloudServicesNetworkName, context);
+    public Response<CloudServicesNetwork> getByResourceGroupWithResponse(String resourceGroupName,
+        String cloudServicesNetworkName, Context context) {
+        Response<CloudServicesNetworkInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, cloudServicesNetworkName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CloudServicesNetworkImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -65,8 +61,8 @@ public final class CloudServicesNetworksImpl implements CloudServicesNetworks {
     }
 
     public CloudServicesNetwork getByResourceGroup(String resourceGroupName, String cloudServicesNetworkName) {
-        CloudServicesNetworkInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, cloudServicesNetworkName);
+        CloudServicesNetworkInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, cloudServicesNetworkName);
         if (inner != null) {
             return new CloudServicesNetworkImpl(inner, this.manager());
         } else {
@@ -85,45 +81,28 @@ public final class CloudServicesNetworksImpl implements CloudServicesNetworks {
     public CloudServicesNetwork getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String cloudServicesNetworkName = Utils.getValueFromIdByName(id, "cloudServicesNetworks");
         if (cloudServicesNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'cloudServicesNetworks'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudServicesNetworks'.", id)));
         }
-        return this
-            .getByResourceGroupWithResponse(resourceGroupName, cloudServicesNetworkName, Context.NONE)
+        return this.getByResourceGroupWithResponse(resourceGroupName, cloudServicesNetworkName, Context.NONE)
             .getValue();
     }
 
     public Response<CloudServicesNetwork> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String cloudServicesNetworkName = Utils.getValueFromIdByName(id, "cloudServicesNetworks");
         if (cloudServicesNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'cloudServicesNetworks'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudServicesNetworks'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, cloudServicesNetworkName, context);
     }
@@ -131,21 +110,13 @@ public final class CloudServicesNetworksImpl implements CloudServicesNetworks {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String cloudServicesNetworkName = Utils.getValueFromIdByName(id, "cloudServicesNetworks");
         if (cloudServicesNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'cloudServicesNetworks'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudServicesNetworks'.", id)));
         }
         this.delete(resourceGroupName, cloudServicesNetworkName, Context.NONE);
     }
@@ -153,21 +124,13 @@ public final class CloudServicesNetworksImpl implements CloudServicesNetworks {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String cloudServicesNetworkName = Utils.getValueFromIdByName(id, "cloudServicesNetworks");
         if (cloudServicesNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'cloudServicesNetworks'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'cloudServicesNetworks'.", id)));
         }
         this.delete(resourceGroupName, cloudServicesNetworkName, context);
     }

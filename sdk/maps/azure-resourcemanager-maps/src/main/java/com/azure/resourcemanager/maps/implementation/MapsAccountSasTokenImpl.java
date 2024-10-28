@@ -12,8 +12,8 @@ public final class MapsAccountSasTokenImpl implements MapsAccountSasToken {
 
     private final com.azure.resourcemanager.maps.AzureMapsManager serviceManager;
 
-    MapsAccountSasTokenImpl(
-        MapsAccountSasTokenInner innerObject, com.azure.resourcemanager.maps.AzureMapsManager serviceManager) {
+    MapsAccountSasTokenImpl(MapsAccountSasTokenInner innerObject,
+        com.azure.resourcemanager.maps.AzureMapsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

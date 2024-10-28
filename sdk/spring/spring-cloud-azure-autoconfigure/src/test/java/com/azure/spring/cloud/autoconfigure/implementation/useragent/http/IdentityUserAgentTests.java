@@ -75,6 +75,7 @@ class IdentityUserAgentTests {
 
     static class CredentialCustomizerConfiguration {
 
+        @SuppressWarnings("deprecation")
         @Bean
         AzureServiceClientBuilderCustomizer<ClientSecretCredentialBuilder> httpLogOptionsCustomizer() {
             return builder -> {

@@ -22,7 +22,8 @@ public final class InMageRcmFailbackReprotectInputTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageRcmFailbackReprotectInput model = new InMageRcmFailbackReprotectInput().withProcessServerId("e")
-            .withRunAsAccountId("fm").withPolicyId("mskkixvlzjxplhpe");
+            .withRunAsAccountId("fm")
+            .withPolicyId("mskkixvlzjxplhpe");
         model = BinaryData.fromObject(model).toObject(InMageRcmFailbackReprotectInput.class);
         Assertions.assertEquals("e", model.processServerId());
         Assertions.assertEquals("fm", model.runAsAccountId());

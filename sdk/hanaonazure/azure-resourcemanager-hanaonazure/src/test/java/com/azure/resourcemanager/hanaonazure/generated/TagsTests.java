@@ -13,17 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class TagsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Tags model = BinaryData.fromString("{\"tags\":{\"c\":\"eiwaopvkmi\"}}").toObject(Tags.class);
-        Assertions.assertEquals("eiwaopvkmi", model.tags().get("c"));
+        Tags model = BinaryData
+            .fromString("{\"tags\":{\"jkrlkhbzhfepg\":\"u\",\"paierh\":\"gqexzlocxs\",\"tjaodxobnb\":\"bcsglumma\"}}")
+            .toObject(Tags.class);
+        Assertions.assertEquals("u", model.tags().get("jkrlkhbzhfepg"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Tags model = new Tags().withTags(mapOf("c", "eiwaopvkmi"));
+        Tags model
+            = new Tags().withTags(mapOf("jkrlkhbzhfepg", "u", "paierh", "gqexzlocxs", "tjaodxobnb", "bcsglumma"));
         model = BinaryData.fromObject(model).toObject(Tags.class);
-        Assertions.assertEquals("eiwaopvkmi", model.tags().get("c"));
+        Assertions.assertEquals("u", model.tags().get("jkrlkhbzhfepg"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

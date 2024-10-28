@@ -3,14 +3,18 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
@@ -104,7 +108,7 @@ public class DeadletterQueueSample {
             .mapToObj(index -> {
                 final Person person = personList.get(index);
 
-                return new ServiceBusMessage(person.toJson())
+                return new ServiceBusMessage(person.toJsonString())
                     .setContentType("application/json")
                     .setSubject(index % 2 == 0 ? "Scientist" : "Physicist")
                     .setMessageId(Integer.toString(index))
@@ -249,7 +253,7 @@ public class DeadletterQueueSample {
                         final String contentType = message.getContentType();
                         final Person person;
                         try {
-                            person = Person.fromJson(message.getBody().toString());
+                            person = Person.fromJsonString(message.getBody().toString());
                         } catch (RuntimeException e) {
                             return Mono.error(new RuntimeException("Could not deserialize message: "
                                 + message.getSequenceNumber(), e));
@@ -337,13 +341,11 @@ public class DeadletterQueueSample {
         });
     }
 
-    private static final class Person {
-        private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
+    private static final class Person implements JsonSerializable<Person> {
         private final String lastName;
         private final String firstName;
 
-        Person(@JsonProperty String lastName, @JsonProperty String firstName) {
+        Person(String lastName, String firstName) {
             this.lastName = lastName;
             this.firstName = firstName;
         }
@@ -356,33 +358,72 @@ public class DeadletterQueueSample {
             return firstName;
         }
 
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            return jsonWriter.writeStartObject()
+                .writeStringField("lastName", lastName)
+                .writeStringField("firstName", firstName)
+                .writeEndObject();
+        }
+
         /**
          * Serializes an item into its JSON string equivalent.
          *
          * @return The JSON representation.
-         *
          * @throws RuntimeException if the person could not be serialized.
          */
-        String toJson() {
-            try {
-                return OBJECT_MAPPER.writeValueAsString(this);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException("Could not serialize object.", e);
+        @Override
+        public String toJsonString() {
+            try (StringWriter stringWriter = new StringWriter();
+                JsonWriter jsonWriter = JsonProviders.createWriter(stringWriter)) {
+                this.toJson(jsonWriter).flush();
+                return stringWriter.toString();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
+        }
+
+        /**
+         * Deserializes an instance of {@link Person} from the {@link JsonReader}.
+         *
+         * @param jsonReader The {@link JsonReader} to read.
+         * @return An instance of {@link Person}, or null if the {@link JsonReader} points to {@link JsonToken#NULL}.
+         * @throws IOException If an error occurs while reading the {@link JsonReader}.
+         */
+        public static Person fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                String lastName = null;
+                String firstName = null;
+
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("lastName".equals(fieldName)) {
+                        lastName = reader.getString();
+                    } else if ("firstName".equals(fieldName)) {
+                        firstName = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+
+                return new Person(lastName, firstName);
+            });
         }
 
         /**
          * Deserializes a JSON string into a Person.
          *
+         * @param json A JSON string.
          * @return The corresponding person.
-         *
          * @throws RuntimeException if the JSON string could not be deserialized.
          */
-        private static Person fromJson(String json) {
-            try {
-                return OBJECT_MAPPER.readValue(json, Person.class);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException("Could not deserialize object.", e);
+        static Person fromJsonString(String json) {
+            try (JsonReader jsonReader = JsonProviders.createReader(json)) {
+                return Person.fromJson(jsonReader);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
         }
     }

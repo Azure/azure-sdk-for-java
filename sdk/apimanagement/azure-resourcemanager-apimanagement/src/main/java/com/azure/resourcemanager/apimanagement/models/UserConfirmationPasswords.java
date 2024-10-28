@@ -23,8 +23,8 @@ public interface UserConfirmationPasswords {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> sendWithResponse(
-        String resourceGroupName, String serviceName, String userId, AppType appType, Context context);
+    Response<Void> sendWithResponse(String resourceGroupName, String serviceName, String userId, AppType appType,
+        Context context);
 
     /**
      * Sends confirmation.

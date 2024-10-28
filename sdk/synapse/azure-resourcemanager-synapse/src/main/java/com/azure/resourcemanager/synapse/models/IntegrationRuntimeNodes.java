@@ -24,12 +24,8 @@ public interface IntegrationRuntimeNodes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration runtime node along with {@link Response}.
      */
-    Response<SelfHostedIntegrationRuntimeNode> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
-        Context context);
+    Response<SelfHostedIntegrationRuntimeNode> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName, Context context);
 
     /**
      * Get integration runtime node
@@ -45,8 +41,8 @@ public interface IntegrationRuntimeNodes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration runtime node.
      */
-    SelfHostedIntegrationRuntimeNode get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName);
+    SelfHostedIntegrationRuntimeNode get(String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        String nodeName);
 
     /**
      * Create integration runtime node
@@ -64,13 +60,9 @@ public interface IntegrationRuntimeNodes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of Self-hosted integration runtime node along with {@link Response}.
      */
-    Response<SelfHostedIntegrationRuntimeNode> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
-        UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest,
-        Context context);
+    Response<SelfHostedIntegrationRuntimeNode> updateWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName,
+        UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest, Context context);
 
     /**
      * Create integration runtime node
@@ -87,11 +79,8 @@ public interface IntegrationRuntimeNodes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of Self-hosted integration runtime node.
      */
-    SelfHostedIntegrationRuntimeNode update(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
+    SelfHostedIntegrationRuntimeNode update(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName,
         UpdateIntegrationRuntimeNodeRequest updateIntegrationRuntimeNodeRequest);
 
     /**
@@ -109,12 +98,8 @@ public interface IntegrationRuntimeNodes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        String nodeName, Context context);
 
     /**
      * Delete integration runtime node

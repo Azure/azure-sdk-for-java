@@ -32,49 +32,37 @@ public final class ContactsCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"cancelled\",\"reservationStartTime\":\"2021-07-26T04:46:18Z\",\"reservationEndTime\":\"2021-03-21T10:48:12Z\",\"rxStartTime\":\"2021-04-11T14:37:21Z\",\"rxEndTime\":\"2021-11-26T05:12:43Z\",\"txStartTime\":\"2021-02-11T01:14:35Z\",\"txEndTime\":\"2021-02-21T18:42:47Z\",\"errorMessage\":\"l\",\"maximumElevationDegrees\":69.63277,\"startAzimuthDegrees\":18.20975,\"endAzimuthDegrees\":37.51781,\"groundStationName\":\"ynduha\",\"startElevationDegrees\":28.043324,\"endElevationDegrees\":94.81316,\"antennaConfiguration\":{\"destinationIp\":\"umaq\",\"sourceIps\":[]},\"contactProfile\":{\"id\":\"bgycduiertgccym\"}},\"id\":\"olpsslqlf\",\"name\":\"mdnbbglzpswiy\",\"type\":\"mcwyhzdxssadb\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"cancelled\",\"reservationStartTime\":\"2021-07-26T04:46:18Z\",\"reservationEndTime\":\"2021-03-21T10:48:12Z\",\"rxStartTime\":\"2021-04-11T14:37:21Z\",\"rxEndTime\":\"2021-11-26T05:12:43Z\",\"txStartTime\":\"2021-02-11T01:14:35Z\",\"txEndTime\":\"2021-02-21T18:42:47Z\",\"errorMessage\":\"l\",\"maximumElevationDegrees\":69.63277,\"startAzimuthDegrees\":18.20975,\"endAzimuthDegrees\":37.51781,\"groundStationName\":\"ynduha\",\"startElevationDegrees\":28.043324,\"endElevationDegrees\":94.81316,\"antennaConfiguration\":{\"destinationIp\":\"umaq\",\"sourceIps\":[]},\"contactProfile\":{\"id\":\"bgycduiertgccym\"}},\"id\":\"olpsslqlf\",\"name\":\"mdnbbglzpswiy\",\"type\":\"mcwyhzdxssadb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        OrbitalManager manager =
-            OrbitalManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        OrbitalManager manager = OrbitalManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Contact response =
-            manager
-                .contacts()
-                .define("bkrvrnsvshqj")
-                .withExistingSpacecraft("obl", "tkblmpewww")
-                .withReservationStartTime(OffsetDateTime.parse("2021-04-07T08:58:23Z"))
-                .withReservationEndTime(OffsetDateTime.parse("2021-02-20T00:19:02Z"))
-                .withGroundStationName("bpybsrfbjf")
-                .withContactProfile(new ContactsPropertiesContactProfile().withId("nfqqnvwp"))
-                .withProvisioningState(ContactsPropertiesProvisioningState.CANCELED)
-                .create();
+        Contact response = manager.contacts()
+            .define("bkrvrnsvshqj")
+            .withExistingSpacecraft("obl", "tkblmpewww")
+            .withReservationStartTime(OffsetDateTime.parse("2021-04-07T08:58:23Z"))
+            .withReservationEndTime(OffsetDateTime.parse("2021-02-20T00:19:02Z"))
+            .withGroundStationName("bpybsrfbjf")
+            .withContactProfile(new ContactsPropertiesContactProfile().withId("nfqqnvwp"))
+            .withProvisioningState(ContactsPropertiesProvisioningState.CANCELED)
+            .create();
 
-        Assertions
-            .assertEquals(ContactsPropertiesProvisioningState.fromString("Succeeded"), response.provisioningState());
+        Assertions.assertEquals(ContactsPropertiesProvisioningState.fromString("Succeeded"),
+            response.provisioningState());
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T04:46:18Z"), response.reservationStartTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-03-21T10:48:12Z"), response.reservationEndTime());
         Assertions.assertEquals("ynduha", response.groundStationName());

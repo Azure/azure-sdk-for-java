@@ -37,8 +37,8 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointsRespons
      * @param value the value value to set.
      * @return the IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner object itself.
      */
-    public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner withValue(
-        List<IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint> value) {
+    public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner
+        withValue(List<IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint> value) {
         this.value = value;
         return this;
     }

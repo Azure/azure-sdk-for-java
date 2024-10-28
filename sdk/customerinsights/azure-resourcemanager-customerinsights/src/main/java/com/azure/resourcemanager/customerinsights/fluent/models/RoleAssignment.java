@@ -6,147 +6,132 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.AssignmentPrincipal;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.ResourceSetDescription;
 import com.azure.resourcemanager.customerinsights.models.RoleTypes;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The Role Assignment definition. */
+/**
+ * The Role Assignment definition.
+ */
 @Fluent
-public final class RoleAssignment {
+public final class RoleAssignment implements JsonSerializable<RoleAssignment> {
     /*
      * The hub name.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * The name of the metadata object.
      */
-    @JsonProperty(value = "assignmentName", access = JsonProperty.Access.WRITE_ONLY)
     private String assignmentName;
 
     /*
      * Localized display names for the metadata.
      */
-    @JsonProperty(value = "displayName")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> displayName;
 
     /*
      * Localized description for the metadata.
      */
-    @JsonProperty(value = "description")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> description;
 
     /*
      * Provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStates provisioningState;
 
     /*
      * Type of roles.
      */
-    @JsonProperty(value = "role", required = true)
     private RoleTypes role;
 
     /*
      * The principals being assigned to.
      */
-    @JsonProperty(value = "principals", required = true)
     private List<AssignmentPrincipal> principals;
 
     /*
      * Profiles set for the assignment.
      */
-    @JsonProperty(value = "profiles")
     private ResourceSetDescription profiles;
 
     /*
      * Interactions set for the assignment.
      */
-    @JsonProperty(value = "interactions")
     private ResourceSetDescription interactions;
 
     /*
      * Links set for the assignment.
      */
-    @JsonProperty(value = "links")
     private ResourceSetDescription links;
 
     /*
      * Kpis set for the assignment.
      */
-    @JsonProperty(value = "kpis")
     private ResourceSetDescription kpis;
 
     /*
      * Sas Policies set for the assignment.
      */
-    @JsonProperty(value = "sasPolicies")
     private ResourceSetDescription sasPolicies;
 
     /*
      * Connectors set for the assignment.
      */
-    @JsonProperty(value = "connectors")
     private ResourceSetDescription connectors;
 
     /*
      * Views set for the assignment.
      */
-    @JsonProperty(value = "views")
     private ResourceSetDescription views;
 
     /*
      * The Role assignments set for the relationship links.
      */
-    @JsonProperty(value = "relationshipLinks")
     private ResourceSetDescription relationshipLinks;
 
     /*
      * The Role assignments set for the relationships.
      */
-    @JsonProperty(value = "relationships")
     private ResourceSetDescription relationships;
 
     /*
      * Widget types set for the assignment.
      */
-    @JsonProperty(value = "widgetTypes")
     private ResourceSetDescription widgetTypes;
 
     /*
      * The Role assignments set for the assignment.
      */
-    @JsonProperty(value = "roleAssignments")
     private ResourceSetDescription roleAssignments;
 
     /*
      * Widget types set for the assignment.
      */
-    @JsonProperty(value = "conflationPolicies")
     private ResourceSetDescription conflationPolicies;
 
     /*
      * The Role assignments set for the assignment.
      */
-    @JsonProperty(value = "segments")
     private ResourceSetDescription segments;
 
-    /** Creates an instance of RoleAssignment class. */
+    /**
+     * Creates an instance of RoleAssignment class.
+     */
     public RoleAssignment() {
     }
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -155,7 +140,7 @@ public final class RoleAssignment {
 
     /**
      * Get the assignmentName property: The name of the metadata object.
-     *
+     * 
      * @return the assignmentName value.
      */
     public String assignmentName() {
@@ -164,7 +149,7 @@ public final class RoleAssignment {
 
     /**
      * Get the displayName property: Localized display names for the metadata.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -173,7 +158,7 @@ public final class RoleAssignment {
 
     /**
      * Set the displayName property: Localized display names for the metadata.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the RoleAssignment object itself.
      */
@@ -184,7 +169,7 @@ public final class RoleAssignment {
 
     /**
      * Get the description property: Localized description for the metadata.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
@@ -193,7 +178,7 @@ public final class RoleAssignment {
 
     /**
      * Set the description property: Localized description for the metadata.
-     *
+     * 
      * @param description the description value to set.
      * @return the RoleAssignment object itself.
      */
@@ -204,7 +189,7 @@ public final class RoleAssignment {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -213,7 +198,7 @@ public final class RoleAssignment {
 
     /**
      * Get the role property: Type of roles.
-     *
+     * 
      * @return the role value.
      */
     public RoleTypes role() {
@@ -222,7 +207,7 @@ public final class RoleAssignment {
 
     /**
      * Set the role property: Type of roles.
-     *
+     * 
      * @param role the role value to set.
      * @return the RoleAssignment object itself.
      */
@@ -233,7 +218,7 @@ public final class RoleAssignment {
 
     /**
      * Get the principals property: The principals being assigned to.
-     *
+     * 
      * @return the principals value.
      */
     public List<AssignmentPrincipal> principals() {
@@ -242,7 +227,7 @@ public final class RoleAssignment {
 
     /**
      * Set the principals property: The principals being assigned to.
-     *
+     * 
      * @param principals the principals value to set.
      * @return the RoleAssignment object itself.
      */
@@ -253,7 +238,7 @@ public final class RoleAssignment {
 
     /**
      * Get the profiles property: Profiles set for the assignment.
-     *
+     * 
      * @return the profiles value.
      */
     public ResourceSetDescription profiles() {
@@ -262,7 +247,7 @@ public final class RoleAssignment {
 
     /**
      * Set the profiles property: Profiles set for the assignment.
-     *
+     * 
      * @param profiles the profiles value to set.
      * @return the RoleAssignment object itself.
      */
@@ -273,7 +258,7 @@ public final class RoleAssignment {
 
     /**
      * Get the interactions property: Interactions set for the assignment.
-     *
+     * 
      * @return the interactions value.
      */
     public ResourceSetDescription interactions() {
@@ -282,7 +267,7 @@ public final class RoleAssignment {
 
     /**
      * Set the interactions property: Interactions set for the assignment.
-     *
+     * 
      * @param interactions the interactions value to set.
      * @return the RoleAssignment object itself.
      */
@@ -293,7 +278,7 @@ public final class RoleAssignment {
 
     /**
      * Get the links property: Links set for the assignment.
-     *
+     * 
      * @return the links value.
      */
     public ResourceSetDescription links() {
@@ -302,7 +287,7 @@ public final class RoleAssignment {
 
     /**
      * Set the links property: Links set for the assignment.
-     *
+     * 
      * @param links the links value to set.
      * @return the RoleAssignment object itself.
      */
@@ -313,7 +298,7 @@ public final class RoleAssignment {
 
     /**
      * Get the kpis property: Kpis set for the assignment.
-     *
+     * 
      * @return the kpis value.
      */
     public ResourceSetDescription kpis() {
@@ -322,7 +307,7 @@ public final class RoleAssignment {
 
     /**
      * Set the kpis property: Kpis set for the assignment.
-     *
+     * 
      * @param kpis the kpis value to set.
      * @return the RoleAssignment object itself.
      */
@@ -333,7 +318,7 @@ public final class RoleAssignment {
 
     /**
      * Get the sasPolicies property: Sas Policies set for the assignment.
-     *
+     * 
      * @return the sasPolicies value.
      */
     public ResourceSetDescription sasPolicies() {
@@ -342,7 +327,7 @@ public final class RoleAssignment {
 
     /**
      * Set the sasPolicies property: Sas Policies set for the assignment.
-     *
+     * 
      * @param sasPolicies the sasPolicies value to set.
      * @return the RoleAssignment object itself.
      */
@@ -353,7 +338,7 @@ public final class RoleAssignment {
 
     /**
      * Get the connectors property: Connectors set for the assignment.
-     *
+     * 
      * @return the connectors value.
      */
     public ResourceSetDescription connectors() {
@@ -362,7 +347,7 @@ public final class RoleAssignment {
 
     /**
      * Set the connectors property: Connectors set for the assignment.
-     *
+     * 
      * @param connectors the connectors value to set.
      * @return the RoleAssignment object itself.
      */
@@ -373,7 +358,7 @@ public final class RoleAssignment {
 
     /**
      * Get the views property: Views set for the assignment.
-     *
+     * 
      * @return the views value.
      */
     public ResourceSetDescription views() {
@@ -382,7 +367,7 @@ public final class RoleAssignment {
 
     /**
      * Set the views property: Views set for the assignment.
-     *
+     * 
      * @param views the views value to set.
      * @return the RoleAssignment object itself.
      */
@@ -393,7 +378,7 @@ public final class RoleAssignment {
 
     /**
      * Get the relationshipLinks property: The Role assignments set for the relationship links.
-     *
+     * 
      * @return the relationshipLinks value.
      */
     public ResourceSetDescription relationshipLinks() {
@@ -402,7 +387,7 @@ public final class RoleAssignment {
 
     /**
      * Set the relationshipLinks property: The Role assignments set for the relationship links.
-     *
+     * 
      * @param relationshipLinks the relationshipLinks value to set.
      * @return the RoleAssignment object itself.
      */
@@ -413,7 +398,7 @@ public final class RoleAssignment {
 
     /**
      * Get the relationships property: The Role assignments set for the relationships.
-     *
+     * 
      * @return the relationships value.
      */
     public ResourceSetDescription relationships() {
@@ -422,7 +407,7 @@ public final class RoleAssignment {
 
     /**
      * Set the relationships property: The Role assignments set for the relationships.
-     *
+     * 
      * @param relationships the relationships value to set.
      * @return the RoleAssignment object itself.
      */
@@ -433,7 +418,7 @@ public final class RoleAssignment {
 
     /**
      * Get the widgetTypes property: Widget types set for the assignment.
-     *
+     * 
      * @return the widgetTypes value.
      */
     public ResourceSetDescription widgetTypes() {
@@ -442,7 +427,7 @@ public final class RoleAssignment {
 
     /**
      * Set the widgetTypes property: Widget types set for the assignment.
-     *
+     * 
      * @param widgetTypes the widgetTypes value to set.
      * @return the RoleAssignment object itself.
      */
@@ -453,7 +438,7 @@ public final class RoleAssignment {
 
     /**
      * Get the roleAssignments property: The Role assignments set for the assignment.
-     *
+     * 
      * @return the roleAssignments value.
      */
     public ResourceSetDescription roleAssignments() {
@@ -462,7 +447,7 @@ public final class RoleAssignment {
 
     /**
      * Set the roleAssignments property: The Role assignments set for the assignment.
-     *
+     * 
      * @param roleAssignments the roleAssignments value to set.
      * @return the RoleAssignment object itself.
      */
@@ -473,7 +458,7 @@ public final class RoleAssignment {
 
     /**
      * Get the conflationPolicies property: Widget types set for the assignment.
-     *
+     * 
      * @return the conflationPolicies value.
      */
     public ResourceSetDescription conflationPolicies() {
@@ -482,7 +467,7 @@ public final class RoleAssignment {
 
     /**
      * Set the conflationPolicies property: Widget types set for the assignment.
-     *
+     * 
      * @param conflationPolicies the conflationPolicies value to set.
      * @return the RoleAssignment object itself.
      */
@@ -493,7 +478,7 @@ public final class RoleAssignment {
 
     /**
      * Get the segments property: The Role assignments set for the assignment.
-     *
+     * 
      * @return the segments value.
      */
     public ResourceSetDescription segments() {
@@ -502,7 +487,7 @@ public final class RoleAssignment {
 
     /**
      * Set the segments property: The Role assignments set for the assignment.
-     *
+     * 
      * @param segments the segments value to set.
      * @return the RoleAssignment object itself.
      */
@@ -513,19 +498,17 @@ public final class RoleAssignment {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (role() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property role in model RoleAssignment"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property role in model RoleAssignment"));
         }
         if (principals() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property principals in model RoleAssignment"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property principals in model RoleAssignment"));
         } else {
             principals().forEach(e -> e.validate());
         }
@@ -571,4 +554,99 @@ public final class RoleAssignment {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RoleAssignment.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        jsonWriter.writeArrayField("principals", this.principals, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("displayName", this.displayName, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("description", this.description, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("profiles", this.profiles);
+        jsonWriter.writeJsonField("interactions", this.interactions);
+        jsonWriter.writeJsonField("links", this.links);
+        jsonWriter.writeJsonField("kpis", this.kpis);
+        jsonWriter.writeJsonField("sasPolicies", this.sasPolicies);
+        jsonWriter.writeJsonField("connectors", this.connectors);
+        jsonWriter.writeJsonField("views", this.views);
+        jsonWriter.writeJsonField("relationshipLinks", this.relationshipLinks);
+        jsonWriter.writeJsonField("relationships", this.relationships);
+        jsonWriter.writeJsonField("widgetTypes", this.widgetTypes);
+        jsonWriter.writeJsonField("roleAssignments", this.roleAssignments);
+        jsonWriter.writeJsonField("conflationPolicies", this.conflationPolicies);
+        jsonWriter.writeJsonField("segments", this.segments);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleAssignment from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleAssignment if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoleAssignment.
+     */
+    public static RoleAssignment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleAssignment deserializedRoleAssignment = new RoleAssignment();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("role".equals(fieldName)) {
+                    deserializedRoleAssignment.role = RoleTypes.fromString(reader.getString());
+                } else if ("principals".equals(fieldName)) {
+                    List<AssignmentPrincipal> principals
+                        = reader.readArray(reader1 -> AssignmentPrincipal.fromJson(reader1));
+                    deserializedRoleAssignment.principals = principals;
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedRoleAssignment.tenantId = reader.getString();
+                } else if ("assignmentName".equals(fieldName)) {
+                    deserializedRoleAssignment.assignmentName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    Map<String, String> displayName = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRoleAssignment.displayName = displayName;
+                } else if ("description".equals(fieldName)) {
+                    Map<String, String> description = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRoleAssignment.description = description;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRoleAssignment.provisioningState = ProvisioningStates.fromString(reader.getString());
+                } else if ("profiles".equals(fieldName)) {
+                    deserializedRoleAssignment.profiles = ResourceSetDescription.fromJson(reader);
+                } else if ("interactions".equals(fieldName)) {
+                    deserializedRoleAssignment.interactions = ResourceSetDescription.fromJson(reader);
+                } else if ("links".equals(fieldName)) {
+                    deserializedRoleAssignment.links = ResourceSetDescription.fromJson(reader);
+                } else if ("kpis".equals(fieldName)) {
+                    deserializedRoleAssignment.kpis = ResourceSetDescription.fromJson(reader);
+                } else if ("sasPolicies".equals(fieldName)) {
+                    deserializedRoleAssignment.sasPolicies = ResourceSetDescription.fromJson(reader);
+                } else if ("connectors".equals(fieldName)) {
+                    deserializedRoleAssignment.connectors = ResourceSetDescription.fromJson(reader);
+                } else if ("views".equals(fieldName)) {
+                    deserializedRoleAssignment.views = ResourceSetDescription.fromJson(reader);
+                } else if ("relationshipLinks".equals(fieldName)) {
+                    deserializedRoleAssignment.relationshipLinks = ResourceSetDescription.fromJson(reader);
+                } else if ("relationships".equals(fieldName)) {
+                    deserializedRoleAssignment.relationships = ResourceSetDescription.fromJson(reader);
+                } else if ("widgetTypes".equals(fieldName)) {
+                    deserializedRoleAssignment.widgetTypes = ResourceSetDescription.fromJson(reader);
+                } else if ("roleAssignments".equals(fieldName)) {
+                    deserializedRoleAssignment.roleAssignments = ResourceSetDescription.fromJson(reader);
+                } else if ("conflationPolicies".equals(fieldName)) {
+                    deserializedRoleAssignment.conflationPolicies = ResourceSetDescription.fromJson(reader);
+                } else if ("segments".equals(fieldName)) {
+                    deserializedRoleAssignment.segments = ResourceSetDescription.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleAssignment;
+        });
+    }
 }

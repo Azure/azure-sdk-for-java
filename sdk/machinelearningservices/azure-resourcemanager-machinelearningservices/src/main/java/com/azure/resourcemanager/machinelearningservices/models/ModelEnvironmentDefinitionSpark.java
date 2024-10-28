@@ -12,7 +12,8 @@ import java.util.List;
 /** The configuration for a Spark environment. */
 @Immutable
 public final class ModelEnvironmentDefinitionSpark extends ModelSparkSection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ModelEnvironmentDefinitionSpark.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ModelEnvironmentDefinitionSpark.class);
 
     /** {@inheritDoc} */
     @Override

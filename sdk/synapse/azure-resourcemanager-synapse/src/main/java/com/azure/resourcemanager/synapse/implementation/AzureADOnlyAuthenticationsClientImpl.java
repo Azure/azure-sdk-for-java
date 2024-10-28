@@ -52,10 +52,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @param client the instance of the service client containing this operation class.
      */
     AzureADOnlyAuthenticationsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    AzureADOnlyAuthenticationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AzureADOnlyAuthenticationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,63 +64,46 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface AzureADOnlyAuthenticationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/azureADOnlyAuthentications/{azureADOnlyAuthenticationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/azureADOnlyAuthentications/{azureADOnlyAuthenticationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureADOnlyAuthenticationInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<AzureADOnlyAuthenticationInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("azureADOnlyAuthenticationName") AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/azureADOnlyAuthentications/{azureADOnlyAuthenticationName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/azureADOnlyAuthentications/{azureADOnlyAuthenticationName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("azureADOnlyAuthenticationName") AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
             @BodyParam("application/json") AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/azureADOnlyAuthentications")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/azureADOnlyAuthentications")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureADOnlyAuthenticationListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AzureADOnlyAuthenticationListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AzureADOnlyAuthenticationListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -140,19 +121,15 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureADOnlyAuthenticationInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName) {
+    private Mono<Response<AzureADOnlyAuthenticationInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -162,26 +139,14 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (azureADOnlyAuthenticationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureADOnlyAuthenticationName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter azureADOnlyAuthenticationName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            azureADOnlyAuthenticationName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, azureADOnlyAuthenticationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -201,22 +166,15 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureADOnlyAuthenticationInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
-        Context context) {
+    private Mono<Response<AzureADOnlyAuthenticationInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -226,24 +184,14 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (azureADOnlyAuthenticationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureADOnlyAuthenticationName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter azureADOnlyAuthenticationName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                azureADOnlyAuthenticationName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, azureADOnlyAuthenticationName, accept, context);
     }
 
     /**
@@ -260,8 +208,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @return a Azure Active Directory only authentication property on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureADOnlyAuthenticationInner> getAsync(
-        String resourceGroupName, String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName) {
+    private Mono<AzureADOnlyAuthenticationInner> getAsync(String resourceGroupName, String workspaceName,
+        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, azureADOnlyAuthenticationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -281,11 +229,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @return a Azure Active Directory only authentication property along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AzureADOnlyAuthenticationInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
-        Context context) {
+    public Response<AzureADOnlyAuthenticationInner> getWithResponse(String resourceGroupName, String workspaceName,
+        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, azureADOnlyAuthenticationName, context).block();
     }
 
@@ -303,8 +248,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @return a Azure Active Directory only authentication property.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureADOnlyAuthenticationInner get(
-        String resourceGroupName, String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName) {
+    public AzureADOnlyAuthenticationInner get(String resourceGroupName, String workspaceName,
+        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName) {
         return getWithResponse(resourceGroupName, workspaceName, azureADOnlyAuthenticationName, Context.NONE)
             .getValue();
     }
@@ -325,22 +270,16 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String workspaceName,
         AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
         AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -350,35 +289,21 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (azureADOnlyAuthenticationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureADOnlyAuthenticationName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter azureADOnlyAuthenticationName is required and cannot be null."));
         }
         if (azureADOnlyAuthenticationInfo == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureADOnlyAuthenticationInfo is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter azureADOnlyAuthenticationInfo is required and cannot be null."));
         } else {
             azureADOnlyAuthenticationInfo.validate();
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            azureADOnlyAuthenticationName,
-                            azureADOnlyAuthenticationInfo,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, azureADOnlyAuthenticationName,
+                azureADOnlyAuthenticationInfo, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -399,23 +324,16 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String workspaceName,
         AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
-        AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo,
-        Context context) {
+        AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -425,33 +343,20 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (azureADOnlyAuthenticationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureADOnlyAuthenticationName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter azureADOnlyAuthenticationName is required and cannot be null."));
         }
         if (azureADOnlyAuthenticationInfo == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureADOnlyAuthenticationInfo is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter azureADOnlyAuthenticationInfo is required and cannot be null."));
         } else {
             azureADOnlyAuthenticationInfo.validate();
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                azureADOnlyAuthenticationName,
-                azureADOnlyAuthenticationInfo,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, azureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo, accept, context);
     }
 
     /**
@@ -470,21 +375,13 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureADOnlyAuthenticationInner>, AzureADOnlyAuthenticationInner> beginCreateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
+        String resourceGroupName, String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
         AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(
-                resourceGroupName, workspaceName, azureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo);
-        return this
-            .client
-            .<AzureADOnlyAuthenticationInner, AzureADOnlyAuthenticationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AzureADOnlyAuthenticationInner.class,
-                AzureADOnlyAuthenticationInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, workspaceName,
+            azureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo);
+        return this.client.<AzureADOnlyAuthenticationInner, AzureADOnlyAuthenticationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AzureADOnlyAuthenticationInner.class, AzureADOnlyAuthenticationInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -504,27 +401,14 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AzureADOnlyAuthenticationInner>, AzureADOnlyAuthenticationInner> beginCreateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
-        AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo,
-        Context context) {
+        String resourceGroupName, String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
+        AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(
-                resourceGroupName,
-                workspaceName,
-                azureADOnlyAuthenticationName,
-                azureADOnlyAuthenticationInfo,
-                context);
-        return this
-            .client
-            .<AzureADOnlyAuthenticationInner, AzureADOnlyAuthenticationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AzureADOnlyAuthenticationInner.class,
-                AzureADOnlyAuthenticationInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, workspaceName,
+            azureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo, context);
+        return this.client.<AzureADOnlyAuthenticationInner, AzureADOnlyAuthenticationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), AzureADOnlyAuthenticationInner.class, AzureADOnlyAuthenticationInner.class,
+            context);
     }
 
     /**
@@ -543,13 +427,11 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureADOnlyAuthenticationInner>, AzureADOnlyAuthenticationInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
+        String resourceGroupName, String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
         AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo) {
         return this
-            .beginCreateAsync(
-                resourceGroupName, workspaceName, azureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo)
+            .beginCreateAsync(resourceGroupName, workspaceName, azureADOnlyAuthenticationName,
+                azureADOnlyAuthenticationInfo)
             .getSyncPoller();
     }
 
@@ -570,14 +452,11 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AzureADOnlyAuthenticationInner>, AzureADOnlyAuthenticationInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
-        AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo,
-        Context context) {
+        String resourceGroupName, String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
+        AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo, Context context) {
         return this
-            .beginCreateAsync(
-                resourceGroupName, workspaceName, azureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo, context)
+            .beginCreateAsync(resourceGroupName, workspaceName, azureADOnlyAuthenticationName,
+                azureADOnlyAuthenticationInfo, context)
             .getSyncPoller();
     }
 
@@ -596,15 +475,11 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @return azure Active Directory Only Authentication Info on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureADOnlyAuthenticationInner> createAsync(
-        String resourceGroupName,
-        String workspaceName,
+    private Mono<AzureADOnlyAuthenticationInner> createAsync(String resourceGroupName, String workspaceName,
         AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
         AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo) {
-        return beginCreateAsync(
-                resourceGroupName, workspaceName, azureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateAsync(resourceGroupName, workspaceName, azureADOnlyAuthenticationName,
+            azureADOnlyAuthenticationInfo).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -623,16 +498,11 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @return azure Active Directory Only Authentication Info on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureADOnlyAuthenticationInner> createAsync(
-        String resourceGroupName,
-        String workspaceName,
+    private Mono<AzureADOnlyAuthenticationInner> createAsync(String resourceGroupName, String workspaceName,
         AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
-        AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo,
-        Context context) {
-        return beginCreateAsync(
-                resourceGroupName, workspaceName, azureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo, Context context) {
+        return beginCreateAsync(resourceGroupName, workspaceName, azureADOnlyAuthenticationName,
+            azureADOnlyAuthenticationInfo, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -650,14 +520,11 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @return azure Active Directory Only Authentication Info.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureADOnlyAuthenticationInner create(
-        String resourceGroupName,
-        String workspaceName,
+    public AzureADOnlyAuthenticationInner create(String resourceGroupName, String workspaceName,
         AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
         AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo) {
-        return createAsync(
-                resourceGroupName, workspaceName, azureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo)
-            .block();
+        return createAsync(resourceGroupName, workspaceName, azureADOnlyAuthenticationName,
+            azureADOnlyAuthenticationInfo).block();
     }
 
     /**
@@ -676,15 +543,11 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      * @return azure Active Directory Only Authentication Info.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureADOnlyAuthenticationInner create(
-        String resourceGroupName,
-        String workspaceName,
+    public AzureADOnlyAuthenticationInner create(String resourceGroupName, String workspaceName,
         AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
-        AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo,
-        Context context) {
-        return createAsync(
-                resourceGroupName, workspaceName, azureADOnlyAuthenticationName, azureADOnlyAuthenticationInfo, context)
-            .block();
+        AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo, Context context) {
+        return createAsync(resourceGroupName, workspaceName, azureADOnlyAuthenticationName,
+            azureADOnlyAuthenticationInfo, context).block();
     }
 
     /**
@@ -701,19 +564,15 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureADOnlyAuthenticationInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<PagedResponse<AzureADOnlyAuthenticationInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -725,26 +584,10 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            accept,
-                            context))
-            .<PagedResponse<AzureADOnlyAuthenticationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, accept, context))
+            .<PagedResponse<AzureADOnlyAuthenticationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -763,19 +606,15 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureADOnlyAuthenticationInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<PagedResponse<AzureADOnlyAuthenticationInner>> listSinglePageAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -788,23 +627,10 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -822,8 +648,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureADOnlyAuthenticationInner> listAsync(String resourceGroupName, String workspaceName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -841,10 +667,9 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AzureADOnlyAuthenticationInner> listAsync(
-        String resourceGroupName, String workspaceName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, context),
+    private PagedFlux<AzureADOnlyAuthenticationInner> listAsync(String resourceGroupName, String workspaceName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -881,8 +706,8 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AzureADOnlyAuthenticationInner> list(
-        String resourceGroupName, String workspaceName, Context context) {
+    public PagedIterable<AzureADOnlyAuthenticationInner> list(String resourceGroupName, String workspaceName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, context));
     }
 
@@ -903,23 +728,13 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AzureADOnlyAuthenticationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<AzureADOnlyAuthenticationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -936,29 +751,19 @@ public final class AzureADOnlyAuthenticationsClientImpl implements AzureADOnlyAu
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureADOnlyAuthenticationInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AzureADOnlyAuthenticationInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

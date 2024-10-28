@@ -12,7 +12,7 @@ import com.microsoft.azure.eventhubs.EventHubClient;
  * @see ReceiveEventsTest
  */
 public class EventHubsReceiveOptions extends EventHubsPartitionOptions {
-    @Parameter(names = {"-cg", "--consumerGroup"}, description = "Name of the consumer group.")
+    @Parameter(names = { "-cg", "--consumerGroup" }, description = "Name of the consumer group.")
     private String consumerGroup;
 
     @Parameter(names = { "--prefetch" }, description = "Prefetch for the receiver.")

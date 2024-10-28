@@ -102,19 +102,16 @@ public final class JitSchedulingPolicy {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model JitSchedulingPolicy"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model JitSchedulingPolicy"));
         }
         if (duration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property duration in model JitSchedulingPolicy"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property duration in model JitSchedulingPolicy"));
         }
         if (startTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property startTime in model JitSchedulingPolicy"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property startTime in model JitSchedulingPolicy"));
         }
     }
 

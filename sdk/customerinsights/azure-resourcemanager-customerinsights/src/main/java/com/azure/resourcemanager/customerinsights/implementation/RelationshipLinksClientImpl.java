@@ -38,22 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RelationshipLinksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RelationshipLinksClient.
+ */
 public final class RelationshipLinksClientImpl implements RelationshipLinksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RelationshipLinksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CustomerInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of RelationshipLinksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RelationshipLinksClientImpl(CustomerInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(RelationshipLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(RelationshipLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,83 +70,58 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
     @Host("{$host}")
     @ServiceInterface(name = "CustomerInsightsMana")
     public interface RelationshipLinksService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/relationshipLinks/{relationshipLinkName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/relationshipLinks/{relationshipLinkName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
             @PathParam("relationshipLinkName") String relationshipLinkName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") RelationshipLinkResourceFormatInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/relationshipLinks/{relationshipLinkName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/relationshipLinks/{relationshipLinkName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RelationshipLinkResourceFormatInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
+        Mono<Response<RelationshipLinkResourceFormatInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
             @PathParam("relationshipLinkName") String relationshipLinkName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/relationshipLinks/{relationshipLinkName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/relationshipLinks/{relationshipLinkName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
             @PathParam("relationshipLinkName") String relationshipLinkName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/relationshipLinks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/relationshipLinks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RelationshipLinkListResult>> listByHub(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RelationshipLinkListResult>> listByHub(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RelationshipLinkListResult>> listByHubNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates a relationship link or updates an existing relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -148,20 +129,15 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the relationship link resource format along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the relationship link resource format along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String hubName,
-        String relationshipLinkName,
-        RelationshipLinkResourceFormatInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String hubName,
+        String relationshipLinkName, RelationshipLinkResourceFormatInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -175,10 +151,8 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
                 .error(new IllegalArgumentException("Parameter relationshipLinkName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -187,25 +161,15 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            relationshipLinkName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, hubName,
+                relationshipLinkName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a relationship link or updates an existing relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -214,21 +178,15 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the relationship link resource format along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the relationship link resource format along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String hubName,
-        String relationshipLinkName,
-        RelationshipLinkResourceFormatInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String hubName,
+        String relationshipLinkName, RelationshipLinkResourceFormatInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -242,10 +200,8 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
                 .error(new IllegalArgumentException("Parameter relationshipLinkName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -254,22 +210,13 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                relationshipLinkName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, hubName, relationshipLinkName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates a relationship link or updates an existing relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -281,26 +228,18 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RelationshipLinkResourceFormatInner>, RelationshipLinkResourceFormatInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String hubName,
-            String relationshipLinkName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String hubName, String relationshipLinkName,
             RelationshipLinkResourceFormatInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, hubName, relationshipLinkName, parameters);
-        return this
-            .client
-            .<RelationshipLinkResourceFormatInner, RelationshipLinkResourceFormatInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                RelationshipLinkResourceFormatInner.class,
-                RelationshipLinkResourceFormatInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, hubName, relationshipLinkName, parameters);
+        return this.client.<RelationshipLinkResourceFormatInner, RelationshipLinkResourceFormatInner>getLroResult(mono,
+            this.client.getHttpPipeline(), RelationshipLinkResourceFormatInner.class,
+            RelationshipLinkResourceFormatInner.class, this.client.getContext());
     }
 
     /**
      * Creates a relationship link or updates an existing relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -313,28 +252,19 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RelationshipLinkResourceFormatInner>, RelationshipLinkResourceFormatInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String hubName,
-            String relationshipLinkName,
-            RelationshipLinkResourceFormatInner parameters,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String hubName, String relationshipLinkName,
+            RelationshipLinkResourceFormatInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, hubName, relationshipLinkName, parameters, context);
-        return this
-            .client
-            .<RelationshipLinkResourceFormatInner, RelationshipLinkResourceFormatInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                RelationshipLinkResourceFormatInner.class,
-                RelationshipLinkResourceFormatInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, hubName, relationshipLinkName, parameters, context);
+        return this.client.<RelationshipLinkResourceFormatInner, RelationshipLinkResourceFormatInner>getLroResult(mono,
+            this.client.getHttpPipeline(), RelationshipLinkResourceFormatInner.class,
+            RelationshipLinkResourceFormatInner.class, context);
     }
 
     /**
      * Creates a relationship link or updates an existing relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -346,19 +276,15 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RelationshipLinkResourceFormatInner>, RelationshipLinkResourceFormatInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String hubName,
-            String relationshipLinkName,
+        beginCreateOrUpdate(String resourceGroupName, String hubName, String relationshipLinkName,
             RelationshipLinkResourceFormatInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, hubName, relationshipLinkName, parameters)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, hubName, relationshipLinkName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Creates a relationship link or updates an existing relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -371,20 +297,15 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RelationshipLinkResourceFormatInner>, RelationshipLinkResourceFormatInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String hubName,
-            String relationshipLinkName,
-            RelationshipLinkResourceFormatInner parameters,
-            Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, hubName, relationshipLinkName, parameters, context)
+        beginCreateOrUpdate(String resourceGroupName, String hubName, String relationshipLinkName,
+            RelationshipLinkResourceFormatInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, hubName, relationshipLinkName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates a relationship link or updates an existing relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -395,19 +316,15 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @return the relationship link resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RelationshipLinkResourceFormatInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String hubName,
-        String relationshipLinkName,
-        RelationshipLinkResourceFormatInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, relationshipLinkName, parameters)
-            .last()
+    private Mono<RelationshipLinkResourceFormatInner> createOrUpdateAsync(String resourceGroupName, String hubName,
+        String relationshipLinkName, RelationshipLinkResourceFormatInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, hubName, relationshipLinkName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a relationship link or updates an existing relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -419,20 +336,15 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @return the relationship link resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RelationshipLinkResourceFormatInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String hubName,
-        String relationshipLinkName,
-        RelationshipLinkResourceFormatInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, relationshipLinkName, parameters, context)
-            .last()
+    private Mono<RelationshipLinkResourceFormatInner> createOrUpdateAsync(String resourceGroupName, String hubName,
+        String relationshipLinkName, RelationshipLinkResourceFormatInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, hubName, relationshipLinkName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a relationship link or updates an existing relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -443,17 +355,14 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @return the relationship link resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RelationshipLinkResourceFormatInner createOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String relationshipLinkName,
-        RelationshipLinkResourceFormatInner parameters) {
+    public RelationshipLinkResourceFormatInner createOrUpdate(String resourceGroupName, String hubName,
+        String relationshipLinkName, RelationshipLinkResourceFormatInner parameters) {
         return createOrUpdateAsync(resourceGroupName, hubName, relationshipLinkName, parameters).block();
     }
 
     /**
      * Creates a relationship link or updates an existing relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -465,18 +374,14 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @return the relationship link resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RelationshipLinkResourceFormatInner createOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String relationshipLinkName,
-        RelationshipLinkResourceFormatInner parameters,
-        Context context) {
+    public RelationshipLinkResourceFormatInner createOrUpdate(String resourceGroupName, String hubName,
+        String relationshipLinkName, RelationshipLinkResourceFormatInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, hubName, relationshipLinkName, parameters, context).block();
     }
 
     /**
      * Gets information about the specified relationship Link.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -484,16 +389,14 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified relationship Link along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RelationshipLinkResourceFormatInner>> getWithResponseAsync(
-        String resourceGroupName, String hubName, String relationshipLinkName) {
+    private Mono<Response<RelationshipLinkResourceFormatInner>> getWithResponseAsync(String resourceGroupName,
+        String hubName, String relationshipLinkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -507,31 +410,19 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
                 .error(new IllegalArgumentException("Parameter relationshipLinkName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            relationshipLinkName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, hubName,
+                relationshipLinkName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the specified relationship Link.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -540,16 +431,14 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified relationship Link along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RelationshipLinkResourceFormatInner>> getWithResponseAsync(
-        String resourceGroupName, String hubName, String relationshipLinkName, Context context) {
+    private Mono<Response<RelationshipLinkResourceFormatInner>> getWithResponseAsync(String resourceGroupName,
+        String hubName, String relationshipLinkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -563,28 +452,18 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
                 .error(new IllegalArgumentException("Parameter relationshipLinkName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                relationshipLinkName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, hubName, relationshipLinkName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets information about the specified relationship Link.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -594,15 +473,15 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @return information about the specified relationship Link on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RelationshipLinkResourceFormatInner> getAsync(
-        String resourceGroupName, String hubName, String relationshipLinkName) {
+    private Mono<RelationshipLinkResourceFormatInner> getAsync(String resourceGroupName, String hubName,
+        String relationshipLinkName) {
         return getWithResponseAsync(resourceGroupName, hubName, relationshipLinkName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets information about the specified relationship Link.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -613,14 +492,14 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @return information about the specified relationship Link along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RelationshipLinkResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String relationshipLinkName, Context context) {
+    public Response<RelationshipLinkResourceFormatInner> getWithResponse(String resourceGroupName, String hubName,
+        String relationshipLinkName, Context context) {
         return getWithResponseAsync(resourceGroupName, hubName, relationshipLinkName, context).block();
     }
 
     /**
      * Gets information about the specified relationship Link.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship link.
@@ -630,14 +509,14 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @return information about the specified relationship Link.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RelationshipLinkResourceFormatInner get(
-        String resourceGroupName, String hubName, String relationshipLinkName) {
+    public RelationshipLinkResourceFormatInner get(String resourceGroupName, String hubName,
+        String relationshipLinkName) {
         return getWithResponse(resourceGroupName, hubName, relationshipLinkName, Context.NONE).getValue();
     }
 
     /**
      * Deletes a relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship.
@@ -647,13 +526,11 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String hubName, String relationshipLinkName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String hubName,
+        String relationshipLinkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -667,29 +544,18 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
                 .error(new IllegalArgumentException("Parameter relationshipLinkName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            relationshipLinkName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, hubName,
+                relationshipLinkName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship.
@@ -700,13 +566,11 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String hubName, String relationshipLinkName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String hubName,
+        String relationshipLinkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -720,26 +584,17 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
                 .error(new IllegalArgumentException("Parameter relationshipLinkName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                relationshipLinkName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, hubName, relationshipLinkName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), context);
     }
 
     /**
      * Deletes a relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship.
@@ -749,19 +604,17 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String hubName, String relationshipLinkName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, hubName, relationshipLinkName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String hubName,
+        String relationshipLinkName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, hubName, relationshipLinkName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship.
@@ -772,19 +625,18 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String hubName, String relationshipLinkName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String hubName,
+        String relationshipLinkName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, hubName, relationshipLinkName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, hubName, relationshipLinkName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship.
@@ -794,14 +646,14 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String hubName, String relationshipLinkName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName,
+        String relationshipLinkName) {
         return this.beginDeleteAsync(resourceGroupName, hubName, relationshipLinkName).getSyncPoller();
     }
 
     /**
      * Deletes a relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship.
@@ -812,14 +664,14 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String hubName, String relationshipLinkName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName,
+        String relationshipLinkName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, hubName, relationshipLinkName, context).getSyncPoller();
     }
 
     /**
      * Deletes a relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship.
@@ -830,14 +682,13 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hubName, String relationshipLinkName) {
-        return beginDeleteAsync(resourceGroupName, hubName, relationshipLinkName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, hubName, relationshipLinkName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship.
@@ -848,16 +699,15 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String hubName, String relationshipLinkName, Context context) {
-        return beginDeleteAsync(resourceGroupName, hubName, relationshipLinkName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String hubName, String relationshipLinkName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, hubName, relationshipLinkName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship.
@@ -872,7 +722,7 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
 
     /**
      * Deletes a relationship link within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipLinkName The name of the relationship.
@@ -888,23 +738,21 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
 
     /**
      * Gets all relationship links in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all relationship links in the hub along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return all relationship links in the hub along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RelationshipLinkResourceFormatInner>> listByHubSinglePageAsync(
-        String resourceGroupName, String hubName) {
+    private Mono<PagedResponse<RelationshipLinkResourceFormatInner>> listByHubSinglePageAsync(String resourceGroupName,
+        String hubName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -914,56 +762,36 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByHub(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<RelationshipLinkResourceFormatInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByHub(this.client.getEndpoint(), resourceGroupName, hubName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<RelationshipLinkResourceFormatInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all relationship links in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all relationship links in the hub along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return all relationship links in the hub along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RelationshipLinkResourceFormatInner>> listByHubSinglePageAsync(
-        String resourceGroupName, String hubName, Context context) {
+    private Mono<PagedResponse<RelationshipLinkResourceFormatInner>> listByHubSinglePageAsync(String resourceGroupName,
+        String hubName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -973,36 +801,21 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByHub(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByHub(this.client.getEndpoint(), resourceGroupName, hubName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all relationship links in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1012,14 +825,13 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RelationshipLinkResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName) {
-        return new PagedFlux<>(
-            () -> listByHubSinglePageAsync(resourceGroupName, hubName),
+        return new PagedFlux<>(() -> listByHubSinglePageAsync(resourceGroupName, hubName),
             nextLink -> listByHubNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all relationship links in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -1029,16 +841,15 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @return all relationship links in the hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RelationshipLinkResourceFormatInner> listByHubAsync(
-        String resourceGroupName, String hubName, Context context) {
-        return new PagedFlux<>(
-            () -> listByHubSinglePageAsync(resourceGroupName, hubName, context),
+    private PagedFlux<RelationshipLinkResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName,
+        Context context) {
+        return new PagedFlux<>(() -> listByHubSinglePageAsync(resourceGroupName, hubName, context),
             nextLink -> listByHubNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all relationship links in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1053,7 +864,7 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
 
     /**
      * Gets all relationship links in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
@@ -1063,21 +874,20 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
      * @return all relationship links in the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RelationshipLinkResourceFormatInner> listByHub(
-        String resourceGroupName, String hubName, Context context) {
+    public PagedIterable<RelationshipLinkResourceFormatInner> listByHub(String resourceGroupName, String hubName,
+        Context context) {
         return new PagedIterable<>(listByHubAsync(resourceGroupName, hubName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of list relationship link operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RelationshipLinkResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink) {
@@ -1085,62 +895,42 @@ public final class RelationshipLinksClientImpl implements RelationshipLinksClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHubNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RelationshipLinkResourceFormatInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RelationshipLinkResourceFormatInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of list relationship link operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RelationshipLinkResourceFormatInner>> listByHubNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<RelationshipLinkResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByHubNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByHubNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

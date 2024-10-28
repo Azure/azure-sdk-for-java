@@ -55,8 +55,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @param client the instance of the service client containing this operation class.
      */
     PortalRevisionsClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy.create(PortalRevisionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(PortalRevisionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,95 +67,63 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientP")
     public interface PortalRevisionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalRevisions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalRevisions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PortalRevisionCollection>> listByService(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<PortalRevisionCollection>> listByService(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Head("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalRevisions/{portalRevisionId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<PortalRevisionsGetEntityTagResponse> getEntityTag(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("portalRevisionId") String portalRevisionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalRevisions/{portalRevisionId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<PortalRevisionsGetResponse> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("portalRevisionId") String portalRevisionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalRevisions/{portalRevisionId}")
+        @ExpectedResponses({ 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("portalRevisionId") String portalRevisionId, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") PortalRevisionContractInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalRevisions/{portalRevisionId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalRevisions/{portalRevisionId}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<PortalRevisionsGetEntityTagResponse> getEntityTag(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("portalRevisionId") String portalRevisionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("portalRevisionId") String portalRevisionId, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") PortalRevisionContractInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalRevisions/{portalRevisionId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<PortalRevisionsGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("portalRevisionId") String portalRevisionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalRevisions/{portalRevisionId}")
-        @ExpectedResponses({201, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("portalRevisionId") String portalRevisionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") PortalRevisionContractInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/portalRevisions/{portalRevisionId}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("portalRevisionId") String portalRevisionId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") PortalRevisionContractInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PortalRevisionCollection>> listByServiceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -175,13 +143,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return paged list of portal revisions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PortalRevisionContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip) {
+    private Mono<PagedResponse<PortalRevisionContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -191,36 +157,15 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByService(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            filter,
-                            top,
-                            skip,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<PortalRevisionContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByService(this.client.getEndpoint(), resourceGroupName, serviceName,
+                filter, top, skip, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<PortalRevisionContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -242,13 +187,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return paged list of portal revisions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PortalRevisionContractInner>> listByServiceSinglePageAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
+    private Mono<PagedResponse<PortalRevisionContractInner>> listByServiceSinglePageAsync(String resourceGroupName,
+        String serviceName, String filter, Integer top, Integer skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -258,34 +201,16 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByService(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                filter,
-                top,
-                skip,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByService(this.client.getEndpoint(), resourceGroupName, serviceName, filter, top, skip,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -305,10 +230,9 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return paged list of portal revisions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PortalRevisionContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip) {
-        return new PagedFlux<>(
-            () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip),
+    private PagedFlux<PortalRevisionContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip) {
+        return new PagedFlux<>(() -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip),
             nextLink -> listByServiceNextSinglePageAsync(nextLink));
     }
 
@@ -327,8 +251,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
-        return new PagedFlux<>(
-            () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip),
+        return new PagedFlux<>(() -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip),
             nextLink -> listByServiceNextSinglePageAsync(nextLink));
     }
 
@@ -350,8 +273,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return paged list of portal revisions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PortalRevisionContractInner> listByServiceAsync(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
+    private PagedFlux<PortalRevisionContractInner> listByServiceAsync(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context) {
         return new PagedFlux<>(
             () -> listByServiceSinglePageAsync(resourceGroupName, serviceName, filter, top, skip, context),
             nextLink -> listByServiceNextSinglePageAsync(nextLink, context));
@@ -393,8 +316,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return paged list of portal revisions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PortalRevisionContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
+    public PagedIterable<PortalRevisionContractInner> listByService(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context) {
         return new PagedIterable<>(listByServiceAsync(resourceGroupName, serviceName, filter, top, skip, context));
     }
 
@@ -411,13 +334,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return the developer portal revision specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PortalRevisionsGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String portalRevisionId) {
+    private Mono<PortalRevisionsGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
+        String serviceName, String portalRevisionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -431,25 +352,13 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
                 .error(new IllegalArgumentException("Parameter portalRevisionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getEntityTag(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            portalRevisionId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName,
+                portalRevisionId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -467,13 +376,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return the developer portal revision specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PortalRevisionsGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String portalRevisionId, Context context) {
+    private Mono<PortalRevisionsGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
+        String serviceName, String portalRevisionId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -487,23 +394,13 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
                 .error(new IllegalArgumentException("Parameter portalRevisionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getEntityTag(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                portalRevisionId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName, portalRevisionId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -538,8 +435,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return the developer portal revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PortalRevisionsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String portalRevisionId, Context context) {
+    public PortalRevisionsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String portalRevisionId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, portalRevisionId, context).block();
     }
 
@@ -572,13 +469,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return the developer portal's revision specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PortalRevisionsGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String portalRevisionId) {
+    private Mono<PortalRevisionsGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String portalRevisionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -592,25 +487,13 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
                 .error(new IllegalArgumentException("Parameter portalRevisionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            portalRevisionId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serviceName,
+                portalRevisionId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -628,13 +511,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return the developer portal's revision specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PortalRevisionsGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String portalRevisionId, Context context) {
+    private Mono<PortalRevisionsGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String portalRevisionId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -648,23 +529,13 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
                 .error(new IllegalArgumentException("Parameter portalRevisionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                portalRevisionId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serviceName, portalRevisionId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -680,8 +551,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return the developer portal's revision specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PortalRevisionContractInner> getAsync(
-        String resourceGroupName, String serviceName, String portalRevisionId) {
+    private Mono<PortalRevisionContractInner> getAsync(String resourceGroupName, String serviceName,
+        String portalRevisionId) {
         return getWithResponseAsync(resourceGroupName, serviceName, portalRevisionId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -700,8 +571,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return the developer portal's revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PortalRevisionsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String portalRevisionId, Context context) {
+    public PortalRevisionsGetResponse getWithResponse(String resourceGroupName, String serviceName,
+        String portalRevisionId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, portalRevisionId, context).block();
     }
 
@@ -737,13 +608,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return portal Revision's contract details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serviceName, String portalRevisionId, PortalRevisionContractInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String portalRevisionId, PortalRevisionContractInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -757,10 +626,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
                 .error(new IllegalArgumentException("Parameter portalRevisionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -769,19 +636,9 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            portalRevisionId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName,
+                portalRevisionId, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -801,17 +658,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return portal Revision's contract details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        PortalRevisionContractInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String portalRevisionId, PortalRevisionContractInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -825,10 +676,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
                 .error(new IllegalArgumentException("Parameter portalRevisionId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -837,17 +686,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                portalRevisionId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName, portalRevisionId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -867,16 +707,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PortalRevisionContractInner>, PortalRevisionContractInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, String portalRevisionId, PortalRevisionContractInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, portalRevisionId, parameters);
-        return this
-            .client
-            .<PortalRevisionContractInner, PortalRevisionContractInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PortalRevisionContractInner.class,
-                PortalRevisionContractInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serviceName, portalRevisionId, parameters);
+        return this.client.<PortalRevisionContractInner, PortalRevisionContractInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PortalRevisionContractInner.class, PortalRevisionContractInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -896,22 +731,14 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PortalRevisionContractInner>, PortalRevisionContractInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        PortalRevisionContractInner parameters,
+        String resourceGroupName, String serviceName, String portalRevisionId, PortalRevisionContractInner parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, portalRevisionId, parameters, context);
-        return this
-            .client
-            .<PortalRevisionContractInner, PortalRevisionContractInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PortalRevisionContractInner.class,
-                PortalRevisionContractInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serviceName, portalRevisionId, parameters, context);
+        return this.client.<PortalRevisionContractInner, PortalRevisionContractInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PortalRevisionContractInner.class, PortalRevisionContractInner.class,
+            context);
     }
 
     /**
@@ -931,8 +758,7 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PortalRevisionContractInner>, PortalRevisionContractInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, String portalRevisionId, PortalRevisionContractInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, portalRevisionId, parameters)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, portalRevisionId, parameters)
             .getSyncPoller();
     }
 
@@ -953,13 +779,9 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PortalRevisionContractInner>, PortalRevisionContractInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        PortalRevisionContractInner parameters,
+        String resourceGroupName, String serviceName, String portalRevisionId, PortalRevisionContractInner parameters,
         Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, portalRevisionId, parameters, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, portalRevisionId, parameters, context)
             .getSyncPoller();
     }
 
@@ -978,10 +800,9 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return portal Revision's contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PortalRevisionContractInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String portalRevisionId, PortalRevisionContractInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, portalRevisionId, parameters)
-            .last()
+    private Mono<PortalRevisionContractInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String portalRevisionId, PortalRevisionContractInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, portalRevisionId, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1001,14 +822,9 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return portal Revision's contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PortalRevisionContractInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        PortalRevisionContractInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, portalRevisionId, parameters, context)
-            .last()
+    private Mono<PortalRevisionContractInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String portalRevisionId, PortalRevisionContractInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, portalRevisionId, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1027,8 +843,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return portal Revision's contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PortalRevisionContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String portalRevisionId, PortalRevisionContractInner parameters) {
+    public PortalRevisionContractInner createOrUpdate(String resourceGroupName, String serviceName,
+        String portalRevisionId, PortalRevisionContractInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serviceName, portalRevisionId, parameters).block();
     }
 
@@ -1048,12 +864,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return portal Revision's contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PortalRevisionContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        PortalRevisionContractInner parameters,
-        Context context) {
+    public PortalRevisionContractInner createOrUpdate(String resourceGroupName, String serviceName,
+        String portalRevisionId, PortalRevisionContractInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, serviceName, portalRevisionId, parameters, context).block();
     }
 
@@ -1073,17 +885,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return portal Revision's contract details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        String ifMatch,
-        PortalRevisionContractInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serviceName,
+        String portalRevisionId, String ifMatch, PortalRevisionContractInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1100,10 +906,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1113,19 +917,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            portalRevisionId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), resourceGroupName, serviceName, portalRevisionId,
+                    ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1146,18 +939,11 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return portal Revision's contract details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        String ifMatch,
-        PortalRevisionContractInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serviceName,
+        String portalRevisionId, String ifMatch, PortalRevisionContractInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1174,10 +960,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1186,18 +970,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                portalRevisionId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, serviceName, portalRevisionId, ifMatch,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -1217,21 +991,13 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PortalRevisionContractInner>, PortalRevisionContractInner> beginUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        String ifMatch,
+        String resourceGroupName, String serviceName, String portalRevisionId, String ifMatch,
         PortalRevisionContractInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serviceName, portalRevisionId, ifMatch, parameters);
-        return this
-            .client
-            .<PortalRevisionContractInner, PortalRevisionContractInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PortalRevisionContractInner.class,
-                PortalRevisionContractInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, serviceName, portalRevisionId, ifMatch, parameters);
+        return this.client.<PortalRevisionContractInner, PortalRevisionContractInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PortalRevisionContractInner.class, PortalRevisionContractInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -1252,23 +1018,14 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PortalRevisionContractInner>, PortalRevisionContractInner> beginUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        String ifMatch,
-        PortalRevisionContractInner parameters,
-        Context context) {
+        String resourceGroupName, String serviceName, String portalRevisionId, String ifMatch,
+        PortalRevisionContractInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serviceName, portalRevisionId, ifMatch, parameters, context);
-        return this
-            .client
-            .<PortalRevisionContractInner, PortalRevisionContractInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PortalRevisionContractInner.class,
-                PortalRevisionContractInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, serviceName, portalRevisionId, ifMatch, parameters, context);
+        return this.client.<PortalRevisionContractInner, PortalRevisionContractInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PortalRevisionContractInner.class, PortalRevisionContractInner.class,
+            context);
     }
 
     /**
@@ -1288,13 +1045,9 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PortalRevisionContractInner>, PortalRevisionContractInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        String ifMatch,
+        String resourceGroupName, String serviceName, String portalRevisionId, String ifMatch,
         PortalRevisionContractInner parameters) {
-        return this
-            .beginUpdateAsync(resourceGroupName, serviceName, portalRevisionId, ifMatch, parameters)
+        return this.beginUpdateAsync(resourceGroupName, serviceName, portalRevisionId, ifMatch, parameters)
             .getSyncPoller();
     }
 
@@ -1316,14 +1069,9 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PortalRevisionContractInner>, PortalRevisionContractInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        String ifMatch,
-        PortalRevisionContractInner parameters,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, serviceName, portalRevisionId, ifMatch, parameters, context)
+        String resourceGroupName, String serviceName, String portalRevisionId, String ifMatch,
+        PortalRevisionContractInner parameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, serviceName, portalRevisionId, ifMatch, parameters, context)
             .getSyncPoller();
     }
 
@@ -1343,14 +1091,9 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return portal Revision's contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PortalRevisionContractInner> updateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        String ifMatch,
-        PortalRevisionContractInner parameters) {
-        return beginUpdateAsync(resourceGroupName, serviceName, portalRevisionId, ifMatch, parameters)
-            .last()
+    private Mono<PortalRevisionContractInner> updateAsync(String resourceGroupName, String serviceName,
+        String portalRevisionId, String ifMatch, PortalRevisionContractInner parameters) {
+        return beginUpdateAsync(resourceGroupName, serviceName, portalRevisionId, ifMatch, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1371,15 +1114,9 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return portal Revision's contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PortalRevisionContractInner> updateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        String ifMatch,
-        PortalRevisionContractInner parameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, serviceName, portalRevisionId, ifMatch, parameters, context)
-            .last()
+    private Mono<PortalRevisionContractInner> updateAsync(String resourceGroupName, String serviceName,
+        String portalRevisionId, String ifMatch, PortalRevisionContractInner parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, serviceName, portalRevisionId, ifMatch, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1399,12 +1136,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return portal Revision's contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PortalRevisionContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        String ifMatch,
-        PortalRevisionContractInner parameters) {
+    public PortalRevisionContractInner update(String resourceGroupName, String serviceName, String portalRevisionId,
+        String ifMatch, PortalRevisionContractInner parameters) {
         return updateAsync(resourceGroupName, serviceName, portalRevisionId, ifMatch, parameters).block();
     }
 
@@ -1425,13 +1158,8 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return portal Revision's contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PortalRevisionContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        String ifMatch,
-        PortalRevisionContractInner parameters,
-        Context context) {
+    public PortalRevisionContractInner update(String resourceGroupName, String serviceName, String portalRevisionId,
+        String ifMatch, PortalRevisionContractInner parameters, Context context) {
         return updateAsync(resourceGroupName, serviceName, portalRevisionId, ifMatch, parameters, context).block();
     }
 
@@ -1451,23 +1179,14 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PortalRevisionContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<PortalRevisionContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1483,29 +1202,19 @@ public final class PortalRevisionsClientImpl implements PortalRevisionsClient {
      * @return paged list of portal revisions along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PortalRevisionContractInner>> listByServiceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<PortalRevisionContractInner>> listByServiceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByServiceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

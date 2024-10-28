@@ -23,8 +23,8 @@ public interface SapDatabaseInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAP Database Instance resource along with {@link Response}.
      */
-    Response<SapDatabaseInstance> getWithResponse(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, Context context);
+    Response<SapDatabaseInstance> getWithResponse(String resourceGroupName, String sapVirtualInstanceName,
+        String databaseInstanceName, Context context);
 
     /**
      * Gets the SAP Database Instance resource.
@@ -69,8 +69,8 @@ public interface SapDatabaseInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult delete(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, Context context);
+    OperationStatusResult delete(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName,
+        Context context);
 
     /**
      * Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
@@ -109,8 +109,8 @@ public interface SapDatabaseInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult startInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
+    OperationStatusResult startInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String databaseInstanceName);
 
     /**
      * Starts the database instance of the SAP system.
@@ -125,8 +125,8 @@ public interface SapDatabaseInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult startInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, Context context);
+    OperationStatusResult startInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String databaseInstanceName, Context context);
 
     /**
      * Stops the database instance of the SAP system.
@@ -140,8 +140,8 @@ public interface SapDatabaseInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult stopInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
+    OperationStatusResult stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String databaseInstanceName);
 
     /**
      * Stops the database instance of the SAP system.
@@ -157,12 +157,8 @@ public interface SapDatabaseInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult stopInstance(
-        String resourceGroupName,
-        String sapVirtualInstanceName,
-        String databaseInstanceName,
-        StopRequest body,
-        Context context);
+    OperationStatusResult stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String databaseInstanceName, StopRequest body, Context context);
 
     /**
      * Gets the SAP Database Instance resource.

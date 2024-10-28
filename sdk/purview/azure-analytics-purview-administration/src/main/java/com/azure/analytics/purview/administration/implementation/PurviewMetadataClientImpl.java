@@ -94,13 +94,8 @@ public final class PurviewMetadataClientImpl {
      * @param serviceVersion Service version.
      */
     public PurviewMetadataClientImpl(String endpoint, PurviewMetadataServiceVersion serviceVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                serviceVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -110,8 +105,8 @@ public final class PurviewMetadataClientImpl {
      * @param endpoint The endpoint of your Purview account. Example: https://{accountName}.purview.azure.com.
      * @param serviceVersion Service version.
      */
-    public PurviewMetadataClientImpl(
-            HttpPipeline httpPipeline, String endpoint, PurviewMetadataServiceVersion serviceVersion) {
+    public PurviewMetadataClientImpl(HttpPipeline httpPipeline, String endpoint,
+        PurviewMetadataServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -123,11 +118,8 @@ public final class PurviewMetadataClientImpl {
      * @param endpoint The endpoint of your Purview account. Example: https://{accountName}.purview.azure.com.
      * @param serviceVersion Service version.
      */
-    public PurviewMetadataClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String endpoint,
-            PurviewMetadataServiceVersion serviceVersion) {
+    public PurviewMetadataClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        PurviewMetadataServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

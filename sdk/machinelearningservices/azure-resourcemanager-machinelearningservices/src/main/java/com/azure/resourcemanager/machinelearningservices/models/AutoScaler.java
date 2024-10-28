@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The Auto Scaler properties. */
 @Fluent
 public class AutoScaler {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoScaler.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AutoScaler.class);
 
     /*
      * Option to enable/disable auto scaling.

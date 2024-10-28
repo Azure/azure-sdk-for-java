@@ -20,8 +20,8 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private link resources for a Digital Twin along with {@link Response}.
      */
-    Response<GroupIdInformationResponse> listWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<GroupIdInformationResponse> listWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * List private link resources for given Digital Twin.
@@ -47,8 +47,8 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link resource for the given Digital Twin along with {@link Response}.
      */
-    Response<GroupIdInformation> getWithResponse(
-        String resourceGroupName, String resourceName, String resourceId, Context context);
+    Response<GroupIdInformation> getWithResponse(String resourceGroupName, String resourceName, String resourceId,
+        Context context);
 
     /**
      * Get the specified private link resource for the given Digital Twin.

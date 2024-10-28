@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ExportDatasetConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExportDatasetConfiguration model =
-            BinaryData.fromString("{\"columns\":[\"vudutncor\"]}").toObject(ExportDatasetConfiguration.class);
+        ExportDatasetConfiguration model
+            = BinaryData.fromString("{\"columns\":[\"vudutncor\"]}").toObject(ExportDatasetConfiguration.class);
         Assertions.assertEquals("vudutncor", model.columns().get(0));
     }
 

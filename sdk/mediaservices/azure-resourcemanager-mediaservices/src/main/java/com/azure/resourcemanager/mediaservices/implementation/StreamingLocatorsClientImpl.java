@@ -50,8 +50,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @param client the instance of the service client containing this operation class.
      */
     StreamingLocatorsClientImpl(AzureMediaServicesImpl client) {
-        this.service =
-            RestProxy.create(StreamingLocatorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(StreamingLocatorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,114 +62,82 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesSt")
     public interface StreamingLocatorsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/streamingLocators")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/streamingLocators")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StreamingLocatorCollection>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<StreamingLocatorCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$orderby") String orderby,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @QueryParam("$orderby") String orderby,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/streamingLocators/{streamingLocatorName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/streamingLocators/{streamingLocatorName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StreamingLocatorInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<StreamingLocatorInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("streamingLocatorName") String streamingLocatorName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/streamingLocators/{streamingLocatorName}")
+        @ExpectedResponses({ 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<StreamingLocatorInner>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("streamingLocatorName") String streamingLocatorName,
             @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") StreamingLocatorInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/streamingLocators/{streamingLocatorName}")
-        @ExpectedResponses({201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/streamingLocators/{streamingLocatorName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StreamingLocatorInner>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("streamingLocatorName") String streamingLocatorName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") StreamingLocatorInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/streamingLocators/{streamingLocatorName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/streamingLocators/{streamingLocatorName}/listContentKeys")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ListContentKeysResponseInner>> listContentKeys(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("streamingLocatorName") String streamingLocatorName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/streamingLocators/{streamingLocatorName}/listContentKeys")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/streamingLocators/{streamingLocatorName}/listPaths")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListContentKeysResponseInner>> listContentKeys(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ListPathsResponseInner>> listPaths(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("streamingLocatorName") String streamingLocatorName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/streamingLocators/{streamingLocatorName}/listPaths")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListPathsResponseInner>> listPaths(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("streamingLocatorName") String streamingLocatorName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StreamingLocatorCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -190,19 +158,15 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StreamingLocatorInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby) {
+    private Mono<PagedResponse<StreamingLocatorInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        String filter, Integer top, String orderby) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -214,29 +178,10 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            apiVersion,
-                            filter,
-                            top,
-                            orderby,
-                            accept,
-                            context))
-            .<PagedResponse<StreamingLocatorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, apiVersion, filter, top, orderby, accept, context))
+            .<PagedResponse<StreamingLocatorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -259,19 +204,15 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StreamingLocatorInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context) {
+    private Mono<PagedResponse<StreamingLocatorInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        String filter, Integer top, String orderby, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -284,26 +225,10 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                apiVersion,
-                filter,
-                top,
-                orderby,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                apiVersion, filter, top, orderby, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 
     /**
@@ -323,10 +248,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return a collection of StreamingLocator items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StreamingLocatorInner> listAsync(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, filter, top, orderby),
+    private PagedFlux<StreamingLocatorInner> listAsync(String resourceGroupName, String accountName, String filter,
+        Integer top, String orderby) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, filter, top, orderby),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -347,8 +271,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, filter, top, orderby),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, filter, top, orderby),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -370,10 +293,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return a collection of StreamingLocator items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StreamingLocatorInner> listAsync(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, accountName, filter, top, orderby, context),
+    private PagedFlux<StreamingLocatorInner> listAsync(String resourceGroupName, String accountName, String filter,
+        Integer top, String orderby, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, filter, top, orderby, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -415,8 +337,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return a collection of StreamingLocator items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StreamingLocatorInner> list(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context) {
+    public PagedIterable<StreamingLocatorInner> list(String resourceGroupName, String accountName, String filter,
+        Integer top, String orderby, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, filter, top, orderby, context));
     }
 
@@ -435,19 +357,15 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StreamingLocatorInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingLocatorName) {
+    private Mono<Response<StreamingLocatorInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingLocatorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -463,18 +381,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingLocatorName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, streamingLocatorName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -494,19 +402,15 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StreamingLocatorInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingLocatorName, Context context) {
+    private Mono<Response<StreamingLocatorInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingLocatorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -522,16 +426,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingLocatorName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            streamingLocatorName, apiVersion, accept, context);
     }
 
     /**
@@ -549,8 +445,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamingLocatorInner> getAsync(
-        String resourceGroupName, String accountName, String streamingLocatorName) {
+    private Mono<StreamingLocatorInner> getAsync(String resourceGroupName, String accountName,
+        String streamingLocatorName) {
         return getWithResponseAsync(resourceGroupName, accountName, streamingLocatorName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -570,8 +466,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return the details of a Streaming Locator in the Media Services account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StreamingLocatorInner> getWithResponse(
-        String resourceGroupName, String accountName, String streamingLocatorName, Context context) {
+    public Response<StreamingLocatorInner> getWithResponse(String resourceGroupName, String accountName,
+        String streamingLocatorName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, streamingLocatorName, context).block();
     }
 
@@ -608,19 +504,15 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return a Streaming Locator resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StreamingLocatorInner>> createWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingLocatorName, StreamingLocatorInner parameters) {
+    private Mono<Response<StreamingLocatorInner>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingLocatorName, StreamingLocatorInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -641,19 +533,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingLocatorName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, streamingLocatorName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -673,23 +554,15 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return a Streaming Locator resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StreamingLocatorInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String streamingLocatorName,
-        StreamingLocatorInner parameters,
-        Context context) {
+    private Mono<Response<StreamingLocatorInner>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingLocatorName, StreamingLocatorInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -710,17 +583,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingLocatorName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, streamingLocatorName, apiVersion, parameters, accept, context);
     }
 
     /**
@@ -738,8 +602,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return a Streaming Locator resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StreamingLocatorInner> createAsync(
-        String resourceGroupName, String accountName, String streamingLocatorName, StreamingLocatorInner parameters) {
+    private Mono<StreamingLocatorInner> createAsync(String resourceGroupName, String accountName,
+        String streamingLocatorName, StreamingLocatorInner parameters) {
         return createWithResponseAsync(resourceGroupName, accountName, streamingLocatorName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -760,12 +624,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return a Streaming Locator resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StreamingLocatorInner> createWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String streamingLocatorName,
-        StreamingLocatorInner parameters,
-        Context context) {
+    public Response<StreamingLocatorInner> createWithResponse(String resourceGroupName, String accountName,
+        String streamingLocatorName, StreamingLocatorInner parameters, Context context) {
         return createWithResponseAsync(resourceGroupName, accountName, streamingLocatorName, parameters, context)
             .block();
     }
@@ -785,8 +645,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return a Streaming Locator resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StreamingLocatorInner create(
-        String resourceGroupName, String accountName, String streamingLocatorName, StreamingLocatorInner parameters) {
+    public StreamingLocatorInner create(String resourceGroupName, String accountName, String streamingLocatorName,
+        StreamingLocatorInner parameters) {
         return createWithResponse(resourceGroupName, accountName, streamingLocatorName, parameters, Context.NONE)
             .getValue();
     }
@@ -805,19 +665,15 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingLocatorName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingLocatorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -833,18 +689,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingLocatorName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, streamingLocatorName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -863,19 +709,15 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingLocatorName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String streamingLocatorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -891,16 +733,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingLocatorName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, streamingLocatorName, apiVersion, accept, context);
     }
 
     /**
@@ -937,8 +771,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String streamingLocatorName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String streamingLocatorName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, streamingLocatorName, context).block();
     }
 
@@ -974,19 +808,15 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ListContentKeysResponseInner>> listContentKeysWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingLocatorName) {
+    private Mono<Response<ListContentKeysResponseInner>> listContentKeysWithResponseAsync(String resourceGroupName,
+        String accountName, String streamingLocatorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1002,18 +832,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listContentKeys(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingLocatorName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.listContentKeys(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, streamingLocatorName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1033,19 +853,15 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ListContentKeysResponseInner>> listContentKeysWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingLocatorName, Context context) {
+    private Mono<Response<ListContentKeysResponseInner>> listContentKeysWithResponseAsync(String resourceGroupName,
+        String accountName, String streamingLocatorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1061,16 +877,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listContentKeys(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingLocatorName,
-                apiVersion,
-                accept,
-                context);
+        return service.listContentKeys(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, streamingLocatorName, apiVersion, accept, context);
     }
 
     /**
@@ -1087,8 +895,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return class of response for listContentKeys action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ListContentKeysResponseInner> listContentKeysAsync(
-        String resourceGroupName, String accountName, String streamingLocatorName) {
+    private Mono<ListContentKeysResponseInner> listContentKeysAsync(String resourceGroupName, String accountName,
+        String streamingLocatorName) {
         return listContentKeysWithResponseAsync(resourceGroupName, accountName, streamingLocatorName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1108,8 +916,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return class of response for listContentKeys action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ListContentKeysResponseInner> listContentKeysWithResponse(
-        String resourceGroupName, String accountName, String streamingLocatorName, Context context) {
+    public Response<ListContentKeysResponseInner> listContentKeysWithResponse(String resourceGroupName,
+        String accountName, String streamingLocatorName, Context context) {
         return listContentKeysWithResponseAsync(resourceGroupName, accountName, streamingLocatorName, context).block();
     }
 
@@ -1127,8 +935,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return class of response for listContentKeys action.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ListContentKeysResponseInner listContentKeys(
-        String resourceGroupName, String accountName, String streamingLocatorName) {
+    public ListContentKeysResponseInner listContentKeys(String resourceGroupName, String accountName,
+        String streamingLocatorName) {
         return listContentKeysWithResponse(resourceGroupName, accountName, streamingLocatorName, Context.NONE)
             .getValue();
     }
@@ -1148,19 +956,15 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ListPathsResponseInner>> listPathsWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingLocatorName) {
+    private Mono<Response<ListPathsResponseInner>> listPathsWithResponseAsync(String resourceGroupName,
+        String accountName, String streamingLocatorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1176,18 +980,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listPaths(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            streamingLocatorName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.listPaths(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, streamingLocatorName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1207,19 +1001,15 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ListPathsResponseInner>> listPathsWithResponseAsync(
-        String resourceGroupName, String accountName, String streamingLocatorName, Context context) {
+    private Mono<Response<ListPathsResponseInner>> listPathsWithResponseAsync(String resourceGroupName,
+        String accountName, String streamingLocatorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1235,16 +1025,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listPaths(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                streamingLocatorName,
-                apiVersion,
-                accept,
-                context);
+        return service.listPaths(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, streamingLocatorName, apiVersion, accept, context);
     }
 
     /**
@@ -1261,8 +1043,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return class of response for listPaths action on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ListPathsResponseInner> listPathsAsync(
-        String resourceGroupName, String accountName, String streamingLocatorName) {
+    private Mono<ListPathsResponseInner> listPathsAsync(String resourceGroupName, String accountName,
+        String streamingLocatorName) {
         return listPathsWithResponseAsync(resourceGroupName, accountName, streamingLocatorName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1282,8 +1064,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @return class of response for listPaths action along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ListPathsResponseInner> listPathsWithResponse(
-        String resourceGroupName, String accountName, String streamingLocatorName, Context context) {
+    public Response<ListPathsResponseInner> listPathsWithResponse(String resourceGroupName, String accountName,
+        String streamingLocatorName, Context context) {
         return listPathsWithResponseAsync(resourceGroupName, accountName, streamingLocatorName, context).block();
     }
 
@@ -1322,23 +1104,13 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<StreamingLocatorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<StreamingLocatorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1360,23 +1132,13 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 }

@@ -22,8 +22,10 @@ public final class ScriptActionTaskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptActionTaskDetails model = new ScriptActionTaskDetails().withName("pzwwytbdjzgh").withPath("mkgfmxpqkjnp")
-            .withOutput("iwntotcxmmqmts").withIsPrimarySideScript(true);
+        ScriptActionTaskDetails model = new ScriptActionTaskDetails().withName("pzwwytbdjzgh")
+            .withPath("mkgfmxpqkjnp")
+            .withOutput("iwntotcxmmqmts")
+            .withIsPrimarySideScript(true);
         model = BinaryData.fromObject(model).toObject(ScriptActionTaskDetails.class);
         Assertions.assertEquals("pzwwytbdjzgh", model.name());
         Assertions.assertEquals("mkgfmxpqkjnp", model.path());

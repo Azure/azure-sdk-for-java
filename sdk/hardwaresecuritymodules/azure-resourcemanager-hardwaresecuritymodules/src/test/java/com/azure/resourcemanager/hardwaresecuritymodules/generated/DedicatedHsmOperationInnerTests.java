@@ -26,8 +26,11 @@ public final class DedicatedHsmOperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DedicatedHsmOperationInner model = new DedicatedHsmOperationInner().withName("nmxiebwwaloayqc")
-            .withOrigin("zjuzgwyz").withDisplay(new DedicatedHsmOperationDisplay().withProvider("xongmtsavjcbpwxq")
-                .withResource("rknftguvriuhprwm").withOperation("vxqtayriwwroyqbe").withDescription("mcqibycnojv"));
+            .withOrigin("zjuzgwyz")
+            .withDisplay(new DedicatedHsmOperationDisplay().withProvider("xongmtsavjcbpwxq")
+                .withResource("rknftguvriuhprwm")
+                .withOperation("vxqtayriwwroyqbe")
+                .withDescription("mcqibycnojv"));
         model = BinaryData.fromObject(model).toObject(DedicatedHsmOperationInner.class);
         Assertions.assertEquals("nmxiebwwaloayqc", model.name());
         Assertions.assertEquals("zjuzgwyz", model.origin());

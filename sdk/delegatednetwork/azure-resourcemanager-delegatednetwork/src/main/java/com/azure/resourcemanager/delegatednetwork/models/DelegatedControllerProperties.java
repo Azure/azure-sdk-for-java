@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.delegatednetwork.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of Delegated controller resource. */
+/**
+ * Properties of Delegated controller resource.
+ */
 @Immutable
-public final class DelegatedControllerProperties {
+public final class DelegatedControllerProperties implements JsonSerializable<DelegatedControllerProperties> {
     /*
      * Resource guid.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
      * The current state of dnc controller resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ControllerState provisioningState;
 
     /*
      * dnc application id should be used by customer to authenticate with dnc gateway.
      */
-    @JsonProperty(value = "dncAppId", access = JsonProperty.Access.WRITE_ONLY)
     private String dncAppId;
 
     /*
      * tenant id of dnc application id
      */
-    @JsonProperty(value = "dncTenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String dncTenantId;
 
     /*
      * dnc endpoint url that customers can use to connect to
      */
-    @JsonProperty(value = "dncEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String dncEndpoint;
 
-    /** Creates an instance of DelegatedControllerProperties class. */
+    /**
+     * Creates an instance of DelegatedControllerProperties class.
+     */
     public DelegatedControllerProperties() {
     }
 
     /**
      * Get the resourceGuid property: Resource guid.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -55,7 +58,7 @@ public final class DelegatedControllerProperties {
 
     /**
      * Get the provisioningState property: The current state of dnc controller resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ControllerState provisioningState() {
@@ -64,7 +67,7 @@ public final class DelegatedControllerProperties {
 
     /**
      * Get the dncAppId property: dnc application id should be used by customer to authenticate with dnc gateway.
-     *
+     * 
      * @return the dncAppId value.
      */
     public String dncAppId() {
@@ -73,7 +76,7 @@ public final class DelegatedControllerProperties {
 
     /**
      * Get the dncTenantId property: tenant id of dnc application id.
-     *
+     * 
      * @return the dncTenantId value.
      */
     public String dncTenantId() {
@@ -82,7 +85,7 @@ public final class DelegatedControllerProperties {
 
     /**
      * Get the dncEndpoint property: dnc endpoint url that customers can use to connect to.
-     *
+     * 
      * @return the dncEndpoint value.
      */
     public String dncEndpoint() {
@@ -91,9 +94,54 @@ public final class DelegatedControllerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DelegatedControllerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DelegatedControllerProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DelegatedControllerProperties.
+     */
+    public static DelegatedControllerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DelegatedControllerProperties deserializedDelegatedControllerProperties
+                = new DelegatedControllerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceGuid".equals(fieldName)) {
+                    deserializedDelegatedControllerProperties.resourceGuid = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDelegatedControllerProperties.provisioningState
+                        = ControllerState.fromString(reader.getString());
+                } else if ("dncAppId".equals(fieldName)) {
+                    deserializedDelegatedControllerProperties.dncAppId = reader.getString();
+                } else if ("dncTenantId".equals(fieldName)) {
+                    deserializedDelegatedControllerProperties.dncTenantId = reader.getString();
+                } else if ("dncEndpoint".equals(fieldName)) {
+                    deserializedDelegatedControllerProperties.dncEndpoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDelegatedControllerProperties;
+        });
     }
 }

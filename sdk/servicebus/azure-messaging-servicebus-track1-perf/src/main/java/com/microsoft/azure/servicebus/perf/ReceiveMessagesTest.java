@@ -41,20 +41,18 @@ public class ReceiveMessagesTest extends ServiceBatchTest<ServiceBusStressOption
     @Override
     public Mono<Integer> runBatchAsync() {
         int receiveCount = options.getMessagesToReceive();
-        return Mono.fromFuture(receiver.receiveBatchAsync(receiveCount))
-            .handle((messages, synchronousSink) -> {
-                int count = messages.size();
-                if (count <= 0) {
-                    synchronousSink.error(new RuntimeException("Error. Should have received some messages."));
-                }
-                synchronousSink.complete();
-            }).then().thenReturn(receiveCount);
+        return Mono.fromFuture(receiver.receiveBatchAsync(receiveCount)).handle((messages, synchronousSink) -> {
+            int count = messages.size();
+            if (count <= 0) {
+                synchronousSink.error(new RuntimeException("Error. Should have received some messages."));
+            }
+            synchronousSink.complete();
+        }).then().thenReturn(receiveCount);
     }
 
     @Override
     public Mono<Void> setupAsync() {
-        return super.setupAsync()
-            .then(sendMessage());
+        return super.setupAsync().then(sendMessage());
     }
 
     @Override
@@ -66,7 +64,8 @@ public class ReceiveMessagesTest extends ServiceBatchTest<ServiceBusStressOption
     private Mono<Void> sendMessage() {
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
         for (int i = 0; i < TOTAL_MESSAGE_MULTIPLIER; i++) {
-            List<IMessage> messages = ServiceBusTestUtil.getMessagesToSend(options.getMessagesSizeBytesToSend(), options.getMessagesToSend());
+            List<IMessage> messages = ServiceBusTestUtil.getMessagesToSend(options.getMessagesSizeBytesToSend(),
+                options.getMessagesToSend());
             sender.sendBatchAsync(messages);
         }
         return Mono.empty();

@@ -23,8 +23,11 @@ public final class UserDetailTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserDetail model = new UserDetail().withFirstName("qfprwzwbn").withLastName("itnwuizgazxufi")
-            .withEmailAddress("uckyf").withUserPrincipalName("rfidfvzwdz").withAadEmail("tymw");
+        UserDetail model = new UserDetail().withFirstName("qfprwzwbn")
+            .withLastName("itnwuizgazxufi")
+            .withEmailAddress("uckyf")
+            .withUserPrincipalName("rfidfvzwdz")
+            .withAadEmail("tymw");
         model = BinaryData.fromObject(model).toObject(UserDetail.class);
         Assertions.assertEquals("qfprwzwbn", model.firstName());
         Assertions.assertEquals("itnwuizgazxufi", model.lastName());

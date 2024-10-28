@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.RawGraphicalRunbookContent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Graphical Runbook Content. */
+/**
+ * Graphical Runbook Content.
+ */
 @Fluent
-public final class GraphicalRunbookContentInner {
+public final class GraphicalRunbookContentInner implements JsonSerializable<GraphicalRunbookContentInner> {
     /*
      * Raw graphical Runbook content.
      */
-    @JsonProperty(value = "rawContent")
     private RawGraphicalRunbookContent rawContent;
 
     /*
      * Graphical Runbook content as JSON
      */
-    @JsonProperty(value = "graphRunbookJson")
     private String graphRunbookJson;
 
     /**
+     * Creates an instance of GraphicalRunbookContentInner class.
+     */
+    public GraphicalRunbookContentInner() {
+    }
+
+    /**
      * Get the rawContent property: Raw graphical Runbook content.
-     *
+     * 
      * @return the rawContent value.
      */
     public RawGraphicalRunbookContent rawContent() {
@@ -34,7 +44,7 @@ public final class GraphicalRunbookContentInner {
 
     /**
      * Set the rawContent property: Raw graphical Runbook content.
-     *
+     * 
      * @param rawContent the rawContent value to set.
      * @return the GraphicalRunbookContentInner object itself.
      */
@@ -45,7 +55,7 @@ public final class GraphicalRunbookContentInner {
 
     /**
      * Get the graphRunbookJson property: Graphical Runbook content as JSON.
-     *
+     * 
      * @return the graphRunbookJson value.
      */
     public String graphRunbookJson() {
@@ -54,7 +64,7 @@ public final class GraphicalRunbookContentInner {
 
     /**
      * Set the graphRunbookJson property: Graphical Runbook content as JSON.
-     *
+     * 
      * @param graphRunbookJson the graphRunbookJson value to set.
      * @return the GraphicalRunbookContentInner object itself.
      */
@@ -65,12 +75,51 @@ public final class GraphicalRunbookContentInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (rawContent() != null) {
             rawContent().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("rawContent", this.rawContent);
+        jsonWriter.writeStringField("graphRunbookJson", this.graphRunbookJson);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GraphicalRunbookContentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GraphicalRunbookContentInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GraphicalRunbookContentInner.
+     */
+    public static GraphicalRunbookContentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GraphicalRunbookContentInner deserializedGraphicalRunbookContentInner = new GraphicalRunbookContentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rawContent".equals(fieldName)) {
+                    deserializedGraphicalRunbookContentInner.rawContent = RawGraphicalRunbookContent.fromJson(reader);
+                } else if ("graphRunbookJson".equals(fieldName)) {
+                    deserializedGraphicalRunbookContentInner.graphRunbookJson = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGraphicalRunbookContentInner;
+        });
     }
 }

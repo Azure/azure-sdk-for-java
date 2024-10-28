@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkbookUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkbookUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"shared\",\"tags\":{\"aznqntoru\":\"bgdknnqv\"},\"properties\":{\"displayName\":\"sahmky\",\"serializedData\":\"rauwjuetaebu\",\"category\":\"vdmovsmzlxwabm\",\"tags\":[\"fkifr\",\"tpuqujmq\"],\"description\":\"kfbtndoaongbjc\",\"revision\":\"ujitcjedftww\"}}")
-                .toObject(WorkbookUpdateParameters.class);
+        WorkbookUpdateParameters model = BinaryData.fromString(
+            "{\"kind\":\"shared\",\"tags\":{\"aznqntoru\":\"bgdknnqv\"},\"properties\":{\"displayName\":\"sahmky\",\"serializedData\":\"rauwjuetaebu\",\"category\":\"vdmovsmzlxwabm\",\"tags\":[\"fkifr\",\"tpuqujmq\"],\"description\":\"kfbtndoaongbjc\",\"revision\":\"ujitcjedftww\"}}")
+            .toObject(WorkbookUpdateParameters.class);
         Assertions.assertEquals(WorkbookUpdateSharedTypeKind.SHARED, model.kind());
         Assertions.assertEquals("bgdknnqv", model.tags().get("aznqntoru"));
         Assertions.assertEquals("sahmky", model.displayName());
@@ -32,16 +30,14 @@ public final class WorkbookUpdateParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookUpdateParameters model =
-            new WorkbookUpdateParameters()
-                .withKind(WorkbookUpdateSharedTypeKind.SHARED)
-                .withTags(mapOf("aznqntoru", "bgdknnqv"))
-                .withDisplayName("sahmky")
-                .withSerializedData("rauwjuetaebu")
-                .withCategory("vdmovsmzlxwabm")
-                .withTagsPropertiesTags(Arrays.asList("fkifr", "tpuqujmq"))
-                .withDescription("kfbtndoaongbjc")
-                .withRevision("ujitcjedftww");
+        WorkbookUpdateParameters model = new WorkbookUpdateParameters().withKind(WorkbookUpdateSharedTypeKind.SHARED)
+            .withTags(mapOf("aznqntoru", "bgdknnqv"))
+            .withDisplayName("sahmky")
+            .withSerializedData("rauwjuetaebu")
+            .withCategory("vdmovsmzlxwabm")
+            .withTagsPropertiesTags(Arrays.asList("fkifr", "tpuqujmq"))
+            .withDescription("kfbtndoaongbjc")
+            .withRevision("ujitcjedftww");
         model = BinaryData.fromObject(model).toObject(WorkbookUpdateParameters.class);
         Assertions.assertEquals(WorkbookUpdateSharedTypeKind.SHARED, model.kind());
         Assertions.assertEquals("bgdknnqv", model.tags().get("aznqntoru"));

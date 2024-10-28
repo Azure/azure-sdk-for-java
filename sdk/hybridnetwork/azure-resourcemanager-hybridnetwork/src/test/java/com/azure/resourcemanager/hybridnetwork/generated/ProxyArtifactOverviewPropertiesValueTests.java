@@ -26,7 +26,8 @@ public final class ProxyArtifactOverviewPropertiesValueTests {
     public void testSerialize() throws Exception {
         ProxyArtifactOverviewPropertiesValue model
             = new ProxyArtifactOverviewPropertiesValue().withArtifactType(ArtifactType.UNKNOWN)
-                .withArtifactVersion("acoebj").withArtifactState(ArtifactState.DEPRECATED);
+                .withArtifactVersion("acoebj")
+                .withArtifactState(ArtifactState.DEPRECATED);
         model = BinaryData.fromObject(model).toObject(ProxyArtifactOverviewPropertiesValue.class);
         Assertions.assertEquals(ArtifactType.UNKNOWN, model.artifactType());
         Assertions.assertEquals("acoebj", model.artifactVersion());

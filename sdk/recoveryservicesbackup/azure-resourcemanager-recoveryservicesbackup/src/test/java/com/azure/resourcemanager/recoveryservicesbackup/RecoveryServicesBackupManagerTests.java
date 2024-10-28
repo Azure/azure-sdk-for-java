@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -55,7 +55,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class RecoveryServicesBackupManagerTests extends TestBase {
+public class RecoveryServicesBackupManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_WEST2;
     private String resourceGroupName = "rg" + randomPadding();
@@ -69,18 +69,15 @@ public class RecoveryServicesBackupManagerTests extends TestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        recoveryServicesManager = RecoveryServicesManager
-            .configure()
+        recoveryServicesManager = RecoveryServicesManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        recoveryServicesBackupManager = RecoveryServicesBackupManager
-            .configure()
+        recoveryServicesBackupManager = RecoveryServicesBackupManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -91,10 +88,7 @@ public class RecoveryServicesBackupManagerTests extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -116,105 +110,83 @@ public class RecoveryServicesBackupManagerTests extends TestBase {
             String policyName = "policy" + randomPadding;
 
             // @embedmeStart
-            OffsetDateTime scheduleDateTime = OffsetDateTime.parse(
-                OffsetDateTime.now(Clock.systemUTC())
-                    .withNano(0).withMinute(0).withSecond(0)
-                    .plusDays(1).format(DateTimeFormatter.ISO_INSTANT));
+            OffsetDateTime scheduleDateTime = OffsetDateTime.parse(OffsetDateTime.now(Clock.systemUTC())
+                .withNano(0)
+                .withMinute(0)
+                .withSecond(0)
+                .plusDays(1)
+                .format(DateTimeFormatter.ISO_INSTANT));
 
-            List<SubProtectionPolicy> lstSubProtectionPolicy = Arrays.asList(
-                new SubProtectionPolicy()
-                    .withPolicyType(PolicyType.FULL)
-                    .withSchedulePolicy(
-                        new SimpleSchedulePolicy()
-                            .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
-                            .withScheduleRunDays(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
-                            .withScheduleRunTimes(Arrays.asList(scheduleDateTime)))
-                    .withRetentionPolicy(
-                        new LongTermRetentionPolicy()
-                            .withWeeklySchedule(
-                                new WeeklyRetentionSchedule()
-                                    .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
-                                    .withRetentionTimes(Arrays.asList(scheduleDateTime))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(2)
+            List<SubProtectionPolicy> lstSubProtectionPolicy
+                = Arrays
+                    .asList(
+                        new SubProtectionPolicy().withPolicyType(PolicyType.FULL)
+                            .withSchedulePolicy(
+                                new SimpleSchedulePolicy().withScheduleRunFrequency(ScheduleRunType.WEEKLY)
+                                    .withScheduleRunDays(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
+                                    .withScheduleRunTimes(Arrays.asList(scheduleDateTime)))
+                            .withRetentionPolicy(
+                                new LongTermRetentionPolicy()
+                                    .withWeeklySchedule(new WeeklyRetentionSchedule()
+                                        .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
+                                        .withRetentionTimes(Arrays.asList(scheduleDateTime))
+                                        .withRetentionDuration(new RetentionDuration().withCount(2)
                                             .withDurationType(RetentionDurationType.WEEKS)))
-                            .withMonthlySchedule(
-                                new MonthlyRetentionSchedule()
-                                    .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                    .withRetentionScheduleWeekly(
-                                        new WeeklyRetentionFormat()
+                                    .withMonthlySchedule(new MonthlyRetentionSchedule()
+                                        .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                        .withRetentionScheduleWeekly(new WeeklyRetentionFormat()
                                             .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
                                             .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.SECOND)))
-                                    .withRetentionTimes(Arrays.asList(scheduleDateTime))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
+                                        .withRetentionTimes(Arrays.asList(scheduleDateTime))
+                                        .withRetentionDuration(new RetentionDuration()
                                             .withCount(1)
                                             .withDurationType(RetentionDurationType.MONTHS)))
-                            .withYearlySchedule(
-                                new YearlyRetentionSchedule()
-                                    .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                    .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY, MonthOfYear.JUNE, MonthOfYear.DECEMBER))
-                                    .withRetentionScheduleWeekly(
-                                        new WeeklyRetentionFormat()
+                                    .withYearlySchedule(new YearlyRetentionSchedule()
+                                        .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                        .withMonthsOfYear(
+                                            Arrays.asList(MonthOfYear.JANUARY, MonthOfYear.JUNE, MonthOfYear.DECEMBER))
+                                        .withRetentionScheduleWeekly(new WeeklyRetentionFormat()
                                             .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
                                             .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.LAST)))
-                                    .withRetentionTimes(Arrays.asList(scheduleDateTime))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(1)
+                                        .withRetentionTimes(Arrays.asList(scheduleDateTime))
+                                        .withRetentionDuration(new RetentionDuration().withCount(1)
                                             .withDurationType(RetentionDurationType.YEARS)))),
-                new SubProtectionPolicy()
-                    .withPolicyType(PolicyType.DIFFERENTIAL)
-                    .withSchedulePolicy(
-                        new SimpleSchedulePolicy()
-                            .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
-                            .withScheduleRunDays(Arrays.asList(DayOfWeek.FRIDAY))
-                            .withScheduleRunTimes(Arrays.asList(scheduleDateTime)))
-                    .withRetentionPolicy(
-                        new SimpleRetentionPolicy()
-                            .withRetentionDuration(
-                                new RetentionDuration()
-                                    .withCount(8)
-                                    .withDurationType(RetentionDurationType.DAYS))),
-                new SubProtectionPolicy()
-                    .withPolicyType(PolicyType.LOG)
-                    .withSchedulePolicy(new LogSchedulePolicy().withScheduleFrequencyInMins(60))
-                    .withRetentionPolicy(
-                        new SimpleRetentionPolicy()
-                            .withRetentionDuration(
-                                new RetentionDuration()
-                                    .withCount(7)
-                                    .withDurationType(RetentionDurationType.DAYS))));
+                        new SubProtectionPolicy().withPolicyType(PolicyType.DIFFERENTIAL)
+                            .withSchedulePolicy(
+                                new SimpleSchedulePolicy().withScheduleRunFrequency(ScheduleRunType.WEEKLY)
+                                    .withScheduleRunDays(Arrays.asList(DayOfWeek.FRIDAY))
+                                    .withScheduleRunTimes(Arrays.asList(scheduleDateTime)))
+                            .withRetentionPolicy(new SimpleRetentionPolicy().withRetentionDuration(
+                                new RetentionDuration().withCount(8).withDurationType(RetentionDurationType.DAYS))),
+                        new SubProtectionPolicy().withPolicyType(PolicyType.LOG)
+                            .withSchedulePolicy(new LogSchedulePolicy().withScheduleFrequencyInMins(60))
+                            .withRetentionPolicy(new SimpleRetentionPolicy().withRetentionDuration(
+                                new RetentionDuration().withCount(7).withDurationType(RetentionDurationType.DAYS))));
 
             vault = recoveryServicesManager.vaults()
                 .define(vaultName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .withSku(new Sku().withName(SkuName.RS0).withTier("Standard"))
-                .withProperties(new VaultProperties()
-                    .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withProperties(new VaultProperties().withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
                     .withRestoreSettings(new RestoreSettings()
-                        .withCrossSubscriptionRestoreSettings(
-                            new CrossSubscriptionRestoreSettings()
-                                .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.ENABLED))))
+                        .withCrossSubscriptionRestoreSettings(new CrossSubscriptionRestoreSettings()
+                            .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.ENABLED))))
                 .create();
 
             protectionPolicyResource = recoveryServicesBackupManager.protectionPolicies()
                 .define(policyName)
                 .withRegion(REGION)
                 .withExistingVault(vaultName, resourceGroupName)
-                .withProperties(
-                    new AzureVmWorkloadProtectionPolicy()
-                        .withWorkLoadType(WorkloadType.SQLDATA_BASE)
-                        .withSettings(new Settings().withTimeZone("Pacific Standard Time").withIssqlcompression(false))
-                        .withSubProtectionPolicy(lstSubProtectionPolicy)
-                )
+                .withProperties(new AzureVmWorkloadProtectionPolicy().withWorkLoadType(WorkloadType.SQLDATA_BASE)
+                    .withSettings(new Settings().withTimeZone("Pacific Standard Time").withIssqlcompression(false))
+                    .withSubProtectionPolicy(lstSubProtectionPolicy))
                 .create();
             // @embedmeEnd
             protectionPolicyResource.refresh();
             Assertions.assertEquals(protectionPolicyResource.name(), policyName);
-            Assertions.assertEquals(protectionPolicyResource.name(), recoveryServicesBackupManager.protectionPolicies().getById(protectionPolicyResource.id()).name());
+            Assertions.assertEquals(protectionPolicyResource.name(),
+                recoveryServicesBackupManager.protectionPolicies().getById(protectionPolicyResource.id()).name());
         } finally {
             if (protectionPolicyResource != null) {
                 recoveryServicesBackupManager.protectionPolicies().deleteById(protectionPolicyResource.id());

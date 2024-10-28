@@ -52,9 +52,8 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
      * @param client the instance of the service client containing this operation class.
      */
     VMInstanceGuestAgentsClientImpl(ConnectedVMwareClientImpl client) {
-        this.service =
-            RestProxy
-                .create(VMInstanceGuestAgentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(VMInstanceGuestAgentsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,63 +64,45 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
     @Host("{$host}")
     @ServiceInterface(name = "ConnectedVMwareClien")
     public interface VMInstanceGuestAgentsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/{resourceUri}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachineInstances/default/guestAgents/default")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/{resourceUri}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachineInstances/default/guestAgents/default")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") GuestAgentInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") GuestAgentInner body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/{resourceUri}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachineInstances/default/guestAgents/default")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceUri}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachineInstances/default/guestAgents/default")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GuestAgentInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<GuestAgentInner>> get(@HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/{resourceUri}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachineInstances/default/guestAgents/default")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/{resourceUri}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachineInstances/default/guestAgents/default")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.ConnectedVMwarevSphere/virtualMachineInstances/default/guestAgents")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GuestAgentList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<GuestAgentList>> list(@HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GuestAgentList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GuestAgentList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -140,10 +121,8 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceUri, GuestAgentInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -153,11 +132,8 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), body, accept, context))
+            .withContext(context -> service.create(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(),
+                body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -176,13 +152,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
      * @return defines the GuestAgent along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceUri, GuestAgentInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceUri, GuestAgentInner body,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -192,8 +166,8 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), body, accept, context);
+        return service.create(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), body, accept,
+            context);
     }
 
     /**
@@ -210,17 +184,11 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
      * @return the {@link PollerFlux} for polling of defines the GuestAgent.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<GuestAgentInner>, GuestAgentInner> beginCreateAsync(
-        String resourceUri, GuestAgentInner body) {
+    private PollerFlux<PollResult<GuestAgentInner>, GuestAgentInner> beginCreateAsync(String resourceUri,
+        GuestAgentInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceUri, body);
-        return this
-            .client
-            .<GuestAgentInner, GuestAgentInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GuestAgentInner.class,
-                GuestAgentInner.class,
-                this.client.getContext());
+        return this.client.<GuestAgentInner, GuestAgentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            GuestAgentInner.class, GuestAgentInner.class, this.client.getContext());
     }
 
     /**
@@ -239,14 +207,8 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
     private PollerFlux<PollResult<GuestAgentInner>, GuestAgentInner> beginCreateAsync(String resourceUri) {
         final GuestAgentInner body = null;
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceUri, body);
-        return this
-            .client
-            .<GuestAgentInner, GuestAgentInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GuestAgentInner.class,
-                GuestAgentInner.class,
-                this.client.getContext());
+        return this.client.<GuestAgentInner, GuestAgentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            GuestAgentInner.class, GuestAgentInner.class, this.client.getContext());
     }
 
     /**
@@ -264,14 +226,12 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
      * @return the {@link PollerFlux} for polling of defines the GuestAgent.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<GuestAgentInner>, GuestAgentInner> beginCreateAsync(
-        String resourceUri, GuestAgentInner body, Context context) {
+    private PollerFlux<PollResult<GuestAgentInner>, GuestAgentInner> beginCreateAsync(String resourceUri,
+        GuestAgentInner body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceUri, body, context);
-        return this
-            .client
-            .<GuestAgentInner, GuestAgentInner>getLroResult(
-                mono, this.client.getHttpPipeline(), GuestAgentInner.class, GuestAgentInner.class, context);
+        return this.client.<GuestAgentInner, GuestAgentInner>getLroResult(mono, this.client.getHttpPipeline(),
+            GuestAgentInner.class, GuestAgentInner.class, context);
     }
 
     /**
@@ -307,8 +267,8 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
      * @return the {@link SyncPoller} for polling of defines the GuestAgent.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<GuestAgentInner>, GuestAgentInner> beginCreate(
-        String resourceUri, GuestAgentInner body, Context context) {
+    public SyncPoller<PollResult<GuestAgentInner>, GuestAgentInner> beginCreate(String resourceUri,
+        GuestAgentInner body, Context context) {
         return this.beginCreateAsync(resourceUri, body, context).getSyncPoller();
     }
 
@@ -419,19 +379,16 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GuestAgentInner>> getWithResponseAsync(String resourceUri) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.get(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -451,10 +408,8 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GuestAgentInner>> getWithResponseAsync(String resourceUri, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -531,20 +486,16 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceUri) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -564,10 +515,8 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceUri, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -592,10 +541,8 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceUri) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceUri);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -615,9 +562,8 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceUri, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceUri, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -738,28 +684,18 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GuestAgentInner>> listSinglePageAsync(String resourceUri) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.list(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<GuestAgentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(),
+                accept, context))
+            .<PagedResponse<GuestAgentInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -779,27 +715,17 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GuestAgentInner>> listSinglePageAsync(String resourceUri, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -834,8 +760,8 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GuestAgentInner> listAsync(String resourceUri, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceUri, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -889,23 +815,13 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<GuestAgentInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<GuestAgentInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -926,23 +842,13 @@ public final class VMInstanceGuestAgentsClientImpl implements VMInstanceGuestAge
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

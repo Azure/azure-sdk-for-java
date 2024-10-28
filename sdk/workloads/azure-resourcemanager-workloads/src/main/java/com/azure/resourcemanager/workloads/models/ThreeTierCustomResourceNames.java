@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "namingPatternType",
     defaultImpl = ThreeTierCustomResourceNames.class)
 @JsonTypeName("ThreeTierCustomResourceNames")
-@JsonSubTypes({@JsonSubTypes.Type(name = "FullResourceName", value = ThreeTierFullResourceNames.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "FullResourceName", value = ThreeTierFullResourceNames.class) })
 @Immutable
 public class ThreeTierCustomResourceNames {
     /** Creates an instance of ThreeTierCustomResourceNames class. */

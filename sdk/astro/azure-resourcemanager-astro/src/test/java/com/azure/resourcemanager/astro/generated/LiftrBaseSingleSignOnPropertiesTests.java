@@ -24,9 +24,11 @@ public final class LiftrBaseSingleSignOnPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiftrBaseSingleSignOnProperties model = new LiftrBaseSingleSignOnProperties()
-            .withSingleSignOnState(SingleSignOnStates.ENABLE).withEnterpriseAppId("ummajtjaod")
-            .withSingleSignOnUrl("bnbdxkqpxokajion").withAadDomains(Arrays.asList("ex", "stxgc", "odgmaajrmvdjwz"));
+        LiftrBaseSingleSignOnProperties model
+            = new LiftrBaseSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.ENABLE)
+                .withEnterpriseAppId("ummajtjaod")
+                .withSingleSignOnUrl("bnbdxkqpxokajion")
+                .withAadDomains(Arrays.asList("ex", "stxgc", "odgmaajrmvdjwz"));
         model = BinaryData.fromObject(model).toObject(LiftrBaseSingleSignOnProperties.class);
         Assertions.assertEquals(SingleSignOnStates.ENABLE, model.singleSignOnState());
         Assertions.assertEquals("ummajtjaod", model.enterpriseAppId());

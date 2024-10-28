@@ -34,8 +34,8 @@ public interface GraphQLApiResolverPoliciesClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyContractInner> listByResolver(
-        String resourceGroupName, String serviceName, String apiId, String resolverId);
+    PagedIterable<PolicyContractInner> listByResolver(String resourceGroupName, String serviceName, String apiId,
+        String resolverId);
 
     /**
      * Get the list of policy configuration at the GraphQL API Resolver level.
@@ -54,8 +54,8 @@ public interface GraphQLApiResolverPoliciesClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyContractInner> listByResolver(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, Context context);
+    PagedIterable<PolicyContractInner> listByResolver(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
@@ -74,13 +74,8 @@ public interface GraphQLApiResolverPoliciesClient {
      * @return the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GraphQLApiResolverPoliciesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        Context context);
+    GraphQLApiResolverPoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName,
+        String serviceName, String apiId, String resolverId, PolicyIdName policyId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver policy specified by its identifier.
@@ -97,8 +92,8 @@ public interface GraphQLApiResolverPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void getEntityTag(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, PolicyIdName policyId);
+    void getEntityTag(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId);
 
     /**
      * Get the policy configuration at the GraphQL API Resolver level.
@@ -118,14 +113,8 @@ public interface GraphQLApiResolverPoliciesClient {
      * @return the policy configuration at the GraphQL API Resolver level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GraphQLApiResolverPoliciesGetResponse getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
-        Context context);
+    GraphQLApiResolverPoliciesGetResponse getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, PolicyIdName policyId, PolicyExportFormat format, Context context);
 
     /**
      * Get the policy configuration at the GraphQL API Resolver level.
@@ -143,8 +132,8 @@ public interface GraphQLApiResolverPoliciesClient {
      * @return the policy configuration at the GraphQL API Resolver level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyContractInner get(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, PolicyIdName policyId);
+    PolicyContractInner get(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId);
 
     /**
      * Creates or updates policy configuration for the GraphQL API Resolver level.
@@ -165,15 +154,9 @@ public interface GraphQLApiResolverPoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GraphQLApiResolverPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch,
-        Context context);
+    GraphQLApiResolverPoliciesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
+        String serviceName, String apiId, String resolverId, PolicyIdName policyId, PolicyContractInner parameters,
+        String ifMatch, Context context);
 
     /**
      * Creates or updates policy configuration for the GraphQL API Resolver level.
@@ -192,13 +175,8 @@ public interface GraphQLApiResolverPoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        PolicyContractInner parameters);
+    PolicyContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId, PolicyContractInner parameters);
 
     /**
      * Deletes the policy configuration at the GraphQL Api Resolver.
@@ -219,14 +197,8 @@ public interface GraphQLApiResolverPoliciesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        PolicyIdName policyId, String ifMatch, Context context);
 
     /**
      * Deletes the policy configuration at the GraphQL Api Resolver.
@@ -245,11 +217,6 @@ public interface GraphQLApiResolverPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String resolverId,
-        PolicyIdName policyId,
+    void delete(String resourceGroupName, String serviceName, String apiId, String resolverId, PolicyIdName policyId,
         String ifMatch);
 }

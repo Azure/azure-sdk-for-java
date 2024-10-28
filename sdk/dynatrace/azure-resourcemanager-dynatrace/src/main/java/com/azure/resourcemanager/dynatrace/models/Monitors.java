@@ -35,8 +35,8 @@ public interface Monitors {
      * @return list of all the resources being monitored by Dynatrace monitor resource as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<MonitoredResource> listMonitoredResources(
-        String resourceGroupName, String monitorName, Context context);
+    PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Returns the payload that needs to be passed in the request body for installing Dynatrace agent on a VM.
@@ -49,8 +49,8 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of payload to be passed while installing VM agent along with {@link Response}.
      */
-    Response<VMExtensionPayload> getVMHostPayloadWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<VMExtensionPayload> getVMHostPayloadWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Returns the payload that needs to be passed in the request body for installing Dynatrace agent on a VM.
@@ -75,8 +75,8 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a MonitorResource along with {@link Response}.
      */
-    Response<MonitorResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<MonitorResource> getByResourceGroupWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Get a MonitorResource.
@@ -168,8 +168,8 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return marketplace SaaS resource details of a tenant under a specific subscription along with {@link Response}.
      */
-    Response<MarketplaceSaaSResourceDetailsResponse> getMarketplaceSaaSResourceDetailsWithResponse(
-        MarketplaceSaaSResourceDetailsRequest request, Context context);
+    Response<MarketplaceSaaSResourceDetailsResponse>
+        getMarketplaceSaaSResourceDetailsWithResponse(MarketplaceSaaSResourceDetailsRequest request, Context context);
 
     /**
      * Get Marketplace SaaS resource details of a tenant under a specific subscription.
@@ -182,8 +182,8 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return marketplace SaaS resource details of a tenant under a specific subscription.
      */
-    MarketplaceSaaSResourceDetailsResponse getMarketplaceSaaSResourceDetails(
-        MarketplaceSaaSResourceDetailsRequest request);
+    MarketplaceSaaSResourceDetailsResponse
+        getMarketplaceSaaSResourceDetails(MarketplaceSaaSResourceDetailsRequest request);
 
     /**
      * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
@@ -221,8 +221,8 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return metric status along with {@link Response}.
      */
-    Response<MetricsStatusResponse> getMetricStatusWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<MetricsStatusResponse> getMetricStatusWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Get metric status.
@@ -277,8 +277,8 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SSO configuration details from the partner along with {@link Response}.
      */
-    Response<SsoDetailsResponse> getSsoDetailsWithResponse(
-        String resourceGroupName, String monitorName, SsoDetailsRequest request, Context context);
+    Response<SsoDetailsResponse> getSsoDetailsWithResponse(String resourceGroupName, String monitorName,
+        SsoDetailsRequest request, Context context);
 
     /**
      * Gets the SSO configuration details from the partner.
@@ -306,8 +306,8 @@ public interface Monitors {
      * @return all the Dynatrace environments that a user can link a azure resource to as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<LinkableEnvironmentResponse> listLinkableEnvironments(
-        String resourceGroupName, String monitorName, LinkableEnvironmentRequest request);
+    PagedIterable<LinkableEnvironmentResponse> listLinkableEnvironments(String resourceGroupName, String monitorName,
+        LinkableEnvironmentRequest request);
 
     /**
      * Gets all the Dynatrace environments that a user can link a azure resource to.
@@ -322,8 +322,8 @@ public interface Monitors {
      * @return all the Dynatrace environments that a user can link a azure resource to as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<LinkableEnvironmentResponse> listLinkableEnvironments(
-        String resourceGroupName, String monitorName, LinkableEnvironmentRequest request, Context context);
+    PagedIterable<LinkableEnvironmentResponse> listLinkableEnvironments(String resourceGroupName, String monitorName,
+        LinkableEnvironmentRequest request, Context context);
 
     /**
      * Get a MonitorResource.

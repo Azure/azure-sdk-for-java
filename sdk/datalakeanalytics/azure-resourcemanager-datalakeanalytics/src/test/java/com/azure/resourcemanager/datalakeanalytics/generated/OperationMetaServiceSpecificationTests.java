@@ -6,6 +6,7 @@ package com.azure.resourcemanager.datalakeanalytics.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datalakeanalytics.models.OperationMetaLogSpecification;
+import com.azure.resourcemanager.datalakeanalytics.models.OperationMetaMetricAvailabilitiesSpecification;
 import com.azure.resourcemanager.datalakeanalytics.models.OperationMetaMetricSpecification;
 import com.azure.resourcemanager.datalakeanalytics.models.OperationMetaServiceSpecification;
 import java.util.Arrays;
@@ -14,65 +15,55 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationMetaServiceSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationMetaServiceSpecification model =
-            BinaryData
-                .fromString(
-                    "{\"metricSpecifications\":[{\"name\":\"wncwzzhxgktrmg\",\"displayDescription\":\"napkteoellw\",\"displayName\":\"fdygpfqbuaceopz\",\"unit\":\"rhhuaopppcqeqx\",\"aggregationType\":\"z\",\"availabilities\":[]},{\"name\":\"xcto\",\"displayDescription\":\"bkdmo\",\"displayName\":\"postmgrcfbunrm\",\"unit\":\"jhhkxbp\",\"aggregationType\":\"ymjhxxjyngudivkr\",\"availabilities\":[]}],\"logSpecifications\":[{\"name\":\"zvszj\",\"displayName\":\"uvjfdxxive\",\"blobDuration\":\"t\"},{\"name\":\"aqtdoqmcbx\",\"displayName\":\"vxysl\",\"blobDuration\":\"hsfxoblytkb\"},{\"name\":\"pe\",\"displayName\":\"wfbkrvrns\",\"blobDuration\":\"hqjohxcrsbfova\"}]}")
-                .toObject(OperationMetaServiceSpecification.class);
-        Assertions.assertEquals("wncwzzhxgktrmg", model.metricSpecifications().get(0).name());
-        Assertions.assertEquals("napkteoellw", model.metricSpecifications().get(0).displayDescription());
-        Assertions.assertEquals("fdygpfqbuaceopz", model.metricSpecifications().get(0).displayName());
-        Assertions.assertEquals("rhhuaopppcqeqx", model.metricSpecifications().get(0).unit());
-        Assertions.assertEquals("z", model.metricSpecifications().get(0).aggregationType());
-        Assertions.assertEquals("zvszj", model.logSpecifications().get(0).name());
-        Assertions.assertEquals("uvjfdxxive", model.logSpecifications().get(0).displayName());
-        Assertions.assertEquals("t", model.logSpecifications().get(0).blobDuration());
+        OperationMetaServiceSpecification model = BinaryData.fromString(
+            "{\"metricSpecifications\":[{\"name\":\"dxluu\",\"displayDescription\":\"ttouwaboekqvkel\",\"displayName\":\"mvb\",\"unit\":\"yjsflhhcaalnji\",\"aggregationType\":\"sxyawjoyaqcs\",\"availabilities\":[{\"timeGrain\":\"kiidzyex\",\"blobDuration\":\"eli\"},{\"timeGrain\":\"nr\",\"blobDuration\":\"folhbnxknal\"},{\"timeGrain\":\"lp\",\"blobDuration\":\"gdtpnapnyiro\"},{\"timeGrain\":\"hpigv\",\"blobDuration\":\"ylgqgitxmedjvcsl\"}]}],\"logSpecifications\":[{\"name\":\"wncwzzhxgktrmg\",\"displayName\":\"napkteoellw\",\"blobDuration\":\"fdygpfqbuaceopz\"},{\"name\":\"rhhuaopppcqeqx\",\"displayName\":\"z\",\"blobDuration\":\"hzxct\"}]}")
+            .toObject(OperationMetaServiceSpecification.class);
+        Assertions.assertEquals("dxluu", model.metricSpecifications().get(0).name());
+        Assertions.assertEquals("ttouwaboekqvkel", model.metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("mvb", model.metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("yjsflhhcaalnji", model.metricSpecifications().get(0).unit());
+        Assertions.assertEquals("sxyawjoyaqcs", model.metricSpecifications().get(0).aggregationType());
+        Assertions.assertEquals("kiidzyex", model.metricSpecifications().get(0).availabilities().get(0).timeGrain());
+        Assertions.assertEquals("eli", model.metricSpecifications().get(0).availabilities().get(0).blobDuration());
+        Assertions.assertEquals("wncwzzhxgktrmg", model.logSpecifications().get(0).name());
+        Assertions.assertEquals("napkteoellw", model.logSpecifications().get(0).displayName());
+        Assertions.assertEquals("fdygpfqbuaceopz", model.logSpecifications().get(0).blobDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationMetaServiceSpecification model =
-            new OperationMetaServiceSpecification()
-                .withMetricSpecifications(
-                    Arrays
-                        .asList(
-                            new OperationMetaMetricSpecification()
-                                .withName("wncwzzhxgktrmg")
-                                .withDisplayDescription("napkteoellw")
-                                .withDisplayName("fdygpfqbuaceopz")
-                                .withUnit("rhhuaopppcqeqx")
-                                .withAggregationType("z")
-                                .withAvailabilities(Arrays.asList()),
-                            new OperationMetaMetricSpecification()
-                                .withName("xcto")
-                                .withDisplayDescription("bkdmo")
-                                .withDisplayName("postmgrcfbunrm")
-                                .withUnit("jhhkxbp")
-                                .withAggregationType("ymjhxxjyngudivkr")
-                                .withAvailabilities(Arrays.asList())))
-                .withLogSpecifications(
-                    Arrays
-                        .asList(
-                            new OperationMetaLogSpecification()
-                                .withName("zvszj")
-                                .withDisplayName("uvjfdxxive")
-                                .withBlobDuration("t"),
-                            new OperationMetaLogSpecification()
-                                .withName("aqtdoqmcbx")
-                                .withDisplayName("vxysl")
-                                .withBlobDuration("hsfxoblytkb"),
-                            new OperationMetaLogSpecification()
-                                .withName("pe")
-                                .withDisplayName("wfbkrvrns")
-                                .withBlobDuration("hqjohxcrsbfova")));
+        OperationMetaServiceSpecification model = new OperationMetaServiceSpecification()
+            .withMetricSpecifications(Arrays.asList(new OperationMetaMetricSpecification().withName("dxluu")
+                .withDisplayDescription("ttouwaboekqvkel")
+                .withDisplayName("mvb")
+                .withUnit("yjsflhhcaalnji")
+                .withAggregationType("sxyawjoyaqcs")
+                .withAvailabilities(Arrays.asList(
+                    new OperationMetaMetricAvailabilitiesSpecification().withTimeGrain("kiidzyex")
+                        .withBlobDuration("eli"),
+                    new OperationMetaMetricAvailabilitiesSpecification().withTimeGrain("nr")
+                        .withBlobDuration("folhbnxknal"),
+                    new OperationMetaMetricAvailabilitiesSpecification().withTimeGrain("lp")
+                        .withBlobDuration("gdtpnapnyiro"),
+                    new OperationMetaMetricAvailabilitiesSpecification().withTimeGrain("hpigv")
+                        .withBlobDuration("ylgqgitxmedjvcsl")))))
+            .withLogSpecifications(Arrays.asList(
+                new OperationMetaLogSpecification().withName("wncwzzhxgktrmg")
+                    .withDisplayName("napkteoellw")
+                    .withBlobDuration("fdygpfqbuaceopz"),
+                new OperationMetaLogSpecification().withName("rhhuaopppcqeqx")
+                    .withDisplayName("z")
+                    .withBlobDuration("hzxct")));
         model = BinaryData.fromObject(model).toObject(OperationMetaServiceSpecification.class);
-        Assertions.assertEquals("wncwzzhxgktrmg", model.metricSpecifications().get(0).name());
-        Assertions.assertEquals("napkteoellw", model.metricSpecifications().get(0).displayDescription());
-        Assertions.assertEquals("fdygpfqbuaceopz", model.metricSpecifications().get(0).displayName());
-        Assertions.assertEquals("rhhuaopppcqeqx", model.metricSpecifications().get(0).unit());
-        Assertions.assertEquals("z", model.metricSpecifications().get(0).aggregationType());
-        Assertions.assertEquals("zvszj", model.logSpecifications().get(0).name());
-        Assertions.assertEquals("uvjfdxxive", model.logSpecifications().get(0).displayName());
-        Assertions.assertEquals("t", model.logSpecifications().get(0).blobDuration());
+        Assertions.assertEquals("dxluu", model.metricSpecifications().get(0).name());
+        Assertions.assertEquals("ttouwaboekqvkel", model.metricSpecifications().get(0).displayDescription());
+        Assertions.assertEquals("mvb", model.metricSpecifications().get(0).displayName());
+        Assertions.assertEquals("yjsflhhcaalnji", model.metricSpecifications().get(0).unit());
+        Assertions.assertEquals("sxyawjoyaqcs", model.metricSpecifications().get(0).aggregationType());
+        Assertions.assertEquals("kiidzyex", model.metricSpecifications().get(0).availabilities().get(0).timeGrain());
+        Assertions.assertEquals("eli", model.metricSpecifications().get(0).availabilities().get(0).blobDuration());
+        Assertions.assertEquals("wncwzzhxgktrmg", model.logSpecifications().get(0).name());
+        Assertions.assertEquals("napkteoellw", model.logSpecifications().get(0).displayName());
+        Assertions.assertEquals("fdygpfqbuaceopz", model.logSpecifications().get(0).blobDuration());
     }
 }
