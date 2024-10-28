@@ -87,7 +87,7 @@ public class Main {
             (newFeature.length() > 0 ? NEW_FEATURE_TITLE + newFeature.toString().replace(namespaces.getBase() + ".", "") : "");
 
         JSONObject json = new JSONObject();
-        json.put("breaking", breakingChange.length() > 0);
+        json.put("breakingChanges", breakingChange);
         json.put("changelog", changelog);
 
         System.out.println(json.toString());

@@ -151,7 +151,8 @@ def generate_changelog_and_breaking_change(
     logging.info("[CHANGELOG] changelog output: {0}".format(stdout))
 
     config = json.loads(stdout)
-    return (config.get("breaking", False), config.get("changelog", ""))
+    breaking_changes = config.get("breakingChanges", [])
+    return (True if len(breaking_changes) > 0 else False, config.get("changelog", ""), breaking_changes)
 
 
 def update_changelog(changelog_file, changelog):
@@ -185,15 +186,6 @@ def update_changelog(changelog_file, changelog):
     logging.info("[Changelog][Success] Write to changelog")
 
 
-def resolve_breaking_change_items(changelog):
-    """
-    Resolves breaking change items for SDK automation.
-    :param changelog: changelog content
-    :return: breaking change items
-    """
-    return ["this_is_a_fake_breaking_change"]
-
-
 def compare_with_maven_package(
     sdk_root: str, group_id: str, service: str, previous_version: str, current_version: str, module: str
 ):
@@ -214,7 +206,6 @@ def compare_with_maven_package(
     )
     r.raise_for_status()
     old_jar_fd, old_jar = tempfile.mkstemp(".jar")
-    breaking_change_items = []
     try:
         with os.fdopen(old_jar_fd, "wb") as tmp:
             tmp.write(r.content)
@@ -224,16 +215,15 @@ def compare_with_maven_package(
         )
         if not os.path.exists(new_jar):
             raise Exception("Cannot found built jar in {0}".format(new_jar))
-        breaking, changelog = generate_changelog_and_breaking_change(sdk_root, old_jar, new_jar)
+        breaking, changelog, breaking_changes = generate_changelog_and_breaking_change(sdk_root, old_jar, new_jar)
         if changelog is not None:
             changelog_file = os.path.join(sdk_root, CHANGELOG_FORMAT.format(service=service, artifact_id=module))
             update_changelog(changelog_file, changelog)
-            breaking_change_items = resolve_breaking_change_items(changelog)
         else:
             logging.error("[Changelog][Skip] Cannot get changelog")
     finally:
         os.remove(old_jar)
-    return breaking, changelog, breaking_change_items
+    return breaking, changelog, breaking_changes
 
 
 def get_version(
