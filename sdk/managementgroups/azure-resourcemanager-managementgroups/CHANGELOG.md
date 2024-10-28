@@ -1,5 +1,15 @@
 # Release History
 
+## 1.0.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0-beta.2 (2024-10-28)
 
 - Azure Resource Manager ManagementGroups client library for Java. This package contains Microsoft Azure SDK for ManagementGroups Management SDK. The Azure Management Groups API enables consolidation of multiple 
