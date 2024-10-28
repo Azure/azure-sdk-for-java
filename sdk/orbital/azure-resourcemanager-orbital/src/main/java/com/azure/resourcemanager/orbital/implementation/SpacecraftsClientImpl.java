@@ -44,17 +44,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SpacecraftsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SpacecraftsClient.
+ */
 public final class SpacecraftsClientImpl implements SpacecraftsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SpacecraftsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureOrbitalImpl client;
 
     /**
      * Initializes an instance of SpacecraftsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SpacecraftsClientImpl(AzureOrbitalImpl client) {
@@ -163,16 +169,16 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by subscription.
-     *
+     * 
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListSpacecrafts API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SpacecraftInner>> listSinglePageAsync(String skiptoken) {
@@ -195,17 +201,17 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by subscription.
-     *
+     * 
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListSpacecrafts API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SpacecraftInner>> listSinglePageAsync(String skiptoken, Context context) {
@@ -228,11 +234,11 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by subscription.
-     *
+     * 
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -246,7 +252,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListSpacecrafts API service call as paginated response with {@link PagedFlux}.
@@ -260,11 +266,11 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by subscription.
-     *
+     * 
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -279,7 +285,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListSpacecrafts API service call as paginated response with {@link PagedIterable}.
@@ -292,11 +298,11 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by subscription.
-     *
+     * 
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -310,17 +316,17 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListSpacecrafts API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SpacecraftInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -348,18 +354,18 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListSpacecrafts API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SpacecraftInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -387,12 +393,12 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -406,7 +412,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -422,12 +428,12 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -443,7 +449,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -458,12 +464,12 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -478,14 +484,14 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Gets the specified spacecraft in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified spacecraft in a specified resource group along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SpacecraftInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -514,7 +520,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Gets the specified spacecraft in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param context The context to associate with this operation.
@@ -522,7 +528,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified spacecraft in a specified resource group along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SpacecraftInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -550,7 +556,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Gets the specified spacecraft in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -566,7 +572,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Gets the specified spacecraft in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param context The context to associate with this operation.
@@ -583,7 +589,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Gets the specified spacecraft in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -598,7 +604,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Creates or updates a spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the created spacecraft.
@@ -606,7 +612,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a spacecraft resource to schedule a contact along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -639,7 +645,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Creates or updates a spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the created spacecraft.
@@ -648,7 +654,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a spacecraft resource to schedule a contact along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -681,7 +687,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Creates or updates a spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the created spacecraft.
@@ -701,7 +707,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Creates or updates a spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the created spacecraft.
@@ -723,7 +729,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Creates or updates a spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the created spacecraft.
@@ -740,7 +746,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Creates or updates a spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the created spacecraft.
@@ -758,7 +764,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Creates or updates a spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the created spacecraft.
@@ -776,7 +782,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Creates or updates a spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the created spacecraft.
@@ -795,7 +801,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Creates or updates a spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the created spacecraft.
@@ -811,7 +817,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Creates or updates a spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the created spacecraft.
@@ -829,7 +835,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -863,7 +869,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param context The context to associate with this operation.
@@ -898,7 +904,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -915,7 +921,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param context The context to associate with this operation.
@@ -935,7 +941,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -950,7 +956,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param context The context to associate with this operation.
@@ -967,7 +973,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -983,7 +989,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param context The context to associate with this operation.
@@ -1000,7 +1006,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1014,7 +1020,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param context The context to associate with this operation.
@@ -1029,7 +1035,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Updates the specified spacecraft tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters Parameters supplied to update spacecraft tags.
@@ -1037,7 +1043,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a spacecraft resource to schedule a contact along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName,
@@ -1070,7 +1076,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Updates the specified spacecraft tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters Parameters supplied to update spacecraft tags.
@@ -1079,7 +1085,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a spacecraft resource to schedule a contact along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName,
@@ -1112,7 +1118,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Updates the specified spacecraft tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters Parameters supplied to update spacecraft tags.
@@ -1132,7 +1138,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Updates the specified spacecraft tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters Parameters supplied to update spacecraft tags.
@@ -1154,7 +1160,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Updates the specified spacecraft tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters Parameters supplied to update spacecraft tags.
@@ -1171,7 +1177,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Updates the specified spacecraft tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters Parameters supplied to update spacecraft tags.
@@ -1189,7 +1195,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Updates the specified spacecraft tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters Parameters supplied to update spacecraft tags.
@@ -1207,7 +1213,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Updates the specified spacecraft tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters Parameters supplied to update spacecraft tags.
@@ -1226,7 +1232,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Updates the specified spacecraft tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters Parameters supplied to update spacecraft tags.
@@ -1242,7 +1248,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Updates the specified spacecraft tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters Parameters supplied to update spacecraft tags.
@@ -1261,7 +1267,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
     /**
      * Returns list of available contacts. A contact is available if the spacecraft is visible from the ground station
      * for more than the minimum viable contact duration provided in the contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the contacts.
@@ -1269,7 +1275,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListAvailableContacts API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableContactsInner>> listAvailableContactsSinglePageAsync(String resourceGroupName,
@@ -1317,7 +1323,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
     /**
      * Returns list of available contacts. A contact is available if the spacecraft is visible from the ground station
      * for more than the minimum viable contact duration provided in the contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the contacts.
@@ -1326,7 +1332,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListAvailableContacts API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableContactsInner>> listAvailableContactsSinglePageAsync(String resourceGroupName,
@@ -1373,7 +1379,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
     /**
      * Returns list of available contacts. A contact is available if the spacecraft is visible from the ground station
      * for more than the minimum viable contact duration provided in the contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the contacts.
@@ -1393,7 +1399,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
     /**
      * Returns list of available contacts. A contact is available if the spacecraft is visible from the ground station
      * for more than the minimum viable contact duration provided in the contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the contacts.
@@ -1414,7 +1420,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
     /**
      * Returns list of available contacts. A contact is available if the spacecraft is visible from the ground station
      * for more than the minimum viable contact duration provided in the contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the contacts.
@@ -1432,7 +1438,7 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
     /**
      * Returns list of available contacts. A contact is available if the spacecraft is visible from the ground station
      * for more than the minimum viable contact duration provided in the contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the contacts.
@@ -1450,14 +1456,13 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListSpacecrafts API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SpacecraftInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1479,15 +1484,14 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListSpacecrafts API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SpacecraftInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
@@ -1508,14 +1512,13 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListSpacecrafts API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SpacecraftInner>> listNextSinglePageAsync(String nextLink) {
@@ -1535,15 +1538,14 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListSpacecrafts API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SpacecraftInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1563,14 +1565,13 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListAvailableContacts API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableContactsInner>> listAvailableContactsNextSinglePageAsync(String nextLink) {
@@ -1592,15 +1593,14 @@ public final class SpacecraftsClientImpl implements SpacecraftsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListAvailableContacts API service call along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AvailableContactsInner>> listAvailableContactsNextSinglePageAsync(String nextLink,
