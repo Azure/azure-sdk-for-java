@@ -5,38 +5,44 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** OAuth Server Secrets Contract. */
+/**
+ * OAuth Server Secrets Contract.
+ */
 @Fluent
-public final class AuthorizationServerSecretsContractInner {
+public final class AuthorizationServerSecretsContractInner
+    implements JsonSerializable<AuthorizationServerSecretsContractInner> {
     /*
      * oAuth Authorization Server Secrets.
      */
-    @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
     /*
      * Can be optionally specified when resource owner password grant type is supported by this authorization server.
      * Default resource owner username.
      */
-    @JsonProperty(value = "resourceOwnerUsername")
     private String resourceOwnerUsername;
 
     /*
      * Can be optionally specified when resource owner password grant type is supported by this authorization server.
      * Default resource owner password.
      */
-    @JsonProperty(value = "resourceOwnerPassword")
     private String resourceOwnerPassword;
 
-    /** Creates an instance of AuthorizationServerSecretsContractInner class. */
+    /**
+     * Creates an instance of AuthorizationServerSecretsContractInner class.
+     */
     public AuthorizationServerSecretsContractInner() {
     }
 
     /**
      * Get the clientSecret property: oAuth Authorization Server Secrets.
-     *
+     * 
      * @return the clientSecret value.
      */
     public String clientSecret() {
@@ -45,7 +51,7 @@ public final class AuthorizationServerSecretsContractInner {
 
     /**
      * Set the clientSecret property: oAuth Authorization Server Secrets.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the AuthorizationServerSecretsContractInner object itself.
      */
@@ -57,7 +63,7 @@ public final class AuthorizationServerSecretsContractInner {
     /**
      * Get the resourceOwnerUsername property: Can be optionally specified when resource owner password grant type is
      * supported by this authorization server. Default resource owner username.
-     *
+     * 
      * @return the resourceOwnerUsername value.
      */
     public String resourceOwnerUsername() {
@@ -67,7 +73,7 @@ public final class AuthorizationServerSecretsContractInner {
     /**
      * Set the resourceOwnerUsername property: Can be optionally specified when resource owner password grant type is
      * supported by this authorization server. Default resource owner username.
-     *
+     * 
      * @param resourceOwnerUsername the resourceOwnerUsername value to set.
      * @return the AuthorizationServerSecretsContractInner object itself.
      */
@@ -79,7 +85,7 @@ public final class AuthorizationServerSecretsContractInner {
     /**
      * Get the resourceOwnerPassword property: Can be optionally specified when resource owner password grant type is
      * supported by this authorization server. Default resource owner password.
-     *
+     * 
      * @return the resourceOwnerPassword value.
      */
     public String resourceOwnerPassword() {
@@ -89,7 +95,7 @@ public final class AuthorizationServerSecretsContractInner {
     /**
      * Set the resourceOwnerPassword property: Can be optionally specified when resource owner password grant type is
      * supported by this authorization server. Default resource owner password.
-     *
+     * 
      * @param resourceOwnerPassword the resourceOwnerPassword value to set.
      * @return the AuthorizationServerSecretsContractInner object itself.
      */
@@ -100,9 +106,52 @@ public final class AuthorizationServerSecretsContractInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clientSecret", this.clientSecret);
+        jsonWriter.writeStringField("resourceOwnerUsername", this.resourceOwnerUsername);
+        jsonWriter.writeStringField("resourceOwnerPassword", this.resourceOwnerPassword);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizationServerSecretsContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizationServerSecretsContractInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AuthorizationServerSecretsContractInner.
+     */
+    public static AuthorizationServerSecretsContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthorizationServerSecretsContractInner deserializedAuthorizationServerSecretsContractInner
+                = new AuthorizationServerSecretsContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientSecret".equals(fieldName)) {
+                    deserializedAuthorizationServerSecretsContractInner.clientSecret = reader.getString();
+                } else if ("resourceOwnerUsername".equals(fieldName)) {
+                    deserializedAuthorizationServerSecretsContractInner.resourceOwnerUsername = reader.getString();
+                } else if ("resourceOwnerPassword".equals(fieldName)) {
+                    deserializedAuthorizationServerSecretsContractInner.resourceOwnerPassword = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthorizationServerSecretsContractInner;
+        });
     }
 }

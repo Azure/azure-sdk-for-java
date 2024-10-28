@@ -20,11 +20,13 @@ import com.azure.resourcemanager.apimanagement.models.SubscriptionsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionsListSecretsResponse;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionsUpdateResponse;
 
-/** An instance of this class provides access to all the operations defined in SubscriptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SubscriptionsClient.
+ */
 public interface SubscriptionsClient {
     /**
      * Lists all subscriptions of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,19 +39,18 @@ public interface SubscriptionsClient {
 
     /**
      * Lists all subscriptions of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| stateComment | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| ownerId | filter | ge, le, eq, ne, gt, lt
-     *     | substringof, contains, startswith, endswith |&lt;/br&gt;| scope | filter | ge, le, eq, ne, gt, lt |
-     *     substringof, contains, startswith, endswith |&lt;/br&gt;| userId | filter | ge, le, eq, ne, gt, lt |
-     *     substringof, contains, startswith, endswith |&lt;/br&gt;| productId | filter | ge, le, eq, ne, gt, lt |
-     *     substringof, contains, startswith, endswith |&lt;/br&gt;| state | filter | eq | |&lt;/br&gt;| user | expand |
-     *     | |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne, gt, lt
+     * | substringof, contains, startswith, endswith |&lt;/br&gt;| stateComment | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| ownerId | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;| scope | filter | ge, le, eq, ne, gt, lt | substringof,
+     * contains, startswith, endswith |&lt;/br&gt;| userId | filter | ge, le, eq, ne, gt, lt | substringof, contains,
+     * startswith, endswith |&lt;/br&gt;| productId | filter | ge, le, eq, ne, gt, lt | substringof, contains,
+     * startswith, endswith |&lt;/br&gt;| state | filter | eq | |&lt;/br&gt;| user | expand | | |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -64,11 +65,11 @@ public interface SubscriptionsClient {
 
     /**
      * Gets the entity state (Etag) version of the apimanagement subscription specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
+     * API Management.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -81,11 +82,11 @@ public interface SubscriptionsClient {
 
     /**
      * Gets the entity state (Etag) version of the apimanagement subscription specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
+     * API Management.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -95,11 +96,11 @@ public interface SubscriptionsClient {
 
     /**
      * Gets the specified Subscription entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
+     * API Management.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -111,11 +112,11 @@ public interface SubscriptionsClient {
 
     /**
      * Gets the specified Subscription entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
+     * API Management.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -126,17 +127,18 @@ public interface SubscriptionsClient {
 
     /**
      * Creates or updates the subscription of specified user to the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
+     * API Management.
      * @param parameters Create parameters.
-     * @param notify Notify change in Subscription State. - If false, do not send any email notification for change of
-     *     state of subscription - If true, send email notification of change of state of subscription.
+     * @param notify Notify change in Subscription State.
+     * - If false, do not send any email notification for change of state of subscription
+     * - If true, send email notification of change of state of subscription.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @param appType Determines the type of application which send the create user request. Default is legacy publisher
-     *     portal.
+     * portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -150,11 +152,11 @@ public interface SubscriptionsClient {
 
     /**
      * Creates or updates the subscription of specified user to the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
+     * API Management.
      * @param parameters Create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -167,18 +169,19 @@ public interface SubscriptionsClient {
 
     /**
      * Updates the details of a subscription specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
+     * API Management.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
-     * @param notify Notify change in Subscription State. - If false, do not send any email notification for change of
-     *     state of subscription - If true, send email notification of change of state of subscription.
+     * @param notify Notify change in Subscription State.
+     * - If false, do not send any email notification for change of state of subscription
+     * - If true, send email notification of change of state of subscription.
      * @param appType Determines the type of application which send the create user request. Default is legacy publisher
-     *     portal.
+     * portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -191,13 +194,13 @@ public interface SubscriptionsClient {
 
     /**
      * Updates the details of a subscription specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
+     * API Management.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -210,13 +213,13 @@ public interface SubscriptionsClient {
 
     /**
      * Deletes the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
+     * API Management.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -229,13 +232,13 @@ public interface SubscriptionsClient {
 
     /**
      * Deletes the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
+     * API Management.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -245,11 +248,11 @@ public interface SubscriptionsClient {
 
     /**
      * Regenerates primary key of existing subscription of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
+     * API Management.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -262,11 +265,11 @@ public interface SubscriptionsClient {
 
     /**
      * Regenerates primary key of existing subscription of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
+     * API Management.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -276,11 +279,11 @@ public interface SubscriptionsClient {
 
     /**
      * Regenerates secondary key of existing subscription of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
+     * API Management.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -293,11 +296,11 @@ public interface SubscriptionsClient {
 
     /**
      * Regenerates secondary key of existing subscription of the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
+     * API Management.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -307,11 +310,11 @@ public interface SubscriptionsClient {
 
     /**
      * Gets the specified Subscription keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
+     * API Management.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -324,11 +327,11 @@ public interface SubscriptionsClient {
 
     /**
      * Gets the specified Subscription keys.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param sid Subscription entity Identifier. The entity represents the association between a user and a product in
-     *     API Management.
+     * API Management.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

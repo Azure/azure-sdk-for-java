@@ -6,59 +6,60 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.AppType;
 import com.azure.resourcemanager.apimanagement.models.Confirmation;
 import com.azure.resourcemanager.apimanagement.models.UserEntityBaseParameters;
 import com.azure.resourcemanager.apimanagement.models.UserState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Parameters supplied to the Create User operation. */
+/**
+ * Parameters supplied to the Create User operation.
+ */
 @Fluent
 public final class UserCreateParameterProperties extends UserEntityBaseParameters {
     /*
      * Email address. Must not be empty and must be unique within the service instance.
      */
-    @JsonProperty(value = "email", required = true)
     private String email;
 
     /*
      * First name.
      */
-    @JsonProperty(value = "firstName", required = true)
     private String firstName;
 
     /*
      * Last name.
      */
-    @JsonProperty(value = "lastName", required = true)
     private String lastName;
 
     /*
      * User Password. If no value is provided, a default password is generated.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Determines the type of application which send the create user request. Default is legacy portal.
      */
-    @JsonProperty(value = "appType")
     private AppType appType;
 
     /*
      * Determines the type of confirmation e-mail that will be sent to the newly created user.
      */
-    @JsonProperty(value = "confirmation")
     private Confirmation confirmation;
 
-    /** Creates an instance of UserCreateParameterProperties class. */
+    /**
+     * Creates an instance of UserCreateParameterProperties class.
+     */
     public UserCreateParameterProperties() {
     }
 
     /**
      * Get the email property: Email address. Must not be empty and must be unique within the service instance.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -67,7 +68,7 @@ public final class UserCreateParameterProperties extends UserEntityBaseParameter
 
     /**
      * Set the email property: Email address. Must not be empty and must be unique within the service instance.
-     *
+     * 
      * @param email the email value to set.
      * @return the UserCreateParameterProperties object itself.
      */
@@ -78,7 +79,7 @@ public final class UserCreateParameterProperties extends UserEntityBaseParameter
 
     /**
      * Get the firstName property: First name.
-     *
+     * 
      * @return the firstName value.
      */
     public String firstName() {
@@ -87,7 +88,7 @@ public final class UserCreateParameterProperties extends UserEntityBaseParameter
 
     /**
      * Set the firstName property: First name.
-     *
+     * 
      * @param firstName the firstName value to set.
      * @return the UserCreateParameterProperties object itself.
      */
@@ -98,7 +99,7 @@ public final class UserCreateParameterProperties extends UserEntityBaseParameter
 
     /**
      * Get the lastName property: Last name.
-     *
+     * 
      * @return the lastName value.
      */
     public String lastName() {
@@ -107,7 +108,7 @@ public final class UserCreateParameterProperties extends UserEntityBaseParameter
 
     /**
      * Set the lastName property: Last name.
-     *
+     * 
      * @param lastName the lastName value to set.
      * @return the UserCreateParameterProperties object itself.
      */
@@ -118,7 +119,7 @@ public final class UserCreateParameterProperties extends UserEntityBaseParameter
 
     /**
      * Get the password property: User Password. If no value is provided, a default password is generated.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -127,7 +128,7 @@ public final class UserCreateParameterProperties extends UserEntityBaseParameter
 
     /**
      * Set the password property: User Password. If no value is provided, a default password is generated.
-     *
+     * 
      * @param password the password value to set.
      * @return the UserCreateParameterProperties object itself.
      */
@@ -139,7 +140,7 @@ public final class UserCreateParameterProperties extends UserEntityBaseParameter
     /**
      * Get the appType property: Determines the type of application which send the create user request. Default is
      * legacy portal.
-     *
+     * 
      * @return the appType value.
      */
     public AppType appType() {
@@ -149,7 +150,7 @@ public final class UserCreateParameterProperties extends UserEntityBaseParameter
     /**
      * Set the appType property: Determines the type of application which send the create user request. Default is
      * legacy portal.
-     *
+     * 
      * @param appType the appType value to set.
      * @return the UserCreateParameterProperties object itself.
      */
@@ -161,7 +162,7 @@ public final class UserCreateParameterProperties extends UserEntityBaseParameter
     /**
      * Get the confirmation property: Determines the type of confirmation e-mail that will be sent to the newly created
      * user.
-     *
+     * 
      * @return the confirmation value.
      */
     public Confirmation confirmation() {
@@ -171,7 +172,7 @@ public final class UserCreateParameterProperties extends UserEntityBaseParameter
     /**
      * Set the confirmation property: Determines the type of confirmation e-mail that will be sent to the newly created
      * user.
-     *
+     * 
      * @param confirmation the confirmation value to set.
      * @return the UserCreateParameterProperties object itself.
      */
@@ -180,21 +181,27 @@ public final class UserCreateParameterProperties extends UserEntityBaseParameter
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserCreateParameterProperties withState(UserState state) {
         super.withState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserCreateParameterProperties withNote(String note) {
         super.withNote(note);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserCreateParameterProperties withIdentities(List<UserIdentityContractInner> identities) {
         super.withIdentities(identities);
@@ -203,25 +210,95 @@ public final class UserCreateParameterProperties extends UserEntityBaseParameter
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (email() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property email in model UserCreateParameterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property email in model UserCreateParameterProperties"));
         }
         if (firstName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property firstName in model UserCreateParameterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property firstName in model UserCreateParameterProperties"));
         }
         if (lastName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property lastName in model UserCreateParameterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property lastName in model UserCreateParameterProperties"));
+        }
+        if (identities() != null) {
+            identities().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UserCreateParameterProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("note", note());
+        jsonWriter.writeArrayField("identities", identities(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeStringField("firstName", this.firstName);
+        jsonWriter.writeStringField("lastName", this.lastName);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("appType", this.appType == null ? null : this.appType.toString());
+        jsonWriter.writeStringField("confirmation", this.confirmation == null ? null : this.confirmation.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserCreateParameterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserCreateParameterProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserCreateParameterProperties.
+     */
+    public static UserCreateParameterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserCreateParameterProperties deserializedUserCreateParameterProperties
+                = new UserCreateParameterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedUserCreateParameterProperties.withState(UserState.fromString(reader.getString()));
+                } else if ("note".equals(fieldName)) {
+                    deserializedUserCreateParameterProperties.withNote(reader.getString());
+                } else if ("identities".equals(fieldName)) {
+                    List<UserIdentityContractInner> identities
+                        = reader.readArray(reader1 -> UserIdentityContractInner.fromJson(reader1));
+                    deserializedUserCreateParameterProperties.withIdentities(identities);
+                } else if ("email".equals(fieldName)) {
+                    deserializedUserCreateParameterProperties.email = reader.getString();
+                } else if ("firstName".equals(fieldName)) {
+                    deserializedUserCreateParameterProperties.firstName = reader.getString();
+                } else if ("lastName".equals(fieldName)) {
+                    deserializedUserCreateParameterProperties.lastName = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedUserCreateParameterProperties.password = reader.getString();
+                } else if ("appType".equals(fieldName)) {
+                    deserializedUserCreateParameterProperties.appType = AppType.fromString(reader.getString());
+                } else if ("confirmation".equals(fieldName)) {
+                    deserializedUserCreateParameterProperties.confirmation
+                        = Confirmation.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserCreateParameterProperties;
+        });
+    }
 }

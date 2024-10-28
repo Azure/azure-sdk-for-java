@@ -28,14 +28,14 @@ public final class ProductSubscriptionsImpl implements ProductSubscriptions {
     public PagedIterable<SubscriptionContract> list(String resourceGroupName, String serviceName, String productId) {
         PagedIterable<SubscriptionContractInner> inner
             = this.serviceClient().list(resourceGroupName, serviceName, productId);
-        return Utils.mapPage(inner, inner1 -> new SubscriptionContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SubscriptionContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SubscriptionContract> list(String resourceGroupName, String serviceName, String productId,
         String filter, Integer top, Integer skip, Context context) {
         PagedIterable<SubscriptionContractInner> inner
             = this.serviceClient().list(resourceGroupName, serviceName, productId, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new SubscriptionContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SubscriptionContractImpl(inner1, this.manager()));
     }
 
     private ProductSubscriptionsClient serviceClient() {

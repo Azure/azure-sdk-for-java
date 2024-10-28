@@ -9,12 +9,14 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.ContentItemContractInner;
 
-/** Contains all response data for the createOrUpdate operation. */
+/**
+ * Contains all response data for the createOrUpdate operation.
+ */
 public final class ContentItemsCreateOrUpdateResponse
     extends ResponseBase<ContentItemsCreateOrUpdateHeaders, ContentItemContractInner> {
     /**
      * Creates an instance of ContentItemsCreateOrUpdateResponse.
-     *
+     * 
      * @param request the request which resulted in this ContentItemsCreateOrUpdateResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -28,7 +30,7 @@ public final class ContentItemsCreateOrUpdateResponse
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

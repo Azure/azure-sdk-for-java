@@ -4,33 +4,38 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for Api Get. */
+/**
+ * Samples for Api Get.
+ */
 public final class ApiGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetApiRevision.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementGetApiRevision.json
      */
     /**
      * Sample code: ApiManagementGetApiRevisionContract.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementGetApiRevisionContract(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+    public static void
+        apiManagementGetApiRevisionContract(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager.apis().getWithResponse("rg1", "apimService1", "echo-api;rev=3", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetApiContract.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementGetApiContract.json
      */
     /**
      * Sample code: ApiManagementGetApiContract.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementGetApiContract(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .apis()
+    public static void
+        apiManagementGetApiContract(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apis()
             .getWithResponse("rg1", "apimService1", "57d1f7558aa04f15146d9d8a", com.azure.core.util.Context.NONE);
     }
 }

@@ -26,17 +26,23 @@ import com.azure.resourcemanager.apimanagement.fluent.models.PolicyDescriptionCo
 import com.azure.resourcemanager.apimanagement.models.PolicyScopeContract;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PolicyDescriptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PolicyDescriptionsClient.
+ */
 public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PolicyDescriptionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of PolicyDescriptionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PolicyDescriptionsClientImpl(ApiManagementClientImpl client) {
@@ -64,15 +70,15 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
 
     /**
      * Lists all policy descriptions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param scope Policy scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return descriptions of API Management policies along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return descriptions of API Management policies along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyDescriptionCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
@@ -101,7 +107,7 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
 
     /**
      * Lists all policy descriptions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param scope Policy scope.
@@ -109,8 +115,8 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return descriptions of API Management policies along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return descriptions of API Management policies along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyDescriptionCollectionInner>> listByServiceWithResponseAsync(String resourceGroupName,
@@ -138,7 +144,7 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
 
     /**
      * Lists all policy descriptions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -155,7 +161,7 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
 
     /**
      * Lists all policy descriptions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param scope Policy scope.
@@ -173,7 +179,7 @@ public final class PolicyDescriptionsClientImpl implements PolicyDescriptionsCli
 
     /**
      * Lists all policy descriptions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

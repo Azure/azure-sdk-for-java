@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Logger type. */
+/**
+ * Logger type.
+ */
 public final class LoggerType extends ExpandableStringEnum<LoggerType> {
-    /** Static value azureEventHub for LoggerType. */
+    /**
+     * Static value azureEventHub for LoggerType.
+     */
     public static final LoggerType AZURE_EVENT_HUB = fromString("azureEventHub");
 
-    /** Static value applicationInsights for LoggerType. */
+    /**
+     * Static value applicationInsights for LoggerType.
+     */
     public static final LoggerType APPLICATION_INSIGHTS = fromString("applicationInsights");
 
-    /** Static value azureMonitor for LoggerType. */
+    /**
+     * Static value azureMonitor for LoggerType.
+     */
     public static final LoggerType AZURE_MONITOR = fromString("azureMonitor");
 
     /**
      * Creates a new instance of LoggerType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class LoggerType extends ExpandableStringEnum<LoggerType> {
 
     /**
      * Creates or finds a LoggerType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LoggerType.
      */
-    @JsonCreator
     public static LoggerType fromString(String name) {
         return fromString(name, LoggerType.class);
     }
 
     /**
      * Gets known LoggerType values.
-     *
+     * 
      * @return known LoggerType values.
      */
     public static Collection<LoggerType> values() {

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AccessIdName. */
+/**
+ * Defines values for AccessIdName.
+ */
 public final class AccessIdName extends ExpandableStringEnum<AccessIdName> {
-    /** Static value access for AccessIdName. */
+    /**
+     * Static value access for AccessIdName.
+     */
     public static final AccessIdName ACCESS = fromString("access");
 
-    /** Static value gitAccess for AccessIdName. */
+    /**
+     * Static value gitAccess for AccessIdName.
+     */
     public static final AccessIdName GIT_ACCESS = fromString("gitAccess");
 
     /**
      * Creates a new instance of AccessIdName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class AccessIdName extends ExpandableStringEnum<AccessIdName> {
 
     /**
      * Creates or finds a AccessIdName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AccessIdName.
      */
-    @JsonCreator
     public static AccessIdName fromString(String name) {
         return fromString(name, AccessIdName.class);
     }
 
     /**
      * Gets known AccessIdName values.
-     *
+     * 
      * @return known AccessIdName values.
      */
     public static Collection<AccessIdName> values() {

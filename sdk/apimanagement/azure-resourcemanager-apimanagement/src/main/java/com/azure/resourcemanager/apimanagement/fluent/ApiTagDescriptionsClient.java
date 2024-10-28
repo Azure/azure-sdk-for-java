@@ -15,16 +15,18 @@ import com.azure.resourcemanager.apimanagement.models.ApiTagDescriptionsGetEntit
 import com.azure.resourcemanager.apimanagement.models.ApiTagDescriptionsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.TagDescriptionCreateParameters;
 
-/** An instance of this class provides access to all the operations defined in ApiTagDescriptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApiTagDescriptionsClient.
+ */
 public interface ApiTagDescriptionsClient {
     /**
      * Lists all Tags descriptions in scope of API. Model similar to swagger - tagDescription is defined on API level
      * but tag may be assigned to the Operations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -37,15 +39,15 @@ public interface ApiTagDescriptionsClient {
     /**
      * Lists all Tags descriptions in scope of API. Model similar to swagger - tagDescription is defined on API level
      * but tag may be assigned to the Operations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| displayName | filter | ge,
-     *     le, eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| displayName | filter | ge, le,
+     * eq, ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| name | filter | ge, le, eq, ne, gt, lt
+     * | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -60,13 +62,13 @@ public interface ApiTagDescriptionsClient {
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param tagDescriptionId Tag description identifier. Used when creating tagDescription for API/Tag association.
-     *     Based on API and Tag names.
+     * Based on API and Tag names.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -79,13 +81,13 @@ public interface ApiTagDescriptionsClient {
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param tagDescriptionId Tag description identifier. Used when creating tagDescription for API/Tag association.
-     *     Based on API and Tag names.
+     * Based on API and Tag names.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -95,13 +97,13 @@ public interface ApiTagDescriptionsClient {
 
     /**
      * Get Tag description in scope of API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param tagDescriptionId Tag description identifier. Used when creating tagDescription for API/Tag association.
-     *     Based on API and Tag names.
+     * Based on API and Tag names.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -114,13 +116,13 @@ public interface ApiTagDescriptionsClient {
 
     /**
      * Get Tag description in scope of API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param tagDescriptionId Tag description identifier. Used when creating tagDescription for API/Tag association.
-     *     Based on API and Tag names.
+     * Based on API and Tag names.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -132,13 +134,13 @@ public interface ApiTagDescriptionsClient {
 
     /**
      * Create/Update tag description in scope of the Api.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param tagDescriptionId Tag description identifier. Used when creating tagDescription for API/Tag association.
-     *     Based on API and Tag names.
+     * Based on API and Tag names.
      * @param parameters Create parameters.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @param context The context to associate with this operation.
@@ -154,13 +156,13 @@ public interface ApiTagDescriptionsClient {
 
     /**
      * Create/Update tag description in scope of the Api.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param tagDescriptionId Tag description identifier. Used when creating tagDescription for API/Tag association.
-     *     Based on API and Tag names.
+     * Based on API and Tag names.
      * @param parameters Create parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -173,15 +175,15 @@ public interface ApiTagDescriptionsClient {
 
     /**
      * Delete tag description for the Api.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param tagDescriptionId Tag description identifier. Used when creating tagDescription for API/Tag association.
-     *     Based on API and Tag names.
+     * Based on API and Tag names.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -194,15 +196,15 @@ public interface ApiTagDescriptionsClient {
 
     /**
      * Delete tag description for the Api.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
-     *     revision has ;rev=n as a suffix where n is the revision number.
+     * revision has ;rev=n as a suffix where n is the revision number.
      * @param tagDescriptionId Tag description identifier. Used when creating tagDescription for API/Tag association.
-     *     Based on API and Tag names.
+     * Based on API and Tag names.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

@@ -143,10 +143,11 @@ public final class AuthorizationContractImpl
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.authorizationProviderId = Utils.getValueFromIdByName(innerObject.id(), "authorizationProviders");
-        this.authorizationId = Utils.getValueFromIdByName(innerObject.id(), "authorizations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.authorizationProviderId
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "authorizationProviders");
+        this.authorizationId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "authorizations");
     }
 
     public AuthorizationContract refresh() {

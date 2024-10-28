@@ -6,49 +6,52 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A request to perform the connectivity check operation on a API Management service. */
+/**
+ * A request to perform the connectivity check operation on a API Management service.
+ */
 @Fluent
-public final class ConnectivityCheckRequest {
+public final class ConnectivityCheckRequest implements JsonSerializable<ConnectivityCheckRequest> {
     /*
      * Definitions about the connectivity check origin.
      */
-    @JsonProperty(value = "source", required = true)
     private ConnectivityCheckRequestSource source;
 
     /*
      * The connectivity check operation destination.
      */
-    @JsonProperty(value = "destination", required = true)
     private ConnectivityCheckRequestDestination destination;
 
     /*
      * The IP version to be used. Only IPv4 is supported for now.
      */
-    @JsonProperty(value = "preferredIPVersion")
     private PreferredIpVersion preferredIpVersion;
 
     /*
      * The request's protocol. Specific protocol configuration can be available based on this selection. The specified
      * destination address must be coherent with this value.
      */
-    @JsonProperty(value = "protocol")
     private ConnectivityCheckProtocol protocol;
 
     /*
      * Protocol-specific configuration.
      */
-    @JsonProperty(value = "protocolConfiguration")
     private ConnectivityCheckRequestProtocolConfiguration protocolConfiguration;
 
-    /** Creates an instance of ConnectivityCheckRequest class. */
+    /**
+     * Creates an instance of ConnectivityCheckRequest class.
+     */
     public ConnectivityCheckRequest() {
     }
 
     /**
      * Get the source property: Definitions about the connectivity check origin.
-     *
+     * 
      * @return the source value.
      */
     public ConnectivityCheckRequestSource source() {
@@ -57,7 +60,7 @@ public final class ConnectivityCheckRequest {
 
     /**
      * Set the source property: Definitions about the connectivity check origin.
-     *
+     * 
      * @param source the source value to set.
      * @return the ConnectivityCheckRequest object itself.
      */
@@ -68,7 +71,7 @@ public final class ConnectivityCheckRequest {
 
     /**
      * Get the destination property: The connectivity check operation destination.
-     *
+     * 
      * @return the destination value.
      */
     public ConnectivityCheckRequestDestination destination() {
@@ -77,7 +80,7 @@ public final class ConnectivityCheckRequest {
 
     /**
      * Set the destination property: The connectivity check operation destination.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the ConnectivityCheckRequest object itself.
      */
@@ -88,7 +91,7 @@ public final class ConnectivityCheckRequest {
 
     /**
      * Get the preferredIpVersion property: The IP version to be used. Only IPv4 is supported for now.
-     *
+     * 
      * @return the preferredIpVersion value.
      */
     public PreferredIpVersion preferredIpVersion() {
@@ -97,7 +100,7 @@ public final class ConnectivityCheckRequest {
 
     /**
      * Set the preferredIpVersion property: The IP version to be used. Only IPv4 is supported for now.
-     *
+     * 
      * @param preferredIpVersion the preferredIpVersion value to set.
      * @return the ConnectivityCheckRequest object itself.
      */
@@ -109,7 +112,7 @@ public final class ConnectivityCheckRequest {
     /**
      * Get the protocol property: The request's protocol. Specific protocol configuration can be available based on this
      * selection. The specified destination address must be coherent with this value.
-     *
+     * 
      * @return the protocol value.
      */
     public ConnectivityCheckProtocol protocol() {
@@ -119,7 +122,7 @@ public final class ConnectivityCheckRequest {
     /**
      * Set the protocol property: The request's protocol. Specific protocol configuration can be available based on this
      * selection. The specified destination address must be coherent with this value.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the ConnectivityCheckRequest object itself.
      */
@@ -130,7 +133,7 @@ public final class ConnectivityCheckRequest {
 
     /**
      * Get the protocolConfiguration property: Protocol-specific configuration.
-     *
+     * 
      * @return the protocolConfiguration value.
      */
     public ConnectivityCheckRequestProtocolConfiguration protocolConfiguration() {
@@ -139,7 +142,7 @@ public final class ConnectivityCheckRequest {
 
     /**
      * Set the protocolConfiguration property: Protocol-specific configuration.
-     *
+     * 
      * @param protocolConfiguration the protocolConfiguration value to set.
      * @return the ConnectivityCheckRequest object itself.
      */
@@ -151,19 +154,21 @@ public final class ConnectivityCheckRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (source() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property source in model ConnectivityCheckRequest"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property source in model ConnectivityCheckRequest"));
         } else {
             source().validate();
         }
         if (destination() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property destination in model ConnectivityCheckRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property destination in model ConnectivityCheckRequest"));
         } else {
             destination().validate();
         }
@@ -173,4 +178,58 @@ public final class ConnectivityCheckRequest {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectivityCheckRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeJsonField("destination", this.destination);
+        jsonWriter.writeStringField("preferredIPVersion",
+            this.preferredIpVersion == null ? null : this.preferredIpVersion.toString());
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeJsonField("protocolConfiguration", this.protocolConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectivityCheckRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectivityCheckRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectivityCheckRequest.
+     */
+    public static ConnectivityCheckRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectivityCheckRequest deserializedConnectivityCheckRequest = new ConnectivityCheckRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedConnectivityCheckRequest.source = ConnectivityCheckRequestSource.fromJson(reader);
+                } else if ("destination".equals(fieldName)) {
+                    deserializedConnectivityCheckRequest.destination
+                        = ConnectivityCheckRequestDestination.fromJson(reader);
+                } else if ("preferredIPVersion".equals(fieldName)) {
+                    deserializedConnectivityCheckRequest.preferredIpVersion
+                        = PreferredIpVersion.fromString(reader.getString());
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedConnectivityCheckRequest.protocol
+                        = ConnectivityCheckProtocol.fromString(reader.getString());
+                } else if ("protocolConfiguration".equals(fieldName)) {
+                    deserializedConnectivityCheckRequest.protocolConfiguration
+                        = ConnectivityCheckRequestProtocolConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectivityCheckRequest;
+        });
+    }
 }

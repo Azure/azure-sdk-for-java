@@ -7,11 +7,13 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PolicyDescriptions. */
+/**
+ * Resource collection API of PolicyDescriptions.
+ */
 public interface PolicyDescriptions {
     /**
      * Lists all policy descriptions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param scope Policy scope.
@@ -26,7 +28,7 @@ public interface PolicyDescriptions {
 
     /**
      * Lists all policy descriptions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

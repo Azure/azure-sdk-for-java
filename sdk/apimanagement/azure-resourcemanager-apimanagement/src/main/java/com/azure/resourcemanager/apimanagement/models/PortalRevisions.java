@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PortalRevisions. */
+/**
+ * Resource collection API of PortalRevisions.
+ */
 public interface PortalRevisions {
     /**
      * Lists developer portal's revisions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,13 +26,15 @@ public interface PortalRevisions {
 
     /**
      * Lists developer portal's revisions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Supported operators | Supported functions |
-     *     |-------------|------------------------|-----------------------------------|
-     *     <p>|name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith| |description | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith| |isCurrent | eq, ne | |.
+     * |-------------|------------------------|-----------------------------------|
+     * 
+     * |name | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+     * |description | ge, le, eq, ne, gt, lt | substringof, contains, startswith, endswith|
+     * |isCurrent | eq, ne | |.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -44,11 +48,11 @@ public interface PortalRevisions {
 
     /**
      * Gets the developer portal revision specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -60,11 +64,11 @@ public interface PortalRevisions {
 
     /**
      * Gets the developer portal revision specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -73,11 +77,11 @@ public interface PortalRevisions {
 
     /**
      * Gets the developer portal's revision specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -89,11 +93,11 @@ public interface PortalRevisions {
 
     /**
      * Gets the developer portal's revision specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param portalRevisionId Portal revision identifier. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -103,7 +107,7 @@ public interface PortalRevisions {
 
     /**
      * Gets the developer portal's revision specified by its identifier.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -114,7 +118,7 @@ public interface PortalRevisions {
 
     /**
      * Gets the developer portal's revision specified by its identifier.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,7 +130,7 @@ public interface PortalRevisions {
 
     /**
      * Begins definition for a new PortalRevisionContract resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new PortalRevisionContract definition.
      */

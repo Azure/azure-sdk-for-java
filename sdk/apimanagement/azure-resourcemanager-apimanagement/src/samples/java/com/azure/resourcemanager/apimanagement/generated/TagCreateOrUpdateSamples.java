@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for Tag CreateOrUpdate. */
+/**
+ * Samples for Tag CreateOrUpdate.
+ */
 public final class TagCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateTag.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreateTag.json
      */
     /**
      * Sample code: ApiManagementCreateTag.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementCreateTag(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {

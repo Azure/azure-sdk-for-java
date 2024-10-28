@@ -5,39 +5,46 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Issue contract Update Properties. */
+/**
+ * Issue contract Update Properties.
+ */
 @Fluent
-public final class KeyVaultLastAccessStatusContractProperties {
+public final class KeyVaultLastAccessStatusContractProperties
+    implements JsonSerializable<KeyVaultLastAccessStatusContractProperties> {
     /*
      * Last status code for sync and refresh of secret from key vault.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Details of the error else empty.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Last time secret was accessed. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by
      * the ISO 8601 standard.
-     *
      */
-    @JsonProperty(value = "timeStampUtc")
     private OffsetDateTime timestampUtc;
 
-    /** Creates an instance of KeyVaultLastAccessStatusContractProperties class. */
+    /**
+     * Creates an instance of KeyVaultLastAccessStatusContractProperties class.
+     */
     public KeyVaultLastAccessStatusContractProperties() {
     }
 
     /**
      * Get the code property: Last status code for sync and refresh of secret from key vault.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -46,7 +53,7 @@ public final class KeyVaultLastAccessStatusContractProperties {
 
     /**
      * Set the code property: Last status code for sync and refresh of secret from key vault.
-     *
+     * 
      * @param code the code value to set.
      * @return the KeyVaultLastAccessStatusContractProperties object itself.
      */
@@ -57,7 +64,7 @@ public final class KeyVaultLastAccessStatusContractProperties {
 
     /**
      * Get the message property: Details of the error else empty.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -66,7 +73,7 @@ public final class KeyVaultLastAccessStatusContractProperties {
 
     /**
      * Set the message property: Details of the error else empty.
-     *
+     * 
      * @param message the message value to set.
      * @return the KeyVaultLastAccessStatusContractProperties object itself.
      */
@@ -78,7 +85,7 @@ public final class KeyVaultLastAccessStatusContractProperties {
     /**
      * Get the timestampUtc property: Last time secret was accessed. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the timestampUtc value.
      */
     public OffsetDateTime timestampUtc() {
@@ -88,7 +95,7 @@ public final class KeyVaultLastAccessStatusContractProperties {
     /**
      * Set the timestampUtc property: Last time secret was accessed. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param timestampUtc the timestampUtc value to set.
      * @return the KeyVaultLastAccessStatusContractProperties object itself.
      */
@@ -99,9 +106,54 @@ public final class KeyVaultLastAccessStatusContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("timeStampUtc",
+            this.timestampUtc == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestampUtc));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultLastAccessStatusContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultLastAccessStatusContractProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyVaultLastAccessStatusContractProperties.
+     */
+    public static KeyVaultLastAccessStatusContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultLastAccessStatusContractProperties deserializedKeyVaultLastAccessStatusContractProperties
+                = new KeyVaultLastAccessStatusContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedKeyVaultLastAccessStatusContractProperties.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedKeyVaultLastAccessStatusContractProperties.message = reader.getString();
+                } else if ("timeStampUtc".equals(fieldName)) {
+                    deserializedKeyVaultLastAccessStatusContractProperties.timestampUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultLastAccessStatusContractProperties;
+        });
     }
 }
