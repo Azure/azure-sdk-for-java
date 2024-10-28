@@ -130,14 +130,14 @@ public class AccessToken {
     }
 
     /**
-     * Gets the {@link Duration} until the {@link AccessToken} is no longer valid.
+     * Gets the {@link Duration} until the {@link AccessToken} expires.
      * <p>
      * The {@link Duration} is based on the {@link OffsetDateTime#now() current time} and may return a negative
-     * {@link Duration}, indicating that the {@link AccessToken} is no longer valid.
+     * {@link Duration}, indicating that the {@link AccessToken} has expired.
      *
-     * @return The {@link Duration} until the {@link AccessToken} is no longer valid.
+     * @return The {@link Duration} until the {@link AccessToken} expires.
      */
-    public Duration getRemainingValidity() {
+    public Duration getDurationUntilExpiration() {
         // Call Duration.between with the 'cache.getExpiresAt' as the start Temporal and 'now' as the end Temporal as
         // some TokenCredential implementations may use 'OffsetDateTime.MAX' as the expiration time. When comparing the
         // time between now and 'OffsetDateTime.MAX', depending on the Java version, it may attempt to change the end

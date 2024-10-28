@@ -289,7 +289,7 @@ public final class AccessTokenCache {
             return logBuilder;
         }
 
-        Duration tte = cache.getRemainingValidity();
+        Duration tte = cache.getDurationUntilExpiration();
         return logBuilder.addKeyValue("expiresAt", cache.getExpiresAt())
             .addKeyValue("tteSeconds", String.valueOf(tte.abs().getSeconds()))
             .addKeyValue("retryAfterSeconds", REFRESH_DELAY_STRING)
