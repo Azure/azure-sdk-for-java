@@ -75,7 +75,6 @@ extends:
           ServiceDirectory: identity
           SupportedClouds: 'Public,UsGov,China'
           EnvVars:
-            SYSTEM_ACCESSTOKEN: $(System.AccessToken)
             ARM_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
             ARM_CLIENT_ID: $(ARM_CLIENT_ID)
             ARM_TENANT_ID: $(ARM_TENANT_ID)
