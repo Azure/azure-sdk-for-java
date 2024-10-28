@@ -61,14 +61,13 @@ public class DataFactoryTests extends TestProxyTestBase {
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile).withDefaultSubscription();
 
-        StorageManager storageManager = StorageManager
-            .configure()
+        StorageManager storageManager = StorageManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
 
-        DataFactoryManager manager = DataFactoryManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        DataFactoryManager manager = DataFactoryManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
 
@@ -77,9 +76,7 @@ public class DataFactoryTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroup = testResourceGroup;
         } else {
-            resourceManager.resourceGroups().define(resourceGroup)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroup).withRegion(REGION).create();
         }
 
         try {

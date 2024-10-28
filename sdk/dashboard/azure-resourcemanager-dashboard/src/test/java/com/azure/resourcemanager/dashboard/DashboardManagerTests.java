@@ -34,7 +34,7 @@ public class DashboardManagerTests extends TestProxyTestBase {
     public void beforeTest() {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
-      
+
         resourceManager = ResourceManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile).withDefaultSubscription();

@@ -59,12 +59,11 @@ public class DataProtectionManagerTest extends TestProxyTestBase {
         final TokenCredential credential = getIdentityTestCredential(super.interceptorManager);
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        resourceManager = ResourceManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        resourceManager = ResourceManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile).withDefaultSubscription();
 
-        dataProtectionManager = DataProtectionManager
-            .configure()
+        dataProtectionManager = DataProtectionManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);

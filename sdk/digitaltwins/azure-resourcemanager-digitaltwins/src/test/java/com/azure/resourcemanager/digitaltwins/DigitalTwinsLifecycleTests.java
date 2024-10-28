@@ -41,12 +41,12 @@ public class DigitalTwinsLifecycleTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        ResourceManager resourceManager = ResourceManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        ResourceManager resourceManager = ResourceManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile).withDefaultSubscription();
 
-        AzureDigitalTwinsManager digitalTwinsManager = AzureDigitalTwinsManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        AzureDigitalTwinsManager digitalTwinsManager = AzureDigitalTwinsManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager)).authenticate(credential, profile);
 
         ResourceGroup group = resourceManager.resourceGroups().define(rgName).withRegion(DEFAULT_REGION).create();
