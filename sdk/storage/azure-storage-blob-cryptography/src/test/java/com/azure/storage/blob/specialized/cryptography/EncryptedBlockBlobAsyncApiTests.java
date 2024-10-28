@@ -1460,20 +1460,29 @@ public class EncryptedBlockBlobAsyncApiTests extends BlobCryptographyTestBase {
 
     @Test
     public void encryptionUploadISOverwriteFails() {
-        //The error thrown diverges from the sync client, which throws a BlobStorageException, but chaging it would
-        //be a breaking change.
-        StepVerifier.create(bec.upload(DATA.getDefaultBinaryData()).then(bec.upload(DATA.getDefaultBinaryData())))
-            .verifyError(IllegalArgumentException.class);
+        byte[] randomData = getRandomByteArray(Constants.KB);
+        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
+
+        Mono<Response<BlockBlobItem>> response = bec.upload(DATA.getDefaultBinaryData())
+            .then(bec.uploadWithResponse(new BlobParallelUploadOptions(input, Constants.KB)
+                .setRequestConditions(new BlobRequestConditions()
+                    .setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD))));
+
+        StepVerifier.create(response)
+            .verifyError(BlobStorageException.class);
     }
 
     @Test
     public void encryptionUploadISOverwrite() {
+        byte[] randomData = getRandomByteArray(Constants.KB);
+        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
+
         Mono<byte[]> response = bec.upload(BinaryData.fromBytes(getRandomByteArray(Constants.KB)))
-            .then(bec.upload(DATA.getDefaultFlux(), null, true)
-                .then(FluxUtil.collectBytesInByteBufferStream(bec.downloadStream())));
+            .then(bec.uploadWithResponse(new BlobParallelUploadOptions(input, Constants.KB)))
+                .then(FluxUtil.collectBytesInByteBufferStream(bec.downloadStream()));
 
         StepVerifier.create(response)
-            .assertNext(r -> assertArrayEquals(DATA.getDefaultBytes(), r))
+            .assertNext(r -> assertArrayEquals(randomData, r))
             .verifyComplete();
     }
 
