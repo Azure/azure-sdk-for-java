@@ -13,25 +13,25 @@ public final class SubscriptionUnderManagementGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriptionUnderManagementGroupInner model = BinaryData.fromString(
-            "{\"properties\":{\"tenant\":\"ipheoflokeyyien\",\"displayName\":\"dlwtgrhpdj\",\"parent\":{\"id\":\"masxazjpqyegu\"},\"state\":\"hb\"},\"id\":\"xhejjzzvdud\",\"name\":\"wdslfhotwmcy\",\"type\":\"pwlbjnpg\"}")
+            "{\"properties\":{\"tenant\":\"uahaquhcdhmd\",\"displayName\":\"laexqp\",\"parent\":{\"id\":\"dmwsrcrgvxpvgomz\"},\"state\":\"misgwbnb\"},\"id\":\"e\",\"name\":\"dawkzbali\",\"type\":\"urqhaka\"}")
             .toObject(SubscriptionUnderManagementGroupInner.class);
-        Assertions.assertEquals("ipheoflokeyyien", model.tenant());
-        Assertions.assertEquals("dlwtgrhpdj", model.displayName());
-        Assertions.assertEquals("masxazjpqyegu", model.parent().id());
-        Assertions.assertEquals("hb", model.state());
+        Assertions.assertEquals("uahaquhcdhmd", model.tenant());
+        Assertions.assertEquals("laexqp", model.displayName());
+        Assertions.assertEquals("dmwsrcrgvxpvgomz", model.parent().id());
+        Assertions.assertEquals("misgwbnb", model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SubscriptionUnderManagementGroupInner model
-            = new SubscriptionUnderManagementGroupInner().withTenant("ipheoflokeyyien")
-                .withDisplayName("dlwtgrhpdj")
-                .withParent(new DescendantParentGroupInfo().withId("masxazjpqyegu"))
-                .withState("hb");
+            = new SubscriptionUnderManagementGroupInner().withTenant("uahaquhcdhmd")
+                .withDisplayName("laexqp")
+                .withParent(new DescendantParentGroupInfo().withId("dmwsrcrgvxpvgomz"))
+                .withState("misgwbnb");
         model = BinaryData.fromObject(model).toObject(SubscriptionUnderManagementGroupInner.class);
-        Assertions.assertEquals("ipheoflokeyyien", model.tenant());
-        Assertions.assertEquals("dlwtgrhpdj", model.displayName());
-        Assertions.assertEquals("masxazjpqyegu", model.parent().id());
-        Assertions.assertEquals("hb", model.state());
+        Assertions.assertEquals("uahaquhcdhmd", model.tenant());
+        Assertions.assertEquals("laexqp", model.displayName());
+        Assertions.assertEquals("dmwsrcrgvxpvgomz", model.parent().id());
+        Assertions.assertEquals("misgwbnb", model.state());
     }
 }

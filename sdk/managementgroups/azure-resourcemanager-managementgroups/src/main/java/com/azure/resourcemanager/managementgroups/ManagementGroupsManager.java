@@ -45,9 +45,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Entry point to ManagementGroupsManager. The Azure Management Groups API enables consolidation of multiple
- * subscriptions/resources into an organizational hierarchy and centrally manage access control, policies, alerting and
- * reporting for those resources.
+ * Entry point to ManagementGroupsManager.
+ * The Azure Management Groups API enables consolidation of multiple
+ * subscriptions/resources into an organizational hierarchy and centrally
+ * manage access control, policies, alerting and reporting for those resources.
  */
 public final class ManagementGroupsManager {
     private ManagementGroups managementGroups;
@@ -75,7 +76,7 @@ public final class ManagementGroupsManager {
 
     /**
      * Creates an instance of ManagementGroups service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the ManagementGroups service API instance.
@@ -88,7 +89,7 @@ public final class ManagementGroupsManager {
 
     /**
      * Creates an instance of ManagementGroups service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the ManagementGroups service API instance.
@@ -101,14 +102,16 @@ public final class ManagementGroupsManager {
 
     /**
      * Gets a Configurable instance that can be used to create ManagementGroupsManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new ManagementGroupsManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -180,8 +183,8 @@ public final class ManagementGroupsManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -223,7 +226,7 @@ public final class ManagementGroupsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.managementgroups")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -271,7 +274,7 @@ public final class ManagementGroupsManager {
 
     /**
      * Gets the resource collection API of ManagementGroups.
-     *
+     * 
      * @return Resource collection API of ManagementGroups.
      */
     public ManagementGroups managementGroups() {
@@ -283,7 +286,7 @@ public final class ManagementGroupsManager {
 
     /**
      * Gets the resource collection API of ManagementGroupSubscriptions.
-     *
+     * 
      * @return Resource collection API of ManagementGroupSubscriptions.
      */
     public ManagementGroupSubscriptions managementGroupSubscriptions() {
@@ -296,7 +299,7 @@ public final class ManagementGroupsManager {
 
     /**
      * Gets the resource collection API of HierarchySettingsOperations.
-     *
+     * 
      * @return Resource collection API of HierarchySettingsOperations.
      */
     public HierarchySettingsOperations hierarchySettingsOperations() {
@@ -309,7 +312,7 @@ public final class ManagementGroupsManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -321,7 +324,7 @@ public final class ManagementGroupsManager {
 
     /**
      * Gets the resource collection API of ResourceProviders.
-     *
+     * 
      * @return Resource collection API of ResourceProviders.
      */
     public ResourceProviders resourceProviders() {
@@ -333,7 +336,7 @@ public final class ManagementGroupsManager {
 
     /**
      * Gets the resource collection API of Entities.
-     *
+     * 
      * @return Resource collection API of Entities.
      */
     public Entities entities() {
@@ -344,8 +347,10 @@ public final class ManagementGroupsManager {
     }
 
     /**
-     * @return Wrapped service client ManagementGroupsApi providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client ManagementGroupsApi providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client ManagementGroupsApi.
      */
     public ManagementGroupsApi serviceClient() {
         return this.clientObject;

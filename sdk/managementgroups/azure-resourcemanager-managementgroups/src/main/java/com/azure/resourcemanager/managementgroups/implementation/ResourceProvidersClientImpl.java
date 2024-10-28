@@ -27,17 +27,23 @@ import com.azure.resourcemanager.managementgroups.fluent.models.TenantBackfillSt
 import com.azure.resourcemanager.managementgroups.models.CheckNameAvailabilityRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ManagementGroupsApiImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(ManagementGroupsApiImpl client) {
@@ -79,13 +85,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Checks if the specified management group name is valid and unique.
-     *
+     * 
      * @param checkNameAvailabilityRequest Management group name availability check parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to check management group name availability along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return describes the result of the request to check management group name availability along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityResultInner>>
@@ -109,14 +115,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Checks if the specified management group name is valid and unique.
-     *
+     * 
      * @param checkNameAvailabilityRequest Management group name availability check parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to check management group name availability along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return describes the result of the request to check management group name availability along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
@@ -139,13 +145,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Checks if the specified management group name is valid and unique.
-     *
+     * 
      * @param checkNameAvailabilityRequest Management group name availability check parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to check management group name availability on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckNameAvailabilityResultInner>
@@ -156,14 +162,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Checks if the specified management group name is valid and unique.
-     *
+     * 
      * @param checkNameAvailabilityRequest Management group name availability check parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the result of the request to check management group name availability along with {@link
-     *     Response}.
+     * @return describes the result of the request to check management group name availability along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckNameAvailabilityResultInner>
@@ -173,7 +179,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Checks if the specified management group name is valid and unique.
-     *
+     * 
      * @param checkNameAvailabilityRequest Management group name availability check parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -188,7 +194,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Starts backfilling subscriptions for the Tenant.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the tenant backfill status along with {@link Response} on successful completion of {@link Mono}.
@@ -208,7 +214,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Starts backfilling subscriptions for the Tenant.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -228,7 +234,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Starts backfilling subscriptions for the Tenant.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the tenant backfill status on successful completion of {@link Mono}.
@@ -240,7 +246,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Starts backfilling subscriptions for the Tenant.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -254,7 +260,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Starts backfilling subscriptions for the Tenant.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the tenant backfill status.
@@ -266,7 +272,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Gets tenant backfill status.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tenant backfill status along with {@link Response} on successful completion of {@link Mono}.
@@ -286,7 +292,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Gets tenant backfill status.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -306,7 +312,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Gets tenant backfill status.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tenant backfill status on successful completion of {@link Mono}.
@@ -318,7 +324,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Gets tenant backfill status.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -332,7 +338,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Gets tenant backfill status.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tenant backfill status.

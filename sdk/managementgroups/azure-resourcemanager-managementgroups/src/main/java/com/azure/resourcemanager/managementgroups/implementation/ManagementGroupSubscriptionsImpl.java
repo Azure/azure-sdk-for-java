@@ -81,14 +81,16 @@ public final class ManagementGroupSubscriptionsImpl implements ManagementGroupSu
     public PagedIterable<SubscriptionUnderManagementGroup> getSubscriptionsUnderManagementGroup(String groupId) {
         PagedIterable<SubscriptionUnderManagementGroupInner> inner
             = this.serviceClient().getSubscriptionsUnderManagementGroup(groupId);
-        return Utils.mapPage(inner, inner1 -> new SubscriptionUnderManagementGroupImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SubscriptionUnderManagementGroupImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SubscriptionUnderManagementGroup> getSubscriptionsUnderManagementGroup(String groupId,
         String skiptoken, Context context) {
         PagedIterable<SubscriptionUnderManagementGroupInner> inner
             = this.serviceClient().getSubscriptionsUnderManagementGroup(groupId, skiptoken, context);
-        return Utils.mapPage(inner, inner1 -> new SubscriptionUnderManagementGroupImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SubscriptionUnderManagementGroupImpl(inner1, this.manager()));
     }
 
     private ManagementGroupSubscriptionsClient serviceClient() {
