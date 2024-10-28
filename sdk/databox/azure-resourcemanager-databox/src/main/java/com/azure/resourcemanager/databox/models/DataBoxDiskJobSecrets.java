@@ -5,41 +5,66 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The secrets related to disk job. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobSecretsType")
-@JsonTypeName("DataBoxDisk")
+/**
+ * The secrets related to disk job.
+ */
 @Immutable
 public final class DataBoxDiskJobSecrets extends JobSecrets {
     /*
+     * Used to indicate what type of job secrets object.
+     */
+    private ClassDiscriminator jobSecretsType = ClassDiscriminator.DATA_BOX_DISK;
+
+    /*
      * Contains the list of secrets object for that device.
      */
-    @JsonProperty(value = "diskSecrets", access = JsonProperty.Access.WRITE_ONLY)
     private List<DiskSecret> diskSecrets;
 
     /*
      * PassKey for the disk Job.
      */
-    @JsonProperty(value = "passKey", access = JsonProperty.Access.WRITE_ONLY)
     private String passKey;
 
     /*
      * Whether passkey was provided by user.
      */
-    @JsonProperty(value = "isPasskeyUserDefined", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isPasskeyUserDefined;
 
-    /** Creates an instance of DataBoxDiskJobSecrets class. */
+    /*
+     * Error while fetching the secrets.
+     */
+    private CloudError error;
+
+    /*
+     * Dc Access Security Code for Customer Managed Shipping
+     */
+    private DcAccessSecurityCode dcAccessSecurityCode;
+
+    /**
+     * Creates an instance of DataBoxDiskJobSecrets class.
+     */
     public DataBoxDiskJobSecrets() {
     }
 
     /**
+     * Get the jobSecretsType property: Used to indicate what type of job secrets object.
+     * 
+     * @return the jobSecretsType value.
+     */
+    @Override
+    public ClassDiscriminator jobSecretsType() {
+        return this.jobSecretsType;
+    }
+
+    /**
      * Get the diskSecrets property: Contains the list of secrets object for that device.
-     *
+     * 
      * @return the diskSecrets value.
      */
     public List<DiskSecret> diskSecrets() {
@@ -48,7 +73,7 @@ public final class DataBoxDiskJobSecrets extends JobSecrets {
 
     /**
      * Get the passKey property: PassKey for the disk Job.
-     *
+     * 
      * @return the passKey value.
      */
     public String passKey() {
@@ -57,7 +82,7 @@ public final class DataBoxDiskJobSecrets extends JobSecrets {
 
     /**
      * Get the isPasskeyUserDefined property: Whether passkey was provided by user.
-     *
+     * 
      * @return the isPasskeyUserDefined value.
      */
     public Boolean isPasskeyUserDefined() {
@@ -65,15 +90,89 @@ public final class DataBoxDiskJobSecrets extends JobSecrets {
     }
 
     /**
+     * Get the error property: Error while fetching the secrets.
+     * 
+     * @return the error value.
+     */
+    @Override
+    public CloudError error() {
+        return this.error;
+    }
+
+    /**
+     * Get the dcAccessSecurityCode property: Dc Access Security Code for Customer Managed Shipping.
+     * 
+     * @return the dcAccessSecurityCode value.
+     */
+    @Override
+    public DcAccessSecurityCode dcAccessSecurityCode() {
+        return this.dcAccessSecurityCode;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (diskSecrets() != null) {
             diskSecrets().forEach(e -> e.validate());
         }
+        if (dcAccessSecurityCode() != null) {
+            dcAccessSecurityCode().validate();
+        }
+        if (error() != null) {
+            error().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobSecretsType",
+            this.jobSecretsType == null ? null : this.jobSecretsType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataBoxDiskJobSecrets from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataBoxDiskJobSecrets if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataBoxDiskJobSecrets.
+     */
+    public static DataBoxDiskJobSecrets fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataBoxDiskJobSecrets deserializedDataBoxDiskJobSecrets = new DataBoxDiskJobSecrets();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dcAccessSecurityCode".equals(fieldName)) {
+                    deserializedDataBoxDiskJobSecrets.dcAccessSecurityCode = DcAccessSecurityCode.fromJson(reader);
+                } else if ("error".equals(fieldName)) {
+                    deserializedDataBoxDiskJobSecrets.error = CloudError.fromJson(reader);
+                } else if ("jobSecretsType".equals(fieldName)) {
+                    deserializedDataBoxDiskJobSecrets.jobSecretsType
+                        = ClassDiscriminator.fromString(reader.getString());
+                } else if ("diskSecrets".equals(fieldName)) {
+                    List<DiskSecret> diskSecrets = reader.readArray(reader1 -> DiskSecret.fromJson(reader1));
+                    deserializedDataBoxDiskJobSecrets.diskSecrets = diskSecrets;
+                } else if ("passKey".equals(fieldName)) {
+                    deserializedDataBoxDiskJobSecrets.passKey = reader.getString();
+                } else if ("isPasskeyUserDefined".equals(fieldName)) {
+                    deserializedDataBoxDiskJobSecrets.isPasskeyUserDefined = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataBoxDiskJobSecrets;
+        });
     }
 }

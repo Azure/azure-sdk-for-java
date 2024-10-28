@@ -5,49 +5,53 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Job stages. */
+/**
+ * Job stages.
+ */
 @Immutable
-public final class JobStages {
+public final class JobStages implements JsonSerializable<JobStages> {
     /*
      * Name of the job stage.
      */
-    @JsonProperty(value = "stageName", access = JsonProperty.Access.WRITE_ONLY)
     private StageName stageName;
 
     /*
      * Display name of the job stage.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Status of the job stage.
      */
-    @JsonProperty(value = "stageStatus", access = JsonProperty.Access.WRITE_ONLY)
     private StageStatus stageStatus;
 
     /*
      * Time for the job stage in UTC ISO 8601 format.
      */
-    @JsonProperty(value = "stageTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime stageTime;
 
     /*
      * Job Stage Details
      */
-    @JsonProperty(value = "jobStageDetails", access = JsonProperty.Access.WRITE_ONLY)
     private Object jobStageDetails;
 
-    /** Creates an instance of JobStages class. */
+    /**
+     * Creates an instance of JobStages class.
+     */
     public JobStages() {
     }
 
     /**
      * Get the stageName property: Name of the job stage.
-     *
+     * 
      * @return the stageName value.
      */
     public StageName stageName() {
@@ -56,7 +60,7 @@ public final class JobStages {
 
     /**
      * Get the displayName property: Display name of the job stage.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -65,7 +69,7 @@ public final class JobStages {
 
     /**
      * Get the stageStatus property: Status of the job stage.
-     *
+     * 
      * @return the stageStatus value.
      */
     public StageStatus stageStatus() {
@@ -74,7 +78,7 @@ public final class JobStages {
 
     /**
      * Get the stageTime property: Time for the job stage in UTC ISO 8601 format.
-     *
+     * 
      * @return the stageTime value.
      */
     public OffsetDateTime stageTime() {
@@ -83,7 +87,7 @@ public final class JobStages {
 
     /**
      * Get the jobStageDetails property: Job Stage Details.
-     *
+     * 
      * @return the jobStageDetails value.
      */
     public Object jobStageDetails() {
@@ -92,9 +96,53 @@ public final class JobStages {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobStages from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobStages if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the JobStages.
+     */
+    public static JobStages fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobStages deserializedJobStages = new JobStages();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("stageName".equals(fieldName)) {
+                    deserializedJobStages.stageName = StageName.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedJobStages.displayName = reader.getString();
+                } else if ("stageStatus".equals(fieldName)) {
+                    deserializedJobStages.stageStatus = StageStatus.fromString(reader.getString());
+                } else if ("stageTime".equals(fieldName)) {
+                    deserializedJobStages.stageTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("jobStageDetails".equals(fieldName)) {
+                    deserializedJobStages.jobStageDetails = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobStages;
+        });
     }
 }

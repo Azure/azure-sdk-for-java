@@ -1,14 +1,704 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.4 (2024-10-28)
+
+- Azure Resource Manager DataBox client library for Java. This package contains Microsoft Azure SDK for DataBox Management SDK.  Package tag package-2022-12. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+#### `models.DataBoxAccountCopyLogDetails` was modified
 
-### Bugs Fixed
+* `toJson(com.azure.json.JsonWriter)` was added
+* `copyLogDetailsType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
-### Other Changes
+#### `models.TransportAvailabilityRequest` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DataBoxDiskCopyProgress` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TransferConfiguration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.UserAssignedIdentity` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TransferConfigurationTransferAllDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AccountCredentialDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.UpdateJobDetails` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DataBoxCustomerDiskCopyLogDetails` was modified
+
+* `copyLogDetailsType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DataBoxDiskGranularCopyProgress` was modified
+
+* `isEnumerationInProgress()` was added
+* `filesErroredOut()` was added
+* `bytesProcessed()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `directoriesErroredOut()` was added
+* `dataAccountType()` was added
+* `actions()` was added
+* `invalidFileBytesUploaded()` was added
+* `totalBytesToProcess()` was added
+* `error()` was added
+* `filesProcessed()` was added
+* `accountId()` was added
+* `invalidDirectoriesProcessed()` was added
+* `storageAccountName()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `renamedContainerCount()` was added
+* `transferType()` was added
+* `invalidFilesProcessed()` was added
+* `totalFilesToProcess()` was added
+
+#### `models.DataboxJobSecrets` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `error()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `jobSecretsType()` was added
+* `dcAccessSecurityCode()` was added
+
+#### `models.DataBoxHeavyJobDetails` was modified
+
+* `dataCenterCode()` was added
+* `reverseShipmentLabelSasKey()` was added
+* `returnPackage()` was added
+* `jobStages()` was added
+* `datacenterAddress()` was added
+* `actions()` was added
+* `chainOfCustodySasKey()` was added
+* `lastMitigationActionOnJob()` was added
+* `deviceErasureDetails()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `jobDetailsType()` was added
+* `copyLogDetails()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `deliveryPackage()` was added
+
+#### `models.JobResourceUpdateParameter` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.JobDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `jobDetailsType()` was added
+
+#### `models.DataBoxHeavyAccountCopyLogDetails` was modified
+
+* `copyLogDetailsType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.PackageShippingDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.FilterFileDetails` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DataImportDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DataBoxDiskJobSecrets` was modified
+
+* `dcAccessSecurityCode()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `error()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `jobSecretsType()` was added
+
+#### `models.IdentityProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TransferConfigurationTransferFilterDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.UnencryptedCredentialsList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.JobSecrets` was modified
+
+* `jobSecretsType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SkuAvailabilityValidationRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `validationType()` was added
+
+#### `models.TransportAvailabilityDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DataAccountDetails` was modified
+
+* `dataAccountType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TransferFilterDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DiskScheduleAvailabilityRequest` was modified
+
+* `skuName()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.PreferencesValidationResponseProperties` was modified
+
+* `validationType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `error()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ShareCredentialDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ScheduleAvailabilityRequest` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `skuName()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ContactDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.StorageAccountDetails` was modified
+
+* `dataAccountType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DataBoxJobDetails` was modified
+
+* `actions()` was added
+* `datacenterAddress()` was added
+* `deviceErasureDetails()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `jobDetailsType()` was added
+* `deliveryPackage()` was added
+* `dataCenterCode()` was added
+* `lastMitigationActionOnJob()` was added
+* `returnPackage()` was added
+* `jobStages()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `reverseShipmentLabelSasKey()` was added
+* `chainOfCustodySasKey()` was added
+* `copyLogDetails()` was added
+
+#### `models.ResourceIdentity` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CancellationReason` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.OperationDisplay` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AdditionalErrorInfo` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DcAccessSecurityCode` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ManagedDiskDetails` was modified
+
+* `dataAccountType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.BlobFilterDetails` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DataBoxDiskJobDetails` was modified
+
+* `jobStages()` was added
+* `reverseShipmentLabelSasKey()` was added
+* `datacenterAddress()` was added
+* `jobDetailsType()` was added
+* `chainOfCustodySasKey()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `lastMitigationActionOnJob()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `returnPackage()` was added
+* `dataCenterCode()` was added
+* `actions()` was added
+* `deliveryPackage()` was added
+* `copyLogDetails()` was added
+* `deviceErasureDetails()` was added
+
+#### `models.DataTransferDetailsValidationResponseProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `validationType()` was added
+* `error()` was added
+
+#### `models.DataExportDetails` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.CustomerDiskJobSecrets` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `error()` was added
+* `dcAccessSecurityCode()` was added
+* `jobSecretsType()` was added
+
+#### `models.HeavyScheduleAvailabilityRequest` was modified
+
+* `skuName()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Preferences` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.SubscriptionIsAllowedToCreateJobValidationRequest` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `validationType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.JobDeliveryInfo` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DataBoxCustomerDiskCopyProgress` was modified
+
+* `filesProcessed()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `invalidFileBytesUploaded()` was added
+* `directoriesErroredOut()` was added
+* `transferType()` was added
+* `storageAccountName()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `actions()` was added
+* `invalidFilesProcessed()` was added
+* `isEnumerationInProgress()` was added
+* `bytesProcessed()` was added
+* `totalFilesToProcess()` was added
+* `totalBytesToProcess()` was added
+* `error()` was added
+* `invalidDirectoriesProcessed()` was added
+* `filesErroredOut()` was added
+* `accountId()` was added
+* `dataAccountType()` was added
+* `renamedContainerCount()` was added
+
+#### `models.ValidationInputResponse` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `validationType()` was added
+
+#### `models.PackageCarrierInfo` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.PackageCarrierDetails` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ScheduleAvailabilityResponse` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ImportDiskDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TransferAllDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ExportDiskDetails` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.LastMitigationActionOnJob` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.RegionConfigurationRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.SkuCapacity` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OperationList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.CloudError` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.MarkDevicesShippedRequest` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DatacenterAddressResponse` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `datacenterAddressType()` was added
+
+#### `models.JobStages` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.EncryptionPreferences` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ApplianceNetworkConfiguration` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DataTransferDetailsValidationRequest` was modified
+
+* `validationType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ContactInfo` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DataBoxDiskCopyLogDetails` was modified
+
+* `copyLogDetailsType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SkuCost` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DatacenterAddressLocationResponse` was modified
+
+* `dataCenterAzureLocation()` was added
+* `datacenterAddressType()` was added
+* `supportedCarriersForReturnShipment()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.CreateOrderLimitForSubscriptionValidationResponseProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `validationType()` was added
+* `error()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DeviceErasureDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AvailableSkuRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DataBoxScheduleAvailabilityRequest` was modified
+
+* `skuName()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DiskSecret` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SkuAvailabilityValidationResponseProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `error()` was added
+* `validationType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.CreateJobValidations` was modified
+
+* `validationCategory()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.TransportPreferences` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ValidationInputRequest` was modified
+
+* `validationType()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ShippingAddress` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AddressValidationProperties` was modified
+
+* `error()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `validationType()` was added
+
+#### `models.MitigateJobRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.NotificationPreference` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ShipmentPickUpRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DataBoxCustomerDiskJobDetails` was modified
+
+* `actions()` was added
+* `jobDetailsType()` was added
+* `deliveryPackage()` was added
+* `returnPackage()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `jobStages()` was added
+* `reverseShipmentLabelSasKey()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `deviceErasureDetails()` was added
+* `copyLogDetails()` was added
+* `lastMitigationActionOnJob()` was added
+* `chainOfCustodySasKey()` was added
+* `datacenterAddress()` was added
+* `dataCenterCode()` was added
+
+#### `models.DatacenterAddressInstructionResponse` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `dataCenterAzureLocation()` was added
+* `supportedCarriersForReturnShipment()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `datacenterAddressType()` was added
+
+#### `models.KeyEncryptionKey` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.GranularCopyProgress` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ValidateAddress` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `validationType()` was added
+
+#### `models.DataLocationToServiceLocationMap` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DatacenterAddressRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ReverseShippingDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.SubscriptionIsAllowedToCreateJobValidationResponseProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `error()` was added
+* `validationType()` was added
+
+#### `models.CreateOrderLimitForSubscriptionValidationRequest` was modified
+
+* `validationType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.GranularCopyLogDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `copyLogDetailsType()` was added
+
+#### `models.Sku` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ValidationRequest` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `validationCategory()` was added
+
+#### `models.DataBoxSecret` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DataBoxHeavySecret` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.JobResourceList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DataBoxHeavyJobSecrets` was modified
+
+* `jobSecretsType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `dcAccessSecurityCode()` was added
+* `error()` was added
+
+#### `models.TransportAvailabilityResponse` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AvailableSkusResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CopyProgress` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DataBoxDiskGranularCopyLogDetails` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `copyLogDetailsType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AzureFileFilterDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.PreferencesValidationRequest` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `validationType()` was added
+
+#### `models.UserAssignedProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CopyLogDetails` was modified
+
+* `copyLogDetailsType()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
 
 ## 1.0.0-beta.3 (2023-05-23)
 
