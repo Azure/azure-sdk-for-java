@@ -13,28 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkHubPatchInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkHubPatchInfo model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"foskghsauuimj\":\"ku\",\"rfbyaosvexcso\":\"vxieduugidyj\",\"vleggzfbuhfmvfax\":\"pclhocohslk\",\"hl\":\"ffeii\"}}")
-                .toObject(PrivateLinkHubPatchInfo.class);
+        PrivateLinkHubPatchInfo model = BinaryData.fromString(
+            "{\"tags\":{\"foskghsauuimj\":\"ku\",\"rfbyaosvexcso\":\"vxieduugidyj\",\"vleggzfbuhfmvfax\":\"pclhocohslk\",\"hl\":\"ffeii\"}}")
+            .toObject(PrivateLinkHubPatchInfo.class);
         Assertions.assertEquals("ku", model.tags().get("foskghsauuimj"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkHubPatchInfo model =
-            new PrivateLinkHubPatchInfo()
-                .withTags(
-                    mapOf(
-                        "foskghsauuimj",
-                        "ku",
-                        "rfbyaosvexcso",
-                        "vxieduugidyj",
-                        "vleggzfbuhfmvfax",
-                        "pclhocohslk",
-                        "hl",
-                        "ffeii"));
+        PrivateLinkHubPatchInfo model = new PrivateLinkHubPatchInfo().withTags(mapOf("foskghsauuimj", "ku",
+            "rfbyaosvexcso", "vxieduugidyj", "vleggzfbuhfmvfax", "pclhocohslk", "hl", "ffeii"));
         model = BinaryData.fromObject(model).toObject(PrivateLinkHubPatchInfo.class);
         Assertions.assertEquals("ku", model.tags().get("foskghsauuimj"));
     }

@@ -85,8 +85,8 @@ public final class ClusterPatchParameters {
      * @param aggregatorOrSingleRackDefinition the aggregatorOrSingleRackDefinition value to set.
      * @return the ClusterPatchParameters object itself.
      */
-    public ClusterPatchParameters withAggregatorOrSingleRackDefinition(
-        RackDefinition aggregatorOrSingleRackDefinition) {
+    public ClusterPatchParameters
+        withAggregatorOrSingleRackDefinition(RackDefinition aggregatorOrSingleRackDefinition) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ClusterPatchProperties();
         }

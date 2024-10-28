@@ -27,7 +27,6 @@ public class App {
      * @param args Arguments to the performance tests.
      */
     public static void main(String[] args) {
-        PerfStressProgram.run(
-            new Class<?>[]{DocumentModelAnalysisTest.class, BuildDocumentModelTest.class}, args);
+        PerfStressProgram.run(new Class<?>[] { DocumentModelAnalysisTest.class, BuildDocumentModelTest.class }, args);
     }
 }

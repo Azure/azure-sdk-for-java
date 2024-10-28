@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SavingsPlanUtilizationSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SavingsPlanUtilizationSummary model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"SavingsPlan\",\"properties\":{\"armSkuName\":\"dcqvpn\",\"benefitId\":\"ujviylwdshfs\",\"benefitOrderId\":\"rbgyefry\",\"benefitType\":\"IncludedQuantity\",\"usageDate\":\"2020-12-23T00:32:06Z\"},\"id\":\"j\",\"name\":\"mwn\",\"type\":\"otmrfhir\"}")
-                .toObject(SavingsPlanUtilizationSummary.class);
+        SavingsPlanUtilizationSummary model = BinaryData.fromString(
+            "{\"kind\":\"SavingsPlan\",\"properties\":{\"armSkuName\":\"dcqvpn\",\"benefitId\":\"ujviylwdshfs\",\"benefitOrderId\":\"rbgyefry\",\"benefitType\":\"IncludedQuantity\",\"usageDate\":\"2020-12-23T00:32:06Z\"},\"id\":\"j\",\"name\":\"mwn\",\"type\":\"otmrfhir\"}")
+            .toObject(SavingsPlanUtilizationSummary.class);
         Assertions.assertEquals(BenefitKind.INCLUDED_QUANTITY, model.benefitType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SavingsPlanUtilizationSummary model =
-            new SavingsPlanUtilizationSummary().withBenefitType(BenefitKind.INCLUDED_QUANTITY);
+        SavingsPlanUtilizationSummary model
+            = new SavingsPlanUtilizationSummary().withBenefitType(BenefitKind.INCLUDED_QUANTITY);
         model = BinaryData.fromObject(model).toObject(SavingsPlanUtilizationSummary.class);
         Assertions.assertEquals(BenefitKind.INCLUDED_QUANTITY, model.benefitType());
     }

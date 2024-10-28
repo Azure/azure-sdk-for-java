@@ -169,6 +169,16 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
+    public void createBlobVersionClient() {
+        String name = generateBlobName();
+        BlockBlobClient bc = cc.getBlobClient(name).getBlockBlobClient();
+        bc.upload(DATA.getDefaultInputStream(), 7);
+        BlobClient vc = cc.getBlobVersionClient(name, null);
+
+        assertTrue(vc.exists());
+    }
+
+    @Test
     public void createIfNotExistsAllNull() {
         // Overwrite the existing cc, which has already been created
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName());
@@ -1103,7 +1113,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
-    public void listBlobsFlatWithTimeoutStillBackedByPagedFlux() {
+    public void listBlobsFlatWithTimeoutStillBackedByPagedStream() {
         int numBlobs = 5;
         int pageResults = 3;
 
@@ -1118,7 +1128,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
-    public void listBlobsHierWithTimeoutStillBackedByPagedFlux() {
+    public void listBlobsHierWithTimeoutStillBackedByPagedStream() {
         int numBlobs = 5;
         int pageResults = 3;
 
@@ -1153,9 +1163,8 @@ public class ContainerApiTests extends BlobTestBase {
                 assertNull(blob.getObjectReplicationSourcePolicies());
             } else {
                 assertTrue(validateOR(
-                    blob.getObjectReplicationSourcePolicies(),
-                    "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80",
-                    "105f9aad-f39b-4064-8e47-ccd7937295ca"));
+                    blob.getObjectReplicationSourcePolicies()
+                ));
             }
             i++;
         }
@@ -1166,14 +1175,14 @@ public class ContainerApiTests extends BlobTestBase {
         }
     }
 
-    private boolean validateOR(List<ObjectReplicationPolicy> policies, String policyId, String ruleId) {
+    private boolean validateOR(List<ObjectReplicationPolicy> policies) {
         return policies.stream()
-            .filter(policy -> policyId.equals(policy.getPolicyId()))
+            .filter(policy -> "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80".equals(policy.getPolicyId()))
             .findFirst()
             .get()
             .getRules()
             .stream()
-            .filter(rule -> ruleId.equals(rule.getRuleId()))
+            .filter(rule -> "105f9aad-f39b-4064-8e47-ccd7937295ca".equals(rule.getRuleId()))
             .findFirst()
             .get()
             .getStatus() == ObjectReplicationStatus.COMPLETE;
@@ -1430,8 +1439,8 @@ public class ContainerApiTests extends BlobTestBase {
             if (i == 1) {
                 assertNull(blob.getObjectReplicationSourcePolicies());
             } else {
-                assertTrue(validateOR(blob.getObjectReplicationSourcePolicies(),
-                    "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80", "105f9aad-f39b-4064-8e47-ccd7937295ca"));
+                assertTrue(validateOR(blob.getObjectReplicationSourcePolicies()
+                ));
             }
             i++;
         }
@@ -1592,6 +1601,7 @@ public class ContainerApiTests extends BlobTestBase {
         assertDoesNotThrow(() -> cc.findBlobsByTags("\"key\"='value'").iterator().hasNext());
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
     public void findBlobsQuery() {
@@ -1683,9 +1693,10 @@ public class ContainerApiTests extends BlobTestBase {
         assertThrows(BlobStorageException.class, () -> cc.findBlobsByTags("garbageTag").streamByPage().count());
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
-    public void findBlobsWithTimeoutStillBackedByPagedFlux() {
+    public void findBlobsWithTimeoutStillBackedByPagedStream() {
         int numBlobs = 5;
         int pageResults = 3;
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);

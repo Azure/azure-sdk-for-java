@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Result of Query Performance Insight data reset. */
 @Fluent
 public final class QueryPerformanceInsightResetDataResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryPerformanceInsightResetDataResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(QueryPerformanceInsightResetDataResultInner.class);
 
     /*
      * Indicates result of the operation.

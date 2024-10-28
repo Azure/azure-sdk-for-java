@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Defines all connectivity endpoints and properties for an ComputeInstance. */
 @Immutable
 public final class ComputeInstanceConnectivityEndpoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeInstanceConnectivityEndpoints.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ComputeInstanceConnectivityEndpoints.class);
 
     /*
      * Public IP Address of this ComputeInstance.

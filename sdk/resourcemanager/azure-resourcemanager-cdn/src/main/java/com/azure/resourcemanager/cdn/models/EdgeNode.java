@@ -31,7 +31,6 @@ public class EdgeNode {
         return this.inner.id();
     }
 
-
     /**
      * Edge node resource name.
      *

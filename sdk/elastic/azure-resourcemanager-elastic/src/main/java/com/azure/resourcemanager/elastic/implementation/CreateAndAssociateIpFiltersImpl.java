@@ -16,8 +16,7 @@ public final class CreateAndAssociateIpFiltersImpl implements CreateAndAssociate
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    public CreateAndAssociateIpFiltersImpl(
-        CreateAndAssociateIpFiltersClient innerClient,
+    public CreateAndAssociateIpFiltersImpl(CreateAndAssociateIpFiltersClient innerClient,
         com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

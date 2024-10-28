@@ -5,43 +5,48 @@
 package com.azure.resourcemanager.managementgroups.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The details of a management group used during creation. */
+/**
+ * The details of a management group used during creation.
+ */
 @Fluent
-public final class CreateManagementGroupDetails {
+public final class CreateManagementGroupDetails implements JsonSerializable<CreateManagementGroupDetails> {
     /*
      * The version number of the object.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private Integer version;
 
     /*
      * The date and time when this object was last updated.
      */
-    @JsonProperty(value = "updatedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedTime;
 
     /*
      * The identity of the principal or process that updated the object.
      */
-    @JsonProperty(value = "updatedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String updatedBy;
 
     /*
      * (Optional) The ID of the parent management group used during creation.
      */
-    @JsonProperty(value = "parent")
     private CreateParentGroupInfo parent;
 
-    /** Creates an instance of CreateManagementGroupDetails class. */
+    /**
+     * Creates an instance of CreateManagementGroupDetails class.
+     */
     public CreateManagementGroupDetails() {
     }
 
     /**
      * Get the version property: The version number of the object.
-     *
+     * 
      * @return the version value.
      */
     public Integer version() {
@@ -50,7 +55,7 @@ public final class CreateManagementGroupDetails {
 
     /**
      * Get the updatedTime property: The date and time when this object was last updated.
-     *
+     * 
      * @return the updatedTime value.
      */
     public OffsetDateTime updatedTime() {
@@ -59,7 +64,7 @@ public final class CreateManagementGroupDetails {
 
     /**
      * Get the updatedBy property: The identity of the principal or process that updated the object.
-     *
+     * 
      * @return the updatedBy value.
      */
     public String updatedBy() {
@@ -68,7 +73,7 @@ public final class CreateManagementGroupDetails {
 
     /**
      * Get the parent property: (Optional) The ID of the parent management group used during creation.
-     *
+     * 
      * @return the parent value.
      */
     public CreateParentGroupInfo parent() {
@@ -77,7 +82,7 @@ public final class CreateManagementGroupDetails {
 
     /**
      * Set the parent property: (Optional) The ID of the parent management group used during creation.
-     *
+     * 
      * @param parent the parent value to set.
      * @return the CreateManagementGroupDetails object itself.
      */
@@ -88,12 +93,55 @@ public final class CreateManagementGroupDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parent() != null) {
             parent().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("parent", this.parent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateManagementGroupDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateManagementGroupDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CreateManagementGroupDetails.
+     */
+    public static CreateManagementGroupDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateManagementGroupDetails deserializedCreateManagementGroupDetails = new CreateManagementGroupDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedCreateManagementGroupDetails.version = reader.getNullable(JsonReader::getInt);
+                } else if ("updatedTime".equals(fieldName)) {
+                    deserializedCreateManagementGroupDetails.updatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedBy".equals(fieldName)) {
+                    deserializedCreateManagementGroupDetails.updatedBy = reader.getString();
+                } else if ("parent".equals(fieldName)) {
+                    deserializedCreateManagementGroupDetails.parent = CreateParentGroupInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateManagementGroupDetails;
+        });
     }
 }

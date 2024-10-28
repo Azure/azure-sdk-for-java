@@ -21,12 +21,8 @@ public final class AuthorizationServersListSecretsResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public AuthorizationServersListSecretsResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        AuthorizationServerSecretsContractInner value,
-        AuthorizationServersListSecretsHeaders headers) {
+    public AuthorizationServersListSecretsResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        AuthorizationServerSecretsContractInner value, AuthorizationServersListSecretsHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

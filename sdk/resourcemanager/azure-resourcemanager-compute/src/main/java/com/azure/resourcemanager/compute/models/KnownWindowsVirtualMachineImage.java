@@ -17,8 +17,8 @@ public enum KnownWindowsVirtualMachineImage {
      * @deprecated On May 23rd, 2023, Microsoft was contractually obligated to remove all “*-with-Containers-*” VM images from Azure image gallery.
      */
     @Deprecated
-    WINDOWS_SERVER_2019_DATACENTER_WITH_CONTAINERS(
-        "MicrosoftWindowsServer", "WindowsServer", "2019-Datacenter-with-Containers"),
+    WINDOWS_SERVER_2019_DATACENTER_WITH_CONTAINERS("MicrosoftWindowsServer", "WindowsServer",
+        "2019-Datacenter-with-Containers"),
     /** Windows Server 2016 Data center. */
     WINDOWS_SERVER_2016_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2016-Datacenter"),
     /** Windows Server 2012 R2 Data center. */
@@ -30,8 +30,8 @@ public enum KnownWindowsVirtualMachineImage {
      * @deprecated On May 23rd, 2023, Microsoft was contractually obligated to remove all “*-with-Containers-*” VM images from Azure image gallery.
      */
     @Deprecated
-    WINDOWS_SERVER_2019_DATACENTER_WITH_CONTAINERS_GEN2(
-        "MicrosoftWindowsServer", "WindowsServer", "2019-datacenter-with-containers-g2"),
+    WINDOWS_SERVER_2019_DATACENTER_WITH_CONTAINERS_GEN2("MicrosoftWindowsServer", "WindowsServer",
+        "2019-datacenter-with-containers-g2"),
     /** Windows Server 2016 Data center gen2. */
     WINDOWS_SERVER_2016_DATACENTER_GEN2("MicrosoftWindowsServer", "WindowsServer", "2016-datacenter-gensecond"),
     /** Windows 10 2021 H2 Pro gen2. */

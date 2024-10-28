@@ -14,29 +14,19 @@ import org.junit.jupiter.api.Assertions;
 public final class GroupIdInformationResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GroupIdInformationResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"qjvsovmyokacs\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"hzdobpxjmflbvvnc\",\"name\":\"kcciwwzjuqkhr\",\"type\":\"jiwkuofoskghsau\"}]}")
-                .toObject(GroupIdInformationResponseInner.class);
+        GroupIdInformationResponseInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"groupId\":\"qjvsovmyokacs\",\"requiredMembers\":[],\"requiredZoneNames\":[]},\"id\":\"hzdobpxjmflbvvnc\",\"name\":\"kcciwwzjuqkhr\",\"type\":\"jiwkuofoskghsau\"}]}")
+            .toObject(GroupIdInformationResponseInner.class);
         Assertions.assertEquals("qjvsovmyokacs", model.value().get(0).properties().groupId());
         Assertions.assertEquals("hzdobpxjmflbvvnc", model.value().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupIdInformationResponseInner model =
-            new GroupIdInformationResponseInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new GroupIdInformationInner()
-                                .withProperties(
-                                    new GroupIdInformationProperties()
-                                        .withGroupId("qjvsovmyokacs")
-                                        .withRequiredMembers(Arrays.asList())
-                                        .withRequiredZoneNames(Arrays.asList()))
-                                .withId("hzdobpxjmflbvvnc")));
+        GroupIdInformationResponseInner model = new GroupIdInformationResponseInner().withValue(Arrays.asList(
+            new GroupIdInformationInner().withProperties(new GroupIdInformationProperties().withGroupId("qjvsovmyokacs")
+                .withRequiredMembers(Arrays.asList())
+                .withRequiredZoneNames(Arrays.asList())).withId("hzdobpxjmflbvvnc")));
         model = BinaryData.fromObject(model).toObject(GroupIdInformationResponseInner.class);
         Assertions.assertEquals("qjvsovmyokacs", model.value().get(0).properties().groupId());
         Assertions.assertEquals("hzdobpxjmflbvvnc", model.value().get(0).id());

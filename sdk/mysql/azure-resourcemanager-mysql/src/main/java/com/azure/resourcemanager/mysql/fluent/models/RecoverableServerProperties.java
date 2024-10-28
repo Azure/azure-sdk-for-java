@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The recoverable server's properties. */
 @Immutable
 public final class RecoverableServerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoverableServerProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(RecoverableServerProperties.class);
 
     /*
      * The last available backup date time.

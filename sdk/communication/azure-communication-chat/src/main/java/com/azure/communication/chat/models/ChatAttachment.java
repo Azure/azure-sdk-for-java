@@ -178,10 +178,7 @@ public final class ChatAttachment implements JsonSerializable<ChatAttachment> {
                     reader.skipChildren();
                 }
             }
-            return new ChatAttachment(id, attachmentType)
-                .setName(name)
-                .setUrl(url)
-                .setPreviewUrl(previewUrl);
+            return new ChatAttachment(id, attachmentType).setName(name).setUrl(url).setPreviewUrl(previewUrl);
         });
     }
 }

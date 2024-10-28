@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ArmStreamingEndpointCurrentSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmStreamingEndpointCurrentSku model =
-            BinaryData
-                .fromString("{\"name\":\"ejd\",\"capacity\":732496831}")
-                .toObject(ArmStreamingEndpointCurrentSku.class);
+        ArmStreamingEndpointCurrentSku model = BinaryData.fromString("{\"name\":\"ejd\",\"capacity\":732496831}")
+            .toObject(ArmStreamingEndpointCurrentSku.class);
         Assertions.assertEquals(732496831, model.capacity());
     }
 

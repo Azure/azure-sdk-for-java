@@ -41,8 +41,8 @@ public interface StreamingPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of StreamingPolicy items as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<StreamingPolicy> list(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context);
+    PagedIterable<StreamingPolicy> list(String resourceGroupName, String accountName, String filter, Integer top,
+        String orderby, Context context);
 
     /**
      * Get a Streaming Policy
@@ -58,8 +58,8 @@ public interface StreamingPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a Streaming Policy in the Media Services account along with {@link Response}.
      */
-    Response<StreamingPolicy> getWithResponse(
-        String resourceGroupName, String accountName, String streamingPolicyName, Context context);
+    Response<StreamingPolicy> getWithResponse(String resourceGroupName, String accountName, String streamingPolicyName,
+        Context context);
 
     /**
      * Get a Streaming Policy
@@ -90,8 +90,8 @@ public interface StreamingPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String streamingPolicyName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String streamingPolicyName,
+        Context context);
 
     /**
      * Delete a Streaming Policy

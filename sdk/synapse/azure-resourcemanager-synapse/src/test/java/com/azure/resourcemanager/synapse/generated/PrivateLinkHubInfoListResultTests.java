@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkHubInfoListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkHubInfoListResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"aamdect\",\"value\":[{\"properties\":{\"provisioningState\":\"scjeypv\",\"privateEndpointConnections\":[]},\"location\":\"zrkgqhcjrefovg\",\"tags\":{\"yvxyqjp\":\"sle\"},\"id\":\"cattpngjcrcczsq\",\"name\":\"jh\",\"type\":\"mdajv\"}]}")
-                .toObject(PrivateLinkHubInfoListResult.class);
+        PrivateLinkHubInfoListResult model = BinaryData.fromString(
+            "{\"nextLink\":\"aamdect\",\"value\":[{\"properties\":{\"provisioningState\":\"scjeypv\",\"privateEndpointConnections\":[]},\"location\":\"zrkgqhcjrefovg\",\"tags\":{\"yvxyqjp\":\"sle\"},\"id\":\"cattpngjcrcczsq\",\"name\":\"jh\",\"type\":\"mdajv\"}]}")
+            .toObject(PrivateLinkHubInfoListResult.class);
         Assertions.assertEquals("aamdect", model.nextLink());
         Assertions.assertEquals("zrkgqhcjrefovg", model.value().get(0).location());
         Assertions.assertEquals("sle", model.value().get(0).tags().get("yvxyqjp"));
@@ -28,16 +26,10 @@ public final class PrivateLinkHubInfoListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkHubInfoListResult model =
-            new PrivateLinkHubInfoListResult()
-                .withNextLink("aamdect")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PrivateLinkHubInner()
-                                .withLocation("zrkgqhcjrefovg")
-                                .withTags(mapOf("yvxyqjp", "sle"))
-                                .withProvisioningState("scjeypv")));
+        PrivateLinkHubInfoListResult model = new PrivateLinkHubInfoListResult().withNextLink("aamdect")
+            .withValue(Arrays.asList(new PrivateLinkHubInner().withLocation("zrkgqhcjrefovg")
+                .withTags(mapOf("yvxyqjp", "sle"))
+                .withProvisioningState("scjeypv")));
         model = BinaryData.fromObject(model).toObject(PrivateLinkHubInfoListResult.class);
         Assertions.assertEquals("aamdect", model.nextLink());
         Assertions.assertEquals("zrkgqhcjrefovg", model.value().get(0).location());

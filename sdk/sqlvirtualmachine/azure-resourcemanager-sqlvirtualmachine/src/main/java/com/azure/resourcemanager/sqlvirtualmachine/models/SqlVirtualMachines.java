@@ -37,8 +37,8 @@ public interface SqlVirtualMachines {
      * @return the list of sql virtual machines in a SQL virtual machine group as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<SqlVirtualMachine> listBySqlVmGroup(
-        String resourceGroupName, String sqlVirtualMachineGroupName, Context context);
+    PagedIterable<SqlVirtualMachine> listBySqlVmGroup(String resourceGroupName, String sqlVirtualMachineGroupName,
+        Context context);
 
     /**
      * Gets all SQL virtual machines in a subscription.
@@ -73,8 +73,8 @@ public interface SqlVirtualMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a SQL virtual machine along with {@link Response}.
      */
-    Response<SqlVirtualMachine> getByResourceGroupWithResponse(
-        String resourceGroupName, String sqlVirtualMachineName, String expand, Context context);
+    Response<SqlVirtualMachine> getByResourceGroupWithResponse(String resourceGroupName, String sqlVirtualMachineName,
+        String expand, Context context);
 
     /**
      * Gets a SQL virtual machine.

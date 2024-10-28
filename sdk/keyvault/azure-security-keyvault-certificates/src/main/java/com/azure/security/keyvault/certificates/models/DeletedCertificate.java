@@ -175,11 +175,11 @@ public final class DeletedCertificate extends KeyVaultCertificateWithPolicy {
                 } else if ("recoveryId".equals(fieldName)) {
                     recoveryId = reader.getString();
                 } else if ("deletedDate".equals(fieldName)) {
-                    deletedOn = reader.getNullable(nonNull ->
-                        OffsetDateTime.ofInstant(Instant.ofEpochMilli(nonNull.getLong() * 1000L), ZoneOffset.UTC));
+                    deletedOn = reader.getNullable(nonNull -> OffsetDateTime
+                        .ofInstant(Instant.ofEpochMilli(nonNull.getLong() * 1000L), ZoneOffset.UTC));
                 } else if ("scheduledPurgeDate".equals(fieldName)) {
-                    scheduledPurgeDate = reader.getNullable(nonNull ->
-                        OffsetDateTime.ofInstant(Instant.ofEpochMilli(nonNull.getLong() * 1000L), ZoneOffset.UTC));
+                    scheduledPurgeDate = reader.getNullable(nonNull -> OffsetDateTime
+                        .ofInstant(Instant.ofEpochMilli(nonNull.getLong() * 1000L), ZoneOffset.UTC));
                 } else {
                     reader.skipChildren();
                 }

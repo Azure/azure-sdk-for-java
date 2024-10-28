@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.network.samples;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
@@ -25,7 +24,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -89,13 +88,14 @@ public final class ManageApplicationGateway {
         final String pipName = Utils.randomResourceName(azureResourceManager, "pip" + "-", 18);
 
         final String userName = "tirekicker";
-        final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
+        final String sshKey
+            = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
 
         int backendPools = 2;
         int vmCountInAPool = 4;
 
-        Region[] regions = {Region.US_EAST, Region.US_WEST};
-        String[] addressSpaces = {"172.16.0.0/16", "172.17.0.0/16"};
+        Region[] regions = { Region.US_EAST, Region.US_WEST };
+        String[] addressSpaces = { "172.16.0.0/16", "172.17.0.0/16" };
         String[][] publicIpCreatableKeys = new String[backendPools][vmCountInAPool];
         String[][] ipAddresses = new String[backendPools][vmCountInAPool];
 
@@ -104,23 +104,22 @@ public final class ManageApplicationGateway {
             //=============================================================
             // Create a resource group (Where all resources gets created)
             //
-            ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(rgName)
-                    .withRegion(Region.US_EAST)
-                    .create();
+            ResourceGroup resourceGroup
+                = azureResourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
 
             System.out.println("Created a new resource group - " + resourceGroup.id());
-
 
             //=============================================================
             // Create a public IP address for the Application Gateway
             System.out.println("Creating a public IP address for the application gateway ...");
 
-            PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses().define(pipName)
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(rgName)
-                    .withSku(PublicIPSkuType.STANDARD)
-                    .withStaticIP()
-                    .create();
+            PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses()
+                .define(pipName)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .withSku(PublicIPSkuType.STANDARD)
+                .withStaticIP()
+                .create();
 
             System.out.println("Created a public IP address");
             // Print the virtual network details
@@ -134,61 +133,58 @@ public final class ManageApplicationGateway {
 
             for (int i = 0; i < backendPools; i++) {
 
-
                 //=============================================================
                 // Create 1 network creatable per region
                 // Prepare Creatable Network definition (Where all the virtual machines get added to)
                 String networkName = Utils.randomResourceName(azureResourceManager, "vnetNEAG-", 20);
 
-                Creatable<Network> networkCreatable = azureResourceManager.networks().define(networkName)
-                        .withRegion(regions[i])
-                        .withExistingResourceGroup(resourceGroup)
-                        .withAddressSpace(addressSpaces[i]);
-
+                Creatable<Network> networkCreatable = azureResourceManager.networks()
+                    .define(networkName)
+                    .withRegion(regions[i])
+                    .withExistingResourceGroup(resourceGroup)
+                    .withAddressSpace(addressSpaces[i]);
 
                 //=============================================================
                 // Create 1 storage creatable per region (For storing VMs disk)
                 String storageAccountName = Utils.randomResourceName(azureResourceManager, "stgneag", 20);
-                Creatable<StorageAccount> storageAccountCreatable = azureResourceManager.storageAccounts().define(storageAccountName)
-                        .withRegion(regions[i])
-                        .withExistingResourceGroup(resourceGroup);
+                Creatable<StorageAccount> storageAccountCreatable = azureResourceManager.storageAccounts()
+                    .define(storageAccountName)
+                    .withRegion(regions[i])
+                    .withExistingResourceGroup(resourceGroup);
 
                 String linuxVMNamePrefix = Utils.randomResourceName(azureResourceManager, "vm-", 15);
 
                 for (int j = 0; j < vmCountInAPool; j++) {
 
-
                     //=============================================================
                     // Create 1 public IP address creatable
                     Creatable<PublicIpAddress> publicIPAddressCreatable = azureResourceManager.publicIpAddresses()
-                            .define(String.format("%s-%d", linuxVMNamePrefix, j))
-                            .withRegion(regions[i])
-                            .withExistingResourceGroup(resourceGroup)
-                            .withLeafDomainLabel(String.format("%s-%d", linuxVMNamePrefix, j))
-                            .withSku(PublicIPSkuType.STANDARD)
-                            .withStaticIP();
+                        .define(String.format("%s-%d", linuxVMNamePrefix, j))
+                        .withRegion(regions[i])
+                        .withExistingResourceGroup(resourceGroup)
+                        .withLeafDomainLabel(String.format("%s-%d", linuxVMNamePrefix, j))
+                        .withSku(PublicIPSkuType.STANDARD)
+                        .withStaticIP();
 
                     publicIpCreatableKeys[i][j] = publicIPAddressCreatable.key();
-
 
                     //=============================================================
                     // Create 1 virtual machine creatable
                     Creatable<VirtualMachine> virtualMachineCreatable = azureResourceManager.virtualMachines()
-                            .define(String.format("%s-%d", linuxVMNamePrefix, j))
-                            .withRegion(regions[i])
-                            .withExistingResourceGroup(resourceGroup)
-                            .withNewPrimaryNetwork(networkCreatable)
-                            .withPrimaryPrivateIPAddressDynamic()
-                            .withNewPrimaryPublicIPAddress(publicIPAddressCreatable)
-                            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                            .withRootUsername(userName)
-                            .withSsh(sshKey)
-                            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                            .withNewStorageAccount(storageAccountCreatable);
+                        .define(String.format("%s-%d", linuxVMNamePrefix, j))
+                        .withRegion(regions[i])
+                        .withExistingResourceGroup(resourceGroup)
+                        .withNewPrimaryNetwork(networkCreatable)
+                        .withPrimaryPrivateIPAddressDynamic()
+                        .withNewPrimaryPublicIPAddress(publicIPAddressCreatable)
+                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                        .withRootUsername(userName)
+                        .withSsh(sshKey)
+                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                        .withNewStorageAccount(storageAccountCreatable);
                     creatableVirtualMachines.add(virtualMachineCreatable);
                 }
             }
-
 
             //=============================================================
             // Create two backend pools of virtual machines
@@ -197,7 +193,8 @@ public final class ManageApplicationGateway {
             System.out.println("Creating virtual machines (two backend pools)");
 
             stopwatch.start();
-            CreatedResources<VirtualMachine> virtualMachines = azureResourceManager.virtualMachines().create(creatableVirtualMachines);
+            CreatedResources<VirtualMachine> virtualMachines
+                = azureResourceManager.virtualMachines().create(creatableVirtualMachines);
             stopwatch.stop();
 
             System.out.println("Created virtual machines (two backend pools)");
@@ -206,9 +203,9 @@ public final class ManageApplicationGateway {
                 System.out.println(virtualMachine.id());
             }
 
-            System.out.println("Virtual machines created: (took " + (stopwatch.getTime() / 1000) + " seconds) to create == " + virtualMachines.size()
-                    + " == virtual machines (4 virtual machines per backend pool)");
-
+            System.out
+                .println("Virtual machines created: (took " + (stopwatch.getTime() / 1000) + " seconds) to create == "
+                    + virtualMachines.size() + " == virtual machines (4 virtual machines per backend pool)");
 
             //=======================================================================
             // Get IP addresses from created resources
@@ -216,8 +213,8 @@ public final class ManageApplicationGateway {
             System.out.println("IP Addresses in the backend pools are - ");
             for (int i = 0; i < backendPools; i++) {
                 for (int j = 0; j < vmCountInAPool; j++) {
-                    PublicIpAddress pip = (PublicIpAddress) virtualMachines
-                            .createdRelatedResource(publicIpCreatableKeys[i][j]);
+                    PublicIpAddress pip
+                        = (PublicIpAddress) virtualMachines.createdRelatedResource(publicIpCreatableKeys[i][j]);
                     pip.refresh();
                     ipAddresses[i][j] = pip.ipAddress();
                     System.out.println(String.format("[backend pool = %d][vm = %d] = %s", i, j, ipAddresses[i][j]));
@@ -225,7 +222,6 @@ public final class ManageApplicationGateway {
 
                 System.out.println("======");
             }
-
 
             //=======================================================================
             // Create an application gateway
@@ -235,30 +231,30 @@ public final class ManageApplicationGateway {
             stopwatch.reset();
             stopwatch.start();
 
-            ApplicationGateway applicationGateway = azureResourceManager.applicationGateways().define("myFirstAppGateway")
-                    .withRegion(Region.US_EAST)
-                    .withExistingResourceGroup(resourceGroup)
+            ApplicationGateway applicationGateway = azureResourceManager.applicationGateways()
+                .define("myFirstAppGateway")
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(resourceGroup)
 
-                    // Request routing rule for HTTP from public 80 to public 8080
-                    .defineRequestRoutingRule("HTTP-80-to-8080")
-                    .fromPublicFrontend()
-                    .fromFrontendHttpPort(80)
-                    .toBackendHttpPort(8080)
-                    .toBackendIPAddress(ipAddresses[0][0])
-                    .toBackendIPAddress(ipAddresses[0][1])
-                    .toBackendIPAddress(ipAddresses[0][2])
-                    .toBackendIPAddress(ipAddresses[0][3])
-                    .attach()
+                // Request routing rule for HTTP from public 80 to public 8080
+                .defineRequestRoutingRule("HTTP-80-to-8080")
+                .fromPublicFrontend()
+                .fromFrontendHttpPort(80)
+                .toBackendHttpPort(8080)
+                .toBackendIPAddress(ipAddresses[0][0])
+                .toBackendIPAddress(ipAddresses[0][1])
+                .toBackendIPAddress(ipAddresses[0][2])
+                .toBackendIPAddress(ipAddresses[0][3])
+                .attach()
 
-                    .withTier(ApplicationGatewayTier.WAF_V2)
-                    .withSize(ApplicationGatewaySkuName.WAF_V2)
-                    .withExistingPublicIpAddress(publicIPAddress)
-                    .create();
+                .withTier(ApplicationGatewayTier.WAF_V2)
+                .withSize(ApplicationGatewaySkuName.WAF_V2)
+                .withExistingPublicIpAddress(publicIPAddress)
+                .create();
 
             stopwatch.stop();
             System.out.println("Application gateway created: (took " + (stopwatch.getTime() / 1000) + " seconds)");
             Utils.print(applicationGateway);
-
 
             //=======================================================================
             // Update an application gateway
@@ -270,19 +266,19 @@ public final class ManageApplicationGateway {
             stopwatch.start();
 
             applicationGateway.update()
-                    .withoutRequestRoutingRule("HTTP-80-to-8080")
-                    .defineRequestRoutingRule("HTTP-81-to-8080")
-                    .fromPublicFrontend()
-                    .fromFrontendHttpPort(81)
-                    .toBackendHttpPort(8080)
-                    .toBackendIPAddress(ipAddresses[0][0])
-                    .toBackendIPAddress(ipAddresses[0][1])
-                    .toBackendIPAddress(ipAddresses[0][2])
-                    .toBackendIPAddress(ipAddresses[0][3])
-                    .withHostname("www.contoso.com")
-                    .withCookieBasedAffinity()
-                    .attach()
-                    .apply();
+                .withoutRequestRoutingRule("HTTP-80-to-8080")
+                .defineRequestRoutingRule("HTTP-81-to-8080")
+                .fromPublicFrontend()
+                .fromFrontendHttpPort(81)
+                .toBackendHttpPort(8080)
+                .toBackendIPAddress(ipAddresses[0][0])
+                .toBackendIPAddress(ipAddresses[0][1])
+                .toBackendIPAddress(ipAddresses[0][2])
+                .toBackendIPAddress(ipAddresses[0][3])
+                .withHostname("www.contoso.com")
+                .withCookieBasedAffinity()
+                .attach()
+                .apply();
 
             stopwatch.stop();
             System.out.println("Application gateway updated: (took " + (stopwatch.getTime() / 1000) + " seconds)");
@@ -318,8 +314,7 @@ public final class ManageApplicationGateway {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

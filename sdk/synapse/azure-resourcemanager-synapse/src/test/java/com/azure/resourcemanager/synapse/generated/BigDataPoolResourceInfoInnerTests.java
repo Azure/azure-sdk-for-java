@@ -23,11 +23,9 @@ import org.junit.jupiter.api.Assertions;
 public final class BigDataPoolResourceInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BigDataPoolResourceInfoInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"e\",\"autoScale\":{\"minNodeCount\":2052127591,\"enabled\":true,\"maxNodeCount\":619135714},\"creationDate\":\"2021-01-05T00:16:17Z\",\"autoPause\":{\"delayInMinutes\":639795933,\"enabled\":false},\"isComputeIsolationEnabled\":false,\"isAutotuneEnabled\":false,\"sessionLevelPackagesEnabled\":false,\"cacheSize\":364204104,\"dynamicExecutorAllocation\":{\"enabled\":true,\"minExecutors\":1714927386,\"maxExecutors\":1816331305},\"sparkEventsFolder\":\"uqyrxpdl\",\"nodeCount\":1303034345,\"libraryRequirements\":{\"time\":\"2021-06-26T18:12:50Z\",\"content\":\"mjqfrddgamquhio\",\"filename\":\"sjuivfcdisyir\"},\"customLibraries\":[{\"name\":\"czexrxzbujrtrhqv\",\"path\":\"evkh\",\"containerName\":\"lnzonzlrpiqywn\",\"uploadedTimestamp\":\"2021-10-30T09:16:37Z\",\"type\":\"szcofizeht\",\"provisioningStatus\":\"gbjkvreljeamur\",\"creatorId\":\"mlovuanashcxl\"},{\"name\":\"jerbdkelvidizozs\",\"path\":\"ccxjm\",\"containerName\":\"fdgnwncypuuwwlt\",\"uploadedTimestamp\":\"2021-11-20T18:00Z\",\"type\":\"ctzenkeifzzhmkd\",\"provisioningStatus\":\"vflyhbxcu\",\"creatorId\":\"hxgsrboldfor\"},{\"name\":\"wjlvizbfhfov\",\"path\":\"cqpbtuo\",\"containerName\":\"eszabbelawumuas\",\"uploadedTimestamp\":\"2021-02-28T06:26:09Z\",\"type\":\"rrwoycqucwyhahn\",\"provisioningStatus\":\"drkywuhps\",\"creatorId\":\"uurutlwexxwlalni\"},{\"name\":\"zsrzpgepq\",\"path\":\"bb\",\"containerName\":\"pgdakchzyvli\",\"uploadedTimestamp\":\"2021-05-06T06:22:36Z\",\"type\":\"kcxk\",\"provisioningStatus\":\"bn\",\"creatorId\":\"ysux\"}],\"sparkConfigProperties\":{\"time\":\"2021-12-01T11:30:12Z\",\"content\":\"tvlwijpsttexoq\",\"filename\":\"wcyyufmhruncu\",\"configurationType\":\"Artifact\"},\"sparkVersion\":\"pkcdqzhlct\",\"defaultSparkLogFolder\":\"unqndyfpchrqb\",\"nodeSize\":\"Large\",\"nodeSizeFamily\":\"HardwareAcceleratedFPGA\",\"lastSucceededTimestamp\":\"2021-11-25T18:15:14Z\"},\"location\":\"gydcw\",\"tags\":{\"aubrjtloq\":\"jumvqqolihrraio\",\"rzpasccbiuimzdly\":\"fuojrngif\"},\"id\":\"dfqwmkyoq\",\"name\":\"fdvruz\",\"type\":\"lzo\"}")
-                .toObject(BigDataPoolResourceInfoInner.class);
+        BigDataPoolResourceInfoInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"e\",\"autoScale\":{\"minNodeCount\":2052127591,\"enabled\":true,\"maxNodeCount\":619135714},\"creationDate\":\"2021-01-05T00:16:17Z\",\"autoPause\":{\"delayInMinutes\":639795933,\"enabled\":false},\"isComputeIsolationEnabled\":false,\"isAutotuneEnabled\":false,\"sessionLevelPackagesEnabled\":false,\"cacheSize\":364204104,\"dynamicExecutorAllocation\":{\"enabled\":true,\"minExecutors\":1714927386,\"maxExecutors\":1816331305},\"sparkEventsFolder\":\"uqyrxpdl\",\"nodeCount\":1303034345,\"libraryRequirements\":{\"time\":\"2021-06-26T18:12:50Z\",\"content\":\"mjqfrddgamquhio\",\"filename\":\"sjuivfcdisyir\"},\"customLibraries\":[{\"name\":\"czexrxzbujrtrhqv\",\"path\":\"evkh\",\"containerName\":\"lnzonzlrpiqywn\",\"uploadedTimestamp\":\"2021-10-30T09:16:37Z\",\"type\":\"szcofizeht\",\"provisioningStatus\":\"gbjkvreljeamur\",\"creatorId\":\"mlovuanashcxl\"},{\"name\":\"jerbdkelvidizozs\",\"path\":\"ccxjm\",\"containerName\":\"fdgnwncypuuwwlt\",\"uploadedTimestamp\":\"2021-11-20T18:00Z\",\"type\":\"ctzenkeifzzhmkd\",\"provisioningStatus\":\"vflyhbxcu\",\"creatorId\":\"hxgsrboldfor\"},{\"name\":\"wjlvizbfhfov\",\"path\":\"cqpbtuo\",\"containerName\":\"eszabbelawumuas\",\"uploadedTimestamp\":\"2021-02-28T06:26:09Z\",\"type\":\"rrwoycqucwyhahn\",\"provisioningStatus\":\"drkywuhps\",\"creatorId\":\"uurutlwexxwlalni\"},{\"name\":\"zsrzpgepq\",\"path\":\"bb\",\"containerName\":\"pgdakchzyvli\",\"uploadedTimestamp\":\"2021-05-06T06:22:36Z\",\"type\":\"kcxk\",\"provisioningStatus\":\"bn\",\"creatorId\":\"ysux\"}],\"sparkConfigProperties\":{\"time\":\"2021-12-01T11:30:12Z\",\"content\":\"tvlwijpsttexoq\",\"filename\":\"wcyyufmhruncu\",\"configurationType\":\"Artifact\"},\"sparkVersion\":\"pkcdqzhlct\",\"defaultSparkLogFolder\":\"unqndyfpchrqb\",\"nodeSize\":\"Large\",\"nodeSizeFamily\":\"HardwareAcceleratedFPGA\",\"lastSucceededTimestamp\":\"2021-11-25T18:15:14Z\"},\"location\":\"gydcw\",\"tags\":{\"aubrjtloq\":\"jumvqqolihrraio\",\"rzpasccbiuimzdly\":\"fuojrngif\"},\"id\":\"dfqwmkyoq\",\"name\":\"fdvruz\",\"type\":\"lzo\"}")
+            .toObject(BigDataPoolResourceInfoInner.class);
         Assertions.assertEquals("gydcw", model.location());
         Assertions.assertEquals("jumvqqolihrraio", model.tags().get("aubrjtloq"));
         Assertions.assertEquals("e", model.provisioningState());
@@ -61,61 +59,46 @@ public final class BigDataPoolResourceInfoInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BigDataPoolResourceInfoInner model =
-            new BigDataPoolResourceInfoInner()
-                .withLocation("gydcw")
-                .withTags(mapOf("aubrjtloq", "jumvqqolihrraio", "rzpasccbiuimzdly", "fuojrngif"))
-                .withProvisioningState("e")
-                .withAutoScale(
-                    new AutoScaleProperties()
-                        .withMinNodeCount(2052127591)
-                        .withEnabled(true)
-                        .withMaxNodeCount(619135714))
-                .withAutoPause(new AutoPauseProperties().withDelayInMinutes(639795933).withEnabled(false))
-                .withIsComputeIsolationEnabled(false)
-                .withIsAutotuneEnabled(false)
-                .withSessionLevelPackagesEnabled(false)
-                .withDynamicExecutorAllocation(
-                    new DynamicExecutorAllocation()
-                        .withEnabled(true)
-                        .withMinExecutors(1714927386)
-                        .withMaxExecutors(1816331305))
-                .withSparkEventsFolder("uqyrxpdl")
-                .withNodeCount(1303034345)
-                .withLibraryRequirements(
-                    new LibraryRequirements().withContent("mjqfrddgamquhio").withFilename("sjuivfcdisyir"))
-                .withCustomLibraries(
-                    Arrays
-                        .asList(
-                            new LibraryInfo()
-                                .withName("czexrxzbujrtrhqv")
-                                .withPath("evkh")
-                                .withContainerName("lnzonzlrpiqywn")
-                                .withType("szcofizeht"),
-                            new LibraryInfo()
-                                .withName("jerbdkelvidizozs")
-                                .withPath("ccxjm")
-                                .withContainerName("fdgnwncypuuwwlt")
-                                .withType("ctzenkeifzzhmkd"),
-                            new LibraryInfo()
-                                .withName("wjlvizbfhfov")
-                                .withPath("cqpbtuo")
-                                .withContainerName("eszabbelawumuas")
-                                .withType("rrwoycqucwyhahn"),
-                            new LibraryInfo()
-                                .withName("zsrzpgepq")
-                                .withPath("bb")
-                                .withContainerName("pgdakchzyvli")
-                                .withType("kcxk")))
-                .withSparkConfigProperties(
-                    new SparkConfigProperties()
-                        .withContent("tvlwijpsttexoq")
-                        .withFilename("wcyyufmhruncu")
-                        .withConfigurationType(ConfigurationType.ARTIFACT))
-                .withSparkVersion("pkcdqzhlct")
-                .withDefaultSparkLogFolder("unqndyfpchrqb")
-                .withNodeSize(NodeSize.LARGE)
-                .withNodeSizeFamily(NodeSizeFamily.HARDWARE_ACCELERATED_FPGA);
+        BigDataPoolResourceInfoInner model = new BigDataPoolResourceInfoInner().withLocation("gydcw")
+            .withTags(mapOf("aubrjtloq", "jumvqqolihrraio", "rzpasccbiuimzdly", "fuojrngif"))
+            .withProvisioningState("e")
+            .withAutoScale(
+                new AutoScaleProperties().withMinNodeCount(2052127591).withEnabled(true).withMaxNodeCount(619135714))
+            .withAutoPause(new AutoPauseProperties().withDelayInMinutes(639795933).withEnabled(false))
+            .withIsComputeIsolationEnabled(false)
+            .withIsAutotuneEnabled(false)
+            .withSessionLevelPackagesEnabled(false)
+            .withDynamicExecutorAllocation(new DynamicExecutorAllocation().withEnabled(true)
+                .withMinExecutors(1714927386)
+                .withMaxExecutors(1816331305))
+            .withSparkEventsFolder("uqyrxpdl")
+            .withNodeCount(1303034345)
+            .withLibraryRequirements(
+                new LibraryRequirements().withContent("mjqfrddgamquhio").withFilename("sjuivfcdisyir"))
+            .withCustomLibraries(Arrays.asList(
+                new LibraryInfo().withName("czexrxzbujrtrhqv")
+                    .withPath("evkh")
+                    .withContainerName("lnzonzlrpiqywn")
+                    .withType("szcofizeht"),
+                new LibraryInfo().withName("jerbdkelvidizozs")
+                    .withPath("ccxjm")
+                    .withContainerName("fdgnwncypuuwwlt")
+                    .withType("ctzenkeifzzhmkd"),
+                new LibraryInfo().withName("wjlvizbfhfov")
+                    .withPath("cqpbtuo")
+                    .withContainerName("eszabbelawumuas")
+                    .withType("rrwoycqucwyhahn"),
+                new LibraryInfo().withName("zsrzpgepq")
+                    .withPath("bb")
+                    .withContainerName("pgdakchzyvli")
+                    .withType("kcxk")))
+            .withSparkConfigProperties(new SparkConfigProperties().withContent("tvlwijpsttexoq")
+                .withFilename("wcyyufmhruncu")
+                .withConfigurationType(ConfigurationType.ARTIFACT))
+            .withSparkVersion("pkcdqzhlct")
+            .withDefaultSparkLogFolder("unqndyfpchrqb")
+            .withNodeSize(NodeSize.LARGE)
+            .withNodeSizeFamily(NodeSizeFamily.HARDWARE_ACCELERATED_FPGA);
         model = BinaryData.fromObject(model).toObject(BigDataPoolResourceInfoInner.class);
         Assertions.assertEquals("gydcw", model.location());
         Assertions.assertEquals("jumvqqolihrraio", model.tags().get("aubrjtloq"));

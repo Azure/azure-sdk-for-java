@@ -164,24 +164,22 @@ public class UsernamePasswordCredential implements TokenCredential {
     public Mono<AuthenticationRecord> authenticate() {
         String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
-            return Mono.error(
-                LoggingUtil.logCredentialUnavailableException(LOGGER, identityClient.getIdentityClientOptions(),
-                    new CredentialUnavailableException(
-                        "Authenticating in this " + "environment requires specifying a TokenRequestContext.")));
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER,
+                identityClient.getIdentityClientOptions(), new CredentialUnavailableException(
+                    "Authenticating in this environment requires specifying a TokenRequestContext.")));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }
 
     private AccessToken updateCache(MsalToken msalToken) {
-        cachedToken.set(new MsalAuthenticationAccount(
-            new AuthenticationRecord(msalToken.getAuthenticationResult(), identityClient.getTenantId(),
-                identityClient.getClientId()), msalToken.getAccount().getTenantProfiles()));
+        cachedToken.set(new MsalAuthenticationAccount(new AuthenticationRecord(msalToken.getAuthenticationResult(),
+            identityClient.getTenantId(), identityClient.getClientId()), msalToken.getAccount().getTenantProfiles()));
         return msalToken;
     }
 
     private boolean isCachePopulated(TokenRequestContext request) {
         return (cachedToken.get() != null)
             && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
-            || (!request.isCaeEnabled() && isCaeDisabledRequestCached));
+                || (!request.isCaeEnabled() && isCaeDisabledRequestCached));
     }
 }

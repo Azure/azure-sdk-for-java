@@ -39,15 +39,8 @@ public interface Policies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Policy> list(
-        String resourceGroupName,
-        String labName,
-        String policySetName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<Policy> list(String resourceGroupName, String labName, String policySetName, String expand,
+        String filter, Integer top, String orderby, Context context);
 
     /**
      * Get policy.
@@ -63,8 +56,8 @@ public interface Policies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy along with {@link Response}.
      */
-    Response<Policy> getWithResponse(
-        String resourceGroupName, String labName, String policySetName, String name, String expand, Context context);
+    Response<Policy> getWithResponse(String resourceGroupName, String labName, String policySetName, String name,
+        String expand, Context context);
 
     /**
      * Get policy.
@@ -93,8 +86,8 @@ public interface Policies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String labName, String policySetName, String name, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String labName, String policySetName, String name,
+        Context context);
 
     /**
      * Delete policy.

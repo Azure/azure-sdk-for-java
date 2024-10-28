@@ -25,8 +25,10 @@ public final class NewProtectionProfileTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NewProtectionProfile model = new NewProtectionProfile().withPolicyName("pc")
-            .withRecoveryPointHistory(1754737974).withCrashConsistentFrequencyInMinutes(381406744)
-            .withAppConsistentFrequencyInMinutes(198630766).withMultiVmSyncStatus(SetMultiVmSyncStatus.ENABLE);
+            .withRecoveryPointHistory(1754737974)
+            .withCrashConsistentFrequencyInMinutes(381406744)
+            .withAppConsistentFrequencyInMinutes(198630766)
+            .withMultiVmSyncStatus(SetMultiVmSyncStatus.ENABLE);
         model = BinaryData.fromObject(model).toObject(NewProtectionProfile.class);
         Assertions.assertEquals("pc", model.policyName());
         Assertions.assertEquals(1754737974, model.recoveryPointHistory());

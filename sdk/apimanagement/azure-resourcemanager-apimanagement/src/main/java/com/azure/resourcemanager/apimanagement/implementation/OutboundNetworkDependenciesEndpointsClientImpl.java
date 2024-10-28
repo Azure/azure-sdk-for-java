@@ -43,12 +43,8 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
      * @param client the instance of the service client containing this operation class.
      */
     OutboundNetworkDependenciesEndpointsClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    OutboundNetworkDependenciesEndpointsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(OutboundNetworkDependenciesEndpointsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,19 +55,14 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientO")
     public interface OutboundNetworkDependenciesEndpointsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/outboundNetworkDependenciesEndpoints")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/outboundNetworkDependenciesEndpoints")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OutboundEnvironmentEndpointListInner>> listByService(
-            @HostParam("$host") String endpoint,
+        Mono<Response<OutboundEnvironmentEndpointListInner>> listByService(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -86,19 +77,15 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OutboundEnvironmentEndpointListInner>> listByServiceWithResponseAsync(
-        String resourceGroupName, String serviceName) {
+    private Mono<Response<OutboundEnvironmentEndpointListInner>>
+        listByServiceWithResponseAsync(String resourceGroupName, String serviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -109,17 +96,8 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByService(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listByService(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, serviceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -136,19 +114,15 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OutboundEnvironmentEndpointListInner>> listByServiceWithResponseAsync(
-        String resourceGroupName, String serviceName, Context context) {
+    private Mono<Response<OutboundEnvironmentEndpointListInner>>
+        listByServiceWithResponseAsync(String resourceGroupName, String serviceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -159,15 +133,8 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByService(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listByService(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            serviceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -182,8 +149,8 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OutboundEnvironmentEndpointListInner> listByServiceAsync(
-        String resourceGroupName, String serviceName) {
+    private Mono<OutboundEnvironmentEndpointListInner> listByServiceAsync(String resourceGroupName,
+        String serviceName) {
         return listByServiceWithResponseAsync(resourceGroupName, serviceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -201,8 +168,8 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OutboundEnvironmentEndpointListInner> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context) {
+    public Response<OutboundEnvironmentEndpointListInner> listByServiceWithResponse(String resourceGroupName,
+        String serviceName, Context context) {
         return listByServiceWithResponseAsync(resourceGroupName, serviceName, context).block();
     }
 

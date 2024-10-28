@@ -12,22 +12,22 @@ public final class PartitionInstanceCountScaleMechanismTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PartitionInstanceCountScaleMechanism model = BinaryData.fromString(
-            "{\"kind\":\"ScalePartitionInstanceCount\",\"minInstanceCount\":285412743,\"maxInstanceCount\":688115873,\"scaleIncrement\":2049082916}")
+            "{\"kind\":\"ScalePartitionInstanceCount\",\"minInstanceCount\":351855115,\"maxInstanceCount\":1170712777,\"scaleIncrement\":141055691}")
             .toObject(PartitionInstanceCountScaleMechanism.class);
-        Assertions.assertEquals(285412743, model.minInstanceCount());
-        Assertions.assertEquals(688115873, model.maxInstanceCount());
-        Assertions.assertEquals(2049082916, model.scaleIncrement());
+        Assertions.assertEquals(351855115, model.minInstanceCount());
+        Assertions.assertEquals(1170712777, model.maxInstanceCount());
+        Assertions.assertEquals(141055691, model.scaleIncrement());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PartitionInstanceCountScaleMechanism model
-            = new PartitionInstanceCountScaleMechanism().withMinInstanceCount(285412743)
-                .withMaxInstanceCount(688115873)
-                .withScaleIncrement(2049082916);
+            = new PartitionInstanceCountScaleMechanism().withMinInstanceCount(351855115)
+                .withMaxInstanceCount(1170712777)
+                .withScaleIncrement(141055691);
         model = BinaryData.fromObject(model).toObject(PartitionInstanceCountScaleMechanism.class);
-        Assertions.assertEquals(285412743, model.minInstanceCount());
-        Assertions.assertEquals(688115873, model.maxInstanceCount());
-        Assertions.assertEquals(2049082916, model.scaleIncrement());
+        Assertions.assertEquals(351855115, model.minInstanceCount());
+        Assertions.assertEquals(1170712777, model.maxInstanceCount());
+        Assertions.assertEquals(141055691, model.scaleIncrement());
     }
 }

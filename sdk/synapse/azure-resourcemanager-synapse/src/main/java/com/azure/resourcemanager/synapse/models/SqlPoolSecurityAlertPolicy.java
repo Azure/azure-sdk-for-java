@@ -110,11 +110,13 @@ public interface SqlPoolSecurityAlertPolicy {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The SqlPoolSecurityAlertPolicy definition stages. */
     interface DefinitionStages {
         /** The first stage of the SqlPoolSecurityAlertPolicy definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the SqlPoolSecurityAlertPolicy definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -127,18 +129,15 @@ public interface SqlPoolSecurityAlertPolicy {
              */
             WithCreate withExistingSqlPool(String resourceGroupName, String workspaceName, String sqlPoolName);
         }
+
         /**
          * The stage of the SqlPoolSecurityAlertPolicy definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithState,
-                DefinitionStages.WithDisabledAlerts,
-                DefinitionStages.WithEmailAddresses,
-                DefinitionStages.WithEmailAccountAdmins,
-                DefinitionStages.WithStorageEndpoint,
-                DefinitionStages.WithStorageAccountAccessKey,
-                DefinitionStages.WithRetentionDays {
+        interface WithCreate extends DefinitionStages.WithState, DefinitionStages.WithDisabledAlerts,
+            DefinitionStages.WithEmailAddresses, DefinitionStages.WithEmailAccountAdmins,
+            DefinitionStages.WithStorageEndpoint, DefinitionStages.WithStorageAccountAccessKey,
+            DefinitionStages.WithRetentionDays {
             /**
              * Executes the create request.
              *
@@ -154,6 +153,7 @@ public interface SqlPoolSecurityAlertPolicy {
              */
             SqlPoolSecurityAlertPolicy create(Context context);
         }
+
         /** The stage of the SqlPoolSecurityAlertPolicy definition allowing to specify state. */
         interface WithState {
             /**
@@ -166,6 +166,7 @@ public interface SqlPoolSecurityAlertPolicy {
              */
             WithCreate withState(SecurityAlertPolicyState state);
         }
+
         /** The stage of the SqlPoolSecurityAlertPolicy definition allowing to specify disabledAlerts. */
         interface WithDisabledAlerts {
             /**
@@ -178,6 +179,7 @@ public interface SqlPoolSecurityAlertPolicy {
              */
             WithCreate withDisabledAlerts(List<String> disabledAlerts);
         }
+
         /** The stage of the SqlPoolSecurityAlertPolicy definition allowing to specify emailAddresses. */
         interface WithEmailAddresses {
             /**
@@ -189,6 +191,7 @@ public interface SqlPoolSecurityAlertPolicy {
              */
             WithCreate withEmailAddresses(List<String> emailAddresses);
         }
+
         /** The stage of the SqlPoolSecurityAlertPolicy definition allowing to specify emailAccountAdmins. */
         interface WithEmailAccountAdmins {
             /**
@@ -200,6 +203,7 @@ public interface SqlPoolSecurityAlertPolicy {
              */
             WithCreate withEmailAccountAdmins(Boolean emailAccountAdmins);
         }
+
         /** The stage of the SqlPoolSecurityAlertPolicy definition allowing to specify storageEndpoint. */
         interface WithStorageEndpoint {
             /**
@@ -213,6 +217,7 @@ public interface SqlPoolSecurityAlertPolicy {
              */
             WithCreate withStorageEndpoint(String storageEndpoint);
         }
+
         /** The stage of the SqlPoolSecurityAlertPolicy definition allowing to specify storageAccountAccessKey. */
         interface WithStorageAccountAccessKey {
             /**
@@ -225,6 +230,7 @@ public interface SqlPoolSecurityAlertPolicy {
              */
             WithCreate withStorageAccountAccessKey(String storageAccountAccessKey);
         }
+
         /** The stage of the SqlPoolSecurityAlertPolicy definition allowing to specify retentionDays. */
         interface WithRetentionDays {
             /**
@@ -237,6 +243,7 @@ public interface SqlPoolSecurityAlertPolicy {
             WithCreate withRetentionDays(Integer retentionDays);
         }
     }
+
     /**
      * Begins update for the SqlPoolSecurityAlertPolicy resource.
      *
@@ -245,12 +252,8 @@ public interface SqlPoolSecurityAlertPolicy {
     SqlPoolSecurityAlertPolicy.Update update();
 
     /** The template for SqlPoolSecurityAlertPolicy update. */
-    interface Update
-        extends UpdateStages.WithState,
-            UpdateStages.WithEmailAccountAdmins,
-            UpdateStages.WithStorageEndpoint,
-            UpdateStages.WithStorageAccountAccessKey,
-            UpdateStages.WithRetentionDays {
+    interface Update extends UpdateStages.WithState, UpdateStages.WithEmailAccountAdmins,
+        UpdateStages.WithStorageEndpoint, UpdateStages.WithStorageAccountAccessKey, UpdateStages.WithRetentionDays {
         /**
          * Executes the update request.
          *
@@ -266,6 +269,7 @@ public interface SqlPoolSecurityAlertPolicy {
          */
         SqlPoolSecurityAlertPolicy apply(Context context);
     }
+
     /** The SqlPoolSecurityAlertPolicy update stages. */
     interface UpdateStages {
         /** The stage of the SqlPoolSecurityAlertPolicy update allowing to specify state. */
@@ -280,6 +284,7 @@ public interface SqlPoolSecurityAlertPolicy {
              */
             Update withState(SecurityAlertPolicyState state);
         }
+
         /** The stage of the SqlPoolSecurityAlertPolicy update allowing to specify emailAccountAdmins. */
         interface WithEmailAccountAdmins {
             /**
@@ -291,6 +296,7 @@ public interface SqlPoolSecurityAlertPolicy {
              */
             Update withEmailAccountAdmins(Boolean emailAccountAdmins);
         }
+
         /** The stage of the SqlPoolSecurityAlertPolicy update allowing to specify storageEndpoint. */
         interface WithStorageEndpoint {
             /**
@@ -304,6 +310,7 @@ public interface SqlPoolSecurityAlertPolicy {
              */
             Update withStorageEndpoint(String storageEndpoint);
         }
+
         /** The stage of the SqlPoolSecurityAlertPolicy update allowing to specify storageAccountAccessKey. */
         interface WithStorageAccountAccessKey {
             /**
@@ -316,6 +323,7 @@ public interface SqlPoolSecurityAlertPolicy {
              */
             Update withStorageAccountAccessKey(String storageAccountAccessKey);
         }
+
         /** The stage of the SqlPoolSecurityAlertPolicy update allowing to specify retentionDays. */
         interface WithRetentionDays {
             /**
@@ -328,6 +336,7 @@ public interface SqlPoolSecurityAlertPolicy {
             Update withRetentionDays(Integer retentionDays);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -82,13 +82,12 @@ public final class AzureBareMetalStorageInstanceInner extends Resource {
      *     set.
      * @return the AzureBareMetalStorageInstanceInner object itself.
      */
-    public AzureBareMetalStorageInstanceInner withAzureBareMetalStorageInstanceUniqueIdentifier(
-        String azureBareMetalStorageInstanceUniqueIdentifier) {
+    public AzureBareMetalStorageInstanceInner
+        withAzureBareMetalStorageInstanceUniqueIdentifier(String azureBareMetalStorageInstanceUniqueIdentifier) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AzureBareMetalStorageInstanceProperties();
         }
-        this
-            .innerProperties()
+        this.innerProperties()
             .withAzureBareMetalStorageInstanceUniqueIdentifier(azureBareMetalStorageInstanceUniqueIdentifier);
         return this;
     }

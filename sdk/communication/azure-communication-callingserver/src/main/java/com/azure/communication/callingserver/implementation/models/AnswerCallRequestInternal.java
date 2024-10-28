@@ -5,27 +5,29 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The request payload for answering the call. */
 @Fluent
-public final class AnswerCallRequestInternal {
+public final class AnswerCallRequestInternal implements JsonSerializable<AnswerCallRequestInternal> {
     /*
      * The context associated with the call.
      */
-    @JsonProperty(value = "incomingCallContext", required = true)
     private String incomingCallContext;
 
     /*
      * The callback uri.
      */
-    @JsonProperty(value = "callbackUri")
     private String callbackUri;
 
     /*
      * Media Streaming Configuration.
      */
-    @JsonProperty(value = "mediaStreamingConfiguration")
     private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
 
     /**
@@ -83,9 +85,49 @@ public final class AnswerCallRequestInternal {
      * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal setMediaStreamingConfiguration(
-            MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
+    public AnswerCallRequestInternal
+        setMediaStreamingConfiguration(MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
         this.mediaStreamingConfiguration = mediaStreamingConfiguration;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("incomingCallContext", incomingCallContext)
+            .writeStringField("callbackUri", callbackUri)
+            .writeJsonField("mediaStreamingConfiguration", mediaStreamingConfiguration)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link AnswerCallRequestInternal} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link AnswerCallRequestInternal}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static AnswerCallRequestInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AnswerCallRequestInternal request = new AnswerCallRequestInternal();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("incomingCallContext".equals(fieldName)) {
+                    request.incomingCallContext = reader.getString();
+                } else if ("callbackUri".equals(fieldName)) {
+                    request.callbackUri = reader.getString();
+                } else if ("mediaStreamingConfiguration".equals(fieldName)) {
+                    request.mediaStreamingConfiguration = MediaStreamingConfigurationInternal.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return request;
+        });
     }
 }

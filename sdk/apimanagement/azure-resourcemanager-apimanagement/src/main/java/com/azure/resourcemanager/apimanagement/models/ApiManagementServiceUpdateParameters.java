@@ -301,8 +301,8 @@ public final class ApiManagementServiceUpdateParameters extends ApimResource {
      * @param hostnameConfigurations the hostnameConfigurations value to set.
      * @return the ApiManagementServiceUpdateParameters object itself.
      */
-    public ApiManagementServiceUpdateParameters withHostnameConfigurations(
-        List<HostnameConfiguration> hostnameConfigurations) {
+    public ApiManagementServiceUpdateParameters
+        withHostnameConfigurations(List<HostnameConfiguration> hostnameConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiManagementServiceUpdateProperties();
         }
@@ -400,8 +400,8 @@ public final class ApiManagementServiceUpdateParameters extends ApimResource {
      * @param virtualNetworkConfiguration the virtualNetworkConfiguration value to set.
      * @return the ApiManagementServiceUpdateParameters object itself.
      */
-    public ApiManagementServiceUpdateParameters withVirtualNetworkConfiguration(
-        VirtualNetworkConfiguration virtualNetworkConfiguration) {
+    public ApiManagementServiceUpdateParameters
+        withVirtualNetworkConfiguration(VirtualNetworkConfiguration virtualNetworkConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiManagementServiceUpdateProperties();
         }
@@ -701,8 +701,8 @@ public final class ApiManagementServiceUpdateParameters extends ApimResource {
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the ApiManagementServiceUpdateParameters object itself.
      */
-    public ApiManagementServiceUpdateParameters withPrivateEndpointConnections(
-        List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
+    public ApiManagementServiceUpdateParameters
+        withPrivateEndpointConnections(List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiManagementServiceUpdateProperties();
         }

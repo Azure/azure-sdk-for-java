@@ -21,11 +21,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DismissAlertPayloadTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DismissAlertPayload model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"definition\":{\"type\":\"Budget\",\"category\":\"Cost\",\"criteria\":\"CreditThresholdReached\"},\"description\":\"fnljky\",\"source\":\"Preset\",\"details\":{\"timeGrainType\":\"BillingMonth\",\"periodStartDate\":\"qgidokgjljyo\",\"triggeredBy\":\"vcltbgsncgh\",\"resourceGroupFilter\":[\"dataszzhbijhtxfvgxbf\"],\"resourceFilter\":[\"datanehmpvecx\",\"dataodebfqkkrbmpu\",\"datagr\"],\"meterFilter\":[\"datalzlfbxzpuz\"],\"tagFilter\":\"dataispnqzahmgkbrp\",\"operator\":\"EqualTo\",\"unit\":\"nuqqkpikadrgvt\",\"contactEmails\":[\"buynhijggm\"],\"contactGroups\":[\"siarbutrcvpn\",\"zzmhjrunmpxttd\",\"hrbnlankxmyskpbh\"],\"contactRoles\":[\"tkcxywnytnrsy\",\"lqidyby\",\"czfc\",\"haaxdbabphl\"],\"overridingAlert\":\"qlfktsths\",\"departmentName\":\"ocmnyyazttbtwwrq\",\"companyName\":\"edckzywbiexzfey\",\"enrollmentNumber\":\"axibxujw\",\"enrollmentStartDate\":\"qwalmuzyoxaepd\",\"enrollmentEndDate\":\"jancu\"},\"costEntityId\":\"d\",\"status\":\"Resolved\",\"creationTime\":\"xbniwdjs\",\"closeTime\":\"tsdbpgn\",\"modificationTime\":\"txhp\",\"statusModificationUserName\":\"bzpfzab\",\"statusModificationTime\":\"cuh\"}}")
-                .toObject(DismissAlertPayload.class);
+        DismissAlertPayload model = BinaryData.fromString(
+            "{\"properties\":{\"definition\":{\"type\":\"Budget\",\"category\":\"Cost\",\"criteria\":\"CreditThresholdReached\"},\"description\":\"fnljky\",\"source\":\"Preset\",\"details\":{\"timeGrainType\":\"BillingMonth\",\"periodStartDate\":\"qgidokgjljyo\",\"triggeredBy\":\"vcltbgsncgh\",\"resourceGroupFilter\":[\"dataszzhbijhtxfvgxbf\"],\"resourceFilter\":[\"datanehmpvecx\",\"dataodebfqkkrbmpu\",\"datagr\"],\"meterFilter\":[\"datalzlfbxzpuz\"],\"tagFilter\":\"dataispnqzahmgkbrp\",\"operator\":\"EqualTo\",\"unit\":\"nuqqkpikadrgvt\",\"contactEmails\":[\"buynhijggm\"],\"contactGroups\":[\"siarbutrcvpn\",\"zzmhjrunmpxttd\",\"hrbnlankxmyskpbh\"],\"contactRoles\":[\"tkcxywnytnrsy\",\"lqidyby\",\"czfc\",\"haaxdbabphl\"],\"overridingAlert\":\"qlfktsths\",\"departmentName\":\"ocmnyyazttbtwwrq\",\"companyName\":\"edckzywbiexzfey\",\"enrollmentNumber\":\"axibxujw\",\"enrollmentStartDate\":\"qwalmuzyoxaepd\",\"enrollmentEndDate\":\"jancu\"},\"costEntityId\":\"d\",\"status\":\"Resolved\",\"creationTime\":\"xbniwdjs\",\"closeTime\":\"tsdbpgn\",\"modificationTime\":\"txhp\",\"statusModificationUserName\":\"bzpfzab\",\"statusModificationTime\":\"cuh\"}}")
+            .toObject(DismissAlertPayload.class);
         Assertions.assertEquals(AlertType.BUDGET, model.definition().type());
         Assertions.assertEquals(AlertCategory.COST, model.definition().category());
         Assertions.assertEquals(AlertCriteria.CREDIT_THRESHOLD_REACHED, model.definition().criteria());
@@ -56,42 +54,37 @@ public final class DismissAlertPayloadTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DismissAlertPayload model =
-            new DismissAlertPayload()
-                .withDefinition(
-                    new AlertPropertiesDefinition()
-                        .withType(AlertType.BUDGET)
-                        .withCategory(AlertCategory.COST)
-                        .withCriteria(AlertCriteria.CREDIT_THRESHOLD_REACHED))
-                .withDescription("fnljky")
-                .withSource(AlertSource.PRESET)
-                .withDetails(
-                    new AlertPropertiesDetails()
-                        .withTimeGrainType(AlertTimeGrainType.BILLING_MONTH)
-                        .withPeriodStartDate("qgidokgjljyo")
-                        .withTriggeredBy("vcltbgsncgh")
-                        .withResourceGroupFilter(Arrays.asList("dataszzhbijhtxfvgxbf"))
-                        .withResourceFilter(Arrays.asList("datanehmpvecx", "dataodebfqkkrbmpu", "datagr"))
-                        .withMeterFilter(Arrays.asList("datalzlfbxzpuz"))
-                        .withTagFilter("dataispnqzahmgkbrp")
-                        .withOperator(AlertOperator.EQUAL_TO)
-                        .withUnit("nuqqkpikadrgvt")
-                        .withContactEmails(Arrays.asList("buynhijggm"))
-                        .withContactGroups(Arrays.asList("siarbutrcvpn", "zzmhjrunmpxttd", "hrbnlankxmyskpbh"))
-                        .withContactRoles(Arrays.asList("tkcxywnytnrsy", "lqidyby", "czfc", "haaxdbabphl"))
-                        .withOverridingAlert("qlfktsths")
-                        .withDepartmentName("ocmnyyazttbtwwrq")
-                        .withCompanyName("edckzywbiexzfey")
-                        .withEnrollmentNumber("axibxujw")
-                        .withEnrollmentStartDate("qwalmuzyoxaepd")
-                        .withEnrollmentEndDate("jancu"))
-                .withCostEntityId("d")
-                .withStatus(AlertStatus.RESOLVED)
-                .withCreationTime("xbniwdjs")
-                .withCloseTime("tsdbpgn")
-                .withModificationTime("txhp")
-                .withStatusModificationUsername("bzpfzab")
-                .withStatusModificationTime("cuh");
+        DismissAlertPayload model = new DismissAlertPayload()
+            .withDefinition(new AlertPropertiesDefinition().withType(AlertType.BUDGET)
+                .withCategory(AlertCategory.COST)
+                .withCriteria(AlertCriteria.CREDIT_THRESHOLD_REACHED))
+            .withDescription("fnljky")
+            .withSource(AlertSource.PRESET)
+            .withDetails(new AlertPropertiesDetails().withTimeGrainType(AlertTimeGrainType.BILLING_MONTH)
+                .withPeriodStartDate("qgidokgjljyo")
+                .withTriggeredBy("vcltbgsncgh")
+                .withResourceGroupFilter(Arrays.asList("dataszzhbijhtxfvgxbf"))
+                .withResourceFilter(Arrays.asList("datanehmpvecx", "dataodebfqkkrbmpu", "datagr"))
+                .withMeterFilter(Arrays.asList("datalzlfbxzpuz"))
+                .withTagFilter("dataispnqzahmgkbrp")
+                .withOperator(AlertOperator.EQUAL_TO)
+                .withUnit("nuqqkpikadrgvt")
+                .withContactEmails(Arrays.asList("buynhijggm"))
+                .withContactGroups(Arrays.asList("siarbutrcvpn", "zzmhjrunmpxttd", "hrbnlankxmyskpbh"))
+                .withContactRoles(Arrays.asList("tkcxywnytnrsy", "lqidyby", "czfc", "haaxdbabphl"))
+                .withOverridingAlert("qlfktsths")
+                .withDepartmentName("ocmnyyazttbtwwrq")
+                .withCompanyName("edckzywbiexzfey")
+                .withEnrollmentNumber("axibxujw")
+                .withEnrollmentStartDate("qwalmuzyoxaepd")
+                .withEnrollmentEndDate("jancu"))
+            .withCostEntityId("d")
+            .withStatus(AlertStatus.RESOLVED)
+            .withCreationTime("xbniwdjs")
+            .withCloseTime("tsdbpgn")
+            .withModificationTime("txhp")
+            .withStatusModificationUsername("bzpfzab")
+            .withStatusModificationTime("cuh");
         model = BinaryData.fromObject(model).toObject(DismissAlertPayload.class);
         Assertions.assertEquals(AlertType.BUDGET, model.definition().type());
         Assertions.assertEquals(AlertCategory.COST, model.definition().category());

@@ -101,7 +101,8 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
         // Special handle content length
         String contentLength = headerValue(request, HttpHeaderName.CONTENT_LENGTH);
 
-        signature.append((contentLength == null || Long.parseLong(contentLength) < 0  ? "" : contentLength)).append("\n");
+        signature.append((contentLength == null || Long.parseLong(contentLength) < 0 ? "" : contentLength))
+            .append("\n");
 
         signature.append(headerValue(request, HttpHeaderName.CONTENT_MD5)).append("\n");
 
@@ -125,14 +126,14 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
         Collections.sort(customHeaders);
         for (String canonicalHeader : customHeaders) {
             String value = request.getHeaders().getValue(HttpHeaderName.fromString(canonicalHeader));
-            value = value.replace('\n', ' ').replace('\r', ' ')
-                    .replaceAll("^[ ]+", "");
+            value = value.replace('\n', ' ').replace('\r', ' ').replaceAll("^[ ]+", "");
             signature.append(canonicalHeader).append(":").append(value).append("\n");
         }
 
         signature.append("/")
-                .append(azureNamedKeyCredential.getAzureNamedKey().getName().toLowerCase(Locale.ROOT)).append("/")
-                .append(request.getUrl().getPath().replaceAll("^[/]+", ""));
+            .append(azureNamedKeyCredential.getAzureNamedKey().getName().toLowerCase(Locale.ROOT))
+            .append("/")
+            .append(request.getUrl().getPath().replaceAll("^[/]+", ""));
 
         String query = request.getUrl().getQuery();
 
@@ -141,11 +142,8 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
             String[] pairs = query.split("&");
             for (String pair : pairs) {
                 int idx = pair.indexOf("=");
-                String key = URLDecoder.decode(pair.substring(0, idx), "UTF-8")
-                        .toLowerCase(Locale.US);
-                queryComponents.put(
-                        key,
-                        key + ":" + URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
+                String key = URLDecoder.decode(pair.substring(0, idx), "UTF-8").toLowerCase(Locale.US);
+                queryComponents.put(key, key + ":" + URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
             }
 
             for (Map.Entry<String, String> entry : queryComponents.entrySet()) {
@@ -154,8 +152,8 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
         }
 
         String signedSignature = sign(signature.toString());
-        String authorization = "SharedKey " + azureNamedKeyCredential.getAzureNamedKey().getName()
-                + ":" + signedSignature;
+        String authorization
+            = "SharedKey " + azureNamedKeyCredential.getAzureNamedKey().getName() + ":" + signedSignature;
 
         return authorization;
     }

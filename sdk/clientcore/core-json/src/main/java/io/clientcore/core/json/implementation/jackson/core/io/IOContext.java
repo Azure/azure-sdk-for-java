@@ -13,8 +13,7 @@ import io.clientcore.core.json.implementation.jackson.core.util.TextBuffer;
  *<p>
  * NOTE: non-final since 2.4, to allow sub-classing.
  */
-public class IOContext
-{
+public class IOContext {
     /*
     /**********************************************************************
     /* Configuration
@@ -116,8 +115,7 @@ public class IOContext
      *
      * @since 2.13
      */
-    public IOContext(BufferRecycler br, ContentReference contentRef, boolean managedResource)
-    {
+    public IOContext(BufferRecycler br, ContentReference contentRef, boolean managedResource) {
         _bufferRecycler = br;
         _contentReference = contentRef;
         _sourceRef = contentRef.getRawContent();
@@ -144,8 +142,13 @@ public class IOContext
     /**********************************************************************
      */
 
-    public JsonEncoding getEncoding() { return _encoding; }
-    public boolean isResourceManaged() { return _managedResource; }
+    public JsonEncoding getEncoding() {
+        return _encoding;
+    }
+
+    public boolean isResourceManaged() {
+        return _managedResource;
+    }
 
     /**
      * Accessor for getting (some) information about input source, mostly
@@ -164,7 +167,9 @@ public class IOContext
      * @return "Raw" source reference
      */
     @Deprecated
-    public Object getSourceReference() { return _sourceRef; }
+    public Object getSourceReference() {
+        return _sourceRef;
+    }
 
     /*
     /**********************************************************************
@@ -229,7 +234,8 @@ public class IOContext
      */
     public byte[] allocWriteEncodingBuffer(int minSize) {
         _verifyAlloc(_writeEncodingBuffer);
-        return (_writeEncodingBuffer = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, minSize));
+        return (_writeEncodingBuffer
+            = _bufferRecycler.allocByteBuffer(BufferRecycler.BYTE_WRITE_ENCODING_BUFFER, minSize));
     }
 
     /**
@@ -348,17 +354,23 @@ public class IOContext
      */
 
     protected final void _verifyAlloc(Object buffer) {
-        if (buffer != null) { throw new IllegalStateException("Trying to call same allocXxx() method second time"); }
+        if (buffer != null) {
+            throw new IllegalStateException("Trying to call same allocXxx() method second time");
+        }
     }
 
     protected final void _verifyRelease(byte[] toRelease, byte[] src) {
         // 07-Mar-2016, tatu: As per [core#255], only prevent shrinking of buffer
-        if ((toRelease != src) && (toRelease.length < src.length)) { throw wrongBuf(); }
+        if ((toRelease != src) && (toRelease.length < src.length)) {
+            throw wrongBuf();
+        }
     }
 
     protected final void _verifyRelease(char[] toRelease, char[] src) {
         // 07-Mar-2016, tatu: As per [core#255], only prevent shrinking of buffer
-        if ((toRelease != src) && (toRelease.length < src.length)) { throw wrongBuf(); }
+        if ((toRelease != src) && (toRelease.length < src.length)) {
+            throw wrongBuf();
+        }
     }
 
     private IllegalArgumentException wrongBuf() {

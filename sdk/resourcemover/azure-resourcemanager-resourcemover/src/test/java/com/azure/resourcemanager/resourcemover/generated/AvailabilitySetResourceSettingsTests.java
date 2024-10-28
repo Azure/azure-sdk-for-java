@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailabilitySetResourceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailabilitySetResourceSettings model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"Microsoft.Compute/availabilitySets\",\"tags\":{\"cohoq\":\"hzls\",\"hgyxzkonoc\":\"nwvlryavwhheunmm\",\"uconuqszfkbey\":\"koklya\"},\"faultDomain\":1315033601,\"updateDomain\":1004577663,\"targetResourceName\":\"mwvvjektcxsenhw\",\"targetResourceGroupName\":\"s\"}")
-                .toObject(AvailabilitySetResourceSettings.class);
+        AvailabilitySetResourceSettings model = BinaryData.fromString(
+            "{\"resourceType\":\"Microsoft.Compute/availabilitySets\",\"tags\":{\"cohoq\":\"hzls\",\"hgyxzkonoc\":\"nwvlryavwhheunmm\",\"uconuqszfkbey\":\"koklya\"},\"faultDomain\":1315033601,\"updateDomain\":1004577663,\"targetResourceName\":\"mwvvjektcxsenhw\",\"targetResourceGroupName\":\"s\"}")
+            .toObject(AvailabilitySetResourceSettings.class);
         Assertions.assertEquals("mwvvjektcxsenhw", model.targetResourceName());
         Assertions.assertEquals("s", model.targetResourceGroupName());
         Assertions.assertEquals("hzls", model.tags().get("cohoq"));
@@ -27,9 +25,8 @@ public final class AvailabilitySetResourceSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailabilitySetResourceSettings model =
-            new AvailabilitySetResourceSettings()
-                .withTargetResourceName("mwvvjektcxsenhw")
+        AvailabilitySetResourceSettings model
+            = new AvailabilitySetResourceSettings().withTargetResourceName("mwvvjektcxsenhw")
                 .withTargetResourceGroupName("s")
                 .withTags(mapOf("cohoq", "hzls", "hgyxzkonoc", "nwvlryavwhheunmm", "uconuqszfkbey", "koklya"))
                 .withFaultDomain(1315033601)

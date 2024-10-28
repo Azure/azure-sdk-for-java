@@ -54,20 +54,18 @@ public class SendEventBatchTest extends ServiceBatchTest<EventHubsPerfStressOpti
 
     @Override
     public Mono<Void> setupAsync() {
-        return super.setupAsync()
-            .then(Mono.fromCallable(() -> {
-                eventDataBatch = eventHubClient.createBatch(batchOptions);
-                EventData eventData =  EventData.create(Util.generateString(options.getMessageSize())
-                    .getBytes(StandardCharsets.UTF_8));
-                for (int i = 0; i < options.getEvents(); i++) {
-                    if (!eventDataBatch.tryAdd(eventData)) {
-                        throw new IllegalStateException(String.format("Batch can only fit %d number of messages with "
-                                + "batch size of %d ",
+        return super.setupAsync().then(Mono.fromCallable(() -> {
+            eventDataBatch = eventHubClient.createBatch(batchOptions);
+            EventData eventData
+                = EventData.create(Util.generateString(options.getMessageSize()).getBytes(StandardCharsets.UTF_8));
+            for (int i = 0; i < options.getEvents(); i++) {
+                if (!eventDataBatch.tryAdd(eventData)) {
+                    throw new IllegalStateException(
+                        String.format("Batch can only fit %d number of messages with " + "batch size of %d ",
                             options.getCount(), options.getSize()));
-                    }
                 }
-                return 1;
-            }))
-            .then();
+            }
+            return 1;
+        })).then();
     }
 }

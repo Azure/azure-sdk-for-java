@@ -91,9 +91,8 @@ public final class WorkspaceSku {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model WorkspaceSku"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model WorkspaceSku"));
         }
     }
 

@@ -21,8 +21,8 @@ public interface SignalRs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to check name availability along with {@link Response}.
      */
-    Response<NameAvailability> checkNameAvailabilityWithResponse(
-        String location, NameAvailabilityParameters parameters, Context context);
+    Response<NameAvailability> checkNameAvailabilityWithResponse(String location, NameAvailabilityParameters parameters,
+        Context context);
 
     /**
      * Checks that the resource name is valid and is not already in use.
@@ -94,8 +94,8 @@ public interface SignalRs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the resource and its properties along with {@link Response}.
      */
-    Response<SignalRResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<SignalRResource> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get the resource and its properties.
@@ -182,8 +182,8 @@ public interface SignalRs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represents the access keys of the resource.
      */
-    SignalRKeys regenerateKey(
-        String resourceGroupName, String resourceName, RegenerateKeyParameters parameters, Context context);
+    SignalRKeys regenerateKey(String resourceGroupName, String resourceName, RegenerateKeyParameters parameters,
+        Context context);
 
     /**
      * List all available skus of the replica resource.
@@ -197,8 +197,8 @@ public interface SignalRs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list skus operation response along with {@link Response}.
      */
-    Response<SkuList> listReplicaSkusWithResponse(
-        String resourceGroupName, String resourceName, String replicaName, Context context);
+    Response<SkuList> listReplicaSkusWithResponse(String resourceGroupName, String resourceName, String replicaName,
+        Context context);
 
     /**
      * List all available skus of the replica resource.

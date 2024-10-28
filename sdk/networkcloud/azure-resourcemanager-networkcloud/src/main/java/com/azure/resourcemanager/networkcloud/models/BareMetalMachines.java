@@ -78,8 +78,8 @@ public interface BareMetalMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided bare metal machine along with {@link Response}.
      */
-    Response<BareMetalMachine> getByResourceGroupWithResponse(
-        String resourceGroupName, String bareMetalMachineName, Context context);
+    Response<BareMetalMachine> getByResourceGroupWithResponse(String resourceGroupName, String bareMetalMachineName,
+        Context context);
 
     /**
      * Retrieve the bare metal machine.
@@ -152,11 +152,8 @@ public interface BareMetalMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult cordon(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineCordonParameters bareMetalMachineCordonParameters,
-        Context context);
+    OperationStatusResult cordon(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineCordonParameters bareMetalMachineCordonParameters, Context context);
 
     /**
      * Power off the bare metal machine.
@@ -186,11 +183,8 @@ public interface BareMetalMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult powerOff(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters,
-        Context context);
+    OperationStatusResult powerOff(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachinePowerOffParameters bareMetalMachinePowerOffParameters, Context context);
 
     /**
      * Reimage the bare metal machine.
@@ -249,11 +243,8 @@ public interface BareMetalMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult replace(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters,
-        Context context);
+    OperationStatusResult replace(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineReplaceParameters bareMetalMachineReplaceParameters, Context context);
 
     /**
      * Restart the bare metal machine.
@@ -298,9 +289,7 @@ public interface BareMetalMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult runCommand(
-        String resourceGroupName,
-        String bareMetalMachineName,
+    OperationStatusResult runCommand(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters);
 
     /**
@@ -318,11 +307,8 @@ public interface BareMetalMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult runCommand(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters,
-        Context context);
+    OperationStatusResult runCommand(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunCommandParameters bareMetalMachineRunCommandParameters, Context context);
 
     /**
      * Run data extraction for a bare metal machine.
@@ -339,9 +325,7 @@ public interface BareMetalMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult runDataExtracts(
-        String resourceGroupName,
-        String bareMetalMachineName,
+    OperationStatusResult runDataExtracts(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters);
 
     /**
@@ -360,11 +344,8 @@ public interface BareMetalMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult runDataExtracts(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters,
-        Context context);
+    OperationStatusResult runDataExtracts(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunDataExtractsParameters bareMetalMachineRunDataExtractsParameters, Context context);
 
     /**
      * Run read-only commands against a bare metal machine.
@@ -381,9 +362,7 @@ public interface BareMetalMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult runReadCommands(
-        String resourceGroupName,
-        String bareMetalMachineName,
+    OperationStatusResult runReadCommands(String resourceGroupName, String bareMetalMachineName,
         BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters);
 
     /**
@@ -402,11 +381,8 @@ public interface BareMetalMachines {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult runReadCommands(
-        String resourceGroupName,
-        String bareMetalMachineName,
-        BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters,
-        Context context);
+    OperationStatusResult runReadCommands(String resourceGroupName, String bareMetalMachineName,
+        BareMetalMachineRunReadCommandsParameters bareMetalMachineRunReadCommandsParameters, Context context);
 
     /**
      * Start the bare metal machine.

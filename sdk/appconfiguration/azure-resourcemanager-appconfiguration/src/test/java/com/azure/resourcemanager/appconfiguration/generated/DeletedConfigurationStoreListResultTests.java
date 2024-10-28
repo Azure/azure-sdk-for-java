@@ -13,20 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DeletedConfigurationStoreListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeletedConfigurationStoreListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"de\",\"name\":\"jzicwifsjt\",\"type\":\"zfbishcbkhaj\",\"properties\":{\"configurationStoreId\":\"eamdp\",\"location\":\"g\",\"deletionDate\":\"2021-05-30T00:59:07Z\",\"scheduledPurgeDate\":\"2021-01-24T10:22:55Z\",\"tags\":{},\"purgeProtectionEnabled\":true}},{\"id\":\"pwhonowkg\",\"name\":\"wankixzbi\",\"type\":\"eputtmrywnuzoqf\",\"properties\":{\"configurationStoreId\":\"qzrnkcqvyxlwhz\",\"location\":\"icohoqqnwvl\",\"deletionDate\":\"2021-02-08T19:31:14Z\",\"scheduledPurgeDate\":\"2021-11-09T22:07:11Z\",\"tags\":{},\"purgeProtectionEnabled\":false}}],\"nextLink\":\"nmmqhgyxzkon\"}")
-                .toObject(DeletedConfigurationStoreListResult.class);
+        DeletedConfigurationStoreListResult model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"de\",\"name\":\"jzicwifsjt\",\"type\":\"zfbishcbkhaj\",\"properties\":{\"configurationStoreId\":\"eamdp\",\"location\":\"g\",\"deletionDate\":\"2021-05-30T00:59:07Z\",\"scheduledPurgeDate\":\"2021-01-24T10:22:55Z\",\"tags\":{},\"purgeProtectionEnabled\":true}},{\"id\":\"pwhonowkg\",\"name\":\"wankixzbi\",\"type\":\"eputtmrywnuzoqf\",\"properties\":{\"configurationStoreId\":\"qzrnkcqvyxlwhz\",\"location\":\"icohoqqnwvl\",\"deletionDate\":\"2021-02-08T19:31:14Z\",\"scheduledPurgeDate\":\"2021-11-09T22:07:11Z\",\"tags\":{},\"purgeProtectionEnabled\":false}}],\"nextLink\":\"nmmqhgyxzkon\"}")
+            .toObject(DeletedConfigurationStoreListResult.class);
         Assertions.assertEquals("nmmqhgyxzkon", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeletedConfigurationStoreListResult model =
-            new DeletedConfigurationStoreListResult()
-                .withValue(Arrays.asList(new DeletedConfigurationStoreInner(), new DeletedConfigurationStoreInner()))
-                .withNextLink("nmmqhgyxzkon");
+        DeletedConfigurationStoreListResult model = new DeletedConfigurationStoreListResult()
+            .withValue(Arrays.asList(new DeletedConfigurationStoreInner(), new DeletedConfigurationStoreInner()))
+            .withNextLink("nmmqhgyxzkon");
         model = BinaryData.fromObject(model).toObject(DeletedConfigurationStoreListResult.class);
         Assertions.assertEquals("nmmqhgyxzkon", model.nextLink());
     }

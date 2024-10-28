@@ -14,28 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class JobInputSequenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobInputSequence model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.JobInputSequence\",\"inputs\":[{\"@odata.type\":\"#Microsoft.Media.JobInputClip\",\"files\":[\"cfxwmdbox\"],\"start\":{\"@odata.type\":\"ClipTime\"},\"end\":{\"@odata.type\":\"ClipTime\"},\"label\":\"ft\",\"inputDefinitions\":[]}]}")
-                .toObject(JobInputSequence.class);
+        JobInputSequence model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.JobInputSequence\",\"inputs\":[{\"@odata.type\":\"#Microsoft.Media.JobInputClip\",\"files\":[\"cfxwmdbox\"],\"start\":{\"@odata.type\":\"ClipTime\"},\"end\":{\"@odata.type\":\"ClipTime\"},\"label\":\"ft\",\"inputDefinitions\":[]}]}")
+            .toObject(JobInputSequence.class);
         Assertions.assertEquals("cfxwmdbox", model.inputs().get(0).files().get(0));
         Assertions.assertEquals("ft", model.inputs().get(0).label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobInputSequence model =
-            new JobInputSequence()
-                .withInputs(
-                    Arrays
-                        .asList(
-                            new JobInputClip()
-                                .withFiles(Arrays.asList("cfxwmdbox"))
-                                .withStart(new ClipTime())
-                                .withEnd(new ClipTime())
-                                .withLabel("ft")
-                                .withInputDefinitions(Arrays.asList())));
+        JobInputSequence model
+            = new JobInputSequence().withInputs(Arrays.asList(new JobInputClip().withFiles(Arrays.asList("cfxwmdbox"))
+                .withStart(new ClipTime())
+                .withEnd(new ClipTime())
+                .withLabel("ft")
+                .withInputDefinitions(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(JobInputSequence.class);
         Assertions.assertEquals("cfxwmdbox", model.inputs().get(0).files().get(0));
         Assertions.assertEquals("ft", model.inputs().get(0).label());

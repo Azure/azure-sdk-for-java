@@ -18,8 +18,7 @@ import io.clientcore.core.json.implementation.jackson.core.*;
  *
  * @since 2.3
  */
-public class DupDetector
-{
+public class DupDetector {
     /**
      * We need to store a back-reference here to parser/generator.
      */
@@ -59,7 +58,7 @@ public class DupDetector
     public JsonLocation findLocation() {
         // ugly but:
         if (_source instanceof JsonParser) {
-            return ((JsonParser)_source).getCurrentLocation();
+            return ((JsonParser) _source).getCurrentLocation();
         }
         // do generators have a way to provide Location? Apparently not...
         return null;
@@ -86,8 +85,7 @@ public class DupDetector
      * @throws JsonParseException to report possible operation problem (default implementation
      *    never throws it)
      */
-    public boolean isDup(String name) throws JsonParseException
-    {
+    public boolean isDup(String name) throws JsonParseException {
         if (_firstName == null) {
             _firstName = name;
             return false;

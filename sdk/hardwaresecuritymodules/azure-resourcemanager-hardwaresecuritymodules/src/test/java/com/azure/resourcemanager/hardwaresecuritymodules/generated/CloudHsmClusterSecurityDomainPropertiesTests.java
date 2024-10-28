@@ -20,8 +20,9 @@ public final class CloudHsmClusterSecurityDomainPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CloudHsmClusterSecurityDomainProperties model = new CloudHsmClusterSecurityDomainProperties()
-            .withFipsState(1828393347).withActivationStatus("smodmgloug");
+        CloudHsmClusterSecurityDomainProperties model
+            = new CloudHsmClusterSecurityDomainProperties().withFipsState(1828393347)
+                .withActivationStatus("smodmgloug");
         model = BinaryData.fromObject(model).toObject(CloudHsmClusterSecurityDomainProperties.class);
         Assertions.assertEquals(1828393347, model.fipsState());
         Assertions.assertEquals("smodmgloug", model.activationStatus());

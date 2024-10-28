@@ -5,102 +5,113 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("TableLevelOutput")
+/**
+ * The MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel model.
+ */
 @Immutable
 public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
     extends MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutput {
     /*
+     * Result type
+     */
+    private String resultType = "TableLevelOutput";
+
+    /*
      * Name of the table
      */
-    @JsonProperty(value = "tableName", access = JsonProperty.Access.WRITE_ONLY)
     private String tableName;
 
     /*
      * Name of the database
      */
-    @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
     /*
      * Number of applied inserts
      */
-    @JsonProperty(value = "cdcInsertCounter", access = JsonProperty.Access.WRITE_ONLY)
     private Long cdcInsertCounter;
 
     /*
      * Number of applied updates
      */
-    @JsonProperty(value = "cdcUpdateCounter", access = JsonProperty.Access.WRITE_ONLY)
     private Long cdcUpdateCounter;
 
     /*
      * Number of applied deletes
      */
-    @JsonProperty(value = "cdcDeleteCounter", access = JsonProperty.Access.WRITE_ONLY)
     private Long cdcDeleteCounter;
 
     /*
      * Estimate to finish full load
      */
-    @JsonProperty(value = "fullLoadEstFinishTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime fullLoadEstFinishTime;
 
     /*
      * Full load start time
      */
-    @JsonProperty(value = "fullLoadStartedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime fullLoadStartedOn;
 
     /*
      * Full load end time
      */
-    @JsonProperty(value = "fullLoadEndedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime fullLoadEndedOn;
 
     /*
      * Number of rows applied in full load
      */
-    @JsonProperty(value = "fullLoadTotalRows", access = JsonProperty.Access.WRITE_ONLY)
     private Long fullLoadTotalRows;
 
     /*
      * Current state of the table migration
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private SyncTableMigrationState state;
 
     /*
      * Total number of applied changes
      */
-    @JsonProperty(value = "totalChangesApplied", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalChangesApplied;
 
     /*
      * Number of data errors occurred
      */
-    @JsonProperty(value = "dataErrorsCounter", access = JsonProperty.Access.WRITE_ONLY)
     private Long dataErrorsCounter;
 
     /*
      * Last modified time on target
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
-    /** Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel class. */
+    /*
+     * Result identifier
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel class.
+     */
     public MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel() {
     }
 
     /**
+     * Get the resultType property: Result type.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the tableName property: Name of the table.
-     *
+     * 
      * @return the tableName value.
      */
     public String tableName() {
@@ -109,7 +120,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
 
     /**
      * Get the databaseName property: Name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -118,7 +129,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
 
     /**
      * Get the cdcInsertCounter property: Number of applied inserts.
-     *
+     * 
      * @return the cdcInsertCounter value.
      */
     public Long cdcInsertCounter() {
@@ -127,7 +138,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
 
     /**
      * Get the cdcUpdateCounter property: Number of applied updates.
-     *
+     * 
      * @return the cdcUpdateCounter value.
      */
     public Long cdcUpdateCounter() {
@@ -136,7 +147,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
 
     /**
      * Get the cdcDeleteCounter property: Number of applied deletes.
-     *
+     * 
      * @return the cdcDeleteCounter value.
      */
     public Long cdcDeleteCounter() {
@@ -145,7 +156,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
 
     /**
      * Get the fullLoadEstFinishTime property: Estimate to finish full load.
-     *
+     * 
      * @return the fullLoadEstFinishTime value.
      */
     public OffsetDateTime fullLoadEstFinishTime() {
@@ -154,7 +165,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
 
     /**
      * Get the fullLoadStartedOn property: Full load start time.
-     *
+     * 
      * @return the fullLoadStartedOn value.
      */
     public OffsetDateTime fullLoadStartedOn() {
@@ -163,7 +174,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
 
     /**
      * Get the fullLoadEndedOn property: Full load end time.
-     *
+     * 
      * @return the fullLoadEndedOn value.
      */
     public OffsetDateTime fullLoadEndedOn() {
@@ -172,7 +183,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
 
     /**
      * Get the fullLoadTotalRows property: Number of rows applied in full load.
-     *
+     * 
      * @return the fullLoadTotalRows value.
      */
     public Long fullLoadTotalRows() {
@@ -181,7 +192,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
 
     /**
      * Get the state property: Current state of the table migration.
-     *
+     * 
      * @return the state value.
      */
     public SyncTableMigrationState state() {
@@ -190,7 +201,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
 
     /**
      * Get the totalChangesApplied property: Total number of applied changes.
-     *
+     * 
      * @return the totalChangesApplied value.
      */
     public Long totalChangesApplied() {
@@ -199,7 +210,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
 
     /**
      * Get the dataErrorsCounter property: Number of data errors occurred.
-     *
+     * 
      * @return the dataErrorsCounter value.
      */
     public Long dataErrorsCounter() {
@@ -208,7 +219,7 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
 
     /**
      * Get the lastModifiedTime property: Last modified time on target.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -216,12 +227,103 @@ public final class MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
     }
 
     /**
+     * Get the id property: Result identifier.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.
+     */
+    public static MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel
+                = new MigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.id = reader.getString();
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.resultType
+                        = reader.getString();
+                } else if ("tableName".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.tableName
+                        = reader.getString();
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.databaseName
+                        = reader.getString();
+                } else if ("cdcInsertCounter".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.cdcInsertCounter
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("cdcUpdateCounter".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.cdcUpdateCounter
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("cdcDeleteCounter".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.cdcDeleteCounter
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("fullLoadEstFinishTime".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.fullLoadEstFinishTime
+                        = reader
+                            .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fullLoadStartedOn".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.fullLoadStartedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fullLoadEndedOn".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.fullLoadEndedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fullLoadTotalRows".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.fullLoadTotalRows
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("state".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.state
+                        = SyncTableMigrationState.fromString(reader.getString());
+                } else if ("totalChangesApplied".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.totalChangesApplied
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("dataErrorsCounter".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.dataErrorsCounter
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigratePostgreSqlAzureDbForPostgreSqlSyncTaskOutputTableLevel;
+        });
     }
 }

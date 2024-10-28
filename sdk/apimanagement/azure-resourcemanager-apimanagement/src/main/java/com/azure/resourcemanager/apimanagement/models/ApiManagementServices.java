@@ -22,8 +22,8 @@ public interface ApiManagementServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response.
      */
-    ApiManagementServiceResource restore(
-        String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters);
+    ApiManagementServiceResource restore(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters);
 
     /**
      * Restores a backup of an API Management service created using the ApiManagementService_Backup operation on the
@@ -38,11 +38,8 @@ public interface ApiManagementServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response.
      */
-    ApiManagementServiceResource restore(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceBackupRestoreParameters parameters,
-        Context context);
+    ApiManagementServiceResource restore(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters, Context context);
 
     /**
      * Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
@@ -56,8 +53,8 @@ public interface ApiManagementServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response.
      */
-    ApiManagementServiceResource backup(
-        String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters);
+    ApiManagementServiceResource backup(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters);
 
     /**
      * Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
@@ -72,11 +69,8 @@ public interface ApiManagementServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response.
      */
-    ApiManagementServiceResource backup(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceBackupRestoreParameters parameters,
-        Context context);
+    ApiManagementServiceResource backup(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters, Context context);
 
     /**
      * Gets an API Management service resource description.
@@ -89,8 +83,8 @@ public interface ApiManagementServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an API Management service resource description along with {@link Response}.
      */
-    Response<ApiManagementServiceResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<ApiManagementServiceResource> getByResourceGroupWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets an API Management service resource description.
@@ -215,8 +209,8 @@ public interface ApiManagementServices {
      * @return the Single-Sign-On token for the API Management Service which is valid for 5 Minutes along with {@link
      *     Response}.
      */
-    Response<ApiManagementServiceGetSsoTokenResult> getSsoTokenWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<ApiManagementServiceGetSsoTokenResult> getSsoTokenWithResponse(String resourceGroupName,
+        String serviceName, Context context);
 
     /**
      * Gets the Single-Sign-On token for the API Management Service which is valid for 5 Minutes.
@@ -252,8 +246,8 @@ public interface ApiManagementServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of the CheckNameAvailability operation.
      */
-    ApiManagementServiceNameAvailabilityResult checkNameAvailability(
-        ApiManagementServiceCheckNameAvailabilityParameters parameters);
+    ApiManagementServiceNameAvailabilityResult
+        checkNameAvailability(ApiManagementServiceCheckNameAvailabilityParameters parameters);
 
     /**
      * Get the custom domain ownership identifier for an API Management service.
@@ -264,8 +258,8 @@ public interface ApiManagementServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the custom domain ownership identifier for an API Management service along with {@link Response}.
      */
-    Response<ApiManagementServiceGetDomainOwnershipIdentifierResult> getDomainOwnershipIdentifierWithResponse(
-        Context context);
+    Response<ApiManagementServiceGetDomainOwnershipIdentifierResult>
+        getDomainOwnershipIdentifierWithResponse(Context context);
 
     /**
      * Get the custom domain ownership identifier for an API Management service.
@@ -302,11 +296,8 @@ public interface ApiManagementServices {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response.
      */
-    ApiManagementServiceResource applyNetworkConfigurationUpdates(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceApplyNetworkConfigurationParameters parameters,
-        Context context);
+    ApiManagementServiceResource applyNetworkConfigurationUpdates(String resourceGroupName, String serviceName,
+        ApiManagementServiceApplyNetworkConfigurationParameters parameters, Context context);
 
     /**
      * Gets an API Management service resource description.

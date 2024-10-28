@@ -25,12 +25,8 @@ public interface SqlPoolDataWarehouseUserActivities {
      * @return the user activities of a SQL pool which includes running and suspended queries along with {@link
      *     Response}.
      */
-    Response<DataWarehouseUserActivities> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        DataWarehouseUserActivityName dataWarehouseUserActivityName,
-        Context context);
+    Response<DataWarehouseUserActivities> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, DataWarehouseUserActivityName dataWarehouseUserActivityName, Context context);
 
     /**
      * Get SQL pool user activities
@@ -46,9 +42,6 @@ public interface SqlPoolDataWarehouseUserActivities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the user activities of a SQL pool which includes running and suspended queries.
      */
-    DataWarehouseUserActivities get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    DataWarehouseUserActivities get(String resourceGroupName, String workspaceName, String sqlPoolName,
         DataWarehouseUserActivityName dataWarehouseUserActivityName);
 }

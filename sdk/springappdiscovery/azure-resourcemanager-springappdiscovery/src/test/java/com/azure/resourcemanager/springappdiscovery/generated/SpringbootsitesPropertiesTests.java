@@ -24,7 +24,8 @@ public final class SpringbootsitesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SpringbootsitesProperties model = new SpringbootsitesProperties().withMasterSiteId("aagdfmg")
-            .withMigrateProjectId("lhjxr").withProvisioningState(ProvisioningState.ACCEPTED);
+            .withMigrateProjectId("lhjxr")
+            .withProvisioningState(ProvisioningState.ACCEPTED);
         model = BinaryData.fromObject(model).toObject(SpringbootsitesProperties.class);
         Assertions.assertEquals("aagdfmg", model.masterSiteId());
         Assertions.assertEquals("lhjxr", model.migrateProjectId());

@@ -128,14 +128,13 @@ public final class LoadTestAdministrationClient {
             defaultRequestOptions.setContext(fileUploadRequestOptions.getContext());
         }
         return SyncPoller.createPoller(Duration.ofSeconds(2),
-            (context) -> PollingUtils.getValidationStatus(uploadTestFileWithResponse(testId, fileName, body,
-                fileUploadRequestOptions).getValue()),
-            (context) -> PollingUtils.getValidationStatus(getTestFileWithResponse(testId, fileName,
-                defaultRequestOptions).getValue()),
+            (context) -> PollingUtils.getValidationStatus(
+                uploadTestFileWithResponse(testId, fileName, body, fileUploadRequestOptions).getValue()),
+            (context) -> PollingUtils
+                .getValidationStatus(getTestFileWithResponse(testId, fileName, defaultRequestOptions).getValue()),
             (activationResponse, context) -> {
                 throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
-            },
-            (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).getValue());
+            }, (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).getValue());
     }
 
     /**

@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationAccountSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationAccountSku model =
-            BinaryData.fromString("{\"name\":\"Free\"}").toObject(IntegrationAccountSku.class);
+        IntegrationAccountSku model
+            = BinaryData.fromString("{\"name\":\"Free\"}").toObject(IntegrationAccountSku.class);
         Assertions.assertEquals(IntegrationAccountSkuName.FREE, model.name());
     }
 

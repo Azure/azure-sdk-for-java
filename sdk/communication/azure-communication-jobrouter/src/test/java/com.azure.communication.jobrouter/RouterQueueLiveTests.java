@@ -67,11 +67,13 @@ public class RouterQueueLiveTests extends JobRouterTestBase {
         String queueId = String.format("%s-CreateQueue-Queue", JAVA_LIVE_TESTS);
         RouterQueue queue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
 
-        Map<String, RouterValue> updatedQueueLabels = Collections.singletonMap("Label_1", new RouterValue("UpdatedValue"));
+        Map<String, RouterValue> updatedQueueLabels
+            = Collections.singletonMap("Label_1", new RouterValue("UpdatedValue"));
         queue.setLabels(updatedQueueLabels);
 
         // Action
-        Response<BinaryData> binaryData = routerAdminClient.updateQueueWithResponse(queueId, BinaryData.fromObject(queue), new RequestOptions());
+        Response<BinaryData> binaryData
+            = routerAdminClient.updateQueueWithResponse(queueId, BinaryData.fromObject(queue), new RequestOptions());
         RouterQueue updatedQueue = binaryData.getValue().toObject(RouterQueue.class);
 
         // Verify

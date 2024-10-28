@@ -55,8 +55,8 @@ public interface SignalRReplicasClient {
      * @return the replica and its properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReplicaInner> getWithResponse(
-        String resourceGroupName, String resourceName, String replicaName, Context context);
+    Response<ReplicaInner> getWithResponse(String resourceGroupName, String resourceName, String replicaName,
+        Context context);
 
     /**
      * Get the replica and its properties.
@@ -85,8 +85,8 @@ public interface SignalRReplicasClient {
      * @return the {@link SyncPoller} for polling of a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters);
+    SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, String replicaName, ReplicaInner parameters);
 
     /**
      * Create or update a replica.
@@ -102,8 +102,8 @@ public interface SignalRReplicasClient {
      * @return the {@link SyncPoller} for polling of a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context);
+    SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, String replicaName, ReplicaInner parameters, Context context);
 
     /**
      * Create or update a replica.
@@ -118,8 +118,8 @@ public interface SignalRReplicasClient {
      * @return a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicaInner createOrUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters);
+    ReplicaInner createOrUpdate(String resourceGroupName, String resourceName, String replicaName,
+        ReplicaInner parameters);
 
     /**
      * Create or update a replica.
@@ -135,8 +135,8 @@ public interface SignalRReplicasClient {
      * @return a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicaInner createOrUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context);
+    ReplicaInner createOrUpdate(String resourceGroupName, String resourceName, String replicaName,
+        ReplicaInner parameters, Context context);
 
     /**
      * Operation to delete a replica.
@@ -151,8 +151,8 @@ public interface SignalRReplicasClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String replicaName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String replicaName,
+        Context context);
 
     /**
      * Operation to delete a replica.
@@ -180,8 +180,8 @@ public interface SignalRReplicasClient {
      * @return the {@link SyncPoller} for polling of a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters);
+    SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginUpdate(String resourceGroupName, String resourceName,
+        String replicaName, ReplicaInner parameters);
 
     /**
      * Operation to update an exiting replica.
@@ -197,8 +197,8 @@ public interface SignalRReplicasClient {
      * @return the {@link SyncPoller} for polling of a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context);
+    SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginUpdate(String resourceGroupName, String resourceName,
+        String replicaName, ReplicaInner parameters, Context context);
 
     /**
      * Operation to update an exiting replica.
@@ -229,8 +229,8 @@ public interface SignalRReplicasClient {
      * @return a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicaInner update(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context);
+    ReplicaInner update(String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters,
+        Context context);
 
     /**
      * Operation to restart a replica.
@@ -259,8 +259,8 @@ public interface SignalRReplicasClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestart(
-        String resourceGroupName, String resourceName, String replicaName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String resourceName, String replicaName,
+        Context context);
 
     /**
      * Operation to restart a replica.

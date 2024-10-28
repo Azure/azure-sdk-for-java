@@ -36,6 +36,6 @@ public interface OperationResults {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection operation result along with {@link Response}.
      */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName, String accountName, String name, String operationId, Context context);
+    Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String accountName, String name,
+        String operationId, Context context);
 }

@@ -20,7 +20,8 @@ public final class History implements JsonSerializable<History> {
     private String v1Compatibility;
 
     /** Creates an instance of History class. */
-    public History() {}
+    public History() {
+    }
 
     /**
      * Get the v1Compatibility property: The raw v1 compatibility information.
@@ -58,21 +59,20 @@ public final class History implements JsonSerializable<History> {
      * @throws IOException If an error occurs while reading the History.
      */
     public static History fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    History deserializedHistory = new History();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            History deserializedHistory = new History();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("v1Compatibility".equals(fieldName)) {
-                            deserializedHistory.v1Compatibility = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("v1Compatibility".equals(fieldName)) {
+                    deserializedHistory.v1Compatibility = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedHistory;
-                });
+            return deserializedHistory;
+        });
     }
 }

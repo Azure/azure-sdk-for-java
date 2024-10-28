@@ -57,7 +57,8 @@ public final class CloneVirtualMachineToNewRegion {
 
             System.out.println("Creating a un-managed Linux VM");
 
-            VirtualMachine linuxVM = azureResourceManager.virtualMachines().define(linuxVMName1)
+            VirtualMachine linuxVM = azureResourceManager.virtualMachines()
+                .define(linuxVMName1)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -94,7 +95,8 @@ public final class CloneVirtualMachineToNewRegion {
             //=============================================================
             // Create incremental Snapshot from the OS managed disk
 
-            System.out.printf("Creating managed snapshot from the managed disk (holding specialized OS): %s %n", osDisk.id());
+            System.out.printf("Creating managed snapshot from the managed disk (holding specialized OS): %s %n",
+                osDisk.id());
 
             Snapshot osSnapshot = azureResourceManager.snapshots()
                 .define(osDisk.name() + "-snp")
@@ -107,11 +109,9 @@ public final class CloneVirtualMachineToNewRegion {
             //=============================================================
             // Copy snapshots to the new region
 
-
             System.out.printf("Copying managed snapshot %s to a new region.%n", osDisk.id());
 
-            Snapshot osSnapshotNewRegion = azureResourceManager
-                .snapshots()
+            Snapshot osSnapshotNewRegion = azureResourceManager.snapshots()
                 .define(osDisk.name() + snapshotCopiedSuffix)
                 .withRegion(regionNew)
                 .withNewResourceGroup(rgNameNew)
@@ -131,7 +131,8 @@ public final class CloneVirtualMachineToNewRegion {
 
             List<Snapshot> dataSnapshots = new ArrayList<>();
             for (Disk dataDisk : dataDisks) {
-                System.out.printf("Creating managed snapshot from the managed disk (holding data): %s %n", dataDisk.id());
+                System.out.printf("Creating managed snapshot from the managed disk (holding data): %s %n",
+                    dataDisk.id());
 
                 Snapshot dataSnapshot = azureResourceManager.snapshots()
                     .define(dataDisk.name() + "-snp")
@@ -146,8 +147,7 @@ public final class CloneVirtualMachineToNewRegion {
 
                 System.out.printf("Copying managed snapshot %s to a new region %n", dataSnapshot.id());
 
-                Snapshot dataSnapshotNewRegion = azureResourceManager
-                    .snapshots()
+                Snapshot dataSnapshotNewRegion = azureResourceManager.snapshots()
                     .define(dataDisk.name() + snapshotCopiedSuffix)
                     .withRegion(regionNew)
                     .withExistingResourceGroup(rgNameNew)
@@ -171,7 +171,8 @@ public final class CloneVirtualMachineToNewRegion {
 
             System.out.printf("Creating managed disk from the snapshot holding OS: %s %n", osSnapshotNewRegion.id());
 
-            Disk newOSDisk = azureResourceManager.disks().define(osSnapshotNewRegion.name().replace(snapshotCopiedSuffix, "-new"))
+            Disk newOSDisk = azureResourceManager.disks()
+                .define(osSnapshotNewRegion.name().replace(snapshotCopiedSuffix, "-new"))
                 .withRegion(regionNew)
                 .withExistingResourceGroup(rgNameNew)
                 .withLinuxFromSnapshot(osSnapshotNewRegion.id())
@@ -188,7 +189,8 @@ public final class CloneVirtualMachineToNewRegion {
             for (Snapshot dataSnapshot : dataSnapshots) {
                 System.out.printf("Creating managed disk from the Data snapshot: %s %n", dataSnapshot.id());
 
-                Disk dataDisk = azureResourceManager.disks().define(dataSnapshot.name().replace(snapshotCopiedSuffix, "-new"))
+                Disk dataDisk = azureResourceManager.disks()
+                    .define(dataSnapshot.name().replace(snapshotCopiedSuffix, "-new"))
                     .withRegion(regionNew)
                     .withExistingResourceGroup(rgNameNew)
                     .withData()
@@ -206,7 +208,8 @@ public final class CloneVirtualMachineToNewRegion {
 
             System.out.println("Creating a Linux VM using specialized OS and data disks");
 
-            VirtualMachine linuxVM2 = azureResourceManager.virtualMachines().define(linuxVMName2)
+            VirtualMachine linuxVM2 = azureResourceManager.virtualMachines()
+                .define(linuxVMName2)
                 .withRegion(regionNew)
                 .withExistingResourceGroup(rgNameNew)
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -263,8 +266,7 @@ public final class CloneVirtualMachineToNewRegion {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

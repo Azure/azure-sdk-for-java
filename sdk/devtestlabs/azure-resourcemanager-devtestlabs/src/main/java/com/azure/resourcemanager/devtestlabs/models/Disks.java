@@ -39,15 +39,8 @@ public interface Disks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Disk> list(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<Disk> list(String resourceGroupName, String labName, String username, String expand, String filter,
+        Integer top, String orderby, Context context);
 
     /**
      * Get disk.
@@ -63,8 +56,8 @@ public interface Disks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk along with {@link Response}.
      */
-    Response<Disk> getWithResponse(
-        String resourceGroupName, String labName, String username, String name, String expand, Context context);
+    Response<Disk> getWithResponse(String resourceGroupName, String labName, String username, String name,
+        String expand, Context context);
 
     /**
      * Get disk.
@@ -119,11 +112,7 @@ public interface Disks {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void attach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
+    void attach(String resourceGroupName, String labName, String username, String name,
         AttachDiskProperties attachDiskProperties);
 
     /**
@@ -139,13 +128,8 @@ public interface Disks {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void attach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        AttachDiskProperties attachDiskProperties,
-        Context context);
+    void attach(String resourceGroupName, String labName, String username, String name,
+        AttachDiskProperties attachDiskProperties, Context context);
 
     /**
      * Detach and break the lease of the disk attached to the virtual machine. This operation can take a while to
@@ -160,11 +144,7 @@ public interface Disks {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void detach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
+    void detach(String resourceGroupName, String labName, String username, String name,
         DetachDiskProperties detachDiskProperties);
 
     /**
@@ -181,13 +161,8 @@ public interface Disks {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void detach(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DetachDiskProperties detachDiskProperties,
-        Context context);
+    void detach(String resourceGroupName, String labName, String username, String name,
+        DetachDiskProperties detachDiskProperties, Context context);
 
     /**
      * Get disk.

@@ -11,8 +11,7 @@ import io.clientcore.core.json.implementation.jackson.core.SerializableString;
  * For JSON this applies to both property names and String values.
  */
 @SuppressWarnings("serial")
-public abstract class CharacterEscapes
-    implements java.io.Serializable // since 2.1
+public abstract class CharacterEscapes implements java.io.Serializable // since 2.1
 {
     /**
      * Value used for lookup tables to indicate that matching characters
@@ -71,8 +70,7 @@ public abstract class CharacterEscapes
      * @return Set of escapes, similar to {@link #getEscapeCodesForAscii()} (array of
      *    128 {@code int}s), but a copy that caller owns and is free to modify
      */
-    public static int[] standardAsciiEscapesForJSON()
-    {
+    public static int[] standardAsciiEscapesForJSON() {
         int[] esc = CharTypes.get7BitOutputEscapes();
         return Arrays.copyOf(esc, esc.length);
     }

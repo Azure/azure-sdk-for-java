@@ -6,65 +6,40 @@ package com.azure.resourcemanager.peering.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.peering.PeeringManager;
 import com.azure.resourcemanager.peering.models.PeerAsn;
+import com.azure.resourcemanager.peering.models.Role;
 import com.azure.resourcemanager.peering.models.ValidationState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PeerAsnsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"peerAsn\":411799174,\"peerContactDetail\":[{\"role\":\"Technical\",\"email\":\"olmncwsobqwcs\",\"phone\":\"nwdcfhu\"},{\"role\":\"Technical\",\"email\":\"fuvglsbjjca\",\"phone\":\"xbvtvudu\"},{\"role\":\"Policy\",\"email\":\"rmrlxqtvcof\",\"phone\":\"f\"}],\"peerName\":\"kgjubgdknnqvsazn\",\"validationState\":\"None\",\"errorMessage\":\"rudsg\"},\"id\":\"a\",\"name\":\"mkycgra\",\"type\":\"wjue\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"peerAsn\":288092317,\"peerContactDetail\":[],\"peerName\":\"bjibwwiftohq\",\"validationState\":\"Pending\",\"errorMessage\":\"vksgplsaknynfsy\"},\"id\":\"ljphuopxodl\",\"name\":\"iyntorzihle\",\"type\":\"sjswsrms\"}]}";
-
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        PeeringManager manager =
-            PeeringManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        PeeringManager manager = PeeringManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PeerAsn> response = manager.peerAsns().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(288092317, response.iterator().next().peerAsn());
-        Assertions.assertEquals("bjibwwiftohq", response.iterator().next().peerName());
-        Assertions.assertEquals(ValidationState.PENDING, response.iterator().next().validationState());
+        Assertions.assertEquals(411799174, response.iterator().next().peerAsn());
+        Assertions.assertEquals(Role.TECHNICAL, response.iterator().next().peerContactDetail().get(0).role());
+        Assertions.assertEquals("olmncwsobqwcs", response.iterator().next().peerContactDetail().get(0).email());
+        Assertions.assertEquals("nwdcfhu", response.iterator().next().peerContactDetail().get(0).phone());
+        Assertions.assertEquals("kgjubgdknnqvsazn", response.iterator().next().peerName());
+        Assertions.assertEquals(ValidationState.NONE, response.iterator().next().validationState());
     }
 }

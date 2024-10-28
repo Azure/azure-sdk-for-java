@@ -7,25 +7,27 @@ package com.azure.resourcemanager.subscription.models;
 import com.azure.resourcemanager.subscription.fluent.models.PutAliasListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of PutAliasListResult. */
+/**
+ * An immutable client-side representation of PutAliasListResult.
+ */
 public interface PutAliasListResult {
     /**
      * Gets the value property: The list of alias.
-     *
+     * 
      * @return the value value.
      */
     List<PutAliasResponse> value();
 
     /**
      * Gets the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.subscription.fluent.models.PutAliasListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     PutAliasListResultInner innerModel();

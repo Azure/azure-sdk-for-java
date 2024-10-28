@@ -22,8 +22,7 @@ import java.nio.ByteBuffer;
  *
  * @see io.clientcore.core.json.implementation.jackson.core.io.SerializedString
  */
-public interface SerializableString
-{
+public interface SerializableString {
     /**
      * Returns unquoted String that this object represents (and offers
      * serialized forms for)

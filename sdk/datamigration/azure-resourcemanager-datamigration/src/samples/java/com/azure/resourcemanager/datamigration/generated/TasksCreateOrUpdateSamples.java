@@ -9,33 +9,31 @@ import com.azure.resourcemanager.datamigration.models.ConnectToTargetSqlDbTaskIn
 import com.azure.resourcemanager.datamigration.models.ConnectToTargetSqlDbTaskProperties;
 import com.azure.resourcemanager.datamigration.models.SqlConnectionInfo;
 
-/** Samples for Tasks CreateOrUpdate. */
+/**
+ * Samples for Tasks CreateOrUpdate.
+ */
 public final class TasksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/Tasks_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/
+     * Tasks_CreateOrUpdate.json
      */
     /**
      * Sample code: Tasks_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void tasksCreateOrUpdate(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {
-        manager
-            .tasks()
+        manager.tasks()
             .define("DmsSdkTask")
             .withExistingProject("DmsSdkRg", "DmsSdkService", "DmsSdkProject")
-            .withProperties(
-                new ConnectToTargetSqlDbTaskProperties()
-                    .withInput(
-                        new ConnectToTargetSqlDbTaskInput()
-                            .withTargetConnectionInfo(
-                                new SqlConnectionInfo()
-                                    .withUsername("testuser")
-                                    .withPassword("fakeTokenPlaceholder")
-                                    .withDataSource("ssma-test-server.database.windows.net")
-                                    .withAuthentication(AuthenticationType.SQL_AUTHENTICATION)
-                                    .withEncryptConnection(true)
-                                    .withTrustServerCertificate(true))))
+            .withProperties(new ConnectToTargetSqlDbTaskProperties().withInput(new ConnectToTargetSqlDbTaskInput()
+                .withTargetConnectionInfo(new SqlConnectionInfo().withUsername("testuser")
+                    .withPassword("fakeTokenPlaceholder")
+                    .withDataSource("ssma-test-server.database.windows.net")
+                    .withAuthentication(AuthenticationType.SQL_AUTHENTICATION)
+                    .withEncryptConnection(true)
+                    .withTrustServerCertificate(true))))
             .create();
     }
 }

@@ -35,39 +35,27 @@ public final class WorkflowsListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"githubWorkflowProfile\":{\"repositoryOwner\":\"iith\",\"repositoryName\":\"m\",\"branchName\":\"yvshxmz\",\"dockerfile\":\"bzoggigrx\",\"dockerBuildContext\":\"ur\",\"namespace\":\"xjnspy\",\"aksResourceId\":\"oenkouknvudwti\",\"prURL\":\"bldngkpoc\",\"pullNumber\":523665642,\"prStatus\":\"merged\",\"authStatus\":\"Error\"},\"artifactGenerationProperties\":{\"generationLanguage\":\"javascript\",\"languageVersion\":\"jnpiucgyg\",\"builderVersion\":\"qzntypm\",\"port\":\"p\",\"appName\":\"c\",\"dockerfileOutputDirectory\":\"qjsdpydnfyhxdeo\",\"manifestOutputDirectory\":\"zi\",\"dockerfileGenerationMode\":\"disabled\",\"manifestGenerationMode\":\"disabled\",\"manifestType\":\"helm\",\"imageName\":\"gzfbishcbk\",\"namespace\":\"jdeyeamdpha\",\"imageTag\":\"lpbuxwgipwhonowk\"}},\"location\":\"hwankixzbinjepu\",\"tags\":{\"zoqftiyqzrnkcqvy\":\"rywn\"},\"id\":\"lwh\",\"name\":\"lsicohoqqnwv\",\"type\":\"ryavwhheunmmqh\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"githubWorkflowProfile\":{\"repositoryOwner\":\"iith\",\"repositoryName\":\"m\",\"branchName\":\"yvshxmz\",\"dockerfile\":\"bzoggigrx\",\"dockerBuildContext\":\"ur\",\"namespace\":\"xjnspy\",\"aksResourceId\":\"oenkouknvudwti\",\"prURL\":\"bldngkpoc\",\"pullNumber\":523665642,\"prStatus\":\"merged\",\"authStatus\":\"Error\"},\"artifactGenerationProperties\":{\"generationLanguage\":\"javascript\",\"languageVersion\":\"jnpiucgyg\",\"builderVersion\":\"qzntypm\",\"port\":\"p\",\"appName\":\"c\",\"dockerfileOutputDirectory\":\"qjsdpydnfyhxdeo\",\"manifestOutputDirectory\":\"zi\",\"dockerfileGenerationMode\":\"disabled\",\"manifestGenerationMode\":\"disabled\",\"manifestType\":\"helm\",\"imageName\":\"gzfbishcbk\",\"namespace\":\"jdeyeamdpha\",\"imageTag\":\"lpbuxwgipwhonowk\"}},\"location\":\"hwankixzbinjepu\",\"tags\":{\"zoqftiyqzrnkcqvy\":\"rywn\"},\"id\":\"lwh\",\"name\":\"lsicohoqqnwv\",\"type\":\"ryavwhheunmmqh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevHubManager manager =
-            DevHubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevHubManager manager = DevHubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Workflow> response =
-            manager
-                .workflows()
-                .listByResourceGroup("pclhocohslk", "vleggzfbuhfmvfax", com.azure.core.util.Context.NONE);
+        PagedIterable<Workflow> response = manager.workflows()
+            .listByResourceGroup("pclhocohslk", "vleggzfbuhfmvfax", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("hwankixzbinjepu", response.iterator().next().location());
         Assertions.assertEquals("rywn", response.iterator().next().tags().get("zoqftiyqzrnkcqvy"));
@@ -85,13 +73,13 @@ public final class WorkflowsListByResourceGroupMockTests {
         Assertions.assertEquals("c", response.iterator().next().appName());
         Assertions.assertEquals("qjsdpydnfyhxdeo", response.iterator().next().dockerfileOutputDirectory());
         Assertions.assertEquals("zi", response.iterator().next().manifestOutputDirectory());
-        Assertions
-            .assertEquals(DockerfileGenerationMode.DISABLED, response.iterator().next().dockerfileGenerationMode());
+        Assertions.assertEquals(DockerfileGenerationMode.DISABLED,
+            response.iterator().next().dockerfileGenerationMode());
         Assertions.assertEquals(ManifestGenerationMode.DISABLED, response.iterator().next().manifestGenerationMode());
         Assertions.assertEquals(GenerationManifestType.HELM, response.iterator().next().manifestType());
         Assertions.assertEquals("gzfbishcbk", response.iterator().next().imageName());
-        Assertions
-            .assertEquals("jdeyeamdpha", response.iterator().next().namespaceArtifactGenerationPropertiesNamespace());
+        Assertions.assertEquals("jdeyeamdpha",
+            response.iterator().next().namespaceArtifactGenerationPropertiesNamespace());
         Assertions.assertEquals("lpbuxwgipwhonowk", response.iterator().next().imageTag());
     }
 }

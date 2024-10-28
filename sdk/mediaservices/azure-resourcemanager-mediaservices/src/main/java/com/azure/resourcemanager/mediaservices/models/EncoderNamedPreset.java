@@ -29,15 +29,15 @@ public final class EncoderNamedPreset extends ExpandableStringEnum<EncoderNamedP
     public static final EncoderNamedPreset DDGOOD_QUALITY_AUDIO = fromString("DDGoodQualityAudio");
 
     /** Static value ContentAwareEncodingExperimental for EncoderNamedPreset. */
-    public static final EncoderNamedPreset CONTENT_AWARE_ENCODING_EXPERIMENTAL =
-        fromString("ContentAwareEncodingExperimental");
+    public static final EncoderNamedPreset CONTENT_AWARE_ENCODING_EXPERIMENTAL
+        = fromString("ContentAwareEncodingExperimental");
 
     /** Static value ContentAwareEncoding for EncoderNamedPreset. */
     public static final EncoderNamedPreset CONTENT_AWARE_ENCODING = fromString("ContentAwareEncoding");
 
     /** Static value CopyAllBitrateNonInterleaved for EncoderNamedPreset. */
-    public static final EncoderNamedPreset COPY_ALL_BITRATE_NON_INTERLEAVED =
-        fromString("CopyAllBitrateNonInterleaved");
+    public static final EncoderNamedPreset COPY_ALL_BITRATE_NON_INTERLEAVED
+        = fromString("CopyAllBitrateNonInterleaved");
 
     /** Static value H264MultipleBitrate1080p for EncoderNamedPreset. */
     public static final EncoderNamedPreset H264MULTIPLE_BITRATE1080P = fromString("H264MultipleBitrate1080p");

@@ -25,14 +25,14 @@ public final class MSIToken extends AccessToken {
     private static final ClientLogger LOGGER = new ClientLogger(MSIToken.class);
     private static final OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
 
-    private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX")
-        .withLocale(Locale.US);
+    private static final DateTimeFormatter DTF
+        = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX").withLocale(Locale.US);
 
     // This is the format for app service on Windows as of API version 2017-09-01.
     // The format is changed to Unix timestamp in 2019-08-01 but this API version
     // has not been deployed to Linux app services.
-    private static final DateTimeFormatter DTF_WINDOWS = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a XXX")
-        .withLocale(Locale.US);
+    private static final DateTimeFormatter DTF_WINDOWS
+        = DateTimeFormatter.ofPattern("M/d/yyyy h:mm:ss a XXX").withLocale(Locale.US);
 
     private final String accessToken;
 
@@ -53,6 +53,7 @@ public final class MSIToken extends AccessToken {
     public String getToken() {
         return accessToken;
     }
+
     public static MSIToken fromJson(JsonReader jsonReader) throws IOException {
 
         // a serialized MSIToken will have more fields in it, but we don't need them

@@ -30,8 +30,12 @@ public final class LiftrBaseMarketplaceDetailsTests {
     public void testSerialize() throws Exception {
         LiftrBaseMarketplaceDetails model = new LiftrBaseMarketplaceDetails().withSubscriptionId("muouqfp")
             .withSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START)
-            .withOfferDetails(new LiftrBaseOfferDetails().withPublisherId("wbnguitnwui").withOfferId("gazxuf")
-                .withPlanId("zuckyfi").withPlanName("fidfvzw").withTermUnit("uht").withTermId("wisdkft"));
+            .withOfferDetails(new LiftrBaseOfferDetails().withPublisherId("wbnguitnwui")
+                .withOfferId("gazxuf")
+                .withPlanId("zuckyfi")
+                .withPlanName("fidfvzw")
+                .withTermUnit("uht")
+                .withTermId("wisdkft"));
         model = BinaryData.fromObject(model).toObject(LiftrBaseMarketplaceDetails.class);
         Assertions.assertEquals("muouqfp", model.subscriptionId());
         Assertions.assertEquals(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START, model.subscriptionStatus());

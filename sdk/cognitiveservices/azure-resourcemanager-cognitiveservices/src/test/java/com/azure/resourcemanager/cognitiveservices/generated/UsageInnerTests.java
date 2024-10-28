@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageInner model =
-            BinaryData
-                .fromString(
-                    "{\"unit\":\"Seconds\",\"name\":{\"value\":\"uokktwhrdxwz\",\"localizedValue\":\"q\"},\"quotaPeriod\":\"bsureximo\",\"limit\":23.538238166454796,\"currentValue\":27.071751224209883,\"nextResetTime\":\"s\",\"status\":\"Unknown\"}")
-                .toObject(UsageInner.class);
+        UsageInner model = BinaryData.fromString(
+            "{\"unit\":\"Seconds\",\"name\":{\"value\":\"uokktwhrdxwz\",\"localizedValue\":\"q\"},\"quotaPeriod\":\"bsureximo\",\"limit\":23.538238166454796,\"currentValue\":27.071751224209883,\"nextResetTime\":\"s\",\"status\":\"Unknown\"}")
+            .toObject(UsageInner.class);
         Assertions.assertEquals(UnitType.SECONDS, model.unit());
         Assertions.assertEquals("uokktwhrdxwz", model.name().value());
         Assertions.assertEquals("q", model.name().localizedValue());
@@ -31,15 +29,13 @@ public final class UsageInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageInner model =
-            new UsageInner()
-                .withUnit(UnitType.SECONDS)
-                .withName(new MetricName().withValue("uokktwhrdxwz").withLocalizedValue("q"))
-                .withQuotaPeriod("bsureximo")
-                .withLimit(23.538238166454796D)
-                .withCurrentValue(27.071751224209883D)
-                .withNextResetTime("s")
-                .withStatus(QuotaUsageStatus.UNKNOWN);
+        UsageInner model = new UsageInner().withUnit(UnitType.SECONDS)
+            .withName(new MetricName().withValue("uokktwhrdxwz").withLocalizedValue("q"))
+            .withQuotaPeriod("bsureximo")
+            .withLimit(23.538238166454796D)
+            .withCurrentValue(27.071751224209883D)
+            .withNextResetTime("s")
+            .withStatus(QuotaUsageStatus.UNKNOWN);
         model = BinaryData.fromObject(model).toObject(UsageInner.class);
         Assertions.assertEquals(UnitType.SECONDS, model.unit());
         Assertions.assertEquals("uokktwhrdxwz", model.name().value());

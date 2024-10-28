@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Test;
 public final class DetailedInformationTests {
     @Test
     public void testDeserialize() {
-        DetailedInformation model =
-            BinaryData
-                .fromString(
-                    "{\"apiName\":\"mgxsab\",\"customParameters\":[\"duuji\",\"c\",\"czdzev\",\"dhkrwpdappdsbdk\"],\"platformParameters\":[\"wjfeusnhutjel\",\"mrldhu\"],\"unitsSupported\":{\"key\":\"zzd\",\"values\":[\"qxhocdgeablgphut\",\"cndvkaozwyiftyhx\",\"urokft\"]},\"apiInputParameters\":[\"lniwpwcukjfkgiaw\",\"klryplwck\",\"asy\"]}")
-                .toObject(DetailedInformation.class);
+        DetailedInformation model = BinaryData.fromString(
+            "{\"apiName\":\"mgxsab\",\"customParameters\":[\"duuji\",\"c\",\"czdzev\",\"dhkrwpdappdsbdk\"],\"platformParameters\":[\"wjfeusnhutjel\",\"mrldhu\"],\"unitsSupported\":{\"key\":\"zzd\",\"values\":[\"qxhocdgeablgphut\",\"cndvkaozwyiftyhx\",\"urokft\"]},\"apiInputParameters\":[\"lniwpwcukjfkgiaw\",\"klryplwck\",\"asy\"]}")
+            .toObject(DetailedInformation.class);
         Assertions.assertEquals("mgxsab", model.apiName());
         Assertions.assertEquals("duuji", model.customParameters().get(0));
         Assertions.assertEquals("wjfeusnhutjel", model.platformParameters().get(0));
@@ -29,16 +27,12 @@ public final class DetailedInformationTests {
 
     @Test
     public void testSerialize() {
-        DetailedInformation model =
-            new DetailedInformation()
-                .withApiName("mgxsab")
-                .withCustomParameters(Arrays.asList("duuji", "c", "czdzev", "dhkrwpdappdsbdk"))
-                .withPlatformParameters(Arrays.asList("wjfeusnhutjel", "mrldhu"))
-                .withUnitsSupported(
-                    new UnitSystemsInfo()
-                        .withKey("zzd")
-                        .withValues(Arrays.asList("qxhocdgeablgphut", "cndvkaozwyiftyhx", "urokft")))
-                .withApiInputParameters(Arrays.asList("lniwpwcukjfkgiaw", "klryplwck", "asy"));
+        DetailedInformation model = new DetailedInformation().withApiName("mgxsab")
+            .withCustomParameters(Arrays.asList("duuji", "c", "czdzev", "dhkrwpdappdsbdk"))
+            .withPlatformParameters(Arrays.asList("wjfeusnhutjel", "mrldhu"))
+            .withUnitsSupported(new UnitSystemsInfo().withKey("zzd")
+                .withValues(Arrays.asList("qxhocdgeablgphut", "cndvkaozwyiftyhx", "urokft")))
+            .withApiInputParameters(Arrays.asList("lniwpwcukjfkgiaw", "klryplwck", "asy"));
         model = BinaryData.fromObject(model).toObject(DetailedInformation.class);
         Assertions.assertEquals("mgxsab", model.apiName());
         Assertions.assertEquals("duuji", model.customParameters().get(0));

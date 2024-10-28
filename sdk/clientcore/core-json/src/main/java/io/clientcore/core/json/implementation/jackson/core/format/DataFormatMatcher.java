@@ -11,8 +11,7 @@ import io.clientcore.core.json.implementation.jackson.core.io.MergedStream;
  * Result object constructed by {@link DataFormatDetector} when requested
  * to detect format of given input data.
  */
-public class DataFormatMatcher
-{
+public class DataFormatMatcher {
     protected final InputStream _originalStream;
 
     /**
@@ -40,10 +39,8 @@ public class DataFormatMatcher
      */
     protected final MatchStrength _matchStrength;
 
-    protected DataFormatMatcher(InputStream in, byte[] buffered,
-            int bufferedStart, int bufferedLength,
-            JsonFactory match, MatchStrength strength)
-    {
+    protected DataFormatMatcher(InputStream in, byte[] buffered, int bufferedStart, int bufferedLength,
+        JsonFactory match, MatchStrength strength) {
         _originalStream = in;
         _bufferedData = buffered;
         _bufferedStart = bufferedStart;
@@ -52,10 +49,9 @@ public class DataFormatMatcher
         _matchStrength = strength;
 
         // can't have negative offset or length
-        if ((bufferedStart | bufferedLength) < 0
-                || (bufferedStart + bufferedLength) > buffered.length) {
+        if ((bufferedStart | bufferedLength) < 0 || (bufferedStart + bufferedLength) > buffered.length) {
             throw new IllegalArgumentException(String.format("Illegal start/length (%d/%d) wrt input array of %d bytes",
-                    bufferedStart, bufferedLength, buffered.length));
+                bufferedStart, bufferedLength, buffered.length));
         }
     }
 
@@ -71,7 +67,9 @@ public class DataFormatMatcher
      *
      * @return Whether format has a match
      */
-    public boolean hasMatch() { return _match != null; }
+    public boolean hasMatch() {
+        return _match != null;
+    }
 
     /**
      * Method for accessing strength of the match, if any; if no match,
@@ -88,7 +86,9 @@ public class DataFormatMatcher
      *
      * @return Relevant {@link JsonFactory} to indicate matched format
      */
-    public JsonFactory getMatch() { return _match; }
+    public JsonFactory getMatch() {
+        return _match;
+    }
 
     /**
      * Accessor for getting brief textual name of matched format if any (null

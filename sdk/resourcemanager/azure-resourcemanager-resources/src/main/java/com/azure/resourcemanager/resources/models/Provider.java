@@ -14,9 +14,7 @@ import java.util.List;
  * An immutable client-side representation of an Azure resource provider.
  */
 @Fluent
-public interface Provider extends
-        Indexable,
-        HasInnerModel<ProviderInner> {
+public interface Provider extends Indexable, HasInnerModel<ProviderInner> {
 
     /**
      * @return the namespace of the provider

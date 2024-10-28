@@ -63,24 +63,19 @@ public final class TagContractImpl implements TagContract, TagContract.Definitio
     }
 
     public TagContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTags()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, tagId, createParameters, createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTags()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, tagId, createParameters, createIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public TagContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTags()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, tagId, createParameters, createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTags()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, tagId, createParameters, createIfMatch, context)
+            .getValue();
         return this;
     }
 
@@ -99,28 +94,23 @@ public final class TagContractImpl implements TagContract, TagContract.Definitio
     }
 
     public TagContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTags()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, tagId, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTags()
+            .updateWithResponse(resourceGroupName, serviceName, tagId, updateIfMatch, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public TagContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTags()
-                .updateWithResponse(resourceGroupName, serviceName, tagId, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTags()
+            .updateWithResponse(resourceGroupName, serviceName, tagId, updateIfMatch, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    TagContractImpl(
-        TagContractInner innerObject, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    TagContractImpl(TagContractInner innerObject,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -129,22 +119,18 @@ public final class TagContractImpl implements TagContract, TagContract.Definitio
     }
 
     public TagContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTags()
-                .getWithResponse(resourceGroupName, serviceName, tagId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTags()
+            .getWithResponse(resourceGroupName, serviceName, tagId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public TagContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTags()
-                .getWithResponse(resourceGroupName, serviceName, tagId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getTags()
+            .getWithResponse(resourceGroupName, serviceName, tagId, context)
+            .getValue();
         return this;
     }
 

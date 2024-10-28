@@ -4,8 +4,10 @@
 package com.azure.iot.modelsrepository.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+
+import java.io.IOException;
 
 /**
  * The {@link FetchMetadataResult} class is used for storing the result of the
@@ -18,7 +20,6 @@ public class FetchMetadataResult {
 
     private ModelsRepositoryMetadata definition;
     private String path;
-    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
      * Gets the model repository's metadata definition
@@ -35,8 +36,10 @@ public class FetchMetadataResult {
      * @param definition the model repository's metadata definition
      * @return the {@link FetchMetadataResult}  object itself
      */
-    public FetchMetadataResult setDefinition(String definition) throws JsonProcessingException {
-        this.definition = MAPPER.readValue(definition, ModelsRepositoryMetadata.class);
+    public FetchMetadataResult setDefinition(String definition) throws IOException {
+        try (JsonReader jsonReader = JsonProviders.createReader(definition)) {
+            this.definition = ModelsRepositoryMetadata.fromJson(jsonReader);
+        }
         return this;
     }
 

@@ -13,8 +13,7 @@ public final class WorkspacePurgeStatusResponseImpl implements WorkspacePurgeSta
 
     private final com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager;
 
-    WorkspacePurgeStatusResponseImpl(
-        WorkspacePurgeStatusResponseInner innerObject,
+    WorkspacePurgeStatusResponseImpl(WorkspacePurgeStatusResponseInner innerObject,
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

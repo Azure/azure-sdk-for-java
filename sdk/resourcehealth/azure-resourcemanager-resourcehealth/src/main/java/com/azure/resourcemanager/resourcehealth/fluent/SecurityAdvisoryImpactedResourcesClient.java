@@ -39,8 +39,8 @@ public interface SecurityAdvisoryImpactedResourcesClient {
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventImpactedResourceInner> listBySubscriptionIdAndEventId(
-        String eventTrackingId, String filter, Context context);
+    PagedIterable<EventImpactedResourceInner> listBySubscriptionIdAndEventId(String eventTrackingId, String filter,
+        Context context);
 
     /**
      * Lists impacted resources in the tenant by an event (Security Advisory).
@@ -67,6 +67,6 @@ public interface SecurityAdvisoryImpactedResourcesClient {
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventImpactedResourceInner> listByTenantIdAndEventId(
-        String eventTrackingId, String filter, Context context);
+    PagedIterable<EventImpactedResourceInner> listByTenantIdAndEventId(String eventTrackingId, String filter,
+        Context context);
 }

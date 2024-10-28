@@ -13,12 +13,11 @@ import java.util.Collection;
 public final class ForceDeletionResourceType extends ExpandableStringEnum<ForceDeletionResourceType> {
 
     /** Static value Microsoft.Compute/virtualMachines for ForceDeletionResourceType. */
-    public static final ForceDeletionResourceType VIRTUAL_MACHINES =
-        fromString("Microsoft.Compute/virtualMachines");
+    public static final ForceDeletionResourceType VIRTUAL_MACHINES = fromString("Microsoft.Compute/virtualMachines");
 
     /** Static value Microsoft.Compute/virtualMachineScaleSets for ForceDeletionResourceType. */
-    public static final ForceDeletionResourceType VIRTUAL_MACHINE_SCALE_SETS =
-        fromString("Microsoft.Compute/virtualMachineScaleSets");
+    public static final ForceDeletionResourceType VIRTUAL_MACHINE_SCALE_SETS
+        = fromString("Microsoft.Compute/virtualMachineScaleSets");
 
     /**
      * Creates or finds a ForceDeletionResourceType from its string representation.

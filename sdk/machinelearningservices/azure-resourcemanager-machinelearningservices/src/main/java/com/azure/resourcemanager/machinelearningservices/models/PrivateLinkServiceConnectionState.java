@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** A collection of information about the state of the connection between service consumer and provider. */
 @Fluent
 public final class PrivateLinkServiceConnectionState {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnectionState.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnectionState.class);
 
     /*
      * Indicates whether the connection has been Approved/Rejected/Removed by

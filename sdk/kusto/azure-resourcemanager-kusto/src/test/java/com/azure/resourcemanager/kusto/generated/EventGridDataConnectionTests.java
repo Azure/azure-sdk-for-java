@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EventGridDataConnectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventGridDataConnection model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"EventGrid\",\"properties\":{\"storageAccountResourceId\":\"alhsnvkc\",\"eventGridResourceId\":\"xzrpo\",\"eventHubResourceId\":\"imlnwiaaomylw\",\"consumerGroup\":\"azul\",\"tableName\":\"ethwwnpjhlfz\",\"mappingRuleName\":\"pchwa\",\"dataFormat\":\"SCSV\",\"ignoreFirstRecord\":true,\"blobStorageEventType\":\"Microsoft.Storage.BlobCreated\",\"managedIdentityResourceId\":\"epgfew\",\"managedIdentityObjectId\":\"wlyxgncxyk\",\"databaseRouting\":\"Single\",\"provisioningState\":\"Deleting\"},\"location\":\"immbcx\",\"id\":\"h\",\"name\":\"cporxvxcjz\",\"type\":\"qizxfpxtgqscjavf\"}")
-                .toObject(EventGridDataConnection.class);
+        EventGridDataConnection model = BinaryData.fromString(
+            "{\"kind\":\"EventGrid\",\"properties\":{\"storageAccountResourceId\":\"alhsnvkc\",\"eventGridResourceId\":\"xzrpo\",\"eventHubResourceId\":\"imlnwiaaomylw\",\"consumerGroup\":\"azul\",\"tableName\":\"ethwwnpjhlfz\",\"mappingRuleName\":\"pchwa\",\"dataFormat\":\"SCSV\",\"ignoreFirstRecord\":true,\"blobStorageEventType\":\"Microsoft.Storage.BlobCreated\",\"managedIdentityResourceId\":\"epgfew\",\"managedIdentityObjectId\":\"wlyxgncxyk\",\"databaseRouting\":\"Single\",\"provisioningState\":\"Deleting\"},\"location\":\"immbcx\",\"id\":\"h\",\"name\":\"cporxvxcjz\",\"type\":\"qizxfpxtgqscjavf\"}")
+            .toObject(EventGridDataConnection.class);
         Assertions.assertEquals("immbcx", model.location());
         Assertions.assertEquals("alhsnvkc", model.storageAccountResourceId());
         Assertions.assertEquals("xzrpo", model.eventGridResourceId());
@@ -35,20 +33,18 @@ public final class EventGridDataConnectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventGridDataConnection model =
-            new EventGridDataConnection()
-                .withLocation("immbcx")
-                .withStorageAccountResourceId("alhsnvkc")
-                .withEventGridResourceId("xzrpo")
-                .withEventHubResourceId("imlnwiaaomylw")
-                .withConsumerGroup("azul")
-                .withTableName("ethwwnpjhlfz")
-                .withMappingRuleName("pchwa")
-                .withDataFormat(EventGridDataFormat.SCSV)
-                .withIgnoreFirstRecord(true)
-                .withBlobStorageEventType(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_CREATED)
-                .withManagedIdentityResourceId("epgfew")
-                .withDatabaseRouting(DatabaseRouting.SINGLE);
+        EventGridDataConnection model = new EventGridDataConnection().withLocation("immbcx")
+            .withStorageAccountResourceId("alhsnvkc")
+            .withEventGridResourceId("xzrpo")
+            .withEventHubResourceId("imlnwiaaomylw")
+            .withConsumerGroup("azul")
+            .withTableName("ethwwnpjhlfz")
+            .withMappingRuleName("pchwa")
+            .withDataFormat(EventGridDataFormat.SCSV)
+            .withIgnoreFirstRecord(true)
+            .withBlobStorageEventType(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_CREATED)
+            .withManagedIdentityResourceId("epgfew")
+            .withDatabaseRouting(DatabaseRouting.SINGLE);
         model = BinaryData.fromObject(model).toObject(EventGridDataConnection.class);
         Assertions.assertEquals("immbcx", model.location());
         Assertions.assertEquals("alhsnvkc", model.storageAccountResourceId());

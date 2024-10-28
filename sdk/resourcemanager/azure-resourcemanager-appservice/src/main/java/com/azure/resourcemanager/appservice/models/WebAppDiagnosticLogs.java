@@ -50,14 +50,12 @@ public interface WebAppDiagnosticLogs extends HasInnerModel<SiteLogsConfigInner>
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
     interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithDiagnosticLogging<ParentT>,
-            DefinitionStages.WithApplicationLogLevel<ParentT>,
-            DefinitionStages.WithStorageLocationForApplication<ParentT>,
-            DefinitionStages.WithStorageLocationForWebServer<ParentT>,
-            DefinitionStages.WithAttachForWebServerStorage<ParentT>,
-            DefinitionStages.WithAttachForWebServerFileSystem<ParentT>,
-            DefinitionStages.WithAttachForApplicationStorage<ParentT> {
+        extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithDiagnosticLogging<ParentT>,
+        DefinitionStages.WithApplicationLogLevel<ParentT>, DefinitionStages.WithStorageLocationForApplication<ParentT>,
+        DefinitionStages.WithStorageLocationForWebServer<ParentT>,
+        DefinitionStages.WithAttachForWebServerStorage<ParentT>,
+        DefinitionStages.WithAttachForWebServerFileSystem<ParentT>,
+        DefinitionStages.WithAttachForApplicationStorage<ParentT> {
     }
 
     /** Grouping of web app diagnostic log definition stages applicable as part of a web app creation. */
@@ -262,10 +260,8 @@ public interface WebAppDiagnosticLogs extends HasInnerModel<SiteLogsConfigInner>
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InDefinition<ParentT>,
-                DefinitionStages.WithDetailedErrorMessages<ParentT>,
-                DefinitionStages.WithFailedRequestTracing<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT>,
+            DefinitionStages.WithDetailedErrorMessages<ParentT>, DefinitionStages.WithFailedRequestTracing<ParentT> {
         }
     }
 
@@ -275,15 +271,10 @@ public interface WebAppDiagnosticLogs extends HasInnerModel<SiteLogsConfigInner>
      * @param <ParentT> the return type of the final {@link Update#parent()} ()}
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateStages.Blank<ParentT>,
-            UpdateStages.Update<ParentT>,
-            UpdateStages.WithDiagnosticLogging<ParentT>,
-            UpdateStages.WithApplicationLogLevel<ParentT>,
-            UpdateStages.WithStorageLocationForApplication<ParentT>,
-            UpdateStages.WithStorageLocationForWebServer<ParentT>,
-            UpdateStages.WithAttachForWebServerStorage<ParentT>,
-            UpdateStages.WithAttachForWebServerFileSystem<ParentT>,
-            UpdateStages.WithAttachForApplicationStorage<ParentT> {
+        extends UpdateStages.Blank<ParentT>, UpdateStages.Update<ParentT>, UpdateStages.WithDiagnosticLogging<ParentT>,
+        UpdateStages.WithApplicationLogLevel<ParentT>, UpdateStages.WithStorageLocationForApplication<ParentT>,
+        UpdateStages.WithStorageLocationForWebServer<ParentT>, UpdateStages.WithAttachForWebServerStorage<ParentT>,
+        UpdateStages.WithAttachForWebServerFileSystem<ParentT>, UpdateStages.WithAttachForApplicationStorage<ParentT> {
     }
 
     /** Grouping of web app diagnostic log update stages applicable as part of a web app update. */

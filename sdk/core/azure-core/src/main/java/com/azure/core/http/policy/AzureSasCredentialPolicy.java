@@ -24,7 +24,7 @@ import java.util.Objects;
  * <p><strong>Code sample:</strong></p>
  *
  * <p>In this example, an {@code AzureSasCredentialPolicy} is created with a SAS. The policy can then added to the
- * pipeline. The requess sent by the pipeline will then include the SAS appended to its query string.</p>
+ * pipeline. The request sent by the pipeline will then include the SAS appended to its query string.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.AzureSasCredentialPolicy.constructor -->
  * <pre>

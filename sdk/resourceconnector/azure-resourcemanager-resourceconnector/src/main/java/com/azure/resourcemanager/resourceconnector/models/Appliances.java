@@ -174,8 +174,8 @@ public interface Appliances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Cluster User Credential appliance along with {@link Response}.
      */
-    Response<ApplianceListCredentialResults> listClusterUserCredentialWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<ApplianceListCredentialResults> listClusterUserCredentialWithResponse(String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Returns the cluster user credential.
@@ -205,8 +205,8 @@ public interface Appliances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Cluster Keys Results appliance along with {@link Response}.
      */
-    Response<ApplianceListKeysResults> listKeysWithResponse(
-        String resourceGroupName, String resourceName, String artifactType, Context context);
+    Response<ApplianceListKeysResults> listKeysWithResponse(String resourceGroupName, String resourceName,
+        String artifactType, Context context);
 
     /**
      * Gets the management config.
@@ -237,8 +237,8 @@ public interface Appliances {
      * @return the upgrade graph of an Appliance with a specified resource group and name and specific release train
      *     along with {@link Response}.
      */
-    Response<UpgradeGraph> getUpgradeGraphWithResponse(
-        String resourceGroupName, String resourceName, String upgradeGraph, Context context);
+    Response<UpgradeGraph> getUpgradeGraphWithResponse(String resourceGroupName, String resourceName,
+        String upgradeGraph, Context context);
 
     /**
      * Gets an Appliance upgrade graph.

@@ -12,21 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationServiceEnvironmentManagedApiDeploymentParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationServiceEnvironmentManagedApiDeploymentParameters model =
-            BinaryData
-                .fromString(
-                    "{\"contentLinkDefinition\":{\"uri\":\"gvkzqkjjeokbze\",\"contentVersion\":\"zrxcczurt\",\"contentSize\":5192277708355571160,\"contentHash\":{\"algorithm\":\"bkwvzg\",\"value\":\"v\"},\"metadata\":\"databzdixzmq\"}}")
-                .toObject(IntegrationServiceEnvironmentManagedApiDeploymentParameters.class);
-        Assertions.assertEquals("gvkzqkjjeokbze", model.contentLinkDefinition().uri());
+        IntegrationServiceEnvironmentManagedApiDeploymentParameters model = BinaryData.fromString(
+            "{\"contentLinkDefinition\":{\"uri\":\"rrvwey\",\"contentVersion\":\"oy\",\"contentSize\":275572615553249364,\"contentHash\":{\"algorithm\":\"immoiroqboshbrag\",\"value\":\"yyrmfsvbp\"},\"metadata\":\"databopfppdbwnup\"}}")
+            .toObject(IntegrationServiceEnvironmentManagedApiDeploymentParameters.class);
+        Assertions.assertEquals("rrvwey", model.contentLinkDefinition().uri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationServiceEnvironmentManagedApiDeploymentParameters model =
-            new IntegrationServiceEnvironmentManagedApiDeploymentParameters()
-                .withContentLinkDefinition(new ContentLink().withUri("gvkzqkjjeokbze"));
-        model =
-            BinaryData.fromObject(model).toObject(IntegrationServiceEnvironmentManagedApiDeploymentParameters.class);
-        Assertions.assertEquals("gvkzqkjjeokbze", model.contentLinkDefinition().uri());
+        IntegrationServiceEnvironmentManagedApiDeploymentParameters model
+            = new IntegrationServiceEnvironmentManagedApiDeploymentParameters()
+                .withContentLinkDefinition(new ContentLink().withUri("rrvwey"));
+        model
+            = BinaryData.fromObject(model).toObject(IntegrationServiceEnvironmentManagedApiDeploymentParameters.class);
+        Assertions.assertEquals("rrvwey", model.contentLinkDefinition().uri());
     }
 }

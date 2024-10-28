@@ -18,17 +18,15 @@ import java.util.Objects;
 /**
  * The implementation for Identity and its create and update interfaces.
  */
-public final class IdentityImpl
-        extends GroupableResourceImpl<Identity, IdentityInner, IdentityImpl, MsiManager>
-        implements Identity, Identity.Definition, Identity.Update {
+public final class IdentityImpl extends GroupableResourceImpl<Identity, IdentityInner, IdentityImpl, MsiManager>
+    implements Identity, Identity.Definition, Identity.Update {
 
     private RoleAssignmentHelper roleAssignmentHelper;
 
     public IdentityImpl(String name, IdentityInner innerObject, MsiManager manager) {
         super(name, innerObject, manager);
-        this.roleAssignmentHelper = new RoleAssignmentHelper(manager.authorizationManager(),
-            this.taskGroup(),
-            this.idProvider());
+        this.roleAssignmentHelper
+            = new RoleAssignmentHelper(manager.authorizationManager(), this.taskGroup(), this.idProvider());
     }
 
     @Override
@@ -108,17 +106,18 @@ public final class IdentityImpl
 
     @Override
     public Mono<Identity> createResourceAsync() {
-        return this.manager().serviceClient().getUserAssignedIdentities()
-                .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
-                .map(innerToFluentMap(this));
+        return this.manager()
+            .serviceClient()
+            .getUserAssignedIdentities()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
+            .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<IdentityInner> getInnerAsync() {
-        return this.myManager
-                .serviceClient()
-                .getUserAssignedIdentities()
-                .getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.myManager.serviceClient()
+            .getUserAssignedIdentities()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     private RoleAssignmentHelper.IdProvider idProvider() {
@@ -129,6 +128,7 @@ public final class IdentityImpl
                 Objects.requireNonNull(innerModel().principalId());
                 return innerModel().principalId().toString();
             }
+
             @Override
             public String resourceId() {
                 Objects.requireNonNull(innerModel());

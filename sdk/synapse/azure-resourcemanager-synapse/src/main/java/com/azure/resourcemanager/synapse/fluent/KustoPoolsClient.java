@@ -58,8 +58,8 @@ public interface KustoPoolsClient {
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String location, KustoPoolCheckNameRequest kustoPoolName, Context context);
+    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String location,
+        KustoPoolCheckNameRequest kustoPoolName, Context context);
 
     /**
      * Checks that the kusto pool name is valid and is not already in use.
@@ -88,8 +88,8 @@ public interface KustoPoolsClient {
      * @return the list Kusto pools operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<KustoPoolListResultInner> listByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<KustoPoolListResultInner> listByWorkspaceWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * List Kusto pools
@@ -119,8 +119,8 @@ public interface KustoPoolsClient {
      * @return a Kusto pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<KustoPoolInner> getWithResponse(
-        String workspaceName, String kustoPoolName, String resourceGroupName, Context context);
+    Response<KustoPoolInner> getWithResponse(String workspaceName, String kustoPoolName, String resourceGroupName,
+        Context context);
 
     /**
      * Gets a Kusto pool.
@@ -149,8 +149,8 @@ public interface KustoPoolsClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto kusto pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<KustoPoolInner>, KustoPoolInner> beginCreateOrUpdate(
-        String workspaceName, String resourceGroupName, String kustoPoolName, KustoPoolInner parameters);
+    SyncPoller<PollResult<KustoPoolInner>, KustoPoolInner> beginCreateOrUpdate(String workspaceName,
+        String resourceGroupName, String kustoPoolName, KustoPoolInner parameters);
 
     /**
      * Create or update a Kusto pool.
@@ -170,13 +170,8 @@ public interface KustoPoolsClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto kusto pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<KustoPoolInner>, KustoPoolInner> beginCreateOrUpdate(
-        String workspaceName,
-        String resourceGroupName,
-        String kustoPoolName,
-        KustoPoolInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
+    SyncPoller<PollResult<KustoPoolInner>, KustoPoolInner> beginCreateOrUpdate(String workspaceName,
+        String resourceGroupName, String kustoPoolName, KustoPoolInner parameters, String ifMatch, String ifNoneMatch,
         Context context);
 
     /**
@@ -192,8 +187,8 @@ public interface KustoPoolsClient {
      * @return class representing a Kusto kusto pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    KustoPoolInner createOrUpdate(
-        String workspaceName, String resourceGroupName, String kustoPoolName, KustoPoolInner parameters);
+    KustoPoolInner createOrUpdate(String workspaceName, String resourceGroupName, String kustoPoolName,
+        KustoPoolInner parameters);
 
     /**
      * Create or update a Kusto pool.
@@ -213,14 +208,8 @@ public interface KustoPoolsClient {
      * @return class representing a Kusto kusto pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    KustoPoolInner createOrUpdate(
-        String workspaceName,
-        String resourceGroupName,
-        String kustoPoolName,
-        KustoPoolInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
+    KustoPoolInner createOrUpdate(String workspaceName, String resourceGroupName, String kustoPoolName,
+        KustoPoolInner parameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Update a Kusto Kusto Pool.
@@ -235,8 +224,8 @@ public interface KustoPoolsClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto kusto pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<KustoPoolInner>, KustoPoolInner> beginUpdate(
-        String workspaceName, String resourceGroupName, String kustoPoolName, KustoPoolUpdate parameters);
+    SyncPoller<PollResult<KustoPoolInner>, KustoPoolInner> beginUpdate(String workspaceName, String resourceGroupName,
+        String kustoPoolName, KustoPoolUpdate parameters);
 
     /**
      * Update a Kusto Kusto Pool.
@@ -254,13 +243,8 @@ public interface KustoPoolsClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto kusto pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<KustoPoolInner>, KustoPoolInner> beginUpdate(
-        String workspaceName,
-        String resourceGroupName,
-        String kustoPoolName,
-        KustoPoolUpdate parameters,
-        String ifMatch,
-        Context context);
+    SyncPoller<PollResult<KustoPoolInner>, KustoPoolInner> beginUpdate(String workspaceName, String resourceGroupName,
+        String kustoPoolName, KustoPoolUpdate parameters, String ifMatch, Context context);
 
     /**
      * Update a Kusto Kusto Pool.
@@ -275,8 +259,8 @@ public interface KustoPoolsClient {
      * @return class representing a Kusto kusto pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    KustoPoolInner update(
-        String workspaceName, String resourceGroupName, String kustoPoolName, KustoPoolUpdate parameters);
+    KustoPoolInner update(String workspaceName, String resourceGroupName, String kustoPoolName,
+        KustoPoolUpdate parameters);
 
     /**
      * Update a Kusto Kusto Pool.
@@ -294,13 +278,8 @@ public interface KustoPoolsClient {
      * @return class representing a Kusto kusto pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    KustoPoolInner update(
-        String workspaceName,
-        String resourceGroupName,
-        String kustoPoolName,
-        KustoPoolUpdate parameters,
-        String ifMatch,
-        Context context);
+    KustoPoolInner update(String workspaceName, String resourceGroupName, String kustoPoolName,
+        KustoPoolUpdate parameters, String ifMatch, Context context);
 
     /**
      * Deletes a Kusto pool.
@@ -314,8 +293,8 @@ public interface KustoPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String workspaceName, String resourceGroupName, String kustoPoolName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String workspaceName, String resourceGroupName,
+        String kustoPoolName);
 
     /**
      * Deletes a Kusto pool.
@@ -330,8 +309,8 @@ public interface KustoPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String workspaceName, String resourceGroupName, String kustoPoolName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String workspaceName, String resourceGroupName, String kustoPoolName,
+        Context context);
 
     /**
      * Deletes a Kusto pool.
@@ -387,8 +366,8 @@ public interface KustoPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStop(
-        String workspaceName, String kustoPoolName, String resourceGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStop(String workspaceName, String kustoPoolName, String resourceGroupName,
+        Context context);
 
     /**
      * Stops a Kusto pool.
@@ -444,8 +423,8 @@ public interface KustoPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStart(
-        String workspaceName, String kustoPoolName, String resourceGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStart(String workspaceName, String kustoPoolName, String resourceGroupName,
+        Context context);
 
     /**
      * Starts a Kusto pool.
@@ -486,8 +465,8 @@ public interface KustoPoolsClient {
      * @return list of available SKUs for a Kusto Pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AzureResourceSkuInner> listSkusByResource(
-        String workspaceName, String kustoPoolName, String resourceGroupName);
+    PagedIterable<AzureResourceSkuInner> listSkusByResource(String workspaceName, String kustoPoolName,
+        String resourceGroupName);
 
     /**
      * Returns the SKUs available for the provided resource.
@@ -502,8 +481,8 @@ public interface KustoPoolsClient {
      * @return list of available SKUs for a Kusto Pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AzureResourceSkuInner> listSkusByResource(
-        String workspaceName, String kustoPoolName, String resourceGroupName, Context context);
+    PagedIterable<AzureResourceSkuInner> listSkusByResource(String workspaceName, String kustoPoolName,
+        String resourceGroupName, Context context);
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
@@ -517,8 +496,8 @@ public interface KustoPoolsClient {
      * @return the list of language extension objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LanguageExtensionInner> listLanguageExtensions(
-        String workspaceName, String kustoPoolName, String resourceGroupName);
+    PagedIterable<LanguageExtensionInner> listLanguageExtensions(String workspaceName, String kustoPoolName,
+        String resourceGroupName);
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
@@ -533,8 +512,8 @@ public interface KustoPoolsClient {
      * @return the list of language extension objects as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LanguageExtensionInner> listLanguageExtensions(
-        String workspaceName, String kustoPoolName, String resourceGroupName, Context context);
+    PagedIterable<LanguageExtensionInner> listLanguageExtensions(String workspaceName, String kustoPoolName,
+        String resourceGroupName, Context context);
 
     /**
      * Add a list of language extensions that can run within KQL queries.
@@ -549,10 +528,39 @@ public interface KustoPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginAddLanguageExtensions(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
+    SyncPoller<PollResult<Void>, Void> beginAddLanguageExtensions(String workspaceName, String kustoPoolName,
+        String resourceGroupName, LanguageExtensionsList languageExtensionsToAdd);
+
+    /**
+     * Add a list of language extensions that can run within KQL queries.
+     *
+     * @param workspaceName The name of the workspace.
+     * @param kustoPoolName The name of the Kusto pool.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param languageExtensionsToAdd The language extensions to add.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginAddLanguageExtensions(String workspaceName, String kustoPoolName,
+        String resourceGroupName, LanguageExtensionsList languageExtensionsToAdd, Context context);
+
+    /**
+     * Add a list of language extensions that can run within KQL queries.
+     *
+     * @param workspaceName The name of the workspace.
+     * @param kustoPoolName The name of the Kusto pool.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param languageExtensionsToAdd The language extensions to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void addLanguageExtensions(String workspaceName, String kustoPoolName, String resourceGroupName,
         LanguageExtensionsList languageExtensionsToAdd);
 
     /**
@@ -566,53 +574,10 @@ public interface KustoPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginAddLanguageExtensions(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        LanguageExtensionsList languageExtensionsToAdd,
-        Context context);
-
-    /**
-     * Add a list of language extensions that can run within KQL queries.
-     *
-     * @param workspaceName The name of the workspace.
-     * @param kustoPoolName The name of the Kusto pool.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param languageExtensionsToAdd The language extensions to add.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void addLanguageExtensions(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        LanguageExtensionsList languageExtensionsToAdd);
-
-    /**
-     * Add a list of language extensions that can run within KQL queries.
-     *
-     * @param workspaceName The name of the workspace.
-     * @param kustoPoolName The name of the Kusto pool.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param languageExtensionsToAdd The language extensions to add.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void addLanguageExtensions(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        LanguageExtensionsList languageExtensionsToAdd,
-        Context context);
+    void addLanguageExtensions(String workspaceName, String kustoPoolName, String resourceGroupName,
+        LanguageExtensionsList languageExtensionsToAdd, Context context);
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
@@ -627,11 +592,8 @@ public interface KustoPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRemoveLanguageExtensions(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        LanguageExtensionsList languageExtensionsToRemove);
+    SyncPoller<PollResult<Void>, Void> beginRemoveLanguageExtensions(String workspaceName, String kustoPoolName,
+        String resourceGroupName, LanguageExtensionsList languageExtensionsToRemove);
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
@@ -647,12 +609,8 @@ public interface KustoPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRemoveLanguageExtensions(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        LanguageExtensionsList languageExtensionsToRemove,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginRemoveLanguageExtensions(String workspaceName, String kustoPoolName,
+        String resourceGroupName, LanguageExtensionsList languageExtensionsToRemove, Context context);
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
@@ -666,10 +624,7 @@ public interface KustoPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void removeLanguageExtensions(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
+    void removeLanguageExtensions(String workspaceName, String kustoPoolName, String resourceGroupName,
         LanguageExtensionsList languageExtensionsToRemove);
 
     /**
@@ -685,12 +640,8 @@ public interface KustoPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void removeLanguageExtensions(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        LanguageExtensionsList languageExtensionsToRemove,
-        Context context);
+    void removeLanguageExtensions(String workspaceName, String kustoPoolName, String resourceGroupName,
+        LanguageExtensionsList languageExtensionsToRemove, Context context);
 
     /**
      * Returns a list of databases that are owned by this Kusto Pool and were followed by another Kusto Pool.
@@ -704,8 +655,8 @@ public interface KustoPoolsClient {
      * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FollowerDatabaseDefinitionInner> listFollowerDatabases(
-        String workspaceName, String kustoPoolName, String resourceGroupName);
+    PagedIterable<FollowerDatabaseDefinitionInner> listFollowerDatabases(String workspaceName, String kustoPoolName,
+        String resourceGroupName);
 
     /**
      * Returns a list of databases that are owned by this Kusto Pool and were followed by another Kusto Pool.
@@ -720,8 +671,8 @@ public interface KustoPoolsClient {
      * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FollowerDatabaseDefinitionInner> listFollowerDatabases(
-        String workspaceName, String kustoPoolName, String resourceGroupName, Context context);
+    PagedIterable<FollowerDatabaseDefinitionInner> listFollowerDatabases(String workspaceName, String kustoPoolName,
+        String resourceGroupName, Context context);
 
     /**
      * Detaches all followers of a database owned by this Kusto Pool.
@@ -736,11 +687,8 @@ public interface KustoPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDetachFollowerDatabases(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        FollowerDatabaseDefinitionInner followerDatabaseToRemove);
+    SyncPoller<PollResult<Void>, Void> beginDetachFollowerDatabases(String workspaceName, String kustoPoolName,
+        String resourceGroupName, FollowerDatabaseDefinitionInner followerDatabaseToRemove);
 
     /**
      * Detaches all followers of a database owned by this Kusto Pool.
@@ -756,12 +704,8 @@ public interface KustoPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDetachFollowerDatabases(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        FollowerDatabaseDefinitionInner followerDatabaseToRemove,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDetachFollowerDatabases(String workspaceName, String kustoPoolName,
+        String resourceGroupName, FollowerDatabaseDefinitionInner followerDatabaseToRemove, Context context);
 
     /**
      * Detaches all followers of a database owned by this Kusto Pool.
@@ -775,10 +719,7 @@ public interface KustoPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void detachFollowerDatabases(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
+    void detachFollowerDatabases(String workspaceName, String kustoPoolName, String resourceGroupName,
         FollowerDatabaseDefinitionInner followerDatabaseToRemove);
 
     /**
@@ -794,10 +735,6 @@ public interface KustoPoolsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void detachFollowerDatabases(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        FollowerDatabaseDefinitionInner followerDatabaseToRemove,
-        Context context);
+    void detachFollowerDatabases(String workspaceName, String kustoPoolName, String resourceGroupName,
+        FollowerDatabaseDefinitionInner followerDatabaseToRemove, Context context);
 }

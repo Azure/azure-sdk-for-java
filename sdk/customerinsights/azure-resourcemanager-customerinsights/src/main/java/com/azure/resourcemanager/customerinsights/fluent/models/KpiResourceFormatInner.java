@@ -6,6 +6,9 @@ package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.CalculationWindowTypes;
 import com.azure.resourcemanager.customerinsights.models.EntityTypes;
 import com.azure.resourcemanager.customerinsights.models.KpiAlias;
@@ -15,26 +18,44 @@ import com.azure.resourcemanager.customerinsights.models.KpiGroupByMetadata;
 import com.azure.resourcemanager.customerinsights.models.KpiParticipantProfilesMetadata;
 import com.azure.resourcemanager.customerinsights.models.KpiThresholds;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The KPI resource format. */
+/**
+ * The KPI resource format.
+ */
 @Fluent
 public final class KpiResourceFormatInner extends ProxyResource {
     /*
      * Defines the KPI Threshold limits.
      */
-    @JsonProperty(value = "properties")
     private KpiDefinitionInner innerProperties;
 
-    /** Creates an instance of KpiResourceFormatInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of KpiResourceFormatInner class.
+     */
     public KpiResourceFormatInner() {
     }
 
     /**
      * Get the innerProperties property: Defines the KPI Threshold limits.
-     *
+     * 
      * @return the innerProperties value.
      */
     private KpiDefinitionInner innerProperties() {
@@ -42,8 +63,38 @@ public final class KpiResourceFormatInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the entityType property: The mapping entity type.
-     *
+     * 
      * @return the entityType value.
      */
     public EntityTypes entityType() {
@@ -52,7 +103,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Set the entityType property: The mapping entity type.
-     *
+     * 
      * @param entityType the entityType value to set.
      * @return the KpiResourceFormatInner object itself.
      */
@@ -66,7 +117,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the entityTypeName property: The mapping entity name.
-     *
+     * 
      * @return the entityTypeName value.
      */
     public String entityTypeName() {
@@ -75,7 +126,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Set the entityTypeName property: The mapping entity name.
-     *
+     * 
      * @param entityTypeName the entityTypeName value to set.
      * @return the KpiResourceFormatInner object itself.
      */
@@ -89,7 +140,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -98,7 +149,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the kpiName property: The KPI name.
-     *
+     * 
      * @return the kpiName value.
      */
     public String kpiName() {
@@ -107,7 +158,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the displayName property: Localized display name for the KPI.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
@@ -116,7 +167,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Set the displayName property: Localized display name for the KPI.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the KpiResourceFormatInner object itself.
      */
@@ -130,7 +181,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the description property: Localized description for the KPI.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
@@ -139,7 +190,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Set the description property: Localized description for the KPI.
-     *
+     * 
      * @param description the description value to set.
      * @return the KpiResourceFormatInner object itself.
      */
@@ -153,7 +204,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the calculationWindow property: The calculation window.
-     *
+     * 
      * @return the calculationWindow value.
      */
     public CalculationWindowTypes calculationWindow() {
@@ -162,7 +213,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Set the calculationWindow property: The calculation window.
-     *
+     * 
      * @param calculationWindow the calculationWindow value to set.
      * @return the KpiResourceFormatInner object itself.
      */
@@ -176,7 +227,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the calculationWindowFieldName property: Name of calculation window field.
-     *
+     * 
      * @return the calculationWindowFieldName value.
      */
     public String calculationWindowFieldName() {
@@ -185,7 +236,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Set the calculationWindowFieldName property: Name of calculation window field.
-     *
+     * 
      * @param calculationWindowFieldName the calculationWindowFieldName value to set.
      * @return the KpiResourceFormatInner object itself.
      */
@@ -199,7 +250,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the function property: The computation function for the KPI.
-     *
+     * 
      * @return the function value.
      */
     public KpiFunctions function() {
@@ -208,7 +259,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Set the function property: The computation function for the KPI.
-     *
+     * 
      * @param function the function value to set.
      * @return the KpiResourceFormatInner object itself.
      */
@@ -222,7 +273,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the expression property: The computation expression for the KPI.
-     *
+     * 
      * @return the expression value.
      */
     public String expression() {
@@ -231,7 +282,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Set the expression property: The computation expression for the KPI.
-     *
+     * 
      * @param expression the expression value to set.
      * @return the KpiResourceFormatInner object itself.
      */
@@ -245,7 +296,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the unit property: The unit of measurement for the KPI.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -254,7 +305,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Set the unit property: The unit of measurement for the KPI.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the KpiResourceFormatInner object itself.
      */
@@ -268,7 +319,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the filter property: The filter expression for the KPI.
-     *
+     * 
      * @return the filter value.
      */
     public String filter() {
@@ -277,7 +328,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Set the filter property: The filter expression for the KPI.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the KpiResourceFormatInner object itself.
      */
@@ -291,7 +342,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the groupBy property: the group by properties for the KPI.
-     *
+     * 
      * @return the groupBy value.
      */
     public List<String> groupBy() {
@@ -300,7 +351,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Set the groupBy property: the group by properties for the KPI.
-     *
+     * 
      * @param groupBy the groupBy value to set.
      * @return the KpiResourceFormatInner object itself.
      */
@@ -314,7 +365,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the groupByMetadata property: The KPI GroupByMetadata.
-     *
+     * 
      * @return the groupByMetadata value.
      */
     public List<KpiGroupByMetadata> groupByMetadata() {
@@ -323,7 +374,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the participantProfilesMetadata property: The participant profiles.
-     *
+     * 
      * @return the participantProfilesMetadata value.
      */
     public List<KpiParticipantProfilesMetadata> participantProfilesMetadata() {
@@ -332,7 +383,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -341,7 +392,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the thresHolds property: The KPI thresholds.
-     *
+     * 
      * @return the thresHolds value.
      */
     public KpiThresholds thresHolds() {
@@ -350,7 +401,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Set the thresHolds property: The KPI thresholds.
-     *
+     * 
      * @param thresHolds the thresHolds value to set.
      * @return the KpiResourceFormatInner object itself.
      */
@@ -364,7 +415,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the aliases property: The aliases.
-     *
+     * 
      * @return the aliases value.
      */
     public List<KpiAlias> aliases() {
@@ -373,7 +424,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Set the aliases property: The aliases.
-     *
+     * 
      * @param aliases the aliases value to set.
      * @return the KpiResourceFormatInner object itself.
      */
@@ -387,7 +438,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Get the extracts property: The KPI extracts.
-     *
+     * 
      * @return the extracts value.
      */
     public List<KpiExtract> extracts() {
@@ -396,7 +447,7 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Set the extracts property: The KPI extracts.
-     *
+     * 
      * @param extracts the extracts value to set.
      * @return the KpiResourceFormatInner object itself.
      */
@@ -410,12 +461,55 @@ public final class KpiResourceFormatInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KpiResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KpiResourceFormatInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KpiResourceFormatInner.
+     */
+    public static KpiResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KpiResourceFormatInner deserializedKpiResourceFormatInner = new KpiResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedKpiResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedKpiResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedKpiResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedKpiResourceFormatInner.innerProperties = KpiDefinitionInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKpiResourceFormatInner;
+        });
     }
 }

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** An enumeration of backup modes. */
+/**
+ * An enumeration of backup modes.
+ */
 public final class BackupMode extends ExpandableStringEnum<BackupMode> {
-    /** Static value CreateBackup for BackupMode. */
+    /**
+     * Static value CreateBackup for BackupMode.
+     */
     public static final BackupMode CREATE_BACKUP = fromString("CreateBackup");
 
-    /** Static value ExistingBackup for BackupMode. */
+    /**
+     * Static value ExistingBackup for BackupMode.
+     */
     public static final BackupMode EXISTING_BACKUP = fromString("ExistingBackup");
 
     /**
      * Creates a new instance of BackupMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class BackupMode extends ExpandableStringEnum<BackupMode> {
 
     /**
      * Creates or finds a BackupMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BackupMode.
      */
-    @JsonCreator
     public static BackupMode fromString(String name) {
         return fromString(name, BackupMode.class);
     }
 
     /**
      * Gets known BackupMode values.
-     *
+     * 
      * @return known BackupMode values.
      */
     public static Collection<BackupMode> values() {

@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.databoxedge.fluent.models.RoleInner;
 
-/** Resource collection API of Roles. */
+/**
+ * Resource collection API of Roles.
+ */
 public interface Roles {
     /**
      * Lists all the roles configured in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,7 +27,7 @@ public interface Roles {
 
     /**
      * Lists all the roles configured in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
@@ -38,7 +40,7 @@ public interface Roles {
 
     /**
      * Gets a specific role by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The role name.
      * @param resourceGroupName The resource group name.
@@ -52,7 +54,7 @@ public interface Roles {
 
     /**
      * Gets a specific role by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The role name.
      * @param resourceGroupName The resource group name.
@@ -65,7 +67,7 @@ public interface Roles {
 
     /**
      * Create or update a role.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The role name.
      * @param resourceGroupName The resource group name.
@@ -79,7 +81,7 @@ public interface Roles {
 
     /**
      * Create or update a role.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The role name.
      * @param resourceGroupName The resource group name.
@@ -94,7 +96,7 @@ public interface Roles {
 
     /**
      * Deletes the role on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The role name.
      * @param resourceGroupName The resource group name.
@@ -106,7 +108,7 @@ public interface Roles {
 
     /**
      * Deletes the role on the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The role name.
      * @param resourceGroupName The resource group name.

@@ -6,30 +6,36 @@ package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The purchase SKU for CloudSimple paid resources. */
+/**
+ * The purchase SKU for CloudSimple paid resources.
+ */
 @Fluent
-public final class SkuDescription {
+public final class SkuDescription implements JsonSerializable<SkuDescription> {
     /*
      * SKU's id
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * SKU's name
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
-    /** Creates an instance of SkuDescription class. */
+    /**
+     * Creates an instance of SkuDescription class.
+     */
     public SkuDescription() {
     }
 
     /**
      * Get the id property: SKU's id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -38,7 +44,7 @@ public final class SkuDescription {
 
     /**
      * Set the id property: SKU's id.
-     *
+     * 
      * @param id the id value to set.
      * @return the SkuDescription object itself.
      */
@@ -49,7 +55,7 @@ public final class SkuDescription {
 
     /**
      * Get the name property: SKU's name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -58,7 +64,7 @@ public final class SkuDescription {
 
     /**
      * Set the name property: SKU's name.
-     *
+     * 
      * @param name the name value to set.
      * @return the SkuDescription object itself.
      */
@@ -69,21 +75,59 @@ public final class SkuDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model SkuDescription"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model SkuDescription"));
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model SkuDescription"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model SkuDescription"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SkuDescription.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuDescription if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SkuDescription.
+     */
+    public static SkuDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuDescription deserializedSkuDescription = new SkuDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSkuDescription.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSkuDescription.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuDescription;
+        });
+    }
 }

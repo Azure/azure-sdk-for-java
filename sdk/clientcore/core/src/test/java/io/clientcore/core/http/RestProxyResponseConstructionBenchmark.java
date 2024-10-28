@@ -41,9 +41,8 @@ public class RestProxyResponseConstructionBenchmark {
     private static final HttpRequest REQUEST = new HttpRequest(HttpMethod.GET, "https://example.com");
     private static final HttpHeaders HEADERS = new HttpHeaders();
 
-    private static final Class<? extends Response<?>> RESPONSE_TYPE =
-        (Class<? extends Response<?>>) TypeUtil.getRawClass(TypeUtil.createParameterizedType(HttpResponse.class,
-            Object.class, String.class));
+    private static final Class<? extends Response<?>> RESPONSE_TYPE = (Class<? extends Response<?>>) TypeUtil
+        .getRawClass(TypeUtil.createParameterizedType(HttpResponse.class, Object.class, String.class));
 
     /**
      * Benchmarks creating a {@link Response} type using the constructor directly when possible (types outside the scope

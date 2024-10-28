@@ -31,7 +31,8 @@ public final class PrivateEndpointConnectionInnerTests {
             = new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
                 .withPrivateLinkServiceConnectionState(
                     new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                        .withDescription("utegjvwmfdats").withActionsRequired("dvpjhulsuuvmk"))
+                        .withDescription("utegjvwmfdats")
+                        .withActionsRequired("dvpjhulsuuvmk"))
                 .withGroupIds(Arrays.asList("k", "wfndiodjpsl"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionInner.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,

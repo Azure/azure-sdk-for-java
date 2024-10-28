@@ -64,7 +64,7 @@ public class DefaultJsonSerializer implements JsonSerializer {
         }
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-             JsonWriter jsonWriter = JsonProviders.createWriter(byteArrayOutputStream)) {
+            JsonWriter jsonWriter = JsonProviders.createWriter(byteArrayOutputStream)) {
 
             jsonWriter.writeUntyped(value);
             jsonWriter.flush();

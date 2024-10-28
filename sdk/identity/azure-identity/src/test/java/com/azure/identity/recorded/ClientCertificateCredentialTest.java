@@ -22,14 +22,15 @@ public class ClientCertificateCredentialTest extends IdentityTestBase {
     private ClientCertificateCredential credential;
 
     private void initializeClient(HttpClient httpClient) {
-        ClientCertificateCredentialBuilder builder = new ClientCertificateCredentialBuilder()
-            .clientId(isPlaybackMode() ? "Dummy-Id" : getClientId())
-            .tenantId(isPlaybackMode() ? "Dummy-Id" : getTenantId())
-            .pipeline(super.getHttpPipeline(httpClient));
+        ClientCertificateCredentialBuilder builder
+            = new ClientCertificateCredentialBuilder().clientId(isPlaybackMode() ? "Dummy-Id" : getClientId())
+                .tenantId(isPlaybackMode() ? "Dummy-Id" : getTenantId())
+                .pipeline(super.getHttpPipeline(httpClient));
 
         credential = isPlaybackMode()
             ? builder.pemCertificate(getClass().getClassLoader().getResourceAsStream("pemCert.pem")).build()
-            : builder.pemCertificate(Configuration.getGlobalConfiguration().get("AZURE_CLIENT_CERTIFICATE_PATH")).build();
+            : builder.pemCertificate(Configuration.getGlobalConfiguration().get("AZURE_CLIENT_CERTIFICATE_PATH"))
+                .build();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -40,7 +41,8 @@ public class ClientCertificateCredentialTest extends IdentityTestBase {
         initializeClient(httpClient);
 
         // act
-        AccessToken actual = credential.getTokenSync(new TokenRequestContext().addScopes("https://vault.azure.net/.default"));
+        AccessToken actual
+            = credential.getTokenSync(new TokenRequestContext().addScopes("https://vault.azure.net/.default"));
 
         // assert
         assertNotNull(actual);
@@ -54,7 +56,8 @@ public class ClientCertificateCredentialTest extends IdentityTestBase {
     public void getTokenAsync(HttpClient httpClient) {
         // arrange
         initializeClient(httpClient);
-        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
+        StepVerifier
+            .create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
             .expectNextMatches(accessToken -> accessToken.getToken() != null && accessToken.getExpiresAt() != null)
             .verifyComplete();
     }

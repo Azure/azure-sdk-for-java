@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceProviderOperationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderOperationList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"xrmcqibycnojvk\",\"display\":{\"provider\":\"fqsgzvahapjy\",\"resource\":\"pvgqzcjrvxdjzlm\",\"operation\":\"xkvugfhzov\",\"description\":\"jvzunluthnnp\"},\"isDataAction\":true,\"origin\":\"peilpjzuaejxdu\"},{\"name\":\"skzbb\",\"display\":{\"provider\":\"umveekgpwozuhkf\",\"resource\":\"sjyofdx\",\"operation\":\"us\",\"description\":\"touwaboekqv\"},\"isDataAction\":false,\"origin\":\"smv\"}],\"nextLink\":\"wyjsflhhcaalnjix\"}")
-                .toObject(ResourceProviderOperationList.class);
+        ResourceProviderOperationList model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"xrmcqibycnojvk\",\"display\":{\"provider\":\"fqsgzvahapjy\",\"resource\":\"pvgqzcjrvxdjzlm\",\"operation\":\"xkvugfhzov\",\"description\":\"jvzunluthnnp\"},\"isDataAction\":true,\"origin\":\"peilpjzuaejxdu\"},{\"name\":\"skzbb\",\"display\":{\"provider\":\"umveekgpwozuhkf\",\"resource\":\"sjyofdx\",\"operation\":\"us\",\"description\":\"touwaboekqv\"},\"isDataAction\":false,\"origin\":\"smv\"}],\"nextLink\":\"wyjsflhhcaalnjix\"}")
+            .toObject(ResourceProviderOperationList.class);
         Assertions.assertEquals("xrmcqibycnojvk", model.value().get(0).name());
         Assertions.assertEquals("fqsgzvahapjy", model.value().get(0).display().provider());
         Assertions.assertEquals("pvgqzcjrvxdjzlm", model.value().get(0).display().resource());
@@ -28,27 +26,17 @@ public final class ResourceProviderOperationListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceProviderOperationList model =
-            new ResourceProviderOperationList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ResourceProviderOperationInner()
-                                .withName("xrmcqibycnojvk")
-                                .withDisplay(
-                                    new ResourceProviderOperationDisplay()
-                                        .withProvider("fqsgzvahapjy")
-                                        .withResource("pvgqzcjrvxdjzlm")
-                                        .withOperation("xkvugfhzov")
-                                        .withDescription("jvzunluthnnp")),
-                            new ResourceProviderOperationInner()
-                                .withName("skzbb")
-                                .withDisplay(
-                                    new ResourceProviderOperationDisplay()
-                                        .withProvider("umveekgpwozuhkf")
-                                        .withResource("sjyofdx")
-                                        .withOperation("us")
-                                        .withDescription("touwaboekqv"))));
+        ResourceProviderOperationList model = new ResourceProviderOperationList().withValue(Arrays.asList(
+            new ResourceProviderOperationInner().withName("xrmcqibycnojvk")
+                .withDisplay(new ResourceProviderOperationDisplay().withProvider("fqsgzvahapjy")
+                    .withResource("pvgqzcjrvxdjzlm")
+                    .withOperation("xkvugfhzov")
+                    .withDescription("jvzunluthnnp")),
+            new ResourceProviderOperationInner().withName("skzbb")
+                .withDisplay(new ResourceProviderOperationDisplay().withProvider("umveekgpwozuhkf")
+                    .withResource("sjyofdx")
+                    .withOperation("us")
+                    .withDescription("touwaboekqv"))));
         model = BinaryData.fromObject(model).toObject(ResourceProviderOperationList.class);
         Assertions.assertEquals("xrmcqibycnojvk", model.value().get(0).name());
         Assertions.assertEquals("fqsgzvahapjy", model.value().get(0).display().provider());

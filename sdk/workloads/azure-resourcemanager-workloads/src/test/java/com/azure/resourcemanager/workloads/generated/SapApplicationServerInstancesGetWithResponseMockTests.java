@@ -30,40 +30,28 @@ public final class SapApplicationServerInstancesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"instanceNo\":\"ftpmdtzfjltfv\",\"subnet\":\"cyjtotpvop\",\"hostname\":\"bdb\",\"kernelVersion\":\"gqqihedsvqwt\",\"kernelPatch\":\"ky\",\"ipAddress\":\"cysihs\",\"gatewayPort\":2251416135088020925,\"icmHttpPort\":5483811337729194379,\"icmHttpsPort\":8229457154745715233,\"loadBalancerDetails\":{\"id\":\"cdzsu\"},\"vmDetails\":[],\"status\":\"PartiallyRunning\",\"health\":\"Healthy\",\"provisioningState\":\"Updating\",\"errors\":{}},\"location\":\"uapcvhdbevwqqxe\",\"tags\":{\"eqocljmygvk\":\"onqzinkfkbgbzbow\"},\"id\":\"qkjjeokbz\",\"name\":\"fezrx\",\"type\":\"czurtlei\"}";
+        String responseStr
+            = "{\"properties\":{\"instanceNo\":\"ftpmdtzfjltfv\",\"subnet\":\"cyjtotpvop\",\"hostname\":\"bdb\",\"kernelVersion\":\"gqqihedsvqwt\",\"kernelPatch\":\"ky\",\"ipAddress\":\"cysihs\",\"gatewayPort\":2251416135088020925,\"icmHttpPort\":5483811337729194379,\"icmHttpsPort\":8229457154745715233,\"loadBalancerDetails\":{\"id\":\"cdzsu\"},\"vmDetails\":[],\"status\":\"PartiallyRunning\",\"health\":\"Healthy\",\"provisioningState\":\"Updating\",\"errors\":{}},\"location\":\"uapcvhdbevwqqxe\",\"tags\":{\"eqocljmygvk\":\"onqzinkfkbgbzbow\"},\"id\":\"qkjjeokbz\",\"name\":\"fezrx\",\"type\":\"czurtlei\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        WorkloadsManager manager =
-            WorkloadsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        WorkloadsManager manager = WorkloadsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SapApplicationServerInstance response =
-            manager
-                .sapApplicationServerInstances()
-                .getWithResponse("xhugcm", "k", "vlgo", com.azure.core.util.Context.NONE)
-                .getValue();
+        SapApplicationServerInstance response = manager.sapApplicationServerInstances()
+            .getWithResponse("xhugcm", "k", "vlgo", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("uapcvhdbevwqqxe", response.location());
         Assertions.assertEquals("onqzinkfkbgbzbow", response.tags().get("eqocljmygvk"));

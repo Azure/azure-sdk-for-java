@@ -20,21 +20,18 @@ public final class RecoverableServersImpl implements RecoverableServers {
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    public RecoverableServersImpl(
-        RecoverableServersClient innerClient, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
+    public RecoverableServersImpl(RecoverableServersClient innerClient,
+        com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<RecoverableServerResource> getWithResponse(
-        String resourceGroupName, String serverName, Context context) {
-        Response<RecoverableServerResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, context);
+    public Response<RecoverableServerResource> getWithResponse(String resourceGroupName, String serverName,
+        Context context) {
+        Response<RecoverableServerResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RecoverableServerResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.models.TransparentDataEncryptionListRes
 public final class TransparentDataEncryptionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TransparentDataEncryptionListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"location\":\"lxprglyatddckcbc\",\"properties\":{\"status\":\"Disabled\"},\"id\":\"jxgciqibrh\",\"name\":\"sxsdqrhzoymibm\",\"type\":\"qyib\"},{\"location\":\"wfluszdt\",\"properties\":{\"status\":\"Disabled\"},\"id\":\"wofyyvoqacpiexp\",\"name\":\"tg\",\"type\":\"wbwo\"},{\"location\":\"washr\",\"properties\":{\"status\":\"Disabled\"},\"id\":\"cnqxwbpokulpi\",\"name\":\"jwaa\",\"type\":\"ipqiiobyuqerpq\"}],\"nextLink\":\"qwcciuqg\"}")
-                .toObject(TransparentDataEncryptionListResult.class);
+        TransparentDataEncryptionListResult model = BinaryData.fromString(
+            "{\"value\":[{\"location\":\"lxprglyatddckcbc\",\"properties\":{\"status\":\"Disabled\"},\"id\":\"jxgciqibrh\",\"name\":\"sxsdqrhzoymibm\",\"type\":\"qyib\"},{\"location\":\"wfluszdt\",\"properties\":{\"status\":\"Disabled\"},\"id\":\"wofyyvoqacpiexp\",\"name\":\"tg\",\"type\":\"wbwo\"},{\"location\":\"washr\",\"properties\":{\"status\":\"Disabled\"},\"id\":\"cnqxwbpokulpi\",\"name\":\"jwaa\",\"type\":\"ipqiiobyuqerpq\"}],\"nextLink\":\"qwcciuqg\"}")
+            .toObject(TransparentDataEncryptionListResult.class);
     }
 
     @org.junit.jupiter.api.Test

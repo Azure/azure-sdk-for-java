@@ -33,8 +33,10 @@ public final class ManagedPrivateEndpointModelListResponseTests {
         ManagedPrivateEndpointModelListResponse model = new ManagedPrivateEndpointModelListResponse()
             .withValue(Arrays.asList(new ManagedPrivateEndpointModelInner().withLocation("nfnbacfionlebxe")
                 .withTags(mapOf("jfeallnwsub", "tzxdpnqbqqwx", "zscxaqwo", "snjampmng"))
-                .withPrivateLinkResourceId("yktz").withPrivateLinkResourceRegion("u")
-                .withGroupIds(Arrays.asList("gqywgndrv", "nhzgpphrcgyn")).withRequestMessage("cpecfvmmcoofs")
+                .withPrivateLinkResourceId("yktz")
+                .withPrivateLinkResourceRegion("u")
+                .withGroupIds(Arrays.asList("gqywgndrv", "nhzgpphrcgyn"))
+                .withRequestMessage("cpecfvmmcoofs")
                 .withPrivateLinkServiceUrl("lzu")))
             .withNextLink("nj");
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpointModelListResponse.class);

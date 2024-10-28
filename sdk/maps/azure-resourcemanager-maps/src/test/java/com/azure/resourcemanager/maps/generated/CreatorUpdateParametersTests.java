@@ -13,20 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CreatorUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreatorUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"sbj\":\"ye\",\"wfqkquj\":\"azqugxywpmueefj\"},\"properties\":{\"provisioningState\":\"uyonobglaoc\",\"storageUnits\":1422532209}}")
-                .toObject(CreatorUpdateParameters.class);
+        CreatorUpdateParameters model = BinaryData.fromString(
+            "{\"tags\":{\"sbj\":\"ye\",\"wfqkquj\":\"azqugxywpmueefj\"},\"properties\":{\"provisioningState\":\"uyonobglaoc\",\"storageUnits\":1422532209}}")
+            .toObject(CreatorUpdateParameters.class);
         Assertions.assertEquals("ye", model.tags().get("sbj"));
         Assertions.assertEquals(1422532209, model.storageUnits());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreatorUpdateParameters model =
-            new CreatorUpdateParameters()
-                .withTags(mapOf("sbj", "ye", "wfqkquj", "azqugxywpmueefj"))
+        CreatorUpdateParameters model
+            = new CreatorUpdateParameters().withTags(mapOf("sbj", "ye", "wfqkquj", "azqugxywpmueefj"))
                 .withStorageUnits(1422532209);
         model = BinaryData.fromObject(model).toObject(CreatorUpdateParameters.class);
         Assertions.assertEquals("ye", model.tags().get("sbj"));

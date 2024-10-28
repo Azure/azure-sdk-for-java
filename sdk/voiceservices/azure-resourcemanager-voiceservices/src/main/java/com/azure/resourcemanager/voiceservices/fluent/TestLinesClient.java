@@ -27,8 +27,8 @@ public interface TestLinesClient {
      * @return the response of a TestLine list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TestLineInner> listByCommunicationsGateway(
-        String resourceGroupName, String communicationsGatewayName);
+    PagedIterable<TestLineInner> listByCommunicationsGateway(String resourceGroupName,
+        String communicationsGatewayName);
 
     /**
      * List TestLine resources by CommunicationsGateway.
@@ -42,8 +42,8 @@ public interface TestLinesClient {
      * @return the response of a TestLine list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TestLineInner> listByCommunicationsGateway(
-        String resourceGroupName, String communicationsGatewayName, Context context);
+    PagedIterable<TestLineInner> listByCommunicationsGateway(String resourceGroupName, String communicationsGatewayName,
+        Context context);
 
     /**
      * Get a TestLine.
@@ -58,8 +58,8 @@ public interface TestLinesClient {
      * @return a TestLine along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TestLineInner> getWithResponse(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, Context context);
+    Response<TestLineInner> getWithResponse(String resourceGroupName, String communicationsGatewayName,
+        String testLineName, Context context);
 
     /**
      * Get a TestLine.
@@ -88,8 +88,8 @@ public interface TestLinesClient {
      * @return the {@link SyncPoller} for polling of a TestLine resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TestLineInner>, TestLineInner> beginCreateOrUpdate(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, TestLineInner resource);
+    SyncPoller<PollResult<TestLineInner>, TestLineInner> beginCreateOrUpdate(String resourceGroupName,
+        String communicationsGatewayName, String testLineName, TestLineInner resource);
 
     /**
      * Create a TestLine.
@@ -105,12 +105,8 @@ public interface TestLinesClient {
      * @return the {@link SyncPoller} for polling of a TestLine resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TestLineInner>, TestLineInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String communicationsGatewayName,
-        String testLineName,
-        TestLineInner resource,
-        Context context);
+    SyncPoller<PollResult<TestLineInner>, TestLineInner> beginCreateOrUpdate(String resourceGroupName,
+        String communicationsGatewayName, String testLineName, TestLineInner resource, Context context);
 
     /**
      * Create a TestLine.
@@ -125,8 +121,8 @@ public interface TestLinesClient {
      * @return a TestLine resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TestLineInner createOrUpdate(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, TestLineInner resource);
+    TestLineInner createOrUpdate(String resourceGroupName, String communicationsGatewayName, String testLineName,
+        TestLineInner resource);
 
     /**
      * Create a TestLine.
@@ -142,12 +138,8 @@ public interface TestLinesClient {
      * @return a TestLine resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TestLineInner createOrUpdate(
-        String resourceGroupName,
-        String communicationsGatewayName,
-        String testLineName,
-        TestLineInner resource,
-        Context context);
+    TestLineInner createOrUpdate(String resourceGroupName, String communicationsGatewayName, String testLineName,
+        TestLineInner resource, Context context);
 
     /**
      * Delete a TestLine.
@@ -161,8 +153,8 @@ public interface TestLinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String communicationsGatewayName, String testLineName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communicationsGatewayName,
+        String testLineName);
 
     /**
      * Delete a TestLine.
@@ -177,8 +169,8 @@ public interface TestLinesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communicationsGatewayName,
+        String testLineName, Context context);
 
     /**
      * Delete a TestLine.
@@ -221,12 +213,8 @@ public interface TestLinesClient {
      * @return a TestLine resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TestLineInner> updateWithResponse(
-        String resourceGroupName,
-        String communicationsGatewayName,
-        String testLineName,
-        TestLineUpdate properties,
-        Context context);
+    Response<TestLineInner> updateWithResponse(String resourceGroupName, String communicationsGatewayName,
+        String testLineName, TestLineUpdate properties, Context context);
 
     /**
      * Update a TestLine.
@@ -241,6 +229,6 @@ public interface TestLinesClient {
      * @return a TestLine resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TestLineInner update(
-        String resourceGroupName, String communicationsGatewayName, String testLineName, TestLineUpdate properties);
+    TestLineInner update(String resourceGroupName, String communicationsGatewayName, String testLineName,
+        TestLineUpdate properties);
 }

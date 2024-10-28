@@ -49,19 +49,20 @@ public final class ManageWebAppCosmosDbByMsi {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager, String clientId) throws IOException {
         // New resources
-        final Region region         = Region.US_WEST;
-        final String appName        = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
-        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
-        final String vaultName      = Utils.randomResourceName(azureResourceManager, "vault", 20);
-        final String cosmosName     = Utils.randomResourceName(azureResourceManager, "cosmosdb", 20);
-        final String appUrl         = appName + ".azurewebsites.net";
+        final Region region = Region.US_WEST;
+        final String appName = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
+        final String vaultName = Utils.randomResourceName(azureResourceManager, "vault", 20);
+        final String cosmosName = Utils.randomResourceName(azureResourceManager, "cosmosdb", 20);
+        final String appUrl = appName + ".azurewebsites.net";
 
         try {
             //============================================================
             // Create a CosmosDB
 
             System.out.println("Creating a CosmosDB...");
-            CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts().define(cosmosName)
+            CosmosDBAccount cosmosDBAccount = azureResourceManager.cosmosDBAccounts()
+                .define(cosmosName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withKind(DatabaseAccountKind.GLOBAL_DOCUMENT_DB)
@@ -86,7 +87,9 @@ public final class ManageWebAppCosmosDbByMsi {
             //============================================================
             // Allow the sample to store secret in the Key Vault
 
-            azureResourceManager.accessManagement().roleAssignments().define(UUID.randomUUID().toString())
+            azureResourceManager.accessManagement()
+                .roleAssignments()
+                .define(UUID.randomUUID().toString())
                 .forServicePrincipal(clientId)
                 .withBuiltInRole(BuiltInRole.KEY_VAULT_SECRETS_OFFICER)
                 .withScope(vault.id())
@@ -98,15 +101,12 @@ public final class ManageWebAppCosmosDbByMsi {
             //============================================================
             // Store Cosmos DB credentials in Key Vault
 
-            vault.secrets().define("azure-documentdb-uri")
-                .withValue(cosmosDBAccount.documentEndpoint())
-                .create();
-            vault.secrets().define("azure-documentdb-key")
+            vault.secrets().define("azure-documentdb-uri").withValue(cosmosDBAccount.documentEndpoint()).create();
+            vault.secrets()
+                .define("azure-documentdb-key")
                 .withValue(cosmosDBAccount.listKeys().primaryMasterKey())
                 .create();
-            vault.secrets().define("azure-documentdb-database")
-                .withValue("tododb")
-                .create();
+            vault.secrets().define("azure-documentdb-database").withValue("tododb").create();
 
             //============================================================
             // Create a web app with a new app service plan
@@ -134,7 +134,8 @@ public final class ManageWebAppCosmosDbByMsi {
 
             System.out.println("Deploying a spring boot app to " + appName + " through OneDeploy...");
 
-            try (InputStream is = ManageWebAppCosmosDbByMsi.class.getResourceAsStream("/todo-app-java-on-azure-1.0-SNAPSHOT.jar")) {
+            try (InputStream is
+                = ManageWebAppCosmosDbByMsi.class.getResourceAsStream("/todo-app-java-on-azure-1.0-SNAPSHOT.jar")) {
                 byte[] buff = new byte[8192];
                 int bytesRead;
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -189,8 +190,7 @@ public final class ManageWebAppCosmosDbByMsi {
                 .build();
             final Configuration configuration = Configuration.getGlobalConfiguration();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

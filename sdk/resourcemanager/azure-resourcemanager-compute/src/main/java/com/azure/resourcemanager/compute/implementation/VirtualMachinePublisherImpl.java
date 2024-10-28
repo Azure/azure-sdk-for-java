@@ -16,10 +16,7 @@ class VirtualMachinePublisherImpl implements VirtualMachinePublisher {
     private final VirtualMachineOffers offers;
     private final VirtualMachineExtensionImageTypes types;
 
-    VirtualMachinePublisherImpl(
-        Region location,
-        String publisher,
-        VirtualMachineImagesClient imagesClient,
+    VirtualMachinePublisherImpl(Region location, String publisher, VirtualMachineImagesClient imagesClient,
         VirtualMachineExtensionImagesClient extensionsClient) {
         this.location = location;
         this.publisher = publisher;

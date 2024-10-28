@@ -40,35 +40,29 @@ public class SqlFirewallRuleOperationsImpl
 
     @Override
     public SqlFirewallRule getBySqlServer(String resourceGroupName, String sqlServerName, String name) {
-        FirewallRuleInner inner =
-            this.sqlServerManager.serviceClient().getFirewallRules().get(resourceGroupName, sqlServerName, name);
+        FirewallRuleInner inner
+            = this.sqlServerManager.serviceClient().getFirewallRules().get(resourceGroupName, sqlServerName, name);
         return (inner != null)
             ? new SqlFirewallRuleImpl(resourceGroupName, sqlServerName, inner.name(), inner, sqlServerManager)
             : null;
     }
 
     @Override
-    public Mono<SqlFirewallRule> getBySqlServerAsync(
-        final String resourceGroupName, final String sqlServerName, final String name) {
-        return this
-            .sqlServerManager
-            .serviceClient()
+    public Mono<SqlFirewallRule> getBySqlServerAsync(final String resourceGroupName, final String sqlServerName,
+        final String name) {
+        return this.sqlServerManager.serviceClient()
             .getFirewallRules()
             .getAsync(resourceGroupName, sqlServerName, name)
-            .map(
-                inner ->
-                    new SqlFirewallRuleImpl(resourceGroupName, sqlServerName, inner.name(), inner, sqlServerManager));
+            .map(inner -> new SqlFirewallRuleImpl(resourceGroupName, sqlServerName, inner.name(), inner,
+                sqlServerManager));
     }
 
     @Override
     public SqlFirewallRule getBySqlServer(SqlServer sqlServer, String name) {
         Objects.requireNonNull(sqlServer);
-        FirewallRuleInner inner =
-            this
-                .sqlServerManager
-                .serviceClient()
-                .getFirewallRules()
-                .get(sqlServer.resourceGroupName(), sqlServer.name(), name);
+        FirewallRuleInner inner = this.sqlServerManager.serviceClient()
+            .getFirewallRules()
+            .get(sqlServer.resourceGroupName(), sqlServer.name(), name);
         return (inner != null)
             ? new SqlFirewallRuleImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager())
             : null;
@@ -77,9 +71,7 @@ public class SqlFirewallRuleOperationsImpl
     @Override
     public Mono<SqlFirewallRule> getBySqlServerAsync(final SqlServer sqlServer, final String name) {
         Objects.requireNonNull(sqlServer);
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getFirewallRules()
             .getAsync(sqlServer.resourceGroupName(), sqlServer.name(), name)
             .map(inner -> new SqlFirewallRuleImpl(name, (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
@@ -104,21 +96,17 @@ public class SqlFirewallRuleOperationsImpl
     @Override
     public SqlFirewallRule getById(String id) {
         Objects.requireNonNull(id);
-        return this
-            .getBySqlServer(
-                ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
-                ResourceUtils.nameFromResourceId(id));
+        return this.getBySqlServer(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
+            ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
     public Mono<SqlFirewallRule> getByIdAsync(String id) {
         Objects.requireNonNull(id);
-        return this
-            .getBySqlServerAsync(
-                ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
-                ResourceUtils.nameFromResourceId(id));
+        return this.getBySqlServerAsync(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
+            ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -128,9 +116,7 @@ public class SqlFirewallRuleOperationsImpl
 
     @Override
     public Mono<Void> deleteBySqlServerAsync(String resourceGroupName, String sqlServerName, String name) {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getFirewallRules()
             .deleteAsync(resourceGroupName, sqlServerName, name);
     }
@@ -138,21 +124,17 @@ public class SqlFirewallRuleOperationsImpl
     @Override
     public void deleteById(String id) {
         Objects.requireNonNull(id);
-        this
-            .deleteBySqlServer(
-                ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
-                ResourceUtils.nameFromResourceId(id));
+        this.deleteBySqlServer(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
+            ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
         Objects.requireNonNull(id);
-        return this
-            .deleteBySqlServerAsync(
-                ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
-                ResourceUtils.nameFromResourceId(id));
+        return this.deleteBySqlServerAsync(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(ResourceUtils.parentRelativePathFromResourceId(id)),
+            ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
@@ -173,38 +155,32 @@ public class SqlFirewallRuleOperationsImpl
     @Override
     public List<SqlFirewallRule> listBySqlServer(String resourceGroupName, String sqlServerName) {
         List<SqlFirewallRule> firewallRuleSet = new ArrayList<>();
-        PagedIterable<FirewallRuleInner> firewallRuleInners =
-            this.sqlServerManager.serviceClient().getFirewallRules().listByServer(resourceGroupName, sqlServerName);
+        PagedIterable<FirewallRuleInner> firewallRuleInners
+            = this.sqlServerManager.serviceClient().getFirewallRules().listByServer(resourceGroupName, sqlServerName);
         for (FirewallRuleInner inner : firewallRuleInners) {
-            firewallRuleSet
-                .add(
-                    new SqlFirewallRuleImpl(
-                        resourceGroupName, sqlServerName, inner.name(), inner, this.sqlServerManager));
+            firewallRuleSet.add(
+                new SqlFirewallRuleImpl(resourceGroupName, sqlServerName, inner.name(), inner, this.sqlServerManager));
         }
         return Collections.unmodifiableList(firewallRuleSet);
     }
 
     @Override
     public PagedFlux<SqlFirewallRule> listBySqlServerAsync(final String resourceGroupName, final String sqlServerName) {
-        return PagedConverter.mapPage(this
-            .sqlServerManager
-            .serviceClient()
-            .getFirewallRules()
-            .listByServerAsync(resourceGroupName, sqlServerName),
-                inner ->
-                    new SqlFirewallRuleImpl(resourceGroupName, sqlServerName, inner.name(), inner, sqlServerManager));
+        return PagedConverter.mapPage(
+            this.sqlServerManager.serviceClient()
+                .getFirewallRules()
+                .listByServerAsync(resourceGroupName, sqlServerName),
+            inner -> new SqlFirewallRuleImpl(resourceGroupName, sqlServerName, inner.name(), inner, sqlServerManager));
     }
 
     @Override
     public List<SqlFirewallRule> listBySqlServer(SqlServer sqlServer) {
         Objects.requireNonNull(sqlServer);
         List<SqlFirewallRule> firewallRuleSet = new ArrayList<>();
-        for (FirewallRuleInner inner
-            : sqlServer
-                .manager()
-                .serviceClient()
-                .getFirewallRules()
-                .listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
+        for (FirewallRuleInner inner : sqlServer.manager()
+            .serviceClient()
+            .getFirewallRules()
+            .listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
             firewallRuleSet
                 .add(new SqlFirewallRuleImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
         }
@@ -214,12 +190,12 @@ public class SqlFirewallRuleOperationsImpl
     @Override
     public PagedFlux<SqlFirewallRule> listBySqlServerAsync(final SqlServer sqlServer) {
         Objects.requireNonNull(sqlServer);
-        return PagedConverter.mapPage(sqlServer
-            .manager()
-            .serviceClient()
-            .getFirewallRules()
-            .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name()),
-                inner -> new SqlFirewallRuleImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
+        return PagedConverter.mapPage(
+            sqlServer.manager()
+                .serviceClient()
+                .getFirewallRules()
+                .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name()),
+            inner -> new SqlFirewallRuleImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
     }
 
     @Override

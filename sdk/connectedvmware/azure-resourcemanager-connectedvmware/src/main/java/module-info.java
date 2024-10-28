@@ -10,10 +10,6 @@ module com.azure.resourcemanager.connectedvmware {
     exports com.azure.resourcemanager.connectedvmware.fluent.models;
     exports com.azure.resourcemanager.connectedvmware.models;
 
-    opens com.azure.resourcemanager.connectedvmware.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.connectedvmware.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.connectedvmware.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.connectedvmware.models to com.azure.core, com.fasterxml.jackson.databind;
 }

@@ -16,8 +16,8 @@ public final class DetachTrafficFiltersImpl implements DetachTrafficFilters {
 
     private final com.azure.resourcemanager.elastic.ElasticManager serviceManager;
 
-    public DetachTrafficFiltersImpl(
-        DetachTrafficFiltersClient innerClient, com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
+    public DetachTrafficFiltersImpl(DetachTrafficFiltersClient innerClient,
+        com.azure.resourcemanager.elastic.ElasticManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

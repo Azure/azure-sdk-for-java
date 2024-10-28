@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualMachinePlacementHintTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachinePlacementHint model =
-            BinaryData
-                .fromString(
-                    "{\"hintType\":\"Affinity\",\"resourceId\":\"inmfgvxirp\",\"schedulingExecution\":\"Soft\",\"scope\":\"Machine\"}")
-                .toObject(VirtualMachinePlacementHint.class);
+        VirtualMachinePlacementHint model = BinaryData.fromString(
+            "{\"hintType\":\"Affinity\",\"resourceId\":\"inmfgvxirp\",\"schedulingExecution\":\"Soft\",\"scope\":\"Machine\"}")
+            .toObject(VirtualMachinePlacementHint.class);
         Assertions.assertEquals(VirtualMachinePlacementHintType.AFFINITY, model.hintType());
         Assertions.assertEquals("inmfgvxirp", model.resourceId());
         Assertions.assertEquals(VirtualMachineSchedulingExecution.SOFT, model.schedulingExecution());
@@ -27,9 +25,8 @@ public final class VirtualMachinePlacementHintTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualMachinePlacementHint model =
-            new VirtualMachinePlacementHint()
-                .withHintType(VirtualMachinePlacementHintType.AFFINITY)
+        VirtualMachinePlacementHint model
+            = new VirtualMachinePlacementHint().withHintType(VirtualMachinePlacementHintType.AFFINITY)
                 .withResourceId("inmfgvxirp")
                 .withSchedulingExecution(VirtualMachineSchedulingExecution.SOFT)
                 .withScope(VirtualMachinePlacementHintPodAffinityScope.MACHINE);

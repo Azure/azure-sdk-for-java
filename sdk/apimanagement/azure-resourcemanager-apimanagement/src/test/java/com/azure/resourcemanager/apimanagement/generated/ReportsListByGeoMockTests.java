@@ -31,37 +31,27 @@ public final class ReportsListByGeoMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"bzfhu\",\"timestamp\":\"2021-01-20T05:04:37Z\",\"interval\":\"cwwitzmx\",\"country\":\"glehylbnay\",\"region\":\"sxyhoemsdnm\",\"zip\":\"vopvfgu\",\"userId\":\"xumwdqw\",\"productId\":\"nawzeleqpnkqxk\",\"apiId\":\"m\",\"operationId\":\"eqboigwj\",\"apiRegion\":\"twxiyarfhivs\",\"subscriptionId\":\"i\",\"callCountSuccess\":1071154318,\"callCountBlocked\":2025699954,\"callCountFailed\":403503106,\"callCountOther\":224854898,\"callCountTotal\":1299917382,\"bandwidth\":1193679270655570927,\"cacheHitCount\":969024512,\"cacheMissCount\":312800166,\"apiTimeAvg\":8.448745001334446,\"apiTimeMin\":70.1416266521297,\"apiTimeMax\":69.29684874814046,\"serviceTimeAvg\":25.129030590541525,\"serviceTimeMin\":46.26141000870224,\"serviceTimeMax\":9.24441937740389}]}";
+        String responseStr
+            = "{\"value\":[{\"name\":\"bzfhu\",\"timestamp\":\"2021-01-20T05:04:37Z\",\"interval\":\"cwwitzmx\",\"country\":\"glehylbnay\",\"region\":\"sxyhoemsdnm\",\"zip\":\"vopvfgu\",\"userId\":\"xumwdqw\",\"productId\":\"nawzeleqpnkqxk\",\"apiId\":\"m\",\"operationId\":\"eqboigwj\",\"apiRegion\":\"twxiyarfhivs\",\"subscriptionId\":\"i\",\"callCountSuccess\":1071154318,\"callCountBlocked\":2025699954,\"callCountFailed\":403503106,\"callCountOther\":224854898,\"callCountTotal\":1299917382,\"bandwidth\":1193679270655570927,\"cacheHitCount\":969024512,\"cacheMissCount\":312800166,\"apiTimeAvg\":8.448745001334446,\"apiTimeMin\":70.1416266521297,\"apiTimeMax\":69.29684874814046,\"serviceTimeAvg\":25.129030590541525,\"serviceTimeMin\":46.26141000870224,\"serviceTimeMax\":9.24441937740389}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ReportRecordContract> response =
-            manager.reports().listByGeo("dwirglqib", "g", "mka", 42265672, 375117512, com.azure.core.util.Context.NONE);
+        PagedIterable<ReportRecordContract> response = manager.reports()
+            .listByGeo("dwirglqib", "g", "mka", 42265672, 375117512, com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("bzfhu", response.iterator().next().name());
         Assertions.assertEquals(OffsetDateTime.parse("2021-01-20T05:04:37Z"), response.iterator().next().timestamp());

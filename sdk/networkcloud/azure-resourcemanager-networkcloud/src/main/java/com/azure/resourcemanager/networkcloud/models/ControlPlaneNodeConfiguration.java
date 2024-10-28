@@ -68,8 +68,8 @@ public final class ControlPlaneNodeConfiguration {
      * @param administratorConfiguration the administratorConfiguration value to set.
      * @return the ControlPlaneNodeConfiguration object itself.
      */
-    public ControlPlaneNodeConfiguration withAdministratorConfiguration(
-        AdministratorConfiguration administratorConfiguration) {
+    public ControlPlaneNodeConfiguration
+        withAdministratorConfiguration(AdministratorConfiguration administratorConfiguration) {
         this.administratorConfiguration = administratorConfiguration;
         return this;
     }
@@ -146,10 +146,8 @@ public final class ControlPlaneNodeConfiguration {
             administratorConfiguration().validate();
         }
         if (vmSkuName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vmSkuName in model ControlPlaneNodeConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property vmSkuName in model ControlPlaneNodeConfiguration"));
         }
     }
 

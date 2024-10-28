@@ -5,7 +5,6 @@ package com.azure.ai.translation.document.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -72,7 +71,6 @@ public final class Status extends ExpandableStringEnum<Status> {
      * @return the corresponding Status.
      */
     @Generated
-    @JsonCreator
     public static Status fromString(String name) {
         return fromString(name, Status.class);
     }

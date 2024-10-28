@@ -5,42 +5,43 @@ package com.azure.ai.translation.document.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Translation job status response.
  */
 @Immutable
-public final class TranslationStatus {
+public final class TranslationStatus implements JsonSerializable<TranslationStatus> {
 
     /*
      * Id of the operation.
      */
     @Generated
-    @JsonProperty(value = "id")
     private final String id;
 
     /*
      * Operation created date time
      */
     @Generated
-    @JsonProperty(value = "createdDateTimeUtc")
     private final OffsetDateTime createdDateTimeUtc;
 
     /*
      * Date time in which the operation's status has been updated
      */
     @Generated
-    @JsonProperty(value = "lastActionDateTimeUtc")
     private final OffsetDateTime lastActionDateTimeUtc;
 
     /*
      * List of possible statuses for job or document
      */
     @Generated
-    @JsonProperty(value = "status")
     private final Status status;
 
     /*
@@ -48,14 +49,12 @@ public final class TranslationStatus {
      * inner error with more descriptive details.
      */
     @Generated
-    @JsonProperty(value = "error")
     private TranslationError error;
 
     /*
      * Status Summary
      */
     @Generated
-    @JsonProperty(value = "summary")
     private final StatusSummary summary;
 
     /**
@@ -68,11 +67,8 @@ public final class TranslationStatus {
      * @param summary the summary value to set.
      */
     @Generated
-    @JsonCreator
-    private TranslationStatus(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "createdDateTimeUtc") OffsetDateTime createdDateTimeUtc,
-        @JsonProperty(value = "lastActionDateTimeUtc") OffsetDateTime lastActionDateTimeUtc,
-        @JsonProperty(value = "status") Status status, @JsonProperty(value = "summary") StatusSummary summary) {
+    private TranslationStatus(String id, OffsetDateTime createdDateTimeUtc, OffsetDateTime lastActionDateTimeUtc,
+        Status status, StatusSummary summary) {
         this.id = id;
         this.createdDateTimeUtc = createdDateTimeUtc;
         this.lastActionDateTimeUtc = lastActionDateTimeUtc;
@@ -139,5 +135,73 @@ public final class TranslationStatus {
     @Generated
     public StatusSummary getSummary() {
         return this.summary;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("createdDateTimeUtc",
+            this.createdDateTimeUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTimeUtc));
+        jsonWriter.writeStringField("lastActionDateTimeUtc",
+            this.lastActionDateTimeUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastActionDateTimeUtc));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeJsonField("summary", this.summary);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TranslationStatus from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TranslationStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TranslationStatus.
+     */
+    @Generated
+    public static TranslationStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            OffsetDateTime createdDateTimeUtc = null;
+            OffsetDateTime lastActionDateTimeUtc = null;
+            Status status = null;
+            StatusSummary summary = null;
+            TranslationError error = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("createdDateTimeUtc".equals(fieldName)) {
+                    createdDateTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastActionDateTimeUtc".equals(fieldName)) {
+                    lastActionDateTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    status = Status.fromString(reader.getString());
+                } else if ("summary".equals(fieldName)) {
+                    summary = StatusSummary.fromJson(reader);
+                } else if ("error".equals(fieldName)) {
+                    error = TranslationError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            TranslationStatus deserializedTranslationStatus
+                = new TranslationStatus(id, createdDateTimeUtc, lastActionDateTimeUtc, status, summary);
+            deserializedTranslationStatus.error = error;
+            return deserializedTranslationStatus;
+        });
     }
 }

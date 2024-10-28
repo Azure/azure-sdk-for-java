@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkedIntegrationRuntimeRbacAuthorizationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedIntegrationRuntimeRbacAuthorization model =
-            BinaryData
-                .fromString("{\"authorizationType\":\"RBAC\",\"resourceId\":\"qm\"}")
+        LinkedIntegrationRuntimeRbacAuthorization model
+            = BinaryData.fromString("{\"authorizationType\":\"RBAC\",\"resourceId\":\"qm\"}")
                 .toObject(LinkedIntegrationRuntimeRbacAuthorization.class);
         Assertions.assertEquals("qm", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedIntegrationRuntimeRbacAuthorization model =
-            new LinkedIntegrationRuntimeRbacAuthorization().withResourceId("qm");
+        LinkedIntegrationRuntimeRbacAuthorization model
+            = new LinkedIntegrationRuntimeRbacAuthorization().withResourceId("qm");
         model = BinaryData.fromObject(model).toObject(LinkedIntegrationRuntimeRbacAuthorization.class);
         Assertions.assertEquals("qm", model.resourceId());
     }

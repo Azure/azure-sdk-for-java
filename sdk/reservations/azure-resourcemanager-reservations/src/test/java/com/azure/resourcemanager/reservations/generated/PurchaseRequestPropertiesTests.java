@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PurchaseRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PurchaseRequestProperties model =
-            BinaryData
-                .fromString(
-                    "{\"reservedResourceType\":\"SapHana\",\"billingScopeId\":\"kvwrwjfeu\",\"term\":\"P5Y\",\"billingPlan\":\"Upfront\",\"quantity\":1936335434,\"displayName\":\"tmrldhugjzzdatq\",\"appliedScopeType\":\"ManagementGroup\",\"appliedScopes\":[\"geablgphuticndvk\",\"ozwyiftyhxhuro\",\"ftyxolniw\"],\"appliedScopeProperties\":{\"tenantId\":\"ukjfkgiawxklr\",\"managementGroupId\":\"lwckbasyypnddhs\",\"subscriptionId\":\"bacphejko\",\"resourceGroupId\":\"nqgoulzndli\",\"displayName\":\"yqkgfg\"},\"renew\":true,\"reservedResourceProperties\":{\"instanceFlexibility\":\"On\"},\"reviewDateTime\":\"2021-09-02T02:02:12Z\"}")
-                .toObject(PurchaseRequestProperties.class);
+        PurchaseRequestProperties model = BinaryData.fromString(
+            "{\"reservedResourceType\":\"SapHana\",\"billingScopeId\":\"kvwrwjfeu\",\"term\":\"P5Y\",\"billingPlan\":\"Upfront\",\"quantity\":1936335434,\"displayName\":\"tmrldhugjzzdatq\",\"appliedScopeType\":\"ManagementGroup\",\"appliedScopes\":[\"geablgphuticndvk\",\"ozwyiftyhxhuro\",\"ftyxolniw\"],\"appliedScopeProperties\":{\"tenantId\":\"ukjfkgiawxklr\",\"managementGroupId\":\"lwckbasyypnddhs\",\"subscriptionId\":\"bacphejko\",\"resourceGroupId\":\"nqgoulzndli\",\"displayName\":\"yqkgfg\"},\"renew\":true,\"reservedResourceProperties\":{\"instanceFlexibility\":\"On\"},\"reviewDateTime\":\"2021-09-02T02:02:12Z\"}")
+            .toObject(PurchaseRequestProperties.class);
         Assertions.assertEquals(ReservedResourceType.SAP_HANA, model.reservedResourceType());
         Assertions.assertEquals("kvwrwjfeu", model.billingScopeId());
         Assertions.assertEquals(ReservationTerm.P5Y, model.term());
@@ -45,9 +43,8 @@ public final class PurchaseRequestPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PurchaseRequestProperties model =
-            new PurchaseRequestProperties()
-                .withReservedResourceType(ReservedResourceType.SAP_HANA)
+        PurchaseRequestProperties model
+            = new PurchaseRequestProperties().withReservedResourceType(ReservedResourceType.SAP_HANA)
                 .withBillingScopeId("kvwrwjfeu")
                 .withTerm(ReservationTerm.P5Y)
                 .withBillingPlan(ReservationBillingPlan.UPFRONT)
@@ -55,17 +52,14 @@ public final class PurchaseRequestPropertiesTests {
                 .withDisplayName("tmrldhugjzzdatq")
                 .withAppliedScopeType(AppliedScopeType.MANAGEMENT_GROUP)
                 .withAppliedScopes(Arrays.asList("geablgphuticndvk", "ozwyiftyhxhuro", "ftyxolniw"))
-                .withAppliedScopeProperties(
-                    new AppliedScopeProperties()
-                        .withTenantId("ukjfkgiawxklr")
-                        .withManagementGroupId("lwckbasyypnddhs")
-                        .withSubscriptionId("bacphejko")
-                        .withResourceGroupId("nqgoulzndli")
-                        .withDisplayName("yqkgfg"))
+                .withAppliedScopeProperties(new AppliedScopeProperties().withTenantId("ukjfkgiawxklr")
+                    .withManagementGroupId("lwckbasyypnddhs")
+                    .withSubscriptionId("bacphejko")
+                    .withResourceGroupId("nqgoulzndli")
+                    .withDisplayName("yqkgfg"))
                 .withRenew(true)
-                .withReservedResourceProperties(
-                    new PurchaseRequestPropertiesReservedResourceProperties()
-                        .withInstanceFlexibility(InstanceFlexibility.ON))
+                .withReservedResourceProperties(new PurchaseRequestPropertiesReservedResourceProperties()
+                    .withInstanceFlexibility(InstanceFlexibility.ON))
                 .withReviewDateTime(OffsetDateTime.parse("2021-09-02T02:02:12Z"));
         model = BinaryData.fromObject(model).toObject(PurchaseRequestProperties.class);
         Assertions.assertEquals(ReservedResourceType.SAP_HANA, model.reservedResourceType());

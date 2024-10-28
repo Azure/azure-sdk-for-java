@@ -12,7 +12,8 @@ import com.azure.ai.textanalytics.util.ExtractiveSummaryResultCollection;
 public final class ExtractiveSummaryResultCollectionPropertiesHelper {
     private static ExtractiveSummaryResultCollectionAccessor accessor;
 
-    private ExtractiveSummaryResultCollectionPropertiesHelper() { }
+    private ExtractiveSummaryResultCollectionPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an
@@ -20,8 +21,8 @@ public final class ExtractiveSummaryResultCollectionPropertiesHelper {
      */
     public interface ExtractiveSummaryResultCollectionAccessor {
         void setModelVersion(ExtractiveSummaryResultCollection resultCollection, String modelVersion);
-        void setStatistics(ExtractiveSummaryResultCollection resultCollection,
-                           TextDocumentBatchStatistics statistics);
+
+        void setStatistics(ExtractiveSummaryResultCollection resultCollection, TextDocumentBatchStatistics statistics);
     }
 
     /**
@@ -29,8 +30,8 @@ public final class ExtractiveSummaryResultCollectionPropertiesHelper {
      *
      * @param extractiveSummaryResultCollectionAccessor The accessor.
      */
-    public static void setAccessor(
-        final ExtractiveSummaryResultCollectionAccessor extractiveSummaryResultCollectionAccessor) {
+    public static void
+        setAccessor(final ExtractiveSummaryResultCollectionAccessor extractiveSummaryResultCollectionAccessor) {
         accessor = extractiveSummaryResultCollectionAccessor;
     }
 
@@ -39,7 +40,7 @@ public final class ExtractiveSummaryResultCollectionPropertiesHelper {
     }
 
     public static void setStatistics(ExtractiveSummaryResultCollection resultCollection,
-                                     TextDocumentBatchStatistics statistics) {
+        TextDocumentBatchStatistics statistics) {
         accessor.setStatistics(resultCollection, statistics);
     }
 }

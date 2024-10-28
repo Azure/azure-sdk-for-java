@@ -38,14 +38,22 @@ public final class VmmVirtualMachineDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VmmVirtualMachineDetails model
-            = new VmmVirtualMachineDetails().withSourceItemId("mmofbnivdqtkyk").withGeneration("xnlsf")
-                .withOsDetails(new OSDetails().withOsType("scaccptbz").withProductType("x").withOsEdition("xxicee")
-                    .withOSVersion("jwyuveox").withOSMajorVersion("z").withOSMinorVersion("ahdr"))
-                .withDiskDetails(Arrays.asList(new DiskDetails().withMaxSizeMB(2901220119484364811L).withVhdType("xbiv")
-                    .withVhdId("gxmbrygmwibiosiq").withVhdName("kqfdqwdrtx")))
-                .withHasPhysicalDisk(PresenceStatus.NOT_PRESENT).withHasFibreChannelAdapter(PresenceStatus.UNKNOWN)
-                .withHasSharedVhd(PresenceStatus.PRESENT).withHyperVHostId("co");
+        VmmVirtualMachineDetails model = new VmmVirtualMachineDetails().withSourceItemId("mmofbnivdqtkyk")
+            .withGeneration("xnlsf")
+            .withOsDetails(new OSDetails().withOsType("scaccptbz")
+                .withProductType("x")
+                .withOsEdition("xxicee")
+                .withOSVersion("jwyuveox")
+                .withOSMajorVersion("z")
+                .withOSMinorVersion("ahdr"))
+            .withDiskDetails(Arrays.asList(new DiskDetails().withMaxSizeMB(2901220119484364811L)
+                .withVhdType("xbiv")
+                .withVhdId("gxmbrygmwibiosiq")
+                .withVhdName("kqfdqwdrtx")))
+            .withHasPhysicalDisk(PresenceStatus.NOT_PRESENT)
+            .withHasFibreChannelAdapter(PresenceStatus.UNKNOWN)
+            .withHasSharedVhd(PresenceStatus.PRESENT)
+            .withHyperVHostId("co");
         model = BinaryData.fromObject(model).toObject(VmmVirtualMachineDetails.class);
         Assertions.assertEquals("mmofbnivdqtkyk", model.sourceItemId());
         Assertions.assertEquals("xnlsf", model.generation());

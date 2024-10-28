@@ -7,39 +7,58 @@ package com.azure.resourcemanager.storageimportexport.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storageimportexport.models.IdentityDetails;
 import com.azure.resourcemanager.storageimportexport.models.JobDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Contains the job information. */
+/**
+ * Contains the job information.
+ */
 @Fluent
 public final class JobResponseInner extends Resource {
     /*
      * SystemData of ImportExport Jobs.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Specifies the job properties
      */
-    @JsonProperty(value = "properties")
     private JobDetails properties;
 
     /*
      * Specifies the job identity details
      */
-    @JsonProperty(value = "identity")
     private IdentityDetails identity;
 
-    /** Creates an instance of JobResponseInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of JobResponseInner class.
+     */
     public JobResponseInner() {
     }
 
     /**
      * Get the systemData property: SystemData of ImportExport Jobs.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -48,7 +67,7 @@ public final class JobResponseInner extends Resource {
 
     /**
      * Get the properties property: Specifies the job properties.
-     *
+     * 
      * @return the properties value.
      */
     public JobDetails properties() {
@@ -57,7 +76,7 @@ public final class JobResponseInner extends Resource {
 
     /**
      * Set the properties property: Specifies the job properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the JobResponseInner object itself.
      */
@@ -68,7 +87,7 @@ public final class JobResponseInner extends Resource {
 
     /**
      * Get the identity property: Specifies the job identity details.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityDetails identity() {
@@ -77,7 +96,7 @@ public final class JobResponseInner extends Resource {
 
     /**
      * Set the identity property: Specifies the job identity details.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the JobResponseInner object itself.
      */
@@ -86,14 +105,48 @@ public final class JobResponseInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobResponseInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobResponseInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -102,7 +155,7 @@ public final class JobResponseInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -112,5 +165,60 @@ public final class JobResponseInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobResponseInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobResponseInner.
+     */
+    public static JobResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobResponseInner deserializedJobResponseInner = new JobResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJobResponseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedJobResponseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedJobResponseInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedJobResponseInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedJobResponseInner.withTags(tags);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedJobResponseInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJobResponseInner.properties = JobDetails.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedJobResponseInner.identity = IdentityDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobResponseInner;
+        });
     }
 }

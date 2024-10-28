@@ -51,8 +51,8 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @param client the instance of the service client containing this operation class.
      */
     SingleSignOnsClientImpl(DynatraceObservabilityImpl client) {
-        this.service =
-            RestProxy.create(SingleSignOnsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SingleSignOnsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,60 +63,43 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
     @Host("{$host}")
     @ServiceInterface(name = "DynatraceObservabili")
     public interface SingleSignOnsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
             @PathParam("configurationName") String configurationName,
             @BodyParam("application/json") DynatraceSingleSignOnResourceInner resource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DynatraceSingleSignOnResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("configurationName") String configurationName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<DynatraceSingleSignOnResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("configurationName") String configurationName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/singleSignOnConfigurations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Dynatrace.Observability/monitors/{monitorName}/singleSignOnConfigurations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DynatraceSingleSignOnResourceListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DynatraceSingleSignOnResourceListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DynatraceSingleSignOnResourceListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -133,22 +116,15 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        DynatraceSingleSignOnResourceInner resource) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String monitorName, String configurationName, DynatraceSingleSignOnResourceInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -168,19 +144,9 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            configurationName,
-                            resource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, resource, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -199,23 +165,15 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        DynatraceSingleSignOnResourceInner resource,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String monitorName, String configurationName, DynatraceSingleSignOnResourceInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -235,17 +193,9 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                configurationName,
-                resource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, resource, accept,
+            context);
     }
 
     /**
@@ -262,21 +212,13 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DynatraceSingleSignOnResourceInner>, DynatraceSingleSignOnResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String monitorName,
-            String configurationName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String monitorName, String configurationName,
             DynatraceSingleSignOnResourceInner resource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, resource);
-        return this
-            .client
-            .<DynatraceSingleSignOnResourceInner, DynatraceSingleSignOnResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DynatraceSingleSignOnResourceInner.class,
-                DynatraceSingleSignOnResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, resource);
+        return this.client.<DynatraceSingleSignOnResourceInner, DynatraceSingleSignOnResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DynatraceSingleSignOnResourceInner.class,
+            DynatraceSingleSignOnResourceInner.class, this.client.getContext());
     }
 
     /**
@@ -294,23 +236,14 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DynatraceSingleSignOnResourceInner>, DynatraceSingleSignOnResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String monitorName,
-            String configurationName,
-            DynatraceSingleSignOnResourceInner resource,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String monitorName, String configurationName,
+            DynatraceSingleSignOnResourceInner resource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, resource, context);
-        return this
-            .client
-            .<DynatraceSingleSignOnResourceInner, DynatraceSingleSignOnResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DynatraceSingleSignOnResourceInner.class,
-                DynatraceSingleSignOnResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, resource, context);
+        return this.client.<DynatraceSingleSignOnResourceInner, DynatraceSingleSignOnResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DynatraceSingleSignOnResourceInner.class,
+            DynatraceSingleSignOnResourceInner.class, context);
     }
 
     /**
@@ -327,13 +260,9 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DynatraceSingleSignOnResourceInner>, DynatraceSingleSignOnResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String monitorName,
-            String configurationName,
+        beginCreateOrUpdate(String resourceGroupName, String monitorName, String configurationName,
             DynatraceSingleSignOnResourceInner resource) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, resource)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, resource)
             .getSyncPoller();
     }
 
@@ -352,14 +281,9 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DynatraceSingleSignOnResourceInner>, DynatraceSingleSignOnResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String monitorName,
-            String configurationName,
-            DynatraceSingleSignOnResourceInner resource,
-            Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, resource, context)
+        beginCreateOrUpdate(String resourceGroupName, String monitorName, String configurationName,
+            DynatraceSingleSignOnResourceInner resource, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, resource, context)
             .getSyncPoller();
     }
 
@@ -376,13 +300,9 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @return single sign-on configurations for a given monitor resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DynatraceSingleSignOnResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        DynatraceSingleSignOnResourceInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, resource)
-            .last()
+    private Mono<DynatraceSingleSignOnResourceInner> createOrUpdateAsync(String resourceGroupName, String monitorName,
+        String configurationName, DynatraceSingleSignOnResourceInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, resource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -400,14 +320,9 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @return single sign-on configurations for a given monitor resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DynatraceSingleSignOnResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        DynatraceSingleSignOnResourceInner resource,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, resource, context)
-            .last()
+    private Mono<DynatraceSingleSignOnResourceInner> createOrUpdateAsync(String resourceGroupName, String monitorName,
+        String configurationName, DynatraceSingleSignOnResourceInner resource, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, resource, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -424,11 +339,8 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @return single sign-on configurations for a given monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynatraceSingleSignOnResourceInner createOrUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        DynatraceSingleSignOnResourceInner resource) {
+    public DynatraceSingleSignOnResourceInner createOrUpdate(String resourceGroupName, String monitorName,
+        String configurationName, DynatraceSingleSignOnResourceInner resource) {
         return createOrUpdateAsync(resourceGroupName, monitorName, configurationName, resource).block();
     }
 
@@ -446,12 +358,8 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @return single sign-on configurations for a given monitor resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynatraceSingleSignOnResourceInner createOrUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        DynatraceSingleSignOnResourceInner resource,
-        Context context) {
+    public DynatraceSingleSignOnResourceInner createOrUpdate(String resourceGroupName, String monitorName,
+        String configurationName, DynatraceSingleSignOnResourceInner resource, Context context) {
         return createOrUpdateAsync(resourceGroupName, monitorName, configurationName, resource, context).block();
     }
 
@@ -467,19 +375,15 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @return a DynatraceSingleSignOnResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DynatraceSingleSignOnResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String monitorName, String configurationName) {
+    private Mono<Response<DynatraceSingleSignOnResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String monitorName, String configurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -494,18 +398,8 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            configurationName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, configurationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -522,19 +416,15 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @return a DynatraceSingleSignOnResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DynatraceSingleSignOnResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String monitorName, String configurationName, Context context) {
+    private Mono<Response<DynatraceSingleSignOnResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String monitorName, String configurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -549,16 +439,8 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                configurationName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, monitorName, configurationName, accept, context);
     }
 
     /**
@@ -573,8 +455,8 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @return a DynatraceSingleSignOnResource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DynatraceSingleSignOnResourceInner> getAsync(
-        String resourceGroupName, String monitorName, String configurationName) {
+    private Mono<DynatraceSingleSignOnResourceInner> getAsync(String resourceGroupName, String monitorName,
+        String configurationName) {
         return getWithResponseAsync(resourceGroupName, monitorName, configurationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -592,8 +474,8 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @return a DynatraceSingleSignOnResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DynatraceSingleSignOnResourceInner> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context) {
+    public Response<DynatraceSingleSignOnResourceInner> getWithResponse(String resourceGroupName, String monitorName,
+        String configurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, monitorName, configurationName, context).block();
     }
 
@@ -609,8 +491,8 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @return a DynatraceSingleSignOnResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DynatraceSingleSignOnResourceInner get(
-        String resourceGroupName, String monitorName, String configurationName) {
+    public DynatraceSingleSignOnResourceInner get(String resourceGroupName, String monitorName,
+        String configurationName) {
         return getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE).getValue();
     }
 
@@ -626,19 +508,15 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DynatraceSingleSignOnResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String monitorName) {
+    private Mono<PagedResponse<DynatraceSingleSignOnResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String monitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -649,26 +527,10 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            accept,
-                            context))
-            .<PagedResponse<DynatraceSingleSignOnResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, accept, context))
+            .<PagedResponse<DynatraceSingleSignOnResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -685,19 +547,15 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DynatraceSingleSignOnResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String monitorName, Context context) {
+    private Mono<PagedResponse<DynatraceSingleSignOnResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String monitorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -709,23 +567,10 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -741,8 +586,8 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DynatraceSingleSignOnResourceInner> listAsync(String resourceGroupName, String monitorName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, monitorName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, monitorName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -758,10 +603,9 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DynatraceSingleSignOnResourceInner> listAsync(
-        String resourceGroupName, String monitorName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, monitorName, context),
+    private PagedFlux<DynatraceSingleSignOnResourceInner> listAsync(String resourceGroupName, String monitorName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, monitorName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -794,8 +638,8 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DynatraceSingleSignOnResourceInner> list(
-        String resourceGroupName, String monitorName, Context context) {
+    public PagedIterable<DynatraceSingleSignOnResourceInner> list(String resourceGroupName, String monitorName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, monitorName, context));
     }
 
@@ -816,23 +660,13 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DynatraceSingleSignOnResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DynatraceSingleSignOnResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -849,29 +683,19 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DynatraceSingleSignOnResourceInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DynatraceSingleSignOnResourceInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

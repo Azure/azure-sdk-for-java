@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of customization (Linux or Windows). */
+/**
+ * The type of customization (Linux or Windows).
+ */
 public final class CustomizationPolicyPropertiesType extends ExpandableStringEnum<CustomizationPolicyPropertiesType> {
-    /** Static value LINUX for CustomizationPolicyPropertiesType. */
+    /**
+     * Static value LINUX for CustomizationPolicyPropertiesType.
+     */
     public static final CustomizationPolicyPropertiesType LINUX = fromString("LINUX");
 
-    /** Static value WINDOWS for CustomizationPolicyPropertiesType. */
+    /**
+     * Static value WINDOWS for CustomizationPolicyPropertiesType.
+     */
     public static final CustomizationPolicyPropertiesType WINDOWS = fromString("WINDOWS");
 
     /**
      * Creates a new instance of CustomizationPolicyPropertiesType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class CustomizationPolicyPropertiesType extends ExpandableStringEnu
 
     /**
      * Creates or finds a CustomizationPolicyPropertiesType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CustomizationPolicyPropertiesType.
      */
-    @JsonCreator
     public static CustomizationPolicyPropertiesType fromString(String name) {
         return fromString(name, CustomizationPolicyPropertiesType.class);
     }
 
     /**
      * Gets known CustomizationPolicyPropertiesType values.
-     *
+     * 
      * @return known CustomizationPolicyPropertiesType values.
      */
     public static Collection<CustomizationPolicyPropertiesType> values() {

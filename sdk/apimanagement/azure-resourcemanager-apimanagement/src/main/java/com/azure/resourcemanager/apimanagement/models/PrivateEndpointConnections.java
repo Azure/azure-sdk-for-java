@@ -35,8 +35,8 @@ public interface PrivateEndpointConnections {
      * @return list of private endpoint connection associated with the specified storage account as paginated response
      *     with {@link PagedIterable}.
      */
-    PagedIterable<PrivateEndpointConnection> listByService(
-        String resourceGroupName, String serviceName, Context context);
+    PagedIterable<PrivateEndpointConnection> listByService(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets the details of the Private Endpoint Connection specified by its identifier.
@@ -50,8 +50,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the Private Endpoint Connection specified by its identifier along with {@link Response}.
      */
-    Response<PrivateEndpointConnection> getByNameWithResponse(
-        String resourceGroupName, String serviceName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnection> getByNameWithResponse(String resourceGroupName, String serviceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Gets the details of the Private Endpoint Connection specified by its identifier.
@@ -64,8 +64,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the Private Endpoint Connection specified by its identifier.
      */
-    PrivateEndpointConnection getByName(
-        String resourceGroupName, String serviceName, String privateEndpointConnectionName);
+    PrivateEndpointConnection getByName(String resourceGroupName, String serviceName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes the specified Private Endpoint Connection.
@@ -103,8 +103,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources along with {@link Response}.
      */
-    Response<PrivateLinkResourceListResult> listPrivateLinkResourcesWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<PrivateLinkResourceListResult> listPrivateLinkResourcesWithResponse(String resourceGroupName,
+        String serviceName, Context context);
 
     /**
      * Gets the private link resources.
@@ -130,8 +130,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources along with {@link Response}.
      */
-    Response<PrivateLinkResource> getPrivateLinkResourceWithResponse(
-        String resourceGroupName, String serviceName, String privateLinkSubResourceName, Context context);
+    Response<PrivateLinkResource> getPrivateLinkResourceWithResponse(String resourceGroupName, String serviceName,
+        String privateLinkSubResourceName, Context context);
 
     /**
      * Gets the private link resources.
@@ -144,8 +144,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources.
      */
-    PrivateLinkResource getPrivateLinkResource(
-        String resourceGroupName, String serviceName, String privateLinkSubResourceName);
+    PrivateLinkResource getPrivateLinkResource(String resourceGroupName, String serviceName,
+        String privateLinkSubResourceName);
 
     /**
      * Gets the details of the Private Endpoint Connection specified by its identifier.

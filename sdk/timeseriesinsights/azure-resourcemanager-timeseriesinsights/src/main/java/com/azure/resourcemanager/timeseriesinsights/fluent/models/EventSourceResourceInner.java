@@ -25,8 +25,7 @@ import java.util.Map;
 @JsonTypeName("EventSourceResource")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Microsoft.EventHub", value = EventHubEventSourceResource.class),
-    @JsonSubTypes.Type(name = "Microsoft.IoTHub", value = IoTHubEventSourceResource.class)
-})
+    @JsonSubTypes.Type(name = "Microsoft.IoTHub", value = IoTHubEventSourceResource.class) })
 @Fluent
 public class EventSourceResourceInner extends Resource {
     /** Creates an instance of EventSourceResourceInner class. */

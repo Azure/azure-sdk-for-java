@@ -36,6 +36,6 @@ public interface SparkConfigurationsOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of SparkConfiguration resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SparkConfigurationResource> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<SparkConfigurationResource> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 }

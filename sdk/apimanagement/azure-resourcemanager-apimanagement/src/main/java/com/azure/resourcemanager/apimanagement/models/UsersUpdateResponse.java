@@ -20,11 +20,7 @@ public final class UsersUpdateResponse extends ResponseBase<UsersUpdateHeaders, 
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public UsersUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        UserContractInner value,
+    public UsersUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, UserContractInner value,
         UsersUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

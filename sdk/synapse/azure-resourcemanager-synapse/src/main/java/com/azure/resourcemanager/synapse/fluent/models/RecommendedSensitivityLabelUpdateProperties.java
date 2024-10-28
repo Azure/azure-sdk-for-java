@@ -127,28 +127,20 @@ public final class RecommendedSensitivityLabelUpdateProperties {
      */
     public void validate() {
         if (op() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property op in model RecommendedSensitivityLabelUpdateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property op in model RecommendedSensitivityLabelUpdateProperties"));
         }
         if (schema() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schema in model RecommendedSensitivityLabelUpdateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property schema in model RecommendedSensitivityLabelUpdateProperties"));
         }
         if (table() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property table in model RecommendedSensitivityLabelUpdateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property table in model RecommendedSensitivityLabelUpdateProperties"));
         }
         if (column() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property column in model RecommendedSensitivityLabelUpdateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property column in model RecommendedSensitivityLabelUpdateProperties"));
         }
     }
 

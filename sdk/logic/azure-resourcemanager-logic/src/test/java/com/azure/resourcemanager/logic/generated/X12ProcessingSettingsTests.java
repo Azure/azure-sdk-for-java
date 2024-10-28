@@ -11,35 +11,31 @@ import org.junit.jupiter.api.Assertions;
 public final class X12ProcessingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        X12ProcessingSettings model =
-            BinaryData
-                .fromString(
-                    "{\"maskSecurityInfo\":true,\"convertImpliedDecimal\":false,\"preserveInterchange\":false,\"suspendInterchangeOnError\":true,\"createEmptyXmlTagsForTrailingSeparators\":false,\"useDotAsDecimalSeparator\":false}")
-                .toObject(X12ProcessingSettings.class);
-        Assertions.assertEquals(true, model.maskSecurityInfo());
+        X12ProcessingSettings model = BinaryData.fromString(
+            "{\"maskSecurityInfo\":false,\"convertImpliedDecimal\":false,\"preserveInterchange\":false,\"suspendInterchangeOnError\":false,\"createEmptyXmlTagsForTrailingSeparators\":true,\"useDotAsDecimalSeparator\":false}")
+            .toObject(X12ProcessingSettings.class);
+        Assertions.assertEquals(false, model.maskSecurityInfo());
         Assertions.assertEquals(false, model.convertImpliedDecimal());
         Assertions.assertEquals(false, model.preserveInterchange());
-        Assertions.assertEquals(true, model.suspendInterchangeOnError());
-        Assertions.assertEquals(false, model.createEmptyXmlTagsForTrailingSeparators());
+        Assertions.assertEquals(false, model.suspendInterchangeOnError());
+        Assertions.assertEquals(true, model.createEmptyXmlTagsForTrailingSeparators());
         Assertions.assertEquals(false, model.useDotAsDecimalSeparator());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        X12ProcessingSettings model =
-            new X12ProcessingSettings()
-                .withMaskSecurityInfo(true)
-                .withConvertImpliedDecimal(false)
-                .withPreserveInterchange(false)
-                .withSuspendInterchangeOnError(true)
-                .withCreateEmptyXmlTagsForTrailingSeparators(false)
-                .withUseDotAsDecimalSeparator(false);
+        X12ProcessingSettings model = new X12ProcessingSettings().withMaskSecurityInfo(false)
+            .withConvertImpliedDecimal(false)
+            .withPreserveInterchange(false)
+            .withSuspendInterchangeOnError(false)
+            .withCreateEmptyXmlTagsForTrailingSeparators(true)
+            .withUseDotAsDecimalSeparator(false);
         model = BinaryData.fromObject(model).toObject(X12ProcessingSettings.class);
-        Assertions.assertEquals(true, model.maskSecurityInfo());
+        Assertions.assertEquals(false, model.maskSecurityInfo());
         Assertions.assertEquals(false, model.convertImpliedDecimal());
         Assertions.assertEquals(false, model.preserveInterchange());
-        Assertions.assertEquals(true, model.suspendInterchangeOnError());
-        Assertions.assertEquals(false, model.createEmptyXmlTagsForTrailingSeparators());
+        Assertions.assertEquals(false, model.suspendInterchangeOnError());
+        Assertions.assertEquals(true, model.createEmptyXmlTagsForTrailingSeparators());
         Assertions.assertEquals(false, model.useDotAsDecimalSeparator());
     }
 }

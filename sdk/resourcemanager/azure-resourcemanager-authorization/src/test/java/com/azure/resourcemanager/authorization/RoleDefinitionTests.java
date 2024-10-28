@@ -14,10 +14,8 @@ import java.util.Locale;
 public class RoleDefinitionTests extends GraphRbacManagementTest {
     @Test
     public void canGetRoleByRoleName() throws Exception {
-        RoleDefinition roleDefinition =
-            authorizationManager
-                .roleDefinitions()
-                .getByScopeAndRoleName("subscriptions/" + resourceManager.subscriptionId(), "Contributor");
+        RoleDefinition roleDefinition = authorizationManager.roleDefinitions()
+            .getByScopeAndRoleName("subscriptions/" + resourceManager.subscriptionId(), "Contributor");
         Assertions.assertNotNull(roleDefinition);
         Assertions.assertEquals("Contributor", roleDefinition.roleName());
     }
@@ -25,8 +23,8 @@ public class RoleDefinitionTests extends GraphRbacManagementTest {
     @Test
     @Disabled("Util to generate missing built-in role")
     public void generateMissingRole() {
-        PagedIterable<RoleDefinition> roleDefinitions =
-            authorizationManager.roleDefinitions().listByScope("subscriptions/" + resourceManager.subscriptionId());
+        PagedIterable<RoleDefinition> roleDefinitions
+            = authorizationManager.roleDefinitions().listByScope("subscriptions/" + resourceManager.subscriptionId());
 
         StringBuilder sb = new StringBuilder();
 
@@ -35,9 +33,18 @@ public class RoleDefinitionTests extends GraphRbacManagementTest {
             .forEach(r -> {
                 String roleEnumName = r.roleName().toUpperCase(Locale.ROOT).replaceAll(" ", "_");
 
-                sb.append("/** ").append(r.description()).append(". */").append(System.lineSeparator())
-                    .append("public static final BuiltInRole ").append(roleEnumName).append(" =").append(System.lineSeparator())
-                    .append("    BuiltInRole.fromString(\"").append(r.roleName()).append("\");").append(System.lineSeparator());
+                sb.append("/** ")
+                    .append(r.description())
+                    .append(". */")
+                    .append(System.lineSeparator())
+                    .append("public static final BuiltInRole ")
+                    .append(roleEnumName)
+                    .append(" =")
+                    .append(System.lineSeparator())
+                    .append("    BuiltInRole.fromString(\"")
+                    .append(r.roleName())
+                    .append("\");")
+                    .append(System.lineSeparator());
             });
 
         System.out.print(sb.toString());

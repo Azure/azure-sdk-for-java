@@ -18,7 +18,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-/** As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18. */
+/**
+ * As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18.
+ */
 @Fluent
 public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
     /*
@@ -101,12 +103,15 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      */
     private Base64Url y;
 
-    /** Creates an instance of JsonWebKey class. */
-    public JsonWebKey() {}
+    /**
+     * Creates an instance of JsonWebKey class.
+     */
+    public JsonWebKey() {
+    }
 
     /**
      * Get the kid property: Key identifier.
-     *
+     * 
      * @return the kid value.
      */
     public String getKid() {
@@ -115,7 +120,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the kid property: Key identifier.
-     *
+     * 
      * @param kid the kid value to set.
      * @return the JsonWebKey object itself.
      */
@@ -127,7 +132,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
     /**
      * Get the kty property: JsonWebKey Key Type (kty), as defined in
      * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-     *
+     * 
      * @return the kty value.
      */
     public KeyType getKty() {
@@ -137,7 +142,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
     /**
      * Set the kty property: JsonWebKey Key Type (kty), as defined in
      * https://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-40.
-     *
+     * 
      * @param kty the kty value to set.
      * @return the JsonWebKey object itself.
      */
@@ -148,7 +153,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the keyOps property: The key_ops property.
-     *
+     * 
      * @return the keyOps value.
      */
     public List<KeyOperation> getKeyOps() {
@@ -157,7 +162,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the keyOps property: The key_ops property.
-     *
+     * 
      * @param keyOps the keyOps value to set.
      * @return the JsonWebKey object itself.
      */
@@ -168,7 +173,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the n property: RSA modulus.
-     *
+     * 
      * @return the n value.
      */
     public byte[] getN() {
@@ -180,7 +185,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the n property: RSA modulus.
-     *
+     * 
      * @param n the n value to set.
      * @return the JsonWebKey object itself.
      */
@@ -195,7 +200,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the e property: RSA public exponent.
-     *
+     * 
      * @return the e value.
      */
     public byte[] getE() {
@@ -207,7 +212,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the e property: RSA public exponent.
-     *
+     * 
      * @param e the e value to set.
      * @return the JsonWebKey object itself.
      */
@@ -222,7 +227,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the d property: RSA private exponent, or the D component of an EC private key.
-     *
+     * 
      * @return the d value.
      */
     public byte[] getD() {
@@ -234,7 +239,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the d property: RSA private exponent, or the D component of an EC private key.
-     *
+     * 
      * @param d the d value to set.
      * @return the JsonWebKey object itself.
      */
@@ -249,7 +254,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the dp property: RSA private key parameter.
-     *
+     * 
      * @return the dp value.
      */
     public byte[] getDp() {
@@ -261,7 +266,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the dp property: RSA private key parameter.
-     *
+     * 
      * @param dp the dp value to set.
      * @return the JsonWebKey object itself.
      */
@@ -276,7 +281,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the dq property: RSA private key parameter.
-     *
+     * 
      * @return the dq value.
      */
     public byte[] getDq() {
@@ -288,7 +293,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the dq property: RSA private key parameter.
-     *
+     * 
      * @param dq the dq value to set.
      * @return the JsonWebKey object itself.
      */
@@ -303,7 +308,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the qi property: RSA private key parameter.
-     *
+     * 
      * @return the qi value.
      */
     public byte[] getQi() {
@@ -315,7 +320,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the qi property: RSA private key parameter.
-     *
+     * 
      * @param qi the qi value to set.
      * @return the JsonWebKey object itself.
      */
@@ -330,7 +335,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the p property: RSA secret prime.
-     *
+     * 
      * @return the p value.
      */
     public byte[] getP() {
@@ -342,7 +347,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the p property: RSA secret prime.
-     *
+     * 
      * @param p the p value to set.
      * @return the JsonWebKey object itself.
      */
@@ -357,7 +362,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the q property: RSA secret prime, with p &lt; q.
-     *
+     * 
      * @return the q value.
      */
     public byte[] getQ() {
@@ -369,7 +374,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the q property: RSA secret prime, with p &lt; q.
-     *
+     * 
      * @param q the q value to set.
      * @return the JsonWebKey object itself.
      */
@@ -384,7 +389,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the k property: Symmetric key.
-     *
+     * 
      * @return the k value.
      */
     public byte[] getK() {
@@ -396,7 +401,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the k property: Symmetric key.
-     *
+     * 
      * @param k the k value to set.
      * @return the JsonWebKey object itself.
      */
@@ -411,7 +416,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the t property: Protected Key, used with 'Bring Your Own Key'.
-     *
+     * 
      * @return the t value.
      */
     public byte[] getT() {
@@ -423,7 +428,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the t property: Protected Key, used with 'Bring Your Own Key'.
-     *
+     * 
      * @param t the t value to set.
      * @return the JsonWebKey object itself.
      */
@@ -438,7 +443,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the crv property: Elliptic curve name.
-     *
+     * 
      * @return the crv value.
      */
     public KeyCurveName getCrv() {
@@ -447,7 +452,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the crv property: Elliptic curve name.
-     *
+     * 
      * @param crv the crv value to set.
      * @return the JsonWebKey object itself.
      */
@@ -458,7 +463,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the x property: X component of an EC public key.
-     *
+     * 
      * @return the x value.
      */
     public byte[] getX() {
@@ -470,7 +475,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the x property: X component of an EC public key.
-     *
+     * 
      * @param x the x value to set.
      * @return the JsonWebKey object itself.
      */
@@ -485,7 +490,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Get the y property: Y component of an EC public key.
-     *
+     * 
      * @return the y value.
      */
     public byte[] getY() {
@@ -497,7 +502,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Set the y property: Y component of an EC public key.
-     *
+     * 
      * @param y the y value to set.
      * @return the JsonWebKey object itself.
      */
@@ -510,13 +515,16 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("kid", this.kid);
-        jsonWriter.writeStringField("kty", Objects.toString(this.kty, null));
-        jsonWriter.writeArrayField(
-                "key_ops", this.keyOps, (writer, element) -> writer.writeString(Objects.toString(element, null)));
+        jsonWriter.writeStringField("kty", this.kty == null ? null : this.kty.toString());
+        jsonWriter.writeArrayField("key_ops", this.keyOps,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeStringField("n", Objects.toString(this.n, null));
         jsonWriter.writeStringField("e", Objects.toString(this.e, null));
         jsonWriter.writeStringField("d", Objects.toString(this.d, null));
@@ -527,7 +535,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         jsonWriter.writeStringField("q", Objects.toString(this.q, null));
         jsonWriter.writeStringField("k", Objects.toString(this.k, null));
         jsonWriter.writeStringField("key_hsm", Objects.toString(this.t, null));
-        jsonWriter.writeStringField("crv", Objects.toString(this.crv, null));
+        jsonWriter.writeStringField("crv", this.crv == null ? null : this.crv.toString());
         jsonWriter.writeStringField("x", Objects.toString(this.x, null));
         jsonWriter.writeStringField("y", Objects.toString(this.y, null));
         return jsonWriter.writeEndObject();
@@ -535,72 +543,71 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
 
     /**
      * Reads an instance of JsonWebKey from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of JsonWebKey if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
+     * to JSON null.
      * @throws IOException If an error occurs while reading the JsonWebKey.
      */
     public static JsonWebKey fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    JsonWebKey deserializedJsonWebKey = new JsonWebKey();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            JsonWebKey deserializedJsonWebKey = new JsonWebKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("kid".equals(fieldName)) {
-                            deserializedJsonWebKey.kid = reader.getString();
-                        } else if ("kty".equals(fieldName)) {
-                            deserializedJsonWebKey.kty = KeyType.fromString(reader.getString());
-                        } else if ("key_ops".equals(fieldName)) {
-                            List<KeyOperation> keyOps =
-                                    reader.readArray(reader1 -> KeyOperation.fromString(reader1.getString()));
-                            deserializedJsonWebKey.keyOps = keyOps;
-                        } else if ("n".equals(fieldName)) {
-                            deserializedJsonWebKey.n =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("e".equals(fieldName)) {
-                            deserializedJsonWebKey.e =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("d".equals(fieldName)) {
-                            deserializedJsonWebKey.d =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("dp".equals(fieldName)) {
-                            deserializedJsonWebKey.dp =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("dq".equals(fieldName)) {
-                            deserializedJsonWebKey.dq =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("qi".equals(fieldName)) {
-                            deserializedJsonWebKey.qi =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("p".equals(fieldName)) {
-                            deserializedJsonWebKey.p =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("q".equals(fieldName)) {
-                            deserializedJsonWebKey.q =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("k".equals(fieldName)) {
-                            deserializedJsonWebKey.k =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("key_hsm".equals(fieldName)) {
-                            deserializedJsonWebKey.t =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("crv".equals(fieldName)) {
-                            deserializedJsonWebKey.crv = KeyCurveName.fromString(reader.getString());
-                        } else if ("x".equals(fieldName)) {
-                            deserializedJsonWebKey.x =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else if ("y".equals(fieldName)) {
-                            deserializedJsonWebKey.y =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("kid".equals(fieldName)) {
+                    deserializedJsonWebKey.kid = reader.getString();
+                } else if ("kty".equals(fieldName)) {
+                    deserializedJsonWebKey.kty = KeyType.fromString(reader.getString());
+                } else if ("key_ops".equals(fieldName)) {
+                    List<KeyOperation> keyOps
+                        = reader.readArray(reader1 -> KeyOperation.fromString(reader1.getString()));
+                    deserializedJsonWebKey.keyOps = keyOps;
+                } else if ("n".equals(fieldName)) {
+                    deserializedJsonWebKey.n
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("e".equals(fieldName)) {
+                    deserializedJsonWebKey.e
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("d".equals(fieldName)) {
+                    deserializedJsonWebKey.d
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("dp".equals(fieldName)) {
+                    deserializedJsonWebKey.dp
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("dq".equals(fieldName)) {
+                    deserializedJsonWebKey.dq
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("qi".equals(fieldName)) {
+                    deserializedJsonWebKey.qi
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("p".equals(fieldName)) {
+                    deserializedJsonWebKey.p
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("q".equals(fieldName)) {
+                    deserializedJsonWebKey.q
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("k".equals(fieldName)) {
+                    deserializedJsonWebKey.k
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("key_hsm".equals(fieldName)) {
+                    deserializedJsonWebKey.t
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("crv".equals(fieldName)) {
+                    deserializedJsonWebKey.crv = KeyCurveName.fromString(reader.getString());
+                } else if ("x".equals(fieldName)) {
+                    deserializedJsonWebKey.x
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("y".equals(fieldName)) {
+                    deserializedJsonWebKey.y
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedJsonWebKey;
-                });
+            return deserializedJsonWebKey;
+        });
     }
 }

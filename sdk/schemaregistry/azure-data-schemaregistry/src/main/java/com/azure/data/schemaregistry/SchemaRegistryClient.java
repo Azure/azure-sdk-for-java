@@ -249,8 +249,8 @@ public final class SchemaRegistryClient {
         final com.azure.data.schemaregistry.implementation.models.SchemaFormat contentType
             = SchemaRegistryHelper.getContentType(format);
 
-        ResponseBase<SchemasRegisterHeaders, Void> response = restService.getSchemas().registerWithResponse(groupName,
-            name, contentType.toString(), binaryData, binaryData.getLength(), context);
+        ResponseBase<SchemasRegisterHeaders, Void> response = restService.getSchemas()
+            .registerWithResponse(groupName, name, contentType.toString(), binaryData, binaryData.getLength(), context);
         final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(),
             response.getHeaders(), format);
 
@@ -314,13 +314,13 @@ public final class SchemaRegistryClient {
         }
 
         try {
-            ResponseBase<SchemasGetByIdHeaders, BinaryData> response = this.restService.getSchemas()
-                .getByIdWithResponse(schemaId, context);
-            SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(),
-                response.getHeaders());
+            ResponseBase<SchemasGetByIdHeaders, BinaryData> response
+                = this.restService.getSchemas().getByIdWithResponse(schemaId, context);
+            SchemaProperties schemaObject
+                = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
 
-            return new SimpleResponse<>(response, new SchemaRegistrySchema(schemaObject,
-                convertToString(response.getValue().toStream())));
+            return new SimpleResponse<>(response,
+                new SchemaRegistrySchema(schemaObject, convertToString(response.getValue().toStream())));
         } catch (ErrorException ex) {
             throw logger.logExceptionAsError(SchemaRegistryAsyncClient.remapError(ex));
         }
@@ -343,22 +343,22 @@ public final class SchemaRegistryClient {
      * @throws UncheckedIOException if an error occurred while deserializing response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SchemaRegistrySchema> getSchemaWithResponse(String groupName, String schemaName,
-        int schemaVersion, Context context) {
+    public Response<SchemaRegistrySchema> getSchemaWithResponse(String groupName, String schemaName, int schemaVersion,
+        Context context) {
         if (Objects.isNull(groupName)) {
             throw logger.logExceptionAsError(new NullPointerException("'groupName' should not be null."));
         }
 
-        ResponseBase<SchemasGetSchemaVersionHeaders, BinaryData> response = this.restService.getSchemas()
-            .getSchemaVersionWithResponse(groupName, schemaName, schemaVersion, context);
+        ResponseBase<SchemasGetSchemaVersionHeaders, BinaryData> response
+            = this.restService.getSchemas().getSchemaVersionWithResponse(groupName, schemaName, schemaVersion, context);
         InputStream schemaInputStream = response.getValue().toStream();
-        SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(),
-            response.getHeaders());
+        SchemaProperties schemaObject
+            = SchemaRegistryHelper.getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
 
         if (schemaInputStream == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "Schema definition should not be null. Group Name: %s. Schema Name: %s. Version: %d",
-                groupName, schemaName, schemaVersion)));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                String.format("Schema definition should not be null. Group Name: %s. Schema Name: %s. Version: %d",
+                    groupName, schemaName, schemaVersion)));
         }
 
         return new SimpleResponse<>(response,
@@ -426,11 +426,11 @@ public final class SchemaRegistryClient {
             = SchemaRegistryHelper.getContentType(format);
 
         try {
-            ResponseBase<SchemasQueryIdByContentHeaders, Void>  response = restService.getSchemas()
+            ResponseBase<SchemasQueryIdByContentHeaders, Void> response = restService.getSchemas()
                 .queryIdByContentWithResponse(groupName, name, contentType, binaryData, binaryData.getLength(),
                     context);
-            final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(
-                response.getDeserializedHeaders(), response.getHeaders(), format);
+            final SchemaProperties properties = SchemaRegistryHelper
+                .getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
             return new SimpleResponse<>(response, properties);
         } catch (ErrorException ex) {
             throw logger.logExceptionAsError(SchemaRegistryAsyncClient.remapError(ex));

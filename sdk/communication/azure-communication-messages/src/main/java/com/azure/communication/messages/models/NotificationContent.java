@@ -16,7 +16,7 @@ import java.util.List;
  * Details of the message to send.
  */
 @Immutable
-public class NotificationContent implements JsonSerializable<NotificationContent> {
+public abstract class NotificationContent implements JsonSerializable<NotificationContent> {
 
     /*
      * The type discriminator describing a notification type.
@@ -43,7 +43,7 @@ public class NotificationContent implements JsonSerializable<NotificationContent
      * @param to the to value to set.
      */
     @Generated
-    public NotificationContent(String channelRegistrationId, List<String> to) {
+    protected NotificationContent(String channelRegistrationId, List<String> to) {
         this.channelRegistrationId = channelRegistrationId;
         this.to = to;
     }
@@ -120,39 +120,22 @@ public class NotificationContent implements JsonSerializable<NotificationContent
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("text".equals(discriminatorValue)) {
                     return TextNotificationContent.fromJson(readerToUse.reset());
-                } else if ("image".equals(discriminatorValue)) {
+                } else if ("image_v0".equals(discriminatorValue)) {
                     return MediaNotificationContent.fromJson(readerToUse.reset());
+                } else if ("image".equals(discriminatorValue)) {
+                    return ImageNotificationContent.fromJson(readerToUse.reset());
+                } else if ("document".equals(discriminatorValue)) {
+                    return DocumentNotificationContent.fromJson(readerToUse.reset());
+                } else if ("video".equals(discriminatorValue)) {
+                    return VideoNotificationContent.fromJson(readerToUse.reset());
+                } else if ("audio".equals(discriminatorValue)) {
+                    return AudioNotificationContent.fromJson(readerToUse.reset());
                 } else if ("template".equals(discriminatorValue)) {
                     return TemplateNotificationContent.fromJson(readerToUse.reset());
                 } else {
-                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                    throw new IllegalStateException("Invalid Kind value - " + discriminatorValue);
                 }
             }
-        });
-    }
-
-    @Generated
-    static NotificationContent fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String channelRegistrationId = null;
-            List<String> to = null;
-            CommunicationMessageKind kind = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("channelRegistrationId".equals(fieldName)) {
-                    channelRegistrationId = reader.getString();
-                } else if ("to".equals(fieldName)) {
-                    to = reader.readArray(reader1 -> reader1.getString());
-                } else if ("kind".equals(fieldName)) {
-                    kind = CommunicationMessageKind.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            NotificationContent deserializedNotificationContent = new NotificationContent(channelRegistrationId, to);
-            deserializedNotificationContent.kind = kind;
-            return deserializedNotificationContent;
         });
     }
 }

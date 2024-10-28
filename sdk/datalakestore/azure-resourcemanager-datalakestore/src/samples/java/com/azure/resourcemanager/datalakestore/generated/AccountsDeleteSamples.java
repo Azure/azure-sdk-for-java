@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.datalakestore.generated;
 
-/** Samples for Accounts Delete. */
+/**
+ * Samples for Accounts Delete.
+ */
 public final class AccountsDeleteSamples {
     /*
-     * x-ms-original-file: specification/datalake-store/resource-manager/Microsoft.DataLakeStore/stable/2016-11-01/examples/Accounts_Delete.json
+     * x-ms-original-file:
+     * specification/datalake-store/resource-manager/Microsoft.DataLakeStore/stable/2016-11-01/examples/Accounts_Delete.
+     * json
      */
     /**
      * Sample code: Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param manager Entry point to DataLakeStoreManager.
      */
-    public static void deletesTheSpecifiedDataLakeStoreAccount(
-        com.azure.resourcemanager.datalakestore.DataLakeStoreManager manager) {
+    public static void
+        deletesTheSpecifiedDataLakeStoreAccount(com.azure.resourcemanager.datalakestore.DataLakeStoreManager manager) {
         manager.accounts().delete("contosorg", "contosoadla", com.azure.core.util.Context.NONE);
     }
 }

@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageConfigurationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageConfigurationSettings model =
-            BinaryData
-                .fromString(
-                    "{\"sqlDataSettings\":{\"luns\":[1911186108,2119975108],\"defaultFilePath\":\"mcmatuokthfuiu\"},\"sqlLogSettings\":{\"luns\":[680550088,2105680522,397485144,1099680690],\"defaultFilePath\":\"xodpuozmyzydagfu\"},\"sqlTempDbSettings\":{\"dataFileSize\":1613770943,\"dataGrowth\":45811298,\"logFileSize\":1016147904,\"logGrowth\":3069980,\"dataFileCount\":1285068717,\"persistFolder\":true,\"persistFolderPath\":\"dxwzywqsmbsurexi\",\"luns\":[998039935,1010959661,1027022233,994913433],\"defaultFilePath\":\"fksymddystki\"},\"sqlSystemDbOnDataDisk\":true,\"diskConfigurationType\":\"ADD\",\"storageWorkloadType\":\"OLTP\"}")
-                .toObject(StorageConfigurationSettings.class);
+        StorageConfigurationSettings model = BinaryData.fromString(
+            "{\"sqlDataSettings\":{\"luns\":[1911186108,2119975108],\"defaultFilePath\":\"mcmatuokthfuiu\"},\"sqlLogSettings\":{\"luns\":[680550088,2105680522,397485144,1099680690],\"defaultFilePath\":\"xodpuozmyzydagfu\"},\"sqlTempDbSettings\":{\"dataFileSize\":1613770943,\"dataGrowth\":45811298,\"logFileSize\":1016147904,\"logGrowth\":3069980,\"dataFileCount\":1285068717,\"persistFolder\":true,\"persistFolderPath\":\"dxwzywqsmbsurexi\",\"luns\":[998039935,1010959661,1027022233,994913433],\"defaultFilePath\":\"fksymddystki\"},\"sqlSystemDbOnDataDisk\":true,\"diskConfigurationType\":\"ADD\",\"storageWorkloadType\":\"OLTP\"}")
+            .toObject(StorageConfigurationSettings.class);
         Assertions.assertEquals(1911186108, model.sqlDataSettings().luns().get(0));
         Assertions.assertEquals("mcmatuokthfuiu", model.sqlDataSettings().defaultFilePath());
         Assertions.assertEquals(680550088, model.sqlLogSettings().luns().get(0));
@@ -41,30 +39,24 @@ public final class StorageConfigurationSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageConfigurationSettings model =
-            new StorageConfigurationSettings()
-                .withSqlDataSettings(
-                    new SqlStorageSettings()
-                        .withLuns(Arrays.asList(1911186108, 2119975108))
-                        .withDefaultFilePath("mcmatuokthfuiu"))
-                .withSqlLogSettings(
-                    new SqlStorageSettings()
-                        .withLuns(Arrays.asList(680550088, 2105680522, 397485144, 1099680690))
-                        .withDefaultFilePath("xodpuozmyzydagfu"))
-                .withSqlTempDbSettings(
-                    new SqlTempDbSettings()
-                        .withDataFileSize(1613770943)
-                        .withDataGrowth(45811298)
-                        .withLogFileSize(1016147904)
-                        .withLogGrowth(3069980)
-                        .withDataFileCount(1285068717)
-                        .withPersistFolder(true)
-                        .withPersistFolderPath("dxwzywqsmbsurexi")
-                        .withLuns(Arrays.asList(998039935, 1010959661, 1027022233, 994913433))
-                        .withDefaultFilePath("fksymddystki"))
-                .withSqlSystemDbOnDataDisk(true)
-                .withDiskConfigurationType(DiskConfigurationType.ADD)
-                .withStorageWorkloadType(StorageWorkloadType.OLTP);
+        StorageConfigurationSettings model = new StorageConfigurationSettings()
+            .withSqlDataSettings(new SqlStorageSettings().withLuns(Arrays.asList(1911186108, 2119975108))
+                .withDefaultFilePath("mcmatuokthfuiu"))
+            .withSqlLogSettings(
+                new SqlStorageSettings().withLuns(Arrays.asList(680550088, 2105680522, 397485144, 1099680690))
+                    .withDefaultFilePath("xodpuozmyzydagfu"))
+            .withSqlTempDbSettings(new SqlTempDbSettings().withDataFileSize(1613770943)
+                .withDataGrowth(45811298)
+                .withLogFileSize(1016147904)
+                .withLogGrowth(3069980)
+                .withDataFileCount(1285068717)
+                .withPersistFolder(true)
+                .withPersistFolderPath("dxwzywqsmbsurexi")
+                .withLuns(Arrays.asList(998039935, 1010959661, 1027022233, 994913433))
+                .withDefaultFilePath("fksymddystki"))
+            .withSqlSystemDbOnDataDisk(true)
+            .withDiskConfigurationType(DiskConfigurationType.ADD)
+            .withStorageWorkloadType(StorageWorkloadType.OLTP);
         model = BinaryData.fromObject(model).toObject(StorageConfigurationSettings.class);
         Assertions.assertEquals(1911186108, model.sqlDataSettings().luns().get(0));
         Assertions.assertEquals("mcmatuokthfuiu", model.sqlDataSettings().defaultFilePath());

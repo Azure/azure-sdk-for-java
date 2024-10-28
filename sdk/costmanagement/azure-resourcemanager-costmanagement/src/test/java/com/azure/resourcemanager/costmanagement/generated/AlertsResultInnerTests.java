@@ -10,11 +10,9 @@ import com.azure.resourcemanager.costmanagement.fluent.models.AlertsResultInner;
 public final class AlertsResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertsResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"vqdra\",\"source\":\"Preset\",\"costEntityId\":\"igeho\",\"status\":\"Dismissed\",\"creationTime\":\"wska\",\"closeTime\":\"ktzlcuiywg\",\"modificationTime\":\"wgndrvynhzgpp\",\"statusModificationUserName\":\"cgyncocpecf\",\"statusModificationTime\":\"mcoo\"},\"eTag\":\"xlzevgbmqjqabcy\",\"id\":\"mivkwlzuvcc\",\"name\":\"wnfnbacf\",\"type\":\"onlebxetqgtzxdpn\"}],\"nextLink\":\"qqwx\"}")
-                .toObject(AlertsResultInner.class);
+        AlertsResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"vqdra\",\"source\":\"Preset\",\"costEntityId\":\"igeho\",\"status\":\"Dismissed\",\"creationTime\":\"wska\",\"closeTime\":\"ktzlcuiywg\",\"modificationTime\":\"wgndrvynhzgpp\",\"statusModificationUserName\":\"cgyncocpecf\",\"statusModificationTime\":\"mcoo\"},\"eTag\":\"xlzevgbmqjqabcy\",\"id\":\"mivkwlzuvcc\",\"name\":\"wnfnbacf\",\"type\":\"onlebxetqgtzxdpn\"}],\"nextLink\":\"qqwx\"}")
+            .toObject(AlertsResultInner.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -31,12 +31,8 @@ public interface IntegrationRuntimeNodeIpAddressOperationsClient {
      * @return the IP address of an integration runtime node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeNodeIpAddressInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
-        Context context);
+    Response<IntegrationRuntimeNodeIpAddressInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName, Context context);
 
     /**
      * Get integration runtime node IP address
@@ -53,6 +49,6 @@ public interface IntegrationRuntimeNodeIpAddressOperationsClient {
      * @return the IP address of an integration runtime node.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeNodeIpAddressInner get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName);
+    IntegrationRuntimeNodeIpAddressInner get(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName);
 }

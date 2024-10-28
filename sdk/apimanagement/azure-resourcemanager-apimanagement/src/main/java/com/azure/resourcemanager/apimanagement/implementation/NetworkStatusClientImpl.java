@@ -41,8 +41,8 @@ public final class NetworkStatusClientImpl implements NetworkStatusClient {
      * @param client the instance of the service client containing this operation class.
      */
     NetworkStatusClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy.create(NetworkStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(NetworkStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,34 +53,24 @@ public final class NetworkStatusClientImpl implements NetworkStatusClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientN")
     public interface NetworkStatusService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/networkstatus")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/networkstatus")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<List<NetworkStatusContractByLocationInner>>> listByService(
-            @HostParam("$host") String endpoint,
+        Mono<Response<List<NetworkStatusContractByLocationInner>>> listByService(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/locations/{locationName}/networkstatus")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/locations/{locationName}/networkstatus")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkStatusContractInner>> listByLocation(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NetworkStatusContractInner>> listByLocation(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("locationName") String locationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("locationName") String locationName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -96,19 +86,15 @@ public final class NetworkStatusClientImpl implements NetworkStatusClient {
      *     the Cloud Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<NetworkStatusContractByLocationInner>>> listByServiceWithResponseAsync(
-        String resourceGroupName, String serviceName) {
+    private Mono<Response<List<NetworkStatusContractByLocationInner>>>
+        listByServiceWithResponseAsync(String resourceGroupName, String serviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -119,17 +105,8 @@ public final class NetworkStatusClientImpl implements NetworkStatusClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByService(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listByService(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, serviceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -147,19 +124,15 @@ public final class NetworkStatusClientImpl implements NetworkStatusClient {
      *     the Cloud Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<NetworkStatusContractByLocationInner>>> listByServiceWithResponseAsync(
-        String resourceGroupName, String serviceName, Context context) {
+    private Mono<Response<List<NetworkStatusContractByLocationInner>>>
+        listByServiceWithResponseAsync(String resourceGroupName, String serviceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -170,15 +143,8 @@ public final class NetworkStatusClientImpl implements NetworkStatusClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByService(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listByService(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            serviceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -194,8 +160,8 @@ public final class NetworkStatusClientImpl implements NetworkStatusClient {
      *     the Cloud Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<NetworkStatusContractByLocationInner>> listByServiceAsync(
-        String resourceGroupName, String serviceName) {
+    private Mono<List<NetworkStatusContractByLocationInner>> listByServiceAsync(String resourceGroupName,
+        String serviceName) {
         return listByServiceWithResponseAsync(resourceGroupName, serviceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -214,8 +180,8 @@ public final class NetworkStatusClientImpl implements NetworkStatusClient {
      *     the Cloud Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<NetworkStatusContractByLocationInner>> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context) {
+    public Response<List<NetworkStatusContractByLocationInner>> listByServiceWithResponse(String resourceGroupName,
+        String serviceName, Context context) {
         return listByServiceWithResponseAsync(resourceGroupName, serviceName, context).block();
     }
 
@@ -251,19 +217,15 @@ public final class NetworkStatusClientImpl implements NetworkStatusClient {
      *     the Cloud Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkStatusContractInner>> listByLocationWithResponseAsync(
-        String resourceGroupName, String serviceName, String locationName) {
+    private Mono<Response<NetworkStatusContractInner>> listByLocationWithResponseAsync(String resourceGroupName,
+        String serviceName, String locationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -277,18 +239,8 @@ public final class NetworkStatusClientImpl implements NetworkStatusClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByLocation(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            locationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listByLocation(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, serviceName, locationName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -308,19 +260,15 @@ public final class NetworkStatusClientImpl implements NetworkStatusClient {
      *     the Cloud Service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkStatusContractInner>> listByLocationWithResponseAsync(
-        String resourceGroupName, String serviceName, String locationName, Context context) {
+    private Mono<Response<NetworkStatusContractInner>> listByLocationWithResponseAsync(String resourceGroupName,
+        String serviceName, String locationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -334,16 +282,8 @@ public final class NetworkStatusClientImpl implements NetworkStatusClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByLocation(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                locationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listByLocation(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            serviceName, locationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -361,8 +301,8 @@ public final class NetworkStatusClientImpl implements NetworkStatusClient {
      *     the Cloud Service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkStatusContractInner> listByLocationAsync(
-        String resourceGroupName, String serviceName, String locationName) {
+    private Mono<NetworkStatusContractInner> listByLocationAsync(String resourceGroupName, String serviceName,
+        String locationName) {
         return listByLocationWithResponseAsync(resourceGroupName, serviceName, locationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -383,8 +323,8 @@ public final class NetworkStatusClientImpl implements NetworkStatusClient {
      *     the Cloud Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkStatusContractInner> listByLocationWithResponse(
-        String resourceGroupName, String serviceName, String locationName, Context context) {
+    public Response<NetworkStatusContractInner> listByLocationWithResponse(String resourceGroupName, String serviceName,
+        String locationName, Context context) {
         return listByLocationWithResponseAsync(resourceGroupName, serviceName, locationName, context).block();
     }
 
@@ -403,8 +343,8 @@ public final class NetworkStatusClientImpl implements NetworkStatusClient {
      *     the Cloud Service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkStatusContractInner listByLocation(
-        String resourceGroupName, String serviceName, String locationName) {
+    public NetworkStatusContractInner listByLocation(String resourceGroupName, String serviceName,
+        String locationName) {
         return listByLocationWithResponse(resourceGroupName, serviceName, locationName, Context.NONE).getValue();
     }
 }

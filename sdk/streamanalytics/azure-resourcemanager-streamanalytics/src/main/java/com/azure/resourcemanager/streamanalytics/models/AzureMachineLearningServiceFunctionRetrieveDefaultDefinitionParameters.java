@@ -48,7 +48,8 @@ public final class AzureMachineLearningServiceFunctionRetrieveDefaultDefinitionP
      * @return the executeEndpoint value.
      */
     public String executeEndpoint() {
-        return this.innerBindingRetrievalProperties() == null ? null
+        return this.innerBindingRetrievalProperties() == null
+            ? null
             : this.innerBindingRetrievalProperties().executeEndpoint();
     }
 

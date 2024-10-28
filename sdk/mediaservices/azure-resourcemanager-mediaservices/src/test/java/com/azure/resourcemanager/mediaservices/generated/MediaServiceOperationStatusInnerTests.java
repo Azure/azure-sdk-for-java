@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MediaServiceOperationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MediaServiceOperationStatusInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"deyeamdphagalpbu\",\"id\":\"gipwhonowkg\",\"startTime\":\"2021-01-01T20:18:45Z\",\"endTime\":\"2021-11-21T08:10:20Z\",\"status\":\"kix\"}")
-                .toObject(MediaServiceOperationStatusInner.class);
+        MediaServiceOperationStatusInner model = BinaryData.fromString(
+            "{\"name\":\"deyeamdphagalpbu\",\"id\":\"gipwhonowkg\",\"startTime\":\"2021-01-01T20:18:45Z\",\"endTime\":\"2021-11-21T08:10:20Z\",\"status\":\"kix\"}")
+            .toObject(MediaServiceOperationStatusInner.class);
         Assertions.assertEquals("deyeamdphagalpbu", model.name());
         Assertions.assertEquals("gipwhonowkg", model.id());
         Assertions.assertEquals(OffsetDateTime.parse("2021-01-01T20:18:45Z"), model.startTime());
@@ -26,13 +24,11 @@ public final class MediaServiceOperationStatusInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MediaServiceOperationStatusInner model =
-            new MediaServiceOperationStatusInner()
-                .withName("deyeamdphagalpbu")
-                .withId("gipwhonowkg")
-                .withStartTime(OffsetDateTime.parse("2021-01-01T20:18:45Z"))
-                .withEndTime(OffsetDateTime.parse("2021-11-21T08:10:20Z"))
-                .withStatus("kix");
+        MediaServiceOperationStatusInner model = new MediaServiceOperationStatusInner().withName("deyeamdphagalpbu")
+            .withId("gipwhonowkg")
+            .withStartTime(OffsetDateTime.parse("2021-01-01T20:18:45Z"))
+            .withEndTime(OffsetDateTime.parse("2021-11-21T08:10:20Z"))
+            .withStatus("kix");
         model = BinaryData.fromObject(model).toObject(MediaServiceOperationStatusInner.class);
         Assertions.assertEquals("deyeamdphagalpbu", model.name());
         Assertions.assertEquals("gipwhonowkg", model.id());

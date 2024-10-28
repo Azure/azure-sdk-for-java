@@ -27,7 +27,8 @@ public final class MultiLanguageInput implements JsonSerializable<MultiLanguageI
     private String text;
 
     /*
-     * (Optional) This is the 2 letter ISO 639-1 representation of a language. For example, use "en" for English; "es" for Spanish etc. If not set, use "en" for English as default.
+     * (Optional) This is the 2 letter ISO 639-1 representation of a language. For example, use "en" for English; "es"
+     * for Spanish etc. If not set, use "en" for English as default.
      */
     private String language;
 

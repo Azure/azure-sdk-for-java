@@ -66,7 +66,6 @@ public class DAGErrorTests {
         PancakeImpl pancakeL = new PancakeImpl("L", 250);
         pancakeL.withInstantPancake(pancakeP);
 
-
         PancakeImpl pancakeB = new PancakeImpl("B", 4000, true); // Task B wait for 4000 ms then emit error
         pancakeB.withInstantPancake(pancakeA);
         PancakeImpl pancakeC = new PancakeImpl("C", 250);
@@ -108,7 +107,7 @@ public class DAGErrorTests {
 
         TaskGroup pancakeFtg = pancakeF.taskGroup();
         TaskGroup.InvocationContext context = pancakeFtg.newInvocationContext()
-                .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION);
+            .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION);
         IPancake rootPancake = pancakeFtg.invokeAsync(context).map(indexable -> {
             IPancake pancake = (IPancake) indexable;
             LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pancake.name());
@@ -179,7 +178,6 @@ public class DAGErrorTests {
         PastaImpl pastaL = new PastaImpl("L", 250);
         pastaL.withInstantPasta(pastaP);
 
-
         PastaImpl pastaB = new PastaImpl("B", 4000, true); // Task B wait for 4000 ms then emit error
         pastaB.withInstantPasta(pastaA);
         PastaImpl pastaC = new PastaImpl("C", 250);
@@ -226,7 +224,7 @@ public class DAGErrorTests {
 
         TaskGroup pastaFtg = pastaF.taskGroup();
         TaskGroup.InvocationContext context = pastaFtg.newInvocationContext()
-                .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_HITTING_LCA_TASK);
+            .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_HITTING_LCA_TASK);
 
         IPasta rootPasta = pastaFtg.invokeAsync(context).map(indexable -> {
             IPasta pasta = (IPasta) indexable;
@@ -295,7 +293,6 @@ public class DAGErrorTests {
         PancakeImpl pancakeL = new PancakeImpl("L", 250);
         pancakeL.withInstantPancake(pancakeP);
 
-
         PancakeImpl pancakeB = new PancakeImpl("B", 3500, true); // Task B wait for 3500 ms then emit error
         pancakeB.withInstantPancake(pancakeA);
         PancakeImpl pancakeC = new PancakeImpl("C", 250);
@@ -315,7 +312,6 @@ public class DAGErrorTests {
         pancakeF.withInstantPancake(pancakeD);
         pancakeF.withInstantPancake(pancakeE);
         pancakeF.withInstantPancake(pancakeH);
-
 
         pancakeA.withDelayedPancake(pancakeJ);
         pancakeA.withDelayedPancake(pancakeK);
@@ -341,7 +337,7 @@ public class DAGErrorTests {
 
         TaskGroup pancakeFtg = pancakeF.taskGroup();
         TaskGroup.InvocationContext context = pancakeFtg.newInvocationContext()
-                .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION);
+            .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION);
 
         IPancake rootPancake = pancakeFtg.invokeAsync(context).map(indexable -> {
             IPancake pancake = (IPancake) indexable;
@@ -410,7 +406,6 @@ public class DAGErrorTests {
         PancakeImpl pancakeL = new PancakeImpl("L", 250);
         pancakeL.withInstantPancake(pancakeP);
 
-
         PancakeImpl pancakeB = new PancakeImpl("B", 250);
         pancakeB.withInstantPancake(pancakeA);
         PancakeImpl pancakeC = new PancakeImpl("C", 250);
@@ -460,7 +455,7 @@ public class DAGErrorTests {
 
         TaskGroup pancakeFtg = pancakeF.taskGroup();
         TaskGroup.InvocationContext context = pancakeFtg.newInvocationContext()
-                .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION);
+            .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION);
         IPancake rootPancake = pancakeFtg.invokeAsync(context).map(indexable -> {
             IPancake pancake = (IPancake) indexable;
             seen.add(pancake.name());

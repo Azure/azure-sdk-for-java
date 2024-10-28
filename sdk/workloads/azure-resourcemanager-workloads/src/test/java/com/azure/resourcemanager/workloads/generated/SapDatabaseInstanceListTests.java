@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SapDatabaseInstanceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapDatabaseInstanceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"subnet\":\"hkaetcktvfc\",\"databaseSid\":\"fsnkymuctq\",\"databaseType\":\"fbebrjcxer\",\"ipAddress\":\"wutttxfvjrbi\",\"vmDetails\":[],\"status\":\"Running\",\"provisioningState\":\"Failed\"},\"location\":\"ahfn\",\"tags\":{\"j\":\"yq\",\"gvcl\":\"uujqgidokgjljyo\",\"jhtxfvgxbfsmxne\":\"bgsncghkjeszzhb\",\"rbmpukgri\":\"mpvecxgodebfqk\"},\"id\":\"flz\",\"name\":\"fbxzpuzycisp\",\"type\":\"qzahmgkbrp\"},{\"properties\":{\"subnet\":\"hibnuqqkpika\",\"databaseSid\":\"gvtqagnbuynh\",\"databaseType\":\"gg\",\"ipAddress\":\"bfs\",\"vmDetails\":[],\"status\":\"Running\",\"provisioningState\":\"Creating\"},\"location\":\"pnazzm\",\"tags\":{\"hrbnlankxmyskpbh\":\"unmpxttd\",\"yn\":\"nbtkcxywnytnr\"},\"id\":\"qidybyx\",\"name\":\"zfcl\",\"type\":\"aaxdbabphlwrq\"},{\"properties\":{\"subnet\":\"tsthsucocm\",\"databaseSid\":\"yazttbtwwrqpue\",\"databaseType\":\"kzywbiex\",\"ipAddress\":\"eyueaxibxujwb\",\"vmDetails\":[],\"status\":\"Starting\",\"provisioningState\":\"Updating\"},\"location\":\"oxaepd\",\"tags\":{\"bavxbniwdjswzt\":\"ancuxrhd\",\"xbzpfzab\":\"dbpgnxytxhp\"},\"id\":\"lcuhxwtctyqiklb\",\"name\":\"ovplw\",\"type\":\"bhvgy\"}],\"nextLink\":\"uosvmkfssxqukk\"}")
-                .toObject(SapDatabaseInstanceList.class);
+        SapDatabaseInstanceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"subnet\":\"hkaetcktvfc\",\"databaseSid\":\"fsnkymuctq\",\"databaseType\":\"fbebrjcxer\",\"ipAddress\":\"wutttxfvjrbi\",\"vmDetails\":[],\"status\":\"Running\",\"provisioningState\":\"Failed\"},\"location\":\"ahfn\",\"tags\":{\"j\":\"yq\",\"gvcl\":\"uujqgidokgjljyo\",\"jhtxfvgxbfsmxne\":\"bgsncghkjeszzhb\",\"rbmpukgri\":\"mpvecxgodebfqk\"},\"id\":\"flz\",\"name\":\"fbxzpuzycisp\",\"type\":\"qzahmgkbrp\"},{\"properties\":{\"subnet\":\"hibnuqqkpika\",\"databaseSid\":\"gvtqagnbuynh\",\"databaseType\":\"gg\",\"ipAddress\":\"bfs\",\"vmDetails\":[],\"status\":\"Running\",\"provisioningState\":\"Creating\"},\"location\":\"pnazzm\",\"tags\":{\"hrbnlankxmyskpbh\":\"unmpxttd\",\"yn\":\"nbtkcxywnytnr\"},\"id\":\"qidybyx\",\"name\":\"zfcl\",\"type\":\"aaxdbabphlwrq\"},{\"properties\":{\"subnet\":\"tsthsucocm\",\"databaseSid\":\"yazttbtwwrqpue\",\"databaseType\":\"kzywbiex\",\"ipAddress\":\"eyueaxibxujwb\",\"vmDetails\":[],\"status\":\"Starting\",\"provisioningState\":\"Updating\"},\"location\":\"oxaepd\",\"tags\":{\"bavxbniwdjswzt\":\"ancuxrhd\",\"xbzpfzab\":\"dbpgnxytxhp\"},\"id\":\"lcuhxwtctyqiklb\",\"name\":\"ovplw\",\"type\":\"bhvgy\"}],\"nextLink\":\"uosvmkfssxqukk\"}")
+            .toObject(SapDatabaseInstanceList.class);
         Assertions.assertEquals("ahfn", model.value().get(0).location());
         Assertions.assertEquals("yq", model.value().get(0).tags().get("j"));
         Assertions.assertEquals("uosvmkfssxqukk", model.nextLink());
@@ -27,30 +25,16 @@ public final class SapDatabaseInstanceListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapDatabaseInstanceList model =
-            new SapDatabaseInstanceList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SapDatabaseInstanceInner()
-                                .withLocation("ahfn")
-                                .withTags(
-                                    mapOf(
-                                        "j",
-                                        "yq",
-                                        "gvcl",
-                                        "uujqgidokgjljyo",
-                                        "jhtxfvgxbfsmxne",
-                                        "bgsncghkjeszzhb",
-                                        "rbmpukgri",
-                                        "mpvecxgodebfqk")),
-                            new SapDatabaseInstanceInner()
-                                .withLocation("pnazzm")
-                                .withTags(mapOf("hrbnlankxmyskpbh", "unmpxttd", "yn", "nbtkcxywnytnr")),
-                            new SapDatabaseInstanceInner()
-                                .withLocation("oxaepd")
-                                .withTags(mapOf("bavxbniwdjswzt", "ancuxrhd", "xbzpfzab", "dbpgnxytxhp"))))
-                .withNextLink("uosvmkfssxqukk");
+        SapDatabaseInstanceList model = new SapDatabaseInstanceList()
+            .withValue(Arrays.asList(
+                new SapDatabaseInstanceInner().withLocation("ahfn")
+                    .withTags(mapOf("j", "yq", "gvcl", "uujqgidokgjljyo", "jhtxfvgxbfsmxne", "bgsncghkjeszzhb",
+                        "rbmpukgri", "mpvecxgodebfqk")),
+                new SapDatabaseInstanceInner().withLocation("pnazzm")
+                    .withTags(mapOf("hrbnlankxmyskpbh", "unmpxttd", "yn", "nbtkcxywnytnr")),
+                new SapDatabaseInstanceInner().withLocation("oxaepd")
+                    .withTags(mapOf("bavxbniwdjswzt", "ancuxrhd", "xbzpfzab", "dbpgnxytxhp"))))
+            .withNextLink("uosvmkfssxqukk");
         model = BinaryData.fromObject(model).toObject(SapDatabaseInstanceList.class);
         Assertions.assertEquals("ahfn", model.value().get(0).location());
         Assertions.assertEquals("yq", model.value().get(0).tags().get("j"));

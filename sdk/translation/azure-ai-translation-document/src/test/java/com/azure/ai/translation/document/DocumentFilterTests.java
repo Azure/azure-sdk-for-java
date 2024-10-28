@@ -36,7 +36,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         try {
             PagedIterable<DocumentStatus> response = getDocumentTranslationClient()
-                    .getDocumentsStatus(translationStatus.getId(), null, null, null, succeededStatusList, null, null, null);
+                .getDocumentsStatus(translationStatus.getId(), null, null, null, succeededStatusList, null, null, null);
             for (DocumentStatus d : response) {
                 String status = d.getStatus().toString();
                 assertTrue(succeededStatusList.contains(status));
@@ -56,8 +56,8 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         TranslationStatus translationStatus = createSingleTranslationJob(2);
         List<String> testIds = new ArrayList<>();
         try {
-            PagedIterable<DocumentStatus> response = documentTranslationClient
-                    .getDocumentsStatus(translationStatus.getId());
+            PagedIterable<DocumentStatus> response
+                = documentTranslationClient.getDocumentsStatus(translationStatus.getId());
             for (DocumentStatus d : response) {
                 testIds.add(d.getId());
             }
@@ -68,7 +68,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         try {
             PagedIterable<DocumentStatus> response = getDocumentTranslationClient()
-                    .getDocumentsStatus(translationStatus.getId(), null, null, testIds, null, null, null, null);
+                .getDocumentsStatus(translationStatus.getId(), null, null, testIds, null, null, null, null);
             for (DocumentStatus d : response) {
                 String id = d.getId();
                 assertTrue(testIds.contains(id));
@@ -90,7 +90,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         try {
             PagedIterable<DocumentStatus> response = documentTranslationClient
-                    .getDocumentsStatus(translationStatus.getId(), null, null, null, null, null, null, orderBy);
+                .getDocumentsStatus(translationStatus.getId(), null, null, null, null, null, null, orderBy);
             for (DocumentStatus d : response) {
                 String createdDateTimeString = d.getCreatedDateTimeUtc().toString();
                 testCreatedOnDateTimes.add(createdDateTimeString);
@@ -102,8 +102,9 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         // Asserting that only the last document is returned
         try {
-            PagedIterable<DocumentStatus> response = documentTranslationClient
-                    .getDocumentsStatus(translationStatus.getId(), null, null, null, null, getDateTimeOffset(testCreatedOnDateTimes.get(4)), null, null);
+            PagedIterable<DocumentStatus> response
+                = documentTranslationClient.getDocumentsStatus(translationStatus.getId(), null, null, null, null,
+                    getDateTimeOffset(testCreatedOnDateTimes.get(4)), null, null);
             int itemCount = 0;
             for (DocumentStatus d : response) {
                 itemCount += 1;
@@ -116,8 +117,9 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         // Asserting that the last 3 docs are returned
         try {
-            PagedIterable<DocumentStatus> response = documentTranslationClient
-                    .getDocumentsStatus(translationStatus.getId(), null, null, null, null, getDateTimeOffset(testCreatedOnDateTimes.get(2)), null, null);
+            PagedIterable<DocumentStatus> response
+                = documentTranslationClient.getDocumentsStatus(translationStatus.getId(), null, null, null, null,
+                    getDateTimeOffset(testCreatedOnDateTimes.get(2)), null, null);
             int itemCount = 0;
             for (DocumentStatus d : response) {
                 itemCount += 1;
@@ -141,7 +143,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         try {
             PagedIterable<DocumentStatus> response = documentTranslationClient
-                    .getDocumentsStatus(translationStatus.getId(), null, null, null, null, null, null, orderBy);
+                .getDocumentsStatus(translationStatus.getId(), null, null, null, null, null, null, orderBy);
             for (DocumentStatus d : response) {
                 String createdDateTimeString = d.getCreatedDateTimeUtc().toString();
                 testCreatedOnDateTimes.add(createdDateTimeString);
@@ -153,8 +155,9 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         // Asserting that only the first document is returned
         try {
-            PagedIterable<DocumentStatus> response = documentTranslationClient
-                    .getDocumentsStatus(translationStatus.getId(), null, null, null, null, null, getDateTimeOffset(testCreatedOnDateTimes.get(0)), null);
+            PagedIterable<DocumentStatus> response
+                = documentTranslationClient.getDocumentsStatus(translationStatus.getId(), null, null, null, null, null,
+                    getDateTimeOffset(testCreatedOnDateTimes.get(0)), null);
             int itemCount = 0;
             for (DocumentStatus d : response) {
                 itemCount += 1;
@@ -167,8 +170,9 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         // Asserting that the first 4/5 docs are returned
         try {
-            PagedIterable<DocumentStatus> response = documentTranslationClient
-                    .getDocumentsStatus(translationStatus.getId(), null, null, null, null, null, getDateTimeOffset(testCreatedOnDateTimes.get(3)), null);
+            PagedIterable<DocumentStatus> response
+                = documentTranslationClient.getDocumentsStatus(translationStatus.getId(), null, null, null, null, null,
+                    getDateTimeOffset(testCreatedOnDateTimes.get(3)), null);
             int itemCount = 0;
             for (DocumentStatus d : response) {
                 itemCount += 1;
@@ -191,12 +195,12 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         try {
             PagedIterable<DocumentStatus> response = documentTranslationClient
-                    .getDocumentsStatus(translationStatus.getId(), null, null, null, null, null, null, orderBy);
+                .getDocumentsStatus(translationStatus.getId(), null, null, null, null, null, null, orderBy);
             LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
             for (DocumentStatus d : response) {
                 String createdDateTimeString = d.getCreatedDateTimeUtc().toString();
-                LocalDateTime createdDateTimeUtc = LocalDateTime.parse(createdDateTimeString,
-                        DateTimeFormatter.ISO_DATE_TIME);
+                LocalDateTime createdDateTimeUtc
+                    = LocalDateTime.parse(createdDateTimeString, DateTimeFormatter.ISO_DATE_TIME);
                 assertTrue(createdDateTimeUtc.compareTo(timestamp) < 0 || createdDateTimeUtc.compareTo(timestamp) == 0);
                 timestamp = createdDateTimeUtc;
             }
@@ -219,8 +223,8 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         targetInputs.add(targetInput);
         BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, Void> poller = setPlaybackSyncPollerPollInterval(documentTranslationClient
-            .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
         TranslationStatus translationStatus = poller.waitForCompletion().getValue();

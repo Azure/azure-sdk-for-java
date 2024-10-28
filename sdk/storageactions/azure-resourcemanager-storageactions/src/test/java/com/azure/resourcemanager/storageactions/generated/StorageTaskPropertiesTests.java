@@ -42,27 +42,34 @@ public final class StorageTaskPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageTaskProperties model = new StorageTaskProperties().withEnabled(true).withDescription("sntnbybkzgcw")
+        StorageTaskProperties model = new StorageTaskProperties().withEnabled(true)
+            .withDescription("sntnbybkzgcw")
             .withAction(new StorageTaskAction()
                 .withIfProperty(new IfCondition().withCondition("wclxxwrl")
                     .withOperations(Arrays.asList(
                         new StorageTaskOperation().withName(StorageTaskOperationName.UNDELETE_BLOB)
                             .withParameters(mapOf("dkwt", "kcqvkocrc", "ssainqpjwnzll", "hxbnjbiksqrg",
                                 "bvmgxsabkyqduuji", "fmppe"))
-                            .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK),
+                            .withOnSuccess(OnSuccess.CONTINUE)
+                            .withOnFailure(OnFailure.BREAK),
                         new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TIER)
                             .withParameters(mapOf("sbdkvwr", "vndhkrwpdapp", "tjelt", "jfeusnh"))
-                            .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK),
+                            .withOnSuccess(OnSuccess.CONTINUE)
+                            .withOnFailure(OnFailure.BREAK),
                         new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TIER)
-                            .withParameters(mapOf("tqxhocdgeab", "zzd")).withOnSuccess(OnSuccess.CONTINUE)
+                            .withParameters(mapOf("tqxhocdgeab", "zzd"))
+                            .withOnSuccess(OnSuccess.CONTINUE)
                             .withOnFailure(OnFailure.BREAK),
                         new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TIER)
                             .withParameters(mapOf("aozwyiftyhxhu", "ndv", "fkgiawxk", "okftyxolniwpwcuk", "dhsgcba",
                                 "ryplwckbasyypn", "dlikwyqkgfgibma", "phejkotynqgoulz"))
-                            .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK))))
-                .withElseProperty(new ElseCondition().withOperations(Arrays.asList(new StorageTaskOperation()
-                    .withName(StorageTaskOperationName.SET_BLOB_TIER).withParameters(mapOf("ouf", "bzqqedqytbciq"))
-                    .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK)))));
+                            .withOnSuccess(OnSuccess.CONTINUE)
+                            .withOnFailure(OnFailure.BREAK))))
+                .withElseProperty(new ElseCondition().withOperations(
+                    Arrays.asList(new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TIER)
+                        .withParameters(mapOf("ouf", "bzqqedqytbciq"))
+                        .withOnSuccess(OnSuccess.CONTINUE)
+                        .withOnFailure(OnFailure.BREAK)))));
         model = BinaryData.fromObject(model).toObject(StorageTaskProperties.class);
         Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals("sntnbybkzgcw", model.description());

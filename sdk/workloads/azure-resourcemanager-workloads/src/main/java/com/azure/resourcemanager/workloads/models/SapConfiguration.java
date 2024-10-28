@@ -19,8 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Discovery", value = DiscoveryConfiguration.class),
     @JsonSubTypes.Type(name = "Deployment", value = DeploymentConfiguration.class),
-    @JsonSubTypes.Type(name = "DeploymentWithOSConfig", value = DeploymentWithOSConfiguration.class)
-})
+    @JsonSubTypes.Type(name = "DeploymentWithOSConfig", value = DeploymentWithOSConfiguration.class) })
 @Immutable
 public class SapConfiguration {
     /** Creates an instance of SapConfiguration class. */

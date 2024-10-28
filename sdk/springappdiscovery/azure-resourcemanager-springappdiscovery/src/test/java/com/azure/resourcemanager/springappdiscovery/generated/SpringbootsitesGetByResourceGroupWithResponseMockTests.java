@@ -45,12 +45,14 @@ public final class SpringbootsitesGetByResourceGroupWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SpringAppDiscoveryManager manager = SpringAppDiscoveryManager.configure().withHttpClient(httpClient)
+        SpringAppDiscoveryManager manager = SpringAppDiscoveryManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SpringbootsitesModel response = manager.springbootsites()
-            .getByResourceGroupWithResponse("mexgstxgcp", "dg", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("mexgstxgcp", "dg", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("dkexxppofm", response.location());
         Assertions.assertEquals("c", response.tags().get("jpgd"));

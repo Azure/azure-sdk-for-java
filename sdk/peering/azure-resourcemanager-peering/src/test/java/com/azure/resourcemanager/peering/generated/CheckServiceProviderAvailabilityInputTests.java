@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckServiceProviderAvailabilityInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckServiceProviderAvailabilityInput model =
-            BinaryData
-                .fromString("{\"peeringServiceLocation\":\"symglzufcyz\",\"peeringServiceProvider\":\"hdbihan\"}")
-                .toObject(CheckServiceProviderAvailabilityInput.class);
+        CheckServiceProviderAvailabilityInput model = BinaryData
+            .fromString("{\"peeringServiceLocation\":\"symglzufcyz\",\"peeringServiceProvider\":\"hdbihan\"}")
+            .toObject(CheckServiceProviderAvailabilityInput.class);
         Assertions.assertEquals("symglzufcyz", model.peeringServiceLocation());
         Assertions.assertEquals("hdbihan", model.peeringServiceProvider());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckServiceProviderAvailabilityInput model =
-            new CheckServiceProviderAvailabilityInput()
-                .withPeeringServiceLocation("symglzufcyz")
+        CheckServiceProviderAvailabilityInput model
+            = new CheckServiceProviderAvailabilityInput().withPeeringServiceLocation("symglzufcyz")
                 .withPeeringServiceProvider("hdbihan");
         model = BinaryData.fromObject(model).toObject(CheckServiceProviderAvailabilityInput.class);
         Assertions.assertEquals("symglzufcyz", model.peeringServiceLocation());

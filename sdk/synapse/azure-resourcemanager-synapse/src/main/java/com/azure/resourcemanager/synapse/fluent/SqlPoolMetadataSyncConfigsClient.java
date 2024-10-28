@@ -27,8 +27,8 @@ public interface SqlPoolMetadataSyncConfigsClient {
      * @return the metadata sync configuration for a SQL pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MetadataSyncConfigInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    Response<MetadataSyncConfigInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context);
 
     /**
      * Get SQL pool metadata sync config
@@ -62,12 +62,8 @@ public interface SqlPoolMetadataSyncConfigsClient {
      * @return metadata sync configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MetadataSyncConfigInner> createWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        MetadataSyncConfigInner metadataSyncConfiguration,
-        Context context);
+    Response<MetadataSyncConfigInner> createWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, MetadataSyncConfigInner metadataSyncConfiguration, Context context);
 
     /**
      * Set SQL pool metadata sync config
@@ -84,9 +80,6 @@ public interface SqlPoolMetadataSyncConfigsClient {
      * @return metadata sync configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MetadataSyncConfigInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    MetadataSyncConfigInner create(String resourceGroupName, String workspaceName, String sqlPoolName,
         MetadataSyncConfigInner metadataSyncConfiguration);
 }

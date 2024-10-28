@@ -108,8 +108,8 @@ public final class LoadBalancerResourceSettings extends ResourceSettings {
      * @param frontendIpConfigurations the frontendIpConfigurations value to set.
      * @return the LoadBalancerResourceSettings object itself.
      */
-    public LoadBalancerResourceSettings withFrontendIpConfigurations(
-        List<LBFrontendIpConfigurationResourceSettings> frontendIpConfigurations) {
+    public LoadBalancerResourceSettings
+        withFrontendIpConfigurations(List<LBFrontendIpConfigurationResourceSettings> frontendIpConfigurations) {
         this.frontendIpConfigurations = frontendIpConfigurations;
         return this;
     }
@@ -129,8 +129,8 @@ public final class LoadBalancerResourceSettings extends ResourceSettings {
      * @param backendAddressPools the backendAddressPools value to set.
      * @return the LoadBalancerResourceSettings object itself.
      */
-    public LoadBalancerResourceSettings withBackendAddressPools(
-        List<LBBackendAddressPoolResourceSettings> backendAddressPools) {
+    public LoadBalancerResourceSettings
+        withBackendAddressPools(List<LBBackendAddressPoolResourceSettings> backendAddressPools) {
         this.backendAddressPools = backendAddressPools;
         return this;
     }

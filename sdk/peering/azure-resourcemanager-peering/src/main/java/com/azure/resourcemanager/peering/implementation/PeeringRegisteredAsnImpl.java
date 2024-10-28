@@ -64,24 +64,19 @@ public final class PeeringRegisteredAsnImpl
     }
 
     public PeeringRegisteredAsn create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegisteredAsns()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, peeringName, registeredAsnName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegisteredAsns()
+            .createOrUpdateWithResponse(resourceGroupName, peeringName, registeredAsnName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public PeeringRegisteredAsn create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegisteredAsns()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, peeringName, registeredAsnName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegisteredAsns()
+            .createOrUpdateWithResponse(resourceGroupName, peeringName, registeredAsnName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -96,53 +91,44 @@ public final class PeeringRegisteredAsnImpl
     }
 
     public PeeringRegisteredAsn apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegisteredAsns()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, peeringName, registeredAsnName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegisteredAsns()
+            .createOrUpdateWithResponse(resourceGroupName, peeringName, registeredAsnName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public PeeringRegisteredAsn apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegisteredAsns()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, peeringName, registeredAsnName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegisteredAsns()
+            .createOrUpdateWithResponse(resourceGroupName, peeringName, registeredAsnName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    PeeringRegisteredAsnImpl(
-        PeeringRegisteredAsnInner innerObject, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    PeeringRegisteredAsnImpl(PeeringRegisteredAsnInner innerObject,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.peeringName = Utils.getValueFromIdByName(innerObject.id(), "peerings");
-        this.registeredAsnName = Utils.getValueFromIdByName(innerObject.id(), "registeredAsns");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.peeringName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "peerings");
+        this.registeredAsnName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "registeredAsns");
     }
 
     public PeeringRegisteredAsn refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegisteredAsns()
-                .getWithResponse(resourceGroupName, peeringName, registeredAsnName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegisteredAsns()
+            .getWithResponse(resourceGroupName, peeringName, registeredAsnName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PeeringRegisteredAsn refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegisteredAsns()
-                .getWithResponse(resourceGroupName, peeringName, registeredAsnName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegisteredAsns()
+            .getWithResponse(resourceGroupName, peeringName, registeredAsnName, context)
+            .getValue();
         return this;
     }
 

@@ -12,11 +12,10 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkedServicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedServiceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"resourceId\":\"ibx\",\"writeAccessResourceId\":\"wbhqwal\",\"provisioningState\":\"Updating\"}")
-                .toObject(LinkedServiceProperties.class);
+        LinkedServiceProperties model = BinaryData
+            .fromString(
+                "{\"resourceId\":\"ibx\",\"writeAccessResourceId\":\"wbhqwal\",\"provisioningState\":\"Updating\"}")
+            .toObject(LinkedServiceProperties.class);
         Assertions.assertEquals("ibx", model.resourceId());
         Assertions.assertEquals("wbhqwal", model.writeAccessResourceId());
         Assertions.assertEquals(LinkedServiceEntityStatus.UPDATING, model.provisioningState());
@@ -24,11 +23,9 @@ public final class LinkedServicePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedServiceProperties model =
-            new LinkedServiceProperties()
-                .withResourceId("ibx")
-                .withWriteAccessResourceId("wbhqwal")
-                .withProvisioningState(LinkedServiceEntityStatus.UPDATING);
+        LinkedServiceProperties model = new LinkedServiceProperties().withResourceId("ibx")
+            .withWriteAccessResourceId("wbhqwal")
+            .withProvisioningState(LinkedServiceEntityStatus.UPDATING);
         model = BinaryData.fromObject(model).toObject(LinkedServiceProperties.class);
         Assertions.assertEquals("ibx", model.resourceId());
         Assertions.assertEquals("wbhqwal", model.writeAccessResourceId());

@@ -20,10 +20,8 @@ public interface AvailableProviders
     Map<String, AvailableProvidersListCountry> providersByCountry();
 
     /** The entirety of available providers parameters definition. */
-    interface Definition
-        extends DefinitionStages.WithExecuteAndCountry,
-            DefinitionStages.WithExecuteAndState,
-            DefinitionStages.WithExecuteAndCity {
+    interface Definition extends DefinitionStages.WithExecuteAndCountry, DefinitionStages.WithExecuteAndState,
+        DefinitionStages.WithExecuteAndCity {
     }
 
     /** Grouping of available providers parameters definition stages. */

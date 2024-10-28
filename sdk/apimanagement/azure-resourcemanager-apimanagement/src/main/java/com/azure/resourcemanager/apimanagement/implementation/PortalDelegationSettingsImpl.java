@@ -14,8 +14,7 @@ public final class PortalDelegationSettingsImpl implements PortalDelegationSetti
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    PortalDelegationSettingsImpl(
-        PortalDelegationSettingsInner innerObject,
+    PortalDelegationSettingsImpl(PortalDelegationSettingsInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

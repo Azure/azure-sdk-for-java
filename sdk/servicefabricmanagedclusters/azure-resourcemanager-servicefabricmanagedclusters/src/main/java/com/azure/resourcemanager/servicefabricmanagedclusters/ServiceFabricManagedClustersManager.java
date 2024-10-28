@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -24,36 +24,36 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicefabricmanagedclusters.fluent.ServiceFabricManagedClustersMgmtClient;
-import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ApplicationsImpl;
-import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ApplicationTypesImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ApplicationTypeVersionsImpl;
+import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ApplicationTypesImpl;
+import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ApplicationsImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ManagedApplyMaintenanceWindowsImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ManagedAzResiliencyStatusesImpl;
-import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ManagedClustersImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ManagedClusterVersionsImpl;
+import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ManagedClustersImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ManagedMaintenanceWindowStatusesImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ManagedUnsupportedVMSizesImpl;
-import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.NodeTypesImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.NodeTypeSkusImpl;
+import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.NodeTypesImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.OperationResultsImpl;
-import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.OperationsImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.OperationStatusImpl;
+import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.OperationsImpl;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ServiceFabricManagedClustersMgmtClientBuilder;
 import com.azure.resourcemanager.servicefabricmanagedclusters.implementation.ServicesImpl;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.Applications;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationTypes;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationTypeVersions;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ApplicationTypes;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.Applications;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedApplyMaintenanceWindows;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedAzResiliencyStatuses;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedClusters;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedClusterVersions;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedClusters;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedMaintenanceWindowStatuses;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedUnsupportedVMSizes;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypes;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeSkus;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypes;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.OperationResults;
-import com.azure.resourcemanager.servicefabricmanagedclusters.models.Operations;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.OperationStatus;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.Operations;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.Services;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -263,7 +263,7 @@ public final class ServiceFabricManagedClustersManager {
                 .append("-")
                 .append("com.azure.resourcemanager.servicefabricmanagedclusters")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))

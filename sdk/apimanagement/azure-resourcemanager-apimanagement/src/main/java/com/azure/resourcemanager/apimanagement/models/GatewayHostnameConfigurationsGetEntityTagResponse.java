@@ -20,12 +20,8 @@ public final class GatewayHostnameConfigurationsGetEntityTagResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public GatewayHostnameConfigurationsGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
-        GatewayHostnameConfigurationsGetEntityTagHeaders headers) {
+    public GatewayHostnameConfigurationsGetEntityTagResponse(HttpRequest request, int statusCode,
+        HttpHeaders rawHeaders, Void value, GatewayHostnameConfigurationsGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

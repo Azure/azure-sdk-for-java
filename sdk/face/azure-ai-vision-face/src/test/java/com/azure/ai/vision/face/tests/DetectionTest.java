@@ -34,16 +34,15 @@ public class DetectionTest extends FaceClientTestBase {
 
     @ParameterizedTest
     @MethodSource("getDataFortTestDetectFaceReturnFaceIdAndReturnRecognitionModel")
-    public void testDetectFaceReturnFaceIdAndReturnRecognitionModel(
-            String httpClientName, FaceServiceVersion serviceVersion, Supplier<DetectSyncFunction> detectionFunctionSupplier,
-            boolean returnFaceId, boolean returnRecognitionModel) {
+    public void testDetectFaceReturnFaceIdAndReturnRecognitionModel(String httpClientName,
+        FaceServiceVersion serviceVersion, Supplier<DetectSyncFunction> detectionFunctionSupplier, boolean returnFaceId,
+        boolean returnRecognitionModel) {
 
         DetectSyncFunction detectionFunction = detectionFunctionSupplier.get();
 
         FaceRecognitionModel recognitionModel = FaceRecognitionModel.RECOGNITION_04;
-        List<FaceDetectionResult> detectResults = detectionFunction.execute(
-                FaceDetectionModel.DETECTION_03, recognitionModel, returnFaceId, null,
-                null, returnRecognitionModel, null);
+        List<FaceDetectionResult> detectResults = detectionFunction.execute(FaceDetectionModel.DETECTION_03,
+            recognitionModel, returnFaceId, null, null, returnRecognitionModel, null);
 
         Assertions.assertNotNull(detectResults);
 
@@ -57,12 +56,12 @@ public class DetectionTest extends FaceClientTestBase {
     }
 
     private Stream<Arguments> getDataFortTestDetectFaceReturnFaceIdAndReturnRecognitionModel() {
-        Boolean[] booleanArray = {false, true};
-        DetectionFunctionProvider[] providers = DetectionFunctionProvider.getFunctionProviders(
-                Resources.TEST_IMAGE_PATH_FAMILY1_DAD1, Resources.TEST_IMAGE_URL_DETECT_SAMPLE);
+        Boolean[] booleanArray = { false, true };
+        DetectionFunctionProvider[] providers = DetectionFunctionProvider
+            .getFunctionProviders(Resources.TEST_IMAGE_PATH_FAMILY1_DAD1, Resources.TEST_IMAGE_URL_DETECT_SAMPLE);
 
-        Stream<Tuple3<String, FaceServiceVersion, Supplier<DetectSyncFunction>>> clientArumentStream =
-                createClientArgumentStream(FaceClient.class, FaceAsyncClient.class, providers);
+        Stream<Tuple3<String, FaceServiceVersion, Supplier<DetectSyncFunction>>> clientArumentStream
+            = createClientArgumentStream(FaceClient.class, FaceAsyncClient.class, providers);
 
         return TestUtils.createCombinationWithClientArguments(clientArumentStream, booleanArray, booleanArray);
     }

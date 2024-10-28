@@ -52,13 +52,6 @@ public interface OperationsClient {
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TagResourceContractInner> listByTags(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean includeNotTaggedOperations,
-        Context context);
+    PagedIterable<TagResourceContractInner> listByTags(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Boolean includeNotTaggedOperations, Context context);
 }

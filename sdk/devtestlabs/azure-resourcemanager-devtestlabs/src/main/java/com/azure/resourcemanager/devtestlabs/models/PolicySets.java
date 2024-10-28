@@ -22,12 +22,8 @@ public interface PolicySets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body for evaluating a policy set along with {@link Response}.
      */
-    Response<EvaluatePoliciesResponse> evaluatePoliciesWithResponse(
-        String resourceGroupName,
-        String labName,
-        String name,
-        EvaluatePoliciesRequest evaluatePoliciesRequest,
-        Context context);
+    Response<EvaluatePoliciesResponse> evaluatePoliciesWithResponse(String resourceGroupName, String labName,
+        String name, EvaluatePoliciesRequest evaluatePoliciesRequest, Context context);
 
     /**
      * Evaluates lab policy.
@@ -41,6 +37,6 @@ public interface PolicySets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body for evaluating a policy set.
      */
-    EvaluatePoliciesResponse evaluatePolicies(
-        String resourceGroupName, String labName, String name, EvaluatePoliciesRequest evaluatePoliciesRequest);
+    EvaluatePoliciesResponse evaluatePolicies(String resourceGroupName, String labName, String name,
+        EvaluatePoliciesRequest evaluatePoliciesRequest);
 }

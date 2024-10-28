@@ -34,48 +34,34 @@ public final class ResourceProvidersSapDiskConfigurationsWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"volumeConfigurations\":{\"rbe\":{\"supportedConfigurations\":[]},\"o\":{\"supportedConfigurations\":[]},\"fkmr\":{\"supportedConfigurations\":[]}}}";
+        String responseStr
+            = "{\"volumeConfigurations\":{\"rbe\":{\"supportedConfigurations\":[]},\"o\":{\"supportedConfigurations\":[]},\"fkmr\":{\"supportedConfigurations\":[]}}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        WorkloadsManager manager =
-            WorkloadsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        WorkloadsManager manager = WorkloadsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SapDiskConfigurationsResult response =
-            manager
-                .resourceProviders()
-                .sapDiskConfigurationsWithResponse(
-                    "aryeu",
-                    new SapDiskConfigurationsRequest()
-                        .withAppLocation("yjkqabqgzslesjcb")
-                        .withEnvironment(SapEnvironmentType.PROD)
-                        .withSapProduct(SapProductType.S4HANA)
-                        .withDatabaseType(SapDatabaseType.HANA)
-                        .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
-                        .withDbVmSku("tiewdj"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        SapDiskConfigurationsResult response = manager.resourceProviders()
+            .sapDiskConfigurationsWithResponse("aryeu",
+                new SapDiskConfigurationsRequest().withAppLocation("yjkqabqgzslesjcb")
+                    .withEnvironment(SapEnvironmentType.PROD)
+                    .withSapProduct(SapProductType.S4HANA)
+                    .withDatabaseType(SapDatabaseType.HANA)
+                    .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
+                    .withDbVmSku("tiewdj"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
     }
 }

@@ -253,24 +253,24 @@ public final class AuthorizationServerContractProperties extends AuthorizationSe
 
     /** {@inheritDoc} */
     @Override
-    public AuthorizationServerContractProperties withAuthorizationMethods(
-        List<AuthorizationMethod> authorizationMethods) {
+    public AuthorizationServerContractProperties
+        withAuthorizationMethods(List<AuthorizationMethod> authorizationMethods) {
         super.withAuthorizationMethods(authorizationMethods);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AuthorizationServerContractProperties withClientAuthenticationMethod(
-        List<ClientAuthenticationMethod> clientAuthenticationMethod) {
+    public AuthorizationServerContractProperties
+        withClientAuthenticationMethod(List<ClientAuthenticationMethod> clientAuthenticationMethod) {
         super.withClientAuthenticationMethod(clientAuthenticationMethod);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AuthorizationServerContractProperties withTokenBodyParameters(
-        List<TokenBodyParameterContract> tokenBodyParameters) {
+    public AuthorizationServerContractProperties
+        withTokenBodyParameters(List<TokenBodyParameterContract> tokenBodyParameters) {
         super.withTokenBodyParameters(tokenBodyParameters);
         return this;
     }
@@ -298,8 +298,8 @@ public final class AuthorizationServerContractProperties extends AuthorizationSe
 
     /** {@inheritDoc} */
     @Override
-    public AuthorizationServerContractProperties withBearerTokenSendingMethods(
-        List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
+    public AuthorizationServerContractProperties
+        withBearerTokenSendingMethods(List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
         super.withBearerTokenSendingMethods(bearerTokenSendingMethods);
         return this;
     }
@@ -327,36 +327,25 @@ public final class AuthorizationServerContractProperties extends AuthorizationSe
     public void validate() {
         super.validate();
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model AuthorizationServerContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property displayName in model AuthorizationServerContractProperties"));
         }
         if (clientRegistrationEndpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientRegistrationEndpoint in model"
-                            + " AuthorizationServerContractProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property clientRegistrationEndpoint in model"
+                    + " AuthorizationServerContractProperties"));
         }
         if (authorizationEndpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property authorizationEndpoint in model"
-                            + " AuthorizationServerContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property authorizationEndpoint in model" + " AuthorizationServerContractProperties"));
         }
         if (grantTypes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property grantTypes in model AuthorizationServerContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property grantTypes in model AuthorizationServerContractProperties"));
         }
         if (clientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientId in model AuthorizationServerContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property clientId in model AuthorizationServerContractProperties"));
         }
     }
 

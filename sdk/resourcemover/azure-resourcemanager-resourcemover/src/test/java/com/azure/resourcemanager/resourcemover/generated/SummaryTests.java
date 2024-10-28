@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Summary model =
-            BinaryData.fromString("{\"count\":1873646059,\"item\":\"njeaseipheofloke\"}").toObject(Summary.class);
+        Summary model
+            = BinaryData.fromString("{\"count\":1873646059,\"item\":\"njeaseipheofloke\"}").toObject(Summary.class);
         Assertions.assertEquals(1873646059, model.count());
         Assertions.assertEquals("njeaseipheofloke", model.item());
     }

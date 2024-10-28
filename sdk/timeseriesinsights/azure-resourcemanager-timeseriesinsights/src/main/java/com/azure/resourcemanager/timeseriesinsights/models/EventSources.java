@@ -23,12 +23,8 @@ public interface EventSources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment receives data from one or more event sources along with {@link Response}.
      */
-    Response<EventSourceResource> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceCreateOrUpdateParameters parameters,
-        Context context);
+    Response<EventSourceResource> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
+        String eventSourceName, EventSourceCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Create or update an event source under the specified environment.
@@ -43,10 +39,7 @@ public interface EventSources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment receives data from one or more event sources.
      */
-    EventSourceResource createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
+    EventSourceResource createOrUpdate(String resourceGroupName, String environmentName, String eventSourceName,
         EventSourceCreateOrUpdateParameters parameters);
 
     /**
@@ -63,8 +56,8 @@ public interface EventSources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the event source with the specified name in the specified environment along with {@link Response}.
      */
-    Response<EventSourceResource> getWithResponse(
-        String resourceGroupName, String environmentName, String eventSourceName, Context context);
+    Response<EventSourceResource> getWithResponse(String resourceGroupName, String environmentName,
+        String eventSourceName, Context context);
 
     /**
      * Gets the event source with the specified name in the specified environment.
@@ -96,12 +89,8 @@ public interface EventSources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment receives data from one or more event sources along with {@link Response}.
      */
-    Response<EventSourceResource> updateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceUpdateParameters eventSourceUpdateParameters,
-        Context context);
+    Response<EventSourceResource> updateWithResponse(String resourceGroupName, String environmentName,
+        String eventSourceName, EventSourceUpdateParameters eventSourceUpdateParameters, Context context);
 
     /**
      * Updates the event source with the specified name in the specified subscription, resource group, and environment.
@@ -117,10 +106,7 @@ public interface EventSources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment receives data from one or more event sources.
      */
-    EventSourceResource update(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
+    EventSourceResource update(String resourceGroupName, String environmentName, String eventSourceName,
         EventSourceUpdateParameters eventSourceUpdateParameters);
 
     /**
@@ -137,8 +123,8 @@ public interface EventSources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String eventSourceName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String eventSourceName,
+        Context context);
 
     /**
      * Deletes the event source with the specified name in the specified subscription, resource group, and environment.
@@ -167,8 +153,8 @@ public interface EventSources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List EventSources operation along with {@link Response}.
      */
-    Response<EventSourceListResponse> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context);
+    Response<EventSourceListResponse> listByEnvironmentWithResponse(String resourceGroupName, String environmentName,
+        Context context);
 
     /**
      * Lists all the available event sources associated with the subscription and within the specified resource group

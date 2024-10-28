@@ -31,37 +31,27 @@ public final class LibrariesOperationsListByWorkspaceMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"name\":\"ptvcs\",\"path\":\"kutzct\",\"containerName\":\"qgdirda\",\"uploadedTimestamp\":\"2021-05-15T11:21:30Z\",\"type\":\"jgcf\",\"provisioningStatus\":\"xtbw\",\"creatorId\":\"irmu\"},\"etag\":\"gftt\",\"id\":\"dofgeoagfuoftnx\",\"name\":\"dwxmda\",\"type\":\"wiygmgsevmdmzenl\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"name\":\"ptvcs\",\"path\":\"kutzct\",\"containerName\":\"qgdirda\",\"uploadedTimestamp\":\"2021-05-15T11:21:30Z\",\"type\":\"jgcf\",\"provisioningStatus\":\"xtbw\",\"creatorId\":\"irmu\"},\"etag\":\"gftt\",\"id\":\"dofgeoagfuoftnx\",\"name\":\"dwxmda\",\"type\":\"wiygmgsevmdmzenl\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<LibraryResource> response =
-            manager.librariesOperations().listByWorkspace("d", "fa", com.azure.core.util.Context.NONE);
+        PagedIterable<LibraryResource> response
+            = manager.librariesOperations().listByWorkspace("d", "fa", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("ptvcs", response.iterator().next().namePropertiesName());
         Assertions.assertEquals("kutzct", response.iterator().next().path());

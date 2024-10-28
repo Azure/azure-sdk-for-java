@@ -80,24 +80,20 @@ public final class CertificateContractImpl
     }
 
     public CertificateContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, certificateId, createParameters, createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificates()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, certificateId, createParameters, createIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public CertificateContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, certificateId, createParameters, createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificates()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, certificateId, createParameters, createIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
@@ -116,29 +112,24 @@ public final class CertificateContractImpl
     }
 
     public CertificateContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, certificateId, updateParameters, updateIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificates()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, certificateId, updateParameters, updateIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public CertificateContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, certificateId, updateParameters, updateIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificates()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, certificateId, updateParameters, updateIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
-    CertificateContractImpl(
-        CertificateContractInner innerObject,
+    CertificateContractImpl(CertificateContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -148,28 +139,23 @@ public final class CertificateContractImpl
     }
 
     public CertificateContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .getWithResponse(resourceGroupName, serviceName, certificateId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificates()
+            .getWithResponse(resourceGroupName, serviceName, certificateId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CertificateContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCertificates()
-                .getWithResponse(resourceGroupName, serviceName, certificateId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCertificates()
+            .getWithResponse(resourceGroupName, serviceName, certificateId, context)
+            .getValue();
         return this;
     }
 
     public Response<CertificateContract> refreshSecretWithResponse(Context context) {
-        return serviceManager
-            .certificates()
+        return serviceManager.certificates()
             .refreshSecretWithResponse(resourceGroupName, serviceName, certificateId, context);
     }
 

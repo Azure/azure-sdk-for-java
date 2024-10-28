@@ -17,7 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class RoomsBuilderTests {
     static final String MOCK_URL = "https://REDACTED.communication.azure.com";
     static final String MOCK_ACCESS_KEY = "P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e";
-    static final String MOCK_CONNECTION_STRING = "endpoint=https://REDACTED.communication.azure.com/;accesskey=P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e";
+    static final String MOCK_CONNECTION_STRING
+        = "endpoint=https://REDACTED.communication.azure.com/;accesskey=P2tP5RwZVFcJa3sfJvHEmGaKbemSAw2e";
 
     static class NoOpHttpClient implements HttpClient {
         @Override
@@ -29,8 +30,7 @@ public class RoomsBuilderTests {
     private final RoomsClientBuilder builder = new RoomsClientBuilder();
 
     @Test
-    public void missingTokenCredentialTest()
-            throws NullPointerException {
+    public void missingTokenCredentialTest() throws NullPointerException {
         builder.endpoint(MOCK_URL).httpClient(new NoOpHttpClient());
         assertThrows(Exception.class, builder::buildAsyncClient);
     }
@@ -43,33 +43,44 @@ public class RoomsBuilderTests {
 
     @Test
     public void nullPipelineTest() {
-        assertThrows(NullPointerException.class, () -> builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).pipeline(null));
+        assertThrows(NullPointerException.class,
+            () -> builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).pipeline(null));
     }
 
     @Test
     public void nullCustomPolicyTest() {
-        assertThrows(NullPointerException.class, () -> builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).addPolicy(null));
+        assertThrows(NullPointerException.class,
+            () -> builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).addPolicy(null));
     }
 
     @Test
     public void nullConfigurationTest() {
-        assertThrows(NullPointerException.class, () -> builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).configuration(null));
+        assertThrows(NullPointerException.class,
+            () -> builder.connectionString(MOCK_CONNECTION_STRING)
+                .httpClient(new NoOpHttpClient())
+                .configuration(null));
     }
 
     @Test
     public void nullHttpLogOptionsTest() {
-        assertThrows(NullPointerException.class, () -> builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).httpLogOptions(null));
+        assertThrows(NullPointerException.class,
+            () -> builder.connectionString(MOCK_CONNECTION_STRING)
+                .httpClient(new NoOpHttpClient())
+                .httpLogOptions(null));
     }
 
     @Test
     public void nullRetryPolicyTest() {
-        assertThrows(NullPointerException.class, () -> builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).retryPolicy(null));
+        assertThrows(NullPointerException.class,
+            () -> builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient()).retryPolicy(null));
     }
 
     @Test
     public void buildPiplineForClient() {
-        RoomsAsyncClient roomsClient = builder.connectionString(MOCK_CONNECTION_STRING).httpClient(new NoOpHttpClient())
-                .pipeline(new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).build()).buildAsyncClient();
+        RoomsAsyncClient roomsClient = builder.connectionString(MOCK_CONNECTION_STRING)
+            .httpClient(new NoOpHttpClient())
+            .pipeline(new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).build())
+            .buildAsyncClient();
         assertNotNull(roomsClient);
     }
 }

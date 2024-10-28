@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Test;
 public final class QuotaResourceInnerTests {
     @Test
     public void testDeserialize() throws Exception {
-        QuotaResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"limit\":143848779,\"usage\":519347031,\"provisioningState\":\"Canceled\"},\"id\":\"jgrtfwvukxga\",\"name\":\"dcc\",\"type\":\"nhsjcnyej\"}")
-                .toObject(QuotaResourceInner.class);
+        QuotaResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"limit\":143848779,\"usage\":519347031,\"provisioningState\":\"Canceled\"},\"id\":\"jgrtfwvukxga\",\"name\":\"dcc\",\"type\":\"nhsjcnyej\"}")
+            .toObject(QuotaResourceInner.class);
         Assertions.assertEquals(143848779, model.limit());
         Assertions.assertEquals(519347031, model.usage());
     }

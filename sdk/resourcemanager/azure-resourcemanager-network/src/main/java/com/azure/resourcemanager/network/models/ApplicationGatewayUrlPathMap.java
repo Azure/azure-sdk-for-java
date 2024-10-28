@@ -159,12 +159,9 @@ public interface ApplicationGatewayUrlPathMap
      * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this
      *     definition
      */
-    interface Definition<ReturnT>
-        extends DefinitionStages.Blank<ReturnT>,
-            DefinitionStages.WithBackendHttpConfiguration<ReturnT>,
-            DefinitionStages.WithBackend<ReturnT>,
-            DefinitionStages.WithPathRule<ReturnT>,
-            DefinitionStages.WithAttach<ReturnT> {
+    interface Definition<ReturnT> extends DefinitionStages.Blank<ReturnT>,
+        DefinitionStages.WithBackendHttpConfiguration<ReturnT>, DefinitionStages.WithBackend<ReturnT>,
+        DefinitionStages.WithPathRule<ReturnT>, DefinitionStages.WithAttach<ReturnT> {
     }
 
     /** The entirety of an application gateway URL path map update as part of an application gateway update. */
@@ -371,11 +368,9 @@ public interface ApplicationGatewayUrlPathMap
      *     definition
      */
     interface UpdateDefinition<ReturnT>
-        extends UpdateDefinitionStages.Blank<ReturnT>,
-            UpdateDefinitionStages.WithBackendOrAddress<ReturnT>,
-            UpdateDefinitionStages.WithBackendHttpConfiguration<ReturnT>,
-            UpdateDefinitionStages.WithBackendAddressOrPath<ReturnT>,
-            UpdateDefinitionStages.WithPathRule<ReturnT>,
-            UpdateDefinitionStages.WithAttach<ReturnT> {
+        extends UpdateDefinitionStages.Blank<ReturnT>, UpdateDefinitionStages.WithBackendOrAddress<ReturnT>,
+        UpdateDefinitionStages.WithBackendHttpConfiguration<ReturnT>,
+        UpdateDefinitionStages.WithBackendAddressOrPath<ReturnT>, UpdateDefinitionStages.WithPathRule<ReturnT>,
+        UpdateDefinitionStages.WithAttach<ReturnT> {
     }
 }

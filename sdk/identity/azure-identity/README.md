@@ -154,12 +154,10 @@ See more about how to configure your IntelliJ IDEA in [Sign in Azure Toolkit for
 
 ```java
 /**
- * DefaultAzureCredential uses the KeePass database path to find the user account in IntelliJ on Windows.
+ * DefaultAzureCredential uses the signed-in user from Azure Toolkit for Java.
  */
 public void createDefaultAzureCredentialForIntelliJ() {
     DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder()
-        // KeePass configuration required only for Windows. No configuration needed for Linux / Mac
-        .intelliJKeePassDatabasePath("C:\\Users\\user\\AppData\\Roaming\\JetBrains\\IdeaIC2020.1\\c.kdbx")
         .build();
 
     // Azure SDK client builders accept the credential as a parameter

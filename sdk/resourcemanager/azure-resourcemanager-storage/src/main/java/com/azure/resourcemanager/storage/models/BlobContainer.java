@@ -62,12 +62,8 @@ public interface BlobContainer
     String type();
 
     /** The entirety of the BlobContainer definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithBlobService,
-            DefinitionStages.WithPublicAccess,
-            DefinitionStages.WithMetadata,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithBlobService,
+        DefinitionStages.WithPublicAccess, DefinitionStages.WithMetadata, DefinitionStages.WithCreate {
     }
 
     /** Grouping of BlobContainer definition stages. */

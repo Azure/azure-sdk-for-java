@@ -224,16 +224,12 @@ public final class SubscriptionCreateParameterProperties {
      */
     public void validate() {
         if (scope() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property scope in model SubscriptionCreateParameterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property scope in model SubscriptionCreateParameterProperties"));
         }
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model SubscriptionCreateParameterProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property displayName in model SubscriptionCreateParameterProperties"));
         }
     }
 

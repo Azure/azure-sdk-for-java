@@ -21,6 +21,7 @@ import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeNat
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.NodeTypeSku;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.SecurityType;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VaultSecretGroup;
+import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmApplication;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmImagePlan;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmManagedIdentity;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.VmSetupAction;
@@ -46,14 +47,9 @@ public final class NodeTypeInner extends ManagedProxyResource {
     private NodeTypeSku sku;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Metadata pertaining to creation and last modification of the resource.
      */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -61,9 +57,14 @@ public final class NodeTypeInner extends ManagedProxyResource {
     private String type;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * The name of the resource.
      */
-    private SystemData systemData;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of NodeTypeInner class.
@@ -101,23 +102,13 @@ public final class NodeTypeInner extends ManagedProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      * 
-     * @return the id value.
+     * @return the systemData value.
      */
     @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -131,13 +122,23 @@ public final class NodeTypeInner extends ManagedProxyResource {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Get the name property: The name of the resource.
      * 
-     * @return the systemData value.
+     * @return the name value.
      */
     @Override
-    public SystemData systemData() {
-        return this.systemData;
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -1366,13 +1367,37 @@ public final class NodeTypeInner extends ManagedProxyResource {
     }
 
     /**
+     * Get the vmApplications property: Specifies the gallery applications that should be made available to the
+     * underlying VMSS.
+     * 
+     * @return the vmApplications value.
+     */
+    public List<VmApplication> vmApplications() {
+        return this.innerProperties() == null ? null : this.innerProperties().vmApplications();
+    }
+
+    /**
+     * Set the vmApplications property: Specifies the gallery applications that should be made available to the
+     * underlying VMSS.
+     * 
+     * @param vmApplications the vmApplications value to set.
+     * @return the NodeTypeInner object itself.
+     */
+    public NodeTypeInner withVmApplications(List<VmApplication> vmApplications) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NodeTypeProperties();
+        }
+        this.innerProperties().withVmApplications(vmApplications);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

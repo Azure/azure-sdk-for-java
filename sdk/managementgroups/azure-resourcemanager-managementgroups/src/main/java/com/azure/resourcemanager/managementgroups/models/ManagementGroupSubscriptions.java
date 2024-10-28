@@ -8,27 +8,29 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ManagementGroupSubscriptions. */
+/**
+ * Resource collection API of ManagementGroupSubscriptions.
+ */
 public interface ManagementGroupSubscriptions {
     /**
      * Associates existing subscription with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of subscription under management group along with {@link Response}.
      */
-    Response<SubscriptionUnderManagementGroup> createWithResponse(
-        String groupId, String subscriptionId, String cacheControl, Context context);
+    Response<SubscriptionUnderManagementGroup> createWithResponse(String groupId, String subscriptionId,
+        String cacheControl, Context context);
 
     /**
      * Associates existing subscription with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -40,11 +42,11 @@ public interface ManagementGroupSubscriptions {
 
     /**
      * De-associates subscription from the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -55,7 +57,7 @@ public interface ManagementGroupSubscriptions {
 
     /**
      * De-associates subscription from the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,23 +68,23 @@ public interface ManagementGroupSubscriptions {
 
     /**
      * Retrieves details about given subscription which is associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of subscription under management group along with {@link Response}.
      */
-    Response<SubscriptionUnderManagementGroup> getSubscriptionWithResponse(
-        String groupId, String subscriptionId, String cacheControl, Context context);
+    Response<SubscriptionUnderManagementGroup> getSubscriptionWithResponse(String groupId, String subscriptionId,
+        String cacheControl, Context context);
 
     /**
      * Retrieves details about given subscription which is associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -94,7 +96,7 @@ public interface ManagementGroupSubscriptions {
 
     /**
      * Retrieves details about all subscriptions which are associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -105,17 +107,17 @@ public interface ManagementGroupSubscriptions {
 
     /**
      * Retrieves details about all subscriptions which are associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of all subscriptions under management group as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SubscriptionUnderManagementGroup> getSubscriptionsUnderManagementGroup(
-        String groupId, String skiptoken, Context context);
+    PagedIterable<SubscriptionUnderManagementGroup> getSubscriptionsUnderManagementGroup(String groupId,
+        String skiptoken, Context context);
 }

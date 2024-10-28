@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ImportRoutePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImportRoutePolicy model =
-            BinaryData
-                .fromString("{\"importIpv4RoutePolicyId\":\"haxd\",\"importIpv6RoutePolicyId\":\"zaehpphthd\"}")
+        ImportRoutePolicy model
+            = BinaryData.fromString("{\"importIpv4RoutePolicyId\":\"haxd\",\"importIpv6RoutePolicyId\":\"zaehpphthd\"}")
                 .toObject(ImportRoutePolicy.class);
         Assertions.assertEquals("haxd", model.importIpv4RoutePolicyId());
         Assertions.assertEquals("zaehpphthd", model.importIpv6RoutePolicyId());
@@ -21,8 +20,8 @@ public final class ImportRoutePolicyTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImportRoutePolicy model =
-            new ImportRoutePolicy().withImportIpv4RoutePolicyId("haxd").withImportIpv6RoutePolicyId("zaehpphthd");
+        ImportRoutePolicy model
+            = new ImportRoutePolicy().withImportIpv4RoutePolicyId("haxd").withImportIpv6RoutePolicyId("zaehpphthd");
         model = BinaryData.fromObject(model).toObject(ImportRoutePolicy.class);
         Assertions.assertEquals("haxd", model.importIpv4RoutePolicyId());
         Assertions.assertEquals("zaehpphthd", model.importIpv6RoutePolicyId());

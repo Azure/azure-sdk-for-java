@@ -134,8 +134,8 @@ public final class L3IsolationDomainInner extends Resource {
      * @param redistributeConnectedSubnets the redistributeConnectedSubnets value to set.
      * @return the L3IsolationDomainInner object itself.
      */
-    public L3IsolationDomainInner withRedistributeConnectedSubnets(
-        RedistributeConnectedSubnets redistributeConnectedSubnets) {
+    public L3IsolationDomainInner
+        withRedistributeConnectedSubnets(RedistributeConnectedSubnets redistributeConnectedSubnets) {
         if (this.innerProperties() == null) {
             this.innerProperties = new L3IsolationDomainProperties();
         }
@@ -181,8 +181,8 @@ public final class L3IsolationDomainInner extends Resource {
      * @param aggregateRouteConfiguration the aggregateRouteConfiguration value to set.
      * @return the L3IsolationDomainInner object itself.
      */
-    public L3IsolationDomainInner withAggregateRouteConfiguration(
-        AggregateRouteConfiguration aggregateRouteConfiguration) {
+    public L3IsolationDomainInner
+        withAggregateRouteConfiguration(AggregateRouteConfiguration aggregateRouteConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new L3IsolationDomainProperties();
         }
@@ -205,8 +205,8 @@ public final class L3IsolationDomainInner extends Resource {
      * @param connectedSubnetRoutePolicy the connectedSubnetRoutePolicy value to set.
      * @return the L3IsolationDomainInner object itself.
      */
-    public L3IsolationDomainInner withConnectedSubnetRoutePolicy(
-        ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
+    public L3IsolationDomainInner
+        withConnectedSubnetRoutePolicy(ConnectedSubnetRoutePolicy connectedSubnetRoutePolicy) {
         if (this.innerProperties() == null) {
             this.innerProperties = new L3IsolationDomainProperties();
         }
@@ -244,10 +244,8 @@ public final class L3IsolationDomainInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model L3IsolationDomainInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model L3IsolationDomainInner"));
         } else {
             innerProperties().validate();
         }

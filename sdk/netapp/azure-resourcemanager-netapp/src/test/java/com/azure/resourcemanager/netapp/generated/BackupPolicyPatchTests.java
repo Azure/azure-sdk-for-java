@@ -14,31 +14,32 @@ public final class BackupPolicyPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupPolicyPatch model = BinaryData.fromString(
-            "{\"properties\":{\"backupPolicyId\":\"jjklff\",\"provisioningState\":\"ouw\",\"dailyBackupsToKeep\":931521782,\"weeklyBackupsToKeep\":1358338018,\"monthlyBackupsToKeep\":1728733823,\"volumesAssigned\":1485403905,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"ikayuhqlbjbsybb\",\"volumeResourceId\":\"r\",\"backupsCount\":948234782,\"policyEnabled\":false},{\"volumeName\":\"fp\",\"volumeResourceId\":\"mpipaslthaqfxs\",\"backupsCount\":35596652,\"policyEnabled\":true},{\"volumeName\":\"bdsrez\",\"volumeResourceId\":\"rhneuyowq\",\"backupsCount\":638872994,\"policyEnabled\":false}]},\"location\":\"i\",\"tags\":{\"mejzanlfzxia\":\"ircgpikpz\"},\"id\":\"rmbzo\",\"name\":\"okixrjqcir\",\"type\":\"zpfrla\"}")
+            "{\"properties\":{\"backupPolicyId\":\"cwaekrrjre\",\"provisioningState\":\"xt\",\"dailyBackupsToKeep\":747215260,\"weeklyBackupsToKeep\":1781492308,\"monthlyBackupsToKeep\":1019109775,\"volumesAssigned\":991905690,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"lo\",\"volumeResourceId\":\"qpvuzlmvfelf\",\"backupsCount\":2091794134,\"policyEnabled\":false},{\"volumeName\":\"rpw\",\"volumeResourceId\":\"eznoig\",\"backupsCount\":1629929143,\"policyEnabled\":false}]},\"location\":\"mw\",\"tags\":{\"fhsxttaugz\":\"bsazejjoqka\",\"jlwuenvrkp\":\"nfaazpxdtnkdmkq\",\"ibreb\":\"ou\",\"kixqtnqtt\":\"aays\"},\"id\":\"zlwfffiakp\",\"name\":\"pqqmted\",\"type\":\"tmmjihyeozph\"}")
             .toObject(BackupPolicyPatch.class);
-        Assertions.assertEquals("i", model.location());
-        Assertions.assertEquals("ircgpikpz", model.tags().get("mejzanlfzxia"));
-        Assertions.assertEquals(931521782, model.dailyBackupsToKeep());
-        Assertions.assertEquals(1358338018, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(1728733823, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("mw", model.location());
+        Assertions.assertEquals("bsazejjoqka", model.tags().get("fhsxttaugz"));
+        Assertions.assertEquals(747215260, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1781492308, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(1019109775, model.monthlyBackupsToKeep());
+        Assertions.assertEquals(false, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupPolicyPatch model = new BackupPolicyPatch().withLocation("i")
-            .withTags(mapOf("mejzanlfzxia", "ircgpikpz"))
-            .withDailyBackupsToKeep(931521782)
-            .withWeeklyBackupsToKeep(1358338018)
-            .withMonthlyBackupsToKeep(1728733823)
-            .withEnabled(true);
+        BackupPolicyPatch model = new BackupPolicyPatch().withLocation("mw")
+            .withTags(
+                mapOf("fhsxttaugz", "bsazejjoqka", "jlwuenvrkp", "nfaazpxdtnkdmkq", "ibreb", "ou", "kixqtnqtt", "aays"))
+            .withDailyBackupsToKeep(747215260)
+            .withWeeklyBackupsToKeep(1781492308)
+            .withMonthlyBackupsToKeep(1019109775)
+            .withEnabled(false);
         model = BinaryData.fromObject(model).toObject(BackupPolicyPatch.class);
-        Assertions.assertEquals("i", model.location());
-        Assertions.assertEquals("ircgpikpz", model.tags().get("mejzanlfzxia"));
-        Assertions.assertEquals(931521782, model.dailyBackupsToKeep());
-        Assertions.assertEquals(1358338018, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(1728733823, model.monthlyBackupsToKeep());
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals("mw", model.location());
+        Assertions.assertEquals("bsazejjoqka", model.tags().get("fhsxttaugz"));
+        Assertions.assertEquals(747215260, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1781492308, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(1019109775, model.monthlyBackupsToKeep());
+        Assertions.assertEquals(false, model.enabled());
     }
 
     // Use "Map.of" if available

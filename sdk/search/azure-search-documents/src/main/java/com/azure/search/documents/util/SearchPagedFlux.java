@@ -32,8 +32,8 @@ public final class SearchPagedFlux extends PagedFluxBase<SearchResult, SearchPag
      */
     public SearchPagedFlux(Supplier<Mono<SearchPagedResponse>> firstPageRetriever) {
         super(firstPageRetriever);
-        metadataSupplier = () -> firstPageRetriever.get().map(response ->
-            new SearchFirstPageResponseWrapper().setFirstPageResponse(response));
+        metadataSupplier = () -> firstPageRetriever.get()
+            .map(response -> new SearchFirstPageResponseWrapper().setFirstPageResponse(response));
     }
 
     /**
@@ -46,8 +46,8 @@ public final class SearchPagedFlux extends PagedFluxBase<SearchResult, SearchPag
     public SearchPagedFlux(Supplier<Mono<SearchPagedResponse>> firstPageRetriever,
         Function<String, Mono<SearchPagedResponse>> nextPageRetriever) {
         super(firstPageRetriever, nextPageRetriever);
-        metadataSupplier = () -> firstPageRetriever.get().map(response ->
-            new SearchFirstPageResponseWrapper().setFirstPageResponse(response));
+        metadataSupplier = () -> firstPageRetriever.get()
+            .map(response -> new SearchFirstPageResponseWrapper().setFirstPageResponse(response));
     }
 
     /**
@@ -59,13 +59,12 @@ public final class SearchPagedFlux extends PagedFluxBase<SearchResult, SearchPag
      * {@code null}.
      */
     public Mono<Long> getTotalCount() {
-        return metadataSupplier.get()
-            .flatMap(metaData -> {
-                if (metaData.getFirstPageResponse().getCount() == null) {
-                    return Mono.empty();
-                }
-                return Mono.just(metaData.getFirstPageResponse().getCount());
-            });
+        return metadataSupplier.get().flatMap(metaData -> {
+            if (metaData.getFirstPageResponse().getCount() == null) {
+                return Mono.empty();
+            }
+            return Mono.just(metaData.getFirstPageResponse().getCount());
+        });
     }
 
     /**
@@ -77,13 +76,12 @@ public final class SearchPagedFlux extends PagedFluxBase<SearchResult, SearchPag
      * request, otherwise {@code null}.
      */
     public Mono<Double> getCoverage() {
-        return metadataSupplier.get()
-            .flatMap(metaData -> {
-                if (metaData.getFirstPageResponse().getCoverage() == null) {
-                    return Mono.empty();
-                }
-                return Mono.just(metaData.getFirstPageResponse().getCoverage());
-            });
+        return metadataSupplier.get().flatMap(metaData -> {
+            if (metaData.getFirstPageResponse().getCoverage() == null) {
+                return Mono.empty();
+            }
+            return Mono.just(metaData.getFirstPageResponse().getCoverage());
+        });
     }
 
     /**
@@ -94,13 +92,12 @@ public final class SearchPagedFlux extends PagedFluxBase<SearchResult, SearchPag
      * @return The facet query results if {@code facets} were supplied in the request, otherwise {@code null}.
      */
     public Mono<Map<String, List<FacetResult>>> getFacets() {
-        return metadataSupplier.get()
-            .flatMap(metaData -> {
-                if (metaData.getFirstPageResponse().getFacets() == null) {
-                    return Mono.empty();
-                }
-                return Mono.just(metaData.getFirstPageResponse().getFacets());
-            });
+        return metadataSupplier.get().flatMap(metaData -> {
+            if (metaData.getFirstPageResponse().getFacets() == null) {
+                return Mono.empty();
+            }
+            return Mono.just(metaData.getFirstPageResponse().getFacets());
+        });
     }
 
     /**

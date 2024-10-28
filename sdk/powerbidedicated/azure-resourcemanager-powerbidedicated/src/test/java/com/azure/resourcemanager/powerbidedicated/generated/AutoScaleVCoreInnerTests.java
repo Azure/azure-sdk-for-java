@@ -15,52 +15,36 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoScaleVCoreInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoScaleVCoreInner model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"name\":\"pfhyhl\",\"tier\":\"AutoScale\",\"capacity\":1911186108},\"properties\":{\"capacityObjectId\":\"mcmatuokthfuiu\",\"provisioningState\":\"Succeeded\",\"capacityLimit\":680550088},\"location\":\"pk\",\"tags\":{\"dagfuaxbezyiuok\":\"dpuozmyz\",\"surex\":\"twhrdxwzywqsm\",\"dystkiiuxhqyud\":\"moryocfsfksym\",\"rq\":\"o\"},\"id\":\"b\",\"name\":\"oczvy\",\"type\":\"fqrvkdvjsllrmvvd\"}")
-                .toObject(AutoScaleVCoreInner.class);
-        Assertions.assertEquals("pk", model.location());
-        Assertions.assertEquals("dpuozmyz", model.tags().get("dagfuaxbezyiuok"));
-        Assertions.assertEquals("pfhyhl", model.sku().name());
+        AutoScaleVCoreInner model = BinaryData.fromString(
+            "{\"sku\":{\"name\":\"v\",\"tier\":\"AutoScale\",\"capacity\":1443350377},\"properties\":{\"capacityObjectId\":\"bzoggigrx\",\"provisioningState\":\"Succeeded\",\"capacityLimit\":2000842411},\"location\":\"xxjnspydptk\",\"tags\":{\"bldngkpoc\":\"kouknvudwtiu\",\"npiucgygevqznty\":\"pazyxoegukg\"},\"id\":\"mrbpizcdrqj\",\"name\":\"dpydn\",\"type\":\"yhxdeoejzicwi\"}")
+            .toObject(AutoScaleVCoreInner.class);
+        Assertions.assertEquals("xxjnspydptk", model.location());
+        Assertions.assertEquals("kouknvudwtiu", model.tags().get("bldngkpoc"));
+        Assertions.assertEquals("v", model.sku().name());
         Assertions.assertEquals(VCoreSkuTier.AUTO_SCALE, model.sku().tier());
-        Assertions.assertEquals(1911186108, model.sku().capacity());
-        Assertions.assertEquals("mcmatuokthfuiu", model.capacityObjectId());
-        Assertions.assertEquals(680550088, model.capacityLimit());
+        Assertions.assertEquals(1443350377, model.sku().capacity());
+        Assertions.assertEquals("bzoggigrx", model.capacityObjectId());
+        Assertions.assertEquals(2000842411, model.capacityLimit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoScaleVCoreInner model =
-            new AutoScaleVCoreInner()
-                .withLocation("pk")
-                .withTags(
-                    mapOf(
-                        "dagfuaxbezyiuok",
-                        "dpuozmyz",
-                        "surex",
-                        "twhrdxwzywqsm",
-                        "dystkiiuxhqyud",
-                        "moryocfsfksym",
-                        "rq",
-                        "o"))
-                .withSku(
-                    new AutoScaleVCoreSku()
-                        .withName("pfhyhl")
-                        .withTier(VCoreSkuTier.AUTO_SCALE)
-                        .withCapacity(1911186108))
-                .withCapacityObjectId("mcmatuokthfuiu")
-                .withCapacityLimit(680550088);
+        AutoScaleVCoreInner model = new AutoScaleVCoreInner().withLocation("xxjnspydptk")
+            .withTags(mapOf("bldngkpoc", "kouknvudwtiu", "npiucgygevqznty", "pazyxoegukg"))
+            .withSku(new AutoScaleVCoreSku().withName("v").withTier(VCoreSkuTier.AUTO_SCALE).withCapacity(1443350377))
+            .withCapacityObjectId("bzoggigrx")
+            .withCapacityLimit(2000842411);
         model = BinaryData.fromObject(model).toObject(AutoScaleVCoreInner.class);
-        Assertions.assertEquals("pk", model.location());
-        Assertions.assertEquals("dpuozmyz", model.tags().get("dagfuaxbezyiuok"));
-        Assertions.assertEquals("pfhyhl", model.sku().name());
+        Assertions.assertEquals("xxjnspydptk", model.location());
+        Assertions.assertEquals("kouknvudwtiu", model.tags().get("bldngkpoc"));
+        Assertions.assertEquals("v", model.sku().name());
         Assertions.assertEquals(VCoreSkuTier.AUTO_SCALE, model.sku().tier());
-        Assertions.assertEquals(1911186108, model.sku().capacity());
-        Assertions.assertEquals("mcmatuokthfuiu", model.capacityObjectId());
-        Assertions.assertEquals(680550088, model.capacityLimit());
+        Assertions.assertEquals(1443350377, model.sku().capacity());
+        Assertions.assertEquals("bzoggigrx", model.capacityObjectId());
+        Assertions.assertEquals(2000842411, model.capacityLimit());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -22,8 +22,8 @@ public final class FarmBeatsExtensionsImpl implements FarmBeatsExtensions {
 
     private final com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager;
 
-    public FarmBeatsExtensionsImpl(
-        FarmBeatsExtensionsClient innerClient, com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
+    public FarmBeatsExtensionsImpl(FarmBeatsExtensionsClient innerClient,
+        com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -33,23 +33,12 @@ public final class FarmBeatsExtensionsImpl implements FarmBeatsExtensions {
         return Utils.mapPage(inner, inner1 -> new FarmBeatsExtensionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<FarmBeatsExtension> list(
-        List<String> farmBeatsExtensionIds,
-        List<String> farmBeatsExtensionNames,
-        List<String> extensionCategories,
-        List<String> publisherIds,
-        Integer maxPageSize,
-        Context context) {
-        PagedIterable<FarmBeatsExtensionInner> inner =
-            this
-                .serviceClient()
-                .list(
-                    farmBeatsExtensionIds,
-                    farmBeatsExtensionNames,
-                    extensionCategories,
-                    publisherIds,
-                    maxPageSize,
-                    context);
+    public PagedIterable<FarmBeatsExtension> list(List<String> farmBeatsExtensionIds,
+        List<String> farmBeatsExtensionNames, List<String> extensionCategories, List<String> publisherIds,
+        Integer maxPageSize, Context context) {
+        PagedIterable<FarmBeatsExtensionInner> inner = this.serviceClient()
+            .list(farmBeatsExtensionIds, farmBeatsExtensionNames, extensionCategories, publisherIds, maxPageSize,
+                context);
         return Utils.mapPage(inner, inner1 -> new FarmBeatsExtensionImpl(inner1, this.manager()));
     }
 
@@ -65,10 +54,7 @@ public final class FarmBeatsExtensionsImpl implements FarmBeatsExtensions {
     public Response<FarmBeatsExtension> getWithResponse(String farmBeatsExtensionId, Context context) {
         Response<FarmBeatsExtensionInner> inner = this.serviceClient().getWithResponse(farmBeatsExtensionId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FarmBeatsExtensionImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -33,8 +33,8 @@ public interface PrivateEndpointConnectionsPrivateLinkHubs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all PrivateEndpointConnections in the PrivateLinkHub as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PrivateEndpointConnectionForPrivateLinkHub> list(
-        String resourceGroupName, String privateLinkHubName, Context context);
+    PagedIterable<PrivateEndpointConnectionForPrivateLinkHub> list(String resourceGroupName, String privateLinkHubName,
+        Context context);
 
     /**
      * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
@@ -48,8 +48,8 @@ public interface PrivateEndpointConnectionsPrivateLinkHubs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all PrivateEndpointConnection in the PrivateLinkHub by name along with {@link Response}.
      */
-    Response<PrivateEndpointConnectionForPrivateLinkHub> getWithResponse(
-        String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionForPrivateLinkHub> getWithResponse(String resourceGroupName,
+        String privateLinkHubName, String privateEndpointConnectionName, Context context);
 
     /**
      * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
@@ -62,6 +62,6 @@ public interface PrivateEndpointConnectionsPrivateLinkHubs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all PrivateEndpointConnection in the PrivateLinkHub by name.
      */
-    PrivateEndpointConnectionForPrivateLinkHub get(
-        String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionForPrivateLinkHub get(String resourceGroupName, String privateLinkHubName,
+        String privateEndpointConnectionName);
 }

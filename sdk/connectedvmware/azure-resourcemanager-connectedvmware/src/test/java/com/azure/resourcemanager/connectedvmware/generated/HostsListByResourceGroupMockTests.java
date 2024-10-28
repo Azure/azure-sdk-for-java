@@ -31,37 +31,27 @@ public final class HostsListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"uuid\":\"emhooclutnpq\",\"vCenterId\":\"mczjkm\",\"moRefId\":\"kyujxsglhsrrr\",\"inventoryItemId\":\"jylmbkzudnigr\",\"moName\":\"hotj\",\"statuses\":[{\"type\":\"xuzzjgnrefq\",\"status\":\"qotoihiqakydiwfb\",\"reason\":\"wpzdqtvhcspo\",\"message\":\"qaxsipietgbebjf\",\"severity\":\"bmoichd\",\"lastUpdatedAt\":\"2021-02-22T21:48:45Z\"},{\"type\":\"pubntnbatz\",\"status\":\"qs\",\"reason\":\"saaelca\",\"message\":\"cjuhplrvkm\",\"severity\":\"wmj\",\"lastUpdatedAt\":\"2021-03-03T06:49:15Z\"},{\"type\":\"ggcvk\",\"status\":\"lizrzbjpsfxsfuz\",\"reason\":\"vtmva\",\"message\":\"w\",\"severity\":\"qlvh\",\"lastUpdatedAt\":\"2021-03-03T15:39:40Z\"},{\"type\":\"eofiz\",\"status\":\"jfnmjmvlwyz\",\"reason\":\"blkujrllfojuidjp\",\"message\":\"yjucejikzoeo\",\"severity\":\"tzejetjklnt\",\"lastUpdatedAt\":\"2021-05-29T06:35:10Z\"}],\"customResourceName\":\"uzk\",\"overallMemoryUsageGB\":4359795110481373493,\"memorySizeGB\":3276001010985311867,\"overallCpuUsageMHz\":5622137267556803146,\"cpuMhz\":4405347795145754212,\"datastoreIds\":[\"rhtgvgzpcrrkol\",\"w\",\"mjsmwr\",\"kcdxfzzzw\"],\"networkIds\":[\"fitlhguynuchl\",\"mltx\",\"whmozusgzvlnsnnj\",\"fpafolpymwamxq\"],\"provisioningState\":\"Provisioning\"},\"extendedLocation\":{\"type\":\"gdphtvdula\",\"name\":\"lejchcsr\"},\"kind\":\"nmzlanru\",\"location\":\"dwv\",\"tags\":{\"v\":\"cnzqtpjhmqr\",\"xsmlz\":\"hlaiwd\"},\"id\":\"hzdtxetlgydlh\",\"name\":\"vlnnpx\",\"type\":\"b\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"uuid\":\"emhooclutnpq\",\"vCenterId\":\"mczjkm\",\"moRefId\":\"kyujxsglhsrrr\",\"inventoryItemId\":\"jylmbkzudnigr\",\"moName\":\"hotj\",\"statuses\":[{\"type\":\"xuzzjgnrefq\",\"status\":\"qotoihiqakydiwfb\",\"reason\":\"wpzdqtvhcspo\",\"message\":\"qaxsipietgbebjf\",\"severity\":\"bmoichd\",\"lastUpdatedAt\":\"2021-02-22T21:48:45Z\"},{\"type\":\"pubntnbatz\",\"status\":\"qs\",\"reason\":\"saaelca\",\"message\":\"cjuhplrvkm\",\"severity\":\"wmj\",\"lastUpdatedAt\":\"2021-03-03T06:49:15Z\"},{\"type\":\"ggcvk\",\"status\":\"lizrzbjpsfxsfuz\",\"reason\":\"vtmva\",\"message\":\"w\",\"severity\":\"qlvh\",\"lastUpdatedAt\":\"2021-03-03T15:39:40Z\"},{\"type\":\"eofiz\",\"status\":\"jfnmjmvlwyz\",\"reason\":\"blkujrllfojuidjp\",\"message\":\"yjucejikzoeo\",\"severity\":\"tzejetjklnt\",\"lastUpdatedAt\":\"2021-05-29T06:35:10Z\"}],\"customResourceName\":\"uzk\",\"overallMemoryUsageGB\":4359795110481373493,\"memorySizeGB\":3276001010985311867,\"overallCpuUsageMHz\":5622137267556803146,\"cpuMhz\":4405347795145754212,\"datastoreIds\":[\"rhtgvgzpcrrkol\",\"w\",\"mjsmwr\",\"kcdxfzzzw\"],\"networkIds\":[\"fitlhguynuchl\",\"mltx\",\"whmozusgzvlnsnnj\",\"fpafolpymwamxq\"],\"provisioningState\":\"Provisioning\"},\"extendedLocation\":{\"type\":\"gdphtvdula\",\"name\":\"lejchcsr\"},\"kind\":\"nmzlanru\",\"location\":\"dwv\",\"tags\":{\"v\":\"cnzqtpjhmqr\",\"xsmlz\":\"hlaiwd\"},\"id\":\"hzdtxetlgydlh\",\"name\":\"vlnnpx\",\"type\":\"b\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ConnectedVMwareManager manager =
-            ConnectedVMwareManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ConnectedVMwareManager manager = ConnectedVMwareManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<HostModel> response =
-            manager.hosts().listByResourceGroup("lrocuyzlwh", com.azure.core.util.Context.NONE);
+        PagedIterable<HostModel> response
+            = manager.hosts().listByResourceGroup("lrocuyzlwh", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("dwv", response.iterator().next().location());
         Assertions.assertEquals("cnzqtpjhmqr", response.iterator().next().tags().get("v"));

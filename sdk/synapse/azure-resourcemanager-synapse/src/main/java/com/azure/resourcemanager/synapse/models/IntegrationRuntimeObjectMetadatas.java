@@ -24,12 +24,8 @@ public interface IntegrationRuntimeObjectMetadatas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object metadata from an integration runtime along with {@link Response}.
      */
-    Response<SsisObjectMetadataListResponse> listWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        GetSsisObjectMetadataRequest getMetadataRequest,
-        Context context);
+    Response<SsisObjectMetadataListResponse> listWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, GetSsisObjectMetadataRequest getMetadataRequest, Context context);
 
     /**
      * Get integration runtime object metadata
@@ -59,8 +55,8 @@ public interface IntegrationRuntimeObjectMetadatas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the operation.
      */
-    SsisObjectMetadataStatusResponse refresh(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    SsisObjectMetadataStatusResponse refresh(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 
     /**
      * Refresh integration runtime object metadata
@@ -76,6 +72,6 @@ public interface IntegrationRuntimeObjectMetadatas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the operation.
      */
-    SsisObjectMetadataStatusResponse refresh(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    SsisObjectMetadataStatusResponse refresh(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 }

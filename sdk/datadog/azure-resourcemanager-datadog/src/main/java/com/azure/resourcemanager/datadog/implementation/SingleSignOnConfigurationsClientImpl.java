@@ -51,10 +51,8 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @param client the instance of the service client containing this operation class.
      */
     SingleSignOnConfigurationsClientImpl(MicrosoftDatadogClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    SingleSignOnConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SingleSignOnConfigurationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,60 +63,43 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftDatadogClie")
     public interface SingleSignOnConfigurationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatadogSingleSignOnResourceListResponse>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DatadogSingleSignOnResourceListResponse>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("configurationName") String configurationName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DatadogSingleSignOnResourceInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DatadogSingleSignOnResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("configurationName") String configurationName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DatadogSingleSignOnResourceInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("configurationName") String configurationName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatadogSingleSignOnResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("configurationName") String configurationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatadogSingleSignOnResourceListResponse>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -132,19 +113,15 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatadogSingleSignOnResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String monitorName) {
+    private Mono<PagedResponse<DatadogSingleSignOnResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String monitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -155,26 +132,10 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DatadogSingleSignOnResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DatadogSingleSignOnResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -190,19 +151,15 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatadogSingleSignOnResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String monitorName, Context context) {
+    private Mono<PagedResponse<DatadogSingleSignOnResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String monitorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -214,23 +171,10 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, monitorName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -245,8 +189,8 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatadogSingleSignOnResourceInner> listAsync(String resourceGroupName, String monitorName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, monitorName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, monitorName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -261,10 +205,9 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatadogSingleSignOnResourceInner> listAsync(
-        String resourceGroupName, String monitorName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, monitorName, context),
+    private PagedFlux<DatadogSingleSignOnResourceInner> listAsync(String resourceGroupName, String monitorName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, monitorName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -295,8 +238,8 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatadogSingleSignOnResourceInner> list(
-        String resourceGroupName, String monitorName, Context context) {
+    public PagedIterable<DatadogSingleSignOnResourceInner> list(String resourceGroupName, String monitorName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, monitorName, context));
     }
 
@@ -313,19 +256,15 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String monitorName, String configurationName, DatadogSingleSignOnResourceInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String monitorName, String configurationName, DatadogSingleSignOnResourceInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -343,19 +282,8 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            configurationName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, configurationName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -373,23 +301,15 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        DatadogSingleSignOnResourceInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String monitorName, String configurationName, DatadogSingleSignOnResourceInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -407,17 +327,8 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                configurationName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            monitorName, configurationName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
@@ -434,21 +345,13 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatadogSingleSignOnResourceInner>, DatadogSingleSignOnResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String monitorName,
-            String configurationName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String monitorName, String configurationName,
             DatadogSingleSignOnResourceInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
-        return this
-            .client
-            .<DatadogSingleSignOnResourceInner, DatadogSingleSignOnResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DatadogSingleSignOnResourceInner.class,
-                DatadogSingleSignOnResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
+        return this.client.<DatadogSingleSignOnResourceInner, DatadogSingleSignOnResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DatadogSingleSignOnResourceInner.class,
+            DatadogSingleSignOnResourceInner.class, this.client.getContext());
     }
 
     /**
@@ -466,16 +369,11 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
     private PollerFlux<PollResult<DatadogSingleSignOnResourceInner>, DatadogSingleSignOnResourceInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String monitorName, String configurationName) {
         final DatadogSingleSignOnResourceInner body = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
-        return this
-            .client
-            .<DatadogSingleSignOnResourceInner, DatadogSingleSignOnResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DatadogSingleSignOnResourceInner.class,
-                DatadogSingleSignOnResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
+        return this.client.<DatadogSingleSignOnResourceInner, DatadogSingleSignOnResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DatadogSingleSignOnResourceInner.class,
+            DatadogSingleSignOnResourceInner.class, this.client.getContext());
     }
 
     /**
@@ -493,23 +391,14 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatadogSingleSignOnResourceInner>, DatadogSingleSignOnResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String monitorName,
-            String configurationName,
-            DatadogSingleSignOnResourceInner body,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String monitorName, String configurationName,
+            DatadogSingleSignOnResourceInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body, context);
-        return this
-            .client
-            .<DatadogSingleSignOnResourceInner, DatadogSingleSignOnResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DatadogSingleSignOnResourceInner.class,
-                DatadogSingleSignOnResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body, context);
+        return this.client.<DatadogSingleSignOnResourceInner, DatadogSingleSignOnResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DatadogSingleSignOnResourceInner.class,
+            DatadogSingleSignOnResourceInner.class, context);
     }
 
     /**
@@ -545,14 +434,9 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatadogSingleSignOnResourceInner>, DatadogSingleSignOnResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String monitorName,
-            String configurationName,
-            DatadogSingleSignOnResourceInner body,
-            Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body, context)
+        beginCreateOrUpdate(String resourceGroupName, String monitorName, String configurationName,
+            DatadogSingleSignOnResourceInner body, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body, context)
             .getSyncPoller();
     }
 
@@ -569,10 +453,9 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatadogSingleSignOnResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String monitorName, String configurationName, DatadogSingleSignOnResourceInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body)
-            .last()
+    private Mono<DatadogSingleSignOnResourceInner> createOrUpdateAsync(String resourceGroupName, String monitorName,
+        String configurationName, DatadogSingleSignOnResourceInner body) {
+        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -588,11 +471,10 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatadogSingleSignOnResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String monitorName, String configurationName) {
+    private Mono<DatadogSingleSignOnResourceInner> createOrUpdateAsync(String resourceGroupName, String monitorName,
+        String configurationName) {
         final DatadogSingleSignOnResourceInner body = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body)
-            .last()
+        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -610,14 +492,9 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatadogSingleSignOnResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        DatadogSingleSignOnResourceInner body,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body, context)
-            .last()
+    private Mono<DatadogSingleSignOnResourceInner> createOrUpdateAsync(String resourceGroupName, String monitorName,
+        String configurationName, DatadogSingleSignOnResourceInner body, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -633,8 +510,8 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatadogSingleSignOnResourceInner createOrUpdate(
-        String resourceGroupName, String monitorName, String configurationName) {
+    public DatadogSingleSignOnResourceInner createOrUpdate(String resourceGroupName, String monitorName,
+        String configurationName) {
         final DatadogSingleSignOnResourceInner body = null;
         return createOrUpdateAsync(resourceGroupName, monitorName, configurationName, body).block();
     }
@@ -653,12 +530,8 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatadogSingleSignOnResourceInner createOrUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        DatadogSingleSignOnResourceInner body,
-        Context context) {
+    public DatadogSingleSignOnResourceInner createOrUpdate(String resourceGroupName, String monitorName,
+        String configurationName, DatadogSingleSignOnResourceInner body, Context context) {
         return createOrUpdateAsync(resourceGroupName, monitorName, configurationName, body, context).block();
     }
 
@@ -675,19 +548,15 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatadogSingleSignOnResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String monitorName, String configurationName) {
+    private Mono<Response<DatadogSingleSignOnResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String monitorName, String configurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -702,18 +571,8 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            configurationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, configurationName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -731,19 +590,15 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatadogSingleSignOnResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String monitorName, String configurationName, Context context) {
+    private Mono<Response<DatadogSingleSignOnResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String monitorName, String configurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -758,16 +613,8 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                configurationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, monitorName,
+            configurationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -782,8 +629,8 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @return the datadog single sign-on resource for the given Monitor on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatadogSingleSignOnResourceInner> getAsync(
-        String resourceGroupName, String monitorName, String configurationName) {
+    private Mono<DatadogSingleSignOnResourceInner> getAsync(String resourceGroupName, String monitorName,
+        String configurationName) {
         return getWithResponseAsync(resourceGroupName, monitorName, configurationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -801,8 +648,8 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @return the datadog single sign-on resource for the given Monitor along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatadogSingleSignOnResourceInner> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context) {
+    public Response<DatadogSingleSignOnResourceInner> getWithResponse(String resourceGroupName, String monitorName,
+        String configurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, monitorName, configurationName, context).block();
     }
 
@@ -818,8 +665,8 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @return the datadog single sign-on resource for the given Monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatadogSingleSignOnResourceInner get(
-        String resourceGroupName, String monitorName, String configurationName) {
+    public DatadogSingleSignOnResourceInner get(String resourceGroupName, String monitorName,
+        String configurationName) {
         return getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE).getValue();
     }
 
@@ -839,23 +686,13 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DatadogSingleSignOnResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DatadogSingleSignOnResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -871,29 +708,19 @@ public final class SingleSignOnConfigurationsClientImpl implements SingleSignOnC
      * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatadogSingleSignOnResourceInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DatadogSingleSignOnResourceInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

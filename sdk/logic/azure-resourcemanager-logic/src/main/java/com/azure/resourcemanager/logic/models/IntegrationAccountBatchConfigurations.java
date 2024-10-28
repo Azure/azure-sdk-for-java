@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IntegrationAccountBatchConfigurations. */
+/**
+ * Resource collection API of IntegrationAccountBatchConfigurations.
+ */
 public interface IntegrationAccountBatchConfigurations {
     /**
      * List the batch configurations for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface IntegrationAccountBatchConfigurations {
 
     /**
      * List the batch configurations for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface IntegrationAccountBatchConfigurations {
 
     /**
      * Get a batch configuration for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param batchConfigurationName The batch configuration name.
@@ -47,12 +49,12 @@ public interface IntegrationAccountBatchConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a batch configuration for an integration account along with {@link Response}.
      */
-    Response<BatchConfiguration> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String batchConfigurationName, Context context);
+    Response<BatchConfiguration> getWithResponse(String resourceGroupName, String integrationAccountName,
+        String batchConfigurationName, Context context);
 
     /**
      * Get a batch configuration for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param batchConfigurationName The batch configuration name.
@@ -65,7 +67,7 @@ public interface IntegrationAccountBatchConfigurations {
 
     /**
      * Delete a batch configuration for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param batchConfigurationName The batch configuration name.
@@ -75,12 +77,12 @@ public interface IntegrationAccountBatchConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String batchConfigurationName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName,
+        String batchConfigurationName, Context context);
 
     /**
      * Delete a batch configuration for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param batchConfigurationName The batch configuration name.
@@ -92,7 +94,7 @@ public interface IntegrationAccountBatchConfigurations {
 
     /**
      * Get a batch configuration for an integration account.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -103,7 +105,7 @@ public interface IntegrationAccountBatchConfigurations {
 
     /**
      * Get a batch configuration for an integration account.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +117,7 @@ public interface IntegrationAccountBatchConfigurations {
 
     /**
      * Delete a batch configuration for an integration account.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,7 +127,7 @@ public interface IntegrationAccountBatchConfigurations {
 
     /**
      * Delete a batch configuration for an integration account.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +139,7 @@ public interface IntegrationAccountBatchConfigurations {
 
     /**
      * Begins definition for a new BatchConfiguration resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new BatchConfiguration definition.
      */

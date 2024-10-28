@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InventoryItemPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InventoryItemProperties model =
-            BinaryData
-                .fromString(
-                    "{\"inventoryType\":\"InventoryItemProperties\",\"managedResourceId\":\"zvhxnk\",\"moRefId\":\"tkubotppn\",\"moName\":\"xz\",\"provisioningState\":\"Deleting\"}")
-                .toObject(InventoryItemProperties.class);
+        InventoryItemProperties model = BinaryData.fromString(
+            "{\"inventoryType\":\"InventoryItemProperties\",\"managedResourceId\":\"zvhxnk\",\"moRefId\":\"tkubotppn\",\"moName\":\"xz\",\"provisioningState\":\"Deleting\"}")
+            .toObject(InventoryItemProperties.class);
         Assertions.assertEquals("zvhxnk", model.managedResourceId());
         Assertions.assertEquals("tkubotppn", model.moRefId());
         Assertions.assertEquals("xz", model.moName());
@@ -23,8 +21,8 @@ public final class InventoryItemPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InventoryItemProperties model =
-            new InventoryItemProperties().withManagedResourceId("zvhxnk").withMoRefId("tkubotppn").withMoName("xz");
+        InventoryItemProperties model
+            = new InventoryItemProperties().withManagedResourceId("zvhxnk").withMoRefId("tkubotppn").withMoName("xz");
         model = BinaryData.fromObject(model).toObject(InventoryItemProperties.class);
         Assertions.assertEquals("zvhxnk", model.managedResourceId());
         Assertions.assertEquals("tkubotppn", model.moRefId());

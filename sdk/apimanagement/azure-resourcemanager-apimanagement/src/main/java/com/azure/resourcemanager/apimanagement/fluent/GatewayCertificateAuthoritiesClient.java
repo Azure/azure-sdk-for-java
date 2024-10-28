@@ -29,8 +29,8 @@ public interface GatewayCertificateAuthoritiesClient {
      * @return paged Gateway certificate authority list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GatewayCertificateAuthorityContractInner> listByService(
-        String resourceGroupName, String serviceName, String gatewayId);
+    PagedIterable<GatewayCertificateAuthorityContractInner> listByService(String resourceGroupName, String serviceName,
+        String gatewayId);
 
     /**
      * Lists the collection of Certificate Authorities for the specified Gateway entity.
@@ -51,14 +51,8 @@ public interface GatewayCertificateAuthoritiesClient {
      * @return paged Gateway certificate authority list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GatewayCertificateAuthorityContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<GatewayCertificateAuthorityContractInner> listByService(String resourceGroupName, String serviceName,
+        String gatewayId, String filter, Integer top, Integer skip, Context context);
 
     /**
      * Checks if Certificate entity is assigned to Gateway entity as Certificate Authority.
@@ -76,8 +70,8 @@ public interface GatewayCertificateAuthoritiesClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayCertificateAuthoritiesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context);
+    GatewayCertificateAuthoritiesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName,
+        String serviceName, String gatewayId, String certificateId, Context context);
 
     /**
      * Checks if Certificate entity is assigned to Gateway entity as Certificate Authority.
@@ -111,8 +105,8 @@ public interface GatewayCertificateAuthoritiesClient {
      * @return assigned Gateway Certificate Authority details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayCertificateAuthoritiesGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context);
+    GatewayCertificateAuthoritiesGetResponse getWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, String certificateId, Context context);
 
     /**
      * Get assigned Gateway Certificate Authority details.
@@ -129,8 +123,8 @@ public interface GatewayCertificateAuthoritiesClient {
      * @return assigned Gateway Certificate Authority details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayCertificateAuthorityContractInner get(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId);
+    GatewayCertificateAuthorityContractInner get(String resourceGroupName, String serviceName, String gatewayId,
+        String certificateId);
 
     /**
      * Assign Certificate entity to Gateway entity as Certificate Authority.
@@ -150,14 +144,9 @@ public interface GatewayCertificateAuthoritiesClient {
      * @return gateway certificate authority details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayCertificateAuthoritiesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String certificateId,
-        GatewayCertificateAuthorityContractInner parameters,
-        String ifMatch,
-        Context context);
+    GatewayCertificateAuthoritiesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
+        String serviceName, String gatewayId, String certificateId, GatewayCertificateAuthorityContractInner parameters,
+        String ifMatch, Context context);
 
     /**
      * Assign Certificate entity to Gateway entity as Certificate Authority.
@@ -175,12 +164,8 @@ public interface GatewayCertificateAuthoritiesClient {
      * @return gateway certificate authority details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayCertificateAuthorityContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String certificateId,
-        GatewayCertificateAuthorityContractInner parameters);
+    GatewayCertificateAuthorityContractInner createOrUpdate(String resourceGroupName, String serviceName,
+        String gatewayId, String certificateId, GatewayCertificateAuthorityContractInner parameters);
 
     /**
      * Remove relationship between Certificate Authority and Gateway entity.
@@ -200,13 +185,8 @@ public interface GatewayCertificateAuthoritiesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String certificateId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String gatewayId,
+        String certificateId, String ifMatch, Context context);
 
     /**
      * Remove relationship between Certificate Authority and Gateway entity.

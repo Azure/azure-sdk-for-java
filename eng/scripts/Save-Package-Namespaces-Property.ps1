@@ -18,27 +18,16 @@ libraries are com.azure.spring and their javadoc jars will be under that subdire
 but azure-spring-data-cosmos' GroupId is com.azure and its javadoc jar will be under
 com.azure.
 
-.PARAMETER ArtifactsList
-The list of artifacts to gather namespaces for, this is only done for libraries that are
-producing docs.
--ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json)
+The ArtifactStagingDirectory
+
 #>
 [CmdletBinding()]
 Param (
     [Parameter(Mandatory = $True)]
-    [string] $ArtifactStagingDirectory,
-    [Parameter(Mandatory=$true)]
-    [array] $ArtifactsList
+    [string] $ArtifactStagingDirectory
 )
 
-$ArtifactsList = $ArtifactsList | Where-Object -Not "skipPublishDocMs"
-
 . (Join-Path $PSScriptRoot ".." common scripts common.ps1)
-
-if (-not $ArtifactsList) {
-    Write-Host "ArtifactsList is empty, nothing to process. This can happen if skipPublishDocMs is set to true for all libraries being built."
-    exit 0
-}
 
 Write-Host "ArtifactStagingDirectory=$ArtifactStagingDirectory"
 if (-not (Test-Path -Path $ArtifactStagingDirectory)) {
@@ -46,26 +35,31 @@ if (-not (Test-Path -Path $ArtifactStagingDirectory)) {
     exit 1
 }
 
-Write-Host ""
-Write-Host "ArtifactsList:"
-$ArtifactsList | Format-Table -Property GroupId, Name, ReleaseInBatch | Out-String | Write-Host
-
 $packageInfoDirectory = Join-Path $ArtifactStagingDirectory "PackageInfo"
 
 $foundError = $false
 # At this point the packageInfo files should have been already been created.
-# The only thing being done here is adding or updating namespaces for libraries
-# that will be producing docs. This ArtifactsList is
-foreach($artifact in $ArtifactsList) {
-    if ($artifact.ReleaseInBatch -eq $false) {
-        Write-Host "Skipping $($artifact.Name) as it is not being released in this batch."
+$packageInfoFiles = Get-ChildItem -Path $packageInfoDirectory -File -Filter "*.json"
+
+foreach($packageInfoFile in $packageInfoFiles) {
+    Write-Host "processing $($packageInfoFile.FullName)"
+    $packageInfo = ConvertFrom-Json (Get-Content $packageInfoFile -Raw)
+
+    # ArtifactDetails will be null for AdditionalModules
+    if ($packageInfo.ArtifactDetails) {
+        # If skipPublishDocMs isn't there, then by default docs are being published for that library
+        if ($packageInfo.ArtifactDetails.PSobject.Properties.Name -contains "skipPublishDocMs") {
+            # If skipPublishDocMs is there and it's true, then skip publishing
+            if ($packageInfo.ArtifactDetails.skipPublishDocMs) {
+                Write-Host "Skipping DocsMS publishing for $($packageInfo.Name). skipPublishDocMs is set to false."
+                continue
+            }
+        }
+    } else {
+        Write-Host "Skipping DocsMS publishing for $($packageInfo.Name). ArtifactDetails is null meaning this is an AdditionalModule"
         continue
     }
 
-    # Get the version from the packageInfo file
-    $packageInfoFile = Join-Path $packageInfoDirectory "$($artifact.Name).json"
-    Write-Host "processing $($packageInfoFile.FullName)"
-    $packageInfo = ConvertFrom-Json (Get-Content $packageInfoFile -Raw)
     $version = $packageInfo.Version
     # If the dev version is set, use that. This will be set for nightly builds
     if ($packageInfo.DevVersion) {

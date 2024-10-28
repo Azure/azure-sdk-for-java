@@ -39,79 +39,41 @@ public final class TagRulesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"logRules\":{\"sendAadLogs\":\"Enabled\",\"sendSubscriptionLogs\":\"Enabled\",\"sendActivityLogs\":\"Enabled\",\"filteringTags\":[{\"name\":\"gqwgxhniskxfbkp\",\"value\":\"gklwn\",\"action\":\"Exclude\"},{\"name\":\"dauwhvylwzbtd\",\"value\":\"ujznb\",\"action\":\"Include\"},{\"name\":\"uwprzql\",\"value\":\"ualupjmkh\",\"action\":\"Include\"}]},\"metricRules\":{\"sendingMetrics\":\"Disabled\",\"filteringTags\":[{\"name\":\"rtjriplrbpbew\",\"value\":\"hfgblc\",\"action\":\"Exclude\"},{\"name\":\"vlvqhjkbegi\",\"value\":\"nmxiebwwaloayqc\",\"action\":\"Include\"},{\"name\":\"zjuzgwyz\",\"value\":\"txon\",\"action\":\"Include\"},{\"name\":\"avjcbpwx\",\"value\":\"srknftguv\",\"action\":\"Exclude\"}]},\"provisioningState\":\"Succeeded\"},\"id\":\"wmdyvxqtay\",\"name\":\"iwwroyqbexrmc\",\"type\":\"ibycno\"}";
+        String responseStr
+            = "{\"properties\":{\"logRules\":{\"sendAadLogs\":\"Enabled\",\"sendSubscriptionLogs\":\"Enabled\",\"sendActivityLogs\":\"Enabled\",\"filteringTags\":[{\"name\":\"gqwgxhniskxfbkp\",\"value\":\"gklwn\",\"action\":\"Exclude\"},{\"name\":\"dauwhvylwzbtd\",\"value\":\"ujznb\",\"action\":\"Include\"},{\"name\":\"uwprzql\",\"value\":\"ualupjmkh\",\"action\":\"Include\"}]},\"metricRules\":{\"sendingMetrics\":\"Disabled\",\"filteringTags\":[{\"name\":\"rtjriplrbpbew\",\"value\":\"hfgblc\",\"action\":\"Exclude\"},{\"name\":\"vlvqhjkbegi\",\"value\":\"nmxiebwwaloayqc\",\"action\":\"Include\"},{\"name\":\"zjuzgwyz\",\"value\":\"txon\",\"action\":\"Include\"},{\"name\":\"avjcbpwx\",\"value\":\"srknftguv\",\"action\":\"Exclude\"}]},\"provisioningState\":\"Succeeded\"},\"id\":\"wmdyvxqtay\",\"name\":\"iwwroyqbexrmc\",\"type\":\"ibycno\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DynatraceManager manager =
-            DynatraceManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DynatraceManager manager = DynatraceManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        TagRule response =
-            manager
-                .tagRules()
-                .define("ehhseyvjusrts")
-                .withExistingMonitor("b", "rnwb")
-                .withLogRules(
-                    new LogRules()
-                        .withSendAadLogs(SendAadLogsStatus.DISABLED)
-                        .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
-                        .withSendActivityLogs(SendActivityLogsStatus.DISABLED)
-                        .withFilteringTags(
-                            Arrays
-                                .asList(
-                                    new FilteringTag()
-                                        .withName("fm")
-                                        .withValue("gkvtmelmqkrhah")
-                                        .withAction(TagAction.EXCLUDE),
-                                    new FilteringTag()
-                                        .withName("ahaquh")
-                                        .withValue("hmdua")
-                                        .withAction(TagAction.INCLUDE),
-                                    new FilteringTag()
-                                        .withName("qpv")
-                                        .withValue("dmwsrcrgvxpvgomz")
-                                        .withAction(TagAction.INCLUDE))))
-                .withMetricRules(
-                    new MetricRules()
-                        .withSendingMetrics(SendingMetricsStatus.ENABLED)
-                        .withFilteringTags(
-                            Arrays
-                                .asList(
-                                    new FilteringTag()
-                                        .withName("b")
-                                        .withValue("ldawkzbaliourqha")
-                                        .withAction(TagAction.EXCLUDE),
-                                    new FilteringTag()
-                                        .withName("ashsfwxos")
-                                        .withValue("z")
-                                        .withAction(TagAction.EXCLUDE),
-                                    new FilteringTag()
-                                        .withName("i")
-                                        .withValue("ooxdjebwpuc")
-                                        .withAction(TagAction.EXCLUDE))))
-                .create();
+        TagRule response = manager.tagRules()
+            .define("ehhseyvjusrts")
+            .withExistingMonitor("b", "rnwb")
+            .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.DISABLED)
+                .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
+                .withSendActivityLogs(SendActivityLogsStatus.DISABLED)
+                .withFilteringTags(Arrays.asList(
+                    new FilteringTag().withName("fm").withValue("gkvtmelmqkrhah").withAction(TagAction.EXCLUDE),
+                    new FilteringTag().withName("ahaquh").withValue("hmdua").withAction(TagAction.INCLUDE),
+                    new FilteringTag().withName("qpv").withValue("dmwsrcrgvxpvgomz").withAction(TagAction.INCLUDE))))
+            .withMetricRules(new MetricRules().withSendingMetrics(SendingMetricsStatus.ENABLED)
+                .withFilteringTags(Arrays.asList(
+                    new FilteringTag().withName("b").withValue("ldawkzbaliourqha").withAction(TagAction.EXCLUDE),
+                    new FilteringTag().withName("ashsfwxos").withValue("z").withAction(TagAction.EXCLUDE),
+                    new FilteringTag().withName("i").withValue("ooxdjebwpuc").withAction(TagAction.EXCLUDE))))
+            .create();
 
         Assertions.assertEquals(SendAadLogsStatus.ENABLED, response.logRules().sendAadLogs());
         Assertions.assertEquals(SendSubscriptionLogsStatus.ENABLED, response.logRules().sendSubscriptionLogs());

@@ -16,8 +16,8 @@ public final class ClassifyDocumentResult extends TextAnalyticsResult {
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
-        ClassifyDocumentResultPropertiesHelper.setAccessor(
-            new ClassifyDocumentResultPropertiesHelper.ClassifyDocumentResultAccessor() {
+        ClassifyDocumentResultPropertiesHelper
+            .setAccessor(new ClassifyDocumentResultPropertiesHelper.ClassifyDocumentResultAccessor() {
                 @Override
                 public void setClassifications(ClassifyDocumentResult classifyDocumentResult,
                     IterableStream<ClassificationCategory> classifications) {

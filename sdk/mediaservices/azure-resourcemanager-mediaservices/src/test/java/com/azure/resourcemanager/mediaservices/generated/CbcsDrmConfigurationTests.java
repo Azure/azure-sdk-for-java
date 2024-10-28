@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CbcsDrmConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CbcsDrmConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"fairPlay\":{\"customLicenseAcquisitionUrlTemplate\":\"zpyqsemwab\",\"allowPersistentLicense\":false},\"playReady\":{\"customLicenseAcquisitionUrlTemplate\":\"hhszh\",\"playReadyCustomAttributes\":\"plvwiwubmwmbes\"},\"widevine\":{\"customLicenseAcquisitionUrlTemplate\":\"k\"}}")
-                .toObject(CbcsDrmConfiguration.class);
+        CbcsDrmConfiguration model = BinaryData.fromString(
+            "{\"fairPlay\":{\"customLicenseAcquisitionUrlTemplate\":\"zpyqsemwab\",\"allowPersistentLicense\":false},\"playReady\":{\"customLicenseAcquisitionUrlTemplate\":\"hhszh\",\"playReadyCustomAttributes\":\"plvwiwubmwmbes\"},\"widevine\":{\"customLicenseAcquisitionUrlTemplate\":\"k\"}}")
+            .toObject(CbcsDrmConfiguration.class);
         Assertions.assertEquals("zpyqsemwab", model.fairPlay().customLicenseAcquisitionUrlTemplate());
         Assertions.assertEquals(false, model.fairPlay().allowPersistentLicense());
         Assertions.assertEquals("hhszh", model.playReady().customLicenseAcquisitionUrlTemplate());
@@ -28,17 +26,13 @@ public final class CbcsDrmConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CbcsDrmConfiguration model =
-            new CbcsDrmConfiguration()
-                .withFairPlay(
-                    new StreamingPolicyFairPlayConfiguration()
-                        .withCustomLicenseAcquisitionUrlTemplate("zpyqsemwab")
-                        .withAllowPersistentLicense(false))
-                .withPlayReady(
-                    new StreamingPolicyPlayReadyConfiguration()
-                        .withCustomLicenseAcquisitionUrlTemplate("hhszh")
-                        .withPlayReadyCustomAttributes("plvwiwubmwmbes"))
-                .withWidevine(new StreamingPolicyWidevineConfiguration().withCustomLicenseAcquisitionUrlTemplate("k"));
+        CbcsDrmConfiguration model = new CbcsDrmConfiguration()
+            .withFairPlay(
+                new StreamingPolicyFairPlayConfiguration().withCustomLicenseAcquisitionUrlTemplate("zpyqsemwab")
+                    .withAllowPersistentLicense(false))
+            .withPlayReady(new StreamingPolicyPlayReadyConfiguration().withCustomLicenseAcquisitionUrlTemplate("hhszh")
+                .withPlayReadyCustomAttributes("plvwiwubmwmbes"))
+            .withWidevine(new StreamingPolicyWidevineConfiguration().withCustomLicenseAcquisitionUrlTemplate("k"));
         model = BinaryData.fromObject(model).toObject(CbcsDrmConfiguration.class);
         Assertions.assertEquals("zpyqsemwab", model.fairPlay().customLicenseAcquisitionUrlTemplate());
         Assertions.assertEquals(false, model.fairPlay().allowPersistentLicense());

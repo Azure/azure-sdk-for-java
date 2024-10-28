@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datalakeanalytics.models.StorageAccountInformat
 public final class StorageAccountInformationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageAccountInformationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"suffix\":\"idybyxczf\"},\"name\":\"haaxdbabphl\",\"type\":\"qlfktsths\",\"id\":\"ocmnyyazttbtwwrq\"},{\"properties\":{\"suffix\":\"dckzywbiexz\"},\"name\":\"yueaxibxujwb\",\"type\":\"walm\",\"id\":\"yoxa\"},{\"properties\":{\"suffix\":\"kzjancuxrhdwbav\"},\"name\":\"niwdjsw\",\"type\":\"s\",\"id\":\"pgn\"}],\"nextLink\":\"txhp\"}")
-                .toObject(StorageAccountInformationListResult.class);
+        StorageAccountInformationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"suffix\":\"ydptkoen\"},\"name\":\"uknvudwti\",\"type\":\"bldngkpoc\",\"id\":\"azyxoegukg\"},{\"properties\":{\"suffix\":\"iucgygevqzn\"},\"name\":\"pmr\",\"type\":\"izcdrqjsd\",\"id\":\"dnfyhxdeoejzicwi\"},{\"properties\":{\"suffix\":\"ttgzfbis\"},\"name\":\"bkh\",\"type\":\"deyeamdphagalpbu\",\"id\":\"gipwhonowkg\"},{\"properties\":{\"suffix\":\"ankixzbinjeput\"},\"name\":\"rywn\",\"type\":\"oqftiyqzrnkcq\",\"id\":\"xlwhzlsicoh\"}],\"nextLink\":\"qnwvlrya\"}")
+            .toObject(StorageAccountInformationListResult.class);
     }
 
     @org.junit.jupiter.api.Test

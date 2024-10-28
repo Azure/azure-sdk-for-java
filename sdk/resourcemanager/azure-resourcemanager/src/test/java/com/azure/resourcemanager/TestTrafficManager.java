@@ -49,32 +49,33 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
         final String groupName = profiles.manager().resourceManager().internalContext().randomResourceName("rg", 10);
 
         final String pipName = profiles.manager().resourceManager().internalContext().randomResourceName("pip", 10);
-        final String pipDnsLabel = profiles.manager().resourceManager().internalContext().randomResourceName("contoso", 15);
+        final String pipDnsLabel
+            = profiles.manager().resourceManager().internalContext().randomResourceName("contoso", 15);
 
-        final String tmProfileName = profiles.manager().resourceManager().internalContext().randomResourceName("tm", 10);
+        final String tmProfileName
+            = profiles.manager().resourceManager().internalContext().randomResourceName("tm", 10);
         final String nestedTmProfileName = "nested" + tmProfileName;
 
-        final String tmProfileDnsLabel = profiles.manager().resourceManager().internalContext().randomResourceName("tmdns", 10);
+        final String tmProfileDnsLabel
+            = profiles.manager().resourceManager().internalContext().randomResourceName("tmdns", 10);
         final String nestedTmProfileDnsLabel = "nested" + tmProfileDnsLabel;
 
-        ResourceGroup.DefinitionStages.WithCreate rgCreatable =
-            profiles.manager().resourceManager().resourceGroups().define(groupName).withRegion(region);
+        ResourceGroup.DefinitionStages.WithCreate rgCreatable
+            = profiles.manager().resourceManager().resourceGroups().define(groupName).withRegion(region);
 
         // Creates a TM profile that will be used as a nested profile endpoint in parent TM profile
         //
-        TrafficManagerProfile nestedProfile =
-            profiles
-                .define(nestedTmProfileName)
-                .withNewResourceGroup(rgCreatable)
-                .withLeafDomainLabel(nestedTmProfileDnsLabel)
-                .withPriorityBasedRouting()
-                .defineExternalTargetEndpoint(externalEndpointName21)
-                .toFqdn("www.gitbook.com")
-                .fromRegion(Region.INDIA_CENTRAL)
-                .attach()
-                .withHttpsMonitoring()
-                .withTimeToLive(500)
-                .create();
+        TrafficManagerProfile nestedProfile = profiles.define(nestedTmProfileName)
+            .withNewResourceGroup(rgCreatable)
+            .withLeafDomainLabel(nestedTmProfileDnsLabel)
+            .withPriorityBasedRouting()
+            .defineExternalTargetEndpoint(externalEndpointName21)
+            .toFqdn("www.gitbook.com")
+            .fromRegion(Region.INDIA_CENTRAL)
+            .attach()
+            .withHttpsMonitoring()
+            .withTimeToLive(500)
+            .create();
 
         Assertions.assertTrue(nestedProfile.isEnabled());
         Assertions.assertNotNull(nestedProfile.monitorStatus());
@@ -88,29 +89,24 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
 
         // Creates a public ip to be used as an Azure endpoint
         //
-        PublicIpAddress publicIPAddress =
-            this
-                .publicIpAddresses
-                .define(pipName)
-                .withRegion(region)
-                .withNewResourceGroup(rgCreatable)
-                .withLeafDomainLabel(pipDnsLabel)
-                .create();
+        PublicIpAddress publicIPAddress = this.publicIpAddresses.define(pipName)
+            .withRegion(region)
+            .withNewResourceGroup(rgCreatable)
+            .withLeafDomainLabel(pipDnsLabel)
+            .create();
 
         Assertions.assertNotNull(publicIPAddress.fqdn());
         // Creates a TM profile
         //
 
         // bugfix
-        TrafficManagerProfile updatedProfile =
-            nestedProfile
-                .update()
-                .defineAzureTargetEndpoint(azureEndpointName)
-                .toResourceId(publicIPAddress.id())
-                .withTrafficDisabled()
-                .withRoutingPriority(11)
-                .attach()
-                .apply();
+        TrafficManagerProfile updatedProfile = nestedProfile.update()
+            .defineAzureTargetEndpoint(azureEndpointName)
+            .toResourceId(publicIPAddress.id())
+            .withTrafficDisabled()
+            .withRoutingPriority(11)
+            .attach()
+            .apply();
 
         Assertions.assertEquals(1, updatedProfile.azureEndpoints().size());
         Assertions.assertTrue(updatedProfile.azureEndpoints().containsKey(azureEndpointName));
@@ -137,37 +133,35 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
         Assertions.assertTrue(updatedProfileFromGet.externalEndpoints().containsKey(externalEndpointName21));
         // end of bugfix
 
-        TrafficManagerProfile profile =
-            profiles
-                .define(tmProfileName)
-                .withNewResourceGroup(rgCreatable)
-                .withLeafDomainLabel(tmProfileDnsLabel)
-                .withWeightBasedRouting()
-                .defineExternalTargetEndpoint(externalEndpointName21)
-                .toFqdn(externalFqdn21)
-                .fromRegion(Region.US_EAST)
-                .withRoutingPriority(1)
-                .withRoutingWeight(1)
-                .attach()
-                .defineExternalTargetEndpoint(externalEndpointName22)
-                .toFqdn(externalFqdn22)
-                .fromRegion(Region.US_EAST2)
-                .withRoutingPriority(2)
-                .withRoutingWeight(1)
-                .withTrafficDisabled()
-                .attach()
-                .defineAzureTargetEndpoint(azureEndpointName)
-                .toResourceId(publicIPAddress.id())
-                .withRoutingPriority(3)
-                .attach()
-                .defineNestedTargetEndpoint(nestedProfileEndpointName)
-                .toProfile(nestedProfile)
-                .fromRegion(Region.INDIA_CENTRAL)
-                .withMinimumEndpointsToEnableTraffic(1)
-                .withRoutingPriority(4)
-                .attach()
-                .withHttpMonitoring()
-                .create();
+        TrafficManagerProfile profile = profiles.define(tmProfileName)
+            .withNewResourceGroup(rgCreatable)
+            .withLeafDomainLabel(tmProfileDnsLabel)
+            .withWeightBasedRouting()
+            .defineExternalTargetEndpoint(externalEndpointName21)
+            .toFqdn(externalFqdn21)
+            .fromRegion(Region.US_EAST)
+            .withRoutingPriority(1)
+            .withRoutingWeight(1)
+            .attach()
+            .defineExternalTargetEndpoint(externalEndpointName22)
+            .toFqdn(externalFqdn22)
+            .fromRegion(Region.US_EAST2)
+            .withRoutingPriority(2)
+            .withRoutingWeight(1)
+            .withTrafficDisabled()
+            .attach()
+            .defineAzureTargetEndpoint(azureEndpointName)
+            .toResourceId(publicIPAddress.id())
+            .withRoutingPriority(3)
+            .attach()
+            .defineNestedTargetEndpoint(nestedProfileEndpointName)
+            .toProfile(nestedProfile)
+            .fromRegion(Region.INDIA_CENTRAL)
+            .withMinimumEndpointsToEnableTraffic(1)
+            .withRoutingPriority(4)
+            .attach()
+            .withHttpMonitoring()
+            .create();
 
         Assertions.assertTrue(profile.isEnabled());
         Assertions.assertNotNull(profile.monitorStatus());
@@ -244,8 +238,7 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
     public TrafficManagerProfile updateResource(TrafficManagerProfile profile) throws Exception {
         // Remove an endpoint, update two endpoints and add new one
         //
-        profile
-            .update()
+        profile.update()
             .withTimeToLive(600)
             .withHttpMonitoring(8080, "/")
             .withPerformanceBasedRouting()
@@ -313,8 +306,7 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
     @Override
     public void print(TrafficManagerProfile profile) {
         StringBuilder info = new StringBuilder();
-        info
-            .append("Traffic Manager Profile: ")
+        info.append("Traffic Manager Profile: ")
             .append(profile.id())
             .append("\n\tName: ")
             .append(profile.name())
@@ -346,8 +338,7 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
             info.append("\n\tAzure endpoints:");
             int idx = 1;
             for (TrafficManagerAzureEndpoint endpoint : azureEndpoints.values()) {
-                info
-                    .append("\n\t\tAzure endpoint: #")
+                info.append("\n\t\tAzure endpoint: #")
                     .append(idx++)
                     .append("\n\t\t\tId: ")
                     .append(endpoint.id())
@@ -358,8 +349,7 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
                 if (!isPlaybackMode) {
                     // targetResourceId sanitized
                     // The specified ID `Sanitized` is not a valid Azure resource ID
-                    info.append("\n\t\t\tTarget resourceType: ")
-                        .append(endpoint.targetResourceType());
+                    info.append("\n\t\t\tTarget resourceType: ").append(endpoint.targetResourceType());
                 }
                 info.append("\n\t\t\tMonitor status: ")
                     .append(endpoint.monitorStatus())
@@ -377,8 +367,7 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
             info.append("\n\tExternal endpoints:");
             int idx = 1;
             for (TrafficManagerExternalEndpoint endpoint : externalEndpoints.values()) {
-                info
-                    .append("\n\t\tExternal endpoint: #")
+                info.append("\n\t\tExternal endpoint: #")
                     .append(idx++)
                     .append("\n\t\t\tId: ")
                     .append(endpoint.id())
@@ -404,8 +393,7 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
             info.append("\n\tNested profile endpoints:");
             int idx = 1;
             for (TrafficManagerNestedProfileEndpoint endpoint : nestedProfileEndpoints.values()) {
-                info
-                    .append("\n\t\tNested profile endpoint: #")
+                info.append("\n\t\tNested profile endpoint: #")
                     .append(idx++)
                     .append("\n\t\t\tId: ")
                     .append(endpoint.id())

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.storagepool.models.ResourceSkuZoneDetails;
 public final class ResourceSkuZoneDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSkuZoneDetails model =
-            BinaryData
-                .fromString(
-                    "{\"name\":[\"zy\"],\"capabilities\":[{\"name\":\"mzsb\",\"value\":\"oggigrxwburv\"},{\"name\":\"xjnspy\",\"value\":\"tko\"},{\"name\":\"kouknvudwtiu\",\"value\":\"ldngkpoci\"},{\"name\":\"z\",\"value\":\"o\"}]}")
-                .toObject(ResourceSkuZoneDetails.class);
+        ResourceSkuZoneDetails model = BinaryData
+            .fromString("{\"name\":[\"plgmgsxnk\"],\"capabilities\":[{\"name\":\"es\",\"value\":\"vlopwiyighx\"}]}")
+            .toObject(ResourceSkuZoneDetails.class);
     }
 
     @org.junit.jupiter.api.Test
