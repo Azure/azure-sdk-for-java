@@ -58,32 +58,32 @@ public final class AccessConnectorsImpl implements AccessConnectors {
 
     public PagedIterable<AccessConnector> listByResourceGroup(String resourceGroupName) {
         PagedIterable<AccessConnectorInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new AccessConnectorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccessConnectorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AccessConnector> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<AccessConnectorInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new AccessConnectorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccessConnectorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AccessConnector> list() {
         PagedIterable<AccessConnectorInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AccessConnectorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccessConnectorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AccessConnector> list(Context context) {
         PagedIterable<AccessConnectorInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new AccessConnectorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccessConnectorImpl(inner1, this.manager()));
     }
 
     public AccessConnector getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String connectorName = Utils.getValueFromIdByName(id, "accessConnectors");
+        String connectorName = ResourceManagerUtils.getValueFromIdByName(id, "accessConnectors");
         if (connectorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accessConnectors'.", id)));
@@ -92,12 +92,12 @@ public final class AccessConnectorsImpl implements AccessConnectors {
     }
 
     public Response<AccessConnector> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String connectorName = Utils.getValueFromIdByName(id, "accessConnectors");
+        String connectorName = ResourceManagerUtils.getValueFromIdByName(id, "accessConnectors");
         if (connectorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accessConnectors'.", id)));
@@ -106,12 +106,12 @@ public final class AccessConnectorsImpl implements AccessConnectors {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String connectorName = Utils.getValueFromIdByName(id, "accessConnectors");
+        String connectorName = ResourceManagerUtils.getValueFromIdByName(id, "accessConnectors");
         if (connectorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accessConnectors'.", id)));
@@ -120,12 +120,12 @@ public final class AccessConnectorsImpl implements AccessConnectors {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String connectorName = Utils.getValueFromIdByName(id, "accessConnectors");
+        String connectorName = ResourceManagerUtils.getValueFromIdByName(id, "accessConnectors");
         if (connectorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accessConnectors'.", id)));
