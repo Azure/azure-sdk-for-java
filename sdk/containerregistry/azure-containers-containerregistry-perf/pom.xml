@@ -19,8 +19,6 @@
 
   <properties>
     <perf.test.mainClass>com.azure.containers.containerregistry.perf.App</perf.test.mainClass>
-
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

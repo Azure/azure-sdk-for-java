@@ -49,7 +49,6 @@
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-opens com.azure.ai.openai.assistants/com.azure.ai.openai.assistants=ALL-UNNAMED
      </javaModulesSurefireArgLine>
-    <spotless.skip>false</spotless.skip>
   </properties>
   <dependencies>
 

@@ -44,7 +44,6 @@
       --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.implementation=ALL-UNNAMED
       --add-opens com.azure.security.keyvault.keys/com.azure.security.keyvault.keys.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

@@ -18,7 +18,6 @@
 
   <properties>
     <perf.test.mainClass>com.azure.search.perf.App</perf.test.mainClass>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

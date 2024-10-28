@@ -39,8 +39,6 @@
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
       --add-opens com.azure.digitaltwins.core/com.azure.digitaltwins.core=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

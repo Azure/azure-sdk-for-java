@@ -21,7 +21,6 @@
     </javaModulesSurefireArgLine>
 
     <spotbugs.includeTests>true</spotbugs.includeTests>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <parent>

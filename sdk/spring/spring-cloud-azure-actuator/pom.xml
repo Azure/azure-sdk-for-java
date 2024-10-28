@@ -39,6 +39,7 @@
   <properties>
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
+    <spotless.skip>true</spotless.skip>
   </properties>
   <dependencies>
     <dependency>

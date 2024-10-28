@@ -52,7 +52,6 @@
     </javaModulesSurefireArgLine>
     <codesnippet.skip>false</codesnippet.skip>
     <doclintMissingInclusion>-</doclintMissingInclusion>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

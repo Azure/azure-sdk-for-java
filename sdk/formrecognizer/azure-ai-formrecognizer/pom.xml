@@ -41,7 +41,6 @@
       --add-opens com.azure.ai.formrecognizer/com.azure.ai.formrecognizer.documentanalysis.administration=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <graalvm.disable>false</graalvm.disable>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>
