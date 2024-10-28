@@ -16,8 +16,8 @@ public final class ResourceRateCardInfoImpl implements ResourceRateCardInfo {
 
     private final com.azure.resourcemanager.commerce.UsageManager serviceManager;
 
-    ResourceRateCardInfoImpl(
-        ResourceRateCardInfoInner innerObject, com.azure.resourcemanager.commerce.UsageManager serviceManager) {
+    ResourceRateCardInfoImpl(ResourceRateCardInfoInner innerObject,
+        com.azure.resourcemanager.commerce.UsageManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

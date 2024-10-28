@@ -38,8 +38,8 @@ public final class StorageConfiguration {
      * @param transportFileShareConfiguration the transportFileShareConfiguration value to set.
      * @return the StorageConfiguration object itself.
      */
-    public StorageConfiguration withTransportFileShareConfiguration(
-        FileShareConfiguration transportFileShareConfiguration) {
+    public StorageConfiguration
+        withTransportFileShareConfiguration(FileShareConfiguration transportFileShareConfiguration) {
         this.transportFileShareConfiguration = transportFileShareConfiguration;
         return this;
     }

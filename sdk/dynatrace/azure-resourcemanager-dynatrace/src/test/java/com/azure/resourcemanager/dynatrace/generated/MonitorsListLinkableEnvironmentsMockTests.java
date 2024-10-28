@@ -32,54 +32,38 @@ public final class MonitorsListLinkableEnvironmentsMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"environmentId\":\"bxzpuzycisp\",\"environmentName\":\"zahmgkbrpyydhibn\",\"planData\":{\"usageType\":\"kpikadrgvt\",\"billingCycle\":\"gnbuy\",\"planDetails\":\"ijggmebfsiar\",\"effectiveDate\":\"2021-08-14T22:49:32Z\"}}]}";
+        String responseStr
+            = "{\"value\":[{\"environmentId\":\"bxzpuzycisp\",\"environmentName\":\"zahmgkbrpyydhibn\",\"planData\":{\"usageType\":\"kpikadrgvt\",\"billingCycle\":\"gnbuy\",\"planDetails\":\"ijggmebfsiar\",\"effectiveDate\":\"2021-08-14T22:49:32Z\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DynatraceManager manager =
-            DynatraceManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DynatraceManager manager = DynatraceManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<LinkableEnvironmentResponse> response =
-            manager
-                .monitors()
-                .listLinkableEnvironments(
-                    "bgsncghkjeszzhb",
-                    "jhtxfvgxbfsmxne",
-                    new LinkableEnvironmentRequest()
-                        .withTenantId("mpvecxgodebfqk")
-                        .withUserPrincipal("rbmpukgri")
-                        .withRegion("flz"),
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<LinkableEnvironmentResponse> response = manager.monitors()
+            .listLinkableEnvironments("bgsncghkjeszzhb", "jhtxfvgxbfsmxne",
+                new LinkableEnvironmentRequest().withTenantId("mpvecxgodebfqk")
+                    .withUserPrincipal("rbmpukgri")
+                    .withRegion("flz"),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("bxzpuzycisp", response.iterator().next().environmentId());
         Assertions.assertEquals("zahmgkbrpyydhibn", response.iterator().next().environmentName());
         Assertions.assertEquals("kpikadrgvt", response.iterator().next().planData().usageType());
         Assertions.assertEquals("gnbuy", response.iterator().next().planData().billingCycle());
         Assertions.assertEquals("ijggmebfsiar", response.iterator().next().planData().planDetails());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-08-14T22:49:32Z"), response.iterator().next().planData().effectiveDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-14T22:49:32Z"),
+            response.iterator().next().planData().effectiveDate());
     }
 }

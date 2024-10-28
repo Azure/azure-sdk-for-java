@@ -142,9 +142,10 @@ import static com.azure.security.keyvault.keys.cryptography.implementation.Crypt
  * @see com.azure.security.keyvault.keys.cryptography
  * @see CryptographyClientBuilder
  */
-@ServiceClient(builder = CryptographyClientBuilder.class, isAsync = true,
-               serviceInterfaces = {KeyClientImpl.KeyClientService.class,
-                   SecretMinClientImpl.SecretMinClientService.class})
+@ServiceClient(
+    builder = CryptographyClientBuilder.class,
+    isAsync = true,
+    serviceInterfaces = { KeyClientImpl.KeyClientService.class, SecretMinClientImpl.SecretMinClientService.class })
 public class CryptographyAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(CryptographyAsyncClient.class);
 
@@ -166,7 +167,7 @@ public class CryptographyAsyncClient {
      * deferred to the service.
      */
     CryptographyAsyncClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version,
-                            boolean disableKeyCaching) {
+        boolean disableKeyCaching) {
         this.implClient = new CryptographyClientImpl(keyId, pipeline, version);
         this.keyId = keyId;
         this.pipeline = pipeline;
@@ -201,8 +202,8 @@ public class CryptographyAsyncClient {
         try {
             this.localKeyCryptographyClient = createLocalClient(jsonWebKey, null);
         } catch (RuntimeException e) {
-            throw LOGGER.logExceptionAsError(
-                new RuntimeException("Could not initialize local cryptography client.", e));
+            throw LOGGER
+                .logExceptionAsError(new RuntimeException("Could not initialize local cryptography client.", e));
         }
     }
 
@@ -882,25 +883,23 @@ public class CryptographyAsyncClient {
 
     private Mono<Boolean> isLocalClientAvailable() {
         if (!skipLocalClientCreation && localKeyCryptographyClient == null) {
-            return retrieveJwkAndCreateLocalAsyncClient(implClient)
-                .map(localClient -> {
-                    localKeyCryptographyClient = localClient;
+            return retrieveJwkAndCreateLocalAsyncClient(implClient).map(localClient -> {
+                localKeyCryptographyClient = localClient;
 
-                    return true;
-                })
-                .onErrorResume(t -> {
-                    if (isThrowableRetryable(t)) {
-                        LOGGER.log(LogLevel.VERBOSE, () -> "Could not set up local cryptography for this operation. "
-                            + "Defaulting to service-side cryptography.", t);
-                    } else {
-                        skipLocalClientCreation = true;
+                return true;
+            }).onErrorResume(t -> {
+                if (isThrowableRetryable(t)) {
+                    LOGGER.log(LogLevel.VERBOSE, () -> "Could not set up local cryptography for this operation. "
+                        + "Defaulting to service-side cryptography.", t);
+                } else {
+                    skipLocalClientCreation = true;
 
-                        LOGGER.log(LogLevel.VERBOSE, () -> "Could not set up local cryptography. Defaulting to"
-                            + "service-side cryptography for all operations.", t);
-                    }
+                    LOGGER.log(LogLevel.VERBOSE, () -> "Could not set up local cryptography. Defaulting to"
+                        + "service-side cryptography for all operations.", t);
+                }
 
-                    return Mono.just(false);
-                });
+                return Mono.just(false);
+            });
         }
 
         return Mono.just(localKeyCryptographyClient != null);

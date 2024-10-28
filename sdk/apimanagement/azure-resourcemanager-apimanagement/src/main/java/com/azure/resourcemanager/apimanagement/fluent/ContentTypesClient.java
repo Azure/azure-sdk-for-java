@@ -42,8 +42,8 @@ public interface ContentTypesClient {
      * @return paged list of content types as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ContentTypeContractInner> listByService(
-        String resourceGroupName, String serviceName, Context context);
+    PagedIterable<ContentTypeContractInner> listByService(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets the details of the developer portal's content type. Content types describe content items' properties,
@@ -59,8 +59,8 @@ public interface ContentTypesClient {
      * @return the details of the developer portal's content type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContentTypesGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String contentTypeId, Context context);
+    ContentTypesGetResponse getWithResponse(String resourceGroupName, String serviceName, String contentTypeId,
+        Context context);
 
     /**
      * Gets the details of the developer portal's content type. Content types describe content items' properties,
@@ -94,13 +94,8 @@ public interface ContentTypesClient {
      * @return content type contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContentTypesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String contentTypeId,
-        ContentTypeContractInner parameters,
-        String ifMatch,
-        Context context);
+    ContentTypesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String contentTypeId, ContentTypeContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or updates the developer portal's content type. Content types describe content items' properties,
@@ -117,8 +112,8 @@ public interface ContentTypesClient {
      * @return content type contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContentTypeContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String contentTypeId, ContentTypeContractInner parameters);
+    ContentTypeContractInner createOrUpdate(String resourceGroupName, String serviceName, String contentTypeId,
+        ContentTypeContractInner parameters);
 
     /**
      * Removes the specified developer portal's content type. Content types describe content items' properties,
@@ -137,8 +132,8 @@ public interface ContentTypesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String contentTypeId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String contentTypeId,
+        String ifMatch, Context context);
 
     /**
      * Removes the specified developer portal's content type. Content types describe content items' properties,

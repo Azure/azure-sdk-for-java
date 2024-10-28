@@ -90,11 +90,13 @@ public interface WorkloadGroup {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The WorkloadGroup definition stages. */
     interface DefinitionStages {
         /** The first stage of the WorkloadGroup definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the WorkloadGroup definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -107,17 +109,14 @@ public interface WorkloadGroup {
              */
             WithCreate withExistingSqlPool(String resourceGroupName, String workspaceName, String sqlPoolName);
         }
+
         /**
          * The stage of the WorkloadGroup definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithMinResourcePercent,
-                DefinitionStages.WithMaxResourcePercent,
-                DefinitionStages.WithMinResourcePercentPerRequest,
-                DefinitionStages.WithMaxResourcePercentPerRequest,
-                DefinitionStages.WithImportance,
-                DefinitionStages.WithQueryExecutionTimeout {
+        interface WithCreate extends DefinitionStages.WithMinResourcePercent, DefinitionStages.WithMaxResourcePercent,
+            DefinitionStages.WithMinResourcePercentPerRequest, DefinitionStages.WithMaxResourcePercentPerRequest,
+            DefinitionStages.WithImportance, DefinitionStages.WithQueryExecutionTimeout {
             /**
              * Executes the create request.
              *
@@ -133,6 +132,7 @@ public interface WorkloadGroup {
              */
             WorkloadGroup create(Context context);
         }
+
         /** The stage of the WorkloadGroup definition allowing to specify minResourcePercent. */
         interface WithMinResourcePercent {
             /**
@@ -143,6 +143,7 @@ public interface WorkloadGroup {
              */
             WithCreate withMinResourcePercent(int minResourcePercent);
         }
+
         /** The stage of the WorkloadGroup definition allowing to specify maxResourcePercent. */
         interface WithMaxResourcePercent {
             /**
@@ -153,6 +154,7 @@ public interface WorkloadGroup {
              */
             WithCreate withMaxResourcePercent(int maxResourcePercent);
         }
+
         /** The stage of the WorkloadGroup definition allowing to specify minResourcePercentPerRequest. */
         interface WithMinResourcePercentPerRequest {
             /**
@@ -164,6 +166,7 @@ public interface WorkloadGroup {
              */
             WithCreate withMinResourcePercentPerRequest(double minResourcePercentPerRequest);
         }
+
         /** The stage of the WorkloadGroup definition allowing to specify maxResourcePercentPerRequest. */
         interface WithMaxResourcePercentPerRequest {
             /**
@@ -175,6 +178,7 @@ public interface WorkloadGroup {
              */
             WithCreate withMaxResourcePercentPerRequest(Double maxResourcePercentPerRequest);
         }
+
         /** The stage of the WorkloadGroup definition allowing to specify importance. */
         interface WithImportance {
             /**
@@ -185,6 +189,7 @@ public interface WorkloadGroup {
              */
             WithCreate withImportance(String importance);
         }
+
         /** The stage of the WorkloadGroup definition allowing to specify queryExecutionTimeout. */
         interface WithQueryExecutionTimeout {
             /**
@@ -196,6 +201,7 @@ public interface WorkloadGroup {
             WithCreate withQueryExecutionTimeout(Integer queryExecutionTimeout);
         }
     }
+
     /**
      * Begins update for the WorkloadGroup resource.
      *
@@ -204,13 +210,9 @@ public interface WorkloadGroup {
     WorkloadGroup.Update update();
 
     /** The template for WorkloadGroup update. */
-    interface Update
-        extends UpdateStages.WithMinResourcePercent,
-            UpdateStages.WithMaxResourcePercent,
-            UpdateStages.WithMinResourcePercentPerRequest,
-            UpdateStages.WithMaxResourcePercentPerRequest,
-            UpdateStages.WithImportance,
-            UpdateStages.WithQueryExecutionTimeout {
+    interface Update extends UpdateStages.WithMinResourcePercent, UpdateStages.WithMaxResourcePercent,
+        UpdateStages.WithMinResourcePercentPerRequest, UpdateStages.WithMaxResourcePercentPerRequest,
+        UpdateStages.WithImportance, UpdateStages.WithQueryExecutionTimeout {
         /**
          * Executes the update request.
          *
@@ -226,6 +228,7 @@ public interface WorkloadGroup {
          */
         WorkloadGroup apply(Context context);
     }
+
     /** The WorkloadGroup update stages. */
     interface UpdateStages {
         /** The stage of the WorkloadGroup update allowing to specify minResourcePercent. */
@@ -238,6 +241,7 @@ public interface WorkloadGroup {
              */
             Update withMinResourcePercent(int minResourcePercent);
         }
+
         /** The stage of the WorkloadGroup update allowing to specify maxResourcePercent. */
         interface WithMaxResourcePercent {
             /**
@@ -248,6 +252,7 @@ public interface WorkloadGroup {
              */
             Update withMaxResourcePercent(int maxResourcePercent);
         }
+
         /** The stage of the WorkloadGroup update allowing to specify minResourcePercentPerRequest. */
         interface WithMinResourcePercentPerRequest {
             /**
@@ -259,6 +264,7 @@ public interface WorkloadGroup {
              */
             Update withMinResourcePercentPerRequest(double minResourcePercentPerRequest);
         }
+
         /** The stage of the WorkloadGroup update allowing to specify maxResourcePercentPerRequest. */
         interface WithMaxResourcePercentPerRequest {
             /**
@@ -270,6 +276,7 @@ public interface WorkloadGroup {
              */
             Update withMaxResourcePercentPerRequest(Double maxResourcePercentPerRequest);
         }
+
         /** The stage of the WorkloadGroup update allowing to specify importance. */
         interface WithImportance {
             /**
@@ -280,6 +287,7 @@ public interface WorkloadGroup {
              */
             Update withImportance(String importance);
         }
+
         /** The stage of the WorkloadGroup update allowing to specify queryExecutionTimeout. */
         interface WithQueryExecutionTimeout {
             /**
@@ -291,6 +299,7 @@ public interface WorkloadGroup {
             Update withQueryExecutionTimeout(Integer queryExecutionTimeout);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

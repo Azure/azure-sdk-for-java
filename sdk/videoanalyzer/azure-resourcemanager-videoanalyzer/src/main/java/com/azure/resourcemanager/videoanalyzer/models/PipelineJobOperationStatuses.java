@@ -21,8 +21,8 @@ public interface PipelineJobOperationStatuses {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operation status of a pipeline job with the given operationId.
      */
-    PipelineJobOperationStatus get(
-        String resourceGroupName, String accountName, String pipelineJobName, String operationId);
+    PipelineJobOperationStatus get(String resourceGroupName, String accountName, String pipelineJobName,
+        String operationId);
 
     /**
      * Get the operation status of a pipeline job with the given operationId.
@@ -37,6 +37,6 @@ public interface PipelineJobOperationStatuses {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operation status of a pipeline job with the given operationId along with {@link Response}.
      */
-    Response<PipelineJobOperationStatus> getWithResponse(
-        String resourceGroupName, String accountName, String pipelineJobName, String operationId, Context context);
+    Response<PipelineJobOperationStatus> getWithResponse(String resourceGroupName, String accountName,
+        String pipelineJobName, String operationId, Context context);
 }

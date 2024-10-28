@@ -48,12 +48,14 @@ public final class CloudHsmClustersGetByResourceGroupWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure().withHttpClient(httpClient)
+        HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CloudHsmCluster response = manager.cloudHsmClusters()
-            .getByResourceGroupWithResponse("tx", "tcs", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("tx", "tcs", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("rxxle", response.location());
         Assertions.assertEquals("amxjezwlw", response.tags().get("wxuqlcvydypatdoo"));

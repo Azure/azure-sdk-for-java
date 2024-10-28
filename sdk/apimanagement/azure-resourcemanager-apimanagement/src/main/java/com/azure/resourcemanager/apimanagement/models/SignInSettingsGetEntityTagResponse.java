@@ -19,11 +19,7 @@ public final class SignInSettingsGetEntityTagResponse extends ResponseBase<SignI
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public SignInSettingsGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
+    public SignInSettingsGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
         SignInSettingsGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

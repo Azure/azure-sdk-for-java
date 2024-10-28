@@ -41,8 +41,8 @@ public interface NotificationsClient {
      * @return paged Notification list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NotificationContractInner> listByService(
-        String resourceGroupName, String serviceName, Integer top, Integer skip, Context context);
+    PagedIterable<NotificationContractInner> listByService(String resourceGroupName, String serviceName, Integer top,
+        Integer skip, Context context);
 
     /**
      * Gets the details of the Notification specified by its identifier.
@@ -57,8 +57,8 @@ public interface NotificationsClient {
      * @return the details of the Notification specified by its identifier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotificationContractInner> getWithResponse(
-        String resourceGroupName, String serviceName, NotificationName notificationName, Context context);
+    Response<NotificationContractInner> getWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, Context context);
 
     /**
      * Gets the details of the Notification specified by its identifier.
@@ -88,12 +88,8 @@ public interface NotificationsClient {
      * @return notification details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NotificationContractInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        NotificationName notificationName,
-        String ifMatch,
-        Context context);
+    Response<NotificationContractInner> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String ifMatch, Context context);
 
     /**
      * Create or Update API Management publisher notification.
@@ -107,6 +103,6 @@ public interface NotificationsClient {
      * @return notification details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NotificationContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, NotificationName notificationName);
+    NotificationContractInner createOrUpdate(String resourceGroupName, String serviceName,
+        NotificationName notificationName);
 }

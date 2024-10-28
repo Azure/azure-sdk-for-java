@@ -15,13 +15,8 @@ import com.azure.resourcemanager.eventhubs.models.EventHubs;
 /**
  * Implementation for {@link EventHubNamespaces}.
  */
-public final class EventHubNamespacesImpl
-    extends TopLevelModifiableResourcesImpl<
-        EventHubNamespace,
-        EventHubNamespaceImpl,
-        EHNamespaceInner,
-        NamespacesClient,
-    EventHubsManager>
+public final class EventHubNamespacesImpl extends
+    TopLevelModifiableResourcesImpl<EventHubNamespace, EventHubNamespaceImpl, EHNamespaceInner, NamespacesClient, EventHubsManager>
     implements EventHubNamespaces {
 
     public EventHubNamespacesImpl(EventHubsManager manager) {

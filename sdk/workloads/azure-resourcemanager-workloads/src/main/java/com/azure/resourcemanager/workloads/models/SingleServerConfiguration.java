@@ -133,8 +133,8 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the SingleServerConfiguration object itself.
      */
-    public SingleServerConfiguration withVirtualMachineConfiguration(
-        VirtualMachineConfiguration virtualMachineConfiguration) {
+    public SingleServerConfiguration
+        withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
         return this;
     }
@@ -200,16 +200,12 @@ public final class SingleServerConfiguration extends InfrastructureConfiguration
             networkConfiguration().validate();
         }
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subnetId in model SingleServerConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property subnetId in model SingleServerConfiguration"));
         }
         if (virtualMachineConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property virtualMachineConfiguration in model SingleServerConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property virtualMachineConfiguration in model SingleServerConfiguration"));
         } else {
             virtualMachineConfiguration().validate();
         }

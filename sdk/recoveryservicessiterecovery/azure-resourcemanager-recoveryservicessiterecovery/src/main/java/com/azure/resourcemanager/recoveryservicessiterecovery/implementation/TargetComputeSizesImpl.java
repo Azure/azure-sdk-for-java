@@ -28,16 +28,18 @@ public final class TargetComputeSizesImpl implements TargetComputeSizes {
     public PagedIterable<TargetComputeSize> listByReplicationProtectedItems(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName) {
-        PagedIterable<TargetComputeSizeInner> inner = this.serviceClient().listByReplicationProtectedItems(resourceName,
-            resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName);
+        PagedIterable<TargetComputeSizeInner> inner = this.serviceClient()
+            .listByReplicationProtectedItems(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new TargetComputeSizeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<TargetComputeSize> listByReplicationProtectedItems(String resourceName,
         String resourceGroupName, String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         Context context) {
-        PagedIterable<TargetComputeSizeInner> inner = this.serviceClient().listByReplicationProtectedItems(resourceName,
-            resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName, context);
+        PagedIterable<TargetComputeSizeInner> inner = this.serviceClient()
+            .listByReplicationProtectedItems(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                replicatedProtectedItemName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new TargetComputeSizeImpl(inner1, this.manager()));
     }
 

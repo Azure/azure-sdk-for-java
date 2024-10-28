@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The properties of a database. */
 @Fluent
 public final class DatabaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DatabaseProperties.class);
 
     /*
      * The charset of the database.

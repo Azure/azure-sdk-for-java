@@ -15,10 +15,8 @@ import java.util.Map;
 
 /** Route filter. */
 @Fluent
-public interface RouteFilter
-    extends GroupableResource<NetworkManager, RouteFilterInner>,
-        Refreshable<RouteFilter>,
-        Updatable<RouteFilter.Update> {
+public interface RouteFilter extends GroupableResource<NetworkManager, RouteFilterInner>, Refreshable<RouteFilter>,
+    Updatable<RouteFilter.Update> {
     /** @return rules associated with this route filter, indexed by their names */
     Map<String, RouteFilterRule> rules();
 

@@ -15,20 +15,16 @@ import org.junit.jupiter.api.Assertions;
 public final class UserAssignedServiceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedServiceIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"None\",\"userAssignedIdentities\":{\"eho\":{\"principalId\":\"4ced0614-bd0a-47f5-b199-355f5f357d7f\",\"clientId\":\"ba48814b-9176-46af-8c04-be04ce3edb9d\"}}}")
-                .toObject(UserAssignedServiceIdentity.class);
+        UserAssignedServiceIdentity model = BinaryData.fromString(
+            "{\"type\":\"None\",\"userAssignedIdentities\":{\"eho\":{\"principalId\":\"4ced0614-bd0a-47f5-b199-355f5f357d7f\",\"clientId\":\"ba48814b-9176-46af-8c04-be04ce3edb9d\"}}}")
+            .toObject(UserAssignedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserAssignedServiceIdentity model =
-            new UserAssignedServiceIdentity()
-                .withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("eho", new UserAssignedIdentity()));
+        UserAssignedServiceIdentity model = new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+            .withUserAssignedIdentities(mapOf("eho", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(UserAssignedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
     }

@@ -41,9 +41,10 @@ public final class ManagedPrivateEndpointsDeleteMockTests {
             return Mono.just(httpResponse);
         }));
 
-        DashboardManager manager = DashboardManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        DashboardManager manager = DashboardManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.managedPrivateEndpoints().delete("urqhaka", "hashsfwxosow", "xcug", com.azure.core.util.Context.NONE);
 

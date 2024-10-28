@@ -31,39 +31,27 @@ public final class AnnotationsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"AnnotationName\":\"qunyowxwlmdjr\",\"Category\":\"fgbvfvpdbo\",\"EventTime\":\"2021-12-02T21:38:46Z\",\"Id\":\"zsjqlh\",\"Properties\":\"r\",\"RelatedAnnotation\":\"deibqip\"}]}";
+        String responseStr
+            = "{\"value\":[{\"AnnotationName\":\"qunyowxwlmdjr\",\"Category\":\"fgbvfvpdbo\",\"EventTime\":\"2021-12-02T21:38:46Z\",\"Id\":\"zsjqlh\",\"Properties\":\"r\",\"RelatedAnnotation\":\"deibqip\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApplicationInsightsManager manager =
-            ApplicationInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Annotation> response =
-            manager
-                .annotations()
-                .list("ykhevxccedcpnmdy", "dnwzxltjcvnhltiu", "cxnavv", "xqi", com.azure.core.util.Context.NONE);
+        PagedIterable<Annotation> response = manager.annotations()
+            .list("ykhevxccedcpnmdy", "dnwzxltjcvnhltiu", "cxnavv", "xqi", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("qunyowxwlmdjr", response.iterator().next().annotationName());
         Assertions.assertEquals("fgbvfvpdbo", response.iterator().next().category());

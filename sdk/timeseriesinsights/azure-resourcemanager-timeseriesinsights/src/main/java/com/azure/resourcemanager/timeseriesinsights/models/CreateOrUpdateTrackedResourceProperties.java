@@ -77,10 +77,8 @@ public class CreateOrUpdateTrackedResourceProperties {
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model CreateOrUpdateTrackedResourceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property location in model CreateOrUpdateTrackedResourceProperties"));
         }
     }
 

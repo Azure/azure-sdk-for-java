@@ -20,12 +20,8 @@ public final class AuthorizationServersGetEntityTagResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public AuthorizationServersGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
-        AuthorizationServersGetEntityTagHeaders headers) {
+    public AuthorizationServersGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        Void value, AuthorizationServersGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

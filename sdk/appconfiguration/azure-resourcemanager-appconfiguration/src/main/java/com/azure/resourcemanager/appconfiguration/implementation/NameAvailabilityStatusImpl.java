@@ -12,8 +12,7 @@ public final class NameAvailabilityStatusImpl implements NameAvailabilityStatus 
 
     private final com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager;
 
-    NameAvailabilityStatusImpl(
-        NameAvailabilityStatusInner innerObject,
+    NameAvailabilityStatusImpl(NameAvailabilityStatusInner innerObject,
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

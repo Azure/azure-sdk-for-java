@@ -14,12 +14,12 @@ public final class VMwareToAzureMigrateResyncState extends ExpandableStringEnum<
     public static final VMwareToAzureMigrateResyncState NONE = fromString("None");
 
     /** Static value PreparedForResynchronization for VMwareToAzureMigrateResyncState. */
-    public static final VMwareToAzureMigrateResyncState PREPARED_FOR_RESYNCHRONIZATION =
-        fromString("PreparedForResynchronization");
+    public static final VMwareToAzureMigrateResyncState PREPARED_FOR_RESYNCHRONIZATION
+        = fromString("PreparedForResynchronization");
 
     /** Static value StartedResynchronization for VMwareToAzureMigrateResyncState. */
-    public static final VMwareToAzureMigrateResyncState STARTED_RESYNCHRONIZATION =
-        fromString("StartedResynchronization");
+    public static final VMwareToAzureMigrateResyncState STARTED_RESYNCHRONIZATION
+        = fromString("StartedResynchronization");
 
     /**
      * Creates a new instance of VMwareToAzureMigrateResyncState value.

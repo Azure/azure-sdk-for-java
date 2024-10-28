@@ -19,7 +19,6 @@ import com.azure.communication.common.UnknownIdentifier;
 import java.util.ArrayList;
 import java.util.Objects;
 
-
 public class CommunicationIdentifierConverter {
     /**
      * Convert CommunicationIdentifierModel into CommunicationIdentifier
@@ -47,9 +46,9 @@ public class CommunicationIdentifierConverter {
             Objects.requireNonNull(teamsUserIdentifierModel.getCloud());
             Objects.requireNonNull(rawId);
             return new MicrosoftTeamsUserIdentifier(teamsUserIdentifierModel.getUserId(),
-                teamsUserIdentifierModel.isAnonymous())
-                .setRawId(rawId)
-                .setCloudEnvironment(CommunicationCloudEnvironment.fromString(teamsUserIdentifierModel.getCloud().toString()));
+                teamsUserIdentifierModel.isAnonymous()).setRawId(rawId)
+                    .setCloudEnvironment(
+                        CommunicationCloudEnvironment.fromString(teamsUserIdentifierModel.getCloud().toString()));
         }
 
         Objects.requireNonNull(rawId);
@@ -73,8 +72,8 @@ public class CommunicationIdentifierConverter {
         }
 
         if (presentProperties.size() > 1) {
-            throw new IllegalArgumentException(String.format("Only one of the identifier models in %s should be present.",
-                String.join(", ", presentProperties)));
+            throw new IllegalArgumentException(String.format(
+                "Only one of the identifier models in %s should be present.", String.join(", ", presentProperties)));
         }
     }
 
@@ -89,35 +88,32 @@ public class CommunicationIdentifierConverter {
         throws IllegalArgumentException {
 
         if (identifier instanceof CommunicationUserIdentifier) {
-            return new CommunicationIdentifierModel()
-                .setCommunicationUser(
-                    new CommunicationUserIdentifierModel().setId(((CommunicationUserIdentifier) identifier).getId()));
+            return new CommunicationIdentifierModel().setCommunicationUser(
+                new CommunicationUserIdentifierModel().setId(((CommunicationUserIdentifier) identifier).getId()));
         }
 
         if (identifier instanceof PhoneNumberIdentifier) {
             PhoneNumberIdentifier phoneNumberIdentifier = (PhoneNumberIdentifier) identifier;
-            return new CommunicationIdentifierModel()
-                .setRawId(phoneNumberIdentifier.getRawId())
+            return new CommunicationIdentifierModel().setRawId(phoneNumberIdentifier.getRawId())
                 .setPhoneNumber(new PhoneNumberIdentifierModel().setValue(phoneNumberIdentifier.getPhoneNumber()));
         }
 
         if (identifier instanceof MicrosoftTeamsUserIdentifier) {
             MicrosoftTeamsUserIdentifier teamsUserIdentifier = (MicrosoftTeamsUserIdentifier) identifier;
-            return new CommunicationIdentifierModel()
-                .setRawId(teamsUserIdentifier.getRawId())
-                .setMicrosoftTeamsUser(new MicrosoftTeamsUserIdentifierModel()
-                    .setIsAnonymous(teamsUserIdentifier.isAnonymous())
-                    .setUserId(teamsUserIdentifier.getUserId())
-                    .setCloud(CommunicationCloudEnvironmentModel.fromString(
-                        teamsUserIdentifier.getCloudEnvironment().toString())));
+            return new CommunicationIdentifierModel().setRawId(teamsUserIdentifier.getRawId())
+                .setMicrosoftTeamsUser(
+                    new MicrosoftTeamsUserIdentifierModel().setIsAnonymous(teamsUserIdentifier.isAnonymous())
+                        .setUserId(teamsUserIdentifier.getUserId())
+                        .setCloud(CommunicationCloudEnvironmentModel
+                            .fromString(teamsUserIdentifier.getCloudEnvironment().toString())));
         }
 
         if (identifier instanceof UnknownIdentifier) {
-            return new CommunicationIdentifierModel()
-                .setRawId(((UnknownIdentifier) identifier).getId());
+            return new CommunicationIdentifierModel().setRawId(((UnknownIdentifier) identifier).getId());
         }
 
-        throw new IllegalArgumentException(String.format("Unknown identifier class '%s'", identifier.getClass().getName()));
+        throw new IllegalArgumentException(
+            String.format("Unknown identifier class '%s'", identifier.getClass().getName()));
     }
 
 }

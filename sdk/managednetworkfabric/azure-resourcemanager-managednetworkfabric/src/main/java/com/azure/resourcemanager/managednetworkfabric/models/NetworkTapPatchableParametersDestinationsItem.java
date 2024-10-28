@@ -36,8 +36,8 @@ public final class NetworkTapPatchableParametersDestinationsItem extends Destina
 
     /** {@inheritDoc} */
     @Override
-    public NetworkTapPatchableParametersDestinationsItem withIsolationDomainProperties(
-        IsolationDomainProperties isolationDomainProperties) {
+    public NetworkTapPatchableParametersDestinationsItem
+        withIsolationDomainProperties(IsolationDomainProperties isolationDomainProperties) {
         super.withIsolationDomainProperties(isolationDomainProperties);
         return this;
     }

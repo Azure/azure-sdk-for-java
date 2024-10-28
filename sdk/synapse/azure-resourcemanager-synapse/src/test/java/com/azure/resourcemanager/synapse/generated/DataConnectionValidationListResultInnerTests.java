@@ -13,25 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DataConnectionValidationListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataConnectionValidationListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"errorMessage\":\"mrrqmbzmqkratb\"},{\"errorMessage\":\"wbjsidbirkf\"},{\"errorMessage\":\"sokdgoge\"},{\"errorMessage\":\"jymrhbg\"}]}")
-                .toObject(DataConnectionValidationListResultInner.class);
+        DataConnectionValidationListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"errorMessage\":\"mrrqmbzmqkratb\"},{\"errorMessage\":\"wbjsidbirkf\"},{\"errorMessage\":\"sokdgoge\"},{\"errorMessage\":\"jymrhbg\"}]}")
+            .toObject(DataConnectionValidationListResultInner.class);
         Assertions.assertEquals("mrrqmbzmqkratb", model.value().get(0).errorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataConnectionValidationListResultInner model =
-            new DataConnectionValidationListResultInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DataConnectionValidationResult().withErrorMessage("mrrqmbzmqkratb"),
-                            new DataConnectionValidationResult().withErrorMessage("wbjsidbirkf"),
-                            new DataConnectionValidationResult().withErrorMessage("sokdgoge"),
-                            new DataConnectionValidationResult().withErrorMessage("jymrhbg")));
+        DataConnectionValidationListResultInner model = new DataConnectionValidationListResultInner()
+            .withValue(Arrays.asList(new DataConnectionValidationResult().withErrorMessage("mrrqmbzmqkratb"),
+                new DataConnectionValidationResult().withErrorMessage("wbjsidbirkf"),
+                new DataConnectionValidationResult().withErrorMessage("sokdgoge"),
+                new DataConnectionValidationResult().withErrorMessage("jymrhbg")));
         model = BinaryData.fromObject(model).toObject(DataConnectionValidationListResultInner.class);
         Assertions.assertEquals("mrrqmbzmqkratb", model.value().get(0).errorMessage());
     }

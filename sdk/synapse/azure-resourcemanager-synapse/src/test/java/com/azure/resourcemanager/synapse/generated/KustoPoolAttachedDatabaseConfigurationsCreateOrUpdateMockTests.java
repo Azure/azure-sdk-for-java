@@ -33,53 +33,39 @@ public final class KustoPoolAttachedDatabaseConfigurationsCreateOrUpdateMockTest
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"location\":\"frbzakp\",\"properties\":{\"provisioningState\":\"Succeeded\",\"databaseName\":\"raqp\",\"clusterResourceId\":\"jpsucmxi\",\"attachedDatabaseNames\":[\"qxynqj\",\"satkyvscb\",\"ngcrusxhircpgcvs\",\"kkjbjolpy\"],\"defaultPrincipalsModificationKind\":\"Union\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[],\"tablesToExclude\":[],\"externalTablesToInclude\":[],\"externalTablesToExclude\":[],\"materializedViewsToInclude\":[],\"materializedViewsToExclude\":[]}},\"id\":\"vhmlieoi\",\"name\":\"owxxbh\",\"type\":\"psyioqemqwtqszzg\"}";
+        String responseStr
+            = "{\"location\":\"frbzakp\",\"properties\":{\"provisioningState\":\"Succeeded\",\"databaseName\":\"raqp\",\"clusterResourceId\":\"jpsucmxi\",\"attachedDatabaseNames\":[\"qxynqj\",\"satkyvscb\",\"ngcrusxhircpgcvs\",\"kkjbjolpy\"],\"defaultPrincipalsModificationKind\":\"Union\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[],\"tablesToExclude\":[],\"externalTablesToInclude\":[],\"externalTablesToExclude\":[],\"materializedViewsToInclude\":[],\"materializedViewsToExclude\":[]}},\"id\":\"vhmlieoi\",\"name\":\"owxxbh\",\"type\":\"psyioqemqwtqszzg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AttachedDatabaseConfiguration response =
-            manager
-                .kustoPoolAttachedDatabaseConfigurations()
-                .define("kpkpkocmacc")
-                .withExistingKustoPool("lhqvbk", "rbpyhssrl", "bxxo")
-                .withRegion("icyvspeslh")
-                .withDatabaseName("gvrccpu")
-                .withKustoPoolResourceId("ddhgajkrdyd")
-                .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.UNION)
-                .withTableLevelSharingProperties(
-                    new TableLevelSharingProperties()
-                        .withTablesToInclude(Arrays.asList())
-                        .withTablesToExclude(Arrays.asList())
-                        .withExternalTablesToInclude(Arrays.asList())
-                        .withExternalTablesToExclude(Arrays.asList())
-                        .withMaterializedViewsToInclude(Arrays.asList())
-                        .withMaterializedViewsToExclude(Arrays.asList()))
-                .create();
+        AttachedDatabaseConfiguration response = manager.kustoPoolAttachedDatabaseConfigurations()
+            .define("kpkpkocmacc")
+            .withExistingKustoPool("lhqvbk", "rbpyhssrl", "bxxo")
+            .withRegion("icyvspeslh")
+            .withDatabaseName("gvrccpu")
+            .withKustoPoolResourceId("ddhgajkrdyd")
+            .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.UNION)
+            .withTableLevelSharingProperties(new TableLevelSharingProperties().withTablesToInclude(Arrays.asList())
+                .withTablesToExclude(Arrays.asList())
+                .withExternalTablesToInclude(Arrays.asList())
+                .withExternalTablesToExclude(Arrays.asList())
+                .withMaterializedViewsToInclude(Arrays.asList())
+                .withMaterializedViewsToExclude(Arrays.asList()))
+            .create();
 
         Assertions.assertEquals("frbzakp", response.location());
         Assertions.assertEquals("raqp", response.databaseName());

@@ -302,10 +302,8 @@ public final class EventHubEventSourceResource extends EventSourceResourceInner 
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model EventHubEventSourceResource"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model EventHubEventSourceResource"));
         } else {
             innerProperties().validate();
         }

@@ -30,8 +30,7 @@ class ImageAnalysisOptionsTest {
         List<Double> aspectRatios = Arrays.asList(0.9, 1.33);
         String modelVersion = "latest";
 
-        ImageAnalysisOptions options = new ImageAnalysisOptions()
-            .setLanguage(language)
+        ImageAnalysisOptions options = new ImageAnalysisOptions().setLanguage(language)
             .setGenderNeutralCaption(genderNeutralCaption)
             .setSmartCropsAspectRatios(aspectRatios)
             .setModelVersion(modelVersion);
@@ -48,9 +47,8 @@ class ImageAnalysisOptionsTest {
         Boolean genderNeutralCaption = true;
         String language = "de";
 
-        ImageAnalysisOptions options = new ImageAnalysisOptions()
-            .setLanguage(language)
-            .setGenderNeutralCaption(genderNeutralCaption);
+        ImageAnalysisOptions options
+            = new ImageAnalysisOptions().setLanguage(language).setGenderNeutralCaption(genderNeutralCaption);
 
         assert options.getSmartCropsAspectRatios() == null;
         assert options.getLanguage() == language;

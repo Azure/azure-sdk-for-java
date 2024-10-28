@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.eventhubs.models;
 
-
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -20,17 +19,11 @@ import com.azure.resourcemanager.eventhubs.EventHubsManager;
  * Entry point to manage EventHub namespaces.
  */
 @Fluent
-public interface EventHubNamespaces extends
-    SupportsCreating<EventHubNamespace.DefinitionStages.Blank>,
-    SupportsListing<EventHubNamespace>,
-    SupportsListingByResourceGroup<EventHubNamespace>,
-    SupportsGettingByResourceGroup<EventHubNamespace>,
-    SupportsGettingById<EventHubNamespace>,
-    SupportsDeletingById,
-    SupportsDeletingByResourceGroup,
-    SupportsBatchCreation<EventHubNamespace>,
-    SupportsBatchDeletion,
-    HasManager<EventHubsManager> {
+public interface EventHubNamespaces
+    extends SupportsCreating<EventHubNamespace.DefinitionStages.Blank>, SupportsListing<EventHubNamespace>,
+    SupportsListingByResourceGroup<EventHubNamespace>, SupportsGettingByResourceGroup<EventHubNamespace>,
+    SupportsGettingById<EventHubNamespace>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<EventHubNamespace>, SupportsBatchDeletion, HasManager<EventHubsManager> {
     /**
      * @return entry point to manage authorization rules of event hub namespaces.
      */

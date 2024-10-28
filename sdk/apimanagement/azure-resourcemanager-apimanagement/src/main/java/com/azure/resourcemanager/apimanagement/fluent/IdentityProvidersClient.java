@@ -49,8 +49,8 @@ public interface IdentityProvidersClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IdentityProviderContractInner> listByService(
-        String resourceGroupName, String serviceName, Context context);
+    PagedIterable<IdentityProviderContractInner> listByService(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the identityProvider specified by its identifier.
@@ -65,8 +65,8 @@ public interface IdentityProvidersClient {
      * @return the entity state (Etag) version of the identityProvider specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IdentityProvidersGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, Context context);
+    IdentityProvidersGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        IdentityProviderType identityProviderName, Context context);
 
     /**
      * Gets the entity state (Etag) version of the identityProvider specified by its identifier.
@@ -94,8 +94,8 @@ public interface IdentityProvidersClient {
      * @return the configuration details of the identity Provider configured in specified service instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IdentityProvidersGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, Context context);
+    IdentityProvidersGetResponse getWithResponse(String resourceGroupName, String serviceName,
+        IdentityProviderType identityProviderName, Context context);
 
     /**
      * Gets the configuration details of the identity Provider configured in specified service instance.
@@ -109,8 +109,8 @@ public interface IdentityProvidersClient {
      * @return the configuration details of the identity Provider configured in specified service instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IdentityProviderContractInner get(
-        String resourceGroupName, String serviceName, IdentityProviderType identityProviderName);
+    IdentityProviderContractInner get(String resourceGroupName, String serviceName,
+        IdentityProviderType identityProviderName);
 
     /**
      * Creates or Updates the IdentityProvider configuration.
@@ -127,12 +127,8 @@ public interface IdentityProvidersClient {
      * @return identity Provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IdentityProvidersCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        IdentityProviderType identityProviderName,
-        IdentityProviderCreateContract parameters,
-        String ifMatch,
+    IdentityProvidersCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        IdentityProviderType identityProviderName, IdentityProviderCreateContract parameters, String ifMatch,
         Context context);
 
     /**
@@ -148,11 +144,8 @@ public interface IdentityProvidersClient {
      * @return identity Provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IdentityProviderContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        IdentityProviderType identityProviderName,
-        IdentityProviderCreateContract parameters);
+    IdentityProviderContractInner createOrUpdate(String resourceGroupName, String serviceName,
+        IdentityProviderType identityProviderName, IdentityProviderCreateContract parameters);
 
     /**
      * Updates an existing IdentityProvider configuration.
@@ -170,12 +163,8 @@ public interface IdentityProvidersClient {
      * @return identity Provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IdentityProvidersUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        IdentityProviderType identityProviderName,
-        String ifMatch,
-        IdentityProviderUpdateParameters parameters,
+    IdentityProvidersUpdateResponse updateWithResponse(String resourceGroupName, String serviceName,
+        IdentityProviderType identityProviderName, String ifMatch, IdentityProviderUpdateParameters parameters,
         Context context);
 
     /**
@@ -193,12 +182,8 @@ public interface IdentityProvidersClient {
      * @return identity Provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IdentityProviderContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        IdentityProviderType identityProviderName,
-        String ifMatch,
-        IdentityProviderUpdateParameters parameters);
+    IdentityProviderContractInner update(String resourceGroupName, String serviceName,
+        IdentityProviderType identityProviderName, String ifMatch, IdentityProviderUpdateParameters parameters);
 
     /**
      * Deletes the specified identity provider configuration.
@@ -215,12 +200,8 @@ public interface IdentityProvidersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        IdentityProviderType identityProviderName,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName,
+        IdentityProviderType identityProviderName, String ifMatch, Context context);
 
     /**
      * Deletes the specified identity provider configuration.
@@ -235,8 +216,8 @@ public interface IdentityProvidersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, String ifMatch);
+    void delete(String resourceGroupName, String serviceName, IdentityProviderType identityProviderName,
+        String ifMatch);
 
     /**
      * Gets the client secret details of the Identity Provider.
@@ -251,8 +232,8 @@ public interface IdentityProvidersClient {
      * @return the client secret details of the Identity Provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IdentityProvidersListSecretsResponse listSecretsWithResponse(
-        String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, Context context);
+    IdentityProvidersListSecretsResponse listSecretsWithResponse(String resourceGroupName, String serviceName,
+        IdentityProviderType identityProviderName, Context context);
 
     /**
      * Gets the client secret details of the Identity Provider.
@@ -266,6 +247,6 @@ public interface IdentityProvidersClient {
      * @return the client secret details of the Identity Provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClientSecretContractInner listSecrets(
-        String resourceGroupName, String serviceName, IdentityProviderType identityProviderName);
+    ClientSecretContractInner listSecrets(String resourceGroupName, String serviceName,
+        IdentityProviderType identityProviderName);
 }

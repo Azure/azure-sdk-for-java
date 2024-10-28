@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RackListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RackList model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"onbzoggculapzwy\",\"value\":[{\"extendedLocation\":{\"name\":\"ogtqxepnylbf\",\"type\":\"ajlyjtlvofqzhv\"},\"properties\":{\"availabilityZone\":\"cib\",\"clusterId\":\"mowuxrk\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"w\",\"provisioningState\":\"Accepted\",\"rackLocation\":\"wiivwzjbhyzsx\",\"rackSerialNumber\":\"rkambt\",\"rackSkuId\":\"negvmnvuqe\"},\"location\":\"lds\",\"tags\":{\"kdmflvestmjlx\":\"tjb\",\"zapeewchpx\":\"ril\",\"levufuztcktyhj\":\"ktwkuziyc\"},\"id\":\"qedcgzulwm\",\"name\":\"rqzz\",\"type\":\"rjvpglydzgkrvqee\"},{\"extendedLocation\":{\"name\":\"toepryu\",\"type\":\"nwy\"},\"properties\":{\"availabilityZone\":\"pzdm\",\"clusterId\":\"zvfvaawz\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"lgzurig\",\"provisioningState\":\"Failed\",\"rackLocation\":\"cx\",\"rackSerialNumber\":\"dticokpvzml\",\"rackSkuId\":\"t\"},\"location\":\"dgxobfircl\",\"tags\":{\"fvjlboxqvkjlmx\":\"ciayzriykhya\",\"nraauzz\":\"omdynhdwdigum\"},\"id\":\"tj\",\"name\":\"zysdzh\",\"type\":\"zwwva\"},{\"extendedLocation\":{\"name\":\"qyuvvfonkp\",\"type\":\"hqyikvy\"},\"properties\":{\"availabilityZone\":\"auy\",\"clusterId\":\"luwmncst\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"y\",\"provisioningState\":\"Succeeded\",\"rackLocation\":\"o\",\"rackSerialNumber\":\"krsgsgb\",\"rackSkuId\":\"huzqgn\"},\"location\":\"gkynscliqh\",\"tags\":{\"ppnvdxz\":\"xnkomtkubo\"},\"id\":\"hihfrbbcevqagtlt\",\"name\":\"hlfkqojpy\",\"type\":\"vgtrdcnifmzzs\"},{\"extendedLocation\":{\"name\":\"ymbrnysuxmpraf\",\"type\":\"g\"},\"properties\":{\"availabilityZone\":\"khocxvdfffwaf\",\"clusterId\":\"oudaspavehhrvk\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"oz\",\"provisioningState\":\"Failed\",\"rackLocation\":\"cxgkmoyxcdyui\",\"rackSerialNumber\":\"hmfdnbzydvfvfcj\",\"rackSkuId\":\"aeoisrvh\"},\"location\":\"orffukiscv\",\"tags\":{\"l\":\"hwplefaxvx\",\"nzeyqxtjj\":\"btgn\",\"vodggxdbee\":\"zqlqhyc\",\"wiuagydwqf\":\"mieknlraria\"},\"id\":\"ylyrfgiagtco\",\"name\":\"ocqwogfnzjvus\",\"type\":\"zldmozuxy\"}]}")
-                .toObject(RackList.class);
+        RackList model = BinaryData.fromString(
+            "{\"nextLink\":\"onbzoggculapzwy\",\"value\":[{\"extendedLocation\":{\"name\":\"ogtqxepnylbf\",\"type\":\"ajlyjtlvofqzhv\"},\"properties\":{\"availabilityZone\":\"cib\",\"clusterId\":\"mowuxrk\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"w\",\"provisioningState\":\"Accepted\",\"rackLocation\":\"wiivwzjbhyzsx\",\"rackSerialNumber\":\"rkambt\",\"rackSkuId\":\"negvmnvuqe\"},\"location\":\"lds\",\"tags\":{\"kdmflvestmjlx\":\"tjb\",\"zapeewchpx\":\"ril\",\"levufuztcktyhj\":\"ktwkuziyc\"},\"id\":\"qedcgzulwm\",\"name\":\"rqzz\",\"type\":\"rjvpglydzgkrvqee\"},{\"extendedLocation\":{\"name\":\"toepryu\",\"type\":\"nwy\"},\"properties\":{\"availabilityZone\":\"pzdm\",\"clusterId\":\"zvfvaawz\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"lgzurig\",\"provisioningState\":\"Failed\",\"rackLocation\":\"cx\",\"rackSerialNumber\":\"dticokpvzml\",\"rackSkuId\":\"t\"},\"location\":\"dgxobfircl\",\"tags\":{\"fvjlboxqvkjlmx\":\"ciayzriykhya\",\"nraauzz\":\"omdynhdwdigum\"},\"id\":\"tj\",\"name\":\"zysdzh\",\"type\":\"zwwva\"},{\"extendedLocation\":{\"name\":\"qyuvvfonkp\",\"type\":\"hqyikvy\"},\"properties\":{\"availabilityZone\":\"auy\",\"clusterId\":\"luwmncst\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"y\",\"provisioningState\":\"Succeeded\",\"rackLocation\":\"o\",\"rackSerialNumber\":\"krsgsgb\",\"rackSkuId\":\"huzqgn\"},\"location\":\"gkynscliqh\",\"tags\":{\"ppnvdxz\":\"xnkomtkubo\"},\"id\":\"hihfrbbcevqagtlt\",\"name\":\"hlfkqojpy\",\"type\":\"vgtrdcnifmzzs\"},{\"extendedLocation\":{\"name\":\"ymbrnysuxmpraf\",\"type\":\"g\"},\"properties\":{\"availabilityZone\":\"khocxvdfffwaf\",\"clusterId\":\"oudaspavehhrvk\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"oz\",\"provisioningState\":\"Failed\",\"rackLocation\":\"cxgkmoyxcdyui\",\"rackSerialNumber\":\"hmfdnbzydvfvfcj\",\"rackSkuId\":\"aeoisrvh\"},\"location\":\"orffukiscv\",\"tags\":{\"l\":\"hwplefaxvx\",\"nzeyqxtjj\":\"btgn\",\"vodggxdbee\":\"zqlqhyc\",\"wiuagydwqf\":\"mieknlraria\"},\"id\":\"ylyrfgiagtco\",\"name\":\"ocqwogfnzjvus\",\"type\":\"zldmozuxy\"}]}")
+            .toObject(RackList.class);
         Assertions.assertEquals("onbzoggculapzwy", model.nextLink());
         Assertions.assertEquals("lds", model.value().get(0).location());
         Assertions.assertEquals("tjb", model.value().get(0).tags().get("kdmflvestmjlx"));
@@ -34,14 +32,12 @@ public final class RackListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RackList model =
-            new RackList()
-                .withNextLink("onbzoggculapzwy")
+        RackList model
+            = new RackList().withNextLink("onbzoggculapzwy")
                 .withValue(
                     Arrays
                         .asList(
-                            new RackInner()
-                                .withLocation("lds")
+                            new RackInner().withLocation("lds")
                                 .withTags(
                                     mapOf("kdmflvestmjlx", "tjb", "zapeewchpx", "ril", "levufuztcktyhj", "ktwkuziyc"))
                                 .withExtendedLocation(
@@ -50,34 +46,23 @@ public final class RackListTests {
                                 .withRackLocation("wiivwzjbhyzsx")
                                 .withRackSerialNumber("rkambt")
                                 .withRackSkuId("negvmnvuqe"),
-                            new RackInner()
-                                .withLocation("dgxobfircl")
+                            new RackInner().withLocation("dgxobfircl")
                                 .withTags(mapOf("fvjlboxqvkjlmx", "ciayzriykhya", "nraauzz", "omdynhdwdigum"))
                                 .withExtendedLocation(new ExtendedLocation().withName("toepryu").withType("nwy"))
                                 .withAvailabilityZone("pzdm")
                                 .withRackLocation("cx")
                                 .withRackSerialNumber("dticokpvzml")
                                 .withRackSkuId("t"),
-                            new RackInner()
-                                .withLocation("gkynscliqh")
+                            new RackInner().withLocation("gkynscliqh")
                                 .withTags(mapOf("ppnvdxz", "xnkomtkubo"))
                                 .withExtendedLocation(new ExtendedLocation().withName("qyuvvfonkp").withType("hqyikvy"))
                                 .withAvailabilityZone("auy")
                                 .withRackLocation("o")
                                 .withRackSerialNumber("krsgsgb")
                                 .withRackSkuId("huzqgn"),
-                            new RackInner()
-                                .withLocation("orffukiscv")
-                                .withTags(
-                                    mapOf(
-                                        "l",
-                                        "hwplefaxvx",
-                                        "nzeyqxtjj",
-                                        "btgn",
-                                        "vodggxdbee",
-                                        "zqlqhyc",
-                                        "wiuagydwqf",
-                                        "mieknlraria"))
+                            new RackInner().withLocation("orffukiscv")
+                                .withTags(mapOf("l", "hwplefaxvx", "nzeyqxtjj", "btgn", "vodggxdbee", "zqlqhyc",
+                                    "wiuagydwqf", "mieknlraria"))
                                 .withExtendedLocation(new ExtendedLocation().withName("ymbrnysuxmpraf").withType("g"))
                                 .withAvailabilityZone("khocxvdfffwaf")
                                 .withRackLocation("cxgkmoyxcdyui")

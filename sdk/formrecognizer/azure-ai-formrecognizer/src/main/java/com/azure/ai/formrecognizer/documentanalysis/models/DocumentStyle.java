@@ -72,11 +72,11 @@ public final class DocumentStyle {
         return this.isHandwritten;
     }
 
-      /**
-     * Get the spans property: Location of the text elements in the concatenated content the style applies to.
-     *
-     * @return the spans value.
-     */
+    /**
+    * Get the spans property: Location of the text elements in the concatenated content the style applies to.
+    *
+    * @return the spans value.
+    */
     public List<DocumentSpan> getSpans() {
         return this.spans;
     }
@@ -127,6 +127,7 @@ public final class DocumentStyle {
     private void setColor(String color) {
         this.color = color;
     }
+
     private void setBackgroundColor(String backgroundColor) {
         this.backgroundColor = backgroundColor;
     }

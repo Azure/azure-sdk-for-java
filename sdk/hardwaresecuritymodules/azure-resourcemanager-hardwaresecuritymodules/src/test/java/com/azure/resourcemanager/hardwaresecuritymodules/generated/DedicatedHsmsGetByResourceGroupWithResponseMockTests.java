@@ -45,12 +45,14 @@ public final class DedicatedHsmsGetByResourceGroupWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure().withHttpClient(httpClient)
+        HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DedicatedHsm response = manager.dedicatedHsms()
-            .getByResourceGroupWithResponse("qjbvleorfmlu", "qtqzfavyv", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("qjbvleorfmlu", "qtqzfavyv", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("nnrwrbiork", response.location());
         Assertions.assertEquals("ywjhhgdnhx", response.tags().get("sivfomilo"));

@@ -49,8 +49,7 @@ public class DeleteLiveTests extends CallAutomationLiveTestBase {
 
     private void deleteRecording(CallAutomationClient callingServerAsyncClient) {
         try {
-            Response<Void> response = callingServerAsyncClient
-                .getCallRecording()
+            Response<Void> response = callingServerAsyncClient.getCallRecording()
                 .deleteRecordingWithResponse(RECORDING_DELETE_URL, Context.NONE);
             assertThat(response.getStatusCode(), is(equalTo(200)));
         } catch (Exception e) {
@@ -68,9 +67,8 @@ public class DeleteLiveTests extends CallAutomationLiveTestBase {
     public void deleteRecording401(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingInvalidTokenCredential(httpClient);
         CallAutomationClient callAutomationClient = setupClient(builder, "deleteRecording404Async");
-        Response<Void> response = callAutomationClient
-            .getCallRecording()
-            .deleteRecordingWithResponse(RECORDING_DELETE_URL, Context.NONE);
+        Response<Void> response
+            = callAutomationClient.getCallRecording().deleteRecordingWithResponse(RECORDING_DELETE_URL, Context.NONE);
         assertThat(response.getStatusCode(), is(equalTo(401)));
     }
 
@@ -84,8 +82,7 @@ public class DeleteLiveTests extends CallAutomationLiveTestBase {
     public void deleteRecording404(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationClient callAutomationClient = setupClient(builder, "deleteRecording404Async");
-        Response<Void> response = callAutomationClient
-            .getCallRecording()
+        Response<Void> response = callAutomationClient.getCallRecording()
             .deleteRecordingWithResponse(RECORDING_DELETE_URL_404, Context.NONE);
         assertThat(response.getStatusCode(), is(equalTo(404)));
     }

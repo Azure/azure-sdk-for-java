@@ -20,12 +20,8 @@ public final class SubscriptionsGetResponse extends ResponseBase<SubscriptionsGe
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public SubscriptionsGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        SubscriptionContractInner value,
-        SubscriptionsGetHeaders headers) {
+    public SubscriptionsGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        SubscriptionContractInner value, SubscriptionsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

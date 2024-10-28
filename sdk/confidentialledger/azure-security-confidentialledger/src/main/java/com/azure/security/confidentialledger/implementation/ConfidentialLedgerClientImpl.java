@@ -106,13 +106,8 @@ public final class ConfidentialLedgerClientImpl {
      * @param serviceVersion Service version.
      */
     public ConfidentialLedgerClientImpl(String ledgerEndpoint, ConfidentialLedgerServiceVersion serviceVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                ledgerEndpoint,
-                serviceVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), ledgerEndpoint, serviceVersion);
     }
 
     /**
@@ -122,8 +117,8 @@ public final class ConfidentialLedgerClientImpl {
      * @param ledgerEndpoint The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
      * @param serviceVersion Service version.
      */
-    public ConfidentialLedgerClientImpl(
-            HttpPipeline httpPipeline, String ledgerEndpoint, ConfidentialLedgerServiceVersion serviceVersion) {
+    public ConfidentialLedgerClientImpl(HttpPipeline httpPipeline, String ledgerEndpoint,
+        ConfidentialLedgerServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), ledgerEndpoint, serviceVersion);
     }
 
@@ -135,17 +130,14 @@ public final class ConfidentialLedgerClientImpl {
      * @param ledgerEndpoint The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
      * @param serviceVersion Service version.
      */
-    public ConfidentialLedgerClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String ledgerEndpoint,
-            ConfidentialLedgerServiceVersion serviceVersion) {
+    public ConfidentialLedgerClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        String ledgerEndpoint, ConfidentialLedgerServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.ledgerEndpoint = ledgerEndpoint;
         this.serviceVersion = serviceVersion;
-        this.service =
-                RestProxy.create(ConfidentialLedgerClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ConfidentialLedgerClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -156,316 +148,166 @@ public final class ConfidentialLedgerClientImpl {
     @ServiceInterface(name = "ConfidentialLedgerCl")
     private interface ConfidentialLedgerClientService {
         @Get("/app/governance/constitution")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getConstitution(
-                @HostParam("ledgerEndpoint") String ledgerEndpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getConstitution(@HostParam("ledgerEndpoint") String ledgerEndpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/app/governance/members")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listConsortiumMembers(
-                @HostParam("ledgerEndpoint") String ledgerEndpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listConsortiumMembers(@HostParam("ledgerEndpoint") String ledgerEndpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/app/enclaveQuotes")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getEnclaveQuotes(
-                @HostParam("ledgerEndpoint") String ledgerEndpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getEnclaveQuotes(@HostParam("ledgerEndpoint") String ledgerEndpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/app/collections")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listCollections(
-                @HostParam("ledgerEndpoint") String ledgerEndpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listCollections(@HostParam("ledgerEndpoint") String ledgerEndpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/app/transactions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listLedgerEntries(
-                @HostParam("ledgerEndpoint") String ledgerEndpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listLedgerEntries(@HostParam("ledgerEndpoint") String ledgerEndpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/app/transactions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createLedgerEntry(
-                @HostParam("ledgerEndpoint") String ledgerEndpoint,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData entry,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createLedgerEntry(@HostParam("ledgerEndpoint") String ledgerEndpoint,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BinaryData entry,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/app/transactions/{transactionId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getLedgerEntry(
-                @HostParam("ledgerEndpoint") String ledgerEndpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("transactionId") String transactionId,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getLedgerEntry(@HostParam("ledgerEndpoint") String ledgerEndpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("transactionId") String transactionId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/app/transactions/{transactionId}/receipt")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getReceipt(
-                @HostParam("ledgerEndpoint") String ledgerEndpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("transactionId") String transactionId,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getReceipt(@HostParam("ledgerEndpoint") String ledgerEndpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("transactionId") String transactionId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/app/transactions/{transactionId}/status")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getTransactionStatus(
-                @HostParam("ledgerEndpoint") String ledgerEndpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("transactionId") String transactionId,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getTransactionStatus(@HostParam("ledgerEndpoint") String ledgerEndpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("transactionId") String transactionId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/app/transactions/current")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getCurrentLedgerEntry(
-                @HostParam("ledgerEndpoint") String ledgerEndpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getCurrentLedgerEntry(@HostParam("ledgerEndpoint") String ledgerEndpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Delete("/app/users/{userId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> deleteUser(
-                @HostParam("ledgerEndpoint") String ledgerEndpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam(value = "userId", encoded = true) String userId,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<Void>> deleteUser(@HostParam("ledgerEndpoint") String ledgerEndpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "userId", encoded = true) String userId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/app/users/{userId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getUser(
-                @HostParam("ledgerEndpoint") String ledgerEndpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam(value = "userId", encoded = true) String userId,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getUser(@HostParam("ledgerEndpoint") String ledgerEndpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "userId", encoded = true) String userId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/app/users/{userId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdateUser(
-                @HostParam("ledgerEndpoint") String ledgerEndpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam(value = "userId", encoded = true) String userId,
-                @BodyParam("application/merge-patch+json") BinaryData userDetails,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createOrUpdateUser(@HostParam("ledgerEndpoint") String ledgerEndpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "userId", encoded = true) String userId,
+            @BodyParam("application/merge-patch+json") BinaryData userDetails, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listConsortiumMembersNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("ledgerEndpoint") String ledgerEndpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("ledgerEndpoint") String ledgerEndpoint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listCollectionsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("ledgerEndpoint") String ledgerEndpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listCollectionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("ledgerEndpoint") String ledgerEndpoint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listLedgerEntriesNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("ledgerEndpoint") String ledgerEndpoint,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> listLedgerEntriesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("ledgerEndpoint") String ledgerEndpoint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -491,14 +333,8 @@ public final class ConfidentialLedgerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getConstitutionWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getConstitution(
-                                this.getLedgerEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getConstitution(this.getLedgerEndpoint(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -525,8 +361,8 @@ public final class ConfidentialLedgerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getConstitutionWithResponseAsync(RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.getConstitution(
-                this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions, context);
+        return service.getConstitution(this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), accept,
+            requestOptions, context);
     }
 
     /**
@@ -581,23 +417,11 @@ public final class ConfidentialLedgerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listConsortiumMembersSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listConsortiumMembers(
-                                        this.getLedgerEndpoint(),
-                                        this.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "members"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listConsortiumMembers(this.getLedgerEndpoint(),
+                this.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "members"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -627,24 +451,14 @@ public final class ConfidentialLedgerClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listConsortiumMembersSinglePageAsync(
-            RequestOptions requestOptions, Context context) {
+    public Mono<PagedResponse<BinaryData>> listConsortiumMembersSinglePageAsync(RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json";
-        return service.listConsortiumMembers(
-                        this.getLedgerEndpoint(),
-                        this.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "members"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return service
+            .listConsortiumMembers(this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), accept,
+                requestOptions, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "members"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -675,12 +489,9 @@ public final class ConfidentialLedgerClientImpl {
     public PagedFlux<BinaryData> listConsortiumMembersAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listConsortiumMembersSinglePageAsync(requestOptions),
-                nextLink -> listConsortiumMembersNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listConsortiumMembersSinglePageAsync(requestOptions),
+            nextLink -> listConsortiumMembersNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -712,12 +523,9 @@ public final class ConfidentialLedgerClientImpl {
     public PagedFlux<BinaryData> listConsortiumMembersAsync(RequestOptions requestOptions, Context context) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listConsortiumMembersSinglePageAsync(requestOptions, context),
-                nextLink -> listConsortiumMembersNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listConsortiumMembersSinglePageAsync(requestOptions, context),
+            nextLink -> listConsortiumMembersNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -779,14 +587,8 @@ public final class ConfidentialLedgerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnclaveQuotesWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getEnclaveQuotes(
-                                this.getLedgerEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getEnclaveQuotes(this.getLedgerEndpoint(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -818,11 +620,11 @@ public final class ConfidentialLedgerClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEnclaveQuotesWithResponseAsync(
-            RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> getEnclaveQuotesWithResponseAsync(RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json";
-        return service.getEnclaveQuotes(
-                this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions, context);
+        return service.getEnclaveQuotes(this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), accept,
+            requestOptions, context);
     }
 
     /**
@@ -883,23 +685,11 @@ public final class ConfidentialLedgerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listCollectionsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listCollections(
-                                        this.getLedgerEndpoint(),
-                                        this.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "collections"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listCollections(this.getLedgerEndpoint(),
+                this.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "collections"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -928,24 +718,14 @@ public final class ConfidentialLedgerClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listCollectionsSinglePageAsync(
-            RequestOptions requestOptions, Context context) {
+    public Mono<PagedResponse<BinaryData>> listCollectionsSinglePageAsync(RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json";
-        return service.listCollections(
-                        this.getLedgerEndpoint(),
-                        this.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "collections"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return service
+            .listCollections(this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions,
+                context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "collections"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -975,12 +755,9 @@ public final class ConfidentialLedgerClientImpl {
     public PagedFlux<BinaryData> listCollectionsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listCollectionsSinglePageAsync(requestOptions),
-                nextLink -> listCollectionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listCollectionsSinglePageAsync(requestOptions),
+            nextLink -> listCollectionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1011,12 +788,9 @@ public final class ConfidentialLedgerClientImpl {
     public PagedFlux<BinaryData> listCollectionsAsync(RequestOptions requestOptions, Context context) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listCollectionsSinglePageAsync(requestOptions, context),
-                nextLink -> listCollectionsNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listCollectionsSinglePageAsync(requestOptions, context),
+            nextLink -> listCollectionsNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -1090,23 +864,11 @@ public final class ConfidentialLedgerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BinaryData>> listLedgerEntriesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listLedgerEntries(
-                                        this.getLedgerEndpoint(),
-                                        this.getServiceVersion().getVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "entries"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listLedgerEntries(this.getLedgerEndpoint(),
+                this.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "entries"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -1151,24 +913,14 @@ public final class ConfidentialLedgerClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listLedgerEntriesSinglePageAsync(
-            RequestOptions requestOptions, Context context) {
+    public Mono<PagedResponse<BinaryData>> listLedgerEntriesSinglePageAsync(RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json";
-        return service.listLedgerEntries(
-                        this.getLedgerEndpoint(),
-                        this.getServiceVersion().getVersion(),
-                        accept,
-                        requestOptions,
-                        context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "entries"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return service
+            .listLedgerEntries(this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions,
+                context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "entries"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -1214,12 +966,9 @@ public final class ConfidentialLedgerClientImpl {
     public PagedFlux<BinaryData> listLedgerEntriesAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listLedgerEntriesSinglePageAsync(requestOptions),
-                nextLink -> listLedgerEntriesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listLedgerEntriesSinglePageAsync(requestOptions),
+            nextLink -> listLedgerEntriesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1266,12 +1015,9 @@ public final class ConfidentialLedgerClientImpl {
     public PagedFlux<BinaryData> listLedgerEntriesAsync(RequestOptions requestOptions, Context context) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
-                requestOptions != null && requestOptions.getContext() != null
-                        ? requestOptions.getContext()
-                        : Context.NONE);
-        return new PagedFlux<>(
-                () -> listLedgerEntriesSinglePageAsync(requestOptions, context),
-                nextLink -> listLedgerEntriesNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> listLedgerEntriesSinglePageAsync(requestOptions, context),
+            nextLink -> listLedgerEntriesNextSinglePageAsync(nextLink, requestOptionsForNextPage, context));
     }
 
     /**
@@ -1360,18 +1106,11 @@ public final class ConfidentialLedgerClientImpl {
      *     when the write will become durable along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createLedgerEntryWithResponseAsync(
-            BinaryData entry, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createLedgerEntryWithResponseAsync(BinaryData entry,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createLedgerEntry(
-                                this.getLedgerEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                entry,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.createLedgerEntry(this.getLedgerEndpoint(),
+            this.getServiceVersion().getVersion(), entry, accept, requestOptions, context));
     }
 
     /**
@@ -1416,16 +1155,11 @@ public final class ConfidentialLedgerClientImpl {
      *     when the write will become durable along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createLedgerEntryWithResponseAsync(
-            BinaryData entry, RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> createLedgerEntryWithResponseAsync(BinaryData entry,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.createLedgerEntry(
-                this.getLedgerEndpoint(),
-                this.getServiceVersion().getVersion(),
-                entry,
-                accept,
-                requestOptions,
-                context);
+        return service.createLedgerEntry(this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), entry, accept,
+            requestOptions, context);
     }
 
     /**
@@ -1511,18 +1245,11 @@ public final class ConfidentialLedgerClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getLedgerEntryWithResponseAsync(
-            String transactionId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getLedgerEntryWithResponseAsync(String transactionId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getLedgerEntry(
-                                this.getLedgerEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                transactionId,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getLedgerEntry(this.getLedgerEndpoint(),
+            this.getServiceVersion().getVersion(), transactionId, accept, requestOptions, context));
     }
 
     /**
@@ -1564,16 +1291,11 @@ public final class ConfidentialLedgerClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getLedgerEntryWithResponseAsync(
-            String transactionId, RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> getLedgerEntryWithResponseAsync(String transactionId,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.getLedgerEntry(
-                this.getLedgerEndpoint(),
-                this.getServiceVersion().getVersion(),
-                transactionId,
-                accept,
-                requestOptions,
-                context);
+        return service.getLedgerEntry(this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), transactionId,
+            accept, requestOptions, context);
     }
 
     /**
@@ -1662,15 +1384,8 @@ public final class ConfidentialLedgerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getReceiptWithResponseAsync(String transactionId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getReceipt(
-                                this.getLedgerEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                transactionId,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getReceipt(this.getLedgerEndpoint(),
+            this.getServiceVersion().getVersion(), transactionId, accept, requestOptions, context));
     }
 
     /**
@@ -1717,16 +1432,11 @@ public final class ConfidentialLedgerClientImpl {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getReceiptWithResponseAsync(
-            String transactionId, RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> getReceiptWithResponseAsync(String transactionId, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json";
-        return service.getReceipt(
-                this.getLedgerEndpoint(),
-                this.getServiceVersion().getVersion(),
-                transactionId,
-                accept,
-                requestOptions,
-                context);
+        return service.getReceipt(this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), transactionId,
+            accept, requestOptions, context);
     }
 
     /**
@@ -1797,18 +1507,11 @@ public final class ConfidentialLedgerClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTransactionStatusWithResponseAsync(
-            String transactionId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getTransactionStatusWithResponseAsync(String transactionId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getTransactionStatus(
-                                this.getLedgerEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                transactionId,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getTransactionStatus(this.getLedgerEndpoint(),
+            this.getServiceVersion().getVersion(), transactionId, accept, requestOptions, context));
     }
 
     /**
@@ -1834,16 +1537,11 @@ public final class ConfidentialLedgerClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getTransactionStatusWithResponseAsync(
-            String transactionId, RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> getTransactionStatusWithResponseAsync(String transactionId,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.getTransactionStatus(
-                this.getLedgerEndpoint(),
-                this.getServiceVersion().getVersion(),
-                transactionId,
-                accept,
-                requestOptions,
-                context);
+        return service.getTransactionStatus(this.getLedgerEndpoint(), this.getServiceVersion().getVersion(),
+            transactionId, accept, requestOptions, context);
     }
 
     /**
@@ -1904,14 +1602,8 @@ public final class ConfidentialLedgerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCurrentLedgerEntryWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getCurrentLedgerEntry(
-                                this.getLedgerEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getCurrentLedgerEntry(this.getLedgerEndpoint(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
@@ -1946,11 +1638,11 @@ public final class ConfidentialLedgerClientImpl {
      * @return an entry in the ledger along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCurrentLedgerEntryWithResponseAsync(
-            RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> getCurrentLedgerEntryWithResponseAsync(RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json";
-        return service.getCurrentLedgerEntry(
-                this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions, context);
+        return service.getCurrentLedgerEntry(this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), accept,
+            requestOptions, context);
     }
 
     /**
@@ -2002,15 +1694,8 @@ public final class ConfidentialLedgerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteUserWithResponseAsync(String userId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.deleteUser(
-                                this.getLedgerEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                userId,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.deleteUser(this.getLedgerEndpoint(),
+            this.getServiceVersion().getVersion(), userId, accept, requestOptions, context));
     }
 
     /**
@@ -2026,16 +1711,11 @@ public final class ConfidentialLedgerClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteUserWithResponseAsync(
-            String userId, RequestOptions requestOptions, Context context) {
+    public Mono<Response<Void>> deleteUserWithResponseAsync(String userId, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json";
-        return service.deleteUser(
-                this.getLedgerEndpoint(),
-                this.getServiceVersion().getVersion(),
-                userId,
-                accept,
-                requestOptions,
-                context);
+        return service.deleteUser(this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), userId, accept,
+            requestOptions, context);
     }
 
     /**
@@ -2077,15 +1757,8 @@ public final class ConfidentialLedgerClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getUserWithResponseAsync(String userId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getUser(
-                                this.getLedgerEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                userId,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getUser(this.getLedgerEndpoint(),
+            this.getServiceVersion().getVersion(), userId, accept, requestOptions, context));
     }
 
     /**
@@ -2110,16 +1783,11 @@ public final class ConfidentialLedgerClientImpl {
      * @return a user along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getUserWithResponseAsync(
-            String userId, RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> getUserWithResponseAsync(String userId, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json";
-        return service.getUser(
-                this.getLedgerEndpoint(),
-                this.getServiceVersion().getVersion(),
-                userId,
-                accept,
-                requestOptions,
-                context);
+        return service.getUser(this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), userId, accept,
+            requestOptions, context);
     }
 
     /**
@@ -2179,19 +1847,11 @@ public final class ConfidentialLedgerClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateUserWithResponseAsync(
-            String userId, BinaryData userDetails, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateUserWithResponseAsync(String userId, BinaryData userDetails,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdateUser(
-                                this.getLedgerEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                userId,
-                                userDetails,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.createOrUpdateUser(this.getLedgerEndpoint(),
+            this.getServiceVersion().getVersion(), userId, userDetails, accept, requestOptions, context));
     }
 
     /**
@@ -2227,17 +1887,11 @@ public final class ConfidentialLedgerClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateUserWithResponseAsync(
-            String userId, BinaryData userDetails, RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> createOrUpdateUserWithResponseAsync(String userId, BinaryData userDetails,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
-        return service.createOrUpdateUser(
-                this.getLedgerEndpoint(),
-                this.getServiceVersion().getVersion(),
-                userId,
-                userDetails,
-                accept,
-                requestOptions,
-                context);
+        return service.createOrUpdateUser(this.getLedgerEndpoint(), this.getServiceVersion().getVersion(), userId,
+            userDetails, accept, requestOptions, context);
     }
 
     /**
@@ -2271,8 +1925,8 @@ public final class ConfidentialLedgerClientImpl {
      * @return details about a Confidential Ledger user along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateUserWithResponse(
-            String userId, BinaryData userDetails, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateUserWithResponse(String userId, BinaryData userDetails,
+        RequestOptions requestOptions) {
         return createOrUpdateUserWithResponseAsync(userId, userDetails, requestOptions).block();
     }
 
@@ -2303,22 +1957,14 @@ public final class ConfidentialLedgerClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listConsortiumMembersNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listConsortiumMembersNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listConsortiumMembersNext(
-                                        nextLink, this.getLedgerEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "members"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listConsortiumMembersNext(nextLink, this.getLedgerEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "members"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -2349,19 +1995,12 @@ public final class ConfidentialLedgerClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listConsortiumMembersNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions, Context context) {
+    public Mono<PagedResponse<BinaryData>> listConsortiumMembersNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listConsortiumMembersNext(nextLink, this.getLedgerEndpoint(), accept, requestOptions, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "members"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "members"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -2390,22 +2029,13 @@ public final class ConfidentialLedgerClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listCollectionsNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listCollectionsNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                        context ->
-                                service.listCollectionsNext(
-                                        nextLink, this.getLedgerEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "collections"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+            context -> service.listCollectionsNext(nextLink, this.getLedgerEndpoint(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "collections"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -2435,19 +2065,12 @@ public final class ConfidentialLedgerClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listCollectionsNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions, Context context) {
+    public Mono<PagedResponse<BinaryData>> listCollectionsNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listCollectionsNext(nextLink, this.getLedgerEndpoint(), accept, requestOptions, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "collections"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "collections"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -2479,22 +2102,14 @@ public final class ConfidentialLedgerClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listLedgerEntriesNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions) {
+    public Mono<PagedResponse<BinaryData>> listLedgerEntriesNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.listLedgerEntriesNext(
-                                        nextLink, this.getLedgerEndpoint(), accept, requestOptions, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "entries"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.listLedgerEntriesNext(nextLink, this.getLedgerEndpoint(), accept,
+                requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "entries"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -2527,19 +2142,12 @@ public final class ConfidentialLedgerClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<BinaryData>> listLedgerEntriesNextSinglePageAsync(
-            String nextLink, RequestOptions requestOptions, Context context) {
+    public Mono<PagedResponse<BinaryData>> listLedgerEntriesNextSinglePageAsync(String nextLink,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json";
         return service.listLedgerEntriesNext(nextLink, this.getLedgerEndpoint(), accept, requestOptions, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        getValues(res.getValue(), "entries"),
-                                        getNextLink(res.getValue(), "nextLink"),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "entries"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     private List<BinaryData> getValues(BinaryData binaryData, String path) {

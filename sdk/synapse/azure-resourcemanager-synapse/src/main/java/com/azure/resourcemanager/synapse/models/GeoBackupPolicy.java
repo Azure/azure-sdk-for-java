@@ -88,17 +88,16 @@ public interface GeoBackupPolicy {
     GeoBackupPolicyInner innerModel();
 
     /** The entirety of the GeoBackupPolicy definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithState,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithState, DefinitionStages.WithCreate {
     }
+
     /** The GeoBackupPolicy definition stages. */
     interface DefinitionStages {
         /** The first stage of the GeoBackupPolicy definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the GeoBackupPolicy definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -111,6 +110,7 @@ public interface GeoBackupPolicy {
              */
             WithState withExistingSqlPool(String resourceGroupName, String workspaceName, String sqlPoolName);
         }
+
         /** The stage of the GeoBackupPolicy definition allowing to specify state. */
         interface WithState {
             /**
@@ -121,6 +121,7 @@ public interface GeoBackupPolicy {
              */
             WithCreate withState(GeoBackupPolicyState state);
         }
+
         /**
          * The stage of the GeoBackupPolicy definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -142,6 +143,7 @@ public interface GeoBackupPolicy {
             GeoBackupPolicy create(Context context);
         }
     }
+
     /**
      * Begins update for the GeoBackupPolicy resource.
      *
@@ -166,6 +168,7 @@ public interface GeoBackupPolicy {
          */
         GeoBackupPolicy apply(Context context);
     }
+
     /** The GeoBackupPolicy update stages. */
     interface UpdateStages {
         /** The stage of the GeoBackupPolicy update allowing to specify state. */
@@ -179,6 +182,7 @@ public interface GeoBackupPolicy {
             Update withState(GeoBackupPolicyState state);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

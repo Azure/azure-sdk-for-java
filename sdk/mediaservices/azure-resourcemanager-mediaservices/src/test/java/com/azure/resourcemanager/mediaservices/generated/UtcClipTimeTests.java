@@ -12,10 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UtcClipTimeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UtcClipTime model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.UtcClipTime\",\"time\":\"2021-10-22T01:52:24Z\"}")
-                .toObject(UtcClipTime.class);
+        UtcClipTime model = BinaryData
+            .fromString("{\"@odata.type\":\"#Microsoft.Media.UtcClipTime\",\"time\":\"2021-10-22T01:52:24Z\"}")
+            .toObject(UtcClipTime.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-10-22T01:52:24Z"), model.time());
     }
 

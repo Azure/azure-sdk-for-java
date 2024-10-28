@@ -53,9 +53,7 @@ public interface ApiManagementServicesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginRestore(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceBackupRestoreParameters parameters,
+        String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters,
         Context context);
 
     /**
@@ -71,8 +69,8 @@ public interface ApiManagementServicesClient {
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiManagementServiceResourceInner restore(
-        String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters);
+    ApiManagementServiceResourceInner restore(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters);
 
     /**
      * Restores a backup of an API Management service created using the ApiManagementService_Backup operation on the
@@ -88,11 +86,8 @@ public interface ApiManagementServicesClient {
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiManagementServiceResourceInner restore(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceBackupRestoreParameters parameters,
-        Context context);
+    ApiManagementServiceResourceInner restore(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters, Context context);
 
     /**
      * Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
@@ -125,9 +120,7 @@ public interface ApiManagementServicesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginBackup(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceBackupRestoreParameters parameters,
+        String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters,
         Context context);
 
     /**
@@ -143,8 +136,8 @@ public interface ApiManagementServicesClient {
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiManagementServiceResourceInner backup(
-        String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters);
+    ApiManagementServiceResourceInner backup(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters);
 
     /**
      * Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
@@ -160,11 +153,8 @@ public interface ApiManagementServicesClient {
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiManagementServiceResourceInner backup(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceBackupRestoreParameters parameters,
-        Context context);
+    ApiManagementServiceResourceInner backup(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters, Context context);
 
     /**
      * Creates or updates an API Management service. This is long running operation and could take several minutes to
@@ -179,8 +169,8 @@ public interface ApiManagementServicesClient {
      * @return the {@link SyncPoller} for polling of a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String serviceName, ApiManagementServiceResourceInner parameters);
+    SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String serviceName, ApiManagementServiceResourceInner parameters);
 
     /**
      * Creates or updates an API Management service. This is long running operation and could take several minutes to
@@ -212,8 +202,8 @@ public interface ApiManagementServicesClient {
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiManagementServiceResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, ApiManagementServiceResourceInner parameters);
+    ApiManagementServiceResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        ApiManagementServiceResourceInner parameters);
 
     /**
      * Creates or updates an API Management service. This is long running operation and could take several minutes to
@@ -229,8 +219,8 @@ public interface ApiManagementServicesClient {
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiManagementServiceResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, ApiManagementServiceResourceInner parameters, Context context);
+    ApiManagementServiceResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        ApiManagementServiceResourceInner parameters, Context context);
 
     /**
      * Updates an existing API Management service.
@@ -244,8 +234,8 @@ public interface ApiManagementServicesClient {
      * @return the {@link SyncPoller} for polling of a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginUpdate(
-        String resourceGroupName, String serviceName, ApiManagementServiceUpdateParameters parameters);
+    SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
+        beginUpdate(String resourceGroupName, String serviceName, ApiManagementServiceUpdateParameters parameters);
 
     /**
      * Updates an existing API Management service.
@@ -275,8 +265,8 @@ public interface ApiManagementServicesClient {
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiManagementServiceResourceInner update(
-        String resourceGroupName, String serviceName, ApiManagementServiceUpdateParameters parameters);
+    ApiManagementServiceResourceInner update(String resourceGroupName, String serviceName,
+        ApiManagementServiceUpdateParameters parameters);
 
     /**
      * Updates an existing API Management service.
@@ -291,8 +281,8 @@ public interface ApiManagementServicesClient {
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiManagementServiceResourceInner update(
-        String resourceGroupName, String serviceName, ApiManagementServiceUpdateParameters parameters, Context context);
+    ApiManagementServiceResourceInner update(String resourceGroupName, String serviceName,
+        ApiManagementServiceUpdateParameters parameters, Context context);
 
     /**
      * Gets an API Management service resource description.
@@ -306,8 +296,8 @@ public interface ApiManagementServicesClient {
      * @return an API Management service resource description along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApiManagementServiceResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<ApiManagementServiceResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String serviceName, Context context);
 
     /**
      * Gets an API Management service resource description.
@@ -333,8 +323,8 @@ public interface ApiManagementServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginDelete(
-        String resourceGroupName, String serviceName);
+    SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
+        beginDelete(String resourceGroupName, String serviceName);
 
     /**
      * Deletes an existing API Management service.
@@ -348,8 +338,8 @@ public interface ApiManagementServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginDelete(
-        String resourceGroupName, String serviceName, Context context);
+    SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
+        beginDelete(String resourceGroupName, String serviceName, Context context);
 
     /**
      * Deletes an existing API Management service.
@@ -390,8 +380,8 @@ public interface ApiManagementServicesClient {
      * @return the {@link SyncPoller} for polling of a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginMigrateToStv2(
-        String resourceGroupName, String serviceName);
+    SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
+        beginMigrateToStv2(String resourceGroupName, String serviceName);
 
     /**
      * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
@@ -406,8 +396,8 @@ public interface ApiManagementServicesClient {
      * @return the {@link SyncPoller} for polling of a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginMigrateToStv2(
-        String resourceGroupName, String serviceName, Context context);
+    SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
+        beginMigrateToStv2(String resourceGroupName, String serviceName, Context context);
 
     /**
      * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
@@ -502,8 +492,8 @@ public interface ApiManagementServicesClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApiManagementServiceGetSsoTokenResultInner> getSsoTokenWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<ApiManagementServiceGetSsoTokenResultInner> getSsoTokenWithResponse(String resourceGroupName,
+        String serviceName, Context context);
 
     /**
      * Gets the Single-Sign-On token for the API Management Service which is valid for 5 Minutes.
@@ -542,8 +532,8 @@ public interface ApiManagementServicesClient {
      * @return response of the CheckNameAvailability operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiManagementServiceNameAvailabilityResultInner checkNameAvailability(
-        ApiManagementServiceCheckNameAvailabilityParameters parameters);
+    ApiManagementServiceNameAvailabilityResultInner
+        checkNameAvailability(ApiManagementServiceCheckNameAvailabilityParameters parameters);
 
     /**
      * Get the custom domain ownership identifier for an API Management service.
@@ -555,8 +545,8 @@ public interface ApiManagementServicesClient {
      * @return the custom domain ownership identifier for an API Management service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApiManagementServiceGetDomainOwnershipIdentifierResultInner> getDomainOwnershipIdentifierWithResponse(
-        Context context);
+    Response<ApiManagementServiceGetDomainOwnershipIdentifierResultInner>
+        getDomainOwnershipIdentifierWithResponse(Context context);
 
     /**
      * Get the custom domain ownership identifier for an API Management service.
@@ -598,11 +588,8 @@ public interface ApiManagementServicesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginApplyNetworkConfigurationUpdates(
-            String resourceGroupName,
-            String serviceName,
-            ApiManagementServiceApplyNetworkConfigurationParameters parameters,
-            Context context);
+        beginApplyNetworkConfigurationUpdates(String resourceGroupName, String serviceName,
+            ApiManagementServiceApplyNetworkConfigurationParameters parameters, Context context);
 
     /**
      * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
@@ -632,9 +619,6 @@ public interface ApiManagementServicesClient {
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiManagementServiceResourceInner applyNetworkConfigurationUpdates(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceApplyNetworkConfigurationParameters parameters,
-        Context context);
+    ApiManagementServiceResourceInner applyNetworkConfigurationUpdates(String resourceGroupName, String serviceName,
+        ApiManagementServiceApplyNetworkConfigurationParameters parameters, Context context);
 }

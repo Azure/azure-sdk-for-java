@@ -31,11 +31,8 @@ public interface AzureADOnlyAuthenticationsClient {
      * @return a Azure Active Directory only authentication property along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureADOnlyAuthenticationInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
-        Context context);
+    Response<AzureADOnlyAuthenticationInner> getWithResponse(String resourceGroupName, String workspaceName,
+        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName, Context context);
 
     /**
      * Get Azure Active Directory only authentication property
@@ -51,8 +48,8 @@ public interface AzureADOnlyAuthenticationsClient {
      * @return a Azure Active Directory only authentication property.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureADOnlyAuthenticationInner get(
-        String resourceGroupName, String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName);
+    AzureADOnlyAuthenticationInner get(String resourceGroupName, String workspaceName,
+        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName);
 
     /**
      * Create or Update Azure Active Directory only authentication property
@@ -70,9 +67,7 @@ public interface AzureADOnlyAuthenticationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AzureADOnlyAuthenticationInner>, AzureADOnlyAuthenticationInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
+        String resourceGroupName, String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
         AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo);
 
     /**
@@ -92,11 +87,8 @@ public interface AzureADOnlyAuthenticationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AzureADOnlyAuthenticationInner>, AzureADOnlyAuthenticationInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
-        AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo,
-        Context context);
+        String resourceGroupName, String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
+        AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo, Context context);
 
     /**
      * Create or Update Azure Active Directory only authentication property
@@ -113,9 +105,7 @@ public interface AzureADOnlyAuthenticationsClient {
      * @return azure Active Directory Only Authentication Info.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureADOnlyAuthenticationInner create(
-        String resourceGroupName,
-        String workspaceName,
+    AzureADOnlyAuthenticationInner create(String resourceGroupName, String workspaceName,
         AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
         AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo);
 
@@ -135,12 +125,9 @@ public interface AzureADOnlyAuthenticationsClient {
      * @return azure Active Directory Only Authentication Info.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureADOnlyAuthenticationInner create(
-        String resourceGroupName,
-        String workspaceName,
+    AzureADOnlyAuthenticationInner create(String resourceGroupName, String workspaceName,
         AzureADOnlyAuthenticationName azureADOnlyAuthenticationName,
-        AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo,
-        Context context);
+        AzureADOnlyAuthenticationInner azureADOnlyAuthenticationInfo, Context context);
 
     /**
      * Gets a list of Azure Active Directory only authentication property

@@ -24,8 +24,7 @@ import java.util.Map;
 @JsonTypeName("IntegrationRuntime")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Managed", value = ManagedIntegrationRuntime.class),
-    @JsonSubTypes.Type(name = "SelfHosted", value = SelfHostedIntegrationRuntime.class)
-})
+    @JsonSubTypes.Type(name = "SelfHosted", value = SelfHostedIntegrationRuntime.class) })
 @Fluent
 public class IntegrationRuntime {
     /*
@@ -37,7 +36,8 @@ public class IntegrationRuntime {
     /*
      * Azure Synapse nested object which serves as a compute resource for activities.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /** Creates an instance of IntegrationRuntime class. */
     public IntegrationRuntime() {

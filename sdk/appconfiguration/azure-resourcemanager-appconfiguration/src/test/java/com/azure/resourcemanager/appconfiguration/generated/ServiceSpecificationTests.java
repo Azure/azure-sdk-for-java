@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceSpecification model =
-            BinaryData
-                .fromString(
-                    "{\"logSpecifications\":[{\"name\":\"anyktzlcuiywg\",\"displayName\":\"wgndrvynhzgpp\",\"blobDuration\":\"cgyncocpecf\"},{\"name\":\"mcoo\",\"displayName\":\"xlzevgbmqjqabcy\",\"blobDuration\":\"ivkwlzuvccfwnfnb\"}],\"metricSpecifications\":[{\"name\":\"onlebxetqgtzxdpn\",\"displayName\":\"qqwx\",\"displayDescription\":\"feallnwsu\",\"unit\":\"snjampmng\",\"aggregationType\":\"scxaq\",\"internalMetricName\":\"ochcbonqvpkvl\",\"dimensions\":[],\"fillGapWithZero\":false},{\"name\":\"seiphe\",\"displayName\":\"lokeyy\",\"displayDescription\":\"nj\",\"unit\":\"lwtgrhpdj\",\"aggregationType\":\"umasxazjpq\",\"internalMetricName\":\"gual\",\"dimensions\":[],\"fillGapWithZero\":false}]}")
-                .toObject(ServiceSpecification.class);
+        ServiceSpecification model = BinaryData.fromString(
+            "{\"logSpecifications\":[{\"name\":\"anyktzlcuiywg\",\"displayName\":\"wgndrvynhzgpp\",\"blobDuration\":\"cgyncocpecf\"},{\"name\":\"mcoo\",\"displayName\":\"xlzevgbmqjqabcy\",\"blobDuration\":\"ivkwlzuvccfwnfnb\"}],\"metricSpecifications\":[{\"name\":\"onlebxetqgtzxdpn\",\"displayName\":\"qqwx\",\"displayDescription\":\"feallnwsu\",\"unit\":\"snjampmng\",\"aggregationType\":\"scxaq\",\"internalMetricName\":\"ochcbonqvpkvl\",\"dimensions\":[],\"fillGapWithZero\":false},{\"name\":\"seiphe\",\"displayName\":\"lokeyy\",\"displayDescription\":\"nj\",\"unit\":\"lwtgrhpdj\",\"aggregationType\":\"umasxazjpq\",\"internalMetricName\":\"gual\",\"dimensions\":[],\"fillGapWithZero\":false}]}")
+            .toObject(ServiceSpecification.class);
         Assertions.assertEquals("anyktzlcuiywg", model.logSpecifications().get(0).name());
         Assertions.assertEquals("wgndrvynhzgpp", model.logSpecifications().get(0).displayName());
         Assertions.assertEquals("cgyncocpecf", model.logSpecifications().get(0).blobDuration());
@@ -33,40 +31,31 @@ public final class ServiceSpecificationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceSpecification model =
-            new ServiceSpecification()
-                .withLogSpecifications(
-                    Arrays
-                        .asList(
-                            new LogSpecification()
-                                .withName("anyktzlcuiywg")
-                                .withDisplayName("wgndrvynhzgpp")
-                                .withBlobDuration("cgyncocpecf"),
-                            new LogSpecification()
-                                .withName("mcoo")
-                                .withDisplayName("xlzevgbmqjqabcy")
-                                .withBlobDuration("ivkwlzuvccfwnfnb")))
-                .withMetricSpecifications(
-                    Arrays
-                        .asList(
-                            new MetricSpecification()
-                                .withName("onlebxetqgtzxdpn")
-                                .withDisplayName("qqwx")
-                                .withDisplayDescription("feallnwsu")
-                                .withUnit("snjampmng")
-                                .withAggregationType("scxaq")
-                                .withInternalMetricName("ochcbonqvpkvl")
-                                .withDimensions(Arrays.asList())
-                                .withFillGapWithZero(false),
-                            new MetricSpecification()
-                                .withName("seiphe")
-                                .withDisplayName("lokeyy")
-                                .withDisplayDescription("nj")
-                                .withUnit("lwtgrhpdj")
-                                .withAggregationType("umasxazjpq")
-                                .withInternalMetricName("gual")
-                                .withDimensions(Arrays.asList())
-                                .withFillGapWithZero(false)));
+        ServiceSpecification model = new ServiceSpecification()
+            .withLogSpecifications(Arrays.asList(
+                new LogSpecification().withName("anyktzlcuiywg")
+                    .withDisplayName("wgndrvynhzgpp")
+                    .withBlobDuration("cgyncocpecf"),
+                new LogSpecification().withName("mcoo")
+                    .withDisplayName("xlzevgbmqjqabcy")
+                    .withBlobDuration("ivkwlzuvccfwnfnb")))
+            .withMetricSpecifications(Arrays.asList(
+                new MetricSpecification().withName("onlebxetqgtzxdpn")
+                    .withDisplayName("qqwx")
+                    .withDisplayDescription("feallnwsu")
+                    .withUnit("snjampmng")
+                    .withAggregationType("scxaq")
+                    .withInternalMetricName("ochcbonqvpkvl")
+                    .withDimensions(Arrays.asList())
+                    .withFillGapWithZero(false),
+                new MetricSpecification().withName("seiphe")
+                    .withDisplayName("lokeyy")
+                    .withDisplayDescription("nj")
+                    .withUnit("lwtgrhpdj")
+                    .withAggregationType("umasxazjpq")
+                    .withInternalMetricName("gual")
+                    .withDimensions(Arrays.asList())
+                    .withFillGapWithZero(false)));
         model = BinaryData.fromObject(model).toObject(ServiceSpecification.class);
         Assertions.assertEquals("anyktzlcuiywg", model.logSpecifications().get(0).name());
         Assertions.assertEquals("wgndrvynhzgpp", model.logSpecifications().get(0).displayName());

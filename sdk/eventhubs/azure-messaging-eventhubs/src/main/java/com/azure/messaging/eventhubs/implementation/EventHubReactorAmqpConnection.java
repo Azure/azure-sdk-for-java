@@ -75,7 +75,8 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      */
     public EventHubReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions, String eventHubName,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, boolean isV2, boolean useSessionChannelCache) {
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, boolean isV2,
+        boolean useSessionChannelCache) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, linkProvider, tokenManagerProvider,
             messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, isV2, useSessionChannelCache);
         this.connectionId = connectionId;
@@ -99,8 +100,8 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     @Override
     public Mono<EventHubManagementNode> getManagementNode() {
         if (isDisposed()) {
-            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
-                "connectionId[%s]: Connection is disposed. Cannot get management instance", connectionId))));
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String
+                .format("connectionId[%s]: Connection is disposed. Cannot get management instance", connectionId))));
         }
 
         return getReactorConnection().then(Mono.fromCallable(this::getOrCreateManagementChannel));
@@ -117,16 +118,17 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      * @return A new or existing send link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions, String clientIdentifier) {
-        return createSession(entityPath).cast(EventHubSession.class)
-            .flatMap(session -> {
-                logger.atVerbose()
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(CLIENT_IDENTIFIER_KEY, clientIdentifier)
-                    .log("Get or create producer.");
-                final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
-                return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy, clientIdentifier);
-            });
+    public Mono<AmqpSendLink> createSendLink(String linkName, String entityPath, AmqpRetryOptions retryOptions,
+        String clientIdentifier) {
+        return createSession(entityPath).cast(EventHubSession.class).flatMap(session -> {
+            logger.atVerbose()
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(CLIENT_IDENTIFIER_KEY, clientIdentifier)
+                .log("Get or create producer.");
+            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+            return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy,
+                clientIdentifier);
+        });
     }
 
     /**
@@ -143,17 +145,16 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     @Override
     public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, EventPosition eventPosition,
         ReceiveOptions options, String clientIdentifier) {
-        return createSession(entityPath).cast(EventHubSession.class)
-            .flatMap(session -> {
-                logger.atVerbose()
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .addKeyValue(CLIENT_IDENTIFIER_KEY, clientIdentifier)
-                    .log("Get or create consumer.");
-                final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+        return createSession(entityPath).cast(EventHubSession.class).flatMap(session -> {
+            logger.atVerbose()
+                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                .addKeyValue(CLIENT_IDENTIFIER_KEY, clientIdentifier)
+                .log("Get or create consumer.");
+            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-                return session.createConsumer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy,
-                    eventPosition, options, clientIdentifier);
-            });
+            return session.createConsumer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy,
+                eventPosition, options, clientIdentifier);
+        });
     }
 
     @Override
@@ -171,8 +172,8 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
 
     @Override
     protected ReactorSession createSession(ProtonSessionWrapper session) {
-        return new EventHubReactorSession(this, session, handlerProvider, linkProvider,
-            getClaimsBasedSecurityNode(), tokenManagerProvider, retryOptions, messageSerializer, isV2);
+        return new EventHubReactorSession(this, session, handlerProvider, linkProvider, getClaimsBasedSecurityNode(),
+            tokenManagerProvider, retryOptions, messageSerializer, isV2);
     }
 
     private synchronized ManagementChannel getOrCreateManagementChannel() {
@@ -180,8 +181,8 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
             final ChannelCacheWrapper channelCache;
             if (useSessionChannelCache) {
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
-                final RequestResponseChannelCache cache
-                    = new RequestResponseChannelCache(this, MANAGEMENT_ADDRESS, MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, retryPolicy);
+                final RequestResponseChannelCache cache = new RequestResponseChannelCache(this, MANAGEMENT_ADDRESS,
+                    MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, retryPolicy);
                 channelCache = new ChannelCacheWrapper(cache);
             } else {
                 final AmqpChannelProcessor<RequestResponseChannel> cache

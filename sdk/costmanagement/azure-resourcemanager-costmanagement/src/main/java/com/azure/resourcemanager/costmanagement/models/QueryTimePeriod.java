@@ -75,14 +75,12 @@ public final class QueryTimePeriod {
      */
     public void validate() {
         if (from() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property from in model QueryTimePeriod"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property from in model QueryTimePeriod"));
         }
         if (to() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property to in model QueryTimePeriod"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property to in model QueryTimePeriod"));
         }
     }
 

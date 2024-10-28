@@ -45,14 +45,8 @@ public interface GroupUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Users list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<UserContract> list(
-        String resourceGroupName,
-        String serviceName,
-        String groupId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<UserContract> list(String resourceGroupName, String serviceName, String groupId, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Checks that user entity specified by identifier is associated with the group entity.
@@ -67,8 +61,8 @@ public interface GroupUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists along with {@link Response}.
      */
-    Response<Boolean> checkEntityExistsWithResponse(
-        String resourceGroupName, String serviceName, String groupId, String userId, Context context);
+    Response<Boolean> checkEntityExistsWithResponse(String resourceGroupName, String serviceName, String groupId,
+        String userId, Context context);
 
     /**
      * Checks that user entity specified by identifier is associated with the group entity.
@@ -97,8 +91,8 @@ public interface GroupUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return user details along with {@link Response}.
      */
-    Response<UserContract> createWithResponse(
-        String resourceGroupName, String serviceName, String groupId, String userId, Context context);
+    Response<UserContract> createWithResponse(String resourceGroupName, String serviceName, String groupId,
+        String userId, Context context);
 
     /**
      * Add existing user to existing group.
@@ -127,8 +121,8 @@ public interface GroupUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String groupId, String userId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String groupId, String userId,
+        Context context);
 
     /**
      * Remove existing user from existing group.

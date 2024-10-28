@@ -31,37 +31,27 @@ public final class SqlPoolWorkloadGroupsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"minResourcePercent\":282880446,\"maxResourcePercent\":1621480813,\"minResourcePercentPerRequest\":1.0193954701750108,\"maxResourcePercentPerRequest\":98.46606066426715,\"importance\":\"a\",\"queryExecutionTimeout\":1738475675},\"id\":\"qaqotnn\",\"name\":\"xolousdv\",\"type\":\"g\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"minResourcePercent\":282880446,\"maxResourcePercent\":1621480813,\"minResourcePercentPerRequest\":1.0193954701750108,\"maxResourcePercentPerRequest\":98.46606066426715,\"importance\":\"a\",\"queryExecutionTimeout\":1738475675},\"id\":\"qaqotnn\",\"name\":\"xolousdv\",\"type\":\"g\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<WorkloadGroup> response =
-            manager.sqlPoolWorkloadGroups().list("elsbfvd", "trkzxsgtznsvlrds", "o", com.azure.core.util.Context.NONE);
+        PagedIterable<WorkloadGroup> response = manager.sqlPoolWorkloadGroups()
+            .list("elsbfvd", "trkzxsgtznsvlrds", "o", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(282880446, response.iterator().next().minResourcePercent());
         Assertions.assertEquals(1621480813, response.iterator().next().maxResourcePercent());

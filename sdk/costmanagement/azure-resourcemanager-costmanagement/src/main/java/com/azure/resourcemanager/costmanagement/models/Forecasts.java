@@ -36,8 +36,8 @@ public interface Forecasts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of forecast along with {@link Response}.
      */
-    Response<ForecastResult> usageWithResponse(
-        String scope, ForecastDefinition parameters, String filter, Context context);
+    Response<ForecastResult> usageWithResponse(String scope, ForecastDefinition parameters, String filter,
+        Context context);
 
     /**
      * Lists the forecast charges for scope defined.
@@ -82,12 +82,8 @@ public interface Forecasts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of forecast along with {@link Response}.
      */
-    Response<ForecastResult> externalCloudProviderUsageWithResponse(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        ForecastDefinition parameters,
-        String filter,
-        Context context);
+    Response<ForecastResult> externalCloudProviderUsageWithResponse(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId, ForecastDefinition parameters, String filter, Context context);
 
     /**
      * Lists the forecast charges for external cloud provider type defined.
@@ -103,8 +99,6 @@ public interface Forecasts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of forecast.
      */
-    ForecastResult externalCloudProviderUsage(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        ForecastDefinition parameters);
+    ForecastResult externalCloudProviderUsage(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId, ForecastDefinition parameters);
 }

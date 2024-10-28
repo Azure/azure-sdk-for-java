@@ -46,11 +46,13 @@ public final class ReplicationNetworkMappingsCreateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetworkMapping response = manager.replicationNetworkMappings().define("xyxxhwr")
+        NetworkMapping response = manager.replicationNetworkMappings()
+            .define("xyxxhwr")
             .withExistingReplicationNetwork("brhfiwltkfysunte", "hkl", "whcv", "syyhgqokjbmsrk")
             .withProperties(new CreateNetworkMappingInputProperties().withRecoveryFabricName("omaqsyilpzzb")
                 .withRecoveryNetworkId("wnrzozsxa")

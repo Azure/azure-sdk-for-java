@@ -12,9 +12,7 @@ import io.clientcore.core.json.implementation.jackson.core.util.RequestPayload;
  *
  * @since 2.10
  */
-public abstract class StreamReadException
-    extends JsonProcessingException
-{
+public abstract class StreamReadException extends JsonProcessingException {
     final static long serialVersionUID = 2L;
 
     protected transient JsonParser _processor;
@@ -43,8 +41,7 @@ public abstract class StreamReadException
     }
 
     // @since 2.13
-    protected StreamReadException(JsonParser p, String msg, JsonLocation loc,
-            Throwable rootCause) {
+    protected StreamReadException(JsonParser p, String msg, JsonLocation loc, Throwable rootCause) {
         super(msg, loc, rootCause);
         _processor = p;
     }
@@ -109,7 +106,7 @@ public abstract class StreamReadException
     public String getMessage() {
         String msg = super.getMessage();
         if (_requestPayload != null) {
-            msg +=  "\nRequest payload : " + _requestPayload.toString();
+            msg += "\nRequest payload : " + _requestPayload.toString();
         }
         return msg;
     }

@@ -21,36 +21,32 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     private final com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager;
 
-    public PrivateLinkResourcesImpl(
-        PrivateLinkResourcesClient innerClient,
+    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
         com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<PrivateLinkResource> listByConfigurationStore(
-        String resourceGroupName, String configStoreName) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().listByConfigurationStore(resourceGroupName, configStoreName);
+    public PagedIterable<PrivateLinkResource> listByConfigurationStore(String resourceGroupName,
+        String configStoreName) {
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().listByConfigurationStore(resourceGroupName, configStoreName);
         return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PrivateLinkResource> listByConfigurationStore(
-        String resourceGroupName, String configStoreName, Context context) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().listByConfigurationStore(resourceGroupName, configStoreName, context);
+    public PagedIterable<PrivateLinkResource> listByConfigurationStore(String resourceGroupName, String configStoreName,
+        Context context) {
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().listByConfigurationStore(resourceGroupName, configStoreName, context);
         return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String configStoreName, String groupName, Context context) {
-        Response<PrivateLinkResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, configStoreName, groupName, context);
+    public Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String configStoreName,
+        String groupName, Context context) {
+        Response<PrivateLinkResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, configStoreName, groupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

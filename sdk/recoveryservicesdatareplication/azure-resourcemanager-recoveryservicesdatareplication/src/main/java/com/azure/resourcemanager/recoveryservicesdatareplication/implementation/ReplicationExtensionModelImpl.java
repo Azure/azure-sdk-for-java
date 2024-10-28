@@ -14,13 +14,10 @@ public final class ReplicationExtensionModelImpl
     implements ReplicationExtensionModel, ReplicationExtensionModel.Definition {
     private ReplicationExtensionModelInner innerObject;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    ReplicationExtensionModelImpl(
-        ReplicationExtensionModelInner innerObject,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    ReplicationExtensionModelImpl(ReplicationExtensionModelInner innerObject,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -66,49 +63,39 @@ public final class ReplicationExtensionModelImpl
     }
 
     public ReplicationExtensionModel create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationExtensions()
-                .create(resourceGroupName, vaultName, replicationExtensionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationExtensions()
+            .create(resourceGroupName, vaultName, replicationExtensionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ReplicationExtensionModel create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationExtensions()
-                .create(resourceGroupName, vaultName, replicationExtensionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationExtensions()
+            .create(resourceGroupName, vaultName, replicationExtensionName, this.innerModel(), context);
         return this;
     }
 
-    ReplicationExtensionModelImpl(
-        String name,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    ReplicationExtensionModelImpl(String name,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = new ReplicationExtensionModelInner();
         this.serviceManager = serviceManager;
         this.replicationExtensionName = name;
     }
 
     public ReplicationExtensionModel refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationExtensions()
-                .getWithResponse(resourceGroupName, vaultName, replicationExtensionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationExtensions()
+            .getWithResponse(resourceGroupName, vaultName, replicationExtensionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ReplicationExtensionModel refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationExtensions()
-                .getWithResponse(resourceGroupName, vaultName, replicationExtensionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationExtensions()
+            .getWithResponse(resourceGroupName, vaultName, replicationExtensionName, context)
+            .getValue();
         return this;
     }
 

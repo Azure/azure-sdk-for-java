@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SandboxCustomImagesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SandboxCustomImagesListResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"dndrdvstkwqqtche\",\"value\":[{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"tdaaygdvwvg\",\"requirementsFileContent\":\"ohgwxrtfudxepxg\",\"provisioningState\":\"Succeeded\"},\"id\":\"gvr\",\"name\":\"mnpkukghimdblxg\",\"type\":\"imfnjhfjx\"},{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"zk\",\"requirementsFileContent\":\"oqreyfkzikfjawn\",\"provisioningState\":\"Moving\"},\"id\":\"vxwc\",\"name\":\"elpcirelsfeaenwa\",\"type\":\"fatkld\"},{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"jhwuaanozjos\",\"requirementsFileContent\":\"youlp\",\"provisioningState\":\"Moving\"},\"id\":\"xagl\",\"name\":\"vimjwos\",\"type\":\"tx\"}]}")
-                .toObject(SandboxCustomImagesListResult.class);
+        SandboxCustomImagesListResult model = BinaryData.fromString(
+            "{\"nextLink\":\"dndrdvstkwqqtche\",\"value\":[{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"tdaaygdvwvg\",\"requirementsFileContent\":\"ohgwxrtfudxepxg\",\"provisioningState\":\"Succeeded\"},\"id\":\"gvr\",\"name\":\"mnpkukghimdblxg\",\"type\":\"imfnjhfjx\"},{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"zk\",\"requirementsFileContent\":\"oqreyfkzikfjawn\",\"provisioningState\":\"Moving\"},\"id\":\"vxwc\",\"name\":\"elpcirelsfeaenwa\",\"type\":\"fatkld\"},{\"properties\":{\"language\":\"Python\",\"languageVersion\":\"jhwuaanozjos\",\"requirementsFileContent\":\"youlp\",\"provisioningState\":\"Moving\"},\"id\":\"xagl\",\"name\":\"vimjwos\",\"type\":\"tx\"}]}")
+            .toObject(SandboxCustomImagesListResult.class);
         Assertions.assertEquals("dndrdvstkwqqtche", model.nextLink());
         Assertions.assertEquals(Language.PYTHON, model.value().get(0).language());
         Assertions.assertEquals("tdaaygdvwvg", model.value().get(0).languageVersion());
@@ -27,24 +25,17 @@ public final class SandboxCustomImagesListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SandboxCustomImagesListResult model =
-            new SandboxCustomImagesListResult()
-                .withNextLink("dndrdvstkwqqtche")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SandboxCustomImageInner()
-                                .withLanguage(Language.PYTHON)
-                                .withLanguageVersion("tdaaygdvwvg")
-                                .withRequirementsFileContent("ohgwxrtfudxepxg"),
-                            new SandboxCustomImageInner()
-                                .withLanguage(Language.PYTHON)
-                                .withLanguageVersion("zk")
-                                .withRequirementsFileContent("oqreyfkzikfjawn"),
-                            new SandboxCustomImageInner()
-                                .withLanguage(Language.PYTHON)
-                                .withLanguageVersion("jhwuaanozjos")
-                                .withRequirementsFileContent("youlp")));
+        SandboxCustomImagesListResult model = new SandboxCustomImagesListResult().withNextLink("dndrdvstkwqqtche")
+            .withValue(Arrays.asList(
+                new SandboxCustomImageInner().withLanguage(Language.PYTHON)
+                    .withLanguageVersion("tdaaygdvwvg")
+                    .withRequirementsFileContent("ohgwxrtfudxepxg"),
+                new SandboxCustomImageInner().withLanguage(Language.PYTHON)
+                    .withLanguageVersion("zk")
+                    .withRequirementsFileContent("oqreyfkzikfjawn"),
+                new SandboxCustomImageInner().withLanguage(Language.PYTHON)
+                    .withLanguageVersion("jhwuaanozjos")
+                    .withRequirementsFileContent("youlp")));
         model = BinaryData.fromObject(model).toObject(SandboxCustomImagesListResult.class);
         Assertions.assertEquals("dndrdvstkwqqtche", model.nextLink());
         Assertions.assertEquals(Language.PYTHON, model.value().get(0).language());

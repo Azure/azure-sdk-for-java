@@ -13,21 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class CostManagementResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CostManagementResource model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":\"fqbuaceopzf\",\"eTag\":\"hhuao\",\"location\":\"ppcqeqxolz\",\"tags\":{\"dmoizpostmg\":\"zxctobgb\",\"rmfqjhhkxbpvj\":\"cfbu\"},\"id\":\"mjh\",\"name\":\"xjyngudivk\",\"type\":\"tswb\"}")
-                .toObject(CostManagementResource.class);
+        CostManagementResource model = BinaryData.fromString(
+            "{\"sku\":\"fqbuaceopzf\",\"eTag\":\"hhuao\",\"location\":\"ppcqeqxolz\",\"tags\":{\"dmoizpostmg\":\"zxctobgb\",\"rmfqjhhkxbpvj\":\"cfbu\"},\"id\":\"mjh\",\"name\":\"xjyngudivk\",\"type\":\"tswb\"}")
+            .toObject(CostManagementResource.class);
         Assertions.assertEquals("ppcqeqxolz", model.location());
         Assertions.assertEquals("zxctobgb", model.tags().get("dmoizpostmg"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CostManagementResource model =
-            new CostManagementResource()
-                .withLocation("ppcqeqxolz")
-                .withTags(mapOf("dmoizpostmg", "zxctobgb", "rmfqjhhkxbpvj", "cfbu"));
+        CostManagementResource model = new CostManagementResource().withLocation("ppcqeqxolz")
+            .withTags(mapOf("dmoizpostmg", "zxctobgb", "rmfqjhhkxbpvj", "cfbu"));
         model = BinaryData.fromObject(model).toObject(CostManagementResource.class);
         Assertions.assertEquals("ppcqeqxolz", model.location());
         Assertions.assertEquals("zxctobgb", model.tags().get("dmoizpostmg"));

@@ -70,6 +70,7 @@
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
       --add-opens com.azure.messaging.eventgrid.cloudnative.cloudevents/com.azure.messaging.eventgrid.cloudnative.cloudevents=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <developers>

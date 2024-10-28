@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DataConnectionValidationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataConnectionValidationResult model =
-            BinaryData.fromString("{\"errorMessage\":\"ozkyewnfnzh\"}").toObject(DataConnectionValidationResult.class);
+        DataConnectionValidationResult model = BinaryData.fromString("{\"errorMessage\":\"ozkyewnfnzh\"}")
+            .toObject(DataConnectionValidationResult.class);
         Assertions.assertEquals("ozkyewnfnzh", model.errorMessage());
     }
 

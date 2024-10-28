@@ -10,11 +10,9 @@ import com.azure.resourcemanager.apimanagement.models.DocumentationCollection;
 public final class DocumentationCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DocumentationCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"title\":\"tesmfucrtfodqhu\",\"content\":\"zmzivrtrfzhhez\"},\"id\":\"hjud\",\"name\":\"dyyrudma\",\"type\":\"swtvd\"},{\"properties\":{\"title\":\"qssgfenffdx\",\"content\":\"wfqjch\"},\"id\":\"vdrijanxndm\",\"name\":\"vardlmzjotprrm\",\"type\":\"hcuhtuzlxiw\"},{\"properties\":{\"title\":\"garp\",\"content\":\"twrapczdo\"},\"id\":\"qyvzesipiysnjq\",\"name\":\"owa\",\"type\":\"dcndazabun\"},{\"properties\":{\"title\":\"ewkaupwhl\",\"content\":\"ckremgjlmsvdorsi\"},\"id\":\"xxhyrkqakofa\",\"name\":\"freprfvm\",\"type\":\"inwteyrqsh\"}],\"nextLink\":\"bcejopylbl\"}")
-                .toObject(DocumentationCollection.class);
+        DocumentationCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"title\":\"tesmfucrtfodqhu\",\"content\":\"zmzivrtrfzhhez\"},\"id\":\"hjud\",\"name\":\"dyyrudma\",\"type\":\"swtvd\"},{\"properties\":{\"title\":\"qssgfenffdx\",\"content\":\"wfqjch\"},\"id\":\"vdrijanxndm\",\"name\":\"vardlmzjotprrm\",\"type\":\"hcuhtuzlxiw\"},{\"properties\":{\"title\":\"garp\",\"content\":\"twrapczdo\"},\"id\":\"qyvzesipiysnjq\",\"name\":\"owa\",\"type\":\"dcndazabun\"},{\"properties\":{\"title\":\"ewkaupwhl\",\"content\":\"ckremgjlmsvdorsi\"},\"id\":\"xxhyrkqakofa\",\"name\":\"freprfvm\",\"type\":\"inwteyrqsh\"}],\"nextLink\":\"bcejopylbl\"}")
+            .toObject(DocumentationCollection.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -117,10 +117,8 @@ public final class ServiceConfigurationProperties {
      */
     public void validate() {
         if (serviceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serviceName in model ServiceConfigurationProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property serviceName in model ServiceConfigurationProperties"));
         }
     }
 

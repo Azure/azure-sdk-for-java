@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EventGridConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventGridConnectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"storageAccountResourceId\":\"yutrymd\",\"eventHubResourceId\":\"mfjhpycvjqdvdwkq\",\"consumerGroup\":\"ldrlefgnaavua\",\"tableName\":\"tetaoutnpdctuhs\",\"mappingRuleName\":\"efyihduyeuyl\",\"dataFormat\":\"APACHEAVRO\",\"ignoreFirstRecord\":false,\"blobStorageEventType\":\"Microsoft.Storage.BlobRenamed\",\"provisioningState\":\"Running\"}")
-                .toObject(EventGridConnectionProperties.class);
+        EventGridConnectionProperties model = BinaryData.fromString(
+            "{\"storageAccountResourceId\":\"yutrymd\",\"eventHubResourceId\":\"mfjhpycvjqdvdwkq\",\"consumerGroup\":\"ldrlefgnaavua\",\"tableName\":\"tetaoutnpdctuhs\",\"mappingRuleName\":\"efyihduyeuyl\",\"dataFormat\":\"APACHEAVRO\",\"ignoreFirstRecord\":false,\"blobStorageEventType\":\"Microsoft.Storage.BlobRenamed\",\"provisioningState\":\"Running\"}")
+            .toObject(EventGridConnectionProperties.class);
         Assertions.assertEquals("yutrymd", model.storageAccountResourceId());
         Assertions.assertEquals("mfjhpycvjqdvdwkq", model.eventHubResourceId());
         Assertions.assertEquals("ldrlefgnaavua", model.consumerGroup());
@@ -30,9 +28,8 @@ public final class EventGridConnectionPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventGridConnectionProperties model =
-            new EventGridConnectionProperties()
-                .withStorageAccountResourceId("yutrymd")
+        EventGridConnectionProperties model
+            = new EventGridConnectionProperties().withStorageAccountResourceId("yutrymd")
                 .withEventHubResourceId("mfjhpycvjqdvdwkq")
                 .withConsumerGroup("ldrlefgnaavua")
                 .withTableName("tetaoutnpdctuhs")

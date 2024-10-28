@@ -8,10 +8,8 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayCertificateAuthorityContractInner;
 import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthorityContract;
 
-public final class GatewayCertificateAuthorityContractImpl
-    implements GatewayCertificateAuthorityContract,
-        GatewayCertificateAuthorityContract.Definition,
-        GatewayCertificateAuthorityContract.Update {
+public final class GatewayCertificateAuthorityContractImpl implements GatewayCertificateAuthorityContract,
+    GatewayCertificateAuthorityContract.Definition, GatewayCertificateAuthorityContract.Update {
     private GatewayCertificateAuthorityContractInner innerObject;
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
@@ -56,8 +54,8 @@ public final class GatewayCertificateAuthorityContractImpl
 
     private String updateIfMatch;
 
-    public GatewayCertificateAuthorityContractImpl withExistingGateway(
-        String resourceGroupName, String serviceName, String gatewayId) {
+    public GatewayCertificateAuthorityContractImpl withExistingGateway(String resourceGroupName, String serviceName,
+        String gatewayId) {
         this.resourceGroupName = resourceGroupName;
         this.serviceName = serviceName;
         this.gatewayId = gatewayId;
@@ -65,35 +63,25 @@ public final class GatewayCertificateAuthorityContractImpl
     }
 
     public GatewayCertificateAuthorityContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGatewayCertificateAuthorities()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    gatewayId,
-                    certificateId,
-                    this.innerModel(),
-                    createIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGatewayCertificateAuthorities()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, gatewayId, certificateId, this.innerModel(),
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GatewayCertificateAuthorityContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGatewayCertificateAuthorities()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, gatewayId, certificateId, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGatewayCertificateAuthorities()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, gatewayId, certificateId, this.innerModel(),
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
-    GatewayCertificateAuthorityContractImpl(
-        String name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    GatewayCertificateAuthorityContractImpl(String name,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = new GatewayCertificateAuthorityContractInner();
         this.serviceManager = serviceManager;
         this.certificateId = name;
@@ -106,35 +94,24 @@ public final class GatewayCertificateAuthorityContractImpl
     }
 
     public GatewayCertificateAuthorityContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGatewayCertificateAuthorities()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    gatewayId,
-                    certificateId,
-                    this.innerModel(),
-                    updateIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGatewayCertificateAuthorities()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, gatewayId, certificateId, this.innerModel(),
+                updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GatewayCertificateAuthorityContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGatewayCertificateAuthorities()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, gatewayId, certificateId, this.innerModel(), updateIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGatewayCertificateAuthorities()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, gatewayId, certificateId, this.innerModel(),
+                updateIfMatch, context)
+            .getValue();
         return this;
     }
 
-    GatewayCertificateAuthorityContractImpl(
-        GatewayCertificateAuthorityContractInner innerObject,
+    GatewayCertificateAuthorityContractImpl(GatewayCertificateAuthorityContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -145,22 +122,18 @@ public final class GatewayCertificateAuthorityContractImpl
     }
 
     public GatewayCertificateAuthorityContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGatewayCertificateAuthorities()
-                .getWithResponse(resourceGroupName, serviceName, gatewayId, certificateId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGatewayCertificateAuthorities()
+            .getWithResponse(resourceGroupName, serviceName, gatewayId, certificateId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GatewayCertificateAuthorityContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGatewayCertificateAuthorities()
-                .getWithResponse(resourceGroupName, serviceName, gatewayId, certificateId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGatewayCertificateAuthorities()
+            .getWithResponse(resourceGroupName, serviceName, gatewayId, certificateId, context)
+            .getValue();
         return this;
     }
 

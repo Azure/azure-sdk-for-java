@@ -38,14 +38,8 @@ public interface Schedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Schedule> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<Schedule> list(String resourceGroupName, String labName, String expand, String filter, Integer top,
+        String orderby, Context context);
 
     /**
      * Get schedule.
@@ -60,8 +54,8 @@ public interface Schedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schedule along with {@link Response}.
      */
-    Response<Schedule> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<Schedule> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context);
 
     /**
      * Get schedule.
@@ -89,8 +83,8 @@ public interface Schedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a schedule along with {@link Response}.
      */
-    Response<Schedule> createOrUpdateWithResponse(
-        String resourceGroupName, String labName, String name, ScheduleInner schedule, Context context);
+    Response<Schedule> createOrUpdateWithResponse(String resourceGroupName, String labName, String name,
+        ScheduleInner schedule, Context context);
 
     /**
      * Create or replace an existing schedule.
@@ -145,8 +139,8 @@ public interface Schedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a schedule along with {@link Response}.
      */
-    Response<Schedule> updateWithResponse(
-        String resourceGroupName, String labName, String name, ScheduleFragment schedule, Context context);
+    Response<Schedule> updateWithResponse(String resourceGroupName, String labName, String name,
+        ScheduleFragment schedule, Context context);
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.

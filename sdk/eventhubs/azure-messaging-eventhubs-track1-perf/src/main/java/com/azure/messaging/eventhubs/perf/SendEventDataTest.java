@@ -59,9 +59,8 @@ public class SendEventDataTest extends ServiceTest<EventHubsOptions> {
     @Override
     public Mono<Void> runAsync() {
         return Mono.fromCompletionStage(clientFuture.thenComposeAsync(client -> {
-            final CompletableFuture<?>[] completableFutures = events.stream()
-                .map(client::send)
-                .toArray(CompletableFuture<?>[]::new);
+            final CompletableFuture<?>[] completableFutures
+                = events.stream().map(client::send).toArray(CompletableFuture<?>[]::new);
             return CompletableFuture.allOf(completableFutures);
         }));
     }

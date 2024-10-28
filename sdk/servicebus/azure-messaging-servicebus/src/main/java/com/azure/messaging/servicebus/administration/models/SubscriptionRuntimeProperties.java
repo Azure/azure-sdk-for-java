@@ -30,7 +30,6 @@ public class SubscriptionRuntimeProperties {
     private final int transferDeadLetterMessageCount;
     private final int transferMessageCount;
 
-
     /**
      * Creates a new instance with runtime properties extracted from the given SubscriptionDescription.
      *

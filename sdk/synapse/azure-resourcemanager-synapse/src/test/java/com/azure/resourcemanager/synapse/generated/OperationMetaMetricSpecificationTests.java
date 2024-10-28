@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationMetaMetricSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationMetaMetricSpecification model =
-            BinaryData
-                .fromString(
-                    "{\"sourceMdmNamespace\":\"rfidfvzwdz\",\"displayName\":\"tymw\",\"name\":\"dkfthwxmnt\",\"aggregationType\":\"waopvkmijcmmxd\",\"displayDescription\":\"fufsrpymzi\",\"sourceMdmAccount\":\"sezcxtb\",\"enableRegionalMdmAccount\":false,\"unit\":\"yc\",\"dimensions\":[{\"displayName\":\"wmdwzjeiachboo\",\"name\":\"lnrosfqp\",\"toBeExportedForShoebox\":true},{\"displayName\":\"zzvypyqrimzinp\",\"name\":\"wjdk\",\"toBeExportedForShoebox\":true},{\"displayName\":\"od\",\"name\":\"hc\",\"toBeExportedForShoebox\":false},{\"displayName\":\"hjtckwhd\",\"name\":\"ifiyipjxsqwpgrj\",\"toBeExportedForShoebox\":true}],\"supportsInstanceLevelAggregation\":true,\"metricFilterPattern\":\"jxvsnbyxqabn\"}")
-                .toObject(OperationMetaMetricSpecification.class);
+        OperationMetaMetricSpecification model = BinaryData.fromString(
+            "{\"sourceMdmNamespace\":\"rfidfvzwdz\",\"displayName\":\"tymw\",\"name\":\"dkfthwxmnt\",\"aggregationType\":\"waopvkmijcmmxd\",\"displayDescription\":\"fufsrpymzi\",\"sourceMdmAccount\":\"sezcxtb\",\"enableRegionalMdmAccount\":false,\"unit\":\"yc\",\"dimensions\":[{\"displayName\":\"wmdwzjeiachboo\",\"name\":\"lnrosfqp\",\"toBeExportedForShoebox\":true},{\"displayName\":\"zzvypyqrimzinp\",\"name\":\"wjdk\",\"toBeExportedForShoebox\":true},{\"displayName\":\"od\",\"name\":\"hc\",\"toBeExportedForShoebox\":false},{\"displayName\":\"hjtckwhd\",\"name\":\"ifiyipjxsqwpgrj\",\"toBeExportedForShoebox\":true}],\"supportsInstanceLevelAggregation\":true,\"metricFilterPattern\":\"jxvsnbyxqabn\"}")
+            .toObject(OperationMetaMetricSpecification.class);
         Assertions.assertEquals("rfidfvzwdz", model.sourceMdmNamespace());
         Assertions.assertEquals("tymw", model.displayName());
         Assertions.assertEquals("dkfthwxmnt", model.name());
@@ -35,9 +33,8 @@ public final class OperationMetaMetricSpecificationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationMetaMetricSpecification model =
-            new OperationMetaMetricSpecification()
-                .withSourceMdmNamespace("rfidfvzwdz")
+        OperationMetaMetricSpecification model
+            = new OperationMetaMetricSpecification().withSourceMdmNamespace("rfidfvzwdz")
                 .withDisplayName("tymw")
                 .withName("dkfthwxmnt")
                 .withAggregationType("waopvkmijcmmxd")
@@ -45,25 +42,19 @@ public final class OperationMetaMetricSpecificationTests {
                 .withSourceMdmAccount("sezcxtb")
                 .withEnableRegionalMdmAccount(false)
                 .withUnit("yc")
-                .withDimensions(
-                    Arrays
-                        .asList(
-                            new OperationMetaMetricDimensionSpecification()
-                                .withDisplayName("wmdwzjeiachboo")
-                                .withName("lnrosfqp")
-                                .withToBeExportedForShoebox(true),
-                            new OperationMetaMetricDimensionSpecification()
-                                .withDisplayName("zzvypyqrimzinp")
-                                .withName("wjdk")
-                                .withToBeExportedForShoebox(true),
-                            new OperationMetaMetricDimensionSpecification()
-                                .withDisplayName("od")
-                                .withName("hc")
-                                .withToBeExportedForShoebox(false),
-                            new OperationMetaMetricDimensionSpecification()
-                                .withDisplayName("hjtckwhd")
-                                .withName("ifiyipjxsqwpgrj")
-                                .withToBeExportedForShoebox(true)))
+                .withDimensions(Arrays.asList(
+                    new OperationMetaMetricDimensionSpecification().withDisplayName("wmdwzjeiachboo")
+                        .withName("lnrosfqp")
+                        .withToBeExportedForShoebox(true),
+                    new OperationMetaMetricDimensionSpecification().withDisplayName("zzvypyqrimzinp")
+                        .withName("wjdk")
+                        .withToBeExportedForShoebox(true),
+                    new OperationMetaMetricDimensionSpecification().withDisplayName("od")
+                        .withName("hc")
+                        .withToBeExportedForShoebox(false),
+                    new OperationMetaMetricDimensionSpecification().withDisplayName("hjtckwhd")
+                        .withName("ifiyipjxsqwpgrj")
+                        .withToBeExportedForShoebox(true)))
                 .withSupportsInstanceLevelAggregation(true)
                 .withMetricFilterPattern("jxvsnbyxqabn");
         model = BinaryData.fromObject(model).toObject(OperationMetaMetricSpecification.class);

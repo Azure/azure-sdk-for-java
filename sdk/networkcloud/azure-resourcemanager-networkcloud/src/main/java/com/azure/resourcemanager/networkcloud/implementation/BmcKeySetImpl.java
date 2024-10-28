@@ -140,20 +140,16 @@ public final class BmcKeySetImpl implements BmcKeySet, BmcKeySet.Definition, Bmc
     }
 
     public BmcKeySet create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBmcKeySets()
-                .createOrUpdate(resourceGroupName, clusterName, bmcKeySetName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBmcKeySets()
+            .createOrUpdate(resourceGroupName, clusterName, bmcKeySetName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public BmcKeySet create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBmcKeySets()
-                .createOrUpdate(resourceGroupName, clusterName, bmcKeySetName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBmcKeySets()
+            .createOrUpdate(resourceGroupName, clusterName, bmcKeySetName, this.innerModel(), context);
         return this;
     }
 
@@ -169,25 +165,21 @@ public final class BmcKeySetImpl implements BmcKeySet, BmcKeySet.Definition, Bmc
     }
 
     public BmcKeySet apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBmcKeySets()
-                .update(resourceGroupName, clusterName, bmcKeySetName, updateBmcKeySetUpdateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getBmcKeySets()
+            .update(resourceGroupName, clusterName, bmcKeySetName, updateBmcKeySetUpdateParameters, Context.NONE);
         return this;
     }
 
     public BmcKeySet apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBmcKeySets()
-                .update(resourceGroupName, clusterName, bmcKeySetName, updateBmcKeySetUpdateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getBmcKeySets()
+            .update(resourceGroupName, clusterName, bmcKeySetName, updateBmcKeySetUpdateParameters, context);
         return this;
     }
 
-    BmcKeySetImpl(
-        BmcKeySetInner innerObject, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
+    BmcKeySetImpl(BmcKeySetInner innerObject,
+        com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -196,22 +188,18 @@ public final class BmcKeySetImpl implements BmcKeySet, BmcKeySet.Definition, Bmc
     }
 
     public BmcKeySet refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBmcKeySets()
-                .getWithResponse(resourceGroupName, clusterName, bmcKeySetName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBmcKeySets()
+            .getWithResponse(resourceGroupName, clusterName, bmcKeySetName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public BmcKeySet refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBmcKeySets()
-                .getWithResponse(resourceGroupName, clusterName, bmcKeySetName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBmcKeySets()
+            .getWithResponse(resourceGroupName, clusterName, bmcKeySetName, context)
+            .getValue();
         return this;
     }
 

@@ -159,15 +159,15 @@ public class DefaultHttpClientBuilder {
      * @return A new {@link HttpClient} instance.
      */
     public HttpClient build() {
-        Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
-        ProxyOptions buildProxyOptions =
-            (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration) : proxyOptions;
+        ProxyOptions buildProxyOptions
+            = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration) : proxyOptions;
 
         if (buildProxyOptions != null && buildProxyOptions.getUsername() != null) {
-            Authenticator.setDefault(new ProxyAuthenticator(buildProxyOptions.getUsername(),
-                buildProxyOptions.getPassword()));
+            Authenticator
+                .setDefault(new ProxyAuthenticator(buildProxyOptions.getUsername(), buildProxyOptions.getPassword()));
         }
 
         if (buildProxyOptions != null

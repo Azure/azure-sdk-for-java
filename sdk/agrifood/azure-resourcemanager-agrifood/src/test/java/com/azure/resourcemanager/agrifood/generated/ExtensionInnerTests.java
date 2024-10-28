@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Test;
 public final class ExtensionInnerTests {
     @Test
     public void testDeserialize() {
-        ExtensionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"extensionId\":\"hq\",\"extensionCategory\":\"gjxpybczmehmt\",\"installedExtensionVersion\":\"pbsphrupidgs\",\"extensionAuthLink\":\"bejhphoycmsxa\",\"extensionApiDocsLink\":\"hdxbmtqio\"},\"eTag\":\"zehtbmu\",\"id\":\"p\",\"name\":\"wnoi\",\"type\":\"hwlrx\"}")
-                .toObject(ExtensionInner.class);
+        ExtensionInner model = BinaryData.fromString(
+            "{\"properties\":{\"extensionId\":\"hq\",\"extensionCategory\":\"gjxpybczmehmt\",\"installedExtensionVersion\":\"pbsphrupidgs\",\"extensionAuthLink\":\"bejhphoycmsxa\",\"extensionApiDocsLink\":\"hdxbmtqio\"},\"eTag\":\"zehtbmu\",\"id\":\"p\",\"name\":\"wnoi\",\"type\":\"hwlrx\"}")
+            .toObject(ExtensionInner.class);
     }
 
     @Test

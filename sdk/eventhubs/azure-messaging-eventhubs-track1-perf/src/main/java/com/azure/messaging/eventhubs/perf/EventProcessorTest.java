@@ -33,8 +33,8 @@ import java.util.function.Consumer;
  */
 public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
     private static final String STORAGE_PREFIX = "perf";
-    private static final String HEADERS = String.join("\t", "Id", "Index", "Count",
-        "Elapsed Time (ns)", "Elapsed Time (s)", "Rate (ops/sec)");
+    private static final String HEADERS
+        = String.join("\t", "Id", "Index", "Count", "Elapsed Time (ns)", "Elapsed Time (s)", "Rate (ops/sec)");
     private static final String FORMAT_STRING = "%s\t%d\t%d\t%s\t%s\t%.2f";
 
     // Minimum duration is 2 minutes so we can give it time to claim all the partitions.
@@ -93,24 +93,19 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
             return Mono.error(new RuntimeException("Unable to create container: " + containerName, e));
         }
 
-        return Mono.usingWhen(
-            Mono.fromCompletionStage(createEventHubClientAsync()),
-            client -> Mono.fromCompletionStage(client.getRuntimeInformation())
-                .flatMapMany(runtimeInformation -> {
-                    for (String id : runtimeInformation.getPartitionIds()) {
-                        partitionProcessorMap.put(id, new SamplePartitionProcessor());
-                    }
-                    return Flux.fromArray(runtimeInformation.getPartitionIds());
-                })
-                .flatMap(partitionId -> {
-                    if (options.publishMessages()) {
-                        return sendMessages(client, partitionId, options.getEventsToSend());
-                    } else {
-                        return Mono.empty();
-                    }
-                })
-                .then(),
-            client -> Mono.fromCompletionStage(client.close()));
+        return Mono.usingWhen(Mono.fromCompletionStage(createEventHubClientAsync()),
+            client -> Mono.fromCompletionStage(client.getRuntimeInformation()).flatMapMany(runtimeInformation -> {
+                for (String id : runtimeInformation.getPartitionIds()) {
+                    partitionProcessorMap.put(id, new SamplePartitionProcessor());
+                }
+                return Flux.fromArray(runtimeInformation.getPartitionIds());
+            }).flatMap(partitionId -> {
+                if (options.publishMessages()) {
+                    return sendMessages(client, partitionId, options.getEventsToSend());
+                } else {
+                    return Mono.empty();
+                }
+            }).then(), client -> Mono.fromCompletionStage(client.close()));
     }
 
     @Override
@@ -122,9 +117,9 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
     public Mono<Void> runAsync() {
         final Mono<EventProcessorHost> createProcessor = Mono.fromCallable(() -> {
             final ConnectionStringBuilder connectionStringBuilder = getConnectionStringBuilder();
-            final EventProcessorHost.EventProcessorHostBuilder.OptionalStep builder =
-                EventProcessorHost.EventProcessorHostBuilder.newBuilder(
-                    connectionStringBuilder.getEndpoint().toString(), options.getConsumerGroup())
+            final EventProcessorHost.EventProcessorHostBuilder.OptionalStep builder
+                = EventProcessorHost.EventProcessorHostBuilder
+                    .newBuilder(connectionStringBuilder.getEndpoint().toString(), options.getConsumerGroup())
                     .useAzureStorageCheckpointLeaseManager(storageCredentials, containerName, STORAGE_PREFIX)
                     .useEventHubConnectionString(connectionStringBuilder.toString())
                     .setExecutor(getScheduler());
@@ -133,22 +128,17 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
         });
 
         final Mono<Long> timeout = Mono.delay(testDuration);
-        return Mono.usingWhen(
-            createProcessor,
-            processor -> {
-                startTime = System.nanoTime();
+        return Mono.usingWhen(createProcessor, processor -> {
+            startTime = System.nanoTime();
 
-                return Mono.fromCompletionStage(
-                        processor.registerEventProcessorFactory(processorFactory))
-                    .then(Mono.when(timeout));
-            },
-            processor -> {
-                endTime = System.nanoTime();
+            return Mono.fromCompletionStage(processor.registerEventProcessorFactory(processorFactory))
+                .then(Mono.when(timeout));
+        }, processor -> {
+            endTime = System.nanoTime();
 
-                System.out.println("Completed run.");
-                return Mono.fromCompletionStage(processor.unregisterEventProcessor());
-            })
-            .doFinally(signal -> System.out.println("Finished cleaning up processor resources."));
+            System.out.println("Completed run.");
+            return Mono.fromCompletionStage(processor.unregisterEventProcessor());
+        }).doFinally(signal -> System.out.println("Finished cleaning up processor resources."));
     }
 
     @Override
@@ -169,7 +159,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
         }
 
         try (BlobOutputStream blobOutputStream = blob.openOutputStream();
-             OutputStreamWriter writer = new OutputStreamWriter(blobOutputStream, StandardCharsets.UTF_8)) {
+            OutputStreamWriter writer = new OutputStreamWriter(blobOutputStream, StandardCharsets.UTF_8)) {
 
             outputPartitionResults(content -> {
                 System.out.println(content);
@@ -217,7 +207,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
         final double seconds = eventsCounter.elapsedTime() * 0.000000001;
         final double operationsSecond = eventsCounter.totalEvents() / seconds;
 
-        return String.format(FORMAT_STRING, eventsCounter.getPartitionId(), index,
-            eventsCounter.totalEvents(), eventsCounter.elapsedTime(), seconds, operationsSecond);
+        return String.format(FORMAT_STRING, eventsCounter.getPartitionId(), index, eventsCounter.totalEvents(),
+            eventsCounter.elapsedTime(), seconds, operationsSecond);
     }
 }

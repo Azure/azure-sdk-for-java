@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Script reference. */
 @Fluent
 public final class ScriptReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptReference.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ScriptReference.class);
 
     /*
      * The storage source of the script: inline, workspace.

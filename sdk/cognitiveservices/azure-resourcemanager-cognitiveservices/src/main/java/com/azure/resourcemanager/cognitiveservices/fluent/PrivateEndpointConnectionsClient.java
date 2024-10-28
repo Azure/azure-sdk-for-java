@@ -28,8 +28,8 @@ public interface PrivateEndpointConnectionsClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionListResultInner> listWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<PrivateEndpointConnectionListResultInner> listWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Gets the private endpoint connections associated with the Cognitive Services account.
@@ -59,8 +59,8 @@ public interface PrivateEndpointConnectionsClient {
      *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String accountName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Gets the specified private endpoint connection associated with the Cognitive Services account.
@@ -75,8 +75,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the specified private endpoint connection associated with the Cognitive Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionInner get(String resourceGroupName, String accountName,
+        String privateEndpointConnectionName);
 
     /**
      * Update the state of specified private endpoint connection associated with the Cognitive Services account.
@@ -93,9 +93,7 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionName,
+        String resourceGroupName, String accountName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner properties);
 
     /**
@@ -114,11 +112,8 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner properties,
-        Context context);
+        String resourceGroupName, String accountName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner properties, Context context);
 
     /**
      * Update the state of specified private endpoint connection associated with the Cognitive Services account.
@@ -134,11 +129,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner properties);
+    PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String accountName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner properties);
 
     /**
      * Update the state of specified private endpoint connection associated with the Cognitive Services account.
@@ -155,12 +147,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the Private Endpoint Connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner properties,
-        Context context);
+    PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String accountName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner properties, Context context);
 
     /**
      * Deletes the specified private endpoint connection associated with the Cognitive Services account.
@@ -175,8 +163,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes the specified private endpoint connection associated with the Cognitive Services account.
@@ -192,8 +180,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes the specified private endpoint connection associated with the Cognitive Services account.

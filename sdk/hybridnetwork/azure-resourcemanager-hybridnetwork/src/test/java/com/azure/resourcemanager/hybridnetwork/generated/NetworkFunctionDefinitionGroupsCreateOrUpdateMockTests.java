@@ -47,12 +47,15 @@ public final class NetworkFunctionDefinitionGroupsCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetworkFunctionDefinitionGroup response = manager.networkFunctionDefinitionGroups().define("napqo")
-            .withRegion("ibidmhmwffp").withExistingPublisher("tfgxqbawpcb", "nzqcy")
+        NetworkFunctionDefinitionGroup response = manager.networkFunctionDefinitionGroups()
+            .define("napqo")
+            .withRegion("ibidmhmwffp")
+            .withExistingPublisher("tfgxqbawpcb", "nzqcy")
             .withTags(mapOf("apckccrrvw", "u", "ukphaimmoiroq", "yoxoy"))
             .withProperties(new NetworkFunctionDefinitionGroupPropertiesFormat().withDescription("dhzbdybwwgb"))
             .create();

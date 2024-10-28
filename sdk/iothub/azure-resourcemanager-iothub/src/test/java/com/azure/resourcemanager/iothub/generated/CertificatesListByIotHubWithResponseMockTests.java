@@ -30,43 +30,31 @@ public final class CertificatesListByIotHubWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"subject\":\"coolsttpkiwkkb\",\"expiry\":\"Mon, 31 May 2021 01:02:38"
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"subject\":\"coolsttpkiwkkb\",\"expiry\":\"Mon, 31 May 2021 01:02:38"
                 + " GMT\",\"thumbprint\":\"ywvtylbfpnc\",\"isVerified\":false,\"created\":\"Sat, 16 Oct 2021 01:33:12"
                 + " GMT\",\"updated\":\"Sat, 03 Apr 2021 12:46:32"
                 + " GMT\",\"certificate\":\"thtywub\"},\"etag\":\"bihwqknfdnt\",\"id\":\"jchrdgoihxumw\",\"name\":\"ton\",\"type\":\"zj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        IotHubManager manager =
-            IotHubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        IotHubManager manager = IotHubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CertificateListDescription response =
-            manager
-                .certificates()
-                .listByIotHubWithResponse("totxhojujb", "pelmcuvhixbjxyf", com.azure.core.util.Context.NONE)
-                .getValue();
+        CertificateListDescription response = manager.certificates()
+            .listByIotHubWithResponse("totxhojujb", "pelmcuvhixbjxyf", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(false, response.value().get(0).properties().isVerified());
         Assertions.assertEquals("thtywub", response.value().get(0).properties().certificate());

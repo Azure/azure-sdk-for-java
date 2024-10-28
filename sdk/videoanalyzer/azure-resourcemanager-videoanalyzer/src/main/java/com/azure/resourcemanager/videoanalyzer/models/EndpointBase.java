@@ -20,8 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("EndpointBase")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.UnsecuredEndpoint", value = UnsecuredEndpoint.class),
-    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.TlsEndpoint", value = TlsEndpoint.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.TlsEndpoint", value = TlsEndpoint.class) })
 @Fluent
 public class EndpointBase {
     /*
@@ -113,16 +112,14 @@ public class EndpointBase {
      */
     public void validate() {
         if (credentials() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property credentials in model EndpointBase"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property credentials in model EndpointBase"));
         } else {
             credentials().validate();
         }
         if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property url in model EndpointBase"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property url in model EndpointBase"));
         }
         if (tunnel() != null) {
             tunnel().validate();

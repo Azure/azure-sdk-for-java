@@ -11,11 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactInfo model =
-            BinaryData
-                .fromString(
-                    "{\"contactName\":\"o\",\"phone\":\"rq\",\"phoneExtension\":\"poczvyifqrvkdvjs\",\"mobile\":\"rm\"}")
-                .toObject(ContactInfo.class);
+        ContactInfo model = BinaryData
+            .fromString(
+                "{\"contactName\":\"o\",\"phone\":\"rq\",\"phoneExtension\":\"poczvyifqrvkdvjs\",\"mobile\":\"rm\"}")
+            .toObject(ContactInfo.class);
         Assertions.assertEquals("o", model.contactName());
         Assertions.assertEquals("rq", model.phone());
         Assertions.assertEquals("poczvyifqrvkdvjs", model.phoneExtension());
@@ -24,12 +23,10 @@ public final class ContactInfoTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContactInfo model =
-            new ContactInfo()
-                .withContactName("o")
-                .withPhone("rq")
-                .withPhoneExtension("poczvyifqrvkdvjs")
-                .withMobile("rm");
+        ContactInfo model = new ContactInfo().withContactName("o")
+            .withPhone("rq")
+            .withPhoneExtension("poczvyifqrvkdvjs")
+            .withMobile("rm");
         model = BinaryData.fromObject(model).toObject(ContactInfo.class);
         Assertions.assertEquals("o", model.contactName());
         Assertions.assertEquals("rq", model.phone());

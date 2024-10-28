@@ -53,10 +53,8 @@ public final class ContactProfilesPropertiesNetworkConfiguration {
      */
     public void validate() {
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subnetId in model ContactProfilesPropertiesNetworkConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property subnetId in model ContactProfilesPropertiesNetworkConfiguration"));
         }
     }
 

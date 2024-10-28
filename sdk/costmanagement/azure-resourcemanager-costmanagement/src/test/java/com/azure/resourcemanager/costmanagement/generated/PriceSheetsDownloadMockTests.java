@@ -30,37 +30,27 @@ public final class PriceSheetsDownloadMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"expiryTime\":\"2021-07-31T07:50:02Z\",\"validTill\":\"2021-06-22T06:33:09Z\",\"downloadUrl\":\"iouaubrjt\"}";
+        String responseStr
+            = "{\"expiryTime\":\"2021-07-31T07:50:02Z\",\"validTill\":\"2021-06-22T06:33:09Z\",\"downloadUrl\":\"iouaubrjt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DownloadUrl response =
-            manager.priceSheets().download("jrcg", "gydcw", "oxjumvqqo", com.azure.core.util.Context.NONE);
+        DownloadUrl response
+            = manager.priceSheets().download("jrcg", "gydcw", "oxjumvqqo", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T06:33:09Z"), response.validTill());
         Assertions.assertEquals("iouaubrjt", response.downloadUrl());

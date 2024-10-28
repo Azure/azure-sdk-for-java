@@ -20,8 +20,8 @@ public interface PortalConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the collection of the developer portal configurations along with {@link Response}.
      */
-    Response<PortalConfigCollection> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<PortalConfigCollection> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Lists the developer portal configurations.
@@ -47,8 +47,8 @@ public interface PortalConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the developer portal configuration.
      */
-    PortalConfigsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String portalConfigId, Context context);
+    PortalConfigsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String portalConfigId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the developer portal configuration.
@@ -74,8 +74,8 @@ public interface PortalConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the developer portal configuration.
      */
-    Response<PortalConfigContract> getWithResponse(
-        String resourceGroupName, String serviceName, String portalConfigId, Context context);
+    Response<PortalConfigContract> getWithResponse(String resourceGroupName, String serviceName, String portalConfigId,
+        Context context);
 
     /**
      * Get the developer portal configuration.

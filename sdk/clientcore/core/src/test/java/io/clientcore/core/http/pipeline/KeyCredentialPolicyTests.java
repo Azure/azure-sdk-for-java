@@ -34,7 +34,6 @@ public class KeyCredentialPolicyTests {
             Arguments.of(new KeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential, "Bearer"),
                 "Bearer " + fakeKey),
             Arguments.of(new KeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential, "Bearer "),
-                "Bearer " + fakeKey)
-        );
+                "Bearer " + fakeKey));
     }
 }

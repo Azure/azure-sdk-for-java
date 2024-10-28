@@ -33,9 +33,7 @@ public interface TenantConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginDeploy(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
+        String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
         DeployConfigurationParameters parameters);
 
     /**
@@ -54,11 +52,8 @@ public interface TenantConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginDeploy(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters,
-        Context context);
+        String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
+        DeployConfigurationParameters parameters, Context context);
 
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
@@ -74,11 +69,8 @@ public interface TenantConfigurationsClient {
      * @return long Running Git Operation Results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationResultContractInner deploy(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters);
+    OperationResultContractInner deploy(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, DeployConfigurationParameters parameters);
 
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
@@ -95,12 +87,8 @@ public interface TenantConfigurationsClient {
      * @return long Running Git Operation Results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationResultContractInner deploy(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters,
-        Context context);
+    OperationResultContractInner deploy(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, DeployConfigurationParameters parameters, Context context);
 
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
@@ -117,9 +105,7 @@ public interface TenantConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginSave(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
+        String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
         SaveConfigurationParameter parameters);
 
     /**
@@ -138,11 +124,8 @@ public interface TenantConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginSave(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        SaveConfigurationParameter parameters,
-        Context context);
+        String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
+        SaveConfigurationParameter parameters, Context context);
 
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
@@ -158,11 +141,8 @@ public interface TenantConfigurationsClient {
      * @return long Running Git Operation Results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationResultContractInner save(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        SaveConfigurationParameter parameters);
+    OperationResultContractInner save(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, SaveConfigurationParameter parameters);
 
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
@@ -179,12 +159,8 @@ public interface TenantConfigurationsClient {
      * @return long Running Git Operation Results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationResultContractInner save(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        SaveConfigurationParameter parameters,
-        Context context);
+    OperationResultContractInner save(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, SaveConfigurationParameter parameters, Context context);
 
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
@@ -201,9 +177,7 @@ public interface TenantConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginValidate(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
+        String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
         DeployConfigurationParameters parameters);
 
     /**
@@ -222,11 +196,8 @@ public interface TenantConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginValidate(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters,
-        Context context);
+        String resourceGroupName, String serviceName, ConfigurationIdName configurationName,
+        DeployConfigurationParameters parameters, Context context);
 
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
@@ -242,11 +213,8 @@ public interface TenantConfigurationsClient {
      * @return long Running Git Operation Results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationResultContractInner validate(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters);
+    OperationResultContractInner validate(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, DeployConfigurationParameters parameters);
 
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
@@ -263,12 +231,8 @@ public interface TenantConfigurationsClient {
      * @return long Running Git Operation Results.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationResultContractInner validate(
-        String resourceGroupName,
-        String serviceName,
-        ConfigurationIdName configurationName,
-        DeployConfigurationParameters parameters,
-        Context context);
+    OperationResultContractInner validate(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName, DeployConfigurationParameters parameters, Context context);
 
     /**
      * Gets the status of the most recent synchronization between the configuration database and the Git repository.
@@ -284,8 +248,8 @@ public interface TenantConfigurationsClient {
      *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TenantConfigurationSyncStateContractInner> getSyncStateWithResponse(
-        String resourceGroupName, String serviceName, ConfigurationIdName configurationName, Context context);
+    Response<TenantConfigurationSyncStateContractInner> getSyncStateWithResponse(String resourceGroupName,
+        String serviceName, ConfigurationIdName configurationName, Context context);
 
     /**
      * Gets the status of the most recent synchronization between the configuration database and the Git repository.
@@ -299,6 +263,6 @@ public interface TenantConfigurationsClient {
      * @return the status of the most recent synchronization between the configuration database and the Git repository.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TenantConfigurationSyncStateContractInner getSyncState(
-        String resourceGroupName, String serviceName, ConfigurationIdName configurationName);
+    TenantConfigurationSyncStateContractInner getSyncState(String resourceGroupName, String serviceName,
+        ConfigurationIdName configurationName);
 }

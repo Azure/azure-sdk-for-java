@@ -48,13 +48,8 @@ public interface MyWorkbooksClient {
      *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MyWorkbookInner> listByResourceGroup(
-        String resourceGroupName,
-        CategoryType category,
-        List<String> tags,
-        String sourceId,
-        Boolean canFetchContent,
-        Context context);
+    PagedIterable<MyWorkbookInner> listByResourceGroup(String resourceGroupName, CategoryType category,
+        List<String> tags, String sourceId, Boolean canFetchContent, Context context);
 
     /**
      * Get all private workbooks defined within a specified subscription and category.
@@ -86,8 +81,8 @@ public interface MyWorkbooksClient {
      *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MyWorkbookInner> list(
-        CategoryType category, List<String> tags, Boolean canFetchContent, Context context);
+    PagedIterable<MyWorkbookInner> list(CategoryType category, List<String> tags, Boolean canFetchContent,
+        Context context);
 
     /**
      * Get a single private workbook by its resourceName.
@@ -102,8 +97,8 @@ public interface MyWorkbooksClient {
      * @return a single private workbook by its resourceName along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MyWorkbookInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<MyWorkbookInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get a single private workbook by its resourceName.
@@ -162,12 +157,8 @@ public interface MyWorkbooksClient {
      * @return an Application Insights private workbook definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MyWorkbookInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        MyWorkbookInner workbookProperties,
-        String sourceId,
-        Context context);
+    Response<MyWorkbookInner> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
+        MyWorkbookInner workbookProperties, String sourceId, Context context);
 
     /**
      * Create a new private workbook.
@@ -199,12 +190,8 @@ public interface MyWorkbooksClient {
      * @return an Application Insights private workbook definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MyWorkbookInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        MyWorkbookInner workbookProperties,
-        String sourceId,
-        Context context);
+    Response<MyWorkbookInner> updateWithResponse(String resourceGroupName, String resourceName,
+        MyWorkbookInner workbookProperties, String sourceId, Context context);
 
     /**
      * Updates a private workbook that has already been added.

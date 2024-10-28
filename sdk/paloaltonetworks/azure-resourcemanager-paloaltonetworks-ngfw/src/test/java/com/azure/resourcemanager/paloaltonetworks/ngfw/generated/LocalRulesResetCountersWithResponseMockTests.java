@@ -44,12 +44,15 @@ public final class LocalRulesResetCountersWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RuleCounterReset response = manager.localRules().resetCountersWithResponse("whbgxvellvul", "xdm", "itmujdtvm",
-            "lyymffhmjpddny", com.azure.core.util.Context.NONE).getValue();
+        RuleCounterReset response = manager.localRules()
+            .resetCountersWithResponse("whbgxvellvul", "xdm", "itmujdtvm", "lyymffhmjpddny",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("rb", response.ruleStackName());
         Assertions.assertEquals("vnmdyfoeboj", response.ruleListName());

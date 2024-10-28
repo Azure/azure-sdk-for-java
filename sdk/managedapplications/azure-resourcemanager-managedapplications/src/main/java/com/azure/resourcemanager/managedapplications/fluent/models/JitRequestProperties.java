@@ -181,24 +181,18 @@ public final class JitRequestProperties {
      */
     public void validate() {
         if (applicationResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property applicationResourceId in model JitRequestProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property applicationResourceId in model JitRequestProperties"));
         }
         if (jitAuthorizationPolicies() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property jitAuthorizationPolicies in model JitRequestProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property jitAuthorizationPolicies in model JitRequestProperties"));
         } else {
             jitAuthorizationPolicies().forEach(e -> e.validate());
         }
         if (jitSchedulingPolicy() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property jitSchedulingPolicy in model JitRequestProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property jitSchedulingPolicy in model JitRequestProperties"));
         } else {
             jitSchedulingPolicy().validate();
         }

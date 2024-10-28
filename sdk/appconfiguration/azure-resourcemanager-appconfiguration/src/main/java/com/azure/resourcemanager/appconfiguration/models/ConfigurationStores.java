@@ -70,8 +70,8 @@ public interface ConfigurationStores {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified configuration store along with {@link Response}.
      */
-    Response<ConfigurationStore> getByResourceGroupWithResponse(
-        String resourceGroupName, String configStoreName, Context context);
+    Response<ConfigurationStore> getByResourceGroupWithResponse(String resourceGroupName, String configStoreName,
+        Context context);
 
     /**
      * Gets the properties of the specified configuration store.
@@ -148,11 +148,8 @@ public interface ConfigurationStores {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an API key used for authenticating with a configuration store endpoint along with {@link Response}.
      */
-    Response<ApiKey> regenerateKeyWithResponse(
-        String resourceGroupName,
-        String configStoreName,
-        RegenerateKeyParameters regenerateKeyParameters,
-        Context context);
+    Response<ApiKey> regenerateKeyWithResponse(String resourceGroupName, String configStoreName,
+        RegenerateKeyParameters regenerateKeyParameters, Context context);
 
     /**
      * Regenerates an access key for the specified configuration store.
@@ -165,8 +162,8 @@ public interface ConfigurationStores {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an API key used for authenticating with a configuration store endpoint.
      */
-    ApiKey regenerateKey(
-        String resourceGroupName, String configStoreName, RegenerateKeyParameters regenerateKeyParameters);
+    ApiKey regenerateKey(String resourceGroupName, String configStoreName,
+        RegenerateKeyParameters regenerateKeyParameters);
 
     /**
      * Gets information about the deleted configuration stores in a subscription.
@@ -201,8 +198,8 @@ public interface ConfigurationStores {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deleted Azure app configuration store along with {@link Response}.
      */
-    Response<DeletedConfigurationStore> getDeletedWithResponse(
-        String location, String configStoreName, Context context);
+    Response<DeletedConfigurationStore> getDeletedWithResponse(String location, String configStoreName,
+        Context context);
 
     /**
      * Gets a deleted Azure app configuration store.

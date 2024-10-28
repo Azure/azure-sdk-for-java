@@ -27,8 +27,10 @@ public final class ProtectableItemPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProtectableItemProperties model = new ProtectableItemProperties().withFriendlyName("qdxbxwa")
-            .withProtectionStatus("ogqxndlkzgxhuri").withReplicationProtectedItemId("bpodxunkbebxm")
-            .withRecoveryServicesProviderId("yyntwl").withProtectionReadinessErrors(Arrays.asList("tkoievseotgq", "l"))
+            .withProtectionStatus("ogqxndlkzgxhuri")
+            .withReplicationProtectedItemId("bpodxunkbebxm")
+            .withRecoveryServicesProviderId("yyntwl")
+            .withProtectionReadinessErrors(Arrays.asList("tkoievseotgq", "l"))
             .withSupportedReplicationProviders(
                 Arrays.asList("u", "lauwzizxbmpgcjef", "zmuvpbttdumorppx", "bmnzbtbhjpgl"))
             .withCustomDetails(new ConfigurationSettings());

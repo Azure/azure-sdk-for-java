@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class L2IsolationDomainPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L2IsolationDomainProperties model =
-            BinaryData
-                .fromString(
-                    "{\"networkFabricId\":\"ajxeiygle\",\"vlanId\":216127976,\"mtu\":1327006192,\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"MAT\",\"annotation\":\"rceqnkbrupob\"}")
-                .toObject(L2IsolationDomainProperties.class);
+        L2IsolationDomainProperties model = BinaryData.fromString(
+            "{\"networkFabricId\":\"ajxeiygle\",\"vlanId\":216127976,\"mtu\":1327006192,\"configurationState\":\"ErrorDeprovisioning\",\"provisioningState\":\"Succeeded\",\"administrativeState\":\"MAT\",\"annotation\":\"rceqnkbrupob\"}")
+            .toObject(L2IsolationDomainProperties.class);
         Assertions.assertEquals("rceqnkbrupob", model.annotation());
         Assertions.assertEquals("ajxeiygle", model.networkFabricId());
         Assertions.assertEquals(216127976, model.vlanId());
@@ -24,12 +22,10 @@ public final class L2IsolationDomainPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L2IsolationDomainProperties model =
-            new L2IsolationDomainProperties()
-                .withAnnotation("rceqnkbrupob")
-                .withNetworkFabricId("ajxeiygle")
-                .withVlanId(216127976)
-                .withMtu(1327006192);
+        L2IsolationDomainProperties model = new L2IsolationDomainProperties().withAnnotation("rceqnkbrupob")
+            .withNetworkFabricId("ajxeiygle")
+            .withVlanId(216127976)
+            .withMtu(1327006192);
         model = BinaryData.fromObject(model).toObject(L2IsolationDomainProperties.class);
         Assertions.assertEquals("rceqnkbrupob", model.annotation());
         Assertions.assertEquals("ajxeiygle", model.networkFabricId());

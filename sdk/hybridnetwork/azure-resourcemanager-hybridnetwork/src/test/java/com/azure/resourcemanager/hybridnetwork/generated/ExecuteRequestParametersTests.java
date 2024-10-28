@@ -26,8 +26,10 @@ public final class ExecuteRequestParametersTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ExecuteRequestParameters model = new ExecuteRequestParameters().withServiceEndpoint("ishc")
-            .withRequestMetadata(new RequestMetadata().withRelativePath("khaj").withHttpMethod(HttpMethod.DELETE)
-                .withSerializedBody("yeamdphagalpb").withApiVersion("wgipwhono"));
+            .withRequestMetadata(new RequestMetadata().withRelativePath("khaj")
+                .withHttpMethod(HttpMethod.DELETE)
+                .withSerializedBody("yeamdphagalpb")
+                .withApiVersion("wgipwhono"));
         model = BinaryData.fromObject(model).toObject(ExecuteRequestParameters.class);
         Assertions.assertEquals("ishc", model.serviceEndpoint());
         Assertions.assertEquals("khaj", model.requestMetadata().relativePath());

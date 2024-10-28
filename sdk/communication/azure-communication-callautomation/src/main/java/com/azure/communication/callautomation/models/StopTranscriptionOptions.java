@@ -13,7 +13,6 @@ public class StopTranscriptionOptions {
      */
     private String operationContext;
 
-
     /**
      * Get the operation context.
      *

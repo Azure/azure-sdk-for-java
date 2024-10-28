@@ -33,8 +33,8 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Private link resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PrivateLinkResource> listByResource(
-        String resourceGroupName, String farmBeatsResourceName, Context context);
+    PagedIterable<PrivateLinkResource> listByResource(String resourceGroupName, String farmBeatsResourceName,
+        Context context);
 
     /**
      * Get Private link resource object.
@@ -61,6 +61,6 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link resource object along with {@link Response}.
      */
-    Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String subResourceName, Context context);
+    Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String farmBeatsResourceName,
+        String subResourceName, Context context);
 }

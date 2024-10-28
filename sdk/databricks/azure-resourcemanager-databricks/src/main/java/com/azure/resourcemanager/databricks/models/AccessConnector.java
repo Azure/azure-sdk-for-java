@@ -97,17 +97,16 @@ public interface AccessConnector {
     AccessConnectorInner innerModel();
 
     /** The entirety of the AccessConnector definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
+
     /** The AccessConnector definition stages. */
     interface DefinitionStages {
         /** The first stage of the AccessConnector definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the AccessConnector definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -126,6 +125,7 @@ public interface AccessConnector {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the AccessConnector definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -136,6 +136,7 @@ public interface AccessConnector {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the AccessConnector definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -157,6 +158,7 @@ public interface AccessConnector {
              */
             AccessConnector create(Context context);
         }
+
         /** The stage of the AccessConnector definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -167,6 +169,7 @@ public interface AccessConnector {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the AccessConnector definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -178,6 +181,7 @@ public interface AccessConnector {
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
         }
+
         /** The stage of the AccessConnector definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -189,6 +193,7 @@ public interface AccessConnector {
             WithCreate withProperties(AccessConnectorProperties properties);
         }
     }
+
     /**
      * Begins update for the AccessConnector resource.
      *
@@ -213,6 +218,7 @@ public interface AccessConnector {
          */
         AccessConnector apply(Context context);
     }
+
     /** The AccessConnector update stages. */
     interface UpdateStages {
         /** The stage of the AccessConnector update allowing to specify tags. */
@@ -225,6 +231,7 @@ public interface AccessConnector {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the AccessConnector update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -237,6 +244,7 @@ public interface AccessConnector {
             Update withIdentity(ManagedServiceIdentity identity);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

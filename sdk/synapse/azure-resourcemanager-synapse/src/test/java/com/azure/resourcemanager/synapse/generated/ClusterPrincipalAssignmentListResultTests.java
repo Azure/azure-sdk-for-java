@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterPrincipalAssignmentListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPrincipalAssignmentListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"principalId\":\"h\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"infsz\",\"principalType\":\"User\",\"tenantName\":\"lqdhmrjzr\",\"principalName\":\"cxpjbyypsj\",\"provisioningState\":\"Deleting\",\"aadObjectId\":\"enky\"},\"id\":\"qzvs\",\"name\":\"xfxjelgcmpzqj\",\"type\":\"hhqxuwyvcacoyviv\"},{\"properties\":{\"principalId\":\"izus\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"lbscmnlz\",\"principalType\":\"Group\",\"tenantName\":\"uf\",\"principalName\":\"gmvflnwyvqkx\",\"provisioningState\":\"Running\",\"aadObjectId\":\"niylyly\"},\"id\":\"xzutgqztwhghmupg\",\"name\":\"yjtcdxabbujftab\",\"type\":\"nbbklqpxzucafed\"}]}")
-                .toObject(ClusterPrincipalAssignmentListResult.class);
+        ClusterPrincipalAssignmentListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"principalId\":\"h\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"infsz\",\"principalType\":\"User\",\"tenantName\":\"lqdhmrjzr\",\"principalName\":\"cxpjbyypsj\",\"provisioningState\":\"Deleting\",\"aadObjectId\":\"enky\"},\"id\":\"qzvs\",\"name\":\"xfxjelgcmpzqj\",\"type\":\"hhqxuwyvcacoyviv\"},{\"properties\":{\"principalId\":\"izus\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"lbscmnlz\",\"principalType\":\"Group\",\"tenantName\":\"uf\",\"principalName\":\"gmvflnwyvqkx\",\"provisioningState\":\"Running\",\"aadObjectId\":\"niylyly\"},\"id\":\"xzutgqztwhghmupg\",\"name\":\"yjtcdxabbujftab\",\"type\":\"nbbklqpxzucafed\"}]}")
+            .toObject(ClusterPrincipalAssignmentListResult.class);
         Assertions.assertEquals("h", model.value().get(0).principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, model.value().get(0).role());
         Assertions.assertEquals("infsz", model.value().get(0).tenantId());
@@ -28,21 +26,15 @@ public final class ClusterPrincipalAssignmentListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPrincipalAssignmentListResult model =
-            new ClusterPrincipalAssignmentListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ClusterPrincipalAssignmentInner()
-                                .withPrincipalId("h")
-                                .withRole(ClusterPrincipalRole.ALL_DATABASES_ADMIN)
-                                .withTenantId("infsz")
-                                .withPrincipalType(PrincipalType.USER),
-                            new ClusterPrincipalAssignmentInner()
-                                .withPrincipalId("izus")
-                                .withRole(ClusterPrincipalRole.ALL_DATABASES_ADMIN)
-                                .withTenantId("lbscmnlz")
-                                .withPrincipalType(PrincipalType.GROUP)));
+        ClusterPrincipalAssignmentListResult model = new ClusterPrincipalAssignmentListResult().withValue(Arrays.asList(
+            new ClusterPrincipalAssignmentInner().withPrincipalId("h")
+                .withRole(ClusterPrincipalRole.ALL_DATABASES_ADMIN)
+                .withTenantId("infsz")
+                .withPrincipalType(PrincipalType.USER),
+            new ClusterPrincipalAssignmentInner().withPrincipalId("izus")
+                .withRole(ClusterPrincipalRole.ALL_DATABASES_ADMIN)
+                .withTenantId("lbscmnlz")
+                .withPrincipalType(PrincipalType.GROUP)));
         model = BinaryData.fromObject(model).toObject(ClusterPrincipalAssignmentListResult.class);
         Assertions.assertEquals("h", model.value().get(0).principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, model.value().get(0).role());

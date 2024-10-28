@@ -45,12 +45,13 @@ public final class BinaryHardeningsListByFirmwareMockTests {
             return Mono.just(httpResponse);
         }));
 
-        IoTFirmwareDefenseManager manager = IoTFirmwareDefenseManager.configure().withHttpClient(httpClient)
+        IoTFirmwareDefenseManager manager = IoTFirmwareDefenseManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<BinaryHardeningResource> response = manager.binaryHardenings().listByFirmware("auwhvylwzbtdhx",
-            "jznb", "pow", com.azure.core.util.Context.NONE);
+        PagedIterable<BinaryHardeningResource> response = manager.binaryHardenings()
+            .listByFirmware("auwhvylwzbtdhx", "jznb", "pow", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("rzqlveu", response.iterator().next().binaryHardeningId());
         Assertions.assertEquals("cswsrtjri", response.iterator().next().architecture());

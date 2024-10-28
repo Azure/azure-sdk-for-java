@@ -35,24 +35,21 @@ public final class DeployUsingARMTemplate {
      * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, IllegalAccessException {
+    public static boolean runSample(AzureResourceManager azureResourceManager)
+        throws IOException, IllegalAccessException {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgRSAT", 24);
         final String deploymentName = Utils.randomResourceName(azureResourceManager, "dpRSAT", 24);
         try {
             String templateJson = DeployUsingARMTemplate.getTemplate(azureResourceManager);
-
 
             //=============================================================
             // Create resource group.
 
             System.out.println("Creating a resource group with name: " + rgName);
 
-            azureResourceManager.resourceGroups().define(rgName)
-                    .withRegion(Region.US_EAST2)
-                    .create();
+            azureResourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST2).create();
 
             System.out.println("Created a resource group with name: " + rgName);
-
 
             //=============================================================
             // Create a deployment for an Azure App Service via an ARM
@@ -62,38 +59,34 @@ public final class DeployUsingARMTemplate {
             //
             System.out.println("Starting a deployment for an Azure App Service: " + deploymentName);
 
-            azureResourceManager.deployments().define(deploymentName)
-                    .withExistingResourceGroup(rgName)
-                    .withTemplate(templateJson)
-                    .withParameters("{}")
-                    .withMode(DeploymentMode.INCREMENTAL)
-                    .create();
+            azureResourceManager.deployments()
+                .define(deploymentName)
+                .withExistingResourceGroup(rgName)
+                .withTemplate(templateJson)
+                .withParameters("{}")
+                .withMode(DeploymentMode.INCREMENTAL)
+                .create();
 
             System.out.println("Started a deployment for an Azure App Service: " + deploymentName);
             return true;
         } finally {
             try {
-                Deployment deployment = azureResourceManager.deployments()
-                        .getByResourceGroup(rgName, deploymentName);
-                PagedIterable<DeploymentOperation> operations = deployment.deploymentOperations()
-                        .list();
+                Deployment deployment = azureResourceManager.deployments().getByResourceGroup(rgName, deploymentName);
+                PagedIterable<DeploymentOperation> operations = deployment.deploymentOperations().list();
 
                 for (DeploymentOperation operation : operations) {
                     if (operation.targetResource() != null) {
-                        String operationTxt = String.format("id:%s name:%s type: %s provisioning-state:%s code: %s msg: %s",
-                                operation.targetResource().id(),
-                                operation.targetResource().resourceName(),
-                                operation.targetResource().resourceType(),
-                                operation.provisioningState(),
-                                operation.statusCode(),
-                                operation.statusMessage());
+                        String operationTxt
+                            = String.format("id:%s name:%s type: %s provisioning-state:%s code: %s msg: %s",
+                                operation.targetResource().id(), operation.targetResource().resourceName(),
+                                operation.targetResource().resourceType(), operation.provisioningState(),
+                                operation.statusCode(), operation.statusMessage());
                         System.out.println(operationTxt);
                     }
                 }
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
-
 
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
@@ -124,8 +117,7 @@ public final class DeployUsingARMTemplate {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
@@ -137,7 +129,8 @@ public final class DeployUsingARMTemplate {
         }
     }
 
-    private static String getTemplate(AzureResourceManager azureResourceManager) throws IllegalAccessException, JsonProcessingException, IOException {
+    private static String getTemplate(AzureResourceManager azureResourceManager)
+        throws IllegalAccessException, JsonProcessingException, IOException {
         final String hostingPlanName = Utils.randomResourceName(azureResourceManager, "hpRSAT", 24);
         final String webappName = Utils.randomResourceName(azureResourceManager, "wnRSAT", 24);
 
@@ -156,7 +149,7 @@ public final class DeployUsingARMTemplate {
     }
 
     private static void validateAndAddFieldValue(String type, String fieldValue, String fieldName, String errorMessage,
-                                                 JsonNode tmp) throws IllegalAccessException {
+        JsonNode tmp) throws IllegalAccessException {
         // Add count variable for loop....
         final ObjectMapper mapper = new ObjectMapper();
         final ObjectNode parameter = mapper.createObjectNode();

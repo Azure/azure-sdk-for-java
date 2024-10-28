@@ -28,12 +28,8 @@ public interface SqlPoolMaintenanceWindowOptionsClient {
      * @return list of SQL pool's available maintenance windows along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MaintenanceWindowOptionsInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowOptionsName,
-        Context context);
+    Response<MaintenanceWindowOptionsInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String maintenanceWindowOptionsName, Context context);
 
     /**
      * SQL pool's available maintenance windows.
@@ -50,6 +46,6 @@ public interface SqlPoolMaintenanceWindowOptionsClient {
      * @return list of SQL pool's available maintenance windows.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MaintenanceWindowOptionsInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowOptionsName);
+    MaintenanceWindowOptionsInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowOptionsName);
 }

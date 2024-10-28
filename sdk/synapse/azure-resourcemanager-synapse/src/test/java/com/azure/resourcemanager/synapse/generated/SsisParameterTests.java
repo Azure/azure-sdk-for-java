@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SsisParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SsisParameter model =
-            BinaryData
-                .fromString(
-                    "{\"id\":5832025018417417844,\"name\":\"gydgrpxncakiq\",\"description\":\"ndjrkclamggl\",\"dataType\":\"mfejdoqeykglty\",\"required\":true,\"sensitive\":false,\"designDefaultValue\":\"qkaye\",\"defaultValue\":\"xtlgflwfg\",\"sensitiveDefaultValue\":\"iucijjcea\",\"valueType\":\"ijjj\",\"valueSet\":false,\"variable\":\"mcaszknxkv\"}")
-                .toObject(SsisParameter.class);
+        SsisParameter model = BinaryData.fromString(
+            "{\"id\":5832025018417417844,\"name\":\"gydgrpxncakiq\",\"description\":\"ndjrkclamggl\",\"dataType\":\"mfejdoqeykglty\",\"required\":true,\"sensitive\":false,\"designDefaultValue\":\"qkaye\",\"defaultValue\":\"xtlgflwfg\",\"sensitiveDefaultValue\":\"iucijjcea\",\"valueType\":\"ijjj\",\"valueSet\":false,\"variable\":\"mcaszknxkv\"}")
+            .toObject(SsisParameter.class);
         Assertions.assertEquals(5832025018417417844L, model.id());
         Assertions.assertEquals("gydgrpxncakiq", model.name());
         Assertions.assertEquals("ndjrkclamggl", model.description());
@@ -32,20 +30,18 @@ public final class SsisParameterTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisParameter model =
-            new SsisParameter()
-                .withId(5832025018417417844L)
-                .withName("gydgrpxncakiq")
-                .withDescription("ndjrkclamggl")
-                .withDataType("mfejdoqeykglty")
-                .withRequired(true)
-                .withSensitive(false)
-                .withDesignDefaultValue("qkaye")
-                .withDefaultValue("xtlgflwfg")
-                .withSensitiveDefaultValue("iucijjcea")
-                .withValueType("ijjj")
-                .withValueSet(false)
-                .withVariable("mcaszknxkv");
+        SsisParameter model = new SsisParameter().withId(5832025018417417844L)
+            .withName("gydgrpxncakiq")
+            .withDescription("ndjrkclamggl")
+            .withDataType("mfejdoqeykglty")
+            .withRequired(true)
+            .withSensitive(false)
+            .withDesignDefaultValue("qkaye")
+            .withDefaultValue("xtlgflwfg")
+            .withSensitiveDefaultValue("iucijjcea")
+            .withValueType("ijjj")
+            .withValueSet(false)
+            .withVariable("mcaszknxkv");
         model = BinaryData.fromObject(model).toObject(SsisParameter.class);
         Assertions.assertEquals(5832025018417417844L, model.id());
         Assertions.assertEquals("gydgrpxncakiq", model.name());

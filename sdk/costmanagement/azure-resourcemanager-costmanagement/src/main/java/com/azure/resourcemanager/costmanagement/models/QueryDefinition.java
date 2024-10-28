@@ -128,22 +128,19 @@ public final class QueryDefinition {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model QueryDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model QueryDefinition"));
         }
         if (timeframe() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timeframe in model QueryDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property timeframe in model QueryDefinition"));
         }
         if (timePeriod() != null) {
             timePeriod().validate();
         }
         if (dataset() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dataset in model QueryDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property dataset in model QueryDefinition"));
         } else {
             dataset().validate();
         }

@@ -88,8 +88,8 @@ public final class ResponseConstructorsCache {
         // Before this was returning null, but in all cases where null is returned from this method an exception would
         // be thrown later. Instead, just throw here to properly use computeIfAbsent by not inserting a null key-value
         // pair that would cause the computation to always be performed.
-        throw LOGGER.logThrowableAsError(new RuntimeException("Cannot find suitable constructor for class "
-            + responseClass));
+        throw LOGGER
+            .logThrowableAsError(new RuntimeException("Cannot find suitable constructor for class " + responseClass));
     }
 
     /**
@@ -110,15 +110,18 @@ public final class ResponseConstructorsCache {
             case 3:
                 return constructResponse(reflectiveInvoker, THREE_PARAM_ERROR, httpRequest, responseStatusCode,
                     responseHeaders);
+
             case 4:
                 return constructResponse(reflectiveInvoker, FOUR_PARAM_ERROR, httpRequest, responseStatusCode,
                     responseHeaders, bodyAsObject);
+
             default:
                 throw LOGGER.logThrowableAsError(new IllegalStateException(INVALID_PARAM_COUNT));
         }
     }
 
-    private static Response<?> constructResponse(ReflectiveInvoker reflectiveInvoker, String exceptionMessage, Object... params) {
+    private static Response<?> constructResponse(ReflectiveInvoker reflectiveInvoker, String exceptionMessage,
+        Object... params) {
         try {
             return (Response<?>) reflectiveInvoker.invokeStatic(params);
         } catch (Exception exception) {

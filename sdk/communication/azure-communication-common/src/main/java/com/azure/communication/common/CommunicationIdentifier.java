@@ -63,10 +63,15 @@ public abstract class CommunicationIdentifier {
         } else if (TEAMS_USER_PUBLIC_CLOUD_PREFIX.equals(prefix)) {
             return new MicrosoftTeamsUserIdentifier(suffix, false);
         } else if (TEAMS_USER_DOD_CLOUD_PREFIX.equals(prefix)) {
-            return new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.DOD);
+            return new MicrosoftTeamsUserIdentifier(suffix, false)
+                .setCloudEnvironment(CommunicationCloudEnvironment.DOD);
         } else if (TEAMS_USER_GCCH_CLOUD_PREFIX.equals(prefix)) {
-            return new MicrosoftTeamsUserIdentifier(suffix, false).setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
-        } else if (ACS_USER_PREFIX.equals(prefix) || SPOOL_USER_PREFIX.equals(prefix) || ACS_USER_DOD_CLOUD_PREFIX.equals(prefix) || ACS_USER_GCCH_CLOUD_PREFIX.equals(prefix)) {
+            return new MicrosoftTeamsUserIdentifier(suffix, false)
+                .setCloudEnvironment(CommunicationCloudEnvironment.GCCH);
+        } else if (ACS_USER_PREFIX.equals(prefix)
+            || SPOOL_USER_PREFIX.equals(prefix)
+            || ACS_USER_DOD_CLOUD_PREFIX.equals(prefix)
+            || ACS_USER_GCCH_CLOUD_PREFIX.equals(prefix)) {
             return new CommunicationUserIdentifier(rawId);
         } else if (TEAMS_APP_PUBLIC_CLOUD_PREFIX.equals(prefix)) {
             return new MicrosoftTeamsAppIdentifier(suffix, CommunicationCloudEnvironment.PUBLIC);

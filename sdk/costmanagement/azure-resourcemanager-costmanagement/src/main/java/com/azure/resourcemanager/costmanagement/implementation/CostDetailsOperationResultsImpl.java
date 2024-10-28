@@ -20,8 +20,7 @@ public final class CostDetailsOperationResultsImpl implements CostDetailsOperati
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    CostDetailsOperationResultsImpl(
-        CostDetailsOperationResultsInner innerObject,
+    CostDetailsOperationResultsImpl(CostDetailsOperationResultsInner innerObject,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

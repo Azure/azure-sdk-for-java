@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SupportedConnectorPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SupportedConnectorProperties model =
-            BinaryData
-                .fromString("{\"connectorType\":\"uw\",\"maxSpeedInMbps\":792068826}")
+        SupportedConnectorProperties model
+            = BinaryData.fromString("{\"connectorType\":\"uw\",\"maxSpeedInMbps\":792068826}")
                 .toObject(SupportedConnectorProperties.class);
         Assertions.assertEquals("uw", model.connectorType());
         Assertions.assertEquals(792068826, model.maxSpeedInMbps());
@@ -21,8 +20,8 @@ public final class SupportedConnectorPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SupportedConnectorProperties model =
-            new SupportedConnectorProperties().withConnectorType("uw").withMaxSpeedInMbps(792068826);
+        SupportedConnectorProperties model
+            = new SupportedConnectorProperties().withConnectorType("uw").withMaxSpeedInMbps(792068826);
         model = BinaryData.fromObject(model).toObject(SupportedConnectorProperties.class);
         Assertions.assertEquals("uw", model.connectorType());
         Assertions.assertEquals(792068826, model.maxSpeedInMbps());

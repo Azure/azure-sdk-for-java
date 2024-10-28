@@ -101,14 +101,20 @@ public final class OutputImpl implements Output, Output.Definition, Output.Updat
     }
 
     public Output create() {
-        this.innerObject = serviceManager.serviceClient().getOutputs().createOrReplaceWithResponse(resourceGroupName,
-            jobName, outputName, this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOutputs()
+            .createOrReplaceWithResponse(resourceGroupName, jobName, outputName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Output create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getOutputs().createOrReplaceWithResponse(resourceGroupName,
-            jobName, outputName, this.innerModel(), createIfMatch, createIfNoneMatch, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOutputs()
+            .createOrReplaceWithResponse(resourceGroupName, jobName, outputName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context)
+            .getValue();
         return this;
     }
 
@@ -126,14 +132,16 @@ public final class OutputImpl implements Output, Output.Definition, Output.Updat
     }
 
     public Output apply() {
-        this.innerObject = serviceManager.serviceClient().getOutputs()
+        this.innerObject = serviceManager.serviceClient()
+            .getOutputs()
             .updateWithResponse(resourceGroupName, jobName, outputName, this.innerModel(), updateIfMatch, Context.NONE)
             .getValue();
         return this;
     }
 
     public Output apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getOutputs()
+        this.innerObject = serviceManager.serviceClient()
+            .getOutputs()
             .updateWithResponse(resourceGroupName, jobName, outputName, this.innerModel(), updateIfMatch, context)
             .getValue();
         return this;
@@ -149,14 +157,18 @@ public final class OutputImpl implements Output, Output.Definition, Output.Updat
     }
 
     public Output refresh() {
-        this.innerObject = serviceManager.serviceClient().getOutputs()
-            .getWithResponse(resourceGroupName, jobName, outputName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOutputs()
+            .getWithResponse(resourceGroupName, jobName, outputName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Output refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getOutputs()
-            .getWithResponse(resourceGroupName, jobName, outputName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOutputs()
+            .getWithResponse(resourceGroupName, jobName, outputName, context)
+            .getValue();
         return this;
     }
 

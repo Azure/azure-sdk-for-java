@@ -51,10 +51,11 @@ public class FormRecognizerClientBuilderTest extends TestProxyTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void clientBuilderWithNullServiceVersion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        clientBuilderWithNullServiceVersionRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            assertNotNull(setSyncPollerPollInterval(clientBuilder.buildClient()
-                .beginRecognizeContentFromUrl(input), interceptorManager).getFinalResult()));
+    public void clientBuilderWithNullServiceVersion(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        clientBuilderWithNullServiceVersionRunner(httpClient, serviceVersion,
+            clientBuilder -> (input) -> assertNotNull(setSyncPollerPollInterval(
+                clientBuilder.buildClient().beginRecognizeContentFromUrl(input), interceptorManager).getFinalResult()));
     }
 
     /**
@@ -63,9 +64,9 @@ public class FormRecognizerClientBuilderTest extends TestProxyTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void clientBuilderWithDefaultPipeline(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
-            assertNotNull(setSyncPollerPollInterval(clientBuilder.buildClient()
-                .beginRecognizeContentFromUrl(input), interceptorManager).getFinalResult()));
+        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion,
+            clientBuilder -> (input) -> assertNotNull(setSyncPollerPollInterval(
+                clientBuilder.buildClient().beginRecognizeContentFromUrl(input), interceptorManager).getFinalResult()));
     }
 
     /**
@@ -75,27 +76,27 @@ public class FormRecognizerClientBuilderTest extends TestProxyTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void clientBuilderWithHttpEndpoint(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithNoRecordPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) -> {
-            assertThrows(RuntimeException.class, () -> clientBuilder.endpoint(VALID_HTTP_LOCALHOST)
-                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
-                .buildClient()
-                .beginRecognizeContentFromUrl(input).getFinalResult());
+            assertThrows(RuntimeException.class,
+                () -> clientBuilder.endpoint(VALID_HTTP_LOCALHOST)
+                    .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+                    .buildClient()
+                    .beginRecognizeContentFromUrl(input)
+                    .getFinalResult());
         });
     }
 
     @Test
     @DoNotRecord
     public void applicationIdFallsBackToLogOptions() {
-        FormRecognizerClient formRecognizerClient =
-            new FormRecognizerClientBuilder()
-                .endpoint(getEndpoint())
-                .credential(getCredential())
-                .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
-                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
-                .httpClient(httpRequest -> {
-                    assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
-                    return Mono.just(new MockHttpResponse(httpRequest, 400));
-                })
-                .buildClient();
+        FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder().endpoint(getEndpoint())
+            .credential(getCredential())
+            .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+            .httpClient(httpRequest -> {
+                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
+            })
+            .buildClient();
         assertThrows(HttpResponseException.class,
             () -> formRecognizerClient.beginRecognizeContentFromUrl(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG));
     }
@@ -103,17 +104,15 @@ public class FormRecognizerClientBuilderTest extends TestProxyTestBase {
     @Test
     @DoNotRecord
     public void clientOptionsIsPreferredOverLogOptions() {
-        FormRecognizerClient formRecognizerClient =
-            new FormRecognizerClientBuilder()
-                .endpoint(getEndpoint())
-                .credential(getCredential())
-                .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
-                .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
-                .httpClient(httpRequest -> {
-                    assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
-                    return Mono.just(new MockHttpResponse(httpRequest, 400));
-                })
-                .buildClient();
+        FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder().endpoint(getEndpoint())
+            .credential(getCredential())
+            .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
+            .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
+            .httpClient(httpRequest -> {
+                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
+            })
+            .buildClient();
         assertThrows(HttpResponseException.class,
             () -> formRecognizerClient.beginRecognizeContentFromUrl(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG));
     }
@@ -121,18 +120,16 @@ public class FormRecognizerClientBuilderTest extends TestProxyTestBase {
     @Test
     @DoNotRecord
     public void clientOptionHeadersAreAddedLast() {
-        FormRecognizerClient formRecognizerClient =
-            new FormRecognizerClientBuilder()
-                .endpoint(getEndpoint())
-                .credential(getCredential())
-                .clientOptions(new ClientOptions()
-                    .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
-                .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
-                .httpClient(httpRequest -> {
-                    assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
-                    return Mono.just(new MockHttpResponse(httpRequest, 400));
-                })
-                .buildClient();
+        FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder().endpoint(getEndpoint())
+            .credential(getCredential())
+            .clientOptions(
+                new ClientOptions().setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+            .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
+            .httpClient(httpRequest -> {
+                assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                return Mono.just(new MockHttpResponse(httpRequest, 400));
+            })
+            .buildClient();
         assertThrows(HttpResponseException.class,
             () -> formRecognizerClient.beginRecognizeContentFromUrl(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG));
     }
@@ -146,8 +143,8 @@ public class FormRecognizerClientBuilderTest extends TestProxyTestBase {
 
     void clientBuilderWithNullServiceVersionRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
         Function<FormRecognizerClientBuilder, Consumer<String>> testRunner) {
-        final FormRecognizerClientBuilder clientBuilder =
-            createClientBuilder(httpClient, serviceVersion, getEndpoint(), getCredential())
+        final FormRecognizerClientBuilder clientBuilder
+            = createClientBuilder(httpClient, serviceVersion, getEndpoint(), getCredential())
                 .retryPolicy(new RetryPolicy())
                 .serviceVersion(null);
         testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG);
@@ -155,17 +152,16 @@ public class FormRecognizerClientBuilderTest extends TestProxyTestBase {
 
     void clientBuilderWithDefaultPipelineRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
         Function<FormRecognizerClientBuilder, Consumer<String>> testRunner) {
-        final FormRecognizerClientBuilder clientBuilder =
-            createClientBuilder(httpClient, serviceVersion, getEndpoint(), getCredential())
+        final FormRecognizerClientBuilder clientBuilder
+            = createClientBuilder(httpClient, serviceVersion, getEndpoint(), getCredential())
                 .configuration(Configuration.getGlobalConfiguration())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG);
     }
 
     void clientBuilderWithNoRecordPipelineRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
-                                                Function<FormRecognizerClientBuilder, Consumer<String>> testRunner) {
-        final FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder()
-            .credential(getCredential())
+        Function<FormRecognizerClientBuilder, Consumer<String>> testRunner) {
+        final FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder().credential(getCredential())
             .endpoint(getEndpoint())
             .httpClient(httpClient)
             .serviceVersion(serviceVersion);
@@ -182,8 +178,7 @@ public class FormRecognizerClientBuilderTest extends TestProxyTestBase {
      */
     FormRecognizerClientBuilder createClientBuilder(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
         String endpoint, TokenCredential credential) {
-        final FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder()
-            .credential(credential)
+        final FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder().credential(credential)
             .endpoint(endpoint)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);

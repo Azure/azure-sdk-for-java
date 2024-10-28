@@ -14,8 +14,7 @@ import io.clientcore.core.json.implementation.jackson.core.util.TextBuffer;
  * if so, instance of this class can be given as the writer to
  * <code>JsonGenerator</code>.
  */
-public final class SegmentedStringWriter extends Writer
-{
+public final class SegmentedStringWriter extends Writer {
     final private TextBuffer _buffer;
 
     public SegmentedStringWriter(BufferRecycler br) {
@@ -49,23 +48,38 @@ public final class SegmentedStringWriter extends Writer
         return this;
     }
 
-    @Override public void close() { } // NOP
-    @Override public void flush() { } // NOP
+    @Override
+    public void close() {
+    } // NOP
 
     @Override
-    public void write(char[] cbuf) { _buffer.append(cbuf, 0, cbuf.length); }
+    public void flush() {
+    } // NOP
 
     @Override
-    public void write(char[] cbuf, int off, int len) { _buffer.append(cbuf, off, len); }
+    public void write(char[] cbuf) {
+        _buffer.append(cbuf, 0, cbuf.length);
+    }
 
     @Override
-    public void write(int c) { _buffer.append((char) c); }
+    public void write(char[] cbuf, int off, int len) {
+        _buffer.append(cbuf, off, len);
+    }
 
     @Override
-    public void write(String str) { _buffer.append(str, 0, str.length()); }
+    public void write(int c) {
+        _buffer.append((char) c);
+    }
 
     @Override
-    public void write(String str, int off, int len) { _buffer.append(str, off, len); }
+    public void write(String str) {
+        _buffer.append(str, 0, str.length());
+    }
+
+    @Override
+    public void write(String str, int off, int len) {
+        _buffer.append(str, off, len);
+    }
 
     /*
     /**********************************************************

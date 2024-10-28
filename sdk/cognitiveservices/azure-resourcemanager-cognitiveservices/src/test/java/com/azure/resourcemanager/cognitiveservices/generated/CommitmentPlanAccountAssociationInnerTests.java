@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CommitmentPlanAccountAssociationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommitmentPlanAccountAssociationInner model =
-            BinaryData
-                .fromString(
-                    "{\"etag\":\"einqf\",\"properties\":{\"accountId\":\"x\"},\"id\":\"knpirgnepttwq\",\"name\":\"sniffc\",\"type\":\"mqnrojlpijnkr\"}")
-                .toObject(CommitmentPlanAccountAssociationInner.class);
+        CommitmentPlanAccountAssociationInner model = BinaryData.fromString(
+            "{\"etag\":\"einqf\",\"properties\":{\"accountId\":\"x\"},\"id\":\"knpirgnepttwq\",\"name\":\"sniffc\",\"type\":\"mqnrojlpijnkr\"}")
+            .toObject(CommitmentPlanAccountAssociationInner.class);
         Assertions.assertEquals("x", model.accountId());
     }
 

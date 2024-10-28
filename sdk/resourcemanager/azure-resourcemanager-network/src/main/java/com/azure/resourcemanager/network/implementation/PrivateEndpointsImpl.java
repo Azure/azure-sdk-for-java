@@ -11,8 +11,7 @@ import com.azure.resourcemanager.network.models.PrivateEndpoints;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 public class PrivateEndpointsImpl extends
-    TopLevelModifiableResourcesImpl<
-            PrivateEndpoint, PrivateEndpointImpl, PrivateEndpointInner, PrivateEndpointsClient, NetworkManager>
+    TopLevelModifiableResourcesImpl<PrivateEndpoint, PrivateEndpointImpl, PrivateEndpointInner, PrivateEndpointsClient, NetworkManager>
     implements PrivateEndpoints {
 
     public PrivateEndpointsImpl(NetworkManager manager) {

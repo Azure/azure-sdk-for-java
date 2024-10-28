@@ -70,13 +70,8 @@ public interface ManagementGroupsClient {
      * @return the details of the management group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagementGroupInner> getWithResponse(
-        String groupId,
-        ManagementGroupExpandType expand,
-        Boolean recurse,
-        String filter,
-        String cacheControl,
-        Context context);
+    Response<ManagementGroupInner> getWithResponse(String groupId, ManagementGroupExpandType expand, Boolean recurse,
+        String filter, String cacheControl, Context context);
 
     /**
      * Get the details of the management group.
@@ -102,8 +97,8 @@ public interface ManagementGroupsClient {
      * @return the {@link SyncPoller} for polling of the management group details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagementGroupInner>, ManagementGroupInner> beginCreateOrUpdate(
-        String groupId, CreateManagementGroupRequest createManagementGroupRequest);
+    SyncPoller<PollResult<ManagementGroupInner>, ManagementGroupInner> beginCreateOrUpdate(String groupId,
+        CreateManagementGroupRequest createManagementGroupRequest);
 
     /**
      * Create or update a management group. If a management group is already created and a subsequent create request is
@@ -120,11 +115,8 @@ public interface ManagementGroupsClient {
      * @return the {@link SyncPoller} for polling of the management group details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ManagementGroupInner>, ManagementGroupInner> beginCreateOrUpdate(
-        String groupId,
-        CreateManagementGroupRequest createManagementGroupRequest,
-        String cacheControl,
-        Context context);
+    SyncPoller<PollResult<ManagementGroupInner>, ManagementGroupInner> beginCreateOrUpdate(String groupId,
+        CreateManagementGroupRequest createManagementGroupRequest, String cacheControl, Context context);
 
     /**
      * Create or update a management group. If a management group is already created and a subsequent create request is
@@ -155,11 +147,8 @@ public interface ManagementGroupsClient {
      * @return the management group details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagementGroupInner createOrUpdate(
-        String groupId,
-        CreateManagementGroupRequest createManagementGroupRequest,
-        String cacheControl,
-        Context context);
+    ManagementGroupInner createOrUpdate(String groupId, CreateManagementGroupRequest createManagementGroupRequest,
+        String cacheControl, Context context);
 
     /**
      * Update a management group.
@@ -175,8 +164,8 @@ public interface ManagementGroupsClient {
      * @return the management group details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagementGroupInner> updateWithResponse(
-        String groupId, PatchManagementGroupRequest patchGroupRequest, String cacheControl, Context context);
+    Response<ManagementGroupInner> updateWithResponse(String groupId, PatchManagementGroupRequest patchGroupRequest,
+        String cacheControl, Context context);
 
     /**
      * Update a management group.
@@ -201,8 +190,8 @@ public interface ManagementGroupsClient {
      * @return the {@link SyncPoller} for polling of the results of Azure-AsyncOperation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AzureAsyncOperationResultsInner>, AzureAsyncOperationResultsInner> beginDelete(
-        String groupId);
+    SyncPoller<PollResult<AzureAsyncOperationResultsInner>, AzureAsyncOperationResultsInner>
+        beginDelete(String groupId);
 
     /**
      * Delete management group. If a management group contains child resources, the request will fail.
@@ -217,8 +206,8 @@ public interface ManagementGroupsClient {
      * @return the {@link SyncPoller} for polling of the results of Azure-AsyncOperation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AzureAsyncOperationResultsInner>, AzureAsyncOperationResultsInner> beginDelete(
-        String groupId, String cacheControl, Context context);
+    SyncPoller<PollResult<AzureAsyncOperationResultsInner>, AzureAsyncOperationResultsInner> beginDelete(String groupId,
+        String cacheControl, Context context);
 
     /**
      * Delete management group. If a management group contains child resources, the request will fail.

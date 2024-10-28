@@ -218,18 +218,16 @@ public interface Workspace {
     WorkspaceInner innerModel();
 
     /** The entirety of the Workspace definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithManagedResourceGroupId,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithManagedResourceGroupId, DefinitionStages.WithCreate {
     }
+
     /** The Workspace definition stages. */
     interface DefinitionStages {
         /** The first stage of the Workspace definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Workspace definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -248,6 +246,7 @@ public interface Workspace {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Workspace definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -258,6 +257,7 @@ public interface Workspace {
              */
             WithManagedResourceGroupId withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the Workspace definition allowing to specify managedResourceGroupId. */
         interface WithManagedResourceGroupId {
             /**
@@ -268,23 +268,16 @@ public interface Workspace {
              */
             WithCreate withManagedResourceGroupId(String managedResourceGroupId);
         }
+
         /**
          * The stage of the Workspace definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithParameters,
-                DefinitionStages.WithUiDefinitionUri,
-                DefinitionStages.WithAuthorizations,
-                DefinitionStages.WithCreatedBy,
-                DefinitionStages.WithUpdatedBy,
-                DefinitionStages.WithStorageAccountIdentity,
-                DefinitionStages.WithManagedDiskIdentity,
-                DefinitionStages.WithEncryption,
-                DefinitionStages.WithPublicNetworkAccess,
-                DefinitionStages.WithRequiredNsgRules {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku,
+            DefinitionStages.WithParameters, DefinitionStages.WithUiDefinitionUri, DefinitionStages.WithAuthorizations,
+            DefinitionStages.WithCreatedBy, DefinitionStages.WithUpdatedBy, DefinitionStages.WithStorageAccountIdentity,
+            DefinitionStages.WithManagedDiskIdentity, DefinitionStages.WithEncryption,
+            DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithRequiredNsgRules {
             /**
              * Executes the create request.
              *
@@ -300,6 +293,7 @@ public interface Workspace {
              */
             Workspace create(Context context);
         }
+
         /** The stage of the Workspace definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -310,6 +304,7 @@ public interface Workspace {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Workspace definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -320,6 +315,7 @@ public interface Workspace {
              */
             WithCreate withSku(Sku sku);
         }
+
         /** The stage of the Workspace definition allowing to specify parameters. */
         interface WithParameters {
             /**
@@ -330,6 +326,7 @@ public interface Workspace {
              */
             WithCreate withParameters(WorkspaceCustomParameters parameters);
         }
+
         /** The stage of the Workspace definition allowing to specify uiDefinitionUri. */
         interface WithUiDefinitionUri {
             /**
@@ -340,6 +337,7 @@ public interface Workspace {
              */
             WithCreate withUiDefinitionUri(String uiDefinitionUri);
         }
+
         /** The stage of the Workspace definition allowing to specify authorizations. */
         interface WithAuthorizations {
             /**
@@ -350,6 +348,7 @@ public interface Workspace {
              */
             WithCreate withAuthorizations(List<WorkspaceProviderAuthorization> authorizations);
         }
+
         /** The stage of the Workspace definition allowing to specify createdBy. */
         interface WithCreatedBy {
             /**
@@ -361,6 +360,7 @@ public interface Workspace {
              */
             WithCreate withCreatedBy(CreatedBy createdBy);
         }
+
         /** The stage of the Workspace definition allowing to specify updatedBy. */
         interface WithUpdatedBy {
             /**
@@ -373,6 +373,7 @@ public interface Workspace {
              */
             WithCreate withUpdatedBy(CreatedBy updatedBy);
         }
+
         /** The stage of the Workspace definition allowing to specify storageAccountIdentity. */
         interface WithStorageAccountIdentity {
             /**
@@ -383,6 +384,7 @@ public interface Workspace {
              */
             WithCreate withStorageAccountIdentity(ManagedIdentityConfiguration storageAccountIdentity);
         }
+
         /** The stage of the Workspace definition allowing to specify managedDiskIdentity. */
         interface WithManagedDiskIdentity {
             /**
@@ -395,6 +397,7 @@ public interface Workspace {
              */
             WithCreate withManagedDiskIdentity(ManagedIdentityConfiguration managedDiskIdentity);
         }
+
         /** The stage of the Workspace definition allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -405,6 +408,7 @@ public interface Workspace {
              */
             WithCreate withEncryption(WorkspacePropertiesEncryption encryption);
         }
+
         /** The stage of the Workspace definition allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -417,6 +421,7 @@ public interface Workspace {
              */
             WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
+
         /** The stage of the Workspace definition allowing to specify requiredNsgRules. */
         interface WithRequiredNsgRules {
             /**
@@ -432,6 +437,7 @@ public interface Workspace {
             WithCreate withRequiredNsgRules(RequiredNsgRules requiredNsgRules);
         }
     }
+
     /**
      * Begins update for the Workspace resource.
      *
@@ -456,6 +462,7 @@ public interface Workspace {
          */
         Workspace apply(Context context);
     }
+
     /** The Workspace update stages. */
     interface UpdateStages {
         /** The stage of the Workspace update allowing to specify tags. */
@@ -469,6 +476,7 @@ public interface Workspace {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

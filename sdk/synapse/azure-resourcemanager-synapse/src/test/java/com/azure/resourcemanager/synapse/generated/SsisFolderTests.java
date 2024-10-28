@@ -11,11 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class SsisFolderTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SsisFolder model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Folder\",\"id\":9026085533674004933,\"name\":\"nl\",\"description\":\"mxcpwzvmdoks\"}")
-                .toObject(SsisFolder.class);
+        SsisFolder model = BinaryData
+            .fromString(
+                "{\"type\":\"Folder\",\"id\":9026085533674004933,\"name\":\"nl\",\"description\":\"mxcpwzvmdoks\"}")
+            .toObject(SsisFolder.class);
         Assertions.assertEquals(9026085533674004933L, model.id());
         Assertions.assertEquals("nl", model.name());
         Assertions.assertEquals("mxcpwzvmdoks", model.description());

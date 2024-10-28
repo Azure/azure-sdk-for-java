@@ -47,8 +47,8 @@ public interface ApiVersionSetsClient {
      * @return paged API Version Set list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApiVersionSetContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<ApiVersionSetContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Api Version Set specified by its identifier.
@@ -63,8 +63,8 @@ public interface ApiVersionSetsClient {
      * @return the entity state (Etag) version of the Api Version Set specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiVersionSetsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String versionSetId, Context context);
+    ApiVersionSetsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String versionSetId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Api Version Set specified by its identifier.
@@ -92,8 +92,8 @@ public interface ApiVersionSetsClient {
      * @return the details of the Api Version Set specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiVersionSetsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String versionSetId, Context context);
+    ApiVersionSetsGetResponse getWithResponse(String resourceGroupName, String serviceName, String versionSetId,
+        Context context);
 
     /**
      * Gets the details of the Api Version Set specified by its identifier.
@@ -124,13 +124,8 @@ public interface ApiVersionSetsClient {
      * @return aPI Version Set Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiVersionSetsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String versionSetId,
-        ApiVersionSetContractInner parameters,
-        String ifMatch,
-        Context context);
+    ApiVersionSetsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String versionSetId, ApiVersionSetContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or Updates a Api Version Set.
@@ -145,8 +140,8 @@ public interface ApiVersionSetsClient {
      * @return aPI Version Set Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiVersionSetContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String versionSetId, ApiVersionSetContractInner parameters);
+    ApiVersionSetContractInner createOrUpdate(String resourceGroupName, String serviceName, String versionSetId,
+        ApiVersionSetContractInner parameters);
 
     /**
      * Updates the details of the Api VersionSet specified by its identifier.
@@ -164,13 +159,8 @@ public interface ApiVersionSetsClient {
      * @return aPI Version Set Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiVersionSetsUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String versionSetId,
-        String ifMatch,
-        ApiVersionSetUpdateParameters parameters,
-        Context context);
+    ApiVersionSetsUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String versionSetId,
+        String ifMatch, ApiVersionSetUpdateParameters parameters, Context context);
 
     /**
      * Updates the details of the Api VersionSet specified by its identifier.
@@ -187,11 +177,7 @@ public interface ApiVersionSetsClient {
      * @return aPI Version Set Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiVersionSetContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String versionSetId,
-        String ifMatch,
+    ApiVersionSetContractInner update(String resourceGroupName, String serviceName, String versionSetId, String ifMatch,
         ApiVersionSetUpdateParameters parameters);
 
     /**
@@ -209,8 +195,8 @@ public interface ApiVersionSetsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String versionSetId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String versionSetId, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific Api Version Set.

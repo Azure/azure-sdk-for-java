@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SchemaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Schema model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"dmovzvfva\",\"displayName\":\"zqadf\",\"description\":\"z\",\"columns\":[{\"name\":\"laecxndticok\",\"type\":\"dateTime\",\"dataTypeHint\":\"armPath\",\"displayName\":\"t\",\"description\":\"dgxobfircl\",\"isDefaultDisplay\":false,\"isHidden\":false},{\"name\":\"yzriykhy\",\"type\":\"guid\",\"dataTypeHint\":\"uri\",\"displayName\":\"b\",\"description\":\"qvkjlmxho\",\"isDefaultDisplay\":true,\"isHidden\":false}],\"standardColumns\":[{\"name\":\"igu\",\"type\":\"real\",\"dataTypeHint\":\"ip\",\"displayName\":\"uzzptjazysdz\",\"description\":\"zwwva\",\"isDefaultDisplay\":true,\"isHidden\":false},{\"name\":\"fonkphhqyikvyla\",\"type\":\"boolean\",\"dataTypeHint\":\"guid\",\"displayName\":\"wmn\",\"description\":\"ttijfybvpoekrs\",\"isDefaultDisplay\":true,\"isHidden\":true},{\"name\":\"uzqgnjdgkynsc\",\"type\":\"dateTime\",\"dataTypeHint\":\"guid\",\"displayName\":\"h\",\"description\":\"komtkubotppn\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"ihfrbbcevqa\",\"type\":\"int\",\"dataTypeHint\":\"ip\",\"displayName\":\"lfkqojpy\",\"description\":\"gtrd\",\"isDefaultDisplay\":false,\"isHidden\":false}],\"categories\":[\"sdymbrn\",\"suxmpraf\",\"g\",\"khocxvdfffwaf\"],\"labels\":[\"udaspavehh\",\"vkbunzozudh\",\"xg\",\"moy\"],\"source\":\"microsoft\",\"tableType\":\"SearchResults\",\"tableSubType\":\"DataCollectionRuleBased\",\"solutions\":[\"fdn\"]}")
-                .toObject(Schema.class);
+        Schema model = BinaryData.fromString(
+            "{\"name\":\"dmovzvfva\",\"displayName\":\"zqadf\",\"description\":\"z\",\"columns\":[{\"name\":\"laecxndticok\",\"type\":\"dateTime\",\"dataTypeHint\":\"armPath\",\"displayName\":\"t\",\"description\":\"dgxobfircl\",\"isDefaultDisplay\":false,\"isHidden\":false},{\"name\":\"yzriykhy\",\"type\":\"guid\",\"dataTypeHint\":\"uri\",\"displayName\":\"b\",\"description\":\"qvkjlmxho\",\"isDefaultDisplay\":true,\"isHidden\":false}],\"standardColumns\":[{\"name\":\"igu\",\"type\":\"real\",\"dataTypeHint\":\"ip\",\"displayName\":\"uzzptjazysdz\",\"description\":\"zwwva\",\"isDefaultDisplay\":true,\"isHidden\":false},{\"name\":\"fonkphhqyikvyla\",\"type\":\"boolean\",\"dataTypeHint\":\"guid\",\"displayName\":\"wmn\",\"description\":\"ttijfybvpoekrs\",\"isDefaultDisplay\":true,\"isHidden\":true},{\"name\":\"uzqgnjdgkynsc\",\"type\":\"dateTime\",\"dataTypeHint\":\"guid\",\"displayName\":\"h\",\"description\":\"komtkubotppn\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"ihfrbbcevqa\",\"type\":\"int\",\"dataTypeHint\":\"ip\",\"displayName\":\"lfkqojpy\",\"description\":\"gtrd\",\"isDefaultDisplay\":false,\"isHidden\":false}],\"categories\":[\"sdymbrn\",\"suxmpraf\",\"g\",\"khocxvdfffwaf\"],\"labels\":[\"udaspavehh\",\"vkbunzozudh\",\"xg\",\"moy\"],\"source\":\"microsoft\",\"tableType\":\"SearchResults\",\"tableSubType\":\"DataCollectionRuleBased\",\"solutions\":[\"fdn\"]}")
+            .toObject(Schema.class);
         Assertions.assertEquals("dmovzvfva", model.name());
         Assertions.assertEquals("zqadf", model.displayName());
         Assertions.assertEquals("z", model.description());
@@ -32,26 +30,20 @@ public final class SchemaTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Schema model =
-            new Schema()
-                .withName("dmovzvfva")
-                .withDisplayName("zqadf")
-                .withDescription("z")
-                .withColumns(
-                    Arrays
-                        .asList(
-                            new Column()
-                                .withName("laecxndticok")
-                                .withType(ColumnTypeEnum.DATE_TIME)
-                                .withDataTypeHint(ColumnDataTypeHintEnum.ARM_PATH)
-                                .withDisplayName("t")
-                                .withDescription("dgxobfircl"),
-                            new Column()
-                                .withName("yzriykhy")
-                                .withType(ColumnTypeEnum.GUID)
-                                .withDataTypeHint(ColumnDataTypeHintEnum.URI)
-                                .withDisplayName("b")
-                                .withDescription("qvkjlmxho")));
+        Schema model = new Schema().withName("dmovzvfva")
+            .withDisplayName("zqadf")
+            .withDescription("z")
+            .withColumns(Arrays.asList(
+                new Column().withName("laecxndticok")
+                    .withType(ColumnTypeEnum.DATE_TIME)
+                    .withDataTypeHint(ColumnDataTypeHintEnum.ARM_PATH)
+                    .withDisplayName("t")
+                    .withDescription("dgxobfircl"),
+                new Column().withName("yzriykhy")
+                    .withType(ColumnTypeEnum.GUID)
+                    .withDataTypeHint(ColumnDataTypeHintEnum.URI)
+                    .withDisplayName("b")
+                    .withDescription("qvkjlmxho")));
         model = BinaryData.fromObject(model).toObject(Schema.class);
         Assertions.assertEquals("dmovzvfva", model.name());
         Assertions.assertEquals("zqadf", model.displayName());

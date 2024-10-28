@@ -162,17 +162,15 @@ public final class HostModelImpl implements HostModel, HostModel.Definition, Hos
     }
 
     public HostModel create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHosts()
-                .create(resourceGroupName, hostname, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getHosts()
+            .create(resourceGroupName, hostname, this.innerModel(), Context.NONE);
         return this;
     }
 
     public HostModel create(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getHosts().create(resourceGroupName, hostname, this.innerModel(), context);
+        this.innerObject
+            = serviceManager.serviceClient().getHosts().create(resourceGroupName, hostname, this.innerModel(), context);
         return this;
     }
 
@@ -188,27 +186,23 @@ public final class HostModelImpl implements HostModel, HostModel.Definition, Hos
     }
 
     public HostModel apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHosts()
-                .updateWithResponse(resourceGroupName, hostname, updateBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHosts()
+            .updateWithResponse(resourceGroupName, hostname, updateBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public HostModel apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHosts()
-                .updateWithResponse(resourceGroupName, hostname, updateBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHosts()
+            .updateWithResponse(resourceGroupName, hostname, updateBody, context)
+            .getValue();
         return this;
     }
 
-    HostModelImpl(
-        HostModelInner innerObject, com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
+    HostModelImpl(HostModelInner innerObject,
+        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -216,22 +210,18 @@ public final class HostModelImpl implements HostModel, HostModel.Definition, Hos
     }
 
     public HostModel refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHosts()
-                .getByResourceGroupWithResponse(resourceGroupName, hostname, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHosts()
+            .getByResourceGroupWithResponse(resourceGroupName, hostname, Context.NONE)
+            .getValue();
         return this;
     }
 
     public HostModel refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHosts()
-                .getByResourceGroupWithResponse(resourceGroupName, hostname, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHosts()
+            .getByResourceGroupWithResponse(resourceGroupName, hostname, context)
+            .getValue();
         return this;
     }
 

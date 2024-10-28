@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SingleServerRecommendationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SingleServerRecommendationResult model =
-            BinaryData
-                .fromString("{\"deploymentType\":\"SingleServer\",\"vmSku\":\"syocogjltdtbnnha\"}")
+        SingleServerRecommendationResult model
+            = BinaryData.fromString("{\"deploymentType\":\"SingleServer\",\"vmSku\":\"syocogjltdtbnnha\"}")
                 .toObject(SingleServerRecommendationResult.class);
         Assertions.assertEquals("syocogjltdtbnnha", model.vmSku());
     }

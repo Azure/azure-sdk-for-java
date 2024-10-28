@@ -70,8 +70,8 @@ public interface VideosClient {
      * @return represents a video resource within Azure Video Analyzer along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VideoEntityInner> getWithResponse(
-        String resourceGroupName, String accountName, String videoName, Context context);
+    Response<VideoEntityInner> getWithResponse(String resourceGroupName, String accountName, String videoName,
+        Context context);
 
     /**
      * Creates a new video resource or updates an existing video resource with the given name.
@@ -86,8 +86,8 @@ public interface VideosClient {
      * @return represents a video resource within Azure Video Analyzer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VideoEntityInner createOrUpdate(
-        String resourceGroupName, String accountName, String videoName, VideoEntityInner parameters);
+    VideoEntityInner createOrUpdate(String resourceGroupName, String accountName, String videoName,
+        VideoEntityInner parameters);
 
     /**
      * Creates a new video resource or updates an existing video resource with the given name.
@@ -103,8 +103,8 @@ public interface VideosClient {
      * @return represents a video resource within Azure Video Analyzer along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VideoEntityInner> createOrUpdateWithResponse(
-        String resourceGroupName, String accountName, String videoName, VideoEntityInner parameters, Context context);
+    Response<VideoEntityInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String videoName, VideoEntityInner parameters, Context context);
 
     /**
      * Deletes an existing video resource and its underlying data. This operation is irreversible.
@@ -147,8 +147,8 @@ public interface VideosClient {
      * @return represents a video resource within Azure Video Analyzer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VideoEntityInner update(
-        String resourceGroupName, String accountName, String videoName, VideoEntityInner parameters);
+    VideoEntityInner update(String resourceGroupName, String accountName, String videoName,
+        VideoEntityInner parameters);
 
     /**
      * Updates individual properties of an existing video resource with the given name.
@@ -164,8 +164,8 @@ public interface VideosClient {
      * @return represents a video resource within Azure Video Analyzer along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VideoEntityInner> updateWithResponse(
-        String resourceGroupName, String accountName, String videoName, VideoEntityInner parameters, Context context);
+    Response<VideoEntityInner> updateWithResponse(String resourceGroupName, String accountName, String videoName,
+        VideoEntityInner parameters, Context context);
 
     /**
      * Generates a streaming token which can be used for accessing content from video content URLs, for a video resource
@@ -196,6 +196,6 @@ public interface VideosClient {
      * @return "Video content token grants access to the video content URLs." along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VideoContentTokenInner> listContentTokenWithResponse(
-        String resourceGroupName, String accountName, String videoName, Context context);
+    Response<VideoContentTokenInner> listContentTokenWithResponse(String resourceGroupName, String accountName,
+        String videoName, Context context);
 }

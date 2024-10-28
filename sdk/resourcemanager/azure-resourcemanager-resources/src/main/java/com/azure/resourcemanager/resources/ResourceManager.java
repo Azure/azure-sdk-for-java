@@ -184,10 +184,9 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
         AuthenticatedImpl(HttpPipeline httpPipeline, AzureProfile profile) {
             this.httpPipeline = httpPipeline;
             this.profile = profile;
-            this.subscriptionClient = new SubscriptionClientBuilder()
-                    .pipeline(httpPipeline)
-                    .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                    .buildClient();
+            this.subscriptionClient = new SubscriptionClientBuilder().pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .buildClient();
         }
 
         public Subscriptions subscriptions() {
@@ -222,55 +221,45 @@ public final class ResourceManager extends Manager<ResourceManagementClient> {
     }
 
     private ResourceManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            null,
-            profile,
-            new ResourceManagementClientBuilder()
-                .pipeline(httpPipeline)
+        super(null, profile,
+            new ResourceManagementClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
         super.withResourceManager(this);
 
-        this.featureClient = new FeatureClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient();
-
-        this.subscriptionClient = new SubscriptionClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .buildClient();
-
-        this.policyClient = new PolicyClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient();
-
-        this.managementLockClient = new ManagementLockClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .buildClient();
-
-        this.resourceChangeClient = new ChangesManagementClientBuilder()
-            .pipeline(httpPipeline)
+        this.featureClient = new FeatureClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .buildClient();
 
-        this.deploymentStackClient = new DeploymentStacksManagementClientBuilder()
-            .pipeline(httpPipeline)
+        this.subscriptionClient = new SubscriptionClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .buildClient();
+
+        this.policyClient = new PolicyClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .buildClient();
 
-        this.dataBoundaryClient = new DataBoundariesManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .buildClient();
+        this.managementLockClient = new ManagementLockClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .buildClient();
+
+        this.resourceChangeClient = new ChangesManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .buildClient();
+
+        this.deploymentStackClient = new DeploymentStacksManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .buildClient();
+
+        this.dataBoundaryClient = new DataBoundariesManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .buildClient();
 
         for (int i = 0; i < httpPipeline.getPolicyCount(); ++i) {
             if (httpPipeline.getPolicy(i) instanceof ProviderRegistrationPolicy) {

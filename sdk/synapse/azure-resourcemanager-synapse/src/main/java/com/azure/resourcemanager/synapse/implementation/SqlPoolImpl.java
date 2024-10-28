@@ -131,20 +131,16 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
     }
 
     public SqlPool create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPools()
-                .create(resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPools()
+            .create(resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SqlPool create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPools()
-                .create(resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPools()
+            .create(resourceGroupName, workspaceName, sqlPoolName, this.innerModel(), context);
         return this;
     }
 
@@ -160,20 +156,16 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
     }
 
     public SqlPool apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPools()
-                .update(resourceGroupName, workspaceName, sqlPoolName, updateSqlPoolInfo, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPools()
+            .update(resourceGroupName, workspaceName, sqlPoolName, updateSqlPoolInfo, Context.NONE);
         return this;
     }
 
     public SqlPool apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPools()
-                .update(resourceGroupName, workspaceName, sqlPoolName, updateSqlPoolInfo, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPools()
+            .update(resourceGroupName, workspaceName, sqlPoolName, updateSqlPoolInfo, context);
         return this;
     }
 
@@ -186,22 +178,18 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
     }
 
     public SqlPool refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPools()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPools()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SqlPool refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPools()
-                .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPools()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context)
+            .getValue();
         return this;
     }
 
@@ -222,8 +210,7 @@ public final class SqlPoolImpl implements SqlPool, SqlPool.Definition, SqlPool.U
     }
 
     public Response<Void> renameWithResponse(ResourceMoveDefinition parameters, Context context) {
-        return serviceManager
-            .sqlPools()
+        return serviceManager.sqlPools()
             .renameWithResponse(resourceGroupName, workspaceName, sqlPoolName, parameters, context);
     }
 

@@ -14,8 +14,8 @@ public final class IngestionMode extends ExpandableStringEnum<IngestionMode> {
     public static final IngestionMode APPLICATION_INSIGHTS = fromString("ApplicationInsights");
 
     /** Static value ApplicationInsightsWithDiagnosticSettings for IngestionMode. */
-    public static final IngestionMode APPLICATION_INSIGHTS_WITH_DIAGNOSTIC_SETTINGS =
-        fromString("ApplicationInsightsWithDiagnosticSettings");
+    public static final IngestionMode APPLICATION_INSIGHTS_WITH_DIAGNOSTIC_SETTINGS
+        = fromString("ApplicationInsightsWithDiagnosticSettings");
 
     /** Static value LogAnalytics for IngestionMode. */
     public static final IngestionMode LOG_ANALYTICS = fromString("LogAnalytics");

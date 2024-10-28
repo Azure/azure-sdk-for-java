@@ -52,30 +52,32 @@ public final class NetworkServiceDesignVersionsCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetworkServiceDesignVersion response
-            = manager.networkServiceDesignVersions().define("gdzbenr").withRegion("yuuzivens")
-                .withExistingNetworkServiceDesignGroup("ojpslsvjgpliufi", "woyxqvapcohhou", "qpqojxcxzrzd")
-                .withTags(mapOf("ijp", "eyyvpkpatl", "olmk", "gsksrfhf", "ommpvfqaw", "bnxwc"))
-                .withProperties(new NetworkServiceDesignVersionPropertiesFormat().withDescription("zqddtjwfljhzn")
-                    .withConfigurationGroupSchemaReferences(mapOf("jj", new ReferencedResource().withId("atmzw"),
-                        "tzuuvb", new ReferencedResource().withId("qtjzmizvgbg"), "ajqfutlx",
-                        new ReferencedResource().withId("grebwggahttzlsw")))
-                    .withNfvisFromSite(
-                        mapOf("cnjrohmbpyryxame", new NfviDetails().withName("asunwqrjzfrgq").withType("ohcmbu"),
-                            "dlfp", new NfviDetails().withName("ydyvkfkmro").withType("nehvsmt"), "jlgvvpase",
-                            new NfviDetails().withName("pucygvoavyunss").withType("ghiee"), "iwrqofulopmjnl",
-                            new NfviDetails().withName("gbuxantuygdh").withType("qipir")))
-                    .withResourceElementTemplates(Arrays.asList(new ResourceElementTemplate().withName("cbjpibkephuu")
-                        .withDependsOnProfile(new DependsOnProfile()
-                            .withInstallDependsOn(Arrays.asList("t", "toyint", "pbrlcyrduczkgofx", "fsrucv"))
-                            .withUninstallDependsOn(
-                                Arrays.asList("pcjttbstvjeaqn", "mvvfko", "mlghktuidvrmazlp", "wwexymzvlazipbh"))
-                            .withUpdateDependsOn(Arrays.asList("qsg"))))))
-                .create();
+        NetworkServiceDesignVersion response = manager.networkServiceDesignVersions()
+            .define("gdzbenr")
+            .withRegion("yuuzivens")
+            .withExistingNetworkServiceDesignGroup("ojpslsvjgpliufi", "woyxqvapcohhou", "qpqojxcxzrzd")
+            .withTags(mapOf("ijp", "eyyvpkpatl", "olmk", "gsksrfhf", "ommpvfqaw", "bnxwc"))
+            .withProperties(new NetworkServiceDesignVersionPropertiesFormat().withDescription("zqddtjwfljhzn")
+                .withConfigurationGroupSchemaReferences(mapOf("jj", new ReferencedResource().withId("atmzw"), "tzuuvb",
+                    new ReferencedResource().withId("qtjzmizvgbg"), "ajqfutlx",
+                    new ReferencedResource().withId("grebwggahttzlsw")))
+                .withNfvisFromSite(
+                    mapOf("cnjrohmbpyryxame", new NfviDetails().withName("asunwqrjzfrgq").withType("ohcmbu"), "dlfp",
+                        new NfviDetails().withName("ydyvkfkmro").withType("nehvsmt"), "jlgvvpase",
+                        new NfviDetails().withName("pucygvoavyunss").withType("ghiee"), "iwrqofulopmjnl",
+                        new NfviDetails().withName("gbuxantuygdh").withType("qipir")))
+                .withResourceElementTemplates(Arrays.asList(new ResourceElementTemplate().withName("cbjpibkephuu")
+                    .withDependsOnProfile(new DependsOnProfile()
+                        .withInstallDependsOn(Arrays.asList("t", "toyint", "pbrlcyrduczkgofx", "fsrucv"))
+                        .withUninstallDependsOn(
+                            Arrays.asList("pcjttbstvjeaqn", "mvvfko", "mlghktuidvrmazlp", "wwexymzvlazipbh"))
+                        .withUpdateDependsOn(Arrays.asList("qsg"))))))
+            .create();
 
         Assertions.assertEquals("pmvssehaep", response.location());
         Assertions.assertEquals("cxtczhupeukn", response.tags().get("jduyyespydjfb"));

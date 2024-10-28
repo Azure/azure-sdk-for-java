@@ -21,8 +21,8 @@ public interface Services {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available skus operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SkuInformation> listAvailableSkusByResourceGroup(
-        String resourceGroupName, String location, AvailableSkuRequest availableSkuRequest);
+    PagedIterable<SkuInformation> listAvailableSkusByResourceGroup(String resourceGroupName, String location,
+        AvailableSkuRequest availableSkuRequest);
 
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
@@ -36,8 +36,8 @@ public interface Services {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available skus operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SkuInformation> listAvailableSkusByResourceGroup(
-        String resourceGroupName, String location, AvailableSkuRequest availableSkuRequest, Context context);
+    PagedIterable<SkuInformation> listAvailableSkusByResourceGroup(String resourceGroupName, String location,
+        AvailableSkuRequest availableSkuRequest, Context context);
 
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
@@ -51,8 +51,8 @@ public interface Services {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return output of the address validation api along with {@link Response}.
      */
-    Response<AddressValidationOutput> validateAddressWithResponse(
-        String location, ValidateAddress validateAddress, Context context);
+    Response<AddressValidationOutput> validateAddressWithResponse(String location, ValidateAddress validateAddress,
+        Context context);
 
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
@@ -79,8 +79,8 @@ public interface Services {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of pre job creation validations along with {@link Response}.
      */
-    Response<ValidationResponse> validateInputsByResourceGroupWithResponse(
-        String resourceGroupName, String location, ValidationRequest validationRequest, Context context);
+    Response<ValidationResponse> validateInputsByResourceGroupWithResponse(String resourceGroupName, String location,
+        ValidationRequest validationRequest, Context context);
 
     /**
      * This method does all necessary pre-job creation validation under resource group.
@@ -93,8 +93,8 @@ public interface Services {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of pre job creation validations.
      */
-    ValidationResponse validateInputsByResourceGroup(
-        String resourceGroupName, String location, ValidationRequest validationRequest);
+    ValidationResponse validateInputsByResourceGroup(String resourceGroupName, String location,
+        ValidationRequest validationRequest);
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
@@ -107,8 +107,8 @@ public interface Services {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of pre job creation validations along with {@link Response}.
      */
-    Response<ValidationResponse> validateInputsWithResponse(
-        String location, ValidationRequest validationRequest, Context context);
+    Response<ValidationResponse> validateInputsWithResponse(String location, ValidationRequest validationRequest,
+        Context context);
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
@@ -133,8 +133,8 @@ public interface Services {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration response specific to a region along with {@link Response}.
      */
-    Response<RegionConfigurationResponse> regionConfigurationWithResponse(
-        String location, RegionConfigurationRequest regionConfigurationRequest, Context context);
+    Response<RegionConfigurationResponse> regionConfigurationWithResponse(String location,
+        RegionConfigurationRequest regionConfigurationRequest, Context context);
 
     /**
      * This API provides configuration details specific to given region/location at Subscription level.
@@ -146,8 +146,8 @@ public interface Services {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration response specific to a region.
      */
-    RegionConfigurationResponse regionConfiguration(
-        String location, RegionConfigurationRequest regionConfigurationRequest);
+    RegionConfigurationResponse regionConfiguration(String location,
+        RegionConfigurationRequest regionConfigurationRequest);
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
@@ -161,11 +161,8 @@ public interface Services {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration response specific to a region along with {@link Response}.
      */
-    Response<RegionConfigurationResponse> regionConfigurationByResourceGroupWithResponse(
-        String resourceGroupName,
-        String location,
-        RegionConfigurationRequest regionConfigurationRequest,
-        Context context);
+    Response<RegionConfigurationResponse> regionConfigurationByResourceGroupWithResponse(String resourceGroupName,
+        String location, RegionConfigurationRequest regionConfigurationRequest, Context context);
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
@@ -178,6 +175,6 @@ public interface Services {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration response specific to a region.
      */
-    RegionConfigurationResponse regionConfigurationByResourceGroup(
-        String resourceGroupName, String location, RegionConfigurationRequest regionConfigurationRequest);
+    RegionConfigurationResponse regionConfigurationByResourceGroup(String resourceGroupName, String location,
+        RegionConfigurationRequest regionConfigurationRequest);
 }

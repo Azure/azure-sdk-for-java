@@ -24,8 +24,8 @@ public interface LocationsClient {
      * @return the check availability result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResponseInner checkNameAvailability(
-        String locationName, CheckNameAvailabilityRequest parameters);
+    CheckNameAvailabilityResponseInner checkNameAvailability(String locationName,
+        CheckNameAvailabilityRequest parameters);
 
     /**
      * Checks whether the Video Analyzer resource name is available.
@@ -39,6 +39,6 @@ public interface LocationsClient {
      * @return the check availability result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
-        String locationName, CheckNameAvailabilityRequest parameters, Context context);
+    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(String locationName,
+        CheckNameAvailabilityRequest parameters, Context context);
 }

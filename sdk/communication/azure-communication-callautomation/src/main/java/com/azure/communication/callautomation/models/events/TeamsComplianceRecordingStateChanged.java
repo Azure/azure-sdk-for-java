@@ -95,7 +95,8 @@ public final class TeamsComplianceRecordingStateChanged extends CallAutomationEv
                 } else if ("state".equals(fieldName)) {
                     event.recordingState = RecordingState.fromString(reader.getString());
                 } else if ("startDateTime".equals(fieldName)) {
-                    event.startDateTime = OffsetDateTime.parse(reader.getString(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                    event.startDateTime
+                        = OffsetDateTime.parse(reader.getString(), DateTimeFormatter.ISO_OFFSET_DATE_TIME);
                 } else {
                     if (!event.readField(fieldName, reader)) {
                         reader.skipChildren();

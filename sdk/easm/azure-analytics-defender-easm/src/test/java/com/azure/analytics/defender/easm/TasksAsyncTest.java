@@ -17,31 +17,24 @@ public class TasksAsyncTest extends EasmClientTestBase {
     @Test
     public void testTasksListAsync() {
         PagedFlux<Task> taskPagedFlux = easmAsyncClient.listTask();
-        StepVerifier.create(taskPagedFlux)
-            .assertNext(task -> {
-                task.getId().matches(uuidRegex);
-            });
+        StepVerifier.create(taskPagedFlux).assertNext(task -> {
+            task.getId().matches(uuidRegex);
+        });
     }
 
     @Test
     public void testTasksGetAsync() {
         Mono<Task> taskMono = easmAsyncClient.getTask(existingTaskId);
-        StepVerifier.create(taskMono)
-            .assertNext(task -> {
-                assertTrue(task.getId().equals(existingTaskId));
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(taskMono).assertNext(task -> {
+            assertTrue(task.getId().equals(existingTaskId));
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 
     @Test
     public void testTasksCancelAsync() {
         Mono<Task> taskMono = easmAsyncClient.cancelTask(cancelTaskId);
-        StepVerifier.create(taskMono)
-            .assertNext(task -> {
-                assertTrue(task.getId().equals(existingTaskId));
-            })
-            .expectComplete()
-            .verify(DEFAULT_TIMEOUT);
+        StepVerifier.create(taskMono).assertNext(task -> {
+            assertTrue(task.getId().equals(existingTaskId));
+        }).expectComplete().verify(DEFAULT_TIMEOUT);
     }
 }

@@ -32,11 +32,8 @@ public interface IntegrationRuntimeAuthKeysOperationsClient {
      * @return the integration runtime authentication keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeAuthKeysInner> regenerateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters,
+    Response<IntegrationRuntimeAuthKeysInner> regenerateWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters,
         Context context);
 
     /**
@@ -54,11 +51,8 @@ public interface IntegrationRuntimeAuthKeysOperationsClient {
      * @return the integration runtime authentication keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeAuthKeysInner regenerate(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters);
+    IntegrationRuntimeAuthKeysInner regenerate(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters);
 
     /**
      * List integration runtime authentication keys
@@ -75,8 +69,8 @@ public interface IntegrationRuntimeAuthKeysOperationsClient {
      * @return the integration runtime authentication keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeAuthKeysInner> listWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeAuthKeysInner> listWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * List integration runtime authentication keys

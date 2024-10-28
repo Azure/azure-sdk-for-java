@@ -9,6 +9,7 @@ import com.azure.core.annotation.Fluent;
 public interface PublishingProfile {
     /** @return the url for FTP publishing, with ftp:// and the root folder. E.g. ftp://ftp.contoso.com/site/wwwroot */
     String ftpUrl();
+
     /** @return the username used for FTP publishing */
     String ftpUsername();
 

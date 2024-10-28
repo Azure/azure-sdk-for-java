@@ -52,12 +52,8 @@ public final class IdentityErrorConverter {
                 .collect(Collectors.toList());
         }
 
-        IdentityError identityError = new IdentityError(
-            communicationError.getMessage(),
-            communicationError.getCode(),
-            communicationError.getTarget(),
-            details
-        );
+        IdentityError identityError = new IdentityError(communicationError.getMessage(), communicationError.getCode(),
+            communicationError.getTarget(), details);
 
         return identityError;
     }

@@ -172,10 +172,8 @@ public final class NetworkDeviceSkuProperties {
      */
     public void validate() {
         if (model() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property model in model NetworkDeviceSkuProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property model in model NetworkDeviceSkuProperties"));
         }
         if (supportedVersions() != null) {
             supportedVersions().forEach(e -> e.validate());

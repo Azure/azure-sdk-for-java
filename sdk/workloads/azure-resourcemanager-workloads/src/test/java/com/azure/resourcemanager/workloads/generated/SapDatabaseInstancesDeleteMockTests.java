@@ -30,37 +30,27 @@ public final class SapDatabaseInstancesDeleteMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"lllibph\",\"name\":\"zmizakakan\",\"status\":\"jpdn\",\"percentComplete\":9.865725,\"startTime\":\"2021-03-02T00:11:10Z\",\"endTime\":\"2021-05-28T06:55:36Z\",\"operations\":[{\"id\":\"lmuoyxprimrsopte\",\"name\":\"jme\",\"status\":\"slstvasy\",\"percentComplete\":20.932108,\"startTime\":\"2021-03-08T01:37:13Z\",\"endTime\":\"2021-01-12T02:29:32Z\",\"operations\":[]},{\"id\":\"hguuf\",\"name\":\"boyjathwt\",\"status\":\"olbaemwmdx\",\"percentComplete\":92.43111,\"startTime\":\"2021-09-30T09:00:56Z\",\"endTime\":\"2021-10-19T05:13Z\",\"operations\":[]}]}";
+        String responseStr
+            = "{\"id\":\"lllibph\",\"name\":\"zmizakakan\",\"status\":\"jpdn\",\"percentComplete\":9.865725,\"startTime\":\"2021-03-02T00:11:10Z\",\"endTime\":\"2021-05-28T06:55:36Z\",\"operations\":[{\"id\":\"lmuoyxprimrsopte\",\"name\":\"jme\",\"status\":\"slstvasy\",\"percentComplete\":20.932108,\"startTime\":\"2021-03-08T01:37:13Z\",\"endTime\":\"2021-01-12T02:29:32Z\",\"operations\":[]},{\"id\":\"hguuf\",\"name\":\"boyjathwt\",\"status\":\"olbaemwmdx\",\"percentComplete\":92.43111,\"startTime\":\"2021-09-30T09:00:56Z\",\"endTime\":\"2021-10-19T05:13Z\",\"operations\":[]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        WorkloadsManager manager =
-            WorkloadsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        WorkloadsManager manager = WorkloadsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationStatusResult response =
-            manager.sapDatabaseInstances().delete("qtgdqohmcwsl", "riz", "tpwb", com.azure.core.util.Context.NONE);
+        OperationStatusResult response
+            = manager.sapDatabaseInstances().delete("qtgdqohmcwsl", "riz", "tpwb", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("lllibph", response.id());
         Assertions.assertEquals("zmizakakan", response.name());

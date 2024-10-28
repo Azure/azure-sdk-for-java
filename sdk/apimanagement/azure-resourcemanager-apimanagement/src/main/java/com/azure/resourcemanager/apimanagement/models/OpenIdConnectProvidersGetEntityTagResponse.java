@@ -20,12 +20,8 @@ public final class OpenIdConnectProvidersGetEntityTagResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public OpenIdConnectProvidersGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
-        OpenIdConnectProvidersGetEntityTagHeaders headers) {
+    public OpenIdConnectProvidersGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        Void value, OpenIdConnectProvidersGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

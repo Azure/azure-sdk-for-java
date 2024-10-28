@@ -21,8 +21,7 @@ import java.time.Duration;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.H265Video", value = H265Video.class),
     @JsonSubTypes.Type(name = "#Microsoft.Media.Image", value = Image.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.H264Video", value = H264Video.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.Media.H264Video", value = H264Video.class) })
 @Fluent
 public class Video extends Codec {
     /*

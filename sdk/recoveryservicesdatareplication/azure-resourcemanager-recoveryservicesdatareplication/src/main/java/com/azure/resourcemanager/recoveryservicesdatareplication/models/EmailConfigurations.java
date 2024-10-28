@@ -24,8 +24,8 @@ public interface EmailConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the alert configuration setting along with {@link Response}.
      */
-    Response<EmailConfigurationModel> getWithResponse(
-        String resourceGroupName, String vaultName, String emailConfigurationName, Context context);
+    Response<EmailConfigurationModel> getWithResponse(String resourceGroupName, String vaultName,
+        String emailConfigurationName, Context context);
 
     /**
      * Gets the email configuration setting.

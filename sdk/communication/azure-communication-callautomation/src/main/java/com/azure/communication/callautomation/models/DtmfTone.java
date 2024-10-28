@@ -80,51 +80,67 @@ public final class DtmfTone extends ExpandableStringEnum<DtmfTone> {
             case "zero":
                 toneStringValue = "0";
                 break;
+
             case "one":
                 toneStringValue = "1";
                 break;
+
             case "two":
                 toneStringValue = "2";
                 break;
+
             case "three":
                 toneStringValue = "3";
                 break;
+
             case "four":
                 toneStringValue = "4";
                 break;
+
             case "five":
                 toneStringValue = "5";
                 break;
+
             case "six":
                 toneStringValue = "6";
                 break;
+
             case "seven":
                 toneStringValue = "7";
                 break;
+
             case "eight":
                 toneStringValue = "8";
                 break;
+
             case "nine":
                 toneStringValue = "9";
                 break;
+
             case "a":
                 toneStringValue = "a";
                 break;
+
             case "b":
                 toneStringValue = "b";
                 break;
+
             case "c":
                 toneStringValue = "c";
                 break;
+
             case "d":
                 toneStringValue = "d";
                 break;
+
             case "pound":
                 toneStringValue = "#";
                 break;
+
             case "asterisk":
                 toneStringValue = "*";
                 break;
+
             default:
                 break;
         }

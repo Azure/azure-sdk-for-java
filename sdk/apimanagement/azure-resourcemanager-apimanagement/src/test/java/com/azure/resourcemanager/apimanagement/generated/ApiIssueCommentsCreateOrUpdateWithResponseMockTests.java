@@ -30,45 +30,33 @@ public final class ApiIssueCommentsCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"text\":\"tmsgkwedwl\",\"createdDate\":\"2021-05-25T09:49:35Z\",\"userId\":\"hgbgbhudh\"},\"id\":\"pjimvrrqfibpkwm\",\"name\":\"mrlfizjuddndi\",\"type\":\"upngyhy\"}";
+        String responseStr
+            = "{\"properties\":{\"text\":\"tmsgkwedwl\",\"createdDate\":\"2021-05-25T09:49:35Z\",\"userId\":\"hgbgbhudh\"},\"id\":\"pjimvrrqfibpkwm\",\"name\":\"mrlfizjuddndi\",\"type\":\"upngyhy\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        IssueCommentContract response =
-            manager
-                .apiIssueComments()
-                .define("bzsspmjvail")
-                .withExistingIssue("yfhxohzbzhhav", "fuxnvkdslcofuvtf", "ehoui", "aklhjfddxqfuss")
-                .withText("uyvxpqwlkqdgwbzt")
-                .withCreatedDate(OffsetDateTime.parse("2021-10-09T22:45:13Z"))
-                .withUserId("ldwvog")
-                .withIfMatch("nkyg")
-                .create();
+        IssueCommentContract response = manager.apiIssueComments()
+            .define("bzsspmjvail")
+            .withExistingIssue("yfhxohzbzhhav", "fuxnvkdslcofuvtf", "ehoui", "aklhjfddxqfuss")
+            .withText("uyvxpqwlkqdgwbzt")
+            .withCreatedDate(OffsetDateTime.parse("2021-10-09T22:45:13Z"))
+            .withUserId("ldwvog")
+            .withIfMatch("nkyg")
+            .create();
 
         Assertions.assertEquals("tmsgkwedwl", response.text());
         Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T09:49:35Z"), response.createdDate());

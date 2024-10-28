@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventTrackEventInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventTrackEventInner model =
-            BinaryData
-                .fromString(
-                    "{\"eventType\":\"TrackEvent/IngestHeartbeat\",\"eventTime\":\"2021-02-03T02:01:52Z\",\"data\":{\"trackName\":\"wzxltjc\",\"trackType\":\"audio\",\"bitrate\":598622795111508954,\"incomingBitrate\":3612428382061476540,\"lastTimestamp\":\"navvwx\",\"timescale\":\"byqunyow\",\"overlapCount\":8184174444781433747,\"discontinuityCount\":6859561979091901911,\"nonincreasingCount\":4661329361836653803,\"unexpectedBitrate\":true,\"state\":\"fvpdbo\",\"healthy\":true,\"lastFragmentArrivalTime\":\"2021-11-02T17:27:56Z\",\"ingestDriftValue\":\"j\",\"transcriptionState\":\"hkr\",\"transcriptionLanguage\":\"bdeibqipqk\"}}")
-                .toObject(LiveEventTrackEventInner.class);
+        LiveEventTrackEventInner model = BinaryData.fromString(
+            "{\"eventType\":\"TrackEvent/IngestHeartbeat\",\"eventTime\":\"2021-02-03T02:01:52Z\",\"data\":{\"trackName\":\"wzxltjc\",\"trackType\":\"audio\",\"bitrate\":598622795111508954,\"incomingBitrate\":3612428382061476540,\"lastTimestamp\":\"navvwx\",\"timescale\":\"byqunyow\",\"overlapCount\":8184174444781433747,\"discontinuityCount\":6859561979091901911,\"nonincreasingCount\":4661329361836653803,\"unexpectedBitrate\":true,\"state\":\"fvpdbo\",\"healthy\":true,\"lastFragmentArrivalTime\":\"2021-11-02T17:27:56Z\",\"ingestDriftValue\":\"j\",\"transcriptionState\":\"hkr\",\"transcriptionLanguage\":\"bdeibqipqk\"}}")
+            .toObject(LiveEventTrackEventInner.class);
         Assertions.assertEquals(LiveEventTrackEventType.TRACK_EVENT_INGEST_HEARTBEAT, model.eventType());
         Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T02:01:52Z"), model.eventTime());
         Assertions.assertEquals("wzxltjc", model.data().trackName());
@@ -42,28 +40,25 @@ public final class LiveEventTrackEventInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveEventTrackEventInner model =
-            new LiveEventTrackEventInner()
-                .withEventType(LiveEventTrackEventType.TRACK_EVENT_INGEST_HEARTBEAT)
+        LiveEventTrackEventInner model
+            = new LiveEventTrackEventInner().withEventType(LiveEventTrackEventType.TRACK_EVENT_INGEST_HEARTBEAT)
                 .withEventTime(OffsetDateTime.parse("2021-02-03T02:01:52Z"))
-                .withData(
-                    new LiveEventTrackEventData()
-                        .withTrackName("wzxltjc")
-                        .withTrackType(LiveEventTrackType.AUDIO)
-                        .withBitrate(598622795111508954L)
-                        .withIncomingBitrate(3612428382061476540L)
-                        .withLastTimestamp("navvwx")
-                        .withTimescale("byqunyow")
-                        .withOverlapCount(8184174444781433747L)
-                        .withDiscontinuityCount(6859561979091901911L)
-                        .withNonincreasingCount(4661329361836653803L)
-                        .withUnexpectedBitrate(true)
-                        .withState("fvpdbo")
-                        .withHealthy(true)
-                        .withLastFragmentArrivalTime(OffsetDateTime.parse("2021-11-02T17:27:56Z"))
-                        .withIngestDriftValue("j")
-                        .withTranscriptionState("hkr")
-                        .withTranscriptionLanguage("bdeibqipqk"));
+                .withData(new LiveEventTrackEventData().withTrackName("wzxltjc")
+                    .withTrackType(LiveEventTrackType.AUDIO)
+                    .withBitrate(598622795111508954L)
+                    .withIncomingBitrate(3612428382061476540L)
+                    .withLastTimestamp("navvwx")
+                    .withTimescale("byqunyow")
+                    .withOverlapCount(8184174444781433747L)
+                    .withDiscontinuityCount(6859561979091901911L)
+                    .withNonincreasingCount(4661329361836653803L)
+                    .withUnexpectedBitrate(true)
+                    .withState("fvpdbo")
+                    .withHealthy(true)
+                    .withLastFragmentArrivalTime(OffsetDateTime.parse("2021-11-02T17:27:56Z"))
+                    .withIngestDriftValue("j")
+                    .withTranscriptionState("hkr")
+                    .withTranscriptionLanguage("bdeibqipqk"));
         model = BinaryData.fromObject(model).toObject(LiveEventTrackEventInner.class);
         Assertions.assertEquals(LiveEventTrackEventType.TRACK_EVENT_INGEST_HEARTBEAT, model.eventType());
         Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T02:01:52Z"), model.eventTime());

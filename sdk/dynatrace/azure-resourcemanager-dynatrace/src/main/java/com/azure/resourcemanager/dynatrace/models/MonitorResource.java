@@ -148,11 +148,8 @@ public interface MonitorResource {
     MonitorResourceInner innerModel();
 
     /** The entirety of the MonitorResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The MonitorResource definition stages. */
@@ -196,13 +193,9 @@ public interface MonitorResource {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithMonitoringStatus,
-                DefinitionStages.WithMarketplaceSubscriptionStatus,
-                DefinitionStages.WithDynatraceEnvironmentProperties,
-                DefinitionStages.WithUserInfo,
-                DefinitionStages.WithPlanData {
+            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithMonitoringStatus,
+            DefinitionStages.WithMarketplaceSubscriptionStatus, DefinitionStages.WithDynatraceEnvironmentProperties,
+            DefinitionStages.WithUserInfo, DefinitionStages.WithPlanData {
             /**
              * Executes the create request.
              *
@@ -271,8 +264,8 @@ public interface MonitorResource {
              * @param dynatraceEnvironmentProperties Properties of the Dynatrace environment.
              * @return the next definition stage.
              */
-            WithCreate withDynatraceEnvironmentProperties(
-                DynatraceEnvironmentProperties dynatraceEnvironmentProperties);
+            WithCreate
+                withDynatraceEnvironmentProperties(DynatraceEnvironmentProperties dynatraceEnvironmentProperties);
         }
 
         /** The stage of the MonitorResource definition allowing to specify userInfo. */
@@ -504,6 +497,6 @@ public interface MonitorResource {
      * @return all the Dynatrace environments that a user can link a azure resource to as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<LinkableEnvironmentResponse> listLinkableEnvironments(
-        LinkableEnvironmentRequest request, Context context);
+    PagedIterable<LinkableEnvironmentResponse> listLinkableEnvironments(LinkableEnvironmentRequest request,
+        Context context);
 }

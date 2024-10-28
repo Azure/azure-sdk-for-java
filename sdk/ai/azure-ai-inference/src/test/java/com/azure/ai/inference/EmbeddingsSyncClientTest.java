@@ -14,8 +14,7 @@ public class EmbeddingsSyncClientTest extends EmbeddingsClientTestBase {
 
     private EmbeddingsClient getEmbeddingsClient(HttpClient httpClient) {
         return getEmbeddingsClientBuilder(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .buildClient();
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient).buildClient();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

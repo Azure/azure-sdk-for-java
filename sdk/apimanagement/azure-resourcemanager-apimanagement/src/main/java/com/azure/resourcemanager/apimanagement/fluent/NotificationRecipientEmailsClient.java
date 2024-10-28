@@ -27,8 +27,8 @@ public interface NotificationRecipientEmailsClient {
      * @return the list of the Notification Recipient Emails subscribed to a notification along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecipientEmailCollectionInner> listByNotificationWithResponse(
-        String resourceGroupName, String serviceName, NotificationName notificationName, Context context);
+    Response<RecipientEmailCollectionInner> listByNotificationWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, Context context);
 
     /**
      * Gets the list of the Notification Recipient Emails subscribed to a notification.
@@ -42,8 +42,8 @@ public interface NotificationRecipientEmailsClient {
      * @return the list of the Notification Recipient Emails subscribed to a notification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecipientEmailCollectionInner listByNotification(
-        String resourceGroupName, String serviceName, NotificationName notificationName);
+    RecipientEmailCollectionInner listByNotification(String resourceGroupName, String serviceName,
+        NotificationName notificationName);
 
     /**
      * Determine if Notification Recipient Email subscribed to the notification.
@@ -59,8 +59,8 @@ public interface NotificationRecipientEmailsClient {
      * @return whether resource exists along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Boolean> checkEntityExistsWithResponse(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String email, Context context);
+    Response<Boolean> checkEntityExistsWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String email, Context context);
 
     /**
      * Determine if Notification Recipient Email subscribed to the notification.
@@ -75,8 +75,8 @@ public interface NotificationRecipientEmailsClient {
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    boolean checkEntityExists(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String email);
+    boolean checkEntityExists(String resourceGroupName, String serviceName, NotificationName notificationName,
+        String email);
 
     /**
      * Adds the Email address to the list of Recipients for the Notification.
@@ -92,8 +92,8 @@ public interface NotificationRecipientEmailsClient {
      * @return recipient Email details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecipientEmailContractInner> createOrUpdateWithResponse(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String email, Context context);
+    Response<RecipientEmailContractInner> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String email, Context context);
 
     /**
      * Adds the Email address to the list of Recipients for the Notification.
@@ -108,8 +108,8 @@ public interface NotificationRecipientEmailsClient {
      * @return recipient Email details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RecipientEmailContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String email);
+    RecipientEmailContractInner createOrUpdate(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String email);
 
     /**
      * Removes the email from the list of Notification.
@@ -125,8 +125,8 @@ public interface NotificationRecipientEmailsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String email, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, NotificationName notificationName,
+        String email, Context context);
 
     /**
      * Removes the email from the list of Notification.

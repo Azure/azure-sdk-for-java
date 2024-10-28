@@ -20,8 +20,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 /**
  * Implementation for {@link EventHubConsumerGroups}.
  */
-public final class EventHubConsumerGroupsImpl
-    extends WrapperImpl<ConsumerGroupsClient>
+public final class EventHubConsumerGroupsImpl extends WrapperImpl<ConsumerGroupsClient>
     implements EventHubConsumerGroups {
     private final EventHubsManager manager;
 
@@ -50,37 +49,33 @@ public final class EventHubConsumerGroupsImpl
         Objects.requireNonNull(id);
         ResourceId resourceId = ResourceId.fromString(id);
 
-        return getByNameAsync(resourceId.resourceGroupName(),
-                resourceId.parent().parent().name(),
-                resourceId.parent().name(),
-                resourceId.name());
+        return getByNameAsync(resourceId.resourceGroupName(), resourceId.parent().parent().name(),
+            resourceId.parent().name(), resourceId.name());
     }
 
     @Override
-    public Mono<EventHubConsumerGroup> getByNameAsync(
-        String resourceGroupName, String namespaceName, String eventHubName, String name) {
+    public Mono<EventHubConsumerGroup> getByNameAsync(String resourceGroupName, String namespaceName,
+        String eventHubName, String name) {
         return this.innerModel().getAsync(resourceGroupName, namespaceName, eventHubName, name).map(this::wrapModel);
     }
 
     @Override
-    public EventHubConsumerGroup getByName(
-        String resourceGroupName, String namespaceName, String eventHubName, String name) {
+    public EventHubConsumerGroup getByName(String resourceGroupName, String namespaceName, String eventHubName,
+        String name) {
         return getByNameAsync(resourceGroupName, namespaceName, eventHubName, name).block();
     }
 
     @Override
-    public PagedIterable<EventHubConsumerGroup> listByEventHub(
-        String resourceGroupName, String namespaceName, String eventHubName) {
-        return PagedConverter.mapPage(innerModel()
-            .listByEventHub(resourceGroupName, namespaceName, eventHubName),
+    public PagedIterable<EventHubConsumerGroup> listByEventHub(String resourceGroupName, String namespaceName,
+        String eventHubName) {
+        return PagedConverter.mapPage(innerModel().listByEventHub(resourceGroupName, namespaceName, eventHubName),
             this::wrapModel);
     }
 
     @Override
-    public PagedFlux<EventHubConsumerGroup> listByEventHubAsync(
-        String resourceGroupName, String namespaceName, String eventHubName) {
-        return PagedConverter.mapPage(innerModel()
-            .listByEventHubAsync(resourceGroupName, namespaceName, eventHubName),
+    public PagedFlux<EventHubConsumerGroup> listByEventHubAsync(String resourceGroupName, String namespaceName,
+        String eventHubName) {
+        return PagedConverter.mapPage(innerModel().listByEventHubAsync(resourceGroupName, namespaceName, eventHubName),
             this::wrapModel);
     }
 
@@ -94,19 +89,14 @@ public final class EventHubConsumerGroupsImpl
         Objects.requireNonNull(id);
         ResourceId resourceId = ResourceId.fromString(id);
 
-        return deleteByNameAsync(resourceId.resourceGroupName(),
-                resourceId.parent().parent().name(),
-                resourceId.parent().name(),
-                resourceId.name());
+        return deleteByNameAsync(resourceId.resourceGroupName(), resourceId.parent().parent().name(),
+            resourceId.parent().name(), resourceId.name());
     }
 
     @Override
-    public Mono<Void> deleteByNameAsync(
-        String resourceGroupName, String namespaceName, String eventHubName, String name) {
-        return this.innerModel().deleteAsync(resourceGroupName,
-                namespaceName,
-                eventHubName,
-                name);
+    public Mono<Void> deleteByNameAsync(String resourceGroupName, String namespaceName, String eventHubName,
+        String name) {
+        return this.innerModel().deleteAsync(resourceGroupName, namespaceName, eventHubName, name);
     }
 
     @Override

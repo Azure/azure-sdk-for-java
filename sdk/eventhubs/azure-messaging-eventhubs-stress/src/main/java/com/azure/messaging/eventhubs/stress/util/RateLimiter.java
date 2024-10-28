@@ -41,10 +41,7 @@ public class RateLimiter implements AutoCloseable {
 
         // this Mono.delay is a bottleneck and prevents us from very rate-limiting at a high rates
         // if you need a lot of throughput, don't use this class or use -1 rate to disable limiting
-        return Mono.delay(Duration.ofMillis(1))
-            .repeat(() -> !tryAcquire())
-            .then()
-            .thenReturn(true);
+        return Mono.delay(Duration.ofMillis(1)).repeat(() -> !tryAcquire()).then().thenReturn(true);
     }
 
     public boolean tryAcquire() {

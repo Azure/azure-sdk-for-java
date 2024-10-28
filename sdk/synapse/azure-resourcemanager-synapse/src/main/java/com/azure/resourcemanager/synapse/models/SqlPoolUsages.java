@@ -38,6 +38,6 @@ public interface SqlPoolUsages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool usages as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SqlPoolUsage> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<SqlPoolUsage> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 }

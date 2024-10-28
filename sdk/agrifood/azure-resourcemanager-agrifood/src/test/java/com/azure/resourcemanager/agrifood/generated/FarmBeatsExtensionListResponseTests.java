@@ -13,18 +13,15 @@ import org.junit.jupiter.api.Test;
 public final class FarmBeatsExtensionListResponseTests {
     @Test
     public void testDeserialize() {
-        FarmBeatsExtensionListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"targetResourceType\":\"uf\",\"farmBeatsExtensionId\":\"zk\",\"farmBeatsExtensionName\":\"dbihanufhfcbj\",\"farmBeatsExtensionVersion\":\"a\",\"publisherId\":\"th\",\"description\":\"hab\",\"extensionCategory\":\"pikxwczbyscnpqxu\",\"extensionAuthLink\":\"vyq\",\"extensionApiDocsLink\":\"wby\",\"detailedInformation\":[]},\"id\":\"xvd\",\"name\":\"mjgr\",\"type\":\"fwvuk\"},{\"properties\":{\"targetResourceType\":\"udccsnhsjc\",\"farmBeatsExtensionId\":\"ejhkry\",\"farmBeatsExtensionName\":\"napczwlokjy\",\"farmBeatsExtensionVersion\":\"kkvnipjox\",\"publisherId\":\"nchgej\",\"description\":\"odmailzyd\",\"extensionCategory\":\"o\",\"extensionAuthLink\":\"yahux\",\"extensionApiDocsLink\":\"pmqnja\",\"detailedInformation\":[]},\"id\":\"xj\",\"name\":\"prozvcputegjvwmf\",\"type\":\"atscmd\"}],\"nextLink\":\"jhulsuuvmkjo\"}")
-                .toObject(FarmBeatsExtensionListResponse.class);
+        FarmBeatsExtensionListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"targetResourceType\":\"uf\",\"farmBeatsExtensionId\":\"zk\",\"farmBeatsExtensionName\":\"dbihanufhfcbj\",\"farmBeatsExtensionVersion\":\"a\",\"publisherId\":\"th\",\"description\":\"hab\",\"extensionCategory\":\"pikxwczbyscnpqxu\",\"extensionAuthLink\":\"vyq\",\"extensionApiDocsLink\":\"wby\",\"detailedInformation\":[]},\"id\":\"xvd\",\"name\":\"mjgr\",\"type\":\"fwvuk\"},{\"properties\":{\"targetResourceType\":\"udccsnhsjc\",\"farmBeatsExtensionId\":\"ejhkry\",\"farmBeatsExtensionName\":\"napczwlokjy\",\"farmBeatsExtensionVersion\":\"kkvnipjox\",\"publisherId\":\"nchgej\",\"description\":\"odmailzyd\",\"extensionCategory\":\"o\",\"extensionAuthLink\":\"yahux\",\"extensionApiDocsLink\":\"pmqnja\",\"detailedInformation\":[]},\"id\":\"xj\",\"name\":\"prozvcputegjvwmf\",\"type\":\"atscmd\"}],\"nextLink\":\"jhulsuuvmkjo\"}")
+            .toObject(FarmBeatsExtensionListResponse.class);
     }
 
     @Test
     public void testSerialize() {
-        FarmBeatsExtensionListResponse model =
-            new FarmBeatsExtensionListResponse()
-                .withValue(Arrays.asList(new FarmBeatsExtensionInner(), new FarmBeatsExtensionInner()));
+        FarmBeatsExtensionListResponse model = new FarmBeatsExtensionListResponse()
+            .withValue(Arrays.asList(new FarmBeatsExtensionInner(), new FarmBeatsExtensionInner()));
         model = BinaryData.fromObject(model).toObject(FarmBeatsExtensionListResponse.class);
     }
 }

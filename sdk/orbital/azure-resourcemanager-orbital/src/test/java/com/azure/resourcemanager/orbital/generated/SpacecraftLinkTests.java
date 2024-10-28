@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SpacecraftLinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SpacecraftLink model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"kpode\",\"centerFrequencyMHz\":68.25006,\"bandwidthMHz\":94.95547,\"direction\":\"Downlink\",\"polarization\":\"linearVertical\",\"authorizations\":[{\"groundStation\":\"vamih\"},{\"groundStation\":\"ognarxzxtheotus\"},{\"groundStation\":\"vyevcciqi\"},{\"groundStation\":\"nhungbw\"}]}")
-                .toObject(SpacecraftLink.class);
+        SpacecraftLink model = BinaryData.fromString(
+            "{\"name\":\"kpode\",\"centerFrequencyMHz\":68.25006,\"bandwidthMHz\":94.95547,\"direction\":\"Downlink\",\"polarization\":\"linearVertical\",\"authorizations\":[{\"groundStation\":\"vamih\"},{\"groundStation\":\"ognarxzxtheotus\"},{\"groundStation\":\"vyevcciqi\"},{\"groundStation\":\"nhungbw\"}]}")
+            .toObject(SpacecraftLink.class);
         Assertions.assertEquals("kpode", model.name());
         Assertions.assertEquals(68.25006f, model.centerFrequencyMHz());
         Assertions.assertEquals(94.95547f, model.bandwidthMHz());
@@ -27,13 +25,11 @@ public final class SpacecraftLinkTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SpacecraftLink model =
-            new SpacecraftLink()
-                .withName("kpode")
-                .withCenterFrequencyMHz(68.25006f)
-                .withBandwidthMHz(94.95547f)
-                .withDirection(Direction.DOWNLINK)
-                .withPolarization(Polarization.LINEAR_VERTICAL);
+        SpacecraftLink model = new SpacecraftLink().withName("kpode")
+            .withCenterFrequencyMHz(68.25006f)
+            .withBandwidthMHz(94.95547f)
+            .withDirection(Direction.DOWNLINK)
+            .withPolarization(Polarization.LINEAR_VERTICAL);
         model = BinaryData.fromObject(model).toObject(SpacecraftLink.class);
         Assertions.assertEquals("kpode", model.name());
         Assertions.assertEquals(68.25006f, model.centerFrequencyMHz());

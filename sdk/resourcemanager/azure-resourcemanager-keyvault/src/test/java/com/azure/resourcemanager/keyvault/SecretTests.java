@@ -24,17 +24,15 @@ public class SecretTests extends KeyVaultManagementTest {
         String vaultName = generateRandomResourceName("vault", 20);
         String secretName = generateRandomResourceName("secret", 20);
 
-        Vault vault =
-            keyVaultManager
-                .vaults()
-                .define(vaultName)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName)
-                .defineAccessPolicy()
-                .forUser(azureCliSignedInUser().userPrincipalName())
-                .allowSecretAllPermissions()
-                .attach()
-                .create();
+        Vault vault = keyVaultManager.vaults()
+            .define(vaultName)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName)
+            .defineAccessPolicy()
+            .forUser(azureCliSignedInUser().userPrincipalName())
+            .allowSecretAllPermissions()
+            .attach()
+            .create();
 
         Assertions.assertNotNull(vault);
 
@@ -70,17 +68,15 @@ public class SecretTests extends KeyVaultManagementTest {
         String vaultName = generateRandomResourceName("vault", 20);
         String secretName = generateRandomResourceName("secret", 20);
 
-        Vault vault =
-            keyVaultManager
-                .vaults()
-                .define(vaultName)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName)
-                .defineAccessPolicy()
-                .forUser(azureCliSignedInUser().userPrincipalName())
-                .allowSecretAllPermissions()
-                .attach()
-                .create();
+        Vault vault = keyVaultManager.vaults()
+            .define(vaultName)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName)
+            .defineAccessPolicy()
+            .forUser(azureCliSignedInUser().userPrincipalName())
+            .allowSecretAllPermissions()
+            .attach()
+            .create();
 
         Assertions.assertNotNull(vault);
 
@@ -91,19 +87,14 @@ public class SecretTests extends KeyVaultManagementTest {
         final String type2 = "Other type";
 
         // version
-        Secret secret = vault.secrets().define(secretName)
-            .withValue(value1)
-            .create();
+        Secret secret = vault.secrets().define(secretName).withValue(value1).create();
         String version1 = secret.attributes().getVersion();
 
         Assertions.assertNotNull(secret);
         Assertions.assertNotNull(secret.id());
 
         // new version
-        Secret secret2 = vault.secrets().define(secretName)
-            .withValue(value2)
-            .withContentType(type2)
-            .create();
+        Secret secret2 = vault.secrets().define(secretName).withValue(value2).withContentType(type2).create();
         String version2 = secret2.attributes().getVersion();
 
         // disable secret

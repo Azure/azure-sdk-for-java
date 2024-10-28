@@ -71,7 +71,7 @@ public final class CallRecordingAsync {
     private final String resourceUrl;
 
     CallRecordingAsync(CallRecordingsImpl callRecordingsInternal, ContentDownloader contentDownloader,
-                       HttpPipeline httpPipelineInternal, String resourceUrl) {
+        HttpPipeline httpPipelineInternal, String resourceUrl) {
         this.callRecordingsInternal = callRecordingsInternal;
         this.contentDownloader = contentDownloader;
         this.httpPipelineInternal = httpPipelineInternal;
@@ -90,8 +90,7 @@ public final class CallRecordingAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecordingStateResult> start(StartRecordingOptions options) {
-        return startWithResponse(options)
-            .flatMap(response -> Mono.just(response.getValue()));
+        return startWithResponse(options).flatMap(response -> Mono.just(response.getValue()));
     }
 
     /**
@@ -116,13 +115,9 @@ public final class CallRecordingAsync {
 
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return callRecordingsInternal
-                    .startRecordingWithResponseAsync(
-                        request,
-                        contextValue)
-                    .map(response ->
-                        new SimpleResponse<>(response, RecordingStateResponseConstructorProxy.create(response.getValue()))
-                    );
+                return callRecordingsInternal.startRecordingWithResponseAsync(request, contextValue)
+                    .map(response -> new SimpleResponse<>(response,
+                        RecordingStateResponseConstructorProxy.create(response.getValue())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -131,8 +126,8 @@ public final class CallRecordingAsync {
 
     private StartCallRecordingRequestInternal getStartCallRecordingRequest(StartRecordingOptions options) {
         CallLocator callLocator = options.getCallLocator();
-        CallLocatorInternal callLocatorInternal = new CallLocatorInternal()
-            .setKind(CallLocatorKindInternal.fromString(callLocator.getKind().toString()));
+        CallLocatorInternal callLocatorInternal
+            = new CallLocatorInternal().setKind(CallLocatorKindInternal.fromString(callLocator.getKind().toString()));
 
         if (callLocator.getKind() == CallLocatorKind.GROUP_CALL_LOCATOR) {
             callLocatorInternal.setGroupCallId(((GroupCallLocator) callLocator).getGroupCallId());
@@ -142,36 +137,42 @@ public final class CallRecordingAsync {
             throw logger.logExceptionAsError(new InvalidParameterException("callLocator has invalid kind."));
         }
 
-        StartCallRecordingRequestInternal request = new StartCallRecordingRequestInternal()
-            .setCallLocator(callLocatorInternal);
+        StartCallRecordingRequestInternal request
+            = new StartCallRecordingRequestInternal().setCallLocator(callLocatorInternal);
 
         if (options.getRecordingContent() != null) {
-            request.setRecordingContentType(RecordingContentInternal.fromString(options.getRecordingContent().toString()));
+            request
+                .setRecordingContentType(RecordingContentInternal.fromString(options.getRecordingContent().toString()));
         }
         if (options.getRecordingFormat() != null) {
             request.setRecordingFormatType(RecordingFormatInternal.fromString(options.getRecordingFormat().toString()));
         }
         if (options.getRecordingChannel() != null) {
-            request.setRecordingChannelType(RecordingChannelInternal.fromString(options.getRecordingChannel().toString()));
+            request
+                .setRecordingChannelType(RecordingChannelInternal.fromString(options.getRecordingChannel().toString()));
         }
         if (options.getRecordingStateCallbackUrl() != null) {
             request.setRecordingStateCallbackUri(options.getRecordingStateCallbackUrl());
         }
         if (options.getAudioChannelParticipantOrdering() != null) {
-            List<CommunicationIdentifierModel> audioChannelParticipantOrdering = options.getAudioChannelParticipantOrdering()
-                .stream().map(CommunicationIdentifierConverter::convert)
-                .collect(Collectors.toList());
+            List<CommunicationIdentifierModel> audioChannelParticipantOrdering
+                = options.getAudioChannelParticipantOrdering()
+                    .stream()
+                    .map(CommunicationIdentifierConverter::convert)
+                    .collect(Collectors.toList());
             request.setAudioChannelParticipantOrdering(audioChannelParticipantOrdering);
         }
         if (options.getChannelAffinity() != null) {
             List<ChannelAffinityInternal> channelAffinityInternals = options.getChannelAffinity()
-                .stream().map(this::getChannelAffinityInternal)
+                .stream()
+                .map(this::getChannelAffinityInternal)
                 .collect(Collectors.toList());
             request.setChannelAffinity(channelAffinityInternals);
         }
         if (options.getRecordingStorage() != null) {
             if (options.getRecordingStorage() instanceof AzureBlobContainerRecordingStorage) {
-                AzureBlobContainerRecordingStorage blobStorage = (AzureBlobContainerRecordingStorage) options.getRecordingStorage();
+                AzureBlobContainerRecordingStorage blobStorage
+                    = (AzureBlobContainerRecordingStorage) options.getRecordingStorage();
                 RecordingStorageInternal recordingStorageInternal = new RecordingStorageInternal()
                     .setRecordingDestinationContainerUrl(blobStorage.getRecordingDestinationContainerUrl())
                     .setRecordingStorageKind(RecordingStorageKind.AZURE_BLOB_STORAGE);
@@ -215,8 +216,7 @@ public final class CallRecordingAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return callRecordingsInternal
-                    .stopRecordingWithResponseAsync(recordingId, contextValue);
+                return callRecordingsInternal.stopRecordingWithResponseAsync(recordingId, contextValue);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -253,8 +253,7 @@ public final class CallRecordingAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return callRecordingsInternal
-                    .pauseRecordingWithResponseAsync(recordingId, contextValue);
+                return callRecordingsInternal.pauseRecordingWithResponseAsync(recordingId, contextValue);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -291,8 +290,7 @@ public final class CallRecordingAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return callRecordingsInternal
-                    .resumeRecordingWithResponseAsync(recordingId, contextValue);
+                return callRecordingsInternal.resumeRecordingWithResponseAsync(recordingId, contextValue);
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -329,10 +327,9 @@ public final class CallRecordingAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return callRecordingsInternal
-                    .getRecordingPropertiesWithResponseAsync(recordingId, contextValue)
-                    .map(response ->
-                        new SimpleResponse<>(response, RecordingStateResponseConstructorProxy.create(response.getValue())));
+                return callRecordingsInternal.getRecordingPropertiesWithResponseAsync(recordingId, contextValue)
+                    .map(response -> new SimpleResponse<>(response,
+                        RecordingStateResponseConstructorProxy.create(response.getValue())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -347,10 +344,7 @@ public final class CallRecordingAsync {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ByteBuffer> downloadStream(String sourceUrl) {
-        return downloadStreamWithResponse(sourceUrl, null)
-            .map(Response::getValue)
-            .flux()
-            .flatMap(flux -> flux);
+        return downloadStreamWithResponse(sourceUrl, null).map(Response::getValue).flux().flatMap(flux -> flux);
     }
 
     /**
@@ -365,7 +359,8 @@ public final class CallRecordingAsync {
         return downloadStreamWithResponseInternal(sourceUrl, range, null);
     }
 
-    Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponseInternal(String sourceUrl, HttpRange range, Context context) {
+    Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponseInternal(String sourceUrl, HttpRange range,
+        Context context) {
         try {
             Objects.requireNonNull(sourceUrl, "'sourceUrl' cannot be null");
             return withContext(contextValue -> {
@@ -429,9 +424,7 @@ public final class CallRecordingAsync {
      * @return Response for a successful downloadTo request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> downloadTo(
-        String sourceUrl,
-        Path destinationPath) {
+    public Mono<Void> downloadTo(String sourceUrl, Path destinationPath) {
         try {
             DownloadToFileOptions options = new DownloadToFileOptions();
             return downloadTo(sourceUrl, destinationPath, options).then();
@@ -450,17 +443,11 @@ public final class CallRecordingAsync {
      * @return Response containing the http response information from the download.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> downloadTo(
-        String sourceUrl,
-        Path destinationPath,
-        DownloadToFileOptions options) {
+    public Mono<Void> downloadTo(String sourceUrl, Path destinationPath, DownloadToFileOptions options) {
         return downloadToInternal(sourceUrl, destinationPath, options, null);
     }
 
-    Mono<Void> downloadToInternal(
-        String sourceUrl,
-        Path destinationPath,
-        DownloadToFileOptions options,
+    Mono<Void> downloadToInternal(String sourceUrl, Path destinationPath, DownloadToFileOptions options,
         Context context) {
         Objects.requireNonNull(sourceUrl, "'sourceUrl' cannot be null");
         Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
@@ -485,28 +472,19 @@ public final class CallRecordingAsync {
         }
     }
 
-    Mono<Void> downloadTo(
-        String sourceUrl,
-        OutputStream destinationStream,
-        HttpRange httpRange,
-        Context context) {
+    Mono<Void> downloadTo(String sourceUrl, OutputStream destinationStream, HttpRange httpRange, Context context) {
 
         return contentDownloader.downloadToStreamWithResponse(sourceUrl, destinationStream, httpRange, context).then();
     }
 
-    Mono<Void> downloadTo(
-        String sourceUrl,
-        Path destinationPath,
-        AsynchronousFileChannel fileChannel,
-        DownloadToFileOptions options,
-        Context context
-    ) {
-        ParallelDownloadOptions finalParallelDownloadOptions =
-            options.getParallelDownloadOptions() == null
-                ? new ParallelDownloadOptions()
-                : options.getParallelDownloadOptions();
+    Mono<Void> downloadTo(String sourceUrl, Path destinationPath, AsynchronousFileChannel fileChannel,
+        DownloadToFileOptions options, Context context) {
+        ParallelDownloadOptions finalParallelDownloadOptions = options.getParallelDownloadOptions() == null
+            ? new ParallelDownloadOptions()
+            : options.getParallelDownloadOptions();
 
-        return Mono.just(fileChannel).flatMap(
+        return Mono.just(fileChannel)
+            .flatMap(
                 c -> contentDownloader.downloadToFileWithResponse(sourceUrl, c, finalParallelDownloadOptions, context))
 
             .doFinally(signalType -> contentDownloader.downloadToFileCleanup(fileChannel, destinationPath, signalType))
@@ -548,9 +526,9 @@ public final class CallRecordingAsync {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 contextValue = contextValue.addData("hmacSignatureURL", urlToSignWith);
-                return httpPipelineInternal
-                    .send(request, contextValue)
-                    .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null));
+                return httpPipelineInternal.send(request, contextValue)
+                    .map(response -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), null));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -573,7 +551,8 @@ public final class CallRecordingAsync {
 
     private ChannelAffinityInternal getChannelAffinityInternal(ChannelAffinity channelAffinity) {
         ChannelAffinityInternal channelAffinityInternal = new ChannelAffinityInternal();
-        CommunicationIdentifierModel communicationIdentifierModel = CommunicationIdentifierConverter.convert(channelAffinity.getParticipant());
+        CommunicationIdentifierModel communicationIdentifierModel
+            = CommunicationIdentifierConverter.convert(channelAffinity.getParticipant());
         channelAffinityInternal.setParticipant(communicationIdentifierModel);
         if (channelAffinity.getChannel() != null) {
             channelAffinityInternal.setChannel(channelAffinity.getChannel());

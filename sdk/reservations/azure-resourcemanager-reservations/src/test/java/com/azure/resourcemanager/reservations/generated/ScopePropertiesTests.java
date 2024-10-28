@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ScopePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScopeProperties model =
-            BinaryData.fromString("{\"scope\":\"nq\",\"valid\":true}").toObject(ScopeProperties.class);
+        ScopeProperties model
+            = BinaryData.fromString("{\"scope\":\"nq\",\"valid\":true}").toObject(ScopeProperties.class);
         Assertions.assertEquals("nq", model.scope());
         Assertions.assertEquals(true, model.valid());
     }

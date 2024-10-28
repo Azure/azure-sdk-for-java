@@ -31,45 +31,29 @@ public final class SqlPoolConnectionPoliciesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"kind\":\"ueqihkkyowlt\",\"location\":\"uwhldxwhieproqks\",\"properties\":{\"securityEnabledAccess\":\"mcvprstvk\",\"proxyDnsName\":\"b\",\"proxyPort\":\"tdyotnplf\",\"visibility\":\"qoccqrqxwetjt\",\"useServerDefault\":\"hutfdoadtxopge\",\"redirectionState\":\"adkm\",\"state\":\"gssz\"},\"id\":\"vctkbbx\",\"name\":\"harls\",\"type\":\"rncclabv\"}";
+        String responseStr
+            = "{\"kind\":\"ueqihkkyowlt\",\"location\":\"uwhldxwhieproqks\",\"properties\":{\"securityEnabledAccess\":\"mcvprstvk\",\"proxyDnsName\":\"b\",\"proxyPort\":\"tdyotnplf\",\"visibility\":\"qoccqrqxwetjt\",\"useServerDefault\":\"hutfdoadtxopge\",\"redirectionState\":\"adkm\",\"state\":\"gssz\"},\"id\":\"vctkbbx\",\"name\":\"harls\",\"type\":\"rncclabv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SqlPoolConnectionPolicy response =
-            manager
-                .sqlPoolConnectionPolicies()
-                .getWithResponse(
-                    "knpwirfljf",
-                    "wxqouoxudnmc",
-                    "aprhknqiijgencdg",
-                    ConnectionPolicyName.DEFAULT,
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        SqlPoolConnectionPolicy response = manager.sqlPoolConnectionPolicies()
+            .getWithResponse("knpwirfljf", "wxqouoxudnmc", "aprhknqiijgencdg", ConnectionPolicyName.DEFAULT,
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("mcvprstvk", response.securityEnabledAccess());
         Assertions.assertEquals("b", response.proxyDnsName());

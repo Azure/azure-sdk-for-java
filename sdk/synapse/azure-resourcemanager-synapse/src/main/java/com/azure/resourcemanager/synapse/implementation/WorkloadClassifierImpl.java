@@ -72,8 +72,8 @@ public final class WorkloadClassifierImpl
 
     private String workloadClassifierName;
 
-    public WorkloadClassifierImpl withExistingWorkloadGroup(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName) {
+    public WorkloadClassifierImpl withExistingWorkloadGroup(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName) {
         this.resourceGroupName = resourceGroupName;
         this.workspaceName = workspaceName;
         this.sqlPoolName = sqlPoolName;
@@ -82,34 +82,18 @@ public final class WorkloadClassifierImpl
     }
 
     public WorkloadClassifier create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolWorkloadClassifiers()
-                .createOrUpdate(
-                    resourceGroupName,
-                    workspaceName,
-                    sqlPoolName,
-                    workloadGroupName,
-                    workloadClassifierName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolWorkloadClassifiers()
+            .createOrUpdate(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName,
+                this.innerModel(), Context.NONE);
         return this;
     }
 
     public WorkloadClassifier create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolWorkloadClassifiers()
-                .createOrUpdate(
-                    resourceGroupName,
-                    workspaceName,
-                    sqlPoolName,
-                    workloadGroupName,
-                    workloadClassifierName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolWorkloadClassifiers()
+            .createOrUpdate(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName,
+                this.innerModel(), context);
         return this;
     }
 
@@ -124,39 +108,23 @@ public final class WorkloadClassifierImpl
     }
 
     public WorkloadClassifier apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolWorkloadClassifiers()
-                .createOrUpdate(
-                    resourceGroupName,
-                    workspaceName,
-                    sqlPoolName,
-                    workloadGroupName,
-                    workloadClassifierName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolWorkloadClassifiers()
+            .createOrUpdate(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName,
+                this.innerModel(), Context.NONE);
         return this;
     }
 
     public WorkloadClassifier apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolWorkloadClassifiers()
-                .createOrUpdate(
-                    resourceGroupName,
-                    workspaceName,
-                    sqlPoolName,
-                    workloadGroupName,
-                    workloadClassifierName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolWorkloadClassifiers()
+            .createOrUpdate(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName,
+                this.innerModel(), context);
         return this;
     }
 
-    WorkloadClassifierImpl(
-        WorkloadClassifierInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    WorkloadClassifierImpl(WorkloadClassifierInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -167,29 +135,20 @@ public final class WorkloadClassifierImpl
     }
 
     public WorkloadClassifier refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolWorkloadClassifiers()
-                .getWithResponse(
-                    resourceGroupName,
-                    workspaceName,
-                    sqlPoolName,
-                    workloadGroupName,
-                    workloadClassifierName,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolWorkloadClassifiers()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public WorkloadClassifier refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSqlPoolWorkloadClassifiers()
-                .getWithResponse(
-                    resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSqlPoolWorkloadClassifiers()
+            .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName,
+                context)
+            .getValue();
         return this;
     }
 

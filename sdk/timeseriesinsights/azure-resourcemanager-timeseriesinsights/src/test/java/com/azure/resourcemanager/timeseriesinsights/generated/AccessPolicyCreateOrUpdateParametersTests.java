@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AccessPolicyCreateOrUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccessPolicyCreateOrUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"principalObjectId\":\"jrefovgmkqsle\",\"description\":\"vxyqjpkcattpngjc\",\"roles\":[\"Contributor\",\"Contributor\",\"Reader\"]}}")
-                .toObject(AccessPolicyCreateOrUpdateParameters.class);
+        AccessPolicyCreateOrUpdateParameters model = BinaryData.fromString(
+            "{\"properties\":{\"principalObjectId\":\"jrefovgmkqsle\",\"description\":\"vxyqjpkcattpngjc\",\"roles\":[\"Contributor\",\"Contributor\",\"Reader\"]}}")
+            .toObject(AccessPolicyCreateOrUpdateParameters.class);
         Assertions.assertEquals("jrefovgmkqsle", model.principalObjectId());
         Assertions.assertEquals("vxyqjpkcattpngjc", model.description());
         Assertions.assertEquals(AccessPolicyRole.CONTRIBUTOR, model.roles().get(0));
@@ -25,9 +23,8 @@ public final class AccessPolicyCreateOrUpdateParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessPolicyCreateOrUpdateParameters model =
-            new AccessPolicyCreateOrUpdateParameters()
-                .withPrincipalObjectId("jrefovgmkqsle")
+        AccessPolicyCreateOrUpdateParameters model
+            = new AccessPolicyCreateOrUpdateParameters().withPrincipalObjectId("jrefovgmkqsle")
                 .withDescription("vxyqjpkcattpngjc")
                 .withRoles(
                     Arrays.asList(AccessPolicyRole.CONTRIBUTOR, AccessPolicyRole.CONTRIBUTOR, AccessPolicyRole.READER));

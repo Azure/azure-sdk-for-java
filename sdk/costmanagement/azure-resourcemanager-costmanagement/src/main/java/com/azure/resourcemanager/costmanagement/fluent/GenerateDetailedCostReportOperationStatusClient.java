@@ -29,8 +29,8 @@ public interface GenerateDetailedCostReportOperationStatusClient {
      * @return the status of the specified operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GenerateDetailedCostReportOperationStatusesInner> getWithResponse(
-        String operationId, String scope, Context context);
+    Response<GenerateDetailedCostReportOperationStatusesInner> getWithResponse(String operationId, String scope,
+        Context context);
 
     /**
      * Get the status of the specified operation. This link is provided in the GenerateDetailedCostReport creation

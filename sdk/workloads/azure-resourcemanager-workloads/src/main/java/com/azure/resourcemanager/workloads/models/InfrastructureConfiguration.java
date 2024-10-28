@@ -20,8 +20,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("InfrastructureConfiguration")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SingleServer", value = SingleServerConfiguration.class),
-    @JsonSubTypes.Type(name = "ThreeTier", value = ThreeTierConfiguration.class)
-})
+    @JsonSubTypes.Type(name = "ThreeTier", value = ThreeTierConfiguration.class) })
 @Fluent
 public class InfrastructureConfiguration {
     /*
@@ -61,10 +60,8 @@ public class InfrastructureConfiguration {
      */
     public void validate() {
         if (appResourceGroup() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property appResourceGroup in model InfrastructureConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property appResourceGroup in model InfrastructureConfiguration"));
         }
     }
 

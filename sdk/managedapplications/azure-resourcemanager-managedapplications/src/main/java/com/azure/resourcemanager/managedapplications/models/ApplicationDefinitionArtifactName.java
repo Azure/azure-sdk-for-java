@@ -14,15 +14,15 @@ public final class ApplicationDefinitionArtifactName extends ExpandableStringEnu
     public static final ApplicationDefinitionArtifactName NOT_SPECIFIED = fromString("NotSpecified");
 
     /** Static value ApplicationResourceTemplate for ApplicationDefinitionArtifactName. */
-    public static final ApplicationDefinitionArtifactName APPLICATION_RESOURCE_TEMPLATE =
-        fromString("ApplicationResourceTemplate");
+    public static final ApplicationDefinitionArtifactName APPLICATION_RESOURCE_TEMPLATE
+        = fromString("ApplicationResourceTemplate");
 
     /** Static value CreateUiDefinition for ApplicationDefinitionArtifactName. */
     public static final ApplicationDefinitionArtifactName CREATE_UI_DEFINITION = fromString("CreateUiDefinition");
 
     /** Static value MainTemplateParameters for ApplicationDefinitionArtifactName. */
-    public static final ApplicationDefinitionArtifactName MAIN_TEMPLATE_PARAMETERS =
-        fromString("MainTemplateParameters");
+    public static final ApplicationDefinitionArtifactName MAIN_TEMPLATE_PARAMETERS
+        = fromString("MainTemplateParameters");
 
     /**
      * Creates a new instance of ApplicationDefinitionArtifactName value.

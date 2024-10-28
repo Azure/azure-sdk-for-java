@@ -90,13 +90,16 @@ public final class ConfigurationGroupSchemaImpl
     }
 
     public ConfigurationGroupSchema create() {
-        this.innerObject = serviceManager.serviceClient().getConfigurationGroupSchemas().createOrUpdate(
-            resourceGroupName, publisherName, configurationGroupSchemaName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationGroupSchemas()
+            .createOrUpdate(resourceGroupName, publisherName, configurationGroupSchemaName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public ConfigurationGroupSchema create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConfigurationGroupSchemas()
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationGroupSchemas()
             .createOrUpdate(resourceGroupName, publisherName, configurationGroupSchemaName, this.innerModel(), context);
         return this;
     }
@@ -114,16 +117,20 @@ public final class ConfigurationGroupSchemaImpl
     }
 
     public ConfigurationGroupSchema apply() {
-        this.innerObject
-            = serviceManager.serviceClient().getConfigurationGroupSchemas().updateWithResponse(resourceGroupName,
-                publisherName, configurationGroupSchemaName, updateParameters, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationGroupSchemas()
+            .updateWithResponse(resourceGroupName, publisherName, configurationGroupSchemaName, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConfigurationGroupSchema apply(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getConfigurationGroupSchemas().updateWithResponse(resourceGroupName,
-                publisherName, configurationGroupSchemaName, updateParameters, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationGroupSchemas()
+            .updateWithResponse(resourceGroupName, publisherName, configurationGroupSchemaName, updateParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -137,27 +144,31 @@ public final class ConfigurationGroupSchemaImpl
     }
 
     public ConfigurationGroupSchema refresh() {
-        this.innerObject = serviceManager.serviceClient().getConfigurationGroupSchemas()
-            .getWithResponse(resourceGroupName, publisherName, configurationGroupSchemaName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationGroupSchemas()
+            .getWithResponse(resourceGroupName, publisherName, configurationGroupSchemaName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConfigurationGroupSchema refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getConfigurationGroupSchemas()
-            .getWithResponse(resourceGroupName, publisherName, configurationGroupSchemaName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationGroupSchemas()
+            .getWithResponse(resourceGroupName, publisherName, configurationGroupSchemaName, context)
+            .getValue();
         return this;
     }
 
     public ConfigurationGroupSchemaVersionUpdateState
         updateState(ConfigurationGroupSchemaVersionUpdateStateInner parameters) {
-        return serviceManager.configurationGroupSchemas().updateState(resourceGroupName, publisherName,
-            configurationGroupSchemaName, parameters);
+        return serviceManager.configurationGroupSchemas()
+            .updateState(resourceGroupName, publisherName, configurationGroupSchemaName, parameters);
     }
 
     public ConfigurationGroupSchemaVersionUpdateState
         updateState(ConfigurationGroupSchemaVersionUpdateStateInner parameters, Context context) {
-        return serviceManager.configurationGroupSchemas().updateState(resourceGroupName, publisherName,
-            configurationGroupSchemaName, parameters, context);
+        return serviceManager.configurationGroupSchemas()
+            .updateState(resourceGroupName, publisherName, configurationGroupSchemaName, parameters, context);
     }
 
     public ConfigurationGroupSchemaImpl withRegion(Region location) {

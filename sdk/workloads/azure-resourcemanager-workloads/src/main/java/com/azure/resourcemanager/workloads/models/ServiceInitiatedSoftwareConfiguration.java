@@ -185,35 +185,25 @@ public final class ServiceInitiatedSoftwareConfiguration extends SoftwareConfigu
     public void validate() {
         super.validate();
         if (bomUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property bomUrl in model ServiceInitiatedSoftwareConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property bomUrl in model ServiceInitiatedSoftwareConfiguration"));
         }
         if (softwareVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property softwareVersion in model ServiceInitiatedSoftwareConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property softwareVersion in model ServiceInitiatedSoftwareConfiguration"));
         }
         if (sapBitsStorageAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sapBitsStorageAccountId in model"
-                            + " ServiceInitiatedSoftwareConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sapBitsStorageAccountId in model"
+                    + " ServiceInitiatedSoftwareConfiguration"));
         }
         if (sapFqdn() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sapFqdn in model ServiceInitiatedSoftwareConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sapFqdn in model ServiceInitiatedSoftwareConfiguration"));
         }
         if (sshPrivateKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sshPrivateKey in model ServiceInitiatedSoftwareConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sshPrivateKey in model ServiceInitiatedSoftwareConfiguration"));
         }
         if (highAvailabilitySoftwareConfiguration() != null) {
             highAvailabilitySoftwareConfiguration().validate();
