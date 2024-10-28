@@ -138,7 +138,7 @@ class AzureMonitorExporterBuilder {
             return exporterOptions.connectionString;
         }
         ConnectionString connectionString
-            = ConnectionString.parse(configProperties.getString(APPLICATIONINSIGHTS_CONNECTION_STRING));
+            = ConnectionString.parse(configProperties.getString("applicationinsights.connection.string"));
         return connectionString;
     }
 
