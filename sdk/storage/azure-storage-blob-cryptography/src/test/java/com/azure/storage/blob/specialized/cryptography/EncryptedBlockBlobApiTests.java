@@ -212,7 +212,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     // This test checks that encryption is not just a no-op
     @ParameterizedTest
     @EnumSource(EncryptionVersion.class)
-    public void encryptionNoANoop(EncryptionVersion version) {
+    public void encryptionNotANoop(EncryptionVersion version) {
         beac = getEncryptionAsyncClient(version);
         ByteBuffer byteBuffer = getRandomData(Constants.KB);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -1492,7 +1492,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
     // This test checks that encryption is not just a no-op
     @Test
-    public void encryptionUploadISSyncNotANoop() {
+    public void encryptionUploadISNotANoop() {
         ByteBuffer byteBuffer = getRandomData(Constants.KB);
         ByteArrayOutputStream os = new ByteArrayOutputStream();
 

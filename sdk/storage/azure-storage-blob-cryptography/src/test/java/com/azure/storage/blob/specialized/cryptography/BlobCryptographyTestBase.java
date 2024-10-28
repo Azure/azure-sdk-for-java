@@ -64,6 +64,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static com.azure.core.test.utils.TestUtils.assertByteBuffersEqual;
@@ -265,10 +266,10 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
             : Mono.justOrEmpty(match).defaultIfEmpty("null");
     }
 
-    protected static List<String> convertNulls(String lease, String match) {
-        String newLease = "null".equals(lease) ? null : lease;
-        String newMatch = "null".equals(match) ? null : match;
-        return Arrays.asList(newLease, newMatch);
+    protected static List<String> convertNulls(String... conditions) {
+        return Arrays.stream(conditions)
+            .map(condition -> "null".equals(condition) ? null : condition)
+            .collect(Collectors.toList());
     }
 
     /**

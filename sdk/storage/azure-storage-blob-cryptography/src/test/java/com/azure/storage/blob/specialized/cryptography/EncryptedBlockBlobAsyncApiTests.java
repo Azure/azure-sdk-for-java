@@ -330,13 +330,6 @@ public class EncryptedBlockBlobAsyncApiTests extends BlobCryptographyTestBase {
             .verifyComplete();
     }
 
-    // Requires specific container set up coordinated between languages. Should only be run manually.
-    @Disabled
-    @Test
-    public void testForCrossPlat() {
-        //todo isbr when we have the setup
-    }
-
     @LiveOnly
     @ParameterizedTest
     @MethodSource("encryptionComputeMd5Supplier")
@@ -1481,6 +1474,21 @@ public class EncryptedBlockBlobAsyncApiTests extends BlobCryptographyTestBase {
 
         StepVerifier.create(response)
             .assertNext(r -> assertArrayEquals(DATA.getDefaultBytes(), r))
+            .verifyComplete();
+    }
+
+    // This test checks that encryption is not just a no-op
+    @Test
+    public void encryptionUploadISNotANoop() {
+        byte[] randomData = getRandomByteArray(Constants.KB);
+        ByteArrayInputStream input = new ByteArrayInputStream(randomData);
+
+        Mono<byte[]> response = bec.uploadWithResponse(new BlobParallelUploadOptions(input, Constants.KB))
+            .then(FluxUtil.collectBytesInByteBufferStream(cc.getBlobAsyncClient(bec.getBlobName()).getBlockBlobAsyncClient()
+                .downloadStream()));
+
+        StepVerifier.create(response)
+            .assertNext(r -> assertFalse(Arrays.equals(randomData, r)))
             .verifyComplete();
     }
 
