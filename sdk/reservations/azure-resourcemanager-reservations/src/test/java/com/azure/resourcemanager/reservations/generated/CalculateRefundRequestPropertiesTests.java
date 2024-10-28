@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CalculateRefundRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CalculateRefundRequestProperties model =
-            BinaryData
-                .fromString(
-                    "{\"scope\":\"bglaocqxtccm\",\"reservationToReturn\":{\"reservationId\":\"dxyt\",\"quantity\":2080912340}}")
-                .toObject(CalculateRefundRequestProperties.class);
+        CalculateRefundRequestProperties model = BinaryData.fromString(
+            "{\"scope\":\"bglaocqxtccm\",\"reservationToReturn\":{\"reservationId\":\"dxyt\",\"quantity\":2080912340}}")
+            .toObject(CalculateRefundRequestProperties.class);
         Assertions.assertEquals("bglaocqxtccm", model.scope());
         Assertions.assertEquals("dxyt", model.reservationToReturn().reservationId());
         Assertions.assertEquals(2080912340, model.reservationToReturn().quantity());
@@ -24,10 +22,8 @@ public final class CalculateRefundRequestPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CalculateRefundRequestProperties model =
-            new CalculateRefundRequestProperties()
-                .withScope("bglaocqxtccm")
-                .withReservationToReturn(new ReservationToReturn().withReservationId("dxyt").withQuantity(2080912340));
+        CalculateRefundRequestProperties model = new CalculateRefundRequestProperties().withScope("bglaocqxtccm")
+            .withReservationToReturn(new ReservationToReturn().withReservationId("dxyt").withQuantity(2080912340));
         model = BinaryData.fromObject(model).toObject(CalculateRefundRequestProperties.class);
         Assertions.assertEquals("bglaocqxtccm", model.scope());
         Assertions.assertEquals("dxyt", model.reservationToReturn().reservationId());

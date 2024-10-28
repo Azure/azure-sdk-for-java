@@ -187,8 +187,8 @@ public final class SapVirtualInstanceInner extends Resource {
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the SapVirtualInstanceInner object itself.
      */
-    public SapVirtualInstanceInner withManagedResourceGroupConfiguration(
-        ManagedRGConfiguration managedResourceGroupConfiguration) {
+    public SapVirtualInstanceInner
+        withManagedResourceGroupConfiguration(ManagedRGConfiguration managedResourceGroupConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SapVirtualInstanceProperties();
         }
@@ -251,10 +251,8 @@ public final class SapVirtualInstanceInner extends Resource {
             identity().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model SapVirtualInstanceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model SapVirtualInstanceInner"));
         } else {
             innerProperties().validate();
         }

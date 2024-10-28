@@ -178,10 +178,8 @@ public final class WorkloadClassifierProperties {
      */
     public void validate() {
         if (memberName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property memberName in model WorkloadClassifierProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property memberName in model WorkloadClassifierProperties"));
         }
     }
 

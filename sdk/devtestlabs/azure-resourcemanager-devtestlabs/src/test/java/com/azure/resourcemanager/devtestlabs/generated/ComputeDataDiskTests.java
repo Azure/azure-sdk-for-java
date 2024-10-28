@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ComputeDataDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputeDataDisk model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"plrohkpigq\",\"diskUri\":\"suckzm\",\"managedDiskId\":\"klsnoxaxmqeqa\",\"diskSizeGiB\":1706604371}")
-                .toObject(ComputeDataDisk.class);
+        ComputeDataDisk model = BinaryData.fromString(
+            "{\"name\":\"plrohkpigq\",\"diskUri\":\"suckzm\",\"managedDiskId\":\"klsnoxaxmqeqa\",\"diskSizeGiB\":1706604371}")
+            .toObject(ComputeDataDisk.class);
         Assertions.assertEquals("plrohkpigq", model.name());
         Assertions.assertEquals("suckzm", model.diskUri());
         Assertions.assertEquals("klsnoxaxmqeqa", model.managedDiskId());
@@ -24,12 +22,10 @@ public final class ComputeDataDiskTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ComputeDataDisk model =
-            new ComputeDataDisk()
-                .withName("plrohkpigq")
-                .withDiskUri("suckzm")
-                .withManagedDiskId("klsnoxaxmqeqa")
-                .withDiskSizeGiB(1706604371);
+        ComputeDataDisk model = new ComputeDataDisk().withName("plrohkpigq")
+            .withDiskUri("suckzm")
+            .withManagedDiskId("klsnoxaxmqeqa")
+            .withDiskSizeGiB(1706604371);
         model = BinaryData.fromObject(model).toObject(ComputeDataDisk.class);
         Assertions.assertEquals("plrohkpigq", model.name());
         Assertions.assertEquals("suckzm", model.diskUri());

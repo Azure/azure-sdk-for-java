@@ -417,9 +417,8 @@ public final class AgentPoolInner extends Resource {
             extendedLocation().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model AgentPoolInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model AgentPoolInner"));
         } else {
             innerProperties().validate();
         }

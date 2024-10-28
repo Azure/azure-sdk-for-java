@@ -12,8 +12,7 @@ import java.util.function.Function;
 /**
  * Simplified functional interface equivalent to abstract class {@link IndexableTaskItem}.
  */
-public interface FunctionalTaskItem
-        extends Function<FunctionalTaskItem.Context, Mono<Indexable>> {
+public interface FunctionalTaskItem extends Function<FunctionalTaskItem.Context, Mono<Indexable>> {
     /**
      * Type representing context of an {@link FunctionalTaskItem}.
      */

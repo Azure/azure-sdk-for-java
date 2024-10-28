@@ -103,10 +103,8 @@ public final class L3NetworkAttachmentConfiguration {
      */
     public void validate() {
         if (networkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkId in model L3NetworkAttachmentConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkId in model L3NetworkAttachmentConfiguration"));
         }
     }
 

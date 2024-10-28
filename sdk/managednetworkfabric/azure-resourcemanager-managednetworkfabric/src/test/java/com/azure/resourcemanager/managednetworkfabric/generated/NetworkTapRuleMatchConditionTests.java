@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkTapRuleMatchConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkTapRuleMatchCondition model =
-            BinaryData
-                .fromString(
-                    "{\"encapsulationType\":\"GTPv1\",\"portCondition\":{\"portType\":\"SourcePort\",\"layer4Protocol\":\"UDP\",\"ports\":[\"ause\",\"nczk\",\"ihvtuwyjsqw\"],\"portGroupNames\":[\"oszjgz\",\"nkfnyskwwunq\"]},\"protocolTypes\":[\"avoj\"],\"vlanMatchCondition\":{\"vlans\":[\"ipcuk\",\"bljp\",\"prrv\"],\"innerVlans\":[\"luqalpc\",\"fjjfxtizt\"],\"vlanGroupNames\":[\"tahhhsa\",\"xxsri\",\"rcwbaae\",\"yyefmxwoqotiiqb\"]},\"ipCondition\":{\"type\":\"SourceIP\",\"prefixType\":\"Prefix\",\"ipPrefixValues\":[\"tistyikjhorlx\",\"pypkennycntrq\",\"xwtdmbqjtsuhqh\"],\"ipGroupNames\":[\"tdyqav\",\"x\",\"qmzxsyaks\",\"npaami\"]}}")
-                .toObject(NetworkTapRuleMatchCondition.class);
+        NetworkTapRuleMatchCondition model = BinaryData.fromString(
+            "{\"encapsulationType\":\"GTPv1\",\"portCondition\":{\"portType\":\"SourcePort\",\"layer4Protocol\":\"UDP\",\"ports\":[\"ause\",\"nczk\",\"ihvtuwyjsqw\"],\"portGroupNames\":[\"oszjgz\",\"nkfnyskwwunq\"]},\"protocolTypes\":[\"avoj\"],\"vlanMatchCondition\":{\"vlans\":[\"ipcuk\",\"bljp\",\"prrv\"],\"innerVlans\":[\"luqalpc\",\"fjjfxtizt\"],\"vlanGroupNames\":[\"tahhhsa\",\"xxsri\",\"rcwbaae\",\"yyefmxwoqotiiqb\"]},\"ipCondition\":{\"type\":\"SourceIP\",\"prefixType\":\"Prefix\",\"ipPrefixValues\":[\"tistyikjhorlx\",\"pypkennycntrq\",\"xwtdmbqjtsuhqh\"],\"ipGroupNames\":[\"tdyqav\",\"x\",\"qmzxsyaks\",\"npaami\"]}}")
+            .toObject(NetworkTapRuleMatchCondition.class);
         Assertions.assertEquals("avoj", model.protocolTypes().get(0));
         Assertions.assertEquals("ipcuk", model.vlanMatchCondition().vlans().get(0));
         Assertions.assertEquals("luqalpc", model.vlanMatchCondition().innerVlans().get(0));
@@ -42,27 +40,19 @@ public final class NetworkTapRuleMatchConditionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkTapRuleMatchCondition model =
-            new NetworkTapRuleMatchCondition()
-                .withProtocolTypes(Arrays.asList("avoj"))
-                .withVlanMatchCondition(
-                    new VlanMatchCondition()
-                        .withVlans(Arrays.asList("ipcuk", "bljp", "prrv"))
-                        .withInnerVlans(Arrays.asList("luqalpc", "fjjfxtizt"))
-                        .withVlanGroupNames(Arrays.asList("tahhhsa", "xxsri", "rcwbaae", "yyefmxwoqotiiqb")))
-                .withIpCondition(
-                    new IpMatchCondition()
-                        .withType(SourceDestinationType.SOURCE_IP)
-                        .withPrefixType(PrefixType.PREFIX)
-                        .withIpPrefixValues(Arrays.asList("tistyikjhorlx", "pypkennycntrq", "xwtdmbqjtsuhqh"))
-                        .withIpGroupNames(Arrays.asList("tdyqav", "x", "qmzxsyaks", "npaami")))
-                .withEncapsulationType(EncapsulationType.GTPV1)
-                .withPortCondition(
-                    new PortCondition()
-                        .withPortType(PortType.SOURCE_PORT)
-                        .withLayer4Protocol(Layer4Protocol.UDP)
-                        .withPorts(Arrays.asList("ause", "nczk", "ihvtuwyjsqw"))
-                        .withPortGroupNames(Arrays.asList("oszjgz", "nkfnyskwwunq")));
+        NetworkTapRuleMatchCondition model = new NetworkTapRuleMatchCondition().withProtocolTypes(Arrays.asList("avoj"))
+            .withVlanMatchCondition(new VlanMatchCondition().withVlans(Arrays.asList("ipcuk", "bljp", "prrv"))
+                .withInnerVlans(Arrays.asList("luqalpc", "fjjfxtizt"))
+                .withVlanGroupNames(Arrays.asList("tahhhsa", "xxsri", "rcwbaae", "yyefmxwoqotiiqb")))
+            .withIpCondition(new IpMatchCondition().withType(SourceDestinationType.SOURCE_IP)
+                .withPrefixType(PrefixType.PREFIX)
+                .withIpPrefixValues(Arrays.asList("tistyikjhorlx", "pypkennycntrq", "xwtdmbqjtsuhqh"))
+                .withIpGroupNames(Arrays.asList("tdyqav", "x", "qmzxsyaks", "npaami")))
+            .withEncapsulationType(EncapsulationType.GTPV1)
+            .withPortCondition(new PortCondition().withPortType(PortType.SOURCE_PORT)
+                .withLayer4Protocol(Layer4Protocol.UDP)
+                .withPorts(Arrays.asList("ause", "nczk", "ihvtuwyjsqw"))
+                .withPortGroupNames(Arrays.asList("oszjgz", "nkfnyskwwunq")));
         model = BinaryData.fromObject(model).toObject(NetworkTapRuleMatchCondition.class);
         Assertions.assertEquals("avoj", model.protocolTypes().get(0));
         Assertions.assertEquals("ipcuk", model.vlanMatchCondition().vlans().get(0));

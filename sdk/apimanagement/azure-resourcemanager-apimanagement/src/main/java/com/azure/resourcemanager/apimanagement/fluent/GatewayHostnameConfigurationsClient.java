@@ -30,8 +30,8 @@ public interface GatewayHostnameConfigurationsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GatewayHostnameConfigurationContractInner> listByService(
-        String resourceGroupName, String serviceName, String gatewayId);
+    PagedIterable<GatewayHostnameConfigurationContractInner> listByService(String resourceGroupName, String serviceName,
+        String gatewayId);
 
     /**
      * Lists the collection of hostname configurations for the specified gateway.
@@ -54,14 +54,8 @@ public interface GatewayHostnameConfigurationsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GatewayHostnameConfigurationContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<GatewayHostnameConfigurationContractInner> listByService(String resourceGroupName, String serviceName,
+        String gatewayId, String filter, Integer top, Integer skip, Context context);
 
     /**
      * Checks that hostname configuration entity specified by identifier exists for specified Gateway entity.
@@ -78,8 +72,8 @@ public interface GatewayHostnameConfigurationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayHostnameConfigurationsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String hcId, Context context);
+    GatewayHostnameConfigurationsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName,
+        String serviceName, String gatewayId, String hcId, Context context);
 
     /**
      * Checks that hostname configuration entity specified by identifier exists for specified Gateway entity.
@@ -111,8 +105,8 @@ public interface GatewayHostnameConfigurationsClient {
      * @return details of a hostname configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayHostnameConfigurationsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String hcId, Context context);
+    GatewayHostnameConfigurationsGetResponse getWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, String hcId, Context context);
 
     /**
      * Get details of a hostname configuration.
@@ -128,8 +122,8 @@ public interface GatewayHostnameConfigurationsClient {
      * @return details of a hostname configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayHostnameConfigurationContractInner get(
-        String resourceGroupName, String serviceName, String gatewayId, String hcId);
+    GatewayHostnameConfigurationContractInner get(String resourceGroupName, String serviceName, String gatewayId,
+        String hcId);
 
     /**
      * Creates of updates hostname configuration for a Gateway.
@@ -148,14 +142,9 @@ public interface GatewayHostnameConfigurationsClient {
      * @return gateway hostname configuration details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayHostnameConfigurationsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String hcId,
-        GatewayHostnameConfigurationContractInner parameters,
-        String ifMatch,
-        Context context);
+    GatewayHostnameConfigurationsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
+        String serviceName, String gatewayId, String hcId, GatewayHostnameConfigurationContractInner parameters,
+        String ifMatch, Context context);
 
     /**
      * Creates of updates hostname configuration for a Gateway.
@@ -172,12 +161,8 @@ public interface GatewayHostnameConfigurationsClient {
      * @return gateway hostname configuration details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayHostnameConfigurationContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String hcId,
-        GatewayHostnameConfigurationContractInner parameters);
+    GatewayHostnameConfigurationContractInner createOrUpdate(String resourceGroupName, String serviceName,
+        String gatewayId, String hcId, GatewayHostnameConfigurationContractInner parameters);
 
     /**
      * Deletes the specified hostname configuration from the specified Gateway.
@@ -196,8 +181,8 @@ public interface GatewayHostnameConfigurationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String hcId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String gatewayId, String hcId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified hostname configuration from the specified Gateway.

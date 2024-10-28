@@ -76,9 +76,8 @@ public final class TestLineListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model TestLineListResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model TestLineListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -10,10 +10,6 @@ module com.azure.resourcemanager.digitaltwins {
     exports com.azure.resourcemanager.digitaltwins.fluent.models;
     exports com.azure.resourcemanager.digitaltwins.models;
 
-    opens com.azure.resourcemanager.digitaltwins.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.digitaltwins.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.digitaltwins.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.digitaltwins.models to com.azure.core, com.fasterxml.jackson.databind;
 }

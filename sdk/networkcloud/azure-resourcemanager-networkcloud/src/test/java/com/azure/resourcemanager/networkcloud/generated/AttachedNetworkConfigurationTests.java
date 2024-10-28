@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AttachedNetworkConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AttachedNetworkConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"l2Networks\":[{\"networkId\":\"i\",\"pluginType\":\"SRIOV\"},{\"networkId\":\"lpjzuaejxdu\",\"pluginType\":\"IPVLAN\"},{\"networkId\":\"kzbbtd\",\"pluginType\":\"IPVLAN\"},{\"networkId\":\"veekgpwozuhkfp\",\"pluginType\":\"DPDK\"}],\"l3Networks\":[{\"ipamEnabled\":\"True\",\"networkId\":\"xl\",\"pluginType\":\"IPVLAN\"}],\"trunkedNetworks\":[{\"networkId\":\"touwaboekqv\",\"pluginType\":\"MACVLAN\"},{\"networkId\":\"nsmvbxwyj\",\"pluginType\":\"MACVLAN\"},{\"networkId\":\"hhcaal\",\"pluginType\":\"SRIOV\"},{\"networkId\":\"xisxyawjoyaqcsl\",\"pluginType\":\"MACVLAN\"}]}")
-                .toObject(AttachedNetworkConfiguration.class);
+        AttachedNetworkConfiguration model = BinaryData.fromString(
+            "{\"l2Networks\":[{\"networkId\":\"i\",\"pluginType\":\"SRIOV\"},{\"networkId\":\"lpjzuaejxdu\",\"pluginType\":\"IPVLAN\"},{\"networkId\":\"kzbbtd\",\"pluginType\":\"IPVLAN\"},{\"networkId\":\"veekgpwozuhkfp\",\"pluginType\":\"DPDK\"}],\"l3Networks\":[{\"ipamEnabled\":\"True\",\"networkId\":\"xl\",\"pluginType\":\"IPVLAN\"}],\"trunkedNetworks\":[{\"networkId\":\"touwaboekqv\",\"pluginType\":\"MACVLAN\"},{\"networkId\":\"nsmvbxwyj\",\"pluginType\":\"MACVLAN\"},{\"networkId\":\"hhcaal\",\"pluginType\":\"SRIOV\"},{\"networkId\":\"xisxyawjoyaqcsl\",\"pluginType\":\"MACVLAN\"}]}")
+            .toObject(AttachedNetworkConfiguration.class);
         Assertions.assertEquals("i", model.l2Networks().get(0).networkId());
         Assertions.assertEquals(KubernetesPluginType.SRIOV, model.l2Networks().get(0).pluginType());
         Assertions.assertEquals(L3NetworkConfigurationIpamEnabled.TRUE, model.l3Networks().get(0).ipamEnabled());
@@ -33,45 +31,26 @@ public final class AttachedNetworkConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AttachedNetworkConfiguration model =
-            new AttachedNetworkConfiguration()
-                .withL2Networks(
-                    Arrays
-                        .asList(
-                            new L2NetworkAttachmentConfiguration()
-                                .withNetworkId("i")
-                                .withPluginType(KubernetesPluginType.SRIOV),
-                            new L2NetworkAttachmentConfiguration()
-                                .withNetworkId("lpjzuaejxdu")
-                                .withPluginType(KubernetesPluginType.IPVLAN),
-                            new L2NetworkAttachmentConfiguration()
-                                .withNetworkId("kzbbtd")
-                                .withPluginType(KubernetesPluginType.IPVLAN),
-                            new L2NetworkAttachmentConfiguration()
-                                .withNetworkId("veekgpwozuhkfp")
-                                .withPluginType(KubernetesPluginType.DPDK)))
-                .withL3Networks(
-                    Arrays
-                        .asList(
-                            new L3NetworkAttachmentConfiguration()
-                                .withIpamEnabled(L3NetworkConfigurationIpamEnabled.TRUE)
-                                .withNetworkId("xl")
-                                .withPluginType(KubernetesPluginType.IPVLAN)))
-                .withTrunkedNetworks(
-                    Arrays
-                        .asList(
-                            new TrunkedNetworkAttachmentConfiguration()
-                                .withNetworkId("touwaboekqv")
-                                .withPluginType(KubernetesPluginType.MACVLAN),
-                            new TrunkedNetworkAttachmentConfiguration()
-                                .withNetworkId("nsmvbxwyj")
-                                .withPluginType(KubernetesPluginType.MACVLAN),
-                            new TrunkedNetworkAttachmentConfiguration()
-                                .withNetworkId("hhcaal")
-                                .withPluginType(KubernetesPluginType.SRIOV),
-                            new TrunkedNetworkAttachmentConfiguration()
-                                .withNetworkId("xisxyawjoyaqcsl")
-                                .withPluginType(KubernetesPluginType.MACVLAN)));
+        AttachedNetworkConfiguration model = new AttachedNetworkConfiguration().withL2Networks(Arrays.asList(
+            new L2NetworkAttachmentConfiguration().withNetworkId("i").withPluginType(KubernetesPluginType.SRIOV),
+            new L2NetworkAttachmentConfiguration().withNetworkId("lpjzuaejxdu")
+                .withPluginType(KubernetesPluginType.IPVLAN),
+            new L2NetworkAttachmentConfiguration().withNetworkId("kzbbtd").withPluginType(KubernetesPluginType.IPVLAN),
+            new L2NetworkAttachmentConfiguration().withNetworkId("veekgpwozuhkfp")
+                .withPluginType(KubernetesPluginType.DPDK)))
+            .withL3Networks(Arrays
+                .asList(new L3NetworkAttachmentConfiguration().withIpamEnabled(L3NetworkConfigurationIpamEnabled.TRUE)
+                    .withNetworkId("xl")
+                    .withPluginType(KubernetesPluginType.IPVLAN)))
+            .withTrunkedNetworks(Arrays.asList(
+                new TrunkedNetworkAttachmentConfiguration().withNetworkId("touwaboekqv")
+                    .withPluginType(KubernetesPluginType.MACVLAN),
+                new TrunkedNetworkAttachmentConfiguration().withNetworkId("nsmvbxwyj")
+                    .withPluginType(KubernetesPluginType.MACVLAN),
+                new TrunkedNetworkAttachmentConfiguration().withNetworkId("hhcaal")
+                    .withPluginType(KubernetesPluginType.SRIOV),
+                new TrunkedNetworkAttachmentConfiguration().withNetworkId("xisxyawjoyaqcsl")
+                    .withPluginType(KubernetesPluginType.MACVLAN)));
         model = BinaryData.fromObject(model).toObject(AttachedNetworkConfiguration.class);
         Assertions.assertEquals("i", model.l2Networks().get(0).networkId());
         Assertions.assertEquals(KubernetesPluginType.SRIOV, model.l2Networks().get(0).pluginType());

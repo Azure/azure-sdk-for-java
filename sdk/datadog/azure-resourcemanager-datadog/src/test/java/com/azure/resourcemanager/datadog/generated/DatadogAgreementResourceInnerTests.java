@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatadogAgreementResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatadogAgreementResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"publisher\":\"u\",\"product\":\"nryrtihf\",\"plan\":\"ijbpzvgnwzsymgl\",\"licenseTextLink\":\"fcyzkohdbihanufh\",\"privacyPolicyLink\":\"bj\",\"retrieveDatetime\":\"2021-10-05T18:31:22Z\",\"signature\":\"ithxqhabifpi\",\"accepted\":false},\"id\":\"zb\",\"name\":\"scnpqxuhivy\",\"type\":\"n\"}")
-                .toObject(DatadogAgreementResourceInner.class);
+        DatadogAgreementResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"publisher\":\"u\",\"product\":\"nryrtihf\",\"plan\":\"ijbpzvgnwzsymgl\",\"licenseTextLink\":\"fcyzkohdbihanufh\",\"privacyPolicyLink\":\"bj\",\"retrieveDatetime\":\"2021-10-05T18:31:22Z\",\"signature\":\"ithxqhabifpi\",\"accepted\":false},\"id\":\"zb\",\"name\":\"scnpqxuhivy\",\"type\":\"n\"}")
+            .toObject(DatadogAgreementResourceInner.class);
         Assertions.assertEquals("u", model.properties().publisher());
         Assertions.assertEquals("nryrtihf", model.properties().product());
         Assertions.assertEquals("ijbpzvgnwzsymgl", model.properties().plan());
@@ -30,18 +28,15 @@ public final class DatadogAgreementResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatadogAgreementResourceInner model =
-            new DatadogAgreementResourceInner()
-                .withProperties(
-                    new DatadogAgreementProperties()
-                        .withPublisher("u")
-                        .withProduct("nryrtihf")
-                        .withPlan("ijbpzvgnwzsymgl")
-                        .withLicenseTextLink("fcyzkohdbihanufh")
-                        .withPrivacyPolicyLink("bj")
-                        .withRetrieveDatetime(OffsetDateTime.parse("2021-10-05T18:31:22Z"))
-                        .withSignature("ithxqhabifpi")
-                        .withAccepted(false));
+        DatadogAgreementResourceInner model
+            = new DatadogAgreementResourceInner().withProperties(new DatadogAgreementProperties().withPublisher("u")
+                .withProduct("nryrtihf")
+                .withPlan("ijbpzvgnwzsymgl")
+                .withLicenseTextLink("fcyzkohdbihanufh")
+                .withPrivacyPolicyLink("bj")
+                .withRetrieveDatetime(OffsetDateTime.parse("2021-10-05T18:31:22Z"))
+                .withSignature("ithxqhabifpi")
+                .withAccepted(false));
         model = BinaryData.fromObject(model).toObject(DatadogAgreementResourceInner.class);
         Assertions.assertEquals("u", model.properties().publisher());
         Assertions.assertEquals("nryrtihf", model.properties().product());

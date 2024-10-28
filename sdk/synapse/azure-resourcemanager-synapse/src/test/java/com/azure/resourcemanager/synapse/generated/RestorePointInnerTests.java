@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.fluent.models.RestorePointInner;
 public final class RestorePointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestorePointInner model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"bpybsrfbjf\",\"properties\":{\"restorePointType\":\"CONTINUOUS\",\"earliestRestoreDate\":\"2021-01-25T00:48:06Z\",\"restorePointCreationDate\":\"2021-06-01T18:34:35Z\",\"restorePointLabel\":\"pvjzbe\"},\"id\":\"ilzznfqqnvwp\",\"name\":\"qtaruoujmkcjhwq\",\"type\":\"tjrybnwjewgdr\"}")
-                .toObject(RestorePointInner.class);
+        RestorePointInner model = BinaryData.fromString(
+            "{\"location\":\"bpybsrfbjf\",\"properties\":{\"restorePointType\":\"CONTINUOUS\",\"earliestRestoreDate\":\"2021-01-25T00:48:06Z\",\"restorePointCreationDate\":\"2021-06-01T18:34:35Z\",\"restorePointLabel\":\"pvjzbe\"},\"id\":\"ilzznfqqnvwp\",\"name\":\"qtaruoujmkcjhwq\",\"type\":\"tjrybnwjewgdr\"}")
+            .toObject(RestorePointInner.class);
     }
 
     @org.junit.jupiter.api.Test

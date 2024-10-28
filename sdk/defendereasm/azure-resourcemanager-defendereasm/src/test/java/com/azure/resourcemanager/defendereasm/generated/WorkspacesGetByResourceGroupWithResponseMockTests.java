@@ -30,40 +30,28 @@ public final class WorkspacesGetByResourceGroupWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"dataPlaneEndpoint\":\"i\",\"provisioningState\":\"ProvisioningResources\"},\"location\":\"zrvqdr\",\"tags\":{\"oqfbowskanyk\":\"jybige\",\"nhzgpphrcgyn\":\"zlcuiywgqywgndrv\",\"fsxlzevgbmqjqa\":\"ocpecfvmmco\",\"pmivkwlzu\":\"c\"},\"id\":\"ccfwnfnbacfion\",\"name\":\"ebxetqgtzxdp\",\"type\":\"qbqqwxr\"}";
+        String responseStr
+            = "{\"properties\":{\"dataPlaneEndpoint\":\"i\",\"provisioningState\":\"ProvisioningResources\"},\"location\":\"zrvqdr\",\"tags\":{\"oqfbowskanyk\":\"jybige\",\"nhzgpphrcgyn\":\"zlcuiywgqywgndrv\",\"fsxlzevgbmqjqa\":\"ocpecfvmmco\",\"pmivkwlzu\":\"c\"},\"id\":\"ccfwnfnbacfion\",\"name\":\"ebxetqgtzxdp\",\"type\":\"qbqqwxr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        EasmManager manager =
-            EasmManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        EasmManager manager = EasmManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        WorkspaceResource response =
-            manager
-                .workspaces()
-                .getByResourceGroupWithResponse("ln", "xlefgugnxkrx", com.azure.core.util.Context.NONE)
-                .getValue();
+        WorkspaceResource response = manager.workspaces()
+            .getByResourceGroupWithResponse("ln", "xlefgugnxkrx", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("zrvqdr", response.location());
         Assertions.assertEquals("jybige", response.tags().get("oqfbowskanyk"));

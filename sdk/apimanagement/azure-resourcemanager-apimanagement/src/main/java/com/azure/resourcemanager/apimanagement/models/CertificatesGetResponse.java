@@ -20,12 +20,8 @@ public final class CertificatesGetResponse extends ResponseBase<CertificatesGetH
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public CertificatesGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        CertificateContractInner value,
-        CertificatesGetHeaders headers) {
+    public CertificatesGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        CertificateContractInner value, CertificatesGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

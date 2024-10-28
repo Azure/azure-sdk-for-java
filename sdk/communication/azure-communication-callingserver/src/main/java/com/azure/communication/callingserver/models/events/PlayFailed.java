@@ -25,6 +25,7 @@ public final class PlayFailed extends CallAutomationEventBase {
 
     private PlayFailed() {
     }
+
     /**
      * Get the operationContext property: Operation context.
      *
@@ -45,8 +46,7 @@ public final class PlayFailed extends CallAutomationEventBase {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return toJsonShared(jsonWriter.writeStartObject())
-            .writeStringField("operationContext", operationContext)
+        return toJsonShared(jsonWriter.writeStartObject()).writeStringField("operationContext", operationContext)
             .writeJsonField("resultInfo", resultInfo)
             .writeEndObject();
     }

@@ -66,8 +66,8 @@ public final class MitigateJobRequest {
      * @param serialNumberCustomerResolutionMap the serialNumberCustomerResolutionMap value to set.
      * @return the MitigateJobRequest object itself.
      */
-    public MitigateJobRequest withSerialNumberCustomerResolutionMap(
-        Map<String, CustomerResolutionCode> serialNumberCustomerResolutionMap) {
+    public MitigateJobRequest
+        withSerialNumberCustomerResolutionMap(Map<String, CustomerResolutionCode> serialNumberCustomerResolutionMap) {
         this.serialNumberCustomerResolutionMap = serialNumberCustomerResolutionMap;
         return this;
     }

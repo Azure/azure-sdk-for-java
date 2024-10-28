@@ -19,8 +19,8 @@ public final class UsersGetEntityTagResponse extends ResponseBase<UsersGetEntity
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public UsersGetEntityTagResponse(
-        HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, UsersGetEntityTagHeaders headers) {
+    public UsersGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
+        UsersGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

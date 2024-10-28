@@ -23,8 +23,8 @@ public interface VirtualMachineTemplates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return define the virtualMachineTemplate along with {@link Response}.
      */
-    Response<VirtualMachineTemplate> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualMachineTemplateName, Context context);
+    Response<VirtualMachineTemplate> getByResourceGroupWithResponse(String resourceGroupName,
+        String virtualMachineTemplateName, Context context);
 
     /**
      * Gets a virtual machine template.

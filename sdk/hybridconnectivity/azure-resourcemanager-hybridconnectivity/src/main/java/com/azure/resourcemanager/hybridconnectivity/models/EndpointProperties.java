@@ -89,9 +89,8 @@ public final class EndpointProperties {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model EndpointProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model EndpointProperties"));
         }
     }
 

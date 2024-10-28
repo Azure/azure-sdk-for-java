@@ -48,12 +48,15 @@ public final class PrivateEndpointsCreateOrUpdateWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        StreamAnalyticsManager manager = StreamAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        StreamAnalyticsManager manager = StreamAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpoint response
-            = manager.privateEndpoints().define("xulcdisdos").withExistingCluster("gukkjqnvbroy", "a")
+            = manager.privateEndpoints()
+                .define("xulcdisdos")
+                .withExistingCluster("gukkjqnvbroy", "a")
                 .withProperties(
                     new PrivateEndpointProperties()
                         .withManualPrivateLinkServiceConnections(Arrays.asList(
@@ -67,7 +70,9 @@ public final class PrivateEndpointsCreateOrUpdateWithResponseMockTests {
                             new PrivateLinkServiceConnection().withPrivateLinkServiceId("sr")
                                 .withGroupIds(Arrays.asList("kssjhoiftxfk"))
                                 .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState()))))
-                .withIfMatch("qzmiza").withIfNoneMatch("a").create();
+                .withIfMatch("qzmiza")
+                .withIfNoneMatch("a")
+                .create();
 
         Assertions.assertEquals("muoyxprimr",
             response.properties().manualPrivateLinkServiceConnections().get(0).privateLinkServiceId());

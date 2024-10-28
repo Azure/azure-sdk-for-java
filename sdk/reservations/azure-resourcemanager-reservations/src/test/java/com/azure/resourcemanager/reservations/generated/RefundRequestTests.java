@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RefundRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RefundRequest model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"sessionId\":\"c\",\"scope\":\"mdua\",\"reservationToReturn\":{\"reservationId\":\"xqpvfadmw\",\"quantity\":448234135},\"returnReason\":\"gvxp\"}}")
-                .toObject(RefundRequest.class);
+        RefundRequest model = BinaryData.fromString(
+            "{\"properties\":{\"sessionId\":\"c\",\"scope\":\"mdua\",\"reservationToReturn\":{\"reservationId\":\"xqpvfadmw\",\"quantity\":448234135},\"returnReason\":\"gvxp\"}}")
+            .toObject(RefundRequest.class);
         Assertions.assertEquals("c", model.properties().sessionId());
         Assertions.assertEquals("mdua", model.properties().scope());
         Assertions.assertEquals("xqpvfadmw", model.properties().reservationToReturn().reservationId());
@@ -27,15 +25,10 @@ public final class RefundRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RefundRequest model =
-            new RefundRequest()
-                .withProperties(
-                    new RefundRequestProperties()
-                        .withSessionId("c")
-                        .withScope("mdua")
-                        .withReservationToReturn(
-                            new ReservationToReturn().withReservationId("xqpvfadmw").withQuantity(448234135))
-                        .withReturnReason("gvxp"));
+        RefundRequest model = new RefundRequest().withProperties(new RefundRequestProperties().withSessionId("c")
+            .withScope("mdua")
+            .withReservationToReturn(new ReservationToReturn().withReservationId("xqpvfadmw").withQuantity(448234135))
+            .withReturnReason("gvxp"));
         model = BinaryData.fromObject(model).toObject(RefundRequest.class);
         Assertions.assertEquals("c", model.properties().sessionId());
         Assertions.assertEquals("mdua", model.properties().scope());

@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GenerateDetailedCostReportOperationResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenerateDetailedCostReportOperationResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"tjivfxzsjabib\",\"name\":\"stawfsdjpvkv\",\"type\":\"jxbkzbzkdvn\",\"properties\":{\"expiryTime\":\"2021-03-28T13:01:06Z\",\"validTill\":\"2021-09-14T12:39:28Z\",\"downloadUrl\":\"r\"}}")
-                .toObject(GenerateDetailedCostReportOperationResultInner.class);
+        GenerateDetailedCostReportOperationResultInner model = BinaryData.fromString(
+            "{\"id\":\"tjivfxzsjabib\",\"name\":\"stawfsdjpvkv\",\"type\":\"jxbkzbzkdvn\",\"properties\":{\"expiryTime\":\"2021-03-28T13:01:06Z\",\"validTill\":\"2021-09-14T12:39:28Z\",\"downloadUrl\":\"r\"}}")
+            .toObject(GenerateDetailedCostReportOperationResultInner.class);
         Assertions.assertEquals("tjivfxzsjabib", model.id());
         Assertions.assertEquals("stawfsdjpvkv", model.name());
         Assertions.assertEquals("jxbkzbzkdvn", model.type());
@@ -26,9 +24,8 @@ public final class GenerateDetailedCostReportOperationResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenerateDetailedCostReportOperationResultInner model =
-            new GenerateDetailedCostReportOperationResultInner()
-                .withId("tjivfxzsjabib")
+        GenerateDetailedCostReportOperationResultInner model
+            = new GenerateDetailedCostReportOperationResultInner().withId("tjivfxzsjabib")
                 .withName("stawfsdjpvkv")
                 .withType("jxbkzbzkdvn")
                 .withValidTill(OffsetDateTime.parse("2021-09-14T12:39:28Z"))

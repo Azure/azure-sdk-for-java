@@ -146,16 +146,12 @@ public final class ManagedPrivateEndpointProperties {
      */
     public void validate() {
         if (privateLinkResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property privateLinkResourceId in model ManagedPrivateEndpointProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property privateLinkResourceId in model ManagedPrivateEndpointProperties"));
         }
         if (groupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property groupId in model ManagedPrivateEndpointProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property groupId in model ManagedPrivateEndpointProperties"));
         }
     }
 

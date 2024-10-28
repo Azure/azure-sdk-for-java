@@ -15,43 +15,24 @@ import org.junit.jupiter.api.Assertions;
 public final class EventSourceListResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventSourceListResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"kind\":\"EventSourceResource\",\"location\":\"rzayv\",\"tags\":{\"ln\":\"gvdfgiotkftutq\",\"qmi\":\"xlefgugnxkrx\"},\"id\":\"tthzrvqd\",\"name\":\"abhjybi\",\"type\":\"ehoqfbowskan\"},{\"kind\":\"EventSourceResource\",\"location\":\"ktzlcuiywg\",\"tags\":{\"gpphrcgyn\":\"gndrvynh\",\"fsxlzevgbmqjqa\":\"ocpecfvmmco\",\"pmivkwlzu\":\"c\",\"ebxetqgtzxdp\":\"ccfwnfnbacfion\"},\"id\":\"qbqqwxr\",\"name\":\"feallnwsu\",\"type\":\"isnjampmngnz\"},{\"kind\":\"EventSourceResource\",\"location\":\"c\",\"tags\":{\"cbonqvpk\":\"wooc\",\"f\":\"lrxnjeaseiphe\",\"dlwtgrhpdj\":\"okeyyienj\"},\"id\":\"jumasx\",\"name\":\"zj\",\"type\":\"qyeg\"},{\"kind\":\"EventSourceResource\",\"location\":\"alhbx\",\"tags\":{\"zvdudgwdslfhotwm\":\"jj\"},\"id\":\"ynpwlbj\",\"name\":\"pgacftadehxnlty\",\"type\":\"sop\"}]}")
-                .toObject(EventSourceListResponseInner.class);
+        EventSourceListResponseInner model = BinaryData.fromString(
+            "{\"value\":[{\"kind\":\"EventSourceResource\",\"location\":\"rzayv\",\"tags\":{\"ln\":\"gvdfgiotkftutq\",\"qmi\":\"xlefgugnxkrx\"},\"id\":\"tthzrvqd\",\"name\":\"abhjybi\",\"type\":\"ehoqfbowskan\"},{\"kind\":\"EventSourceResource\",\"location\":\"ktzlcuiywg\",\"tags\":{\"gpphrcgyn\":\"gndrvynh\",\"fsxlzevgbmqjqa\":\"ocpecfvmmco\",\"pmivkwlzu\":\"c\",\"ebxetqgtzxdp\":\"ccfwnfnbacfion\"},\"id\":\"qbqqwxr\",\"name\":\"feallnwsu\",\"type\":\"isnjampmngnz\"},{\"kind\":\"EventSourceResource\",\"location\":\"c\",\"tags\":{\"cbonqvpk\":\"wooc\",\"f\":\"lrxnjeaseiphe\",\"dlwtgrhpdj\":\"okeyyienj\"},\"id\":\"jumasx\",\"name\":\"zj\",\"type\":\"qyeg\"},{\"kind\":\"EventSourceResource\",\"location\":\"alhbx\",\"tags\":{\"zvdudgwdslfhotwm\":\"jj\"},\"id\":\"ynpwlbj\",\"name\":\"pgacftadehxnlty\",\"type\":\"sop\"}]}")
+            .toObject(EventSourceListResponseInner.class);
         Assertions.assertEquals("rzayv", model.value().get(0).location());
         Assertions.assertEquals("gvdfgiotkftutq", model.value().get(0).tags().get("ln"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventSourceListResponseInner model =
-            new EventSourceListResponseInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new EventSourceResourceInner()
-                                .withLocation("rzayv")
-                                .withTags(mapOf("ln", "gvdfgiotkftutq", "qmi", "xlefgugnxkrx")),
-                            new EventSourceResourceInner()
-                                .withLocation("ktzlcuiywg")
-                                .withTags(
-                                    mapOf(
-                                        "gpphrcgyn",
-                                        "gndrvynh",
-                                        "fsxlzevgbmqjqa",
-                                        "ocpecfvmmco",
-                                        "pmivkwlzu",
-                                        "c",
-                                        "ebxetqgtzxdp",
-                                        "ccfwnfnbacfion")),
-                            new EventSourceResourceInner()
-                                .withLocation("c")
-                                .withTags(mapOf("cbonqvpk", "wooc", "f", "lrxnjeaseiphe", "dlwtgrhpdj", "okeyyienj")),
-                            new EventSourceResourceInner()
-                                .withLocation("alhbx")
-                                .withTags(mapOf("zvdudgwdslfhotwm", "jj"))));
+        EventSourceListResponseInner model = new EventSourceListResponseInner().withValue(Arrays.asList(
+            new EventSourceResourceInner().withLocation("rzayv")
+                .withTags(mapOf("ln", "gvdfgiotkftutq", "qmi", "xlefgugnxkrx")),
+            new EventSourceResourceInner().withLocation("ktzlcuiywg")
+                .withTags(mapOf("gpphrcgyn", "gndrvynh", "fsxlzevgbmqjqa", "ocpecfvmmco", "pmivkwlzu", "c",
+                    "ebxetqgtzxdp", "ccfwnfnbacfion")),
+            new EventSourceResourceInner().withLocation("c")
+                .withTags(mapOf("cbonqvpk", "wooc", "f", "lrxnjeaseiphe", "dlwtgrhpdj", "okeyyienj")),
+            new EventSourceResourceInner().withLocation("alhbx").withTags(mapOf("zvdudgwdslfhotwm", "jj"))));
         model = BinaryData.fromObject(model).toObject(EventSourceListResponseInner.class);
         Assertions.assertEquals("rzayv", model.value().get(0).location());
         Assertions.assertEquals("gvdfgiotkftutq", model.value().get(0).tags().get("ln"));

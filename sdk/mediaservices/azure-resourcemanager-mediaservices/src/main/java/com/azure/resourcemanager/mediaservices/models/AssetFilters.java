@@ -56,8 +56,8 @@ public interface AssetFilters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an Asset Filter associated with the specified Asset along with {@link Response}.
      */
-    Response<AssetFilter> getWithResponse(
-        String resourceGroupName, String accountName, String assetName, String filterName, Context context);
+    Response<AssetFilter> getWithResponse(String resourceGroupName, String accountName, String assetName,
+        String filterName, Context context);
 
     /**
      * Get an Asset Filter.
@@ -90,8 +90,8 @@ public interface AssetFilters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String assetName, String filterName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String assetName, String filterName,
+        Context context);
 
     /**
      * Delete an Asset Filter.

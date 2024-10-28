@@ -64,8 +64,8 @@ public interface Dimensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing dimensions as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Dimension> list(
-        String scope, String filter, String expand, String skiptoken, Integer top, Context context);
+    PagedIterable<Dimension> list(String scope, String filter, String expand, String skiptoken, Integer top,
+        Context context);
 
     /**
      * Lists the dimensions by the external cloud provider type.
@@ -80,8 +80,8 @@ public interface Dimensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing dimensions as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Dimension> byExternalCloudProviderType(
-        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId);
+    PagedIterable<Dimension> byExternalCloudProviderType(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId);
 
     /**
      * Lists the dimensions by the external cloud provider type.
@@ -105,12 +105,6 @@ public interface Dimensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing dimensions as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Dimension> byExternalCloudProviderType(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        String filter,
-        String expand,
-        String skiptoken,
-        Integer top,
-        Context context);
+    PagedIterable<Dimension> byExternalCloudProviderType(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId, String filter, String expand, String skiptoken, Integer top, Context context);
 }

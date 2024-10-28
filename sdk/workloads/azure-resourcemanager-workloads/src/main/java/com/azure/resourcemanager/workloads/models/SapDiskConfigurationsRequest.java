@@ -178,40 +178,28 @@ public final class SapDiskConfigurationsRequest {
      */
     public void validate() {
         if (appLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property appLocation in model SapDiskConfigurationsRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property appLocation in model SapDiskConfigurationsRequest"));
         }
         if (environment() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property environment in model SapDiskConfigurationsRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property environment in model SapDiskConfigurationsRequest"));
         }
         if (sapProduct() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sapProduct in model SapDiskConfigurationsRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sapProduct in model SapDiskConfigurationsRequest"));
         }
         if (databaseType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property databaseType in model SapDiskConfigurationsRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property databaseType in model SapDiskConfigurationsRequest"));
         }
         if (deploymentType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deploymentType in model SapDiskConfigurationsRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property deploymentType in model SapDiskConfigurationsRequest"));
         }
         if (dbVmSku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dbVmSku in model SapDiskConfigurationsRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property dbVmSku in model SapDiskConfigurationsRequest"));
         }
     }
 

@@ -39,6 +39,6 @@ public interface UserIdentitiesClient {
      * @return list of Users Identity list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UserIdentityContractInner> list(
-        String resourceGroupName, String serviceName, String userId, Context context);
+    PagedIterable<UserIdentityContractInner> list(String resourceGroupName, String serviceName, String userId,
+        Context context);
 }

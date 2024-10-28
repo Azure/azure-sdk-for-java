@@ -55,8 +55,8 @@ public interface SignalRCustomDomainsClient {
      * @return a custom domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomDomainInner> getWithResponse(
-        String resourceGroupName, String resourceName, String name, Context context);
+    Response<CustomDomainInner> getWithResponse(String resourceGroupName, String resourceName, String name,
+        Context context);
 
     /**
      * Get a custom domain.
@@ -85,8 +85,8 @@ public interface SignalRCustomDomainsClient {
      * @return the {@link SyncPoller} for polling of a custom domain.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, String name, CustomDomainInner parameters);
+    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, String name, CustomDomainInner parameters);
 
     /**
      * Create or update a custom domain.
@@ -102,8 +102,8 @@ public interface SignalRCustomDomainsClient {
      * @return the {@link SyncPoller} for polling of a custom domain.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, String name, CustomDomainInner parameters, Context context);
+    SyncPoller<PollResult<CustomDomainInner>, CustomDomainInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, String name, CustomDomainInner parameters, Context context);
 
     /**
      * Create or update a custom domain.
@@ -118,8 +118,8 @@ public interface SignalRCustomDomainsClient {
      * @return a custom domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainInner createOrUpdate(
-        String resourceGroupName, String resourceName, String name, CustomDomainInner parameters);
+    CustomDomainInner createOrUpdate(String resourceGroupName, String resourceName, String name,
+        CustomDomainInner parameters);
 
     /**
      * Create or update a custom domain.
@@ -135,8 +135,8 @@ public interface SignalRCustomDomainsClient {
      * @return a custom domain.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainInner createOrUpdate(
-        String resourceGroupName, String resourceName, String name, CustomDomainInner parameters, Context context);
+    CustomDomainInner createOrUpdate(String resourceGroupName, String resourceName, String name,
+        CustomDomainInner parameters, Context context);
 
     /**
      * Delete a custom domain.
@@ -165,8 +165,8 @@ public interface SignalRCustomDomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, String name, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String name,
+        Context context);
 
     /**
      * Delete a custom domain.

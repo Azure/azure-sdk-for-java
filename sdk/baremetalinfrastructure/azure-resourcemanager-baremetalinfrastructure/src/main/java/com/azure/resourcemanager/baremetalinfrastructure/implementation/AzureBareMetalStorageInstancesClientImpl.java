@@ -49,12 +49,8 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      * @param client the instance of the service client containing this operation class.
      */
     AzureBareMetalStorageInstancesClientImpl(BareMetalInfrastructureClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    AzureBareMetalStorageInstancesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(AzureBareMetalStorageInstancesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,107 +61,80 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
     @Host("{$host}")
     @ServiceInterface(name = "BareMetalInfrastruct")
     public interface AzureBareMetalStorageInstancesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.BareMetalInfrastructure/bareMetalStorageInstances")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureBareMetalStorageInstancesListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AzureBareMetalStorageInstancesListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BareMetalInfrastructure/bareMetalStorageInstances")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BareMetalInfrastructure/bareMetalStorageInstances")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AzureBareMetalStorageInstancesListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BareMetalInfrastructure/bareMetalStorageInstances/{azureBareMetalStorageInstanceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BareMetalInfrastructure/bareMetalStorageInstances/{azureBareMetalStorageInstanceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureBareMetalStorageInstanceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<AzureBareMetalStorageInstanceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureBareMetalStorageInstanceName") String azureBareMetalStorageInstanceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BareMetalInfrastructure/bareMetalStorageInstances/{azureBareMetalStorageInstanceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BareMetalInfrastructure/bareMetalStorageInstances/{azureBareMetalStorageInstanceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureBareMetalStorageInstanceInner>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<AzureBareMetalStorageInstanceInner>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureBareMetalStorageInstanceName") String azureBareMetalStorageInstanceName,
             @BodyParam("application/json") AzureBareMetalStorageInstanceInner requestBodyParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BareMetalInfrastructure/bareMetalStorageInstances/{azureBareMetalStorageInstanceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BareMetalInfrastructure/bareMetalStorageInstances/{azureBareMetalStorageInstanceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureBareMetalStorageInstanceInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<AzureBareMetalStorageInstanceInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("azureBareMetalStorageInstanceName") String azureBareMetalStorageInstanceName,
+            @BodyParam("application/json") Tags tagsParameter, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BareMetalInfrastructure/bareMetalStorageInstances/{azureBareMetalStorageInstanceName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("azureBareMetalStorageInstanceName") String azureBareMetalStorageInstanceName,
-            @BodyParam("application/json") Tags tagsParameter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BareMetalInfrastructure/bareMetalStorageInstances/{azureBareMetalStorageInstanceName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("azureBareMetalStorageInstanceName") String azureBareMetalStorageInstanceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AzureBareMetalStorageInstancesListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AzureBareMetalStorageInstancesListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -182,37 +151,19 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureBareMetalStorageInstanceInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<AzureBareMetalStorageInstanceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<AzureBareMetalStorageInstanceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -232,35 +183,20 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureBareMetalStorageInstanceInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -276,8 +212,8 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureBareMetalStorageInstanceInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -295,8 +231,8 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureBareMetalStorageInstanceInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -347,19 +283,15 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureBareMetalStorageInstanceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<AzureBareMetalStorageInstanceInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -367,25 +299,10 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<AzureBareMetalStorageInstanceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+            .<PagedResponse<AzureBareMetalStorageInstanceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -404,19 +321,15 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureBareMetalStorageInstanceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<AzureBareMetalStorageInstanceInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -425,22 +338,10 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -458,8 +359,7 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AzureBareMetalStorageInstanceInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -478,10 +378,9 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AzureBareMetalStorageInstanceInner> listByResourceGroupAsync(
-        String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+    private PagedFlux<AzureBareMetalStorageInstanceInner> listByResourceGroupAsync(String resourceGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -518,8 +417,8 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AzureBareMetalStorageInstanceInner> listByResourceGroup(
-        String resourceGroupName, Context context) {
+    public PagedIterable<AzureBareMetalStorageInstanceInner> listByResourceGroup(String resourceGroupName,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
     }
 
@@ -538,43 +437,28 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureBareMetalStorageInstanceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String azureBareMetalStorageInstanceName) {
+    private Mono<Response<AzureBareMetalStorageInstanceInner>>
+        getByResourceGroupWithResponseAsync(String resourceGroupName, String azureBareMetalStorageInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureBareMetalStorageInstanceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureBareMetalStorageInstanceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter azureBareMetalStorageInstanceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            azureBareMetalStorageInstanceName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, azureBareMetalStorageInstanceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -597,38 +481,25 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
     private Mono<Response<AzureBareMetalStorageInstanceInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String azureBareMetalStorageInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureBareMetalStorageInstanceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureBareMetalStorageInstanceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter azureBareMetalStorageInstanceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                azureBareMetalStorageInstanceName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, azureBareMetalStorageInstanceName, accept, context);
     }
 
     /**
@@ -646,8 +517,8 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureBareMetalStorageInstanceInner> getByResourceGroupAsync(
-        String resourceGroupName, String azureBareMetalStorageInstanceName) {
+    private Mono<AzureBareMetalStorageInstanceInner> getByResourceGroupAsync(String resourceGroupName,
+        String azureBareMetalStorageInstanceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, azureBareMetalStorageInstanceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -668,8 +539,8 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AzureBareMetalStorageInstanceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Context context) {
+    public Response<AzureBareMetalStorageInstanceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, azureBareMetalStorageInstanceName, context)
             .block();
     }
@@ -688,8 +559,8 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      * @return an Azure Bare Metal Storage instance for the specified subscription, resource group, and instance name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureBareMetalStorageInstanceInner getByResourceGroup(
-        String resourceGroupName, String azureBareMetalStorageInstanceName) {
+    public AzureBareMetalStorageInstanceInner getByResourceGroup(String resourceGroupName,
+        String azureBareMetalStorageInstanceName) {
         return getByResourceGroupWithResponse(resourceGroupName, azureBareMetalStorageInstanceName, Context.NONE)
             .getValue();
     }
@@ -708,31 +579,23 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureBareMetalStorageInstanceInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String azureBareMetalStorageInstanceName,
-        AzureBareMetalStorageInstanceInner requestBodyParameters) {
+    private Mono<Response<AzureBareMetalStorageInstanceInner>> createWithResponseAsync(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, AzureBareMetalStorageInstanceInner requestBodyParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureBareMetalStorageInstanceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureBareMetalStorageInstanceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter azureBareMetalStorageInstanceName is required and cannot be null."));
         }
         if (requestBodyParameters == null) {
             return Mono
@@ -742,18 +605,9 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            azureBareMetalStorageInstanceName,
-                            requestBodyParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, azureBareMetalStorageInstanceName,
+                requestBodyParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -772,32 +626,24 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureBareMetalStorageInstanceInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String azureBareMetalStorageInstanceName,
-        AzureBareMetalStorageInstanceInner requestBodyParameters,
+    private Mono<Response<AzureBareMetalStorageInstanceInner>> createWithResponseAsync(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, AzureBareMetalStorageInstanceInner requestBodyParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureBareMetalStorageInstanceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureBareMetalStorageInstanceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter azureBareMetalStorageInstanceName is required and cannot be null."));
         }
         if (requestBodyParameters == null) {
             return Mono
@@ -807,16 +653,8 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                azureBareMetalStorageInstanceName,
-                requestBodyParameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, azureBareMetalStorageInstanceName, requestBodyParameters, accept, context);
     }
 
     /**
@@ -833,10 +671,8 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureBareMetalStorageInstanceInner> createAsync(
-        String resourceGroupName,
-        String azureBareMetalStorageInstanceName,
-        AzureBareMetalStorageInstanceInner requestBodyParameters) {
+    private Mono<AzureBareMetalStorageInstanceInner> createAsync(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, AzureBareMetalStorageInstanceInner requestBodyParameters) {
         return createWithResponseAsync(resourceGroupName, azureBareMetalStorageInstanceName, requestBodyParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -856,14 +692,11 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AzureBareMetalStorageInstanceInner> createWithResponse(
-        String resourceGroupName,
-        String azureBareMetalStorageInstanceName,
-        AzureBareMetalStorageInstanceInner requestBodyParameters,
+    public Response<AzureBareMetalStorageInstanceInner> createWithResponse(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, AzureBareMetalStorageInstanceInner requestBodyParameters,
         Context context) {
-        return createWithResponseAsync(
-                resourceGroupName, azureBareMetalStorageInstanceName, requestBodyParameters, context)
-            .block();
+        return createWithResponseAsync(resourceGroupName, azureBareMetalStorageInstanceName, requestBodyParameters,
+            context).block();
     }
 
     /**
@@ -879,13 +712,10 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      * @return azureBareMetalStorageInstance info on Azure (ARM properties and AzureBareMetalStorage properties).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureBareMetalStorageInstanceInner create(
-        String resourceGroupName,
-        String azureBareMetalStorageInstanceName,
+    public AzureBareMetalStorageInstanceInner create(String resourceGroupName, String azureBareMetalStorageInstanceName,
         AzureBareMetalStorageInstanceInner requestBodyParameters) {
-        return createWithResponse(
-                resourceGroupName, azureBareMetalStorageInstanceName, requestBodyParameters, Context.NONE)
-            .getValue();
+        return createWithResponse(resourceGroupName, azureBareMetalStorageInstanceName, requestBodyParameters,
+            Context.NONE).getValue();
     }
 
     /**
@@ -905,29 +735,23 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureBareMetalStorageInstanceInner>> updateWithResponseAsync(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Tags tagsParameter) {
+    private Mono<Response<AzureBareMetalStorageInstanceInner>> updateWithResponseAsync(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, Tags tagsParameter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureBareMetalStorageInstanceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureBareMetalStorageInstanceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter azureBareMetalStorageInstanceName is required and cannot be null."));
         }
         if (tagsParameter == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagsParameter is required and cannot be null."));
@@ -936,18 +760,9 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            azureBareMetalStorageInstanceName,
-                            tagsParameter,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, azureBareMetalStorageInstanceName, tagsParameter,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -969,29 +784,23 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureBareMetalStorageInstanceInner>> updateWithResponseAsync(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Tags tagsParameter, Context context) {
+    private Mono<Response<AzureBareMetalStorageInstanceInner>> updateWithResponseAsync(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, Tags tagsParameter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureBareMetalStorageInstanceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureBareMetalStorageInstanceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter azureBareMetalStorageInstanceName is required and cannot be null."));
         }
         if (tagsParameter == null) {
             return Mono.error(new IllegalArgumentException("Parameter tagsParameter is required and cannot be null."));
@@ -1000,16 +809,8 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                azureBareMetalStorageInstanceName,
-                tagsParameter,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, azureBareMetalStorageInstanceName, tagsParameter, accept, context);
     }
 
     /**
@@ -1029,8 +830,8 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureBareMetalStorageInstanceInner> updateAsync(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Tags tagsParameter) {
+    private Mono<AzureBareMetalStorageInstanceInner> updateAsync(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, Tags tagsParameter) {
         return updateWithResponseAsync(resourceGroupName, azureBareMetalStorageInstanceName, tagsParameter)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1053,8 +854,8 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AzureBareMetalStorageInstanceInner> updateWithResponse(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Tags tagsParameter, Context context) {
+    public Response<AzureBareMetalStorageInstanceInner> updateWithResponse(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, Tags tagsParameter, Context context) {
         return updateWithResponseAsync(resourceGroupName, azureBareMetalStorageInstanceName, tagsParameter, context)
             .block();
     }
@@ -1075,8 +876,8 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      * @return azureBareMetalStorageInstance info on Azure (ARM properties and AzureBareMetalStorage properties).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureBareMetalStorageInstanceInner update(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Tags tagsParameter) {
+    public AzureBareMetalStorageInstanceInner update(String resourceGroupName, String azureBareMetalStorageInstanceName,
+        Tags tagsParameter) {
         return updateWithResponse(resourceGroupName, azureBareMetalStorageInstanceName, tagsParameter, Context.NONE)
             .getValue();
     }
@@ -1093,43 +894,28 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String azureBareMetalStorageInstanceName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName,
+        String azureBareMetalStorageInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureBareMetalStorageInstanceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureBareMetalStorageInstanceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter azureBareMetalStorageInstanceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            azureBareMetalStorageInstanceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, azureBareMetalStorageInstanceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1146,41 +932,28 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (azureBareMetalStorageInstanceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter azureBareMetalStorageInstanceName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter azureBareMetalStorageInstanceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                azureBareMetalStorageInstanceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            azureBareMetalStorageInstanceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1213,8 +986,8 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String azureBareMetalStorageInstanceName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, azureBareMetalStorageInstanceName, context).block();
     }
 
@@ -1245,30 +1018,21 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureBareMetalStorageInstanceInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<AzureBareMetalStorageInstanceInner>>
+        listBySubscriptionNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AzureBareMetalStorageInstanceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AzureBareMetalStorageInstanceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1285,30 +1049,20 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureBareMetalStorageInstanceInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AzureBareMetalStorageInstanceInner>>
+        listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1323,30 +1077,21 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureBareMetalStorageInstanceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<AzureBareMetalStorageInstanceInner>>
+        listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AzureBareMetalStorageInstanceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AzureBareMetalStorageInstanceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1363,29 +1108,19 @@ public final class AzureBareMetalStorageInstancesClientImpl implements AzureBare
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureBareMetalStorageInstanceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AzureBareMetalStorageInstanceInner>>
+        listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

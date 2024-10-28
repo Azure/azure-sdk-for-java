@@ -95,11 +95,8 @@ public interface IssueAttachmentContract {
          * The stage of the IssueAttachmentContract definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTitle,
-                DefinitionStages.WithContentFormat,
-                DefinitionStages.WithContent,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithTitle, DefinitionStages.WithContentFormat,
+            DefinitionStages.WithContent, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -173,11 +170,8 @@ public interface IssueAttachmentContract {
     IssueAttachmentContract.Update update();
 
     /** The template for IssueAttachmentContract update. */
-    interface Update
-        extends UpdateStages.WithTitle,
-            UpdateStages.WithContentFormat,
-            UpdateStages.WithContent,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithTitle, UpdateStages.WithContentFormat, UpdateStages.WithContent,
+        UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

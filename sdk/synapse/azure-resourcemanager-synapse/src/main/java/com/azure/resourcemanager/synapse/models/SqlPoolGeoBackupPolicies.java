@@ -39,8 +39,8 @@ public interface SqlPoolGeoBackupPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of SQL pool geo backup policies as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<GeoBackupPolicy> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<GeoBackupPolicy> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Get a SQL pool geo backup policy
@@ -57,12 +57,8 @@ public interface SqlPoolGeoBackupPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified SQL pool geo backup policy along with {@link Response}.
      */
-    Response<GeoBackupPolicy> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        GeoBackupPolicyName geoBackupPolicyName,
-        Context context);
+    Response<GeoBackupPolicy> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        GeoBackupPolicyName geoBackupPolicyName, Context context);
 
     /**
      * Get a SQL pool geo backup policy
@@ -78,8 +74,8 @@ public interface SqlPoolGeoBackupPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified SQL pool geo backup policy.
      */
-    GeoBackupPolicy get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, GeoBackupPolicyName geoBackupPolicyName);
+    GeoBackupPolicy get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        GeoBackupPolicyName geoBackupPolicyName);
 
     /**
      * Get a SQL pool geo backup policy

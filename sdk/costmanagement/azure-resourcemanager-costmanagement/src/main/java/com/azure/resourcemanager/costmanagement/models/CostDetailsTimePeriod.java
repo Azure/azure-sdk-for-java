@@ -77,14 +77,12 @@ public final class CostDetailsTimePeriod {
      */
     public void validate() {
         if (start() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property start in model CostDetailsTimePeriod"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property start in model CostDetailsTimePeriod"));
         }
         if (end() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property end in model CostDetailsTimePeriod"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property end in model CostDetailsTimePeriod"));
         }
     }
 

@@ -52,37 +52,25 @@ public final class CostsClientImpl implements CostsClient {
     @Host("{$host}")
     @ServiceInterface(name = "DevTestLabsClientCos")
     public interface CostsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/costs/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/costs/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LabCostInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<LabCostInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("name") String name,
-            @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("name") String name, @QueryParam("$expand") String expand,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/costs/{name}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevTestLab/labs/{labName}/costs/{name}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LabCostInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<LabCostInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("labName") String labName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") LabCostInner labCost,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("labName") String labName,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") LabCostInner labCost, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -98,19 +86,15 @@ public final class CostsClientImpl implements CostsClient {
      * @return cost along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LabCostInner>> getWithResponseAsync(
-        String resourceGroupName, String labName, String name, String expand) {
+    private Mono<Response<LabCostInner>> getWithResponseAsync(String resourceGroupName, String labName, String name,
+        String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -124,19 +108,8 @@ public final class CostsClientImpl implements CostsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            name,
-                            expand,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, name, expand, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -154,19 +127,15 @@ public final class CostsClientImpl implements CostsClient {
      * @return cost along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LabCostInner>> getWithResponseAsync(
-        String resourceGroupName, String labName, String name, String expand, Context context) {
+    private Mono<Response<LabCostInner>> getWithResponseAsync(String resourceGroupName, String labName, String name,
+        String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -180,17 +149,8 @@ public final class CostsClientImpl implements CostsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                name,
-                expand,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, labName, name,
+            expand, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -225,8 +185,8 @@ public final class CostsClientImpl implements CostsClient {
      * @return cost along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LabCostInner> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context) {
+    public Response<LabCostInner> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, labName, name, expand, context).block();
     }
 
@@ -260,19 +220,15 @@ public final class CostsClientImpl implements CostsClient {
      * @return a cost item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LabCostInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String labName, String name, LabCostInner labCost) {
+    private Mono<Response<LabCostInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String labName,
+        String name, LabCostInner labCost) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -291,19 +247,8 @@ public final class CostsClientImpl implements CostsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            labName,
-                            name,
-                            this.client.getApiVersion(),
-                            labCost,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, labName, name, this.client.getApiVersion(), labCost, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -321,19 +266,15 @@ public final class CostsClientImpl implements CostsClient {
      * @return a cost item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LabCostInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String labName, String name, LabCostInner labCost, Context context) {
+    private Mono<Response<LabCostInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String labName,
+        String name, LabCostInner labCost, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -352,17 +293,8 @@ public final class CostsClientImpl implements CostsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                labName,
-                name,
-                this.client.getApiVersion(),
-                labCost,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            labName, name, this.client.getApiVersion(), labCost, accept, context);
     }
 
     /**
@@ -378,8 +310,8 @@ public final class CostsClientImpl implements CostsClient {
      * @return a cost item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LabCostInner> createOrUpdateAsync(
-        String resourceGroupName, String labName, String name, LabCostInner labCost) {
+    private Mono<LabCostInner> createOrUpdateAsync(String resourceGroupName, String labName, String name,
+        LabCostInner labCost) {
         return createOrUpdateWithResponseAsync(resourceGroupName, labName, name, labCost)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -398,8 +330,8 @@ public final class CostsClientImpl implements CostsClient {
      * @return a cost item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LabCostInner> createOrUpdateWithResponse(
-        String resourceGroupName, String labName, String name, LabCostInner labCost, Context context) {
+    public Response<LabCostInner> createOrUpdateWithResponse(String resourceGroupName, String labName, String name,
+        LabCostInner labCost, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, labName, name, labCost, context).block();
     }
 

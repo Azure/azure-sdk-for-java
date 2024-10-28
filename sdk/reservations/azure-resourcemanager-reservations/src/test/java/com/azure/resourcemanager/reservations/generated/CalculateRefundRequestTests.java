@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CalculateRefundRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CalculateRefundRequest model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"pabgyeps\",\"properties\":{\"scope\":\"azqugxywpmueefj\",\"reservationToReturn\":{\"reservationId\":\"qkqujidsu\",\"quantity\":168254793}}}")
-                .toObject(CalculateRefundRequest.class);
+        CalculateRefundRequest model = BinaryData.fromString(
+            "{\"id\":\"pabgyeps\",\"properties\":{\"scope\":\"azqugxywpmueefj\",\"reservationToReturn\":{\"reservationId\":\"qkqujidsu\",\"quantity\":168254793}}}")
+            .toObject(CalculateRefundRequest.class);
         Assertions.assertEquals("pabgyeps", model.id());
         Assertions.assertEquals("azqugxywpmueefj", model.properties().scope());
         Assertions.assertEquals("qkqujidsu", model.properties().reservationToReturn().reservationId());
@@ -26,14 +24,10 @@ public final class CalculateRefundRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CalculateRefundRequest model =
-            new CalculateRefundRequest()
-                .withId("pabgyeps")
-                .withProperties(
-                    new CalculateRefundRequestProperties()
-                        .withScope("azqugxywpmueefj")
-                        .withReservationToReturn(
-                            new ReservationToReturn().withReservationId("qkqujidsu").withQuantity(168254793)));
+        CalculateRefundRequest model = new CalculateRefundRequest().withId("pabgyeps")
+            .withProperties(new CalculateRefundRequestProperties().withScope("azqugxywpmueefj")
+                .withReservationToReturn(
+                    new ReservationToReturn().withReservationId("qkqujidsu").withQuantity(168254793)));
         model = BinaryData.fromObject(model).toObject(CalculateRefundRequest.class);
         Assertions.assertEquals("pabgyeps", model.id());
         Assertions.assertEquals("azqugxywpmueefj", model.properties().scope());

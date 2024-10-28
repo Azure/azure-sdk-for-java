@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class JitApproverDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JitApproverDefinition model =
-            BinaryData
-                .fromString("{\"id\":\"wclxxwrl\",\"type\":\"group\",\"displayName\":\"skcqvkocrcjd\"}")
+        JitApproverDefinition model
+            = BinaryData.fromString("{\"id\":\"wclxxwrl\",\"type\":\"group\",\"displayName\":\"skcqvkocrcjd\"}")
                 .toObject(JitApproverDefinition.class);
         Assertions.assertEquals("wclxxwrl", model.id());
         Assertions.assertEquals(JitApproverType.GROUP, model.type());
@@ -23,11 +22,9 @@ public final class JitApproverDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JitApproverDefinition model =
-            new JitApproverDefinition()
-                .withId("wclxxwrl")
-                .withType(JitApproverType.GROUP)
-                .withDisplayName("skcqvkocrcjd");
+        JitApproverDefinition model = new JitApproverDefinition().withId("wclxxwrl")
+            .withType(JitApproverType.GROUP)
+            .withDisplayName("skcqvkocrcjd");
         model = BinaryData.fromObject(model).toObject(JitApproverDefinition.class);
         Assertions.assertEquals("wclxxwrl", model.id());
         Assertions.assertEquals(JitApproverType.GROUP, model.type());

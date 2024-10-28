@@ -13,8 +13,7 @@ public final class IntegrationRuntimeStopOperationStatusImpl implements Integrat
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    IntegrationRuntimeStopOperationStatusImpl(
-        IntegrationRuntimeStopOperationStatusInner innerObject,
+    IntegrationRuntimeStopOperationStatusImpl(IntegrationRuntimeStopOperationStatusInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -115,12 +115,8 @@ public interface StorageInsight {
          * The stage of the StorageInsight definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithEtag,
-                DefinitionStages.WithContainers,
-                DefinitionStages.WithTables,
-                DefinitionStages.WithStorageAccount {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithEtag,
+            DefinitionStages.WithContainers, DefinitionStages.WithTables, DefinitionStages.WithStorageAccount {
             /**
              * Executes the create request.
              *
@@ -201,12 +197,8 @@ public interface StorageInsight {
     StorageInsight.Update update();
 
     /** The template for StorageInsight update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithEtag,
-            UpdateStages.WithContainers,
-            UpdateStages.WithTables,
-            UpdateStages.WithStorageAccount {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithEtag, UpdateStages.WithContainers,
+        UpdateStages.WithTables, UpdateStages.WithStorageAccount {
         /**
          * Executes the update request.
          *

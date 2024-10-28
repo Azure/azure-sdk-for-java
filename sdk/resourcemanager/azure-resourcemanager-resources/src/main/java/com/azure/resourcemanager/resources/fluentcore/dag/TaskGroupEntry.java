@@ -14,8 +14,7 @@ import reactor.core.publisher.Mono;
  *
  * @param <TaskT> the task type that can return a value
  */
-public final class TaskGroupEntry<TaskT extends TaskItem>
-        extends DAGNode<TaskT, TaskGroupEntry<TaskT>> {
+public final class TaskGroupEntry<TaskT extends TaskItem> extends DAGNode<TaskT, TaskGroupEntry<TaskT>> {
     /**
      * The proxy entry for this entry if exists.
      */

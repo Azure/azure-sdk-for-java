@@ -71,9 +71,8 @@ public final class EncoderProcessor extends ProcessorNodeBase {
     public void validate() {
         super.validate();
         if (preset() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property preset in model EncoderProcessor"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property preset in model EncoderProcessor"));
         } else {
             preset().validate();
         }

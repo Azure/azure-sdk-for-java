@@ -10,11 +10,9 @@ import com.azure.resourcemanager.costmanagement.models.BenefitUtilizationSummari
 public final class BenefitUtilizationSummariesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BenefitUtilizationSummariesListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"kind\":\"BenefitUtilizationSummary\",\"id\":\"thtywub\",\"name\":\"cbihwqk\",\"type\":\"fdntwjchrdgoih\"},{\"kind\":\"BenefitUtilizationSummary\",\"id\":\"umwctondz\",\"name\":\"luudfdlwggytsb\",\"type\":\"tov\"}],\"nextLink\":\"gseinq\"}")
-                .toObject(BenefitUtilizationSummariesListResult.class);
+        BenefitUtilizationSummariesListResult model = BinaryData.fromString(
+            "{\"value\":[{\"kind\":\"BenefitUtilizationSummary\",\"id\":\"thtywub\",\"name\":\"cbihwqk\",\"type\":\"fdntwjchrdgoih\"},{\"kind\":\"BenefitUtilizationSummary\",\"id\":\"umwctondz\",\"name\":\"luudfdlwggytsb\",\"type\":\"tov\"}],\"nextLink\":\"gseinq\"}")
+            .toObject(BenefitUtilizationSummariesListResult.class);
     }
 
     @org.junit.jupiter.api.Test

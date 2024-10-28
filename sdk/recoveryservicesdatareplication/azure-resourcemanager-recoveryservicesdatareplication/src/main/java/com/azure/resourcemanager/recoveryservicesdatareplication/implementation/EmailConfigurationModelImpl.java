@@ -13,13 +13,10 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.EmailCon
 public final class EmailConfigurationModelImpl implements EmailConfigurationModel, EmailConfigurationModel.Definition {
     private EmailConfigurationModelInner innerObject;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    EmailConfigurationModelImpl(
-        EmailConfigurationModelInner innerObject,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    EmailConfigurationModelImpl(EmailConfigurationModelInner innerObject,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -65,52 +62,41 @@ public final class EmailConfigurationModelImpl implements EmailConfigurationMode
     }
 
     public EmailConfigurationModel create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEmailConfigurations()
-                .createWithResponse(
-                    resourceGroupName, vaultName, emailConfigurationName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEmailConfigurations()
+            .createWithResponse(resourceGroupName, vaultName, emailConfigurationName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public EmailConfigurationModel create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEmailConfigurations()
-                .createWithResponse(resourceGroupName, vaultName, emailConfigurationName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEmailConfigurations()
+            .createWithResponse(resourceGroupName, vaultName, emailConfigurationName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    EmailConfigurationModelImpl(
-        String name,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    EmailConfigurationModelImpl(String name,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = new EmailConfigurationModelInner();
         this.serviceManager = serviceManager;
         this.emailConfigurationName = name;
     }
 
     public EmailConfigurationModel refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEmailConfigurations()
-                .getWithResponse(resourceGroupName, vaultName, emailConfigurationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEmailConfigurations()
+            .getWithResponse(resourceGroupName, vaultName, emailConfigurationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public EmailConfigurationModel refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEmailConfigurations()
-                .getWithResponse(resourceGroupName, vaultName, emailConfigurationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEmailConfigurations()
+            .getWithResponse(resourceGroupName, vaultName, emailConfigurationName, context)
+            .getValue();
         return this;
     }
 

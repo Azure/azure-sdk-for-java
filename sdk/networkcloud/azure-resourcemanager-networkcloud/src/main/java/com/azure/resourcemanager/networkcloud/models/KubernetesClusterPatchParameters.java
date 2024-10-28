@@ -85,8 +85,8 @@ public final class KubernetesClusterPatchParameters {
      * @param controlPlaneNodeConfiguration the controlPlaneNodeConfiguration value to set.
      * @return the KubernetesClusterPatchParameters object itself.
      */
-    public KubernetesClusterPatchParameters withControlPlaneNodeConfiguration(
-        ControlPlaneNodePatchConfiguration controlPlaneNodeConfiguration) {
+    public KubernetesClusterPatchParameters
+        withControlPlaneNodeConfiguration(ControlPlaneNodePatchConfiguration controlPlaneNodeConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new KubernetesClusterPatchProperties();
         }

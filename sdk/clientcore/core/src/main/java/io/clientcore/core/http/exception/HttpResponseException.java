@@ -34,7 +34,7 @@ public final class HttpResponseException extends RuntimeException {
      * @param value The deserialized response value.
      */
     public HttpResponseException(final String message, final Response<?> response, final HttpExceptionType type,
-                                 final Object value) {
+        final Object value) {
         super(message);
 
         this.value = value;
@@ -51,7 +51,7 @@ public final class HttpResponseException extends RuntimeException {
      * @param cause The {@link Throwable} which caused the creation of this exception.
      */
     public HttpResponseException(final String message, final Response<?> response, final HttpExceptionType type,
-                                 final Throwable cause) {
+        final Throwable cause) {
         super(message, cause);
 
         this.value = null;
@@ -71,8 +71,7 @@ public final class HttpResponseException extends RuntimeException {
      * @param writableStackTrace Whether the exception stack trace will be filled in.
      */
     public HttpResponseException(final String message, final Response<?> response, final HttpExceptionType type,
-                                 final Object value, final Throwable cause, final boolean enableSuppression,
-                                 final boolean writableStackTrace) {
+        final Object value, final Throwable cause, final boolean enableSuppression, final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
 
         this.value = value;

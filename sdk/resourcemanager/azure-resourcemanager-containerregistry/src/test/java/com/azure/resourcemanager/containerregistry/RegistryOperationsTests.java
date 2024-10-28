@@ -18,16 +18,14 @@ public class RegistryOperationsTests extends RegistryTest {
     @Test
     public void canCreateContainerRegisterWithZoneRedundancy() {
         final String acrName = generateRandomResourceName("acr", 10);
-        Registry registry =
-            registryManager
-                .containerRegistries()
-                .define(acrName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(rgName)
-                .withPremiumSku()
-                .withRegistryNameAsAdminUser()
-                .withZoneRedundancy()
-                .create();
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withRegistryNameAsAdminUser()
+            .withZoneRedundancy()
+            .create();
         Assertions.assertTrue(registry.isZoneRedundancyEnabled());
     }
 }

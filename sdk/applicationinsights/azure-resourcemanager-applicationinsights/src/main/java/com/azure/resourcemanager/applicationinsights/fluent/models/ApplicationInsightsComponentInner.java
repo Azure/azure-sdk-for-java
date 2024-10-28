@@ -450,8 +450,8 @@ public final class ApplicationInsightsComponentInner extends ComponentsResource 
      * @param publicNetworkAccessForIngestion the publicNetworkAccessForIngestion value to set.
      * @return the ApplicationInsightsComponentInner object itself.
      */
-    public ApplicationInsightsComponentInner withPublicNetworkAccessForIngestion(
-        PublicNetworkAccessType publicNetworkAccessForIngestion) {
+    public ApplicationInsightsComponentInner
+        withPublicNetworkAccessForIngestion(PublicNetworkAccessType publicNetworkAccessForIngestion) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationInsightsComponentProperties();
         }
@@ -474,8 +474,8 @@ public final class ApplicationInsightsComponentInner extends ComponentsResource 
      * @param publicNetworkAccessForQuery the publicNetworkAccessForQuery value to set.
      * @return the ApplicationInsightsComponentInner object itself.
      */
-    public ApplicationInsightsComponentInner withPublicNetworkAccessForQuery(
-        PublicNetworkAccessType publicNetworkAccessForQuery) {
+    public ApplicationInsightsComponentInner
+        withPublicNetworkAccessForQuery(PublicNetworkAccessType publicNetworkAccessForQuery) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationInsightsComponentProperties();
         }
@@ -546,8 +546,8 @@ public final class ApplicationInsightsComponentInner extends ComponentsResource 
      * @param forceCustomerStorageForProfiler the forceCustomerStorageForProfiler value to set.
      * @return the ApplicationInsightsComponentInner object itself.
      */
-    public ApplicationInsightsComponentInner withForceCustomerStorageForProfiler(
-        Boolean forceCustomerStorageForProfiler) {
+    public ApplicationInsightsComponentInner
+        withForceCustomerStorageForProfiler(Boolean forceCustomerStorageForProfiler) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationInsightsComponentProperties();
         }
@@ -564,10 +564,8 @@ public final class ApplicationInsightsComponentInner extends ComponentsResource 
     public void validate() {
         super.validate();
         if (kind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property kind in model ApplicationInsightsComponentInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property kind in model ApplicationInsightsComponentInner"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();

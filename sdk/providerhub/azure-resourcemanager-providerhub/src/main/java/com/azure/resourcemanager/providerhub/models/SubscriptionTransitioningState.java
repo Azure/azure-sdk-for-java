@@ -47,8 +47,8 @@ public final class SubscriptionTransitioningState extends ExpandableStringEnum<S
     public static final SubscriptionTransitioningState SUSPENDED_TO_DELETED = fromString("SuspendedToDeleted");
 
     /** Static value SuspendedToUnregistered for SubscriptionTransitioningState. */
-    public static final SubscriptionTransitioningState SUSPENDED_TO_UNREGISTERED =
-        fromString("SuspendedToUnregistered");
+    public static final SubscriptionTransitioningState SUSPENDED_TO_UNREGISTERED
+        = fromString("SuspendedToUnregistered");
 
     /**
      * Creates a new instance of SubscriptionTransitioningState value.

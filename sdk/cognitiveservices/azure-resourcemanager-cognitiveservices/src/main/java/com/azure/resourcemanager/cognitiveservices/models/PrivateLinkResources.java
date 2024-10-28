@@ -21,8 +21,8 @@ public interface PrivateLinkResources {
      * @return the private link resources that need to be created for a Cognitive Services account along with {@link
      *     Response}.
      */
-    Response<PrivateLinkResourceListResult> listWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<PrivateLinkResourceListResult> listWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Gets the private link resources that need to be created for a Cognitive Services account.

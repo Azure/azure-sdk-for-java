@@ -44,8 +44,8 @@ public final class VirtualMachinePatchProperties {
      * @param vmImageRepositoryCredentials the vmImageRepositoryCredentials value to set.
      * @return the VirtualMachinePatchProperties object itself.
      */
-    public VirtualMachinePatchProperties withVmImageRepositoryCredentials(
-        ImageRepositoryCredentials vmImageRepositoryCredentials) {
+    public VirtualMachinePatchProperties
+        withVmImageRepositoryCredentials(ImageRepositoryCredentials vmImageRepositoryCredentials) {
         this.vmImageRepositoryCredentials = vmImageRepositoryCredentials;
         return this;
     }

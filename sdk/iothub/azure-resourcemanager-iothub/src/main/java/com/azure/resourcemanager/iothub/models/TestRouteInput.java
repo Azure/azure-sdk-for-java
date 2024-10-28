@@ -103,9 +103,8 @@ public final class TestRouteInput {
             message().validate();
         }
         if (route() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property route in model TestRouteInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property route in model TestRouteInput"));
         } else {
             route().validate();
         }

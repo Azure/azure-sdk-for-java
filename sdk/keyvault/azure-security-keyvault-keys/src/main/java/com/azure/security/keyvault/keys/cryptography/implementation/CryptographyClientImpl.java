@@ -60,7 +60,6 @@ public final class CryptographyClientImpl {
     private final String keyName;
     private final String keyVersion;
 
-
     public CryptographyClientImpl(String keyId, HttpPipeline pipeline, CryptographyServiceVersion serviceVersion) {
         Objects.requireNonNull(keyId);
 
@@ -95,8 +94,9 @@ public final class CryptographyClientImpl {
     }
 
     public Response<KeyVaultKey> getKey(Context context) {
-        Response<KeyBundle> response = callWithMappedException(() -> keyClient.getKeyWithResponse(vaultUrl, keyName,
-            keyVersion, context), KeyVaultKeysUtils::mapGetKeyException);
+        Response<KeyBundle> response
+            = callWithMappedException(() -> keyClient.getKeyWithResponse(vaultUrl, keyName, keyVersion, context),
+                KeyVaultKeysUtils::mapGetKeyException);
 
         return new SimpleResponse<>(response, createKeyVaultKey(response.getValue()));
     }
@@ -110,16 +110,16 @@ public final class CryptographyClientImpl {
     }
 
     public JsonWebKey getSecretKey() {
-        return transformSecretKey(secretClient.getSecretWithResponse(vaultUrl, keyName, keyVersion, Context.NONE)
-            .getValue());
+        return transformSecretKey(
+            secretClient.getSecretWithResponse(vaultUrl, keyName, keyVersion, Context.NONE).getValue());
     }
 
     public Mono<Response<SecretKey>> setSecretKeyAsync(SecretKey secret, Context context) {
         Objects.requireNonNull(secret, "The secret key cannot be null.");
 
-        return secretClient.setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(),
-                secret.getProperties().getTags(), secret.getProperties().getContentType(),
-                new SecretRequestAttributes(secret.getProperties()), context)
+        return secretClient
+            .setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(), secret.getProperties().getTags(),
+                secret.getProperties().getContentType(), new SecretRequestAttributes(secret.getProperties()), context)
             .doOnRequest(ignored -> LOGGER.verbose("Setting secret - {}", secret.getName()))
             .doOnSuccess(response -> LOGGER.verbose("Set secret - {}", response.getValue().getName()))
             .doOnError(error -> LOGGER.warning("Failed to set secret - {}", secret.getName(), error));
@@ -149,8 +149,9 @@ public final class CryptographyClientImpl {
 
     private Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plainText, byte[] iv,
         byte[] additionalAuthenticatedData, Context context) {
-        return keyClient.encryptAsync(vaultUrl, keyName, keyVersion, mapKeyEncryptionAlgorithm(algorithm),
-                plainText, iv, additionalAuthenticatedData, null, context)
+        return keyClient
+            .encryptAsync(vaultUrl, keyName, keyVersion, mapKeyEncryptionAlgorithm(algorithm), plainText, iv,
+                additionalAuthenticatedData, null, context)
             .doOnRequest(ignored -> LOGGER.verbose("Encrypting content with algorithm - {}", algorithm))
             .doOnSuccess(response -> LOGGER.verbose("Retrieved encrypted content with algorithm - {}", algorithm))
             .doOnError(error -> LOGGER.warning("Failed to encrypt content with algorithm - {}", algorithm, error))
@@ -174,12 +175,14 @@ public final class CryptographyClientImpl {
 
     private EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plainText, byte[] iv,
         byte[] additionalAuthenticatedData, Context context) {
-        KeyOperationResult result = keyClient.encryptWithResponse(vaultUrl, keyName, keyVersion,
-            mapKeyEncryptionAlgorithm(algorithm), plainText, iv, additionalAuthenticatedData, null, context)
-            .getValue();
+        KeyOperationResult result
+            = keyClient
+                .encryptWithResponse(vaultUrl, keyName, keyVersion, mapKeyEncryptionAlgorithm(algorithm), plainText, iv,
+                    additionalAuthenticatedData, null, context)
+                .getValue();
 
-        return new EncryptResult(result.getResult(), algorithm, keyId, result.getIv(),
-            result.getAuthenticationTag(), result.getAdditionalAuthenticatedData());
+        return new EncryptResult(result.getResult(), algorithm, keyId, result.getIv(), result.getAuthenticationTag(),
+            result.getAdditionalAuthenticatedData());
     }
 
     public Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
@@ -199,8 +202,9 @@ public final class CryptographyClientImpl {
 
     private Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] ciphertext, byte[] iv,
         byte[] additionalAuthenticatedData, byte[] authenticationTag, Context context) {
-        return keyClient.decryptAsync(vaultUrl, keyName, keyVersion, mapKeyEncryptionAlgorithm(algorithm), ciphertext,
-                iv, additionalAuthenticatedData, authenticationTag, context)
+        return keyClient
+            .decryptAsync(vaultUrl, keyName, keyVersion, mapKeyEncryptionAlgorithm(algorithm), ciphertext, iv,
+                additionalAuthenticatedData, authenticationTag, context)
             .map(result -> new DecryptResult(result.getResult(), algorithm, keyId))
             .doOnRequest(ignored -> LOGGER.verbose("Decrypting content with algorithm - {}", algorithm))
             .doOnSuccess(response -> LOGGER.verbose("Retrieved decrypted content with algorithm - {}", algorithm))
@@ -223,9 +227,11 @@ public final class CryptographyClientImpl {
 
     private DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, byte[] iv,
         byte[] additionalAuthenticatedData, byte[] authenticationTag, Context context) {
-        KeyOperationResult result = keyClient.decryptWithResponse(vaultUrl, keyName, keyVersion,
-            mapKeyEncryptionAlgorithm(algorithm), ciphertext, iv, additionalAuthenticatedData, authenticationTag,
-            context).getValue();
+        KeyOperationResult result
+            = keyClient
+                .decryptWithResponse(vaultUrl, keyName, keyVersion, mapKeyEncryptionAlgorithm(algorithm), ciphertext,
+                    iv, additionalAuthenticatedData, authenticationTag, context)
+                .getValue();
 
         return new DecryptResult(result.getResult(), algorithm, keyId);
     }
@@ -245,20 +251,21 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(digest, "Digest content cannot be null.");
 
-        KeyOperationResult result = keyClient.signWithResponse(vaultUrl, keyName, keyVersion,
-            mapKeySignatureAlgorithm(algorithm), digest, context)
+        KeyOperationResult result = keyClient
+            .signWithResponse(vaultUrl, keyName, keyVersion, mapKeySignatureAlgorithm(algorithm), digest, context)
             .getValue();
 
         return new SignResult(result.getResult(), algorithm, keyId);
     }
 
-    public Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
+    public Mono<VerifyResult> verifyAsync(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
+        Context context) {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(digest, "Digest content cannot be null.");
         Objects.requireNonNull(signature, "Signature to be verified cannot be null.");
 
-        return keyClient.verifyAsync(vaultUrl, keyName, keyVersion, mapKeySignatureAlgorithm(algorithm), digest,
-                signature, context)
+        return keyClient
+            .verifyAsync(vaultUrl, keyName, keyVersion, mapKeySignatureAlgorithm(algorithm), digest, signature, context)
             .map(result -> new VerifyResult(result.isValue(), algorithm, keyId))
             .doOnRequest(ignored -> LOGGER.verbose("Verifying content with algorithm - {}", algorithm))
             .doOnSuccess(response -> LOGGER.verbose("Retrieved verified content with algorithm - {}", algorithm))
@@ -270,18 +277,21 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(digest, "Digest content cannot be null.");
         Objects.requireNonNull(signature, "Signature to be verified cannot be null.");
 
-        KeyVerifyResult result = keyClient.verifyWithResponse(vaultUrl, keyName, keyVersion,
-            mapKeySignatureAlgorithm(algorithm), digest, signature, context).getValue();
+        KeyVerifyResult result
+            = keyClient
+                .verifyWithResponse(vaultUrl, keyName, keyVersion, mapKeySignatureAlgorithm(algorithm), digest,
+                    signature, context)
+                .getValue();
 
         return new VerifyResult(result.isValue(), algorithm, keyId);
     }
 
-    public  Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
+    public Mono<WrapResult> wrapKeyAsync(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(key, "Key content to be wrapped cannot be null.");
 
-        return keyClient.wrapKeyAsync(vaultUrl, keyName, keyVersion, mapWrapAlgorithm(algorithm), key, null, null, null,
-                context)
+        return keyClient
+            .wrapKeyAsync(vaultUrl, keyName, keyVersion, mapWrapAlgorithm(algorithm), key, null, null, null, context)
             .map(result -> new WrapResult(result.getResult(), algorithm, keyId))
             .doOnRequest(ignored -> LOGGER.verbose("Wrapping key content with algorithm - {}", algorithm))
             .doOnSuccess(response -> LOGGER.verbose("Retrieved wrapped key content with algorithm - {}", algorithm))
@@ -292,8 +302,11 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(key, "Key content to be wrapped cannot be null.");
 
-        KeyOperationResult result = keyClient.wrapKeyWithResponse(vaultUrl, keyName, keyVersion,
-            mapWrapAlgorithm(algorithm), key, null, null, null, context).getValue();
+        KeyOperationResult result
+            = keyClient
+                .wrapKeyWithResponse(vaultUrl, keyName, keyVersion, mapWrapAlgorithm(algorithm), key, null, null, null,
+                    context)
+                .getValue();
 
         return new WrapResult(result.getResult(), algorithm, keyId);
     }
@@ -302,8 +315,9 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
 
-        return keyClient.unwrapKeyAsync(vaultUrl, keyName, keyVersion, mapWrapAlgorithm(algorithm), encryptedKey, null,
-                null, null, context)
+        return keyClient
+            .unwrapKeyAsync(vaultUrl, keyName, keyVersion, mapWrapAlgorithm(algorithm), encryptedKey, null, null, null,
+                context)
             .map(result -> new UnwrapResult(result.getResult(), algorithm, keyId))
             .doOnRequest(ignored -> LOGGER.verbose("Unwrapping key content with algorithm - {}", algorithm))
             .doOnSuccess(response -> LOGGER.verbose("Retrieved unwrapped key content with algorithm - {}", algorithm))
@@ -314,9 +328,10 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
 
-
-        KeyOperationResult result = keyClient.unwrapKeyWithResponse(vaultUrl, keyName, keyVersion,
-            mapWrapAlgorithm(algorithm), encryptedKey, null, null, null, context).getValue();
+        KeyOperationResult result = keyClient
+            .unwrapKeyWithResponse(vaultUrl, keyName, keyVersion, mapWrapAlgorithm(algorithm), encryptedKey, null, null,
+                null, context)
+            .getValue();
 
         return new UnwrapResult(result.getResult(), algorithm, keyId);
     }
@@ -353,7 +368,8 @@ public final class CryptographyClientImpl {
         }
     }
 
-    public Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {
+    public Mono<VerifyResult> verifyDataAsync(SignatureAlgorithm algorithm, byte[] data, byte[] signature,
+        Context context) {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(data, "Data to verify cannot be null.");
         Objects.requireNonNull(signature, "Signature to be verified cannot be null.");

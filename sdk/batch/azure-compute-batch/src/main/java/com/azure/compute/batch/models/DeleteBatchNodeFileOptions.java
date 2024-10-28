@@ -32,5 +32,4 @@ public class DeleteBatchNodeFileOptions extends BatchBaseOptions {
         return this;
     }
 
-
 }

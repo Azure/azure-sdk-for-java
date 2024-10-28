@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SapCentralInstanceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapCentralInstanceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"instanceNo\":\"iywgqywgndrvynh\",\"subnet\":\"pphrcgynco\",\"kernelVersion\":\"m\",\"kernelPatch\":\"oo\",\"vmDetails\":[],\"status\":\"Stopping\",\"health\":\"Unknown\",\"provisioningState\":\"Deleting\"},\"location\":\"jqabcypmivkwlzuv\",\"tags\":{\"onlebxetqgtzxdpn\":\"wnfnbacf\",\"eallnwsubisnj\":\"bqqwxrj\"},\"id\":\"mpmngnzscxaqwoo\",\"name\":\"hcbonqvpkvlr\",\"type\":\"njeaseipheofloke\"},{\"properties\":{\"instanceNo\":\"enjbdlwtgrhp\",\"subnet\":\"pj\",\"kernelVersion\":\"zj\",\"kernelPatch\":\"yegu\",\"vmDetails\":[],\"status\":\"Offline\",\"health\":\"Healthy\",\"provisioningState\":\"Deleting\"},\"location\":\"zvdudgwdslfhotwm\",\"tags\":{\"cftadeh\":\"pwlbjnpg\",\"dejbavo\":\"nltyfsoppusuesnz\",\"vudwx\":\"xzdmohctb\"},\"id\":\"ndnvo\",\"name\":\"gujjugwdkcglh\",\"type\":\"lazjdyggdtjixhbk\"},{\"properties\":{\"instanceNo\":\"qweykhmenev\",\"subnet\":\"exfwhy\",\"kernelVersion\":\"vdcsitynn\",\"kernelPatch\":\"mdectehfiqscjey\",\"vmDetails\":[],\"status\":\"Offline\",\"health\":\"Unhealthy\",\"provisioningState\":\"Failed\"},\"location\":\"jrefovgmkqsle\",\"tags\":{\"k\":\"xyqj\",\"jh\":\"attpngjcrcczsq\",\"ysou\":\"mdajv\",\"canoaeupf\":\"q\"},\"id\":\"yhltrpmopjmcm\",\"name\":\"tuo\",\"type\":\"thfuiuaodsfcpkvx\"},{\"properties\":{\"instanceNo\":\"uozmyzydagfua\",\"subnet\":\"ezyiuokktwhrdxw\",\"kernelVersion\":\"bsureximo\",\"kernelPatch\":\"ocfs\",\"vmDetails\":[],\"status\":\"Running\",\"health\":\"Degraded\",\"provisioningState\":\"Creating\"},\"location\":\"i\",\"tags\":{\"vyifqrvkdvjsl\":\"hqyudxorrqnbpoc\",\"vdfwatkpn\":\"rm\",\"wiqzbqjvsovmyo\":\"ulexxbczwtr\",\"zdobpxjmflbvvnch\":\"acspkwl\"},\"id\":\"kcciwwzjuqkhr\",\"name\":\"ajiwkuo\",\"type\":\"oskg\"}],\"nextLink\":\"auu\"}")
-                .toObject(SapCentralInstanceList.class);
+        SapCentralInstanceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"instanceNo\":\"iywgqywgndrvynh\",\"subnet\":\"pphrcgynco\",\"kernelVersion\":\"m\",\"kernelPatch\":\"oo\",\"vmDetails\":[],\"status\":\"Stopping\",\"health\":\"Unknown\",\"provisioningState\":\"Deleting\"},\"location\":\"jqabcypmivkwlzuv\",\"tags\":{\"onlebxetqgtzxdpn\":\"wnfnbacf\",\"eallnwsubisnj\":\"bqqwxrj\"},\"id\":\"mpmngnzscxaqwoo\",\"name\":\"hcbonqvpkvlr\",\"type\":\"njeaseipheofloke\"},{\"properties\":{\"instanceNo\":\"enjbdlwtgrhp\",\"subnet\":\"pj\",\"kernelVersion\":\"zj\",\"kernelPatch\":\"yegu\",\"vmDetails\":[],\"status\":\"Offline\",\"health\":\"Healthy\",\"provisioningState\":\"Deleting\"},\"location\":\"zvdudgwdslfhotwm\",\"tags\":{\"cftadeh\":\"pwlbjnpg\",\"dejbavo\":\"nltyfsoppusuesnz\",\"vudwx\":\"xzdmohctb\"},\"id\":\"ndnvo\",\"name\":\"gujjugwdkcglh\",\"type\":\"lazjdyggdtjixhbk\"},{\"properties\":{\"instanceNo\":\"qweykhmenev\",\"subnet\":\"exfwhy\",\"kernelVersion\":\"vdcsitynn\",\"kernelPatch\":\"mdectehfiqscjey\",\"vmDetails\":[],\"status\":\"Offline\",\"health\":\"Unhealthy\",\"provisioningState\":\"Failed\"},\"location\":\"jrefovgmkqsle\",\"tags\":{\"k\":\"xyqj\",\"jh\":\"attpngjcrcczsq\",\"ysou\":\"mdajv\",\"canoaeupf\":\"q\"},\"id\":\"yhltrpmopjmcm\",\"name\":\"tuo\",\"type\":\"thfuiuaodsfcpkvx\"},{\"properties\":{\"instanceNo\":\"uozmyzydagfua\",\"subnet\":\"ezyiuokktwhrdxw\",\"kernelVersion\":\"bsureximo\",\"kernelPatch\":\"ocfs\",\"vmDetails\":[],\"status\":\"Running\",\"health\":\"Degraded\",\"provisioningState\":\"Creating\"},\"location\":\"i\",\"tags\":{\"vyifqrvkdvjsl\":\"hqyudxorrqnbpoc\",\"vdfwatkpn\":\"rm\",\"wiqzbqjvsovmyo\":\"ulexxbczwtr\",\"zdobpxjmflbvvnch\":\"acspkwl\"},\"id\":\"kcciwwzjuqkhr\",\"name\":\"ajiwkuo\",\"type\":\"oskg\"}],\"nextLink\":\"auu\"}")
+            .toObject(SapCentralInstanceList.class);
         Assertions.assertEquals("jqabcypmivkwlzuv", model.value().get(0).location());
         Assertions.assertEquals("wnfnbacf", model.value().get(0).tags().get("onlebxetqgtzxdpn"));
         Assertions.assertEquals("auu", model.nextLink());
@@ -27,35 +25,17 @@ public final class SapCentralInstanceListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapCentralInstanceList model =
-            new SapCentralInstanceList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SapCentralServerInstanceInner()
-                                .withLocation("jqabcypmivkwlzuv")
-                                .withTags(mapOf("onlebxetqgtzxdpn", "wnfnbacf", "eallnwsubisnj", "bqqwxrj")),
-                            new SapCentralServerInstanceInner()
-                                .withLocation("zvdudgwdslfhotwm")
-                                .withTags(
-                                    mapOf("cftadeh", "pwlbjnpg", "dejbavo", "nltyfsoppusuesnz", "vudwx", "xzdmohctb")),
-                            new SapCentralServerInstanceInner()
-                                .withLocation("jrefovgmkqsle")
-                                .withTags(
-                                    mapOf("k", "xyqj", "jh", "attpngjcrcczsq", "ysou", "mdajv", "canoaeupf", "q")),
-                            new SapCentralServerInstanceInner()
-                                .withLocation("i")
-                                .withTags(
-                                    mapOf(
-                                        "vyifqrvkdvjsl",
-                                        "hqyudxorrqnbpoc",
-                                        "vdfwatkpn",
-                                        "rm",
-                                        "wiqzbqjvsovmyo",
-                                        "ulexxbczwtr",
-                                        "zdobpxjmflbvvnch",
-                                        "acspkwl"))))
-                .withNextLink("auu");
+        SapCentralInstanceList model = new SapCentralInstanceList().withValue(Arrays.asList(
+            new SapCentralServerInstanceInner().withLocation("jqabcypmivkwlzuv")
+                .withTags(mapOf("onlebxetqgtzxdpn", "wnfnbacf", "eallnwsubisnj", "bqqwxrj")),
+            new SapCentralServerInstanceInner().withLocation("zvdudgwdslfhotwm")
+                .withTags(mapOf("cftadeh", "pwlbjnpg", "dejbavo", "nltyfsoppusuesnz", "vudwx", "xzdmohctb")),
+            new SapCentralServerInstanceInner().withLocation("jrefovgmkqsle")
+                .withTags(mapOf("k", "xyqj", "jh", "attpngjcrcczsq", "ysou", "mdajv", "canoaeupf", "q")),
+            new SapCentralServerInstanceInner().withLocation("i")
+                .withTags(mapOf("vyifqrvkdvjsl", "hqyudxorrqnbpoc", "vdfwatkpn", "rm", "wiqzbqjvsovmyo", "ulexxbczwtr",
+                    "zdobpxjmflbvvnch", "acspkwl"))))
+            .withNextLink("auu");
         model = BinaryData.fromObject(model).toObject(SapCentralInstanceList.class);
         Assertions.assertEquals("jqabcypmivkwlzuv", model.value().get(0).location());
         Assertions.assertEquals("wnfnbacf", model.value().get(0).tags().get("onlebxetqgtzxdpn"));

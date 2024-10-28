@@ -88,10 +88,30 @@ public final class AnalyzersImpl {
         @Post("/prebuilt/businessCard/analyze")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeBusinessCardNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @QueryParam("includeTextDetails") Boolean includeTextDetails,
+            @QueryParam("locale") Locale locale, @QueryParam("pages") String pages,
+            @HeaderParam("Content-Type") ContentType contentType,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
+            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/prebuilt/businessCard/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<AnalyzersAnalyzeBusinessCardHeaders, Void>> analyzeBusinessCard(
             @HostParam("endpoint") String endpoint, @HostParam("ApiVersion") String apiVersion,
             @QueryParam("includeTextDetails") Boolean includeTextDetails, @QueryParam("locale") Locale locale,
             @QueryParam("pages") String pages, @HeaderParam("Content-Type") ContentType contentType,
+            @BodyParam("application/octet-stream") BinaryData fileStream,
+            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/prebuilt/businessCard/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeBusinessCardNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @QueryParam("includeTextDetails") Boolean includeTextDetails,
+            @QueryParam("locale") Locale locale, @QueryParam("pages") String pages,
+            @HeaderParam("Content-Type") ContentType contentType,
             @BodyParam("application/octet-stream") BinaryData fileStream,
             @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
 
@@ -103,6 +123,15 @@ public final class AnalyzersImpl {
             @QueryParam("includeTextDetails") Boolean includeTextDetails, @QueryParam("locale") Locale locale,
             @QueryParam("pages") String pages, @BodyParam("application/json") SourcePath fileStream,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/prebuilt/businessCard/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeBusinessCardNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @QueryParam("includeTextDetails") Boolean includeTextDetails,
+            @QueryParam("locale") Locale locale, @QueryParam("pages") String pages,
+            @BodyParam("application/json") SourcePath fileStream, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("/prebuilt/businessCard/analyzeResults/{resultId}")
         @ExpectedResponses({ 200 })
@@ -124,6 +153,16 @@ public final class AnalyzersImpl {
         @Post("/prebuilt/invoice/analyze")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeInvoiceNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @QueryParam("includeTextDetails") Boolean includeTextDetails,
+            @QueryParam("locale") Locale locale, @QueryParam("pages") String pages,
+            @HeaderParam("Content-Type") ContentType contentType,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
+            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/prebuilt/invoice/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<AnalyzersAnalyzeInvoiceHeaders, Void>> analyzeInvoice(@HostParam("endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @QueryParam("includeTextDetails") Boolean includeTextDetails,
             @QueryParam("locale") Locale locale, @QueryParam("pages") String pages,
@@ -134,7 +173,26 @@ public final class AnalyzersImpl {
         @Post("/prebuilt/invoice/analyze")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeInvoiceNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @QueryParam("includeTextDetails") Boolean includeTextDetails,
+            @QueryParam("locale") Locale locale, @QueryParam("pages") String pages,
+            @HeaderParam("Content-Type") ContentType contentType,
+            @BodyParam("application/octet-stream") BinaryData fileStream,
+            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/prebuilt/invoice/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<AnalyzersAnalyzeInvoiceHeaders, Void>> analyzeInvoice(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @QueryParam("includeTextDetails") Boolean includeTextDetails,
+            @QueryParam("locale") Locale locale, @QueryParam("pages") String pages,
+            @BodyParam("application/json") SourcePath fileStream, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Post("/prebuilt/invoice/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeInvoiceNoCustomHeaders(@HostParam("endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @QueryParam("includeTextDetails") Boolean includeTextDetails,
             @QueryParam("locale") Locale locale, @QueryParam("pages") String pages,
             @BodyParam("application/json") SourcePath fileStream, @HeaderParam("Accept") String accept,
@@ -160,10 +218,28 @@ public final class AnalyzersImpl {
         @Post("/prebuilt/idDocument/analyze")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeIdDocumentNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @QueryParam("includeTextDetails") Boolean includeTextDetails,
+            @QueryParam("pages") String pages, @HeaderParam("Content-Type") ContentType contentType,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
+            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/prebuilt/idDocument/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<AnalyzersAnalyzeIdDocumentHeaders, Void>> analyzeIdDocument(
             @HostParam("endpoint") String endpoint, @HostParam("ApiVersion") String apiVersion,
             @QueryParam("includeTextDetails") Boolean includeTextDetails, @QueryParam("pages") String pages,
             @HeaderParam("Content-Type") ContentType contentType,
+            @BodyParam("application/octet-stream") BinaryData fileStream,
+            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/prebuilt/idDocument/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeIdDocumentNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @QueryParam("includeTextDetails") Boolean includeTextDetails,
+            @QueryParam("pages") String pages, @HeaderParam("Content-Type") ContentType contentType,
             @BodyParam("application/octet-stream") BinaryData fileStream,
             @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
 
@@ -175,6 +251,14 @@ public final class AnalyzersImpl {
             @QueryParam("includeTextDetails") Boolean includeTextDetails, @QueryParam("pages") String pages,
             @BodyParam("application/json") SourcePath fileStream, @HeaderParam("Accept") String accept,
             Context context);
+
+        @Post("/prebuilt/idDocument/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeIdDocumentNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @QueryParam("includeTextDetails") Boolean includeTextDetails,
+            @QueryParam("pages") String pages, @BodyParam("application/json") SourcePath fileStream,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/prebuilt/idDocument/analyzeResults/{resultId}")
         @ExpectedResponses({ 200 })
@@ -196,6 +280,16 @@ public final class AnalyzersImpl {
         @Post("/prebuilt/receipt/analyze")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeReceiptNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @QueryParam("includeTextDetails") Boolean includeTextDetails,
+            @QueryParam("locale") Locale locale, @QueryParam("pages") String pages,
+            @HeaderParam("Content-Type") ContentType contentType,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
+            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/prebuilt/receipt/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<AnalyzersAnalyzeReceiptHeaders, Void>> analyzeReceipt(@HostParam("endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @QueryParam("includeTextDetails") Boolean includeTextDetails,
             @QueryParam("locale") Locale locale, @QueryParam("pages") String pages,
@@ -206,7 +300,26 @@ public final class AnalyzersImpl {
         @Post("/prebuilt/receipt/analyze")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeReceiptNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @QueryParam("includeTextDetails") Boolean includeTextDetails,
+            @QueryParam("locale") Locale locale, @QueryParam("pages") String pages,
+            @HeaderParam("Content-Type") ContentType contentType,
+            @BodyParam("application/octet-stream") BinaryData fileStream,
+            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/prebuilt/receipt/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<AnalyzersAnalyzeReceiptHeaders, Void>> analyzeReceipt(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @QueryParam("includeTextDetails") Boolean includeTextDetails,
+            @QueryParam("locale") Locale locale, @QueryParam("pages") String pages,
+            @BodyParam("application/json") SourcePath fileStream, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Post("/prebuilt/receipt/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeReceiptNoCustomHeaders(@HostParam("endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @QueryParam("includeTextDetails") Boolean includeTextDetails,
             @QueryParam("locale") Locale locale, @QueryParam("pages") String pages,
             @BodyParam("application/json") SourcePath fileStream, @HeaderParam("Accept") String accept,
@@ -232,6 +345,16 @@ public final class AnalyzersImpl {
         @Post("/layout/analyze")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeLayoutNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @QueryParam("pages") String pages,
+            @QueryParam("language") Language language, @QueryParam("readingOrder") ReadingOrder readingOrder,
+            @HeaderParam("Content-Type") ContentType contentType,
+            @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream,
+            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/layout/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<AnalyzersAnalyzeLayoutHeaders, Void>> analyzeLayout(@HostParam("endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @QueryParam("pages") String pages,
             @QueryParam("language") Language language, @QueryParam("readingOrder") ReadingOrder readingOrder,
@@ -242,7 +365,26 @@ public final class AnalyzersImpl {
         @Post("/layout/analyze")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeLayoutNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @QueryParam("pages") String pages,
+            @QueryParam("language") Language language, @QueryParam("readingOrder") ReadingOrder readingOrder,
+            @HeaderParam("Content-Type") ContentType contentType,
+            @BodyParam("application/octet-stream") BinaryData fileStream,
+            @HeaderParam("Content-Length") Long contentLength, @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/layout/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<ResponseBase<AnalyzersAnalyzeLayoutHeaders, Void>> analyzeLayout(@HostParam("endpoint") String endpoint,
+            @HostParam("ApiVersion") String apiVersion, @QueryParam("pages") String pages,
+            @QueryParam("language") Language language, @QueryParam("readingOrder") ReadingOrder readingOrder,
+            @BodyParam("application/json") SourcePath fileStream, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Post("/layout/analyze")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<Void>> analyzeLayoutNoCustomHeaders(@HostParam("endpoint") String endpoint,
             @HostParam("ApiVersion") String apiVersion, @QueryParam("pages") String pages,
             @QueryParam("language") Language language, @QueryParam("readingOrder") ReadingOrder readingOrder,
             @BodyParam("application/json") SourcePath fileStream, @HeaderParam("Accept") String accept,
@@ -278,12 +420,8 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeBusinessCardHeaders, Void>> analyzeBusinessCardWithResponseAsync(
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil
-            .withContext(context -> service.analyzeBusinessCard(this.client.getEndpoint(), this.client.getApiVersion(),
-                includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
+        return FluxUtil.withContext(context -> analyzeBusinessCardWithResponseAsync(contentType, includeTextDetails,
+            locale, pages, fileStream, contentLength, context));
     }
 
     /**
@@ -310,8 +448,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeBusinessCard(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -434,18 +575,100 @@ public final class AnalyzersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeBusinessCardNoCustomHeadersWithResponseAsync(ContentType contentType,
+        Boolean includeTextDetails, Locale locale, List<String> pages, Flux<ByteBuffer> fileStream,
+        Long contentLength) {
+        return FluxUtil.withContext(context -> analyzeBusinessCardNoCustomHeadersWithResponseAsync(contentType,
+            includeTextDetails, locale, pages, fileStream, contentLength, context));
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeBusinessCardNoCustomHeadersWithResponseAsync(ContentType contentType,
+        Boolean includeTextDetails, Locale locale, List<String> pages, Flux<ByteBuffer> fileStream, Long contentLength,
+        Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeBusinessCardNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeBusinessCardNoCustomHeadersWithResponse(ContentType contentType,
+        Boolean includeTextDetails, Locale locale, List<String> pages, Flux<ByteBuffer> fileStream, Long contentLength,
+        Context context) {
+        return analyzeBusinessCardNoCustomHeadersWithResponseAsync(contentType, includeTextDetails, locale, pages,
+            fileStream, contentLength, context).block();
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<AnalyzersAnalyzeBusinessCardHeaders, Void>> analyzeBusinessCardWithResponseAsync(
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil
-            .withContext(context -> service.analyzeBusinessCard(this.client.getEndpoint(), this.client.getApiVersion(),
-                includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
+        return FluxUtil.withContext(context -> analyzeBusinessCardWithResponseAsync(contentType, includeTextDetails,
+            locale, pages, fileStream, contentLength, context));
     }
 
     /**
@@ -472,8 +695,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeBusinessCard(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -585,6 +811,91 @@ public final class AnalyzersImpl {
      * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeBusinessCardNoCustomHeadersWithResponseAsync(ContentType contentType,
+        Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream, Long contentLength) {
+        return FluxUtil.withContext(context -> analyzeBusinessCardNoCustomHeadersWithResponseAsync(contentType,
+            includeTextDetails, locale, pages, fileStream, contentLength, context));
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeBusinessCardNoCustomHeadersWithResponseAsync(ContentType contentType,
+        Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream, Long contentLength,
+        Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeBusinessCardNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeBusinessCardNoCustomHeadersWithResponse(ContentType contentType,
+        Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream, Long contentLength,
+        Context context) {
+        return analyzeBusinessCardNoCustomHeadersWithResponseAsync(contentType, includeTextDetails, locale, pages,
+            fileStream, contentLength, context).block();
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -599,11 +910,8 @@ public final class AnalyzersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<AnalyzersAnalyzeBusinessCardHeaders, Void>> analyzeBusinessCardWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.analyzeBusinessCard(this.client.getEndpoint(),
-            this.client.getApiVersion(), includeTextDetails, locale, pagesConverted, fileStream, accept, context));
+        return FluxUtil.withContext(
+            context -> analyzeBusinessCardWithResponseAsync(includeTextDetails, locale, pages, fileStream, context));
     }
 
     /**
@@ -627,8 +935,11 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeBusinessCardHeaders, Void>> analyzeBusinessCardWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeBusinessCard(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, fileStream, accept, context);
     }
@@ -725,6 +1036,83 @@ public final class AnalyzersImpl {
     }
 
     /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeBusinessCardNoCustomHeadersWithResponseAsync(Boolean includeTextDetails,
+        Locale locale, List<String> pages, SourcePath fileStream) {
+        return FluxUtil.withContext(context -> analyzeBusinessCardNoCustomHeadersWithResponseAsync(includeTextDetails,
+            locale, pages, fileStream, context));
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeBusinessCardNoCustomHeadersWithResponseAsync(Boolean includeTextDetails,
+        Locale locale, List<String> pages, SourcePath fileStream, Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeBusinessCardNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            includeTextDetails, locale, pagesConverted, fileStream, accept, context);
+    }
+
+    /**
+     * Extract field text and semantic values from a given business card document. The input document must be of one of
+     * the supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeBusinessCardNoCustomHeadersWithResponse(Boolean includeTextDetails, Locale locale,
+        List<String> pages, SourcePath fileStream, Context context) {
+        return analyzeBusinessCardNoCustomHeadersWithResponseAsync(includeTextDetails, locale, pages, fileStream,
+            context).block();
+    }
+
+    /**
      * Track the progress and obtain the result of the analyze business card operation.
      * 
      * @param resultId Analyze operation result identifier.
@@ -736,9 +1124,7 @@ public final class AnalyzersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeBusinessCardResultWithResponseAsync(UUID resultId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAnalyzeBusinessCardResult(this.client.getEndpoint(),
-            this.client.getApiVersion(), resultId, accept, context));
+        return FluxUtil.withContext(context -> getAnalyzeBusinessCardResultWithResponseAsync(resultId, context));
     }
 
     /**
@@ -841,12 +1227,8 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeInvoiceHeaders, Void>> analyzeInvoiceWithResponseAsync(
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil
-            .withContext(context -> service.analyzeInvoice(this.client.getEndpoint(), this.client.getApiVersion(),
-                includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
+        return FluxUtil.withContext(context -> analyzeInvoiceWithResponseAsync(contentType, includeTextDetails, locale,
+            pages, fileStream, contentLength, context));
     }
 
     /**
@@ -873,8 +1255,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeInvoice(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -997,18 +1382,99 @@ public final class AnalyzersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeInvoiceNoCustomHeadersWithResponseAsync(ContentType contentType,
+        Boolean includeTextDetails, Locale locale, List<String> pages, Flux<ByteBuffer> fileStream,
+        Long contentLength) {
+        return FluxUtil.withContext(context -> analyzeInvoiceNoCustomHeadersWithResponseAsync(contentType,
+            includeTextDetails, locale, pages, fileStream, contentLength, context));
+    }
+
+    /**
+     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeInvoiceNoCustomHeadersWithResponseAsync(ContentType contentType,
+        Boolean includeTextDetails, Locale locale, List<String> pages, Flux<ByteBuffer> fileStream, Long contentLength,
+        Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeInvoiceNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
+    }
+
+    /**
+     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeInvoiceNoCustomHeadersWithResponse(ContentType contentType, Boolean includeTextDetails,
+        Locale locale, List<String> pages, Flux<ByteBuffer> fileStream, Long contentLength, Context context) {
+        return analyzeInvoiceNoCustomHeadersWithResponseAsync(contentType, includeTextDetails, locale, pages,
+            fileStream, contentLength, context).block();
+    }
+
+    /**
+     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<AnalyzersAnalyzeInvoiceHeaders, Void>> analyzeInvoiceWithResponseAsync(
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil
-            .withContext(context -> service.analyzeInvoice(this.client.getEndpoint(), this.client.getApiVersion(),
-                includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
+        return FluxUtil.withContext(context -> analyzeInvoiceWithResponseAsync(contentType, includeTextDetails, locale,
+            pages, fileStream, contentLength, context));
     }
 
     /**
@@ -1035,8 +1501,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeInvoice(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -1148,6 +1617,90 @@ public final class AnalyzersImpl {
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeInvoiceNoCustomHeadersWithResponseAsync(ContentType contentType,
+        Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream, Long contentLength) {
+        return FluxUtil.withContext(context -> analyzeInvoiceNoCustomHeadersWithResponseAsync(contentType,
+            includeTextDetails, locale, pages, fileStream, contentLength, context));
+    }
+
+    /**
+     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeInvoiceNoCustomHeadersWithResponseAsync(ContentType contentType,
+        Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream, Long contentLength,
+        Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeInvoiceNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
+    }
+
+    /**
+     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeInvoiceNoCustomHeadersWithResponse(ContentType contentType, Boolean includeTextDetails,
+        Locale locale, List<String> pages, BinaryData fileStream, Long contentLength, Context context) {
+        return analyzeInvoiceNoCustomHeadersWithResponseAsync(contentType, includeTextDetails, locale, pages,
+            fileStream, contentLength, context).block();
+    }
+
+    /**
+     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -1162,11 +1715,8 @@ public final class AnalyzersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<AnalyzersAnalyzeInvoiceHeaders, Void>> analyzeInvoiceWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.analyzeInvoice(this.client.getEndpoint(),
-            this.client.getApiVersion(), includeTextDetails, locale, pagesConverted, fileStream, accept, context));
+        return FluxUtil.withContext(
+            context -> analyzeInvoiceWithResponseAsync(includeTextDetails, locale, pages, fileStream, context));
     }
 
     /**
@@ -1190,8 +1740,11 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeInvoiceHeaders, Void>> analyzeInvoiceWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeInvoice(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, fileStream, accept, context);
     }
@@ -1287,6 +1840,83 @@ public final class AnalyzersImpl {
     }
 
     /**
+     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeInvoiceNoCustomHeadersWithResponseAsync(Boolean includeTextDetails,
+        Locale locale, List<String> pages, SourcePath fileStream) {
+        return FluxUtil.withContext(context -> analyzeInvoiceNoCustomHeadersWithResponseAsync(includeTextDetails,
+            locale, pages, fileStream, context));
+    }
+
+    /**
+     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeInvoiceNoCustomHeadersWithResponseAsync(Boolean includeTextDetails,
+        Locale locale, List<String> pages, SourcePath fileStream, Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeInvoiceNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            includeTextDetails, locale, pagesConverted, fileStream, accept, context);
+    }
+
+    /**
+     * Extract field text and semantic values from a given invoice document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeInvoiceNoCustomHeadersWithResponse(Boolean includeTextDetails, Locale locale,
+        List<String> pages, SourcePath fileStream, Context context) {
+        return analyzeInvoiceNoCustomHeadersWithResponseAsync(includeTextDetails, locale, pages, fileStream, context)
+            .block();
+    }
+
+    /**
      * Track the progress and obtain the result of the analyze invoice operation.
      * 
      * @param resultId Analyze operation result identifier.
@@ -1298,9 +1928,7 @@ public final class AnalyzersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeInvoiceResultWithResponseAsync(UUID resultId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAnalyzeInvoiceResult(this.client.getEndpoint(),
-            this.client.getApiVersion(), resultId, accept, context));
+        return FluxUtil.withContext(context -> getAnalyzeInvoiceResultWithResponseAsync(resultId, context));
     }
 
     /**
@@ -1401,12 +2029,8 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeIdDocumentHeaders, Void>> analyzeIdDocumentWithResponseAsync(
         ContentType contentType, Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream,
         Long contentLength) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil
-            .withContext(context -> service.analyzeIdDocument(this.client.getEndpoint(), this.client.getApiVersion(),
-                includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context));
+        return FluxUtil.withContext(context -> analyzeIdDocumentWithResponseAsync(contentType, includeTextDetails,
+            pages, fileStream, contentLength, context));
     }
 
     /**
@@ -1431,8 +2055,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeIdDocument(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -1544,18 +2171,93 @@ public final class AnalyzersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeIdDocumentNoCustomHeadersWithResponseAsync(ContentType contentType,
+        Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream, Long contentLength) {
+        return FluxUtil.withContext(context -> analyzeIdDocumentNoCustomHeadersWithResponseAsync(contentType,
+            includeTextDetails, pages, fileStream, contentLength, context));
+    }
+
+    /**
+     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeIdDocumentNoCustomHeadersWithResponseAsync(ContentType contentType,
+        Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream, Long contentLength,
+        Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeIdDocumentNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context);
+    }
+
+    /**
+     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeIdDocumentNoCustomHeadersWithResponse(ContentType contentType,
+        Boolean includeTextDetails, List<String> pages, Flux<ByteBuffer> fileStream, Long contentLength,
+        Context context) {
+        return analyzeIdDocumentNoCustomHeadersWithResponseAsync(contentType, includeTextDetails, pages, fileStream,
+            contentLength, context).block();
+    }
+
+    /**
+     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<AnalyzersAnalyzeIdDocumentHeaders, Void>> analyzeIdDocumentWithResponseAsync(
         ContentType contentType, Boolean includeTextDetails, List<String> pages, BinaryData fileStream,
         Long contentLength) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil
-            .withContext(context -> service.analyzeIdDocument(this.client.getEndpoint(), this.client.getApiVersion(),
-                includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context));
+        return FluxUtil.withContext(context -> analyzeIdDocumentWithResponseAsync(contentType, includeTextDetails,
+            pages, fileStream, contentLength, context));
     }
 
     /**
@@ -1580,8 +2282,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, List<String> pages, BinaryData fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeIdDocument(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -1683,6 +2388,83 @@ public final class AnalyzersImpl {
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeIdDocumentNoCustomHeadersWithResponseAsync(ContentType contentType,
+        Boolean includeTextDetails, List<String> pages, BinaryData fileStream, Long contentLength) {
+        return FluxUtil.withContext(context -> analyzeIdDocumentNoCustomHeadersWithResponseAsync(contentType,
+            includeTextDetails, pages, fileStream, contentLength, context));
+    }
+
+    /**
+     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeIdDocumentNoCustomHeadersWithResponseAsync(ContentType contentType,
+        Boolean includeTextDetails, List<String> pages, BinaryData fileStream, Long contentLength, Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeIdDocumentNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            includeTextDetails, pagesConverted, contentType, fileStream, contentLength, accept, context);
+    }
+
+    /**
+     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeIdDocumentNoCustomHeadersWithResponse(ContentType contentType,
+        Boolean includeTextDetails, List<String> pages, BinaryData fileStream, Long contentLength, Context context) {
+        return analyzeIdDocumentNoCustomHeadersWithResponseAsync(contentType, includeTextDetails, pages, fileStream,
+            contentLength, context).block();
+    }
+
+    /**
+     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
@@ -1695,11 +2477,8 @@ public final class AnalyzersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<AnalyzersAnalyzeIdDocumentHeaders, Void>>
         analyzeIdDocumentWithResponseAsync(Boolean includeTextDetails, List<String> pages, SourcePath fileStream) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.analyzeIdDocument(this.client.getEndpoint(),
-            this.client.getApiVersion(), includeTextDetails, pagesConverted, fileStream, accept, context));
+        return FluxUtil
+            .withContext(context -> analyzeIdDocumentWithResponseAsync(includeTextDetails, pages, fileStream, context));
     }
 
     /**
@@ -1721,8 +2500,11 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeIdDocumentHeaders, Void>> analyzeIdDocumentWithResponseAsync(
         Boolean includeTextDetails, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeIdDocument(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             pagesConverted, fileStream, accept, context);
     }
@@ -1809,6 +2591,77 @@ public final class AnalyzersImpl {
     }
 
     /**
+     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeIdDocumentNoCustomHeadersWithResponseAsync(Boolean includeTextDetails,
+        List<String> pages, SourcePath fileStream) {
+        return FluxUtil.withContext(context -> analyzeIdDocumentNoCustomHeadersWithResponseAsync(includeTextDetails,
+            pages, fileStream, context));
+    }
+
+    /**
+     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeIdDocumentNoCustomHeadersWithResponseAsync(Boolean includeTextDetails,
+        List<String> pages, SourcePath fileStream, Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeIdDocumentNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            includeTextDetails, pagesConverted, fileStream, accept, context);
+    }
+
+    /**
+     * Extract field text and semantic values from a given ID document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeIdDocumentNoCustomHeadersWithResponse(Boolean includeTextDetails, List<String> pages,
+        SourcePath fileStream, Context context) {
+        return analyzeIdDocumentNoCustomHeadersWithResponseAsync(includeTextDetails, pages, fileStream, context)
+            .block();
+    }
+
+    /**
      * Track the progress and obtain the result of the analyze ID operation.
      * 
      * @param resultId Analyze operation result identifier.
@@ -1820,9 +2673,7 @@ public final class AnalyzersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeIdDocumentResultWithResponseAsync(UUID resultId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAnalyzeIdDocumentResult(this.client.getEndpoint(),
-            this.client.getApiVersion(), resultId, accept, context));
+        return FluxUtil.withContext(context -> getAnalyzeIdDocumentResultWithResponseAsync(resultId, context));
     }
 
     /**
@@ -1925,12 +2776,8 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeReceiptHeaders, Void>> analyzeReceiptWithResponseAsync(
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil
-            .withContext(context -> service.analyzeReceipt(this.client.getEndpoint(), this.client.getApiVersion(),
-                includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
+        return FluxUtil.withContext(context -> analyzeReceiptWithResponseAsync(contentType, includeTextDetails, locale,
+            pages, fileStream, contentLength, context));
     }
 
     /**
@@ -1957,8 +2804,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages,
         Flux<ByteBuffer> fileStream, Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeReceipt(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -2081,18 +2931,99 @@ public final class AnalyzersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeReceiptNoCustomHeadersWithResponseAsync(ContentType contentType,
+        Boolean includeTextDetails, Locale locale, List<String> pages, Flux<ByteBuffer> fileStream,
+        Long contentLength) {
+        return FluxUtil.withContext(context -> analyzeReceiptNoCustomHeadersWithResponseAsync(contentType,
+            includeTextDetails, locale, pages, fileStream, contentLength, context));
+    }
+
+    /**
+     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeReceiptNoCustomHeadersWithResponseAsync(ContentType contentType,
+        Boolean includeTextDetails, Locale locale, List<String> pages, Flux<ByteBuffer> fileStream, Long contentLength,
+        Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeReceiptNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
+    }
+
+    /**
+     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeReceiptNoCustomHeadersWithResponse(ContentType contentType, Boolean includeTextDetails,
+        Locale locale, List<String> pages, Flux<ByteBuffer> fileStream, Long contentLength, Context context) {
+        return analyzeReceiptNoCustomHeadersWithResponseAsync(contentType, includeTextDetails, locale, pages,
+            fileStream, contentLength, context).block();
+    }
+
+    /**
+     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<AnalyzersAnalyzeReceiptHeaders, Void>> analyzeReceiptWithResponseAsync(
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil
-            .withContext(context -> service.analyzeReceipt(this.client.getEndpoint(), this.client.getApiVersion(),
-                includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context));
+        return FluxUtil.withContext(context -> analyzeReceiptWithResponseAsync(contentType, includeTextDetails, locale,
+            pages, fileStream, contentLength, context));
     }
 
     /**
@@ -2119,8 +3050,11 @@ public final class AnalyzersImpl {
         ContentType contentType, Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream,
         Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeReceipt(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
     }
@@ -2232,6 +3166,90 @@ public final class AnalyzersImpl {
      * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
      * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
      * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeReceiptNoCustomHeadersWithResponseAsync(ContentType contentType,
+        Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream, Long contentLength) {
+        return FluxUtil.withContext(context -> analyzeReceiptNoCustomHeadersWithResponseAsync(contentType,
+            includeTextDetails, locale, pages, fileStream, contentLength, context));
+    }
+
+    /**
+     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeReceiptNoCustomHeadersWithResponseAsync(ContentType contentType,
+        Boolean includeTextDetails, Locale locale, List<String> pages, BinaryData fileStream, Long contentLength,
+        Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeReceiptNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            includeTextDetails, locale, pagesConverted, contentType, fileStream, contentLength, accept, context);
+    }
+
+    /**
+     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeReceiptNoCustomHeadersWithResponse(ContentType contentType, Boolean includeTextDetails,
+        Locale locale, List<String> pages, BinaryData fileStream, Long contentLength, Context context) {
+        return analyzeReceiptNoCustomHeadersWithResponseAsync(contentType, includeTextDetails, locale, pages,
+            fileStream, contentLength, context).block();
+    }
+
+    /**
+     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
      * @param includeTextDetails Include text lines and element references in the result.
      * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
      * en-US(default).
@@ -2246,11 +3264,8 @@ public final class AnalyzersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<AnalyzersAnalyzeReceiptHeaders, Void>> analyzeReceiptWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.analyzeReceipt(this.client.getEndpoint(),
-            this.client.getApiVersion(), includeTextDetails, locale, pagesConverted, fileStream, accept, context));
+        return FluxUtil.withContext(
+            context -> analyzeReceiptWithResponseAsync(includeTextDetails, locale, pages, fileStream, context));
     }
 
     /**
@@ -2274,8 +3289,11 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeReceiptHeaders, Void>> analyzeReceiptWithResponseAsync(
         Boolean includeTextDetails, Locale locale, List<String> pages, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeReceipt(this.client.getEndpoint(), this.client.getApiVersion(), includeTextDetails,
             locale, pagesConverted, fileStream, accept, context);
     }
@@ -2371,6 +3389,83 @@ public final class AnalyzersImpl {
     }
 
     /**
+     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeReceiptNoCustomHeadersWithResponseAsync(Boolean includeTextDetails,
+        Locale locale, List<String> pages, SourcePath fileStream) {
+        return FluxUtil.withContext(context -> analyzeReceiptNoCustomHeadersWithResponseAsync(includeTextDetails,
+            locale, pages, fileStream, context));
+    }
+
+    /**
+     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeReceiptNoCustomHeadersWithResponseAsync(Boolean includeTextDetails,
+        Locale locale, List<String> pages, SourcePath fileStream, Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeReceiptNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            includeTextDetails, locale, pagesConverted, fileStream, accept, context);
+    }
+
+    /**
+     * Extract field text and semantic values from a given receipt document. The input document must be of one of the
+     * supported content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'.
+     * Alternatively, use 'application/json' type to specify the location (Uri) of the document to be analyzed.
+     * 
+     * @param includeTextDetails Include text lines and element references in the result.
+     * @param locale Locale of the input document. Supported locales include: en-AU, en-CA, en-GB, en-IN,
+     * en-US(default).
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeReceiptNoCustomHeadersWithResponse(Boolean includeTextDetails, Locale locale,
+        List<String> pages, SourcePath fileStream, Context context) {
+        return analyzeReceiptNoCustomHeadersWithResponseAsync(includeTextDetails, locale, pages, fileStream, context)
+            .block();
+    }
+
+    /**
      * Track the progress and obtain the result of the analyze receipt operation.
      * 
      * @param resultId Analyze operation result identifier.
@@ -2382,9 +3477,7 @@ public final class AnalyzersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(UUID resultId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAnalyzeReceiptResult(this.client.getEndpoint(),
-            this.client.getApiVersion(), resultId, accept, context));
+        return FluxUtil.withContext(context -> getAnalyzeReceiptResultWithResponseAsync(resultId, context));
     }
 
     /**
@@ -2501,12 +3594,8 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeLayoutHeaders, Void>> analyzeLayoutWithResponseAsync(
         ContentType contentType, List<String> pages, Language language, ReadingOrder readingOrder,
         Flux<ByteBuffer> fileStream, Long contentLength) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil
-            .withContext(context -> service.analyzeLayout(this.client.getEndpoint(), this.client.getApiVersion(),
-                pagesConverted, language, readingOrder, contentType, fileStream, contentLength, accept, context));
+        return FluxUtil.withContext(context -> analyzeLayoutWithResponseAsync(contentType, pages, language,
+            readingOrder, fileStream, contentLength, context));
     }
 
     /**
@@ -2547,8 +3636,11 @@ public final class AnalyzersImpl {
         ContentType contentType, List<String> pages, Language language, ReadingOrder readingOrder,
         Flux<ByteBuffer> fileStream, Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeLayout(this.client.getEndpoint(), this.client.getApiVersion(), pagesConverted, language,
             readingOrder, contentType, fileStream, contentLength, accept, context);
     }
@@ -2740,18 +3832,142 @@ public final class AnalyzersImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeLayoutNoCustomHeadersWithResponseAsync(ContentType contentType,
+        List<String> pages, Language language, ReadingOrder readingOrder, Flux<ByteBuffer> fileStream,
+        Long contentLength) {
+        return FluxUtil.withContext(context -> analyzeLayoutNoCustomHeadersWithResponseAsync(contentType, pages,
+            language, readingOrder, fileStream, contentLength, context));
+    }
+
+    /**
+     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     * (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’), Crimean
+     * Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian (‘et’), Fijian
+     * (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’), German (‘de’),
+     * Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw (‘mww’), Hungarian (‘hu’),
+     * Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian (‘it’), Japanese (‘ja’), Javanese
+     * (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’), Kashubian (‘csb’), Khasi (‘kha’), Korean
+     * (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’), Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’),
+     * Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots
+     * (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili
+     * (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’), Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish
+     * (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya
+     * (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are supported (print – seventy-three languages and handwritten – English
+     * only). Layout supports auto language identification and multi language documents, so only provide a language code
+     * if you would like to force the documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     * basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeLayoutNoCustomHeadersWithResponseAsync(ContentType contentType,
+        List<String> pages, Language language, ReadingOrder readingOrder, Flux<ByteBuffer> fileStream,
+        Long contentLength, Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeLayoutNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            pagesConverted, language, readingOrder, contentType, fileStream, contentLength, accept, context);
+    }
+
+    /**
+     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     * (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’), Crimean
+     * Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian (‘et’), Fijian
+     * (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’), German (‘de’),
+     * Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw (‘mww’), Hungarian (‘hu’),
+     * Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian (‘it’), Japanese (‘ja’), Javanese
+     * (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’), Kashubian (‘csb’), Khasi (‘kha’), Korean
+     * (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’), Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’),
+     * Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots
+     * (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili
+     * (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’), Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish
+     * (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya
+     * (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are supported (print – seventy-three languages and handwritten – English
+     * only). Layout supports auto language identification and multi language documents, so only provide a language code
+     * if you would like to force the documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     * basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeLayoutNoCustomHeadersWithResponse(ContentType contentType, List<String> pages,
+        Language language, ReadingOrder readingOrder, Flux<ByteBuffer> fileStream, Long contentLength,
+        Context context) {
+        return analyzeLayoutNoCustomHeadersWithResponseAsync(contentType, pages, language, readingOrder, fileStream,
+            contentLength, context).block();
+    }
+
+    /**
+     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     * (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’), Crimean
+     * Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian (‘et’), Fijian
+     * (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’), German (‘de’),
+     * Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw (‘mww’), Hungarian (‘hu’),
+     * Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian (‘it’), Japanese (‘ja’), Javanese
+     * (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’), Kashubian (‘csb’), Khasi (‘kha’), Korean
+     * (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’), Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’),
+     * Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots
+     * (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili
+     * (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’), Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish
+     * (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya
+     * (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are supported (print – seventy-three languages and handwritten – English
+     * only). Layout supports auto language identification and multi language documents, so only provide a language code
+     * if you would like to force the documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     * basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<AnalyzersAnalyzeLayoutHeaders, Void>> analyzeLayoutWithResponseAsync(
         ContentType contentType, List<String> pages, Language language, ReadingOrder readingOrder,
         BinaryData fileStream, Long contentLength) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil
-            .withContext(context -> service.analyzeLayout(this.client.getEndpoint(), this.client.getApiVersion(),
-                pagesConverted, language, readingOrder, contentType, fileStream, contentLength, accept, context));
+        return FluxUtil.withContext(context -> analyzeLayoutWithResponseAsync(contentType, pages, language,
+            readingOrder, fileStream, contentLength, context));
     }
 
     /**
@@ -2792,8 +4008,11 @@ public final class AnalyzersImpl {
         ContentType contentType, List<String> pages, Language language, ReadingOrder readingOrder,
         BinaryData fileStream, Long contentLength, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeLayout(this.client.getEndpoint(), this.client.getApiVersion(), pagesConverted, language,
             readingOrder, contentType, fileStream, contentLength, accept, context);
     }
@@ -2960,6 +4179,132 @@ public final class AnalyzersImpl {
      * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
      * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      * 
+     * @param contentType Upload file type.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     * (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’), Crimean
+     * Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian (‘et’), Fijian
+     * (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’), German (‘de’),
+     * Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw (‘mww’), Hungarian (‘hu’),
+     * Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian (‘it’), Japanese (‘ja’), Javanese
+     * (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’), Kashubian (‘csb’), Khasi (‘kha’), Korean
+     * (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’), Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’),
+     * Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots
+     * (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili
+     * (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’), Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish
+     * (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya
+     * (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are supported (print – seventy-three languages and handwritten – English
+     * only). Layout supports auto language identification and multi language documents, so only provide a language code
+     * if you would like to force the documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     * basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeLayoutNoCustomHeadersWithResponseAsync(ContentType contentType,
+        List<String> pages, Language language, ReadingOrder readingOrder, BinaryData fileStream, Long contentLength) {
+        return FluxUtil.withContext(context -> analyzeLayoutNoCustomHeadersWithResponseAsync(contentType, pages,
+            language, readingOrder, fileStream, contentLength, context));
+    }
+
+    /**
+     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     * (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’), Crimean
+     * Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian (‘et’), Fijian
+     * (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’), German (‘de’),
+     * Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw (‘mww’), Hungarian (‘hu’),
+     * Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian (‘it’), Japanese (‘ja’), Javanese
+     * (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’), Kashubian (‘csb’), Khasi (‘kha’), Korean
+     * (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’), Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’),
+     * Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots
+     * (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili
+     * (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’), Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish
+     * (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya
+     * (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are supported (print – seventy-three languages and handwritten – English
+     * only). Layout supports auto language identification and multi language documents, so only provide a language code
+     * if you would like to force the documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     * basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeLayoutNoCustomHeadersWithResponseAsync(ContentType contentType,
+        List<String> pages, Language language, ReadingOrder readingOrder, BinaryData fileStream, Long contentLength,
+        Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeLayoutNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            pagesConverted, language, readingOrder, contentType, fileStream, contentLength, accept, context);
+    }
+
+    /**
+     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 
+     * @param contentType Upload file type.
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     * (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’), Crimean
+     * Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian (‘et’), Fijian
+     * (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’), German (‘de’),
+     * Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw (‘mww’), Hungarian (‘hu’),
+     * Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian (‘it’), Japanese (‘ja’), Javanese
+     * (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’), Kashubian (‘csb’), Khasi (‘kha’), Korean
+     * (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’), Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’),
+     * Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots
+     * (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili
+     * (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’), Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish
+     * (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya
+     * (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are supported (print – seventy-three languages and handwritten – English
+     * only). Layout supports auto language identification and multi language documents, so only provide a language code
+     * if you would like to force the documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     * basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param contentLength The Content-Length header for the request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeLayoutNoCustomHeadersWithResponse(ContentType contentType, List<String> pages,
+        Language language, ReadingOrder readingOrder, BinaryData fileStream, Long contentLength, Context context) {
+        return analyzeLayoutNoCustomHeadersWithResponseAsync(contentType, pages, language, readingOrder, fileStream,
+            contentLength, context).block();
+    }
+
+    /**
+     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 
      * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
      * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
      * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
@@ -2988,11 +4333,8 @@ public final class AnalyzersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<AnalyzersAnalyzeLayoutHeaders, Void>> analyzeLayoutWithResponseAsync(List<String> pages,
         Language language, ReadingOrder readingOrder, SourcePath fileStream) {
-        final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil.withContext(context -> service.analyzeLayout(this.client.getEndpoint(),
-            this.client.getApiVersion(), pagesConverted, language, readingOrder, fileStream, accept, context));
+        return FluxUtil
+            .withContext(context -> analyzeLayoutWithResponseAsync(pages, language, readingOrder, fileStream, context));
     }
 
     /**
@@ -3030,8 +4372,11 @@ public final class AnalyzersImpl {
     public Mono<ResponseBase<AnalyzersAnalyzeLayoutHeaders, Void>> analyzeLayoutWithResponseAsync(List<String> pages,
         Language language, ReadingOrder readingOrder, SourcePath fileStream, Context context) {
         final String accept = "application/json";
-        String pagesConverted = (pages == null) ? null : pages.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return service.analyzeLayout(this.client.getEndpoint(), this.client.getApiVersion(), pagesConverted, language,
             readingOrder, fileStream, accept, context);
     }
@@ -3183,6 +4528,125 @@ public final class AnalyzersImpl {
     }
 
     /**
+     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     * (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’), Crimean
+     * Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian (‘et’), Fijian
+     * (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’), German (‘de’),
+     * Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw (‘mww’), Hungarian (‘hu’),
+     * Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian (‘it’), Japanese (‘ja’), Javanese
+     * (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’), Kashubian (‘csb’), Khasi (‘kha’), Korean
+     * (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’), Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’),
+     * Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots
+     * (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili
+     * (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’), Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish
+     * (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya
+     * (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are supported (print – seventy-three languages and handwritten – English
+     * only). Layout supports auto language identification and multi language documents, so only provide a language code
+     * if you would like to force the documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     * basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeLayoutNoCustomHeadersWithResponseAsync(List<String> pages, Language language,
+        ReadingOrder readingOrder, SourcePath fileStream) {
+        return FluxUtil.withContext(context -> analyzeLayoutNoCustomHeadersWithResponseAsync(pages, language,
+            readingOrder, fileStream, context));
+    }
+
+    /**
+     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     * (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’), Crimean
+     * Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian (‘et’), Fijian
+     * (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’), German (‘de’),
+     * Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw (‘mww’), Hungarian (‘hu’),
+     * Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian (‘it’), Japanese (‘ja’), Javanese
+     * (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’), Kashubian (‘csb’), Khasi (‘kha’), Korean
+     * (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’), Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’),
+     * Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots
+     * (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili
+     * (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’), Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish
+     * (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya
+     * (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are supported (print – seventy-three languages and handwritten – English
+     * only). Layout supports auto language identification and multi language documents, so only provide a language code
+     * if you would like to force the documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     * basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> analyzeLayoutNoCustomHeadersWithResponseAsync(List<String> pages, Language language,
+        ReadingOrder readingOrder, SourcePath fileStream, Context context) {
+        final String accept = "application/json";
+        String pagesConverted = (pages == null)
+            ? null
+            : pages.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        return service.analyzeLayoutNoCustomHeaders(this.client.getEndpoint(), this.client.getApiVersion(),
+            pagesConverted, language, readingOrder, fileStream, accept, context);
+    }
+
+    /**
+     * Extract text and layout information from a given document. The input document must be of one of the supported
+     * content types - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff' or 'image/bmp'. Alternatively, use
+     * 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
+     * 
+     * @param pages Custom page numbers for multi-page documents(PDF/TIFF), input the number of the pages you want to
+     * get OCR result. For a range of pages, use a hyphen. Separate each page or range with a comma.
+     * @param language Currently, only Afrikaans (‘af’), Albanian (‘sq’), Asturian (‘ast’), Basque (‘eu’), Bislama
+     * (‘bi’), Breton (‘br’), Catalan (‘ca’), Cebuano (‘ceb’), Chamorro (‘ch’), Cornish (‘kw’), Corsican (‘co’), Crimean
+     * Tatar - Latin script(‘crh’), Czech (‘cs’), Danish (‘da’), Dutch (‘nl’), English ('en'), Estonian (‘et’), Fijian
+     * (‘fj’), Filipino (‘fil’), Finnish (‘fi’), French (‘fr’), Friulian (‘fur’), Galician (‘gl’), German (‘de’),
+     * Gilbertese (‘gil’), Greenlandic (‘kl’), Haitian Creole (‘ht’), Hani (‘hni’), Hmong Daw (‘mww’), Hungarian (‘hu’),
+     * Indonesian (‘id’), Interlingua (‘ia’), Inuktitut (‘iu’), Irish (‘ga’), Italian (‘it’), Japanese (‘ja’), Javanese
+     * (‘jv’), Kabuverdianu (‘kea’), Kachin (‘kac’), Kara-Kalpak (‘kaa’), Kashubian (‘csb’), Khasi (‘kha’), Korean
+     * (‘ko’), Kurdish - Latin script (‘ku’), K’iche’ (‘quc’), Luxembourgish (‘lb’), Malay (‘ms’), Manx (‘gv’),
+     * Neapolitan (‘nap’), Norwegian (‘no’), Occitan (‘oc’), Polish (‘pl’), Portuguese (‘pt’), Romansh (‘rm’), Scots
+     * (‘sco’), Scottish Gaelic (‘gd’), simplified Chinese (‘zh-Hans’), Slovenian (‘sl’), Spanish (‘es’), Swahili
+     * (‘sw’), Swedish (‘sv’), Tatar - Latin script (‘tt’), Tetum (‘tet’), traditional Chinese (‘zh-Hant’), Turkish
+     * (‘tr’), Upper Sorbian (‘hsb’), Uzbek (‘uz’), Volapük (‘vo’), Walser (‘wae’), Western Frisian (‘fy’), Yucatec Maya
+     * (‘yua’), Zhuang (‘za’) and Zulu (‘zu’) are supported (print – seventy-three languages and handwritten – English
+     * only). Layout supports auto language identification and multi language documents, so only provide a language code
+     * if you would like to force the documented to be processed as that specific language.
+     * @param readingOrder Reading order algorithm to sort the text lines returned. Supported reading orders include:
+     * basic(default), natural.
+     * @param fileStream .json, .pdf, .jpg, .png, .tiff or .bmp type file stream.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> analyzeLayoutNoCustomHeadersWithResponse(List<String> pages, Language language,
+        ReadingOrder readingOrder, SourcePath fileStream, Context context) {
+        return analyzeLayoutNoCustomHeadersWithResponseAsync(pages, language, readingOrder, fileStream, context)
+            .block();
+    }
+
+    /**
      * Track the progress and obtain the result of the analyze layout operation.
      * 
      * @param resultId Analyze operation result identifier.
@@ -3194,9 +4658,7 @@ public final class AnalyzersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(UUID resultId) {
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAnalyzeLayoutResult(this.client.getEndpoint(),
-            this.client.getApiVersion(), resultId, accept, context));
+        return FluxUtil.withContext(context -> getAnalyzeLayoutResultWithResponseAsync(resultId, context));
     }
 
     /**

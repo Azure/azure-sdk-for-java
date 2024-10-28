@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class ScansAsyncClient {
-    @Generated private final ScansImpl serviceClient;
+    @Generated
+    private final ScansImpl serviceClient;
 
     /**
      * Initializes an instance of ScansAsyncClient class.
@@ -159,8 +160,8 @@ public final class ScansAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String dataSourceName, String scanName,
+        BinaryData body, RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateWithResponseAsync(dataSourceName, scanName, body, requestOptions);
     }
 
@@ -233,8 +234,8 @@ public final class ScansAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(dataSourceName, scanName, requestOptions);
     }
 
@@ -307,8 +308,8 @@ public final class ScansAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deleteWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(dataSourceName, scanName, requestOptions);
     }
 

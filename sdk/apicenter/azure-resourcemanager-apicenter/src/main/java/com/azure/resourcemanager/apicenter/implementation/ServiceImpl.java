@@ -91,14 +91,18 @@ public final class ServiceImpl implements Service, Service.Definition, Service.U
     }
 
     public Service create() {
-        this.innerObject = serviceManager.serviceClient().getServices()
-            .createOrUpdateWithResponse(resourceGroupName, serviceName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Service create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getServices()
-            .createOrUpdateWithResponse(resourceGroupName, serviceName, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -114,14 +118,18 @@ public final class ServiceImpl implements Service, Service.Definition, Service.U
     }
 
     public Service apply() {
-        this.innerObject = serviceManager.serviceClient().getServices()
-            .updateWithResponse(resourceGroupName, serviceName, updateProperties, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .updateWithResponse(resourceGroupName, serviceName, updateProperties, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Service apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getServices()
-            .updateWithResponse(resourceGroupName, serviceName, updateProperties, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .updateWithResponse(resourceGroupName, serviceName, updateProperties, context)
+            .getValue();
         return this;
     }
 
@@ -133,14 +141,18 @@ public final class ServiceImpl implements Service, Service.Definition, Service.U
     }
 
     public Service refresh() {
-        this.innerObject = serviceManager.serviceClient().getServices()
-            .getByResourceGroupWithResponse(resourceGroupName, serviceName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .getByResourceGroupWithResponse(resourceGroupName, serviceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Service refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getServices()
-            .getByResourceGroupWithResponse(resourceGroupName, serviceName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .getByResourceGroupWithResponse(resourceGroupName, serviceName, context)
+            .getValue();
         return this;
     }
 

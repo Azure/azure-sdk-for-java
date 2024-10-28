@@ -141,16 +141,16 @@ public final class ApiContractUpdateProperties extends ApiEntityBaseContract {
 
     /** {@inheritDoc} */
     @Override
-    public ApiContractUpdateProperties withAuthenticationSettings(
-        AuthenticationSettingsContract authenticationSettings) {
+    public ApiContractUpdateProperties
+        withAuthenticationSettings(AuthenticationSettingsContract authenticationSettings) {
         super.withAuthenticationSettings(authenticationSettings);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ApiContractUpdateProperties withSubscriptionKeyParameterNames(
-        SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
+    public ApiContractUpdateProperties
+        withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
         super.withSubscriptionKeyParameterNames(subscriptionKeyParameterNames);
         return this;
     }

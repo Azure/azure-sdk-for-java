@@ -333,8 +333,8 @@ public final class ApiCreateOrUpdateParameter {
      * @param authenticationSettings the authenticationSettings value to set.
      * @return the ApiCreateOrUpdateParameter object itself.
      */
-    public ApiCreateOrUpdateParameter withAuthenticationSettings(
-        AuthenticationSettingsContract authenticationSettings) {
+    public ApiCreateOrUpdateParameter
+        withAuthenticationSettings(AuthenticationSettingsContract authenticationSettings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiCreateOrUpdateProperties();
         }
@@ -357,8 +357,8 @@ public final class ApiCreateOrUpdateParameter {
      * @param subscriptionKeyParameterNames the subscriptionKeyParameterNames value to set.
      * @return the ApiCreateOrUpdateParameter object itself.
      */
-    public ApiCreateOrUpdateParameter withSubscriptionKeyParameterNames(
-        SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
+    public ApiCreateOrUpdateParameter
+        withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiCreateOrUpdateProperties();
         }

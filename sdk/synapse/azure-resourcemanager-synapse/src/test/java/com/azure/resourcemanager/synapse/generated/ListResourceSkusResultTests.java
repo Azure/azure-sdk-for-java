@@ -18,14 +18,12 @@ import org.junit.jupiter.api.Assertions;
 public final class ListResourceSkusResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ListResourceSkusResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"resourceType\":\"qagnepzwakl\",\"sku\":{\"name\":\"Compute"
-                        + " optimized\",\"capacity\":1527114971,\"size\":\"Small\"},\"capacity\":{\"scaleType\":\"automatic\",\"minimum\":622507993,\"maximum\":1059203016,\"default\":465336840}},{\"resourceType\":\"xaomzisglrrc\",\"sku\":{\"name\":\"Storage"
-                        + " optimized\",\"capacity\":552300576,\"size\":\"Large\"},\"capacity\":{\"scaleType\":\"manual\",\"minimum\":1031281718,\"maximum\":244052018,\"default\":1388509479}},{\"resourceType\":\"hqo\",\"sku\":{\"name\":\"Storage"
-                        + " optimized\",\"capacity\":1275493501,\"size\":\"Medium\"},\"capacity\":{\"scaleType\":\"none\",\"minimum\":1715281264,\"maximum\":536422928,\"default\":177387520}}]}")
-                .toObject(ListResourceSkusResult.class);
+        ListResourceSkusResult model = BinaryData
+            .fromString("{\"value\":[{\"resourceType\":\"qagnepzwakl\",\"sku\":{\"name\":\"Compute"
+                + " optimized\",\"capacity\":1527114971,\"size\":\"Small\"},\"capacity\":{\"scaleType\":\"automatic\",\"minimum\":622507993,\"maximum\":1059203016,\"default\":465336840}},{\"resourceType\":\"xaomzisglrrc\",\"sku\":{\"name\":\"Storage"
+                + " optimized\",\"capacity\":552300576,\"size\":\"Large\"},\"capacity\":{\"scaleType\":\"manual\",\"minimum\":1031281718,\"maximum\":244052018,\"default\":1388509479}},{\"resourceType\":\"hqo\",\"sku\":{\"name\":\"Storage"
+                + " optimized\",\"capacity\":1275493501,\"size\":\"Medium\"},\"capacity\":{\"scaleType\":\"none\",\"minimum\":1715281264,\"maximum\":536422928,\"default\":177387520}}]}")
+            .toObject(ListResourceSkusResult.class);
         Assertions.assertEquals("qagnepzwakl", model.value().get(0).resourceType());
         Assertions.assertEquals(SkuName.COMPUTE_OPTIMIZED, model.value().get(0).sku().name());
         Assertions.assertEquals(1527114971, model.value().get(0).sku().capacity());
@@ -38,50 +36,29 @@ public final class ListResourceSkusResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ListResourceSkusResult model =
-            new ListResourceSkusResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AzureResourceSkuInner()
-                                .withResourceType("qagnepzwakl")
-                                .withSku(
-                                    new AzureSku()
-                                        .withName(SkuName.COMPUTE_OPTIMIZED)
-                                        .withCapacity(1527114971)
-                                        .withSize(SkuSize.SMALL))
-                                .withCapacity(
-                                    new AzureCapacity()
-                                        .withScaleType(AzureScaleType.AUTOMATIC)
-                                        .withMinimum(622507993)
-                                        .withMaximum(1059203016)
-                                        .withDefaultProperty(465336840)),
-                            new AzureResourceSkuInner()
-                                .withResourceType("xaomzisglrrc")
-                                .withSku(
-                                    new AzureSku()
-                                        .withName(SkuName.STORAGE_OPTIMIZED)
-                                        .withCapacity(552300576)
-                                        .withSize(SkuSize.LARGE))
-                                .withCapacity(
-                                    new AzureCapacity()
-                                        .withScaleType(AzureScaleType.MANUAL)
-                                        .withMinimum(1031281718)
-                                        .withMaximum(244052018)
-                                        .withDefaultProperty(1388509479)),
-                            new AzureResourceSkuInner()
-                                .withResourceType("hqo")
-                                .withSku(
-                                    new AzureSku()
-                                        .withName(SkuName.STORAGE_OPTIMIZED)
-                                        .withCapacity(1275493501)
-                                        .withSize(SkuSize.MEDIUM))
-                                .withCapacity(
-                                    new AzureCapacity()
-                                        .withScaleType(AzureScaleType.NONE)
-                                        .withMinimum(1715281264)
-                                        .withMaximum(536422928)
-                                        .withDefaultProperty(177387520))));
+        ListResourceSkusResult model = new ListResourceSkusResult().withValue(Arrays.asList(
+            new AzureResourceSkuInner().withResourceType("qagnepzwakl")
+                .withSku(
+                    new AzureSku().withName(SkuName.COMPUTE_OPTIMIZED).withCapacity(1527114971).withSize(SkuSize.SMALL))
+                .withCapacity(new AzureCapacity().withScaleType(AzureScaleType.AUTOMATIC)
+                    .withMinimum(622507993)
+                    .withMaximum(1059203016)
+                    .withDefaultProperty(465336840)),
+            new AzureResourceSkuInner().withResourceType("xaomzisglrrc")
+                .withSku(
+                    new AzureSku().withName(SkuName.STORAGE_OPTIMIZED).withCapacity(552300576).withSize(SkuSize.LARGE))
+                .withCapacity(new AzureCapacity().withScaleType(AzureScaleType.MANUAL)
+                    .withMinimum(1031281718)
+                    .withMaximum(244052018)
+                    .withDefaultProperty(1388509479)),
+            new AzureResourceSkuInner().withResourceType("hqo")
+                .withSku(new AzureSku().withName(SkuName.STORAGE_OPTIMIZED)
+                    .withCapacity(1275493501)
+                    .withSize(SkuSize.MEDIUM))
+                .withCapacity(new AzureCapacity().withScaleType(AzureScaleType.NONE)
+                    .withMinimum(1715281264)
+                    .withMaximum(536422928)
+                    .withDefaultProperty(177387520))));
         model = BinaryData.fromObject(model).toObject(ListResourceSkusResult.class);
         Assertions.assertEquals("qagnepzwakl", model.value().get(0).resourceType());
         Assertions.assertEquals(SkuName.COMPUTE_OPTIMIZED, model.value().get(0).sku().name());

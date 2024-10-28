@@ -29,8 +29,8 @@ public interface AccessConnectorsClient {
      * @return an azure databricks accessConnector along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessConnectorInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String connectorName, Context context);
+    Response<AccessConnectorInner> getByResourceGroupWithResponse(String resourceGroupName, String connectorName,
+        Context context);
 
     /**
      * Gets an azure databricks accessConnector.
@@ -115,8 +115,8 @@ public interface AccessConnectorsClient {
      * @return the {@link SyncPoller} for polling of information about azure databricks accessConnector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner> beginCreateOrUpdate(
-        String resourceGroupName, String connectorName, AccessConnectorInner parameters);
+    SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner> beginCreateOrUpdate(String resourceGroupName,
+        String connectorName, AccessConnectorInner parameters);
 
     /**
      * Creates or updates azure databricks accessConnector.
@@ -132,8 +132,8 @@ public interface AccessConnectorsClient {
      * @return the {@link SyncPoller} for polling of information about azure databricks accessConnector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner> beginCreateOrUpdate(
-        String resourceGroupName, String connectorName, AccessConnectorInner parameters, Context context);
+    SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner> beginCreateOrUpdate(String resourceGroupName,
+        String connectorName, AccessConnectorInner parameters, Context context);
 
     /**
      * Creates or updates azure databricks accessConnector.
@@ -148,8 +148,8 @@ public interface AccessConnectorsClient {
      * @return information about azure databricks accessConnector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessConnectorInner createOrUpdate(
-        String resourceGroupName, String connectorName, AccessConnectorInner parameters);
+    AccessConnectorInner createOrUpdate(String resourceGroupName, String connectorName,
+        AccessConnectorInner parameters);
 
     /**
      * Creates or updates azure databricks accessConnector.
@@ -165,8 +165,8 @@ public interface AccessConnectorsClient {
      * @return information about azure databricks accessConnector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessConnectorInner createOrUpdate(
-        String resourceGroupName, String connectorName, AccessConnectorInner parameters, Context context);
+    AccessConnectorInner createOrUpdate(String resourceGroupName, String connectorName, AccessConnectorInner parameters,
+        Context context);
 
     /**
      * Updates an azure databricks accessConnector.
@@ -181,8 +181,8 @@ public interface AccessConnectorsClient {
      * @return the {@link SyncPoller} for polling of information about azure databricks accessConnector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner> beginUpdate(
-        String resourceGroupName, String connectorName, AccessConnectorUpdate parameters);
+    SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner> beginUpdate(String resourceGroupName,
+        String connectorName, AccessConnectorUpdate parameters);
 
     /**
      * Updates an azure databricks accessConnector.
@@ -198,8 +198,8 @@ public interface AccessConnectorsClient {
      * @return the {@link SyncPoller} for polling of information about azure databricks accessConnector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner> beginUpdate(
-        String resourceGroupName, String connectorName, AccessConnectorUpdate parameters, Context context);
+    SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner> beginUpdate(String resourceGroupName,
+        String connectorName, AccessConnectorUpdate parameters, Context context);
 
     /**
      * Updates an azure databricks accessConnector.
@@ -230,8 +230,8 @@ public interface AccessConnectorsClient {
      * @return information about azure databricks accessConnector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessConnectorInner update(
-        String resourceGroupName, String connectorName, AccessConnectorUpdate parameters, Context context);
+    AccessConnectorInner update(String resourceGroupName, String connectorName, AccessConnectorUpdate parameters,
+        Context context);
 
     /**
      * Gets all the azure databricks accessConnectors within a resource group.

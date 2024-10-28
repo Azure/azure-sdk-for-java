@@ -48,13 +48,11 @@ public final class ApiManagementServiceCheckNameAvailabilityParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ApiManagementServiceCheckNameAvailabilityParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model ApiManagementServiceCheckNameAvailabilityParameters"));
         }
     }
 
-    private static final ClientLogger LOGGER =
-        new ClientLogger(ApiManagementServiceCheckNameAvailabilityParameters.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(ApiManagementServiceCheckNameAvailabilityParameters.class);
 }

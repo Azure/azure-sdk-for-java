@@ -21,51 +21,29 @@ public final class SourceControlConfigurationsImpl implements SourceControlConfi
 
     private final com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager;
 
-    public SourceControlConfigurationsImpl(
-        SourceControlConfigurationsClient innerClient,
+    public SourceControlConfigurationsImpl(SourceControlConfigurationsClient innerClient,
         com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<SourceControlConfiguration> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName,
-        Context context) {
-        Response<SourceControlConfigurationInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    resourceGroupName,
-                    clusterRp,
-                    clusterResourceName,
-                    clusterName,
-                    sourceControlConfigurationName,
-                    context);
+    public Response<SourceControlConfiguration> getWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String sourceControlConfigurationName, Context context) {
+        Response<SourceControlConfigurationInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, clusterRp, clusterResourceName, clusterName,
+                sourceControlConfigurationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SourceControlConfigurationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public SourceControlConfiguration get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName) {
-        SourceControlConfigurationInner inner =
-            this
-                .serviceClient()
-                .get(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName);
+    public SourceControlConfiguration get(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String sourceControlConfigurationName) {
+        SourceControlConfigurationInner inner = this.serviceClient()
+            .get(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName);
         if (inner != null) {
             return new SourceControlConfigurationImpl(inner, this.manager());
         } else {
@@ -73,53 +51,26 @@ public final class SourceControlConfigurationsImpl implements SourceControlConfi
         }
     }
 
-    public Response<SourceControlConfiguration> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName,
-        SourceControlConfigurationInner sourceControlConfiguration,
-        Context context) {
-        Response<SourceControlConfigurationInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    clusterRp,
-                    clusterResourceName,
-                    clusterName,
-                    sourceControlConfigurationName,
-                    sourceControlConfiguration,
-                    context);
+    public Response<SourceControlConfiguration> createOrUpdateWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String sourceControlConfigurationName,
+        SourceControlConfigurationInner sourceControlConfiguration, Context context) {
+        Response<SourceControlConfigurationInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, clusterRp, clusterResourceName, clusterName,
+                sourceControlConfigurationName, sourceControlConfiguration, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SourceControlConfigurationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public SourceControlConfiguration createOrUpdate(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName,
+    public SourceControlConfiguration createOrUpdate(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String sourceControlConfigurationName,
         SourceControlConfigurationInner sourceControlConfiguration) {
-        SourceControlConfigurationInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(
-                    resourceGroupName,
-                    clusterRp,
-                    clusterResourceName,
-                    clusterName,
-                    sourceControlConfigurationName,
-                    sourceControlConfiguration);
+        SourceControlConfigurationInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, clusterRp, clusterResourceName, clusterName,
+                sourceControlConfigurationName, sourceControlConfiguration);
         if (inner != null) {
             return new SourceControlConfigurationImpl(inner, this.manager());
         } else {
@@ -127,46 +78,30 @@ public final class SourceControlConfigurationsImpl implements SourceControlConfi
         }
     }
 
-    public void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
+    public void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
         String sourceControlConfigurationName) {
-        this
-            .serviceClient()
+        this.serviceClient()
             .delete(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String sourceControlConfigurationName,
-        Context context) {
-        this
-            .serviceClient()
-            .delete(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                sourceControlConfigurationName,
+    public void delete(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName,
+        String sourceControlConfigurationName, Context context) {
+        this.serviceClient()
+            .delete(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName,
                 context);
     }
 
-    public PagedIterable<SourceControlConfiguration> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName) {
-        PagedIterable<SourceControlConfigurationInner> inner =
-            this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName);
+    public PagedIterable<SourceControlConfiguration> list(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName) {
+        PagedIterable<SourceControlConfigurationInner> inner
+            = this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName);
         return Utils.mapPage(inner, inner1 -> new SourceControlConfigurationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SourceControlConfiguration> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context) {
-        PagedIterable<SourceControlConfigurationInner> inner =
-            this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName, context);
+    public PagedIterable<SourceControlConfiguration> list(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, Context context) {
+        PagedIterable<SourceControlConfigurationInner> inner
+            = this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new SourceControlConfigurationImpl(inner1, this.manager()));
     }
 

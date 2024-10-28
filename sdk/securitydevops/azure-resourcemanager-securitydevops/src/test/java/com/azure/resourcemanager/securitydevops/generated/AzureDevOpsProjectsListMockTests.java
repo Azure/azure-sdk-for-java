@@ -34,40 +34,30 @@ public final class AzureDevOpsProjectsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"projectId\":\"uqqkpik\",\"orgName\":\"rgvtqag\",\"autoDiscovery\":\"Disabled\"},\"id\":\"nhijggmebfsi\",\"name\":\"rbu\",\"type\":\"rcvpnazzmhjrunmp\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"projectId\":\"uqqkpik\",\"orgName\":\"rgvtqag\",\"autoDiscovery\":\"Disabled\"},\"id\":\"nhijggmebfsi\",\"name\":\"rbu\",\"type\":\"rcvpnazzmhjrunmp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityDevOpsManager manager =
-            SecurityDevOpsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityDevOpsManager manager = SecurityDevOpsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AzureDevOpsProject> response =
-            manager.azureDevOpsProjects().list("fbxzpuzycisp", "qzahmgkbrp", "y", Context.NONE);
+        PagedIterable<AzureDevOpsProject> response
+            = manager.azureDevOpsProjects().list("fbxzpuzycisp", "qzahmgkbrp", "y", Context.NONE);
 
-        Assertions
-            .assertEquals(ProvisioningState.CANCELED, response.iterator().next().properties().provisioningState());
+        Assertions.assertEquals(ProvisioningState.CANCELED,
+            response.iterator().next().properties().provisioningState());
         Assertions.assertEquals("uqqkpik", response.iterator().next().properties().projectId());
         Assertions.assertEquals("rgvtqag", response.iterator().next().properties().orgName());
         Assertions.assertEquals(AutoDiscovery.DISABLED, response.iterator().next().properties().autoDiscovery());

@@ -170,12 +170,8 @@ public interface VCenter {
     VCenterInner innerModel();
 
     /** The entirety of the VCenter definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithFqdn,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithFqdn, DefinitionStages.WithCreate {
     }
 
     /** The VCenter definition stages. */
@@ -229,12 +225,8 @@ public interface VCenter {
          * The stage of the VCenter definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithExtendedLocation,
-                DefinitionStages.WithKind,
-                DefinitionStages.WithPort,
-                DefinitionStages.WithCredentials {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithExtendedLocation,
+            DefinitionStages.WithKind, DefinitionStages.WithPort, DefinitionStages.WithCredentials {
             /**
              * Executes the create request.
              *

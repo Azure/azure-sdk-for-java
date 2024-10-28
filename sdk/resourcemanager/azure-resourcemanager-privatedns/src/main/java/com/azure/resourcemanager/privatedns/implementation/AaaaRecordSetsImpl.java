@@ -8,8 +8,7 @@ import com.azure.resourcemanager.privatedns.models.AaaaRecordSets;
 import com.azure.resourcemanager.privatedns.models.RecordType;
 
 /** Implementation of {@link AaaaRecordSets}. */
-class AaaaRecordSetsImpl
-    extends PrivateDnsRecordSetsBaseImpl<AaaaRecordSet, AaaaRecordSetImpl>
+class AaaaRecordSetsImpl extends PrivateDnsRecordSetsBaseImpl<AaaaRecordSet, AaaaRecordSetImpl>
     implements AaaaRecordSets {
 
     AaaaRecordSetsImpl(PrivateDnsZoneImpl privateDnsZone) {

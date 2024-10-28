@@ -13,10 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SapAvailabilityZoneDetailsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapAvailabilityZoneDetailsRequest model =
-            BinaryData
-                .fromString("{\"appLocation\":\"zufcyzkohdbi\",\"sapProduct\":\"Other\",\"databaseType\":\"HANA\"}")
-                .toObject(SapAvailabilityZoneDetailsRequest.class);
+        SapAvailabilityZoneDetailsRequest model = BinaryData
+            .fromString("{\"appLocation\":\"zufcyzkohdbi\",\"sapProduct\":\"Other\",\"databaseType\":\"HANA\"}")
+            .toObject(SapAvailabilityZoneDetailsRequest.class);
         Assertions.assertEquals("zufcyzkohdbi", model.appLocation());
         Assertions.assertEquals(SapProductType.OTHER, model.sapProduct());
         Assertions.assertEquals(SapDatabaseType.HANA, model.databaseType());
@@ -24,9 +23,8 @@ public final class SapAvailabilityZoneDetailsRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapAvailabilityZoneDetailsRequest model =
-            new SapAvailabilityZoneDetailsRequest()
-                .withAppLocation("zufcyzkohdbi")
+        SapAvailabilityZoneDetailsRequest model
+            = new SapAvailabilityZoneDetailsRequest().withAppLocation("zufcyzkohdbi")
                 .withSapProduct(SapProductType.OTHER)
                 .withDatabaseType(SapDatabaseType.HANA);
         model = BinaryData.fromObject(model).toObject(SapAvailabilityZoneDetailsRequest.class);

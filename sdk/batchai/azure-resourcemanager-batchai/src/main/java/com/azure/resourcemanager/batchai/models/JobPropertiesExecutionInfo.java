@@ -14,7 +14,8 @@ import java.util.List;
 /** Information about the execution of a job. */
 @Immutable
 public final class JobPropertiesExecutionInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobPropertiesExecutionInfo.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(JobPropertiesExecutionInfo.class);
 
     /*
      * The time at which the job started running. 'Running' corresponds to the

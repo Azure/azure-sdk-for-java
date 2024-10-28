@@ -44,8 +44,8 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
      * @param client the instance of the service client containing this operation class.
      */
     OperationStatusClientImpl(SourceControlConfigurationClientImpl client) {
-        this.service =
-            RestProxy.create(OperationStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(OperationStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,49 +56,33 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
     @Host("{$host}")
     @ServiceInterface(name = "SourceControlConfigu")
     public interface OperationStatusService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/extensions/{extensionName}/operations/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/extensions/{extensionName}/operations/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationStatusResultInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<OperationStatusResultInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterRp") String clusterRp,
-            @PathParam("clusterResourceName") String clusterResourceName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("extensionName") String extensionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterRp") String clusterRp,
+            @PathParam("clusterResourceName") String clusterResourceName, @PathParam("clusterName") String clusterName,
+            @PathParam("extensionName") String extensionName, @QueryParam("api-version") String apiVersion,
+            @PathParam("operationId") String operationId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/operations")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{clusterRp}/{clusterResourceName}/{clusterName}/providers/Microsoft.KubernetesConfiguration/operations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationStatusList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<OperationStatusList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterRp") String clusterRp,
-            @PathParam("clusterResourceName") String clusterResourceName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterRp") String clusterRp,
+            @PathParam("clusterResourceName") String clusterResourceName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationStatusList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OperationStatusList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -118,24 +102,15 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
      * @return async Operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusResultInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        String operationId) {
+    private Mono<Response<OperationStatusResultInner>> getWithResponseAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String extensionName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -159,21 +134,9 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterRp,
-                            clusterResourceName,
-                            clusterName,
-                            extensionName,
-                            this.client.getApiVersion(),
-                            operationId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName,
+                this.client.getApiVersion(), operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -195,25 +158,15 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
      * @return async Operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusResultInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        String operationId,
-        Context context) {
+    private Mono<Response<OperationStatusResultInner>> getWithResponseAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String extensionName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -237,19 +190,8 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                extensionName,
-                this.client.getApiVersion(),
-                operationId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterRp,
+            clusterResourceName, clusterName, extensionName, this.client.getApiVersion(), operationId, accept, context);
     }
 
     /**
@@ -269,16 +211,10 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
      * @return async Operation status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> getAsync(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        String operationId) {
-        return getWithResponseAsync(
-                resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, operationId)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<OperationStatusResultInner> getAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String extensionName, String operationId) {
+        return getWithResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName,
+            operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -299,17 +235,10 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
      * @return async Operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationStatusResultInner> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        String operationId,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName, operationId, context)
-            .block();
+    public Response<OperationStatusResultInner> getWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String extensionName, String operationId, Context context) {
+        return getWithResponseAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName,
+            operationId, context).block();
     }
 
     /**
@@ -329,22 +258,10 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
      * @return async Operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        String operationId) {
-        return getWithResponse(
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                extensionName,
-                operationId,
-                Context.NONE)
-            .getValue();
+    public OperationStatusResultInner get(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String extensionName, String operationId) {
+        return getWithResponse(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName,
+            operationId, Context.NONE).getValue();
     }
 
     /**
@@ -363,19 +280,15 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OperationStatusResultInner>> listSinglePageAsync(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName) {
+    private Mono<PagedResponse<OperationStatusResultInner>> listSinglePageAsync(String resourceGroupName,
+        String clusterRp, String clusterResourceName, String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -394,27 +307,10 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterRp,
-                            clusterResourceName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<OperationStatusResultInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    clusterRp, clusterResourceName, clusterName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<OperationStatusResultInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -435,19 +331,15 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OperationStatusResultInner>> listSinglePageAsync(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context) {
+    private Mono<PagedResponse<OperationStatusResultInner>> listSinglePageAsync(String resourceGroupName,
+        String clusterRp, String clusterResourceName, String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -466,25 +358,10 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterRp,
-                clusterResourceName,
-                clusterName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterRp,
+                clusterResourceName, clusterName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -502,8 +379,8 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
      * @return the async operations in progress, in the cluster as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OperationStatusResultInner> listAsync(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName) {
+    private PagedFlux<OperationStatusResultInner> listAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -525,8 +402,8 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
      * @return the async operations in progress, in the cluster as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OperationStatusResultInner> listAsync(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context) {
+    private PagedFlux<OperationStatusResultInner> listAsync(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -547,8 +424,8 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
      * @return the async operations in progress, in the cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OperationStatusResultInner> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName) {
+    public PagedIterable<OperationStatusResultInner> list(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName) {
         return new PagedIterable<>(listAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName));
     }
 
@@ -568,8 +445,8 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
      * @return the async operations in progress, in the cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OperationStatusResultInner> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context) {
+    public PagedIterable<OperationStatusResultInner> list(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, context));
     }
 
@@ -590,23 +467,13 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OperationStatusResultInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<OperationStatusResultInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -628,23 +495,13 @@ public final class OperationStatusClientImpl implements OperationStatusClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

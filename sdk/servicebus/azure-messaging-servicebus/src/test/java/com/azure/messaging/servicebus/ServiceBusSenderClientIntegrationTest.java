@@ -44,14 +44,10 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
             return;
         }
         try {
-            receiver.receiveMessages()
-                .take(messagesPending.get())
-                .map(message -> {
-                    logger.info("Message received: {}", message.getSequenceNumber());
-                    return message;
-                })
-                .timeout(Duration.ofSeconds(5), Mono.empty())
-                .blockLast();
+            receiver.receiveMessages().take(messagesPending.get()).map(message -> {
+                logger.info("Message received: {}", message.getSequenceNumber());
+                return message;
+            }).timeout(Duration.ofSeconds(5), Mono.empty()).blockLast();
         } catch (Exception e) {
             logger.warning("Error occurred when draining queue.", e);
         } finally {
@@ -60,10 +56,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
     }
 
     static Stream<Arguments> receiverTypesProvider() {
-        return Stream.of(
-            Arguments.of(MessagingEntityType.QUEUE),
-            Arguments.of(MessagingEntityType.SUBSCRIPTION)
-        );
+        return Stream.of(Arguments.of(MessagingEntityType.QUEUE), Arguments.of(MessagingEntityType.SUBSCRIPTION));
     }
 
     /**
@@ -119,7 +112,8 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_DEFAULT);
         int count = 3;
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), CONTENTS_BYTES);
+        final List<ServiceBusMessage> messages
+            = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString(), CONTENTS_BYTES);
 
         // Assert & Act
         sender.sendMessages(messages);
@@ -178,14 +172,13 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
 
                 Assertions.assertNotNull(queueName, "'queueName' cannot be null.");
 
-                sender = toClose(getBuilder().sender()
-                    .queueName(queueName)
-                    .buildClient());
+                sender = toClose(getBuilder().sender().queueName(queueName).buildClient());
                 receiver = toClose(getBuilder().receiver()
                     .queueName(queueName)
                     .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
                     .buildAsyncClient());
                 break;
+
             case SUBSCRIPTION:
                 final String topicName = getTopicName(entityIndex);
                 final String subscriptionName = TestUtils.getSubscriptionBaseName();
@@ -193,15 +186,14 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
                 Assertions.assertNotNull(topicName, "'topicName' cannot be null.");
                 Assertions.assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                sender = toClose(getBuilder().sender()
-                    .topicName(topicName)
-                    .buildClient());
+                sender = toClose(getBuilder().sender().topicName(topicName).buildClient());
                 receiver = toClose(getBuilder().receiver()
                     .topicName(topicName)
                     .subscriptionName(subscriptionName)
                     .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
                     .buildAsyncClient());
                 break;
+
             default:
                 throw logger.logExceptionAsError(new IllegalArgumentException("Unknown entity type: " + entityType));
         }

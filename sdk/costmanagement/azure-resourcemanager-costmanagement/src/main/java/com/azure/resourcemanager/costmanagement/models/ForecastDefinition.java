@@ -180,22 +180,19 @@ public final class ForecastDefinition {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ForecastDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model ForecastDefinition"));
         }
         if (timeframe() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timeframe in model ForecastDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property timeframe in model ForecastDefinition"));
         }
         if (timePeriod() != null) {
             timePeriod().validate();
         }
         if (dataset() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dataset in model ForecastDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property dataset in model ForecastDefinition"));
         } else {
             dataset().validate();
         }

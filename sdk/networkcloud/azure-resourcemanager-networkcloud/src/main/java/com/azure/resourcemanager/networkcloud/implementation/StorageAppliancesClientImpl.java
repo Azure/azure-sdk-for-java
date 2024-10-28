@@ -57,8 +57,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @param client the instance of the service client containing this operation class.
      */
     StorageAppliancesClientImpl(NetworkCloudImpl client) {
-        this.service =
-            RestProxy.create(StorageAppliancesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(StorageAppliancesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,138 +69,101 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @Host("{$host}")
     @ServiceInterface(name = "NetworkCloudStorageA")
     public interface StorageAppliancesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.NetworkCloud/storageAppliances")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StorageApplianceList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<StorageApplianceList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<StorageApplianceList>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StorageApplianceList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<StorageApplianceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("storageApplianceName") String storageApplianceName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StorageApplianceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageApplianceName") String storageApplianceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storageApplianceName") String storageApplianceName,
             @BodyParam("application/json") StorageApplianceInner storageApplianceParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageApplianceName") String storageApplianceName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("storageApplianceName") String storageApplianceName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storageApplianceName") String storageApplianceName,
             @BodyParam("application/json") StorageAppliancePatchParameters storageApplianceUpdateParameters,
-            @HeaderParam("Accept") String accept,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}/disableRemoteVendorManagement")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> disableRemoteVendorManagement(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("storageApplianceName") String storageApplianceName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}/disableRemoteVendorManagement")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}/enableRemoteVendorManagement")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> disableRemoteVendorManagement(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> enableRemoteVendorManagement(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("storageApplianceName") String storageApplianceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @BodyParam("application/json") StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/storageAppliances/{storageApplianceName}/enableRemoteVendorManagement")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> enableRemoteVendorManagement(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("storageApplianceName") String storageApplianceName,
-            @BodyParam("application/json")
-                StorageApplianceEnableRemoteVendorManagementParameters
-                    storageApplianceEnableRemoteVendorManagementParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageApplianceList>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageApplianceList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -216,37 +179,19 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageApplianceInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<StorageApplianceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<StorageApplianceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -265,35 +210,20 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageApplianceInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -307,8 +237,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageApplianceInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -324,8 +254,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageApplianceInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -375,16 +305,12 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageApplianceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -392,25 +318,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<StorageApplianceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context))
+            .<PagedResponse<StorageApplianceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -428,19 +339,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageApplianceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<StorageApplianceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -449,22 +356,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -480,8 +375,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageApplianceInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -499,8 +393,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageApplianceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -553,19 +446,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StorageApplianceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String storageApplianceName) {
+    private Mono<Response<StorageApplianceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String storageApplianceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -577,17 +466,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageApplianceName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -606,19 +486,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StorageApplianceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String storageApplianceName, Context context) {
+    private Mono<Response<StorageApplianceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String storageApplianceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -630,15 +506,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageApplianceName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, accept, context);
     }
 
     /**
@@ -673,8 +542,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return properties of the provided storage appliance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StorageApplianceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String storageApplianceName, Context context) {
+    public Response<StorageApplianceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String storageApplianceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, storageApplianceName, context).block();
     }
 
@@ -711,19 +580,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String storageApplianceName, StorageApplianceInner storageApplianceParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -734,27 +599,16 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
                 .error(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
         }
         if (storageApplianceParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageApplianceParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter storageApplianceParameters is required and cannot be null."));
         } else {
             storageApplianceParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageApplianceName,
-                            storageApplianceParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, storageApplianceParameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -775,22 +629,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceInner storageApplianceParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String storageApplianceName, StorageApplianceInner storageApplianceParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -801,25 +648,16 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
                 .error(new IllegalArgumentException("Parameter storageApplianceName is required and cannot be null."));
         }
         if (storageApplianceParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageApplianceParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter storageApplianceParameters is required and cannot be null."));
         } else {
             storageApplianceParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageApplianceName,
-                storageApplianceParameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, storageApplianceParameters,
+            accept, context);
     }
 
     /**
@@ -840,16 +678,11 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, storageApplianceName, storageApplianceParameters);
-        return this
-            .client
-            .<StorageApplianceInner, StorageApplianceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                StorageApplianceInner.class,
-                StorageApplianceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, storageApplianceName, storageApplianceParameters);
+        return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), StorageApplianceInner.class, StorageApplianceInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -870,18 +703,13 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceInner storageApplianceParameters,
+        String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, storageApplianceName, storageApplianceParameters, context);
-        return this
-            .client
-            .<StorageApplianceInner, StorageApplianceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), StorageApplianceInner.class, StorageApplianceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, storageApplianceName,
+            storageApplianceParameters, context);
+        return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), StorageApplianceInner.class, StorageApplianceInner.class, context);
     }
 
     /**
@@ -902,8 +730,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(
         String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceParameters)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceParameters)
             .getSyncPoller();
     }
 
@@ -925,9 +752,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceInner storageApplianceParameters,
+        String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters,
         Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceParameters, context)
@@ -950,10 +775,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StorageApplianceInner> createOrUpdateAsync(
-        String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceParameters)
-            .last()
+    private Mono<StorageApplianceInner> createOrUpdateAsync(String resourceGroupName, String storageApplianceName,
+        StorageApplianceInner storageApplianceParameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -974,11 +798,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StorageApplianceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceInner storageApplianceParameters,
-        Context context) {
+    private Mono<StorageApplianceInner> createOrUpdateAsync(String resourceGroupName, String storageApplianceName,
+        StorageApplianceInner storageApplianceParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -999,8 +820,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return storageAppliance represents on-premises Network Cloud storage appliance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageApplianceInner createOrUpdate(
-        String resourceGroupName, String storageApplianceName, StorageApplianceInner storageApplianceParameters) {
+    public StorageApplianceInner createOrUpdate(String resourceGroupName, String storageApplianceName,
+        StorageApplianceInner storageApplianceParameters) {
         return createOrUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceParameters).block();
     }
 
@@ -1020,11 +841,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return storageAppliance represents on-premises Network Cloud storage appliance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageApplianceInner createOrUpdate(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageApplianceInner storageApplianceParameters,
-        Context context) {
+    public StorageApplianceInner createOrUpdate(String resourceGroupName, String storageApplianceName,
+        StorageApplianceInner storageApplianceParameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceParameters, context)
             .block();
     }
@@ -1043,19 +861,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String storageApplianceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String storageApplianceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1067,17 +881,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageApplianceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1096,19 +901,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String storageApplianceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String storageApplianceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1120,15 +921,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageApplianceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, storageApplianceName, accept, context);
     }
 
     /**
@@ -1147,10 +941,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String storageApplianceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, storageApplianceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1168,14 +960,13 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String storageApplianceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String storageApplianceName,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, storageApplianceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, storageApplianceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1211,8 +1002,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String storageApplianceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String storageApplianceName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, storageApplianceName, context).getSyncPoller();
     }
 
@@ -1231,8 +1022,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String storageApplianceName) {
-        return beginDeleteAsync(resourceGroupName, storageApplianceName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, storageApplianceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1252,8 +1042,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String storageApplianceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, storageApplianceName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, storageApplianceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1308,21 +1097,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageAppliancePatchParameters storageApplianceUpdateParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String storageApplianceName, StorageAppliancePatchParameters storageApplianceUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1337,18 +1120,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageApplianceName,
-                            storageApplianceUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, storageApplianceName,
+                storageApplianceUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1369,22 +1143,16 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageAppliancePatchParameters storageApplianceUpdateParameters,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String storageApplianceName, StorageAppliancePatchParameters storageApplianceUpdateParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1399,16 +1167,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageApplianceName,
-                storageApplianceUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, storageApplianceName, storageApplianceUpdateParameters, accept, context);
     }
 
     /**
@@ -1428,19 +1188,13 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String storageApplianceName,
+        String resourceGroupName, String storageApplianceName,
         StorageAppliancePatchParameters storageApplianceUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters);
-        return this
-            .client
-            .<StorageApplianceInner, StorageApplianceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                StorageApplianceInner.class,
-                StorageApplianceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters);
+        return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), StorageApplianceInner.class, StorageApplianceInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -1458,19 +1212,14 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdateAsync(
-        String resourceGroupName, String storageApplianceName) {
+    private PollerFlux<PollResult<StorageApplianceInner>, StorageApplianceInner>
+        beginUpdateAsync(String resourceGroupName, String storageApplianceName) {
         final StorageAppliancePatchParameters storageApplianceUpdateParameters = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters);
-        return this
-            .client
-            .<StorageApplianceInner, StorageApplianceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                StorageApplianceInner.class,
-                StorageApplianceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters);
+        return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), StorageApplianceInner.class, StorageApplianceInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -1491,17 +1240,13 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageAppliancePatchParameters storageApplianceUpdateParameters,
-        Context context) {
+        String resourceGroupName, String storageApplianceName,
+        StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters, context);
-        return this
-            .client
-            .<StorageApplianceInner, StorageApplianceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), StorageApplianceInner.class, StorageApplianceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, storageApplianceName,
+            storageApplianceUpdateParameters, context);
+        return this.client.<StorageApplianceInner, StorageApplianceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), StorageApplianceInner.class, StorageApplianceInner.class, context);
     }
 
     /**
@@ -1519,11 +1264,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(
-        String resourceGroupName, String storageApplianceName) {
+    public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
+        String storageApplianceName) {
         final StorageAppliancePatchParameters storageApplianceUpdateParameters = null;
-        return this
-            .beginUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters)
+        return this.beginUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters)
             .getSyncPoller();
     }
 
@@ -1544,13 +1288,10 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     appliance.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageAppliancePatchParameters storageApplianceUpdateParameters,
+    public SyncPoller<PollResult<StorageApplianceInner>, StorageApplianceInner> beginUpdate(String resourceGroupName,
+        String storageApplianceName, StorageAppliancePatchParameters storageApplianceUpdateParameters,
         Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters, context)
+        return this.beginUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters, context)
             .getSyncPoller();
     }
 
@@ -1570,12 +1311,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StorageApplianceInner> updateAsync(
-        String resourceGroupName,
-        String storageApplianceName,
+    private Mono<StorageApplianceInner> updateAsync(String resourceGroupName, String storageApplianceName,
         StorageAppliancePatchParameters storageApplianceUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters)
-            .last()
+        return beginUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1596,8 +1334,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageApplianceInner> updateAsync(String resourceGroupName, String storageApplianceName) {
         final StorageAppliancePatchParameters storageApplianceUpdateParameters = null;
-        return beginUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters)
-            .last()
+        return beginUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1618,11 +1355,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StorageApplianceInner> updateAsync(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageAppliancePatchParameters storageApplianceUpdateParameters,
-        Context context) {
+    private Mono<StorageApplianceInner> updateAsync(String resourceGroupName, String storageApplianceName,
+        StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context) {
         return beginUpdateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1663,11 +1397,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return storageAppliance represents on-premises Network Cloud storage appliance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageApplianceInner update(
-        String resourceGroupName,
-        String storageApplianceName,
-        StorageAppliancePatchParameters storageApplianceUpdateParameters,
-        Context context) {
+    public StorageApplianceInner update(String resourceGroupName, String storageApplianceName,
+        StorageAppliancePatchParameters storageApplianceUpdateParameters, Context context) {
         return updateAsync(resourceGroupName, storageApplianceName, storageApplianceUpdateParameters, context).block();
     }
 
@@ -1685,19 +1416,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> disableRemoteVendorManagementWithResponseAsync(
-        String resourceGroupName, String storageApplianceName) {
+    private Mono<Response<Flux<ByteBuffer>>> disableRemoteVendorManagementWithResponseAsync(String resourceGroupName,
+        String storageApplianceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1710,16 +1437,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .disableRemoteVendorManagement(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageApplianceName,
-                            accept,
-                            context))
+                context -> service.disableRemoteVendorManagement(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1738,19 +1457,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> disableRemoteVendorManagementWithResponseAsync(
-        String resourceGroupName, String storageApplianceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> disableRemoteVendorManagementWithResponseAsync(String resourceGroupName,
+        String storageApplianceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1762,15 +1477,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .disableRemoteVendorManagement(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageApplianceName,
-                accept,
-                context);
+        return service.disableRemoteVendorManagement(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName, accept, context);
     }
 
     /**
@@ -1788,16 +1496,11 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginDisableRemoteVendorManagementAsync(String resourceGroupName, String storageApplianceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            disableRemoteVendorManagementWithResponseAsync(resourceGroupName, storageApplianceName);
-        return this
-            .client
-            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusResultInner.class,
-                OperationStatusResultInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = disableRemoteVendorManagementWithResponseAsync(resourceGroupName, storageApplianceName);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -1815,19 +1518,13 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginDisableRemoteVendorManagementAsync(
-            String resourceGroupName, String storageApplianceName, Context context) {
+        beginDisableRemoteVendorManagementAsync(String resourceGroupName, String storageApplianceName,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            disableRemoteVendorManagementWithResponseAsync(resourceGroupName, storageApplianceName, context);
-        return this
-            .client
-            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusResultInner.class,
-                OperationStatusResultInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = disableRemoteVendorManagementWithResponseAsync(resourceGroupName, storageApplianceName, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
@@ -1864,8 +1561,7 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginDisableRemoteVendorManagement(String resourceGroupName, String storageApplianceName, Context context) {
-        return this
-            .beginDisableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName, context)
+        return this.beginDisableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName, context)
             .getSyncPoller();
     }
 
@@ -1882,10 +1578,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> disableRemoteVendorManagementAsync(
-        String resourceGroupName, String storageApplianceName) {
-        return beginDisableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName)
-            .last()
+    private Mono<OperationStatusResultInner> disableRemoteVendorManagementAsync(String resourceGroupName,
+        String storageApplianceName) {
+        return beginDisableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1903,10 +1598,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> disableRemoteVendorManagementAsync(
-        String resourceGroupName, String storageApplianceName, Context context) {
-        return beginDisableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName, context)
-            .last()
+    private Mono<OperationStatusResultInner> disableRemoteVendorManagementAsync(String resourceGroupName,
+        String storageApplianceName, Context context) {
+        return beginDisableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1923,8 +1617,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner disableRemoteVendorManagement(
-        String resourceGroupName, String storageApplianceName) {
+    public OperationStatusResultInner disableRemoteVendorManagement(String resourceGroupName,
+        String storageApplianceName) {
         return disableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName).block();
     }
 
@@ -1942,8 +1636,8 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner disableRemoteVendorManagement(
-        String resourceGroupName, String storageApplianceName, Context context) {
+    public OperationStatusResultInner disableRemoteVendorManagement(String resourceGroupName,
+        String storageApplianceName, Context context) {
         return disableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName, context).block();
     }
 
@@ -1962,21 +1656,16 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> enableRemoteVendorManagementWithResponseAsync(
-        String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> enableRemoteVendorManagementWithResponseAsync(String resourceGroupName,
         String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1991,18 +1680,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .enableRemoteVendorManagement(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            storageApplianceName,
-                            storageApplianceEnableRemoteVendorManagementParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.enableRemoteVendorManagement(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, storageApplianceName,
+                storageApplianceEnableRemoteVendorManagementParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2022,22 +1702,17 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> enableRemoteVendorManagementWithResponseAsync(
-        String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> enableRemoteVendorManagementWithResponseAsync(String resourceGroupName,
         String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2052,16 +1727,9 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .enableRemoteVendorManagement(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                storageApplianceName,
-                storageApplianceEnableRemoteVendorManagementParameters,
-                accept,
-                context);
+        return service.enableRemoteVendorManagement(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, storageApplianceName,
+            storageApplianceEnableRemoteVendorManagementParameters, accept, context);
     }
 
     /**
@@ -2079,22 +1747,13 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginEnableRemoteVendorManagementAsync(
-            String resourceGroupName,
-            String storageApplianceName,
-            StorageApplianceEnableRemoteVendorManagementParameters
-                storageApplianceEnableRemoteVendorManagementParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            enableRemoteVendorManagementWithResponseAsync(
-                resourceGroupName, storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters);
-        return this
-            .client
-            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusResultInner.class,
-                OperationStatusResultInner.class,
-                this.client.getContext());
+        beginEnableRemoteVendorManagementAsync(String resourceGroupName, String storageApplianceName,
+            StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = enableRemoteVendorManagementWithResponseAsync(resourceGroupName,
+            storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -2112,19 +1771,13 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginEnableRemoteVendorManagementAsync(String resourceGroupName, String storageApplianceName) {
-        final StorageApplianceEnableRemoteVendorManagementParameters
-            storageApplianceEnableRemoteVendorManagementParameters = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            enableRemoteVendorManagementWithResponseAsync(
-                resourceGroupName, storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters);
-        return this
-            .client
-            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusResultInner.class,
-                OperationStatusResultInner.class,
-                this.client.getContext());
+        final StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters
+            = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = enableRemoteVendorManagementWithResponseAsync(resourceGroupName,
+            storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -2143,27 +1796,14 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginEnableRemoteVendorManagementAsync(
-            String resourceGroupName,
-            String storageApplianceName,
-            StorageApplianceEnableRemoteVendorManagementParameters
-                storageApplianceEnableRemoteVendorManagementParameters,
+        beginEnableRemoteVendorManagementAsync(String resourceGroupName, String storageApplianceName,
+            StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
             Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            enableRemoteVendorManagementWithResponseAsync(
-                resourceGroupName,
-                storageApplianceName,
-                storageApplianceEnableRemoteVendorManagementParameters,
-                context);
-        return this
-            .client
-            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                OperationStatusResultInner.class,
-                OperationStatusResultInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = enableRemoteVendorManagementWithResponseAsync(resourceGroupName,
+            storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters, context);
+        return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
 
     /**
@@ -2181,11 +1821,11 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
         beginEnableRemoteVendorManagement(String resourceGroupName, String storageApplianceName) {
-        final StorageApplianceEnableRemoteVendorManagementParameters
-            storageApplianceEnableRemoteVendorManagementParameters = null;
+        final StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters
+            = null;
         return this
-            .beginEnableRemoteVendorManagementAsync(
-                resourceGroupName, storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters)
+            .beginEnableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName,
+                storageApplianceEnableRemoteVendorManagementParameters)
             .getSyncPoller();
     }
 
@@ -2205,18 +1845,12 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginEnableRemoteVendorManagement(
-            String resourceGroupName,
-            String storageApplianceName,
-            StorageApplianceEnableRemoteVendorManagementParameters
-                storageApplianceEnableRemoteVendorManagementParameters,
+        beginEnableRemoteVendorManagement(String resourceGroupName, String storageApplianceName,
+            StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
             Context context) {
         return this
-            .beginEnableRemoteVendorManagementAsync(
-                resourceGroupName,
-                storageApplianceName,
-                storageApplianceEnableRemoteVendorManagementParameters,
-                context)
+            .beginEnableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName,
+                storageApplianceEnableRemoteVendorManagementParameters, context)
             .getSyncPoller();
     }
 
@@ -2234,14 +1868,12 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> enableRemoteVendorManagementAsync(
-        String resourceGroupName,
+    private Mono<OperationStatusResultInner> enableRemoteVendorManagementAsync(String resourceGroupName,
         String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters) {
-        return beginEnableRemoteVendorManagementAsync(
-                resourceGroupName, storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginEnableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName,
+            storageApplianceEnableRemoteVendorManagementParameters).last()
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2257,14 +1889,13 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> enableRemoteVendorManagementAsync(
-        String resourceGroupName, String storageApplianceName) {
-        final StorageApplianceEnableRemoteVendorManagementParameters
-            storageApplianceEnableRemoteVendorManagementParameters = null;
-        return beginEnableRemoteVendorManagementAsync(
-                resourceGroupName, storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<OperationStatusResultInner> enableRemoteVendorManagementAsync(String resourceGroupName,
+        String storageApplianceName) {
+        final StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters
+            = null;
+        return beginEnableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName,
+            storageApplianceEnableRemoteVendorManagementParameters).last()
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2282,18 +1913,13 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> enableRemoteVendorManagementAsync(
-        String resourceGroupName,
+    private Mono<OperationStatusResultInner> enableRemoteVendorManagementAsync(String resourceGroupName,
         String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
         Context context) {
-        return beginEnableRemoteVendorManagementAsync(
-                resourceGroupName,
-                storageApplianceName,
-                storageApplianceEnableRemoteVendorManagementParameters,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginEnableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName,
+            storageApplianceEnableRemoteVendorManagementParameters, context).last()
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -2309,13 +1935,12 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner enableRemoteVendorManagement(
-        String resourceGroupName, String storageApplianceName) {
-        final StorageApplianceEnableRemoteVendorManagementParameters
-            storageApplianceEnableRemoteVendorManagementParameters = null;
-        return enableRemoteVendorManagementAsync(
-                resourceGroupName, storageApplianceName, storageApplianceEnableRemoteVendorManagementParameters)
-            .block();
+    public OperationStatusResultInner enableRemoteVendorManagement(String resourceGroupName,
+        String storageApplianceName) {
+        final StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters
+            = null;
+        return enableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName,
+            storageApplianceEnableRemoteVendorManagementParameters).block();
     }
 
     /**
@@ -2333,17 +1958,12 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner enableRemoteVendorManagement(
-        String resourceGroupName,
+    public OperationStatusResultInner enableRemoteVendorManagement(String resourceGroupName,
         String storageApplianceName,
         StorageApplianceEnableRemoteVendorManagementParameters storageApplianceEnableRemoteVendorManagementParameters,
         Context context) {
-        return enableRemoteVendorManagementAsync(
-                resourceGroupName,
-                storageApplianceName,
-                storageApplianceEnableRemoteVendorManagementParameters,
-                context)
-            .block();
+        return enableRemoteVendorManagementAsync(resourceGroupName, storageApplianceName,
+            storageApplianceEnableRemoteVendorManagementParameters, context).block();
     }
 
     /**
@@ -2363,24 +1983,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<StorageApplianceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<StorageApplianceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2397,30 +2008,20 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageApplianceInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<StorageApplianceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2440,24 +2041,15 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<StorageApplianceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<StorageApplianceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -2474,29 +2066,19 @@ public final class StorageAppliancesClientImpl implements StorageAppliancesClien
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageApplianceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<StorageApplianceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

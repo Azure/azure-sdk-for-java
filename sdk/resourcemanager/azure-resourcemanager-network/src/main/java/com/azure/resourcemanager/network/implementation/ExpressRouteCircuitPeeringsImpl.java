@@ -16,14 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 
 /** Represents Express Route Circuit Peerings collection associated with Network Watcher. */
-class ExpressRouteCircuitPeeringsImpl
-    extends IndependentChildrenImpl<
-        ExpressRouteCircuitPeering,
-        ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>,
-        ExpressRouteCircuitPeeringInner,
-        ExpressRouteCircuitPeeringsClient,
-        NetworkManager,
-        ExpressRouteCircuit>
+class ExpressRouteCircuitPeeringsImpl extends
+    IndependentChildrenImpl<ExpressRouteCircuitPeering, ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>, ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeeringsClient, NetworkManager, ExpressRouteCircuit>
     implements ExpressRouteCircuitPeerings {
     private final ExpressRouteCircuitImpl parent;
 
@@ -51,8 +45,8 @@ class ExpressRouteCircuitPeeringsImpl
     @Override
     protected ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>
         wrapModel(String name) {
-        return new ExpressRouteCircuitPeeringImpl<>(
-            parent, new ExpressRouteCircuitPeeringInner(), innerModel(), ExpressRoutePeeringType.fromString(name));
+        return new ExpressRouteCircuitPeeringImpl<>(parent, new ExpressRouteCircuitPeeringInner(), innerModel(),
+            ExpressRoutePeeringType.fromString(name));
     }
 
     protected ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>
@@ -65,22 +59,22 @@ class ExpressRouteCircuitPeeringsImpl
     @Override
     public ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>
         defineAzurePrivatePeering() {
-        return new ExpressRouteCircuitPeeringImpl<>(
-            parent, new ExpressRouteCircuitPeeringInner(), innerModel(), ExpressRoutePeeringType.AZURE_PRIVATE_PEERING);
+        return new ExpressRouteCircuitPeeringImpl<>(parent, new ExpressRouteCircuitPeeringInner(), innerModel(),
+            ExpressRoutePeeringType.AZURE_PRIVATE_PEERING);
     }
 
     @Override
     public ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>
         defineAzurePublicPeering() {
-        return new ExpressRouteCircuitPeeringImpl<>(
-            parent, new ExpressRouteCircuitPeeringInner(), innerModel(), ExpressRoutePeeringType.AZURE_PUBLIC_PEERING);
+        return new ExpressRouteCircuitPeeringImpl<>(parent, new ExpressRouteCircuitPeeringInner(), innerModel(),
+            ExpressRoutePeeringType.AZURE_PUBLIC_PEERING);
     }
 
     @Override
     public ExpressRouteCircuitPeeringImpl<ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl>
         defineMicrosoftPeering() {
-        return new ExpressRouteCircuitPeeringImpl<>(
-            parent, new ExpressRouteCircuitPeeringInner(), innerModel(), ExpressRoutePeeringType.MICROSOFT_PEERING);
+        return new ExpressRouteCircuitPeeringImpl<>(parent, new ExpressRouteCircuitPeeringInner(), innerModel(),
+            ExpressRoutePeeringType.MICROSOFT_PEERING);
     }
 
     @Override

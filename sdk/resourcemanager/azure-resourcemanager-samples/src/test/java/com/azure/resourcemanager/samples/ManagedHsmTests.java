@@ -70,21 +70,10 @@ public class ManagedHsmTests extends SamplesTestBase {
     private KeyVaultManager keyVaultManager;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -124,34 +113,41 @@ public class ManagedHsmTests extends SamplesTestBase {
             activateManagedHsm(managedHsm);
 
             // getByResourceGroup
-            ManagedHsm hsm = keyVaultManager.managedHsms()
-                .getByResourceGroup(rgName, managedHsm.name());
+            ManagedHsm hsm = keyVaultManager.managedHsms().getByResourceGroup(rgName, managedHsm.name());
 
-            KeyVaultAccessControlAsyncClient accessControlAsyncClient =
-                new KeyVaultAccessControlClientBuilder()
-                    .pipeline(keyVaultManager.httpPipeline())
+            KeyVaultAccessControlAsyncClient accessControlAsyncClient
+                = new KeyVaultAccessControlClientBuilder().pipeline(keyVaultManager.httpPipeline())
                     .vaultUrl(managedHsm.hsmUri())
                     .buildAsyncClient();
 
             // create role assignments
             // cryptoUser for key operations
-            KeyVaultRoleDefinition cryptoUser = getRoleDefinitionByName(accessControlAsyncClient, "Managed HSM Crypto User");
-            accessControlAsyncClient.createRoleAssignment(KeyVaultRoleScope.KEYS, cryptoUser.getId(), managedHsm.initialAdminObjectIds().get(0)).block();
+            KeyVaultRoleDefinition cryptoUser
+                = getRoleDefinitionByName(accessControlAsyncClient, "Managed HSM Crypto User");
+            accessControlAsyncClient
+                .createRoleAssignment(KeyVaultRoleScope.KEYS, cryptoUser.getId(),
+                    managedHsm.initialAdminObjectIds().get(0))
+                .block();
 
             // key operations, same interface as the key vault
             Keys keys = hsm.keys();
             String keyName = generateRandomResourceName("key", 10);
-            Key key = keys.define(keyName)
-                .withKeyTypeToCreate(KeyType.RSA)
-                .withKeySize(4096)
-                .create();
+            Key key = keys.define(keyName).withKeyTypeToCreate(KeyType.RSA).withKeySize(4096).create();
 
             // cryptoUser for managing individual key
-            KeyVaultRoleDefinition cryptoUserForKey = getRoleDefinitionByName(accessControlAsyncClient, "Managed HSM Crypto User");
-            accessControlAsyncClient.createRoleAssignment(KeyVaultRoleScope.fromString(String.format("/keys/%s", keyName)), cryptoUserForKey.getId(), managedHsm.initialAdminObjectIds().get(0)).block();
+            KeyVaultRoleDefinition cryptoUserForKey
+                = getRoleDefinitionByName(accessControlAsyncClient, "Managed HSM Crypto User");
+            accessControlAsyncClient
+                .createRoleAssignment(KeyVaultRoleScope.fromString(String.format("/keys/%s", keyName)),
+                    cryptoUserForKey.getId(), managedHsm.initialAdminObjectIds().get(0))
+                .block();
             // cryptoOfficer for polling deleted key status
-            KeyVaultRoleDefinition cryptoOfficer = getRoleDefinitionByName(accessControlAsyncClient, "Managed HSM Crypto Officer");
-            accessControlAsyncClient.createRoleAssignment(KeyVaultRoleScope.KEYS, cryptoOfficer.getId(), managedHsm.initialAdminObjectIds().get(0)).block();
+            KeyVaultRoleDefinition cryptoOfficer
+                = getRoleDefinitionByName(accessControlAsyncClient, "Managed HSM Crypto Officer");
+            accessControlAsyncClient
+                .createRoleAssignment(KeyVaultRoleScope.KEYS, cryptoOfficer.getId(),
+                    managedHsm.initialAdminObjectIds().get(0))
+                .block();
 
             keys.deleteById(key.id());
         } finally {
@@ -160,8 +156,13 @@ public class ManagedHsmTests extends SamplesTestBase {
         }
     }
 
-    private KeyVaultRoleDefinition getRoleDefinitionByName(KeyVaultAccessControlAsyncClient accessControlAsyncClient, String roleName) {
-        return accessControlAsyncClient.listRoleDefinitions(KeyVaultRoleScope.KEYS).toStream().filter(rd -> rd.getRoleName().equals(roleName)).findFirst().get();
+    private KeyVaultRoleDefinition getRoleDefinitionByName(KeyVaultAccessControlAsyncClient accessControlAsyncClient,
+        String roleName) {
+        return accessControlAsyncClient.listRoleDefinitions(KeyVaultRoleScope.KEYS)
+            .toStream()
+            .filter(rd -> rd.getRoleName().equals(roleName))
+            .findFirst()
+            .get();
     }
 
     /*
@@ -174,9 +175,9 @@ public class ManagedHsmTests extends SamplesTestBase {
         keyPairGenerator.initialize(4096);
 
         // 1. generate ssl certificates
-        JsonWebKey key1  = JsonWebKey.fromRsa(keyPairGenerator.generateKeyPair());
-        JsonWebKey key2  = JsonWebKey.fromRsa(keyPairGenerator.generateKeyPair());
-        JsonWebKey key3  = JsonWebKey.fromRsa(keyPairGenerator.generateKeyPair());
+        JsonWebKey key1 = JsonWebKey.fromRsa(keyPairGenerator.generateKeyPair());
+        JsonWebKey key2 = JsonWebKey.fromRsa(keyPairGenerator.generateKeyPair());
+        JsonWebKey key3 = JsonWebKey.fromRsa(keyPairGenerator.generateKeyPair());
 
         // 2. download security domain
         downloadSecurityDomain(managedHsm, key1, key2, key3);
@@ -185,7 +186,8 @@ public class ManagedHsmTests extends SamplesTestBase {
         pollDownlaodStatusUntilSuccess(managedHsm);
     }
 
-    private void downloadSecurityDomain(ManagedHsm managedHsm, JsonWebKey key1, JsonWebKey key2, JsonWebKey key3) throws IOException {
+    private void downloadSecurityDomain(ManagedHsm managedHsm, JsonWebKey key1, JsonWebKey key2, JsonWebKey key3)
+        throws IOException {
         String url = String.format("%ssecuritydomain/download?api-version=7.2", managedHsm.hsmUri());
         HttpRequest request = new HttpRequest(HttpMethod.POST, url);
         request.setHeader("Content-Type", "application/json charset=utf-8");
@@ -199,7 +201,8 @@ public class ManagedHsmTests extends SamplesTestBase {
         if (response.getStatusCode() != 202) {
             throw new RuntimeException("Failed to activate managed hsm");
         }
-        Map<String, Object> responseBody = SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(response.getBodyAsString().block(), Map.class, SerializerEncoding.JSON);
+        Map<String, Object> responseBody = SerializerFactory.createDefaultManagementSerializerAdapter()
+            .deserialize(response.getBodyAsString().block(), Map.class, SerializerEncoding.JSON);
         String securityDomainDownloadToken = (String) responseBody.get("value");
         Assertions.assertNotNull(securityDomainDownloadToken);
     }
@@ -208,29 +211,31 @@ public class ManagedHsmTests extends SamplesTestBase {
         String url = String.format("%ssecuritydomain/download/pending?api-version=7.2", managedHsm.hsmUri());
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         request.setHeader("Content-Type", "application/json charset=utf-8");
-        Flux.interval(Duration.ZERO, ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(keyVaultManager.serviceClient().getDefaultPollInterval()))
+        Flux.interval(Duration.ZERO,
+            ResourceManagerUtils.InternalRuntimeContext
+                .getDelayDuration(keyVaultManager.serviceClient().getDefaultPollInterval()))
             .flatMap(ignored -> keyVaultManager.httpPipeline().send(request))
             .flatMap(httpResponse -> {
                 if (httpResponse.getStatusCode() != 200) {
                     return Mono.error(new RuntimeException("Failed to poll security domain status"));
                 }
-                return httpResponse.getBodyAsString()
-                    .flatMap(bodyString -> {
-                        try {
-                            Map<String, Object> body = SerializerFactory.createDefaultManagementSerializerAdapter()
-                                .deserialize(bodyString, Map.class, SerializerEncoding.JSON);
-                            String status = (String) body.get("status");
-                            if (status == null) {
-                                return Mono.error(new NullPointerException("status null"));
-                            }
-                            if (status.equals("Failed")) {
-                                return Mono.error(new RuntimeException(String.format("Download security domain failed, message:%s", body.get("status_details"))));
-                            }
-                            return Mono.just(status);
-                        } catch (IOException e) {
-                            return Mono.error(e);
+                return httpResponse.getBodyAsString().flatMap(bodyString -> {
+                    try {
+                        Map<String, Object> body = SerializerFactory.createDefaultManagementSerializerAdapter()
+                            .deserialize(bodyString, Map.class, SerializerEncoding.JSON);
+                        String status = (String) body.get("status");
+                        if (status == null) {
+                            return Mono.error(new NullPointerException("status null"));
                         }
-                    });
+                        if (status.equals("Failed")) {
+                            return Mono.error(new RuntimeException(String
+                                .format("Download security domain failed, message:%s", body.get("status_details"))));
+                        }
+                        return Mono.just(status);
+                    } catch (IOException e) {
+                        return Mono.error(e);
+                    }
+                });
             })
             .takeUntil(status -> status.equals("Success"))
             .blockLast();
@@ -240,35 +245,28 @@ public class ManagedHsmTests extends SamplesTestBase {
      * create or get managed hsm instance
      */
     private ManagedHsm createManagedHsm(String mhsmName) {
-        String objectId = azureResourceManager
-            .accessManagement()
+        String objectId = azureResourceManager.accessManagement()
             .servicePrincipals()
             .getByNameAsync(clientIdFromFile())
             .block()
             .id();
 
         keyVaultManager.resourceManager().resourceGroups().define(rgName).withRegion(Region.US_EAST2).create();
-        ManagedHsmInner inner = keyVaultManager.serviceClient()
-            .getManagedHsms()
-            .createOrUpdate(
-                rgName,
-                mhsmName,
-                new ManagedHsmInner()
-                    .withLocation(Region.US_EAST2.name())
+        ManagedHsmInner inner
+            = keyVaultManager.serviceClient()
+                .getManagedHsms()
+                .createOrUpdate(rgName, mhsmName, new ManagedHsmInner().withLocation(Region.US_EAST2.name())
                     .withSku(
                         new ManagedHsmSku().withFamily(ManagedHsmSkuFamily.B).withName(ManagedHsmSkuName.STANDARD_B1))
                     .withProperties(
-                        new ManagedHsmProperties()
-                            .withTenantId(UUID.fromString(azureResourceManager.tenantId()))
+                        new ManagedHsmProperties().withTenantId(UUID.fromString(azureResourceManager.tenantId()))
                             .withInitialAdminObjectIds(Arrays.asList(objectId))
                             .withEnableSoftDelete(true)
                             .withSoftDeleteRetentionInDays(7)
                             .withEnablePurgeProtection(false)),
-                Context.NONE);
+                    Context.NONE);
 
-        keyVaultManager.serviceClient()
-            .getManagedHsms()
-            .createOrUpdate(rgName, inner.name(), inner);
+        keyVaultManager.serviceClient().getManagedHsms().createOrUpdate(rgName, inner.name(), inner);
         return keyVaultManager.managedHsms().getByResourceGroup(rgName, inner.name());
     }
 
@@ -311,7 +309,9 @@ public class ManagedHsmTests extends SamplesTestBase {
         }
 
         private static String base64Encode(byte[] digest) throws Exception {
-            return new String(Base64.getEncoder().encode(digest), "ascii").trim().replaceAll("\\+", "-").replaceAll("/", "_");
+            return new String(Base64.getEncoder().encode(digest), "ascii").trim()
+                .replaceAll("\\+", "-")
+                .replaceAll("/", "_");
         }
 
         public Collection<String> getX5c() {

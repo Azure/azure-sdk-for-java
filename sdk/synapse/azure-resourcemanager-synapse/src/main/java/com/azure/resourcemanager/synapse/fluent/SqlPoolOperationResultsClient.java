@@ -28,8 +28,8 @@ public interface SqlPoolOperationResultsClient {
      * @return the {@link SyncPoller} for polling of the status of a SQL pool operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginGetLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId);
+    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginGetLocationHeaderResult(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String operationId);
 
     /**
      * Get SQL pool operation status
@@ -47,8 +47,8 @@ public interface SqlPoolOperationResultsClient {
      * @return the {@link SyncPoller} for polling of the status of a SQL pool operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginGetLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId, Context context);
+    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginGetLocationHeaderResult(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String operationId, Context context);
 
     /**
      * Get SQL pool operation status
@@ -65,8 +65,8 @@ public interface SqlPoolOperationResultsClient {
      * @return the status of a SQL pool operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolInner getLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId);
+    SqlPoolInner getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String operationId);
 
     /**
      * Get SQL pool operation status
@@ -84,6 +84,6 @@ public interface SqlPoolOperationResultsClient {
      * @return the status of a SQL pool operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolInner getLocationHeaderResult(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String operationId, Context context);
+    SqlPoolInner getLocationHeaderResult(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String operationId, Context context);
 }

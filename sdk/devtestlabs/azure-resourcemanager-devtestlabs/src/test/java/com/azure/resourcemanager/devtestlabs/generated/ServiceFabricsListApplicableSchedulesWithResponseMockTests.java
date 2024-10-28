@@ -31,41 +31,29 @@ public final class ServiceFabricsListApplicableSchedulesWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"labVmsShutdown\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"musuaawja\",\"weeklyRecurrence\":{\"weekdays\":[\"nfczmnniixyxvq\",\"anosj\",\"gir\"],\"time\":\"gmgmdd\"},\"dailyRecurrence\":{\"time\":\"mynltwmpftmfoeaj\"},\"hourlyRecurrence\":{\"minute\":971513853},\"timeZoneId\":\"wetamfddrvlk\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":622642791,\"webhookUrl\":\"ecchdidrmuhkahm\",\"emailRecipient\":\"dbiucvkhhwmjpjbw\",\"notificationLocale\":\"nx\"},\"createdDate\":\"2021-05-20T15:06:34Z\",\"targetResourceId\":\"ihufoihp\",\"provisioningState\":\"ybxvgn\",\"uniqueIdentifier\":\"zpbgkzc\"},\"location\":\"cpiuzvk\",\"tags\":{\"pucdocf\":\"dimjuktirzkau\",\"o\":\"plw\",\"xwr\":\"m\",\"vbgikyj\":\"lvzkl\"},\"id\":\"kakvlbishjvpza\",\"name\":\"tuoska\",\"type\":\"izjixwfgcd\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"xwnujvqyn\",\"weeklyRecurrence\":{\"weekdays\":[\"tmdmuqohhihr\"],\"time\":\"quddrwjclj\"},\"dailyRecurrence\":{\"time\":\"lhpv\"},\"hourlyRecurrence\":{\"minute\":495666062},\"timeZoneId\":\"enninafhxrzfrm\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":671742673,\"webhookUrl\":\"viqlluk\",\"emailRecipient\":\"rcqxgcbvzarmqc\",\"notificationLocale\":\"okstsinvagovjyh\"},\"createdDate\":\"2021-05-26T07:55:45Z\",\"targetResourceId\":\"rdvcehqwhit\",\"provisioningState\":\"mxgnmguzbuwv\",\"uniqueIdentifier\":\"balkjnbkbdhl\"},\"location\":\"tqstqkqsygxiyne\",\"tags\":{\"heu\":\"agz\",\"ckqiawzlzk\":\"anlxunpq\",\"wsaudoejtighsxj\":\"aslgacizuxlrarwp\"},\"id\":\"ytnkqb\",\"name\":\"lahovuuwx\",\"type\":\"mehjnhjioti\"}},\"location\":\"fbbcngkegxcypxbb\",\"tags\":{\"lyr\":\"w\",\"frolq\":\"oxpdxq\",\"u\":\"wnk\"},\"id\":\"jew\",\"name\":\"ahwkxjjm\",\"type\":\"tnlmsoodtmvecdhd\"}";
+        String responseStr
+            = "{\"properties\":{\"labVmsShutdown\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"musuaawja\",\"weeklyRecurrence\":{\"weekdays\":[\"nfczmnniixyxvq\",\"anosj\",\"gir\"],\"time\":\"gmgmdd\"},\"dailyRecurrence\":{\"time\":\"mynltwmpftmfoeaj\"},\"hourlyRecurrence\":{\"minute\":971513853},\"timeZoneId\":\"wetamfddrvlk\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":622642791,\"webhookUrl\":\"ecchdidrmuhkahm\",\"emailRecipient\":\"dbiucvkhhwmjpjbw\",\"notificationLocale\":\"nx\"},\"createdDate\":\"2021-05-20T15:06:34Z\",\"targetResourceId\":\"ihufoihp\",\"provisioningState\":\"ybxvgn\",\"uniqueIdentifier\":\"zpbgkzc\"},\"location\":\"cpiuzvk\",\"tags\":{\"pucdocf\":\"dimjuktirzkau\",\"o\":\"plw\",\"xwr\":\"m\",\"vbgikyj\":\"lvzkl\"},\"id\":\"kakvlbishjvpza\",\"name\":\"tuoska\",\"type\":\"izjixwfgcd\"},\"labVmsStartup\":{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"xwnujvqyn\",\"weeklyRecurrence\":{\"weekdays\":[\"tmdmuqohhihr\"],\"time\":\"quddrwjclj\"},\"dailyRecurrence\":{\"time\":\"lhpv\"},\"hourlyRecurrence\":{\"minute\":495666062},\"timeZoneId\":\"enninafhxrzfrm\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":671742673,\"webhookUrl\":\"viqlluk\",\"emailRecipient\":\"rcqxgcbvzarmqc\",\"notificationLocale\":\"okstsinvagovjyh\"},\"createdDate\":\"2021-05-26T07:55:45Z\",\"targetResourceId\":\"rdvcehqwhit\",\"provisioningState\":\"mxgnmguzbuwv\",\"uniqueIdentifier\":\"balkjnbkbdhl\"},\"location\":\"tqstqkqsygxiyne\",\"tags\":{\"heu\":\"agz\",\"ckqiawzlzk\":\"anlxunpq\",\"wsaudoejtighsxj\":\"aslgacizuxlrarwp\"},\"id\":\"ytnkqb\",\"name\":\"lahovuuwx\",\"type\":\"mehjnhjioti\"}},\"location\":\"fbbcngkegxcypxbb\",\"tags\":{\"lyr\":\"w\",\"frolq\":\"oxpdxq\",\"u\":\"wnk\"},\"id\":\"jew\",\"name\":\"ahwkxjjm\",\"type\":\"tnlmsoodtmvecdhd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ApplicableSchedule response =
-            manager
-                .serviceFabrics()
-                .listApplicableSchedulesWithResponse(
-                    "zpdgonjhxshthmgp", "zqulptkbv", "pxtzhigqqbtimpk", "blornsih", com.azure.core.util.Context.NONE)
-                .getValue();
+        ApplicableSchedule response = manager.serviceFabrics()
+            .listApplicableSchedulesWithResponse("zpdgonjhxshthmgp", "zqulptkbv", "pxtzhigqqbtimpk", "blornsih",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("fbbcngkegxcypxbb", response.location());
         Assertions.assertEquals("w", response.tags().get("lyr"));
@@ -97,8 +85,8 @@ public final class ServiceFabricsListApplicableSchedulesWithResponseMockTests {
         Assertions.assertEquals(671742673, response.labVmsStartup().notificationSettings().timeInMinutes());
         Assertions.assertEquals("viqlluk", response.labVmsStartup().notificationSettings().webhookUrl());
         Assertions.assertEquals("rcqxgcbvzarmqc", response.labVmsStartup().notificationSettings().emailRecipient());
-        Assertions
-            .assertEquals("okstsinvagovjyh", response.labVmsStartup().notificationSettings().notificationLocale());
+        Assertions.assertEquals("okstsinvagovjyh",
+            response.labVmsStartup().notificationSettings().notificationLocale());
         Assertions.assertEquals("rdvcehqwhit", response.labVmsStartup().targetResourceId());
     }
 }

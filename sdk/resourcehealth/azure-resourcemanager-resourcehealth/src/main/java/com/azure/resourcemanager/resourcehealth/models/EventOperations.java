@@ -23,8 +23,8 @@ public interface EventOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service health event along with {@link Response}.
      */
-    Response<Event> getBySubscriptionIdAndTrackingIdWithResponse(
-        String eventTrackingId, String filter, String queryStartTime, Context context);
+    Response<Event> getBySubscriptionIdAndTrackingIdWithResponse(String eventTrackingId, String filter,
+        String queryStartTime, Context context);
 
     /**
      * Service health event in the subscription by event tracking id.
@@ -76,8 +76,8 @@ public interface EventOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service health event along with {@link Response}.
      */
-    Response<Event> getByTenantIdAndTrackingIdWithResponse(
-        String eventTrackingId, String filter, String queryStartTime, Context context);
+    Response<Event> getByTenantIdAndTrackingIdWithResponse(String eventTrackingId, String filter, String queryStartTime,
+        Context context);
 
     /**
      * Service health event in the tenant by event tracking id.

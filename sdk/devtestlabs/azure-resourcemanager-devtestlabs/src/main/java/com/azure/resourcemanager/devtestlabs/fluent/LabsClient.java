@@ -75,8 +75,8 @@ public interface LabsClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LabInner> listByResourceGroup(
-        String resourceGroupName, String expand, String filter, Integer top, String orderby, Context context);
+    PagedIterable<LabInner> listByResourceGroup(String resourceGroupName, String expand, String filter, Integer top,
+        String orderby, Context context);
 
     /**
      * Get lab.
@@ -91,8 +91,8 @@ public interface LabsClient {
      * @return lab along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LabInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String name, String expand, Context context);
+    Response<LabInner> getByResourceGroupWithResponse(String resourceGroupName, String name, String expand,
+        Context context);
 
     /**
      * Get lab.
@@ -134,8 +134,8 @@ public interface LabsClient {
      * @return the {@link SyncPoller} for polling of a lab.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LabInner>, LabInner> beginCreateOrUpdate(
-        String resourceGroupName, String name, LabInner lab, Context context);
+    SyncPoller<PollResult<LabInner>, LabInner> beginCreateOrUpdate(String resourceGroupName, String name, LabInner lab,
+        Context context);
 
     /**
      * Create or replace an existing lab. This operation can take a while to complete.
@@ -311,8 +311,8 @@ public interface LabsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateEnvironment(
-        String resourceGroupName, String name, LabVirtualMachineCreationParameter labVirtualMachineCreationParameter);
+    SyncPoller<PollResult<Void>, Void> beginCreateEnvironment(String resourceGroupName, String name,
+        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter);
 
     /**
      * Create virtual machines in a lab. This operation can take a while to complete.
@@ -327,11 +327,8 @@ public interface LabsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCreateEnvironment(
-        String resourceGroupName,
-        String name,
-        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginCreateEnvironment(String resourceGroupName, String name,
+        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter, Context context);
 
     /**
      * Create virtual machines in a lab. This operation can take a while to complete.
@@ -344,8 +341,8 @@ public interface LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createEnvironment(
-        String resourceGroupName, String name, LabVirtualMachineCreationParameter labVirtualMachineCreationParameter);
+    void createEnvironment(String resourceGroupName, String name,
+        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter);
 
     /**
      * Create virtual machines in a lab. This operation can take a while to complete.
@@ -359,11 +356,8 @@ public interface LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createEnvironment(
-        String resourceGroupName,
-        String name,
-        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter,
-        Context context);
+    void createEnvironment(String resourceGroupName, String name,
+        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter, Context context);
 
     /**
      * Exports the lab resource usage into a storage account This operation can take a while to complete.
@@ -377,8 +371,8 @@ public interface LabsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginExportResourceUsage(
-        String resourceGroupName, String name, ExportResourceUsageParameters exportResourceUsageParameters);
+    SyncPoller<PollResult<Void>, Void> beginExportResourceUsage(String resourceGroupName, String name,
+        ExportResourceUsageParameters exportResourceUsageParameters);
 
     /**
      * Exports the lab resource usage into a storage account This operation can take a while to complete.
@@ -393,11 +387,8 @@ public interface LabsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginExportResourceUsage(
-        String resourceGroupName,
-        String name,
-        ExportResourceUsageParameters exportResourceUsageParameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginExportResourceUsage(String resourceGroupName, String name,
+        ExportResourceUsageParameters exportResourceUsageParameters, Context context);
 
     /**
      * Exports the lab resource usage into a storage account This operation can take a while to complete.
@@ -410,8 +401,8 @@ public interface LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void exportResourceUsage(
-        String resourceGroupName, String name, ExportResourceUsageParameters exportResourceUsageParameters);
+    void exportResourceUsage(String resourceGroupName, String name,
+        ExportResourceUsageParameters exportResourceUsageParameters);
 
     /**
      * Exports the lab resource usage into a storage account This operation can take a while to complete.
@@ -425,11 +416,8 @@ public interface LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void exportResourceUsage(
-        String resourceGroupName,
-        String name,
-        ExportResourceUsageParameters exportResourceUsageParameters,
-        Context context);
+    void exportResourceUsage(String resourceGroupName, String name,
+        ExportResourceUsageParameters exportResourceUsageParameters, Context context);
 
     /**
      * Generate a URI for uploading custom disk images to a Lab.
@@ -444,8 +432,8 @@ public interface LabsClient {
      * @return response body for generating an upload URI along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GenerateUploadUriResponseInner> generateUploadUriWithResponse(
-        String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter, Context context);
+    Response<GenerateUploadUriResponseInner> generateUploadUriWithResponse(String resourceGroupName, String name,
+        GenerateUploadUriParameter generateUploadUriParameter, Context context);
 
     /**
      * Generate a URI for uploading custom disk images to a Lab.
@@ -459,8 +447,8 @@ public interface LabsClient {
      * @return response body for generating an upload URI.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GenerateUploadUriResponseInner generateUploadUri(
-        String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter);
+    GenerateUploadUriResponseInner generateUploadUri(String resourceGroupName, String name,
+        GenerateUploadUriParameter generateUploadUriParameter);
 
     /**
      * Import a virtual machine into a different lab. This operation can take a while to complete.
@@ -475,8 +463,8 @@ public interface LabsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginImportVirtualMachine(
-        String resourceGroupName, String name, ImportLabVirtualMachineRequest importLabVirtualMachineRequest);
+    SyncPoller<PollResult<Void>, Void> beginImportVirtualMachine(String resourceGroupName, String name,
+        ImportLabVirtualMachineRequest importLabVirtualMachineRequest);
 
     /**
      * Import a virtual machine into a different lab. This operation can take a while to complete.
@@ -492,11 +480,8 @@ public interface LabsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginImportVirtualMachine(
-        String resourceGroupName,
-        String name,
-        ImportLabVirtualMachineRequest importLabVirtualMachineRequest,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginImportVirtualMachine(String resourceGroupName, String name,
+        ImportLabVirtualMachineRequest importLabVirtualMachineRequest, Context context);
 
     /**
      * Import a virtual machine into a different lab. This operation can take a while to complete.
@@ -510,8 +495,8 @@ public interface LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void importVirtualMachine(
-        String resourceGroupName, String name, ImportLabVirtualMachineRequest importLabVirtualMachineRequest);
+    void importVirtualMachine(String resourceGroupName, String name,
+        ImportLabVirtualMachineRequest importLabVirtualMachineRequest);
 
     /**
      * Import a virtual machine into a different lab. This operation can take a while to complete.
@@ -526,11 +511,8 @@ public interface LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void importVirtualMachine(
-        String resourceGroupName,
-        String name,
-        ImportLabVirtualMachineRequest importLabVirtualMachineRequest,
-        Context context);
+    void importVirtualMachine(String resourceGroupName, String name,
+        ImportLabVirtualMachineRequest importLabVirtualMachineRequest, Context context);
 
     /**
      * List disk images available for custom image creation.

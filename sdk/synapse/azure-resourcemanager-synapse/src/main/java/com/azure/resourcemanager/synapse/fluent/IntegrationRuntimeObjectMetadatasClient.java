@@ -34,12 +34,8 @@ public interface IntegrationRuntimeObjectMetadatasClient {
      * @return object metadata from an integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SsisObjectMetadataListResponseInner> listWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        GetSsisObjectMetadataRequest getMetadataRequest,
-        Context context);
+    Response<SsisObjectMetadataListResponseInner> listWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, GetSsisObjectMetadataRequest getMetadataRequest, Context context);
 
     /**
      * Get integration runtime object metadata
@@ -55,8 +51,8 @@ public interface IntegrationRuntimeObjectMetadatasClient {
      * @return object metadata from an integration runtime.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SsisObjectMetadataListResponseInner list(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    SsisObjectMetadataListResponseInner list(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 
     /**
      * Refresh integration runtime object metadata
@@ -72,8 +68,8 @@ public interface IntegrationRuntimeObjectMetadatasClient {
      * @return the {@link SyncPoller} for polling of the status of the operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner> beginRefresh(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
+        beginRefresh(String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
     /**
      * Refresh integration runtime object metadata
@@ -90,8 +86,8 @@ public interface IntegrationRuntimeObjectMetadatasClient {
      * @return the {@link SyncPoller} for polling of the status of the operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner> beginRefresh(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
+        beginRefresh(String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
 
     /**
      * Refresh integration runtime object metadata
@@ -107,8 +103,8 @@ public interface IntegrationRuntimeObjectMetadatasClient {
      * @return the status of the operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SsisObjectMetadataStatusResponseInner refresh(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    SsisObjectMetadataStatusResponseInner refresh(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 
     /**
      * Refresh integration runtime object metadata
@@ -125,6 +121,6 @@ public interface IntegrationRuntimeObjectMetadatasClient {
      * @return the status of the operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SsisObjectMetadataStatusResponseInner refresh(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    SsisObjectMetadataStatusResponseInner refresh(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 }

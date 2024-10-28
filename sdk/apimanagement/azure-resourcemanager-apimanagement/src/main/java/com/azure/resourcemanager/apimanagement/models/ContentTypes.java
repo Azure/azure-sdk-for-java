@@ -50,8 +50,8 @@ public interface ContentTypes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the developer portal's content type.
      */
-    Response<ContentTypeContract> getWithResponse(
-        String resourceGroupName, String serviceName, String contentTypeId, Context context);
+    Response<ContentTypeContract> getWithResponse(String resourceGroupName, String serviceName, String contentTypeId,
+        Context context);
 
     /**
      * Gets the details of the developer portal's content type. Content types describe content items' properties,
@@ -83,8 +83,8 @@ public interface ContentTypes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String contentTypeId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String contentTypeId,
+        String ifMatch, Context context);
 
     /**
      * Removes the specified developer portal's content type. Content types describe content items' properties,

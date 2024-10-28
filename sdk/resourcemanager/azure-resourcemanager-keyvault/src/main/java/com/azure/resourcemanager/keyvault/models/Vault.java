@@ -20,10 +20,8 @@ import java.util.List;
 
 /** An immutable client-side representation of an Azure Key Vault. */
 @Fluent
-public interface Vault
-    extends GroupableResource<KeyVaultManager, VaultInner>, Refreshable<Vault>, Updatable<Vault.Update>,
-    SupportsListingPrivateLinkResource,
-    SupportsUpdatingPrivateEndpointConnection {
+public interface Vault extends GroupableResource<KeyVaultManager, VaultInner>, Refreshable<Vault>,
+    Updatable<Vault.Update>, SupportsListingPrivateLinkResource, SupportsUpdatingPrivateEndpointConnection {
 
     /** @return an authenticated Key Vault secret client */
     SecretAsyncClient secretClient();
@@ -109,11 +107,8 @@ public interface Vault
      **************************************************************/
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithAccessPolicy,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithAccessPolicy,
+        DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the key vault definition stages. */
@@ -311,13 +306,9 @@ public interface Vault
          * A key vault definition with sufficient inputs to create a new storage account in the cloud, but exposing
          * additional optional inputs to specify.
          */
-        interface WithCreate
-            extends Creatable<Vault>,
-                GroupableResource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithNetworkRuleSet,
-                DefinitionStages.WithConfigurations,
-                DefinitionStages.WithAccessPolicy {
+        interface WithCreate extends Creatable<Vault>, GroupableResource.DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithSku, DefinitionStages.WithNetworkRuleSet, DefinitionStages.WithConfigurations,
+            DefinitionStages.WithAccessPolicy {
         }
     }
 
@@ -518,11 +509,7 @@ public interface Vault
     }
 
     /** The template for a key vault update operation, containing all the settings that can be modified. */
-    interface Update
-        extends GroupableResource.UpdateWithTags<Update>,
-            Appliable<Vault>,
-            UpdateStages.WithAccessPolicy,
-            UpdateStages.WithNetworkRuleSet,
-            UpdateStages.WithConfigurations {
+    interface Update extends GroupableResource.UpdateWithTags<Update>, Appliable<Vault>, UpdateStages.WithAccessPolicy,
+        UpdateStages.WithNetworkRuleSet, UpdateStages.WithConfigurations {
     }
 }

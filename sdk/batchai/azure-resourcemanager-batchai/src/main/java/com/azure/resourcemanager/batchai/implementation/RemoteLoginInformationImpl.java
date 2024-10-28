@@ -12,8 +12,8 @@ public final class RemoteLoginInformationImpl implements RemoteLoginInformation 
 
     private final com.azure.resourcemanager.batchai.BatchAIManager serviceManager;
 
-    RemoteLoginInformationImpl(
-        RemoteLoginInformationInner innerObject, com.azure.resourcemanager.batchai.BatchAIManager serviceManager) {
+    RemoteLoginInformationImpl(RemoteLoginInformationInner innerObject,
+        com.azure.resourcemanager.batchai.BatchAIManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

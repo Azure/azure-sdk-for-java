@@ -22,7 +22,8 @@ public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
 
     @BeforeEach
     public void setup() {
-        CallAutomationClient callAutomationClient = CallAutomationUnitTestBase.getCallAutomationClient(new ArrayList<>());
+        CallAutomationClient callAutomationClient
+            = CallAutomationUnitTestBase.getCallAutomationClient(new ArrayList<>());
         callRecording = callAutomationClient.getCallRecording();
     }
 
@@ -30,26 +31,16 @@ public class CallRecordingUnitTests extends CallRecordingUnitTestBase {
     @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void recordingOperationsTest() {
 
-        CallAutomationClient callAutomationClient = CallAutomationUnitTestBase.getCallAutomationClient(
-            recordingOperationsResponses
-        );
+        CallAutomationClient callAutomationClient
+            = CallAutomationUnitTestBase.getCallAutomationClient(recordingOperationsResponses);
         callRecording = callAutomationClient.getCallRecording();
 
-        validateRecording(
-            callRecording.startRecording(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
-                .setRecordingStateCallbackUrl("https://localhost/")),
-            RecordingState.ACTIVE
-        );
+        validateRecording(callRecording.startRecording(new StartRecordingOptions(new ServerCallLocator(SERVER_CALL_ID))
+            .setRecordingStateCallbackUrl("https://localhost/")), RecordingState.ACTIVE);
 
-        verifyOperationWithRecordingState(
-            () -> callRecording.pauseRecording(RECORDING_ID),
-            RecordingState.INACTIVE
-        );
+        verifyOperationWithRecordingState(() -> callRecording.pauseRecording(RECORDING_ID), RecordingState.INACTIVE);
 
-        verifyOperationWithRecordingState(
-            () -> callRecording.resumeRecording(RECORDING_ID),
-            RecordingState.ACTIVE
-        );
+        verifyOperationWithRecordingState(() -> callRecording.resumeRecording(RECORDING_ID), RecordingState.ACTIVE);
 
         callRecording.stopRecording(RECORDING_ID);
         assertThrows(CallingServerErrorException.class, () -> callRecording.getRecordingState(RECORDING_ID));

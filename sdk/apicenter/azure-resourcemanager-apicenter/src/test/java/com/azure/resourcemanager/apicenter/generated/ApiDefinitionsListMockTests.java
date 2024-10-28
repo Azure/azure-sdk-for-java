@@ -45,12 +45,14 @@ public final class ApiDefinitionsListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ApiDefinition> response = manager.apiDefinitions().list("vmtgjqppy", "s", "ronzmyhgfip", "sxkm",
-            "waekrrjreafxtsgu", "hjglikk", com.azure.core.util.Context.NONE);
+        PagedIterable<ApiDefinition> response = manager.apiDefinitions()
+            .list("vmtgjqppy", "s", "ronzmyhgfip", "sxkm", "waekrrjreafxtsgu", "hjglikk",
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("slol", response.iterator().next().properties().title());
         Assertions.assertEquals("pvuzlmv", response.iterator().next().properties().description());

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkFabricSkusListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkFabricSkusListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"type\":\"MultiRack\",\"maxComputeRacks\":844024628,\"maximumServerCount\":1036553043,\"supportedVersions\":[\"sgfy\",\"skyekgafxczv\",\"cckwrtwle\"],\"details\":\"veszrtlhpdhw\",\"provisioningState\":\"Canceled\"},\"id\":\"tacz\",\"name\":\"njfmbbfnvjxit\",\"type\":\"ovnkrtiklsmnihql\"},{\"properties\":{\"type\":\"MultiRack\",\"maxComputeRacks\":688911413,\"maximumServerCount\":357291580,\"supportedVersions\":[\"hyxwbgbud\",\"vqdorbccqcd\"],\"details\":\"hojvlirkn\",\"provisioningState\":\"Failed\"},\"id\":\"sawrdtn\",\"name\":\"gzlgpyaixihz\",\"type\":\"jjtsm\"}],\"nextLink\":\"dqftt\"}")
-                .toObject(NetworkFabricSkusListResult.class);
+        NetworkFabricSkusListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"type\":\"MultiRack\",\"maxComputeRacks\":844024628,\"maximumServerCount\":1036553043,\"supportedVersions\":[\"sgfy\",\"skyekgafxczv\",\"cckwrtwle\"],\"details\":\"veszrtlhpdhw\",\"provisioningState\":\"Canceled\"},\"id\":\"tacz\",\"name\":\"njfmbbfnvjxit\",\"type\":\"ovnkrtiklsmnihql\"},{\"properties\":{\"type\":\"MultiRack\",\"maxComputeRacks\":688911413,\"maximumServerCount\":357291580,\"supportedVersions\":[\"hyxwbgbud\",\"vqdorbccqcd\"],\"details\":\"hojvlirkn\",\"provisioningState\":\"Failed\"},\"id\":\"sawrdtn\",\"name\":\"gzlgpyaixihz\",\"type\":\"jjtsm\"}],\"nextLink\":\"dqftt\"}")
+            .toObject(NetworkFabricSkusListResult.class);
         Assertions.assertEquals(844024628, model.value().get(0).maxComputeRacks());
         Assertions.assertEquals(1036553043, model.value().get(0).maximumServerCount());
         Assertions.assertEquals("dqftt", model.nextLink());
@@ -25,18 +23,11 @@ public final class NetworkFabricSkusListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkFabricSkusListResult model =
-            new NetworkFabricSkusListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new NetworkFabricSkuInner()
-                                .withMaxComputeRacks(844024628)
-                                .withMaximumServerCount(1036553043),
-                            new NetworkFabricSkuInner()
-                                .withMaxComputeRacks(688911413)
-                                .withMaximumServerCount(357291580)))
-                .withNextLink("dqftt");
+        NetworkFabricSkusListResult model = new NetworkFabricSkusListResult()
+            .withValue(Arrays.asList(
+                new NetworkFabricSkuInner().withMaxComputeRacks(844024628).withMaximumServerCount(1036553043),
+                new NetworkFabricSkuInner().withMaxComputeRacks(688911413).withMaximumServerCount(357291580)))
+            .withNextLink("dqftt");
         model = BinaryData.fromObject(model).toObject(NetworkFabricSkusListResult.class);
         Assertions.assertEquals(844024628, model.value().get(0).maxComputeRacks());
         Assertions.assertEquals(1036553043, model.value().get(0).maximumServerCount());

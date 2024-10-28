@@ -26,8 +26,8 @@ public interface CostsClient {
      * @return cost along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LabCostInner> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<LabCostInner> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context);
 
     /**
      * Get cost.
@@ -57,8 +57,8 @@ public interface CostsClient {
      * @return a cost item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LabCostInner> createOrUpdateWithResponse(
-        String resourceGroupName, String labName, String name, LabCostInner labCost, Context context);
+    Response<LabCostInner> createOrUpdateWithResponse(String resourceGroupName, String labName, String name,
+        LabCostInner labCost, Context context);
 
     /**
      * Create or replace an existing cost.

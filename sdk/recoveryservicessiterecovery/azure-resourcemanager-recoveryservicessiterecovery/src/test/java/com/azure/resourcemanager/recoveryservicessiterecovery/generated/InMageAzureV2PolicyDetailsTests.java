@@ -25,8 +25,10 @@ public final class InMageAzureV2PolicyDetailsTests {
     public void testSerialize() throws Exception {
         InMageAzureV2PolicyDetails model
             = new InMageAzureV2PolicyDetails().withCrashConsistentFrequencyInMinutes(699440843)
-                .withRecoveryPointThresholdInMinutes(1580992750).withRecoveryPointHistory(893679063)
-                .withAppConsistentFrequencyInMinutes(710111101).withMultiVmSyncStatus("tlh");
+                .withRecoveryPointThresholdInMinutes(1580992750)
+                .withRecoveryPointHistory(893679063)
+                .withAppConsistentFrequencyInMinutes(710111101)
+                .withMultiVmSyncStatus("tlh");
         model = BinaryData.fromObject(model).toObject(InMageAzureV2PolicyDetails.class);
         Assertions.assertEquals(699440843, model.crashConsistentFrequencyInMinutes());
         Assertions.assertEquals(1580992750, model.recoveryPointThresholdInMinutes());

@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ReservationToReturnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReservationToReturn model =
-            BinaryData
-                .fromString("{\"reservationId\":\"rxv\",\"quantity\":76468143}")
-                .toObject(ReservationToReturn.class);
+        ReservationToReturn model = BinaryData.fromString("{\"reservationId\":\"rxv\",\"quantity\":76468143}")
+            .toObject(ReservationToReturn.class);
         Assertions.assertEquals("rxv", model.reservationId());
         Assertions.assertEquals(76468143, model.quantity());
     }

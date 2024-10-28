@@ -64,10 +64,8 @@ public final class IntegrationRuntimeStatusResponseInner {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model IntegrationRuntimeStatusResponseInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model IntegrationRuntimeStatusResponseInner"));
         } else {
             properties().validate();
         }

@@ -35,12 +35,14 @@ public final class PrivateLinkServiceProxyTests {
         PrivateLinkServiceProxy model = new PrivateLinkServiceProxy().withId("xrxxlep")
             .withRemotePrivateLinkServiceConnectionState(
                 new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
-                    .withDescription("jezwlwnw").withActionsRequired("qlcvydy"))
+                    .withDescription("jezwlwnw")
+                    .withActionsRequired("qlcvydy"))
             .withRemotePrivateEndpointConnection(new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
             .withGroupConnectivityInformation(Arrays.asList(new GroupConnectivityInformation()
                 .withCustomerVisibleFqdns(
                     Arrays.asList("lfltka", "jvefkdlfoakggkfp", "gaowpulpqblylsyx", "qjnsjervtia"))
-                .withRedirectMapId("sbzkf").withPrivateLinkServiceArmRegion("eyvpnqicvinvkj")));
+                .withRedirectMapId("sbzkf")
+                .withPrivateLinkServiceArmRegion("eyvpnqicvinvkj")));
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceProxy.class);
         Assertions.assertEquals("xrxxlep", model.id());
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,

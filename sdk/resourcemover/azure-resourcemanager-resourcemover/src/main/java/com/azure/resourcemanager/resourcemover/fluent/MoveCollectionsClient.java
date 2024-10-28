@@ -36,8 +36,8 @@ public interface MoveCollectionsClient {
      * @return define the move collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MoveCollectionInner> createWithResponse(
-        String resourceGroupName, String moveCollectionName, MoveCollectionInner body, Context context);
+    Response<MoveCollectionInner> createWithResponse(String resourceGroupName, String moveCollectionName,
+        MoveCollectionInner body, Context context);
 
     /**
      * Creates or updates a move collection.
@@ -65,8 +65,8 @@ public interface MoveCollectionsClient {
      * @return define the move collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MoveCollectionInner> updateWithResponse(
-        String resourceGroupName, String moveCollectionName, UpdateMoveCollectionRequest body, Context context);
+    Response<MoveCollectionInner> updateWithResponse(String resourceGroupName, String moveCollectionName,
+        UpdateMoveCollectionRequest body, Context context);
 
     /**
      * Updates a move collection.
@@ -92,8 +92,8 @@ public interface MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(
-        String resourceGroupName, String moveCollectionName);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(String resourceGroupName,
+        String moveCollectionName);
 
     /**
      * Deletes a move collection.
@@ -107,8 +107,8 @@ public interface MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(
-        String resourceGroupName, String moveCollectionName, Context context);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDelete(String resourceGroupName,
+        String moveCollectionName, Context context);
 
     /**
      * Deletes a move collection.
@@ -149,8 +149,8 @@ public interface MoveCollectionsClient {
      * @return the move collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MoveCollectionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String moveCollectionName, Context context);
+    Response<MoveCollectionInner> getByResourceGroupWithResponse(String resourceGroupName, String moveCollectionName,
+        Context context);
 
     /**
      * Gets the move collection.
@@ -179,8 +179,8 @@ public interface MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginPrepare(
-        String resourceGroupName, String moveCollectionName);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginPrepare(String resourceGroupName,
+        String moveCollectionName);
 
     /**
      * Initiates prepare for the set of resources included in the request body. The prepare operation is on the
@@ -198,8 +198,8 @@ public interface MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginPrepare(
-        String resourceGroupName, String moveCollectionName, PrepareRequest body, Context context);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginPrepare(String resourceGroupName,
+        String moveCollectionName, PrepareRequest body, Context context);
 
     /**
      * Initiates prepare for the set of resources included in the request body. The prepare operation is on the
@@ -233,8 +233,8 @@ public interface MoveCollectionsClient {
      * @return operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusInner prepare(
-        String resourceGroupName, String moveCollectionName, PrepareRequest body, Context context);
+    OperationStatusInner prepare(String resourceGroupName, String moveCollectionName, PrepareRequest body,
+        Context context);
 
     /**
      * Moves the set of resources included in the request body. The move operation is triggered after the moveResources
@@ -250,8 +250,8 @@ public interface MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginInitiateMove(
-        String resourceGroupName, String moveCollectionName);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginInitiateMove(String resourceGroupName,
+        String moveCollectionName);
 
     /**
      * Moves the set of resources included in the request body. The move operation is triggered after the moveResources
@@ -269,8 +269,8 @@ public interface MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginInitiateMove(
-        String resourceGroupName, String moveCollectionName, ResourceMoveRequest body, Context context);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginInitiateMove(String resourceGroupName,
+        String moveCollectionName, ResourceMoveRequest body, Context context);
 
     /**
      * Moves the set of resources included in the request body. The move operation is triggered after the moveResources
@@ -304,8 +304,8 @@ public interface MoveCollectionsClient {
      * @return operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusInner initiateMove(
-        String resourceGroupName, String moveCollectionName, ResourceMoveRequest body, Context context);
+    OperationStatusInner initiateMove(String resourceGroupName, String moveCollectionName, ResourceMoveRequest body,
+        Context context);
 
     /**
      * Commits the set of resources included in the request body. The commit operation is triggered on the moveResources
@@ -321,8 +321,8 @@ public interface MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginCommit(
-        String resourceGroupName, String moveCollectionName);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginCommit(String resourceGroupName,
+        String moveCollectionName);
 
     /**
      * Commits the set of resources included in the request body. The commit operation is triggered on the moveResources
@@ -340,8 +340,8 @@ public interface MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginCommit(
-        String resourceGroupName, String moveCollectionName, CommitRequest body, Context context);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginCommit(String resourceGroupName,
+        String moveCollectionName, CommitRequest body, Context context);
 
     /**
      * Commits the set of resources included in the request body. The commit operation is triggered on the moveResources
@@ -375,8 +375,8 @@ public interface MoveCollectionsClient {
      * @return operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusInner commit(
-        String resourceGroupName, String moveCollectionName, CommitRequest body, Context context);
+    OperationStatusInner commit(String resourceGroupName, String moveCollectionName, CommitRequest body,
+        Context context);
 
     /**
      * Discards the set of resources included in the request body. The discard operation is triggered on the
@@ -392,8 +392,8 @@ public interface MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDiscard(
-        String resourceGroupName, String moveCollectionName);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDiscard(String resourceGroupName,
+        String moveCollectionName);
 
     /**
      * Discards the set of resources included in the request body. The discard operation is triggered on the
@@ -411,8 +411,8 @@ public interface MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDiscard(
-        String resourceGroupName, String moveCollectionName, DiscardRequest body, Context context);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginDiscard(String resourceGroupName,
+        String moveCollectionName, DiscardRequest body, Context context);
 
     /**
      * Discards the set of resources included in the request body. The discard operation is triggered on the
@@ -446,8 +446,8 @@ public interface MoveCollectionsClient {
      * @return operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusInner discard(
-        String resourceGroupName, String moveCollectionName, DiscardRequest body, Context context);
+    OperationStatusInner discard(String resourceGroupName, String moveCollectionName, DiscardRequest body,
+        Context context);
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
@@ -460,8 +460,8 @@ public interface MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginResolveDependencies(
-        String resourceGroupName, String moveCollectionName);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginResolveDependencies(String resourceGroupName, String moveCollectionName);
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
@@ -475,8 +475,8 @@ public interface MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginResolveDependencies(
-        String resourceGroupName, String moveCollectionName, Context context);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner>
+        beginResolveDependencies(String resourceGroupName, String moveCollectionName, Context context);
 
     /**
      * Computes, resolves and validate the dependencies of the moveResources in the move collection.
@@ -518,8 +518,8 @@ public interface MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginBulkRemove(
-        String resourceGroupName, String moveCollectionName);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginBulkRemove(String resourceGroupName,
+        String moveCollectionName);
 
     /**
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
@@ -536,8 +536,8 @@ public interface MoveCollectionsClient {
      * @return the {@link SyncPoller} for polling of operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginBulkRemove(
-        String resourceGroupName, String moveCollectionName, BulkRemoveRequest body, Context context);
+    SyncPoller<PollResult<OperationStatusInner>, OperationStatusInner> beginBulkRemove(String resourceGroupName,
+        String moveCollectionName, BulkRemoveRequest body, Context context);
 
     /**
      * Removes the set of move resources included in the request body from move collection. The orchestration is done by
@@ -569,8 +569,8 @@ public interface MoveCollectionsClient {
      * @return operation status REST resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusInner bulkRemove(
-        String resourceGroupName, String moveCollectionName, BulkRemoveRequest body, Context context);
+    OperationStatusInner bulkRemove(String resourceGroupName, String moveCollectionName, BulkRemoveRequest body,
+        Context context);
 
     /**
      * Get all Move Collections.
@@ -640,8 +640,8 @@ public interface MoveCollectionsClient {
      * @return required for resources collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RequiredForResourcesCollectionInner> listRequiredForWithResponse(
-        String resourceGroupName, String moveCollectionName, String sourceId, Context context);
+    Response<RequiredForResourcesCollectionInner> listRequiredForWithResponse(String resourceGroupName,
+        String moveCollectionName, String sourceId, Context context);
 
     /**
      * List of the move resources for which an arm resource is required for.
@@ -655,6 +655,6 @@ public interface MoveCollectionsClient {
      * @return required for resources collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RequiredForResourcesCollectionInner listRequiredFor(
-        String resourceGroupName, String moveCollectionName, String sourceId);
+    RequiredForResourcesCollectionInner listRequiredFor(String resourceGroupName, String moveCollectionName,
+        String sourceId);
 }

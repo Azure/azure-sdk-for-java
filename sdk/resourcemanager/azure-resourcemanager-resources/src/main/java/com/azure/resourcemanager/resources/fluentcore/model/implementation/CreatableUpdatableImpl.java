@@ -26,16 +26,9 @@ import java.util.function.Function;
  * @param <InnerModelT> the inner model type that the fluent model wraps
  * @param <FluentModelImplT> the implementation type of the fluent model
  */
-public abstract class CreatableUpdatableImpl<
-        FluentModelT extends Indexable,
-        InnerModelT,
-        FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
-        extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
-        implements
-        Appliable<FluentModelT>,
-        Creatable<FluentModelT>,
-        TaskGroup.HasTaskGroup,
-        CreateUpdateTask.ResourceCreatorUpdater<FluentModelT> {
+public abstract class CreatableUpdatableImpl<FluentModelT extends Indexable, InnerModelT, FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
+    extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT> implements Appliable<FluentModelT>,
+    Creatable<FluentModelT>, TaskGroup.HasTaskGroup, CreateUpdateTask.ResourceCreatorUpdater<FluentModelT> {
     /**
      * The name of the creatable updatable model.
      */
@@ -65,8 +58,7 @@ public abstract class CreatableUpdatableImpl<
     protected CreatableUpdatableImpl(String name, String key, InnerModelT innerObject) {
         super(key, innerObject);
         this.name = name;
-        taskGroup = new TaskGroup(this.key(),
-                new CreateUpdateTask<FluentModelT>(this));
+        taskGroup = new TaskGroup(this.key(), new CreateUpdateTask<FluentModelT>(this));
     }
 
     @Override

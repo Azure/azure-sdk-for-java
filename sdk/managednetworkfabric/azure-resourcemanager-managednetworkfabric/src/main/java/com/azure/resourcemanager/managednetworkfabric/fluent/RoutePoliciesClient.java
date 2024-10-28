@@ -34,8 +34,8 @@ public interface RoutePoliciesClient {
      * @return the {@link SyncPoller} for polling of the RoutePolicy resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RoutePolicyInner>, RoutePolicyInner> beginCreate(
-        String resourceGroupName, String routePolicyName, RoutePolicyInner body);
+    SyncPoller<PollResult<RoutePolicyInner>, RoutePolicyInner> beginCreate(String resourceGroupName,
+        String routePolicyName, RoutePolicyInner body);
 
     /**
      * Create Route Policy.
@@ -52,8 +52,8 @@ public interface RoutePoliciesClient {
      * @return the {@link SyncPoller} for polling of the RoutePolicy resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RoutePolicyInner>, RoutePolicyInner> beginCreate(
-        String resourceGroupName, String routePolicyName, RoutePolicyInner body, Context context);
+    SyncPoller<PollResult<RoutePolicyInner>, RoutePolicyInner> beginCreate(String resourceGroupName,
+        String routePolicyName, RoutePolicyInner body, Context context);
 
     /**
      * Create Route Policy.
@@ -102,8 +102,8 @@ public interface RoutePoliciesClient {
      * @return the RoutePolicy resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RoutePolicyInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String routePolicyName, Context context);
+    Response<RoutePolicyInner> getByResourceGroupWithResponse(String resourceGroupName, String routePolicyName,
+        Context context);
 
     /**
      * Gets a Route Policy.
@@ -134,8 +134,8 @@ public interface RoutePoliciesClient {
      * @return the {@link SyncPoller} for polling of the RoutePolicy resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RoutePolicyInner>, RoutePolicyInner> beginUpdate(
-        String resourceGroupName, String routePolicyName, RoutePolicyPatch body);
+    SyncPoller<PollResult<RoutePolicyInner>, RoutePolicyInner> beginUpdate(String resourceGroupName,
+        String routePolicyName, RoutePolicyPatch body);
 
     /**
      * Updates a Route Policy.
@@ -152,8 +152,8 @@ public interface RoutePoliciesClient {
      * @return the {@link SyncPoller} for polling of the RoutePolicy resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RoutePolicyInner>, RoutePolicyInner> beginUpdate(
-        String resourceGroupName, String routePolicyName, RoutePolicyPatch body, Context context);
+    SyncPoller<PollResult<RoutePolicyInner>, RoutePolicyInner> beginUpdate(String resourceGroupName,
+        String routePolicyName, RoutePolicyPatch body, Context context);
 
     /**
      * Updates a Route Policy.
@@ -318,8 +318,8 @@ public interface RoutePoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String routePolicyName, UpdateAdministrativeState body);
+        beginUpdateAdministrativeState(String resourceGroupName, String routePolicyName,
+            UpdateAdministrativeState body);
 
     /**
      * Executes enable operation to the underlying resources.
@@ -337,8 +337,8 @@ public interface RoutePoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String routePolicyName, UpdateAdministrativeState body, Context context);
+        beginUpdateAdministrativeState(String resourceGroupName, String routePolicyName, UpdateAdministrativeState body,
+            Context context);
 
     /**
      * Executes enable operation to the underlying resources.
@@ -354,8 +354,8 @@ public interface RoutePoliciesClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
-        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body);
+    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(String resourceGroupName,
+        String routePolicyName, UpdateAdministrativeState body);
 
     /**
      * Executes enable operation to the underlying resources.
@@ -372,8 +372,8 @@ public interface RoutePoliciesClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
-        String resourceGroupName, String routePolicyName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(String resourceGroupName,
+        String routePolicyName, UpdateAdministrativeState body, Context context);
 
     /**
      * Validates the configuration of the resources.
@@ -429,8 +429,8 @@ public interface RoutePoliciesClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String routePolicyName, Context context);
+    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String routePolicyName,
+        Context context);
 
     /**
      * Execute the commit on the resources.
@@ -494,6 +494,6 @@ public interface RoutePoliciesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner commitConfiguration(
-        String resourceGroupName, String routePolicyName, Context context);
+    CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName, String routePolicyName,
+        Context context);
 }

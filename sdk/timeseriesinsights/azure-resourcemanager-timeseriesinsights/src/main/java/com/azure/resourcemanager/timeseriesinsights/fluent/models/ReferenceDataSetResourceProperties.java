@@ -58,8 +58,8 @@ public final class ReferenceDataSetResourceProperties extends ReferenceDataSetCr
 
     /** {@inheritDoc} */
     @Override
-    public ReferenceDataSetResourceProperties withDataStringComparisonBehavior(
-        DataStringComparisonBehavior dataStringComparisonBehavior) {
+    public ReferenceDataSetResourceProperties
+        withDataStringComparisonBehavior(DataStringComparisonBehavior dataStringComparisonBehavior) {
         super.withDataStringComparisonBehavior(dataStringComparisonBehavior);
         return this;
     }

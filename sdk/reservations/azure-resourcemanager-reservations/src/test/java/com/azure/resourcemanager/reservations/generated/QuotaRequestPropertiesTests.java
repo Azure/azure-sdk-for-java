@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaRequestProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Accepted\",\"message\":\"zwl\",\"requestSubmitTime\":\"2021-07-30T12:05:38Z\",\"value\":[{\"limit\":544110475,\"name\":{\"value\":\"dy\",\"localizedValue\":\"tdooaoj\"},\"resourceType\":\"iodkooebwnujhem\",\"unit\":\"bvdkcrodtjin\",\"provisioningState\":\"Failed\",\"message\":\"fltkacjv\",\"subRequestId\":\"kdlfoa\"},{\"limit\":1662630957,\"name\":{\"value\":\"pagao\",\"localizedValue\":\"ulpqblylsyxkqjn\"},\"resourceType\":\"ervtiagxs\",\"unit\":\"zuempsbzkf\",\"provisioningState\":\"Succeeded\",\"message\":\"v\",\"subRequestId\":\"qi\"}]}")
-                .toObject(QuotaRequestProperties.class);
+        QuotaRequestProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Accepted\",\"message\":\"zwl\",\"requestSubmitTime\":\"2021-07-30T12:05:38Z\",\"value\":[{\"limit\":544110475,\"name\":{\"value\":\"dy\",\"localizedValue\":\"tdooaoj\"},\"resourceType\":\"iodkooebwnujhem\",\"unit\":\"bvdkcrodtjin\",\"provisioningState\":\"Failed\",\"message\":\"fltkacjv\",\"subRequestId\":\"kdlfoa\"},{\"limit\":1662630957,\"name\":{\"value\":\"pagao\",\"localizedValue\":\"ulpqblylsyxkqjn\"},\"resourceType\":\"ervtiagxs\",\"unit\":\"zuempsbzkf\",\"provisioningState\":\"Succeeded\",\"message\":\"v\",\"subRequestId\":\"qi\"}]}")
+            .toObject(QuotaRequestProperties.class);
         Assertions.assertEquals(QuotaRequestState.ACCEPTED, model.provisioningState());
         Assertions.assertEquals("dy", model.value().get(0).name().value());
         Assertions.assertEquals("bvdkcrodtjin", model.value().get(0).unit());
@@ -28,20 +26,14 @@ public final class QuotaRequestPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaRequestProperties model =
-            new QuotaRequestProperties()
-                .withProvisioningState(QuotaRequestState.ACCEPTED)
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SubRequest()
-                                .withName(new ResourceName().withValue("dy"))
-                                .withUnit("bvdkcrodtjin")
-                                .withProvisioningState(QuotaRequestState.FAILED),
-                            new SubRequest()
-                                .withName(new ResourceName().withValue("pagao"))
-                                .withUnit("zuempsbzkf")
-                                .withProvisioningState(QuotaRequestState.SUCCEEDED)));
+        QuotaRequestProperties model = new QuotaRequestProperties().withProvisioningState(QuotaRequestState.ACCEPTED)
+            .withValue(Arrays.asList(
+                new SubRequest().withName(new ResourceName().withValue("dy"))
+                    .withUnit("bvdkcrodtjin")
+                    .withProvisioningState(QuotaRequestState.FAILED),
+                new SubRequest().withName(new ResourceName().withValue("pagao"))
+                    .withUnit("zuempsbzkf")
+                    .withProvisioningState(QuotaRequestState.SUCCEEDED)));
         model = BinaryData.fromObject(model).toObject(QuotaRequestProperties.class);
         Assertions.assertEquals(QuotaRequestState.ACCEPTED, model.provisioningState());
         Assertions.assertEquals("dy", model.value().get(0).name().value());

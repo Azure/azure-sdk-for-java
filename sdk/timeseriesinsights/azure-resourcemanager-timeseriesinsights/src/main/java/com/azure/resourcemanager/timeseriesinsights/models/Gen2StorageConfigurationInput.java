@@ -80,16 +80,12 @@ public final class Gen2StorageConfigurationInput {
      */
     public void validate() {
         if (accountName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property accountName in model Gen2StorageConfigurationInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property accountName in model Gen2StorageConfigurationInput"));
         }
         if (managementKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property managementKey in model Gen2StorageConfigurationInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property managementKey in model Gen2StorageConfigurationInput"));
         }
     }
 

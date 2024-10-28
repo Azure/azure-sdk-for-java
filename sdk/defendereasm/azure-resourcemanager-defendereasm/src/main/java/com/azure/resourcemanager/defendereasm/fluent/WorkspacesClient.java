@@ -75,8 +75,8 @@ public interface WorkspacesClient {
      * @return workspace details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<WorkspaceResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Returns a workspace with the given name.
@@ -102,8 +102,8 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of workspace details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkspaceResourceInner>, WorkspaceResourceInner> beginCreateAndUpdate(
-        String resourceGroupName, String workspaceName);
+    SyncPoller<PollResult<WorkspaceResourceInner>, WorkspaceResourceInner>
+        beginCreateAndUpdate(String resourceGroupName, String workspaceName);
 
     /**
      * Create or update a Workspace.
@@ -147,8 +147,8 @@ public interface WorkspacesClient {
      * @return workspace details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceResourceInner createAndUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceResourceInner workspaceResource, Context context);
+    WorkspaceResourceInner createAndUpdate(String resourceGroupName, String workspaceName,
+        WorkspaceResourceInner workspaceResource, Context context);
 
     /**
      * Update a Workspace.
@@ -163,8 +163,8 @@ public interface WorkspacesClient {
      * @return workspace details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceResourceInner> updateWithResponse(
-        String resourceGroupName, String workspaceName, WorkspacePatchResource workspacePatchResource, Context context);
+    Response<WorkspaceResourceInner> updateWithResponse(String resourceGroupName, String workspaceName,
+        WorkspacePatchResource workspacePatchResource, Context context);
 
     /**
      * Update a Workspace.

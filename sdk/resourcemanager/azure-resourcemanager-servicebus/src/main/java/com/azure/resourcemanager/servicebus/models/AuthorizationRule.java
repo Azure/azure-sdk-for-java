@@ -18,9 +18,8 @@ import java.util.List;
  * @param <RuleT> the specific rule type
  */
 @Fluent
-public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> extends
-    IndependentChildResource<ServiceBusManager, SBAuthorizationRuleInner>,
-    Refreshable<RuleT> {
+public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>>
+    extends IndependentChildResource<ServiceBusManager, SBAuthorizationRuleInner>, Refreshable<RuleT> {
 
     /**
      * @return rights associated with the rule

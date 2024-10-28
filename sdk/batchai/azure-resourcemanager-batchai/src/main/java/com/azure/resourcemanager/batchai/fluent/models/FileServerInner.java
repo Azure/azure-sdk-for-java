@@ -21,7 +21,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Fluent
 public class FileServerInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileServerInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FileServerInner.class);
 
     /*
      * VM size of the File Server.

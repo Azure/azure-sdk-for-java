@@ -80,9 +80,8 @@ public final class CreatorInner extends Resource {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model CreatorInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model CreatorInner"));
         } else {
             properties().validate();
         }

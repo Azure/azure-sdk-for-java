@@ -15,8 +15,8 @@ import static java.util.logging.Level.WARNING;
  * The Jackson JsonConverter.
  */
 public final class JsonConverterUtil {
-    private static final ObjectMapper FROM_JSON_MAPPER = new ObjectMapper()
-        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    private static final ObjectMapper FROM_JSON_MAPPER
+        = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     private static final ObjectMapper TO_JSON_MAPPER = new ObjectMapper();
 
     /**

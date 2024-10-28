@@ -36,8 +36,8 @@ public interface KustoPoolDatabases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Database> listByKustoPool(
-        String resourceGroupName, String workspaceName, String kustoPoolName, Context context);
+    PagedIterable<Database> listByKustoPool(String resourceGroupName, String workspaceName, String kustoPoolName,
+        Context context);
 
     /**
      * Returns a database.
@@ -52,8 +52,8 @@ public interface KustoPoolDatabases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto database along with {@link Response}.
      */
-    Response<Database> getWithResponse(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context);
+    Response<Database> getWithResponse(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, Context context);
 
     /**
      * Returns a database.
@@ -82,11 +82,7 @@ public interface KustoPoolDatabases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto database.
      */
-    Database createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
+    Database createOrUpdate(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
         DatabaseInner parameters);
 
     /**
@@ -103,13 +99,8 @@ public interface KustoPoolDatabases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto database.
      */
-    Database createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters,
-        Context context);
+    Database createOrUpdate(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
+        DatabaseInner parameters, Context context);
 
     /**
      * Updates a database.
@@ -124,11 +115,7 @@ public interface KustoPoolDatabases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto database.
      */
-    Database update(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
+    Database update(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
         DatabaseInner parameters);
 
     /**
@@ -145,13 +132,8 @@ public interface KustoPoolDatabases {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Kusto database.
      */
-    Database update(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters,
-        Context context);
+    Database update(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
+        DatabaseInner parameters, Context context);
 
     /**
      * Deletes the database with the given name.
@@ -178,6 +160,6 @@ public interface KustoPoolDatabases {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context);
+    void delete(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
+        Context context);
 }

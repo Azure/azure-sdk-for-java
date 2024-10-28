@@ -44,12 +44,14 @@ public final class NetworkServiceDesignGroupsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NetworkServiceDesignGroup response = manager.networkServiceDesignGroups()
-            .getWithResponse("tljqobbpih", "hcecybmrqbr", "bbmpxdlvykfre", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("tljqobbpih", "hcecybmrqbr", "bbmpxdlvykfre", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("ogjggsvoujkxibda", response.location());
         Assertions.assertEquals("kmdyomkxfbvfbh", response.tags().get("y"));

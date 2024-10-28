@@ -39,8 +39,8 @@ public interface OpenIdConnectProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged OpenIdProviders list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OpenidConnectProviderContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<OpenidConnectProviderContract> listByService(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
@@ -54,8 +54,8 @@ public interface OpenIdConnectProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
      */
-    OpenIdConnectProvidersGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String opid, Context context);
+    OpenIdConnectProvidersGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String opid, Context context);
 
     /**
      * Gets the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
@@ -81,8 +81,8 @@ public interface OpenIdConnectProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specific OpenID Connect Provider without secrets.
      */
-    Response<OpenidConnectProviderContract> getWithResponse(
-        String resourceGroupName, String serviceName, String opid, Context context);
+    Response<OpenidConnectProviderContract> getWithResponse(String resourceGroupName, String serviceName, String opid,
+        Context context);
 
     /**
      * Gets specific OpenID Connect Provider without secrets.
@@ -111,8 +111,8 @@ public interface OpenIdConnectProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String opid, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String opid, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific OpenID Connect Provider of the API Management service instance.
@@ -140,8 +140,8 @@ public interface OpenIdConnectProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the client secret details of the OpenID Connect Provider.
      */
-    Response<ClientSecretContract> listSecretsWithResponse(
-        String resourceGroupName, String serviceName, String opid, Context context);
+    Response<ClientSecretContract> listSecretsWithResponse(String resourceGroupName, String serviceName, String opid,
+        Context context);
 
     /**
      * Gets the client secret details of the OpenID Connect Provider.

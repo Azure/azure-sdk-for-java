@@ -44,15 +44,19 @@ public final class NetworkFunctionsExecuteRequestMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.networkFunctions().executeRequest("henlusfnr", "tjxtxr",
-            new ExecuteRequestParameters().withServiceEndpoint("cq")
-                .withRequestMetadata(new RequestMetadata().withRelativePath("jvidttge")
-                    .withHttpMethod(HttpMethod.DELETE).withSerializedBody("slvyjtcvuwkasi").withApiVersion("esfuught")),
-            com.azure.core.util.Context.NONE);
+        manager.networkFunctions()
+            .executeRequest("henlusfnr", "tjxtxr",
+                new ExecuteRequestParameters().withServiceEndpoint("cq")
+                    .withRequestMetadata(new RequestMetadata().withRelativePath("jvidttge")
+                        .withHttpMethod(HttpMethod.DELETE)
+                        .withSerializedBody("slvyjtcvuwkasi")
+                        .withApiVersion("esfuught")),
+                com.azure.core.util.Context.NONE);
 
     }
 }

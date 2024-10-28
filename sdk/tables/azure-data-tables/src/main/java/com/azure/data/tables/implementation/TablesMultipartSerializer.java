@@ -40,8 +40,8 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
         private final HttpHeaders headers = new HttpHeaders();
 
         TableTransactionActionResponse build() {
-            TableTransactionActionResponse response =
-                TableTransactionActionResponseAccessHelper.createTableTransactionActionResponse(statusCode, value);
+            TableTransactionActionResponse response
+                = TableTransactionActionResponseAccessHelper.createTableTransactionActionResponse(statusCode, value);
 
             headers.setAllHttpHeaders(response.getHeaders());
 
@@ -150,7 +150,8 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <U> U deserialize(InputStream inputStream, Type type, SerializerEncoding serializerEncoding) throws IOException {
+    public <U> U deserialize(InputStream inputStream, Type type, SerializerEncoding serializerEncoding)
+        throws IOException {
         if (type == TableTransactionActionResponse[].class) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
             String line = reader.readLine();
@@ -169,8 +170,8 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
                     if (responseParams != null) {
                         if (body != null && !body.isEmpty()) {
                             try {
-                                responseParams.setValue(deserialize(body, TableServiceJsonError.class,
-                                    serializerEncoding));
+                                responseParams
+                                    .setValue(deserialize(body, TableServiceJsonError.class, serializerEncoding));
                             } catch (IOException e) {
                                 logger.logThrowableAsWarning(
                                     new IOException("Unable to deserialize sub-response body.", e));

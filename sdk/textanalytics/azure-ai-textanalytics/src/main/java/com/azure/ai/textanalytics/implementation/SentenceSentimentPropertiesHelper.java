@@ -13,14 +13,17 @@ import com.azure.core.util.IterableStream;
 public final class SentenceSentimentPropertiesHelper {
     private static SentenceSentimentAccessor accessor;
 
-    private SentenceSentimentPropertiesHelper() { }
+    private SentenceSentimentPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link SentenceSentiment} instance.
      */
     public interface SentenceSentimentAccessor {
         void setOpinions(SentenceSentiment sentenceSentiment, IterableStream<SentenceOpinion> opinions);
+
         void setOffset(SentenceSentiment sentenceSentiment, int offset);
+
         void setLength(SentenceSentiment sentenceSentiment, int length);
     }
 

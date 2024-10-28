@@ -12,10 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlPoolColumnPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlPoolColumnProperties model =
-            BinaryData
-                .fromString("{\"columnType\":\"tinyint\",\"isComputed\":true}")
-                .toObject(SqlPoolColumnProperties.class);
+        SqlPoolColumnProperties model = BinaryData.fromString("{\"columnType\":\"tinyint\",\"isComputed\":true}")
+            .toObject(SqlPoolColumnProperties.class);
         Assertions.assertEquals(ColumnDataType.TINYINT, model.columnType());
     }
 

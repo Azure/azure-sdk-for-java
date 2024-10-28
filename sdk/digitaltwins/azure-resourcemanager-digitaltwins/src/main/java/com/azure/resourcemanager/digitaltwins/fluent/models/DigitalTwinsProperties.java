@@ -105,8 +105,8 @@ public final class DigitalTwinsProperties {
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the DigitalTwinsProperties object itself.
      */
-    public DigitalTwinsProperties withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public DigitalTwinsProperties
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }

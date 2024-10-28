@@ -28,10 +28,12 @@ public final class PrefixListGlobalRulestackResourceListResultTests {
         PrefixListGlobalRulestackResourceListResult model
             = new PrefixListGlobalRulestackResourceListResult().withValue(Arrays.asList(
                 new PrefixListGlobalRulestackResourceInner().withDescription("fuflrwdmhdlx")
-                    .withPrefixList(Arrays.asList("rxsagafcnihgwqa")).withEtag("edgfbcvkcvq")
+                    .withPrefixList(Arrays.asList("rxsagafcnihgwqa"))
+                    .withEtag("edgfbcvkcvq")
                     .withAuditComment("keqdcvdrhvoods"),
                 new PrefixListGlobalRulestackResourceInner().withDescription("iyq")
-                    .withPrefixList(Arrays.asList("uicpd", "gk", "zl", "mbmpaxmodfvuefy")).withEtag("bpfvm")
+                    .withPrefixList(Arrays.asList("uicpd", "gk", "zl", "mbmpaxmodfvuefy"))
+                    .withEtag("bpfvm")
                     .withAuditComment("hrfou")))
                 .withNextLink("smond");
         model = BinaryData.fromObject(model).toObject(PrefixListGlobalRulestackResourceListResult.class);

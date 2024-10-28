@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.kafka.connect.implementation.CosmosContainerUtils.validateContainers;
+import static com.azure.cosmos.kafka.connect.implementation.CosmosContainerUtils.validateDatabaseAndContainers;
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateCosmosAccountAuthConfig;
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateThroughputControlConfig;
 import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateWriteConfig;
@@ -47,7 +47,9 @@ public final class CosmosSinkConnector extends SinkConnector {
         this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
         CosmosSinkContainersConfig containersConfig = this.sinkConfig.getContainersConfig();
         CosmosAsyncClient cosmosAsyncClient = CosmosClientStore.getCosmosClient(this.sinkConfig.getAccountConfig(), this.connectorName);
-        validateContainers(new ArrayList<>(containersConfig.getTopicToContainerMap().values()), cosmosAsyncClient,
+        validateDatabaseAndContainers(
+            new ArrayList<>(containersConfig.getTopicToContainerMap().values()),
+            cosmosAsyncClient,
             containersConfig.getDatabaseName());
         cosmosAsyncClient.close();
     }

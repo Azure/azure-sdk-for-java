@@ -15,9 +15,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import java.util.ArrayList;
 
 /** Implementation for Networks. */
-public class NetworksImpl
-    extends TopLevelModifiableResourcesImpl<
-        Network, NetworkImpl, VirtualNetworkInner, VirtualNetworksClient, NetworkManager>
+public class NetworksImpl extends
+    TopLevelModifiableResourcesImpl<Network, NetworkImpl, VirtualNetworkInner, VirtualNetworksClient, NetworkManager>
     implements Networks {
 
     public NetworksImpl(final NetworkManager networkManager) {

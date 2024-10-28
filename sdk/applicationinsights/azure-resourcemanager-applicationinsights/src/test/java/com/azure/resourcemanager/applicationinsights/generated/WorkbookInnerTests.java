@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkbookInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkbookInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"wdmjsjqbjhhyx\",\"serializedData\":\"rw\",\"version\":\"co\",\"timeModified\":\"2021-02-27T00:57:42Z\",\"category\":\"p\",\"tags\":[\"gymare\",\"n\",\"jxqugjhky\",\"ubeddg\"],\"userId\":\"ofwq\",\"sourceId\":\"qal\",\"storageUri\":\"mnjijpxacqqudf\",\"description\":\"yxbaaabjyvayf\",\"revision\":\"m\"},\"identity\":{\"principalId\":\"be632264-181e-4d90-a7c6-76af9f361265\",\"tenantId\":\"51f31ba0-c910-4b3f-87b2-eb46357f0c67\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"exn\":{\"principalId\":\"06583265-61d0-4385-8f06-96bf6687cf4f\",\"clientId\":\"e1e22704-ee09-4a3b-b432-3658bf5231d5\"}}},\"kind\":\"shared\",\"etag\":\"nwnwme\",\"location\":\"zsyyceuzso\",\"tags\":{\"frxtrthzvaytdwk\":\"ud\",\"xhexiilivpdti\":\"brqubp\"},\"id\":\"r\",\"name\":\"tdqoaxoruzfgsq\",\"type\":\"yfxrx\"}")
-                .toObject(WorkbookInner.class);
+        WorkbookInner model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"wdmjsjqbjhhyx\",\"serializedData\":\"rw\",\"version\":\"co\",\"timeModified\":\"2021-02-27T00:57:42Z\",\"category\":\"p\",\"tags\":[\"gymare\",\"n\",\"jxqugjhky\",\"ubeddg\"],\"userId\":\"ofwq\",\"sourceId\":\"qal\",\"storageUri\":\"mnjijpxacqqudf\",\"description\":\"yxbaaabjyvayf\",\"revision\":\"m\"},\"identity\":{\"principalId\":\"be632264-181e-4d90-a7c6-76af9f361265\",\"tenantId\":\"51f31ba0-c910-4b3f-87b2-eb46357f0c67\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"exn\":{\"principalId\":\"06583265-61d0-4385-8f06-96bf6687cf4f\",\"clientId\":\"e1e22704-ee09-4a3b-b432-3658bf5231d5\"}}},\"kind\":\"shared\",\"etag\":\"nwnwme\",\"location\":\"zsyyceuzso\",\"tags\":{\"frxtrthzvaytdwk\":\"ud\",\"xhexiilivpdti\":\"brqubp\"},\"id\":\"r\",\"name\":\"tdqoaxoruzfgsq\",\"type\":\"yfxrx\"}")
+            .toObject(WorkbookInner.class);
         Assertions.assertEquals("zsyyceuzso", model.location());
         Assertions.assertEquals("ud", model.tags().get("frxtrthzvaytdwk"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
@@ -40,24 +38,20 @@ public final class WorkbookInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookInner model =
-            new WorkbookInner()
-                .withLocation("zsyyceuzso")
-                .withTags(mapOf("frxtrthzvaytdwk", "ud", "xhexiilivpdti", "brqubp"))
-                .withIdentity(
-                    new WorkbookResourceIdentity()
-                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("exn", new UserAssignedIdentity())))
-                .withKind(WorkbookSharedTypeKind.SHARED)
-                .withEtag("nwnwme")
-                .withDisplayName("wdmjsjqbjhhyx")
-                .withSerializedData("rw")
-                .withVersion("co")
-                .withCategory("p")
-                .withTagsPropertiesTags(Arrays.asList("gymare", "n", "jxqugjhky", "ubeddg"))
-                .withSourceId("qal")
-                .withStorageUri("mnjijpxacqqudf")
-                .withDescription("yxbaaabjyvayf");
+        WorkbookInner model = new WorkbookInner().withLocation("zsyyceuzso")
+            .withTags(mapOf("frxtrthzvaytdwk", "ud", "xhexiilivpdti", "brqubp"))
+            .withIdentity(new WorkbookResourceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("exn", new UserAssignedIdentity())))
+            .withKind(WorkbookSharedTypeKind.SHARED)
+            .withEtag("nwnwme")
+            .withDisplayName("wdmjsjqbjhhyx")
+            .withSerializedData("rw")
+            .withVersion("co")
+            .withCategory("p")
+            .withTagsPropertiesTags(Arrays.asList("gymare", "n", "jxqugjhky", "ubeddg"))
+            .withSourceId("qal")
+            .withStorageUri("mnjijpxacqqudf")
+            .withDescription("yxbaaabjyvayf");
         model = BinaryData.fromObject(model).toObject(WorkbookInner.class);
         Assertions.assertEquals("zsyyceuzso", model.location());
         Assertions.assertEquals("ud", model.tags().get("frxtrthzvaytdwk"));

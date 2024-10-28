@@ -21,8 +21,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 /**
  * Implementation for {@link EventHubDisasterRecoveryPairings}.
  */
-public final class EventHubDisasterRecoveryPairingsImpl
-    extends WrapperImpl<DisasterRecoveryConfigsClient>
+public final class EventHubDisasterRecoveryPairingsImpl extends WrapperImpl<DisasterRecoveryConfigsClient>
     implements EventHubDisasterRecoveryPairings {
     private EventHubsManager manager;
 
@@ -55,39 +54,30 @@ public final class EventHubDisasterRecoveryPairingsImpl
     public Mono<EventHubDisasterRecoveryPairing> getByIdAsync(String id) {
         Objects.requireNonNull(id);
         ResourceId resourceId = ResourceId.fromString(id);
-        return getByNameAsync(resourceId.resourceGroupName(),
-                resourceId.parent().name(),
-                resourceId.name());
+        return getByNameAsync(resourceId.resourceGroupName(), resourceId.parent().name(), resourceId.name());
     }
 
     @Override
-    public Mono<EventHubDisasterRecoveryPairing> getByNameAsync(
-        String resourceGroupName, String namespaceName, String name) {
-        return this.innerModel().getAsync(resourceGroupName,
-            namespaceName,
-            name)
-            .map(this::wrapModel);
+    public Mono<EventHubDisasterRecoveryPairing> getByNameAsync(String resourceGroupName, String namespaceName,
+        String name) {
+        return this.innerModel().getAsync(resourceGroupName, namespaceName, name).map(this::wrapModel);
     }
 
     @Override
-    public EventHubDisasterRecoveryPairing getByName(
-        String resourceGroupName, String namespaceName, String name) {
+    public EventHubDisasterRecoveryPairing getByName(String resourceGroupName, String namespaceName, String name) {
         return getByNameAsync(resourceGroupName, namespaceName, name).block();
     }
 
     @Override
-    public PagedIterable<EventHubDisasterRecoveryPairing> listByNamespace(
-        String resourceGroupName, String namespaceName) {
-        return PagedConverter.mapPage(innerModel()
-            .list(resourceGroupName, namespaceName),
-            this::wrapModel);
+    public PagedIterable<EventHubDisasterRecoveryPairing> listByNamespace(String resourceGroupName,
+        String namespaceName) {
+        return PagedConverter.mapPage(innerModel().list(resourceGroupName, namespaceName), this::wrapModel);
     }
 
     @Override
-    public PagedFlux<EventHubDisasterRecoveryPairing> listByNamespaceAsync(
-        String resourceGroupName, String namespaceName) {
-        return PagedConverter.mapPage(this.innerModel().listAsync(resourceGroupName, namespaceName),
-            this::wrapModel);
+    public PagedFlux<EventHubDisasterRecoveryPairing> listByNamespaceAsync(String resourceGroupName,
+        String namespaceName) {
+        return PagedConverter.mapPage(this.innerModel().listAsync(resourceGroupName, namespaceName), this::wrapModel);
     }
 
     @Override
@@ -99,16 +89,12 @@ public final class EventHubDisasterRecoveryPairingsImpl
     public Mono<Void> deleteByIdAsync(String id) {
         Objects.requireNonNull(id);
         ResourceId resourceId = ResourceId.fromString(id);
-        return deleteByNameAsync(resourceId.resourceGroupName(),
-                resourceId.parent().name(),
-                resourceId.name());
+        return deleteByNameAsync(resourceId.resourceGroupName(), resourceId.parent().name(), resourceId.name());
     }
 
     @Override
     public Mono<Void> deleteByNameAsync(String resourceGroupName, String namespaceName, String name) {
-        return this.innerModel().deleteAsync(resourceGroupName,
-                namespaceName,
-                name);
+        return this.innerModel().deleteAsync(resourceGroupName, namespaceName, name);
     }
 
     @Override

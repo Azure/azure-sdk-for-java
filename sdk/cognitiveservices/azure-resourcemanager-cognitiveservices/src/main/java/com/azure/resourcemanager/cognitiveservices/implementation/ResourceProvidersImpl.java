@@ -24,22 +24,18 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<SkuAvailabilityListResult> checkSkuAvailabilityWithResponse(
-        String location, CheckSkuAvailabilityParameter parameters, Context context) {
-        Response<SkuAvailabilityListResultInner> inner =
-            this.serviceClient().checkSkuAvailabilityWithResponse(location, parameters, context);
+    public Response<SkuAvailabilityListResult> checkSkuAvailabilityWithResponse(String location,
+        CheckSkuAvailabilityParameter parameters, Context context) {
+        Response<SkuAvailabilityListResultInner> inner
+            = this.serviceClient().checkSkuAvailabilityWithResponse(location, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SkuAvailabilityListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -55,15 +51,12 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public Response<DomainAvailability> checkDomainAvailabilityWithResponse(
-        CheckDomainAvailabilityParameter parameters, Context context) {
-        Response<DomainAvailabilityInner> inner =
-            this.serviceClient().checkDomainAvailabilityWithResponse(parameters, context);
+    public Response<DomainAvailability> checkDomainAvailabilityWithResponse(CheckDomainAvailabilityParameter parameters,
+        Context context) {
+        Response<DomainAvailabilityInner> inner
+            = this.serviceClient().checkDomainAvailabilityWithResponse(parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DomainAvailabilityImpl(inner.getValue(), this.manager()));
         } else {
             return null;

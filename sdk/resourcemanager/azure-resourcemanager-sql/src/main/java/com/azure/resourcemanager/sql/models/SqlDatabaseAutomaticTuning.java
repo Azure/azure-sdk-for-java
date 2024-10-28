@@ -13,10 +13,8 @@ import java.util.Map;
 
 /** An immutable client-side representation of an Azure SQL database automatic tuning object. */
 @Fluent
-public interface SqlDatabaseAutomaticTuning
-    extends HasInnerModel<DatabaseAutomaticTuningInner>,
-        Refreshable<SqlDatabaseAutomaticTuning>,
-        Updatable<SqlDatabaseAutomaticTuning.Update> {
+public interface SqlDatabaseAutomaticTuning extends HasInnerModel<DatabaseAutomaticTuningInner>,
+    Refreshable<SqlDatabaseAutomaticTuning>, Updatable<SqlDatabaseAutomaticTuning.Update> {
 
     /** @return the database automatic tuning desired state */
     AutomaticTuningMode desiredState();
@@ -34,10 +32,8 @@ public interface SqlDatabaseAutomaticTuning
     /**
      * The template for a SqlDatabaseAutomaticTuning update operation, containing all the settings that can be modified.
      */
-    interface Update
-        extends SqlDatabaseAutomaticTuning.UpdateStages.WithAutomaticTuningMode,
-            SqlDatabaseAutomaticTuning.UpdateStages.WithAutomaticTuningOptions,
-            Appliable<SqlDatabaseAutomaticTuning> {
+    interface Update extends SqlDatabaseAutomaticTuning.UpdateStages.WithAutomaticTuningMode,
+        SqlDatabaseAutomaticTuning.UpdateStages.WithAutomaticTuningOptions, Appliable<SqlDatabaseAutomaticTuning> {
     }
 
     /** Grouping of all the SqlDatabaseAutomaticTuning update stages. */

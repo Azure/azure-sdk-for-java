@@ -67,8 +67,8 @@ public final class SharedStorageResourceNames {
      * @param sharedStorageAccountPrivateEndPointName the sharedStorageAccountPrivateEndPointName value to set.
      * @return the SharedStorageResourceNames object itself.
      */
-    public SharedStorageResourceNames withSharedStorageAccountPrivateEndPointName(
-        String sharedStorageAccountPrivateEndPointName) {
+    public SharedStorageResourceNames
+        withSharedStorageAccountPrivateEndPointName(String sharedStorageAccountPrivateEndPointName) {
         this.sharedStorageAccountPrivateEndPointName = sharedStorageAccountPrivateEndPointName;
         return this;
     }

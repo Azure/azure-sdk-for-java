@@ -339,8 +339,8 @@ public final class PurchaseRequest {
      * @param reservedResourceProperties the reservedResourceProperties value to set.
      * @return the PurchaseRequest object itself.
      */
-    public PurchaseRequest withReservedResourceProperties(
-        PurchaseRequestPropertiesReservedResourceProperties reservedResourceProperties) {
+    public PurchaseRequest
+        withReservedResourceProperties(PurchaseRequestPropertiesReservedResourceProperties reservedResourceProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PurchaseRequestProperties();
         }

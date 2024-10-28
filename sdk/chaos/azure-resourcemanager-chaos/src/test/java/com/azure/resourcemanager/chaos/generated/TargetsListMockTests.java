@@ -45,12 +45,13 @@ public final class TargetsListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ChaosManager manager = ChaosManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ChaosManager manager = ChaosManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Target> response = manager.targets().list("uajlyj", "lvofqzhvfcibyfmo", "uxrkjp", "dwxf",
-            "wiivwzjbhyzsx", com.azure.core.util.Context.NONE);
+        PagedIterable<Target> response = manager.targets()
+            .list("uajlyj", "lvofqzhvfcibyfmo", "uxrkjp", "dwxf", "wiivwzjbhyzsx", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("ambtrnegvm", response.iterator().next().location());
     }

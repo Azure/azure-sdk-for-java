@@ -32,24 +32,20 @@ public class AzureThreadAsyncTest extends AssistantsClientTestBase {
         createRunRunner(threadCreationOptions -> {
             AtomicReference<String> threadIdReference = new AtomicReference<>();
             // Create a thread
-            StepVerifier.create(client.createThread(threadCreationOptions))
-                    .assertNext(assistantThread -> {
-                        threadIdReference.set(assistantThread.getId());
-                        assertNotNull(assistantThread.getId());
-                        assertNotNull(assistantThread.getCreatedAt());
-                        assertEquals("thread", assistantThread.getObject());
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.createThread(threadCreationOptions)).assertNext(assistantThread -> {
+                threadIdReference.set(assistantThread.getId());
+                assertNotNull(assistantThread.getId());
+                assertNotNull(assistantThread.getCreatedAt());
+                assertEquals("thread", assistantThread.getObject());
+            }).verifyComplete();
 
             String threadId = threadIdReference.get();
             // Get a thread
-            StepVerifier.create(client.getThread(threadId))
-                    .assertNext(assistantThread -> {
-                        assertEquals(threadId, assistantThread.getId());
-                        assertNotNull(assistantThread.getCreatedAt());
-                        assertEquals("thread", assistantThread.getObject());
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.getThread(threadId)).assertNext(assistantThread -> {
+                assertEquals(threadId, assistantThread.getId());
+                assertNotNull(assistantThread.getCreatedAt());
+                assertEquals("thread", assistantThread.getObject());
+            }).verifyComplete();
 
             // Update a thread
             Map<String, String> metadata = new HashMap<>();
@@ -57,21 +53,19 @@ public class AzureThreadAsyncTest extends AssistantsClientTestBase {
             metadata.put("name", "John Doe");
             metadata.put("content", "Hello, I'm John Doe.");
             StepVerifier.create(client.updateThread(threadId, new UpdateAssistantThreadOptions().setMetadata(metadata)))
-                    .assertNext(assistantThread -> {
-                        assertEquals(threadId, assistantThread.getId());
-                        assertEquals("user", assistantThread.getMetadata().get("role"));
-                        assertEquals("John Doe", assistantThread.getMetadata().get("name"));
-                        assertEquals("Hello, I'm John Doe.", assistantThread.getMetadata().get("content"));
-                    })
-                    .verifyComplete();
+                .assertNext(assistantThread -> {
+                    assertEquals(threadId, assistantThread.getId());
+                    assertEquals("user", assistantThread.getMetadata().get("role"));
+                    assertEquals("John Doe", assistantThread.getMetadata().get("name"));
+                    assertEquals("Hello, I'm John Doe.", assistantThread.getMetadata().get("content"));
+                })
+                .verifyComplete();
 
             // Delete the created thread
-            StepVerifier.create(client.deleteThread(threadId))
-                    .assertNext(deletionStatus -> {
-                        assertEquals(threadId, deletionStatus.getId());
-                        assertTrue(deletionStatus.isDeleted());
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.deleteThread(threadId)).assertNext(deletionStatus -> {
+                assertEquals(threadId, deletionStatus.getId());
+                assertTrue(deletionStatus.isDeleted());
+            }).verifyComplete();
         });
     }
 
@@ -82,31 +76,29 @@ public class AzureThreadAsyncTest extends AssistantsClientTestBase {
         createRunRunner(threadCreationOptions -> {
             AtomicReference<String> threadIdReference = new AtomicReference<>();
             // Create a thread
-            StepVerifier.create(client.createThreadWithResponse(
-                            BinaryData.fromObject(threadCreationOptions), new RequestOptions()))
-                    .assertNext(response -> {
-                        AssistantThread assistantThread = assertAndGetValueFromResponse(response,
-                                AssistantThread.class, 200);
-                        String threadId = assistantThread.getId();
-                        threadIdReference.set(threadId);
-                        assertNotNull(threadId);
-                        assertNotNull(assistantThread.getCreatedAt());
-                        assertEquals("thread", assistantThread.getObject());
-                    })
-                    .verifyComplete();
+            StepVerifier
+                .create(
+                    client.createThreadWithResponse(BinaryData.fromObject(threadCreationOptions), new RequestOptions()))
+                .assertNext(response -> {
+                    AssistantThread assistantThread
+                        = assertAndGetValueFromResponse(response, AssistantThread.class, 200);
+                    String threadId = assistantThread.getId();
+                    threadIdReference.set(threadId);
+                    assertNotNull(threadId);
+                    assertNotNull(assistantThread.getCreatedAt());
+                    assertEquals("thread", assistantThread.getObject());
+                })
+                .verifyComplete();
 
             String threadId = threadIdReference.get();
 
             // Get a thread
-            StepVerifier.create(client.getThreadWithResponse(threadId, new RequestOptions()))
-                    .assertNext(response -> {
-                        AssistantThread assistantThread = assertAndGetValueFromResponse(response,
-                                AssistantThread.class, 200);
-                        assertEquals(threadId, assistantThread.getId());
-                        assertNotNull(assistantThread.getCreatedAt());
-                        assertEquals("thread", assistantThread.getObject());
-                    })
-                    .verifyComplete();
+            StepVerifier.create(client.getThreadWithResponse(threadId, new RequestOptions())).assertNext(response -> {
+                AssistantThread assistantThread = assertAndGetValueFromResponse(response, AssistantThread.class, 200);
+                assertEquals(threadId, assistantThread.getId());
+                assertNotNull(assistantThread.getCreatedAt());
+                assertEquals("thread", assistantThread.getObject());
+            }).verifyComplete();
 
             // Update a thread
             Map<String, String> metadata = new HashMap<>();
@@ -115,27 +107,28 @@ public class AzureThreadAsyncTest extends AssistantsClientTestBase {
             metadata.put("content", "Hello, I'm John Doe.");
             Map<String, Object> requestObj = new HashMap<>();
             requestObj.put("metadata", metadata);
-            StepVerifier.create(client.updateThreadWithResponse(threadId, BinaryData.fromObject(requestObj),
-                            new RequestOptions()))
-                    .assertNext(response -> {
-                        AssistantThread assistantThread = assertAndGetValueFromResponse(response,
-                                AssistantThread.class, 200);
-                        assertEquals(threadId, assistantThread.getId());
-                        assertEquals("user", assistantThread.getMetadata().get("role"));
-                        assertEquals("John Doe", assistantThread.getMetadata().get("name"));
-                        assertEquals("Hello, I'm John Doe.", assistantThread.getMetadata().get("content"));
-                    })
-                    .verifyComplete();
+            StepVerifier
+                .create(
+                    client.updateThreadWithResponse(threadId, BinaryData.fromObject(requestObj), new RequestOptions()))
+                .assertNext(response -> {
+                    AssistantThread assistantThread
+                        = assertAndGetValueFromResponse(response, AssistantThread.class, 200);
+                    assertEquals(threadId, assistantThread.getId());
+                    assertEquals("user", assistantThread.getMetadata().get("role"));
+                    assertEquals("John Doe", assistantThread.getMetadata().get("name"));
+                    assertEquals("Hello, I'm John Doe.", assistantThread.getMetadata().get("content"));
+                })
+                .verifyComplete();
 
             // Delete the created thread
             StepVerifier.create(client.deleteThreadWithResponse(threadId, new RequestOptions()))
-                    .assertNext(response -> {
-                        ThreadDeletionStatus deletionStatus = assertAndGetValueFromResponse(response,
-                                ThreadDeletionStatus.class, 200);
-                        assertEquals(threadId, deletionStatus.getId());
-                        assertTrue(deletionStatus.isDeleted());
-                    })
-                    .verifyComplete();
+                .assertNext(response -> {
+                    ThreadDeletionStatus deletionStatus
+                        = assertAndGetValueFromResponse(response, ThreadDeletionStatus.class, 200);
+                    assertEquals(threadId, deletionStatus.getId());
+                    assertTrue(deletionStatus.isDeleted());
+                })
+                .verifyComplete();
         });
     }
 }

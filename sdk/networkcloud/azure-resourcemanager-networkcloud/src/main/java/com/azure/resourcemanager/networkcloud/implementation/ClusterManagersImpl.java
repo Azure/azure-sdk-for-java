@@ -21,8 +21,8 @@ public final class ClusterManagersImpl implements ClusterManagers {
 
     private final com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager;
 
-    public ClusterManagersImpl(
-        ClusterManagersClient innerClient, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
+    public ClusterManagersImpl(ClusterManagersClient innerClient,
+        com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -47,15 +47,12 @@ public final class ClusterManagersImpl implements ClusterManagers {
         return Utils.mapPage(inner, inner1 -> new ClusterManagerImpl(inner1, this.manager()));
     }
 
-    public Response<ClusterManager> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterManagerName, Context context) {
-        Response<ClusterManagerInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, clusterManagerName, context);
+    public Response<ClusterManager> getByResourceGroupWithResponse(String resourceGroupName, String clusterManagerName,
+        Context context) {
+        Response<ClusterManagerInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, clusterManagerName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ClusterManagerImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -82,19 +79,13 @@ public final class ClusterManagersImpl implements ClusterManagers {
     public ClusterManager getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String clusterManagerName = Utils.getValueFromIdByName(id, "clusterManagers");
         if (clusterManagerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'clusterManagers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusterManagers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, clusterManagerName, Context.NONE).getValue();
     }
@@ -102,19 +93,13 @@ public final class ClusterManagersImpl implements ClusterManagers {
     public Response<ClusterManager> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String clusterManagerName = Utils.getValueFromIdByName(id, "clusterManagers");
         if (clusterManagerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'clusterManagers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusterManagers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, clusterManagerName, context);
     }
@@ -122,19 +107,13 @@ public final class ClusterManagersImpl implements ClusterManagers {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String clusterManagerName = Utils.getValueFromIdByName(id, "clusterManagers");
         if (clusterManagerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'clusterManagers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusterManagers'.", id)));
         }
         this.delete(resourceGroupName, clusterManagerName, Context.NONE);
     }
@@ -142,19 +121,13 @@ public final class ClusterManagersImpl implements ClusterManagers {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String clusterManagerName = Utils.getValueFromIdByName(id, "clusterManagers");
         if (clusterManagerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'clusterManagers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusterManagers'.", id)));
         }
         this.delete(resourceGroupName, clusterManagerName, context);
     }

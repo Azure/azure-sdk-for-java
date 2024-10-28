@@ -10,10 +10,7 @@ module com.azure.resourcemanager.azureadexternalidentities {
     exports com.azure.resourcemanager.azureadexternalidentities.fluent.models;
     exports com.azure.resourcemanager.azureadexternalidentities.models;
 
-    opens com.azure.resourcemanager.azureadexternalidentities.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.azureadexternalidentities.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.azureadexternalidentities.fluent.models
+        to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.azureadexternalidentities.models to com.azure.core, com.fasterxml.jackson.databind;
 }

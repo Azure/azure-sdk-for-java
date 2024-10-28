@@ -65,14 +65,12 @@ public class IndexDocumentsBatch<T> extends IndexBatchBase<T> {
      * @param keyValues Keys of the documents to delete.
      * @return The updated IndexDocumentsBatch object.
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public IndexDocumentsBatch<T> addDeleteActions(String keyName, Iterable<String> keyValues) {
         for (String val : keyValues) {
             SearchDocument doc = new SearchDocument();
             doc.put(keyName, val);
-            IndexAction indexAction = new IndexAction()
-                .setActionType(IndexActionType.DELETE)
-                .setDocument(doc);
+            IndexAction indexAction = new IndexAction().setActionType(IndexActionType.DELETE).setDocument(doc);
             this.getActions().add(indexAction);
         }
         return this;
@@ -101,8 +99,6 @@ public class IndexDocumentsBatch<T> extends IndexBatchBase<T> {
     }
 
     private void addDocumentActions(Iterable<T> documents, IndexActionType actionType) {
-        documents.forEach(d -> this.getActions().add(new IndexAction<T>()
-            .setActionType(actionType)
-            .setDocument(d)));
+        documents.forEach(d -> this.getActions().add(new IndexAction<T>().setActionType(actionType).setDocument(d)));
     }
 }

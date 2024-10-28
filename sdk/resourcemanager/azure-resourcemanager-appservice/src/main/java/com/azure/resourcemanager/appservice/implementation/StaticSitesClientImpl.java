@@ -5789,7 +5789,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             Boolean isForced) {
         return beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name, environmentName,
             functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5816,7 +5816,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         final Boolean isForced = null;
         return beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name, environmentName,
             functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -5847,7 +5847,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             Context context) {
         return beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name, environmentName,
             functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -7841,7 +7841,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         Context context) {
         return beginCreateOrUpdateStaticSiteCustomDomainAsync(resourceGroupName, name, domainName,
             staticSiteCustomDomainRequestPropertiesEnvelope, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -8390,7 +8390,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         Context context) {
         return beginValidateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName,
             staticSiteCustomDomainRequestPropertiesEnvelope, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -10755,7 +10755,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         return beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
             privateEndpointConnectionName, privateEndpointWrapper).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -10779,7 +10779,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
         return beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
             privateEndpointConnectionName, privateEndpointWrapper, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -12162,7 +12162,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         Context context) {
         return beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(resourceGroupName, name, functionAppName,
             staticSiteUserProvidedFunctionEnvelope, isForced, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

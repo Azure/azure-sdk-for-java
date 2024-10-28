@@ -28,8 +28,8 @@ public interface KeyValuesClient {
      * @return the properties of the specified key-value along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<KeyValueInner> getWithResponse(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context);
+    Response<KeyValueInner> getWithResponse(String resourceGroupName, String configStoreName, String keyValueName,
+        Context context);
 
     /**
      * Gets the properties of the specified key-value.
@@ -61,12 +61,8 @@ public interface KeyValuesClient {
      * @return the key-value resource along with all resource properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<KeyValueInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String configStoreName,
-        String keyValueName,
-        KeyValueInner keyValueParameters,
-        Context context);
+    Response<KeyValueInner> createOrUpdateWithResponse(String resourceGroupName, String configStoreName,
+        String keyValueName, KeyValueInner keyValueParameters, Context context);
 
     /**
      * Creates a key-value.
@@ -96,8 +92,8 @@ public interface KeyValuesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String configStoreName, String keyValueName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
+        String keyValueName);
 
     /**
      * Deletes a key-value.
@@ -113,8 +109,8 @@ public interface KeyValuesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
+        String keyValueName, Context context);
 
     /**
      * Deletes a key-value.

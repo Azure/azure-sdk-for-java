@@ -35,49 +35,36 @@ public final class TrunkedNetworksCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"extendedLocation\":{\"name\":\"vlizedvb\",\"type\":\"abv\"},\"properties\":{\"associatedResourceIds\":[\"ge\",\"zyqxadyfhbmwkh\"],\"clusterId\":\"qttbspvkhgla\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"yzstujrzxrkns\",\"hybridAksClustersAssociatedIds\":[\"lduyehiiittugyuq\",\"rldaxurfqa\",\"csozjv\",\"dzciggb\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"o\",\"isolationDomainIds\":[\"alzyxwhoeamo\",\"obdoey\",\"fpnimtwuuhaueg\",\"kwmnfeub\"],\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"kwfugiphrrkuu\"],\"vlans\":[3759154775204122401]},\"location\":\"rhzz\",\"tags\":{\"pwnibittozt\":\"ueoqusvwluj\"},\"id\":\"dqumqvfm\",\"name\":\"caddtgc\",\"type\":\"xegtvgwyur\"}";
+        String responseStr
+            = "{\"extendedLocation\":{\"name\":\"vlizedvb\",\"type\":\"abv\"},\"properties\":{\"associatedResourceIds\":[\"ge\",\"zyqxadyfhbmwkh\"],\"clusterId\":\"qttbspvkhgla\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"yzstujrzxrkns\",\"hybridAksClustersAssociatedIds\":[\"lduyehiiittugyuq\",\"rldaxurfqa\",\"csozjv\",\"dzciggb\"],\"hybridAksPluginType\":\"OSDevice\",\"interfaceName\":\"o\",\"isolationDomainIds\":[\"alzyxwhoeamo\",\"obdoey\",\"fpnimtwuuhaueg\",\"kwmnfeub\"],\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"kwfugiphrrkuu\"],\"vlans\":[3759154775204122401]},\"location\":\"rhzz\",\"tags\":{\"pwnibittozt\":\"ueoqusvwluj\"},\"id\":\"dqumqvfm\",\"name\":\"caddtgc\",\"type\":\"xegtvgwyur\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        TrunkedNetwork response =
-            manager
-                .trunkedNetworks()
-                .define("qtrotpvclp")
-                .withRegion("rmvgoqplehmumkz")
-                .withExistingResourceGroup("wj")
-                .withExtendedLocation(new ExtendedLocation().withName("fyrlmwkptskwxj").withType("vhxccbmkakmkoo"))
-                .withIsolationDomainIds(Arrays.asList("jow", "yeyzm", "dsqcmhnxl"))
-                .withVlans(Arrays.asList(7344737615857384709L, 3877439825280273474L, 6320930867686077386L))
-                .withTags(
-                    mapOf("rwnhkgqggoxsst", "czd", "cwmhlymgnukxrk", "ivrakfrryn", "zaudgjtfbclakkuc", "mjpequlr"))
-                .withHybridAksPluginType(HybridAksPluginType.DPDK)
-                .withInterfaceName("ibfiplhxfnsm")
-                .create();
+        TrunkedNetwork response = manager.trunkedNetworks()
+            .define("qtrotpvclp")
+            .withRegion("rmvgoqplehmumkz")
+            .withExistingResourceGroup("wj")
+            .withExtendedLocation(new ExtendedLocation().withName("fyrlmwkptskwxj").withType("vhxccbmkakmkoo"))
+            .withIsolationDomainIds(Arrays.asList("jow", "yeyzm", "dsqcmhnxl"))
+            .withVlans(Arrays.asList(7344737615857384709L, 3877439825280273474L, 6320930867686077386L))
+            .withTags(mapOf("rwnhkgqggoxsst", "czd", "cwmhlymgnukxrk", "ivrakfrryn", "zaudgjtfbclakkuc", "mjpequlr"))
+            .withHybridAksPluginType(HybridAksPluginType.DPDK)
+            .withInterfaceName("ibfiplhxfnsm")
+            .create();
 
         Assertions.assertEquals("rhzz", response.location());
         Assertions.assertEquals("ueoqusvwluj", response.tags().get("pwnibittozt"));

@@ -101,16 +101,12 @@ public final class ApiVersionSetContractProperties extends ApiVersionSetEntityBa
     public void validate() {
         super.validate();
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model ApiVersionSetContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property displayName in model ApiVersionSetContractProperties"));
         }
         if (versioningScheme() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property versioningScheme in model ApiVersionSetContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property versioningScheme in model ApiVersionSetContractProperties"));
         }
     }
 

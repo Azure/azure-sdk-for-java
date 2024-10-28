@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabasePrincipalPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabasePrincipalProperties model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"opcjwvnhd\",\"role\":\"Ingestor\",\"tenantId\":\"mgxcxrslpm\",\"principalType\":\"App\",\"tenantName\":\"uoegrpkhjwniyqs\",\"principalName\":\"i\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"gk\"}")
-                .toObject(DatabasePrincipalProperties.class);
+        DatabasePrincipalProperties model = BinaryData.fromString(
+            "{\"principalId\":\"opcjwvnhd\",\"role\":\"Ingestor\",\"tenantId\":\"mgxcxrslpm\",\"principalType\":\"App\",\"tenantName\":\"uoegrpkhjwniyqs\",\"principalName\":\"i\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"gk\"}")
+            .toObject(DatabasePrincipalProperties.class);
         Assertions.assertEquals("opcjwvnhd", model.principalId());
         Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, model.role());
         Assertions.assertEquals("mgxcxrslpm", model.tenantId());
@@ -26,12 +24,10 @@ public final class DatabasePrincipalPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabasePrincipalProperties model =
-            new DatabasePrincipalProperties()
-                .withPrincipalId("opcjwvnhd")
-                .withRole(DatabasePrincipalRole.INGESTOR)
-                .withTenantId("mgxcxrslpm")
-                .withPrincipalType(PrincipalType.APP);
+        DatabasePrincipalProperties model = new DatabasePrincipalProperties().withPrincipalId("opcjwvnhd")
+            .withRole(DatabasePrincipalRole.INGESTOR)
+            .withTenantId("mgxcxrslpm")
+            .withPrincipalType(PrincipalType.APP);
         model = BinaryData.fromObject(model).toObject(DatabasePrincipalProperties.class);
         Assertions.assertEquals("opcjwvnhd", model.principalId());
         Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, model.role());

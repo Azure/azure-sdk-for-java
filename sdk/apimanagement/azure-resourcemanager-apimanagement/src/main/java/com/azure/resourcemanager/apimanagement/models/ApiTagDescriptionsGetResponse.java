@@ -21,12 +21,8 @@ public final class ApiTagDescriptionsGetResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ApiTagDescriptionsGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        TagDescriptionContractInner value,
-        ApiTagDescriptionsGetHeaders headers) {
+    public ApiTagDescriptionsGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        TagDescriptionContractInner value, ApiTagDescriptionsGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

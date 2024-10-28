@@ -249,8 +249,8 @@ public final class EventHubEventSourceCreateOrUpdateParameters extends EventSour
      * @param localTimestamp the localTimestamp value to set.
      * @return the EventHubEventSourceCreateOrUpdateParameters object itself.
      */
-    public EventHubEventSourceCreateOrUpdateParameters withLocalTimestampPropertiesLocalTimestamp(
-        LocalTimestamp localTimestamp) {
+    public EventHubEventSourceCreateOrUpdateParameters
+        withLocalTimestampPropertiesLocalTimestamp(LocalTimestamp localTimestamp) {
         if (this.innerProperties() == null) {
             this.innerProperties = new EventHubEventSourceCreationProperties();
         }
@@ -335,11 +335,8 @@ public final class EventHubEventSourceCreateOrUpdateParameters extends EventSour
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model"
-                            + " EventHubEventSourceCreateOrUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model" + " EventHubEventSourceCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
         }

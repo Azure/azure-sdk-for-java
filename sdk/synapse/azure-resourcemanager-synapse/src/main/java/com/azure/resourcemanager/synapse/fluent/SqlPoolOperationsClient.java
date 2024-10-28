@@ -43,6 +43,6 @@ public interface SqlPoolOperationsClient {
      * @return a list of operations performed on the SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlPoolOperationInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<SqlPoolOperationInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 }

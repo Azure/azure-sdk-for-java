@@ -131,14 +131,12 @@ public final class ExportDefinition {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ExportDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model ExportDefinition"));
         }
         if (timeframe() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timeframe in model ExportDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property timeframe in model ExportDefinition"));
         }
         if (timePeriod() != null) {
             timePeriod().validate();

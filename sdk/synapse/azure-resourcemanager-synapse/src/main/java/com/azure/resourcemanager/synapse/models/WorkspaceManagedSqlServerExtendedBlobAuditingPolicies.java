@@ -24,8 +24,8 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace SQL server's extended blob auditing policy along with {@link Response}.
      */
-    Response<ExtendedServerBlobAuditingPolicy> getWithResponse(
-        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName, Context context);
+    Response<ExtendedServerBlobAuditingPolicy> getWithResponse(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName, Context context);
 
     /**
      * Get server's extended blob auditing policy.
@@ -40,8 +40,8 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace SQL server's extended blob auditing policy.
      */
-    ExtendedServerBlobAuditingPolicy get(
-        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName);
+    ExtendedServerBlobAuditingPolicy get(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName);
 
     /**
      * List server's extended blob auditing policies.
@@ -70,8 +70,8 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server extended auditing settings as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ExtendedServerBlobAuditingPolicy> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<ExtendedServerBlobAuditingPolicy> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Get server's extended blob auditing policy.

@@ -62,8 +62,7 @@ public final class ProviderStatus implements JsonSerializable<ProviderStatus> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeEndObject();
     }
 
     /**

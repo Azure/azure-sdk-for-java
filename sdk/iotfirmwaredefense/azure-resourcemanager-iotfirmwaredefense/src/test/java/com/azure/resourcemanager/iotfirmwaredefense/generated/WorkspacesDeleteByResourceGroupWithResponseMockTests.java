@@ -41,12 +41,13 @@ public final class WorkspacesDeleteByResourceGroupWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        IoTFirmwareDefenseManager manager = IoTFirmwareDefenseManager.configure().withHttpClient(httpClient)
+        IoTFirmwareDefenseManager manager = IoTFirmwareDefenseManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.workspaces().deleteByResourceGroupWithResponse("qibrhosxsdqrhzoy", "i",
-            com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .deleteByResourceGroupWithResponse("qibrhosxsdqrhzoy", "i", com.azure.core.util.Context.NONE);
 
     }
 }

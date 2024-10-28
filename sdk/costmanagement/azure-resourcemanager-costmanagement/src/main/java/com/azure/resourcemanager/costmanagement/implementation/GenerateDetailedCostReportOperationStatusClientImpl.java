@@ -43,12 +43,8 @@ public final class GenerateDetailedCostReportOperationStatusClientImpl
      * @param client the instance of the service client containing this operation class.
      */
     GenerateDetailedCostReportOperationStatusClientImpl(CostManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    GenerateDetailedCostReportOperationStatusService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(GenerateDetailedCostReportOperationStatusService.class,
+            client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,17 +55,13 @@ public final class GenerateDetailedCostReportOperationStatusClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
     public interface GenerateDetailedCostReportOperationStatusService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.CostManagement/operationStatus/{operationId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GenerateDetailedCostReportOperationStatusesInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("operationId") String operationId,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GenerateDetailedCostReportOperationStatusesInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("operationId") String operationId, @PathParam(value = "scope", encoded = true) String scope,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -86,13 +78,11 @@ public final class GenerateDetailedCostReportOperationStatusClientImpl
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GenerateDetailedCostReportOperationStatusesInner>> getWithResponseAsync(
-        String operationId, String scope) {
+    private Mono<Response<GenerateDetailedCostReportOperationStatusesInner>> getWithResponseAsync(String operationId,
+        String scope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
@@ -102,16 +92,8 @@ public final class GenerateDetailedCostReportOperationStatusClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            operationId,
-                            scope,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), operationId, scope,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -130,13 +112,11 @@ public final class GenerateDetailedCostReportOperationStatusClientImpl
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GenerateDetailedCostReportOperationStatusesInner>> getWithResponseAsync(
-        String operationId, String scope, Context context) {
+    private Mono<Response<GenerateDetailedCostReportOperationStatusesInner>> getWithResponseAsync(String operationId,
+        String scope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
@@ -180,8 +160,8 @@ public final class GenerateDetailedCostReportOperationStatusClientImpl
      * @return the status of the specified operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GenerateDetailedCostReportOperationStatusesInner> getWithResponse(
-        String operationId, String scope, Context context) {
+    public Response<GenerateDetailedCostReportOperationStatusesInner> getWithResponse(String operationId, String scope,
+        Context context) {
         return getWithResponseAsync(operationId, scope, context).block();
     }
 

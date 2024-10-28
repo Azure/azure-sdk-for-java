@@ -14,20 +14,17 @@ import org.junit.jupiter.api.Test;
 public final class FarmBeatsUpdatePropertiesTests {
     @Test
     public void testDeserialize() {
-        FarmBeatsUpdateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"sensorIntegration\":{\"enabled\":\"gmaajrm\",\"provisioningState\":\"Succeeded\"},\"publicNetworkAccess\":\"Hybrid\"}")
-                .toObject(FarmBeatsUpdateProperties.class);
+        FarmBeatsUpdateProperties model = BinaryData.fromString(
+            "{\"sensorIntegration\":{\"enabled\":\"gmaajrm\",\"provisioningState\":\"Succeeded\"},\"publicNetworkAccess\":\"Hybrid\"}")
+            .toObject(FarmBeatsUpdateProperties.class);
         Assertions.assertEquals("gmaajrm", model.sensorIntegration().enabled());
         Assertions.assertEquals(PublicNetworkAccess.HYBRID, model.publicNetworkAccess());
     }
 
     @Test
     public void testSerialize() {
-        FarmBeatsUpdateProperties model =
-            new FarmBeatsUpdateProperties()
-                .withSensorIntegration(new SensorIntegration().withEnabled("gmaajrm"))
+        FarmBeatsUpdateProperties model
+            = new FarmBeatsUpdateProperties().withSensorIntegration(new SensorIntegration().withEnabled("gmaajrm"))
                 .withPublicNetworkAccess(PublicNetworkAccess.HYBRID);
         model = BinaryData.fromObject(model).toObject(FarmBeatsUpdateProperties.class);
         Assertions.assertEquals("gmaajrm", model.sensorIntegration().enabled());

@@ -19,26 +19,28 @@ import java.time.OffsetDateTime;
  * An immutable client-side representation of an Azure Service Bus namespace.
  */
 @Fluent
-public interface ServiceBusNamespace extends
-    GroupableResource<ServiceBusManager, SBNamespaceInner>,
-    Refreshable<ServiceBusNamespace>,
-    Updatable<ServiceBusNamespace.Update> {
+public interface ServiceBusNamespace extends GroupableResource<ServiceBusManager, SBNamespaceInner>,
+    Refreshable<ServiceBusNamespace>, Updatable<ServiceBusNamespace.Update> {
     /**
      * @return the relative DNS name of the Service Bus namespace
      */
     String dnsLabel();
+
     /**
      * @return fully qualified domain name (FQDN) of the Service Bus namespace
      */
     String fqdn();
+
     /**
      * @return sku value
      */
     NamespaceSku sku();
+
     /**
      * @return time the namespace was created
      */
     OffsetDateTime createdAt();
+
     /**
      * @return time the namespace was updated
      */
@@ -48,10 +50,12 @@ public interface ServiceBusNamespace extends
      * @return entry point to manage queue entities in the Service Bus namespace
      */
     Queues queues();
+
     /**
      * @return entry point to manage topics entities in the Service Bus namespace
      */
     Topics topics();
+
     /**
      * @return entry point to manage authorization rules for the Service Bus namespace
      */
@@ -60,10 +64,8 @@ public interface ServiceBusNamespace extends
     /**
      * The entirety of the Service Bus namespace definition.
      */
-    interface Definition extends
-            ServiceBusNamespace.DefinitionStages.Blank,
-            ServiceBusNamespace.DefinitionStages.WithGroup,
-            ServiceBusNamespace.DefinitionStages.WithCreate {
+    interface Definition extends ServiceBusNamespace.DefinitionStages.Blank,
+        ServiceBusNamespace.DefinitionStages.WithGroup, ServiceBusNamespace.DefinitionStages.WithCreate {
     }
 
     /**
@@ -135,6 +137,7 @@ public interface ServiceBusNamespace extends
              * @return next stage of the Service Bus namespace definition
              */
             WithCreate withNewSendRule(String name);
+
             /**
              * Creates a listen authorization rule for the Service Bus namespace.
              *
@@ -142,6 +145,7 @@ public interface ServiceBusNamespace extends
              * @return next stage of the Service Bus namespace definition
              */
             WithCreate withNewListenRule(String name);
+
             /**
              * Creates a manage authorization rule for the Service Bus namespace.
              *
@@ -156,26 +160,18 @@ public interface ServiceBusNamespace extends
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends
-            Creatable<ServiceBusNamespace>,
-            Resource.DefinitionWithTags<WithCreate>,
-            ServiceBusNamespace.DefinitionStages.WithSku,
-            ServiceBusNamespace.DefinitionStages.WithQueue,
-            ServiceBusNamespace.DefinitionStages.WithTopic,
-            ServiceBusNamespace.DefinitionStages.WithAuthorizationRule {
+        interface WithCreate extends Creatable<ServiceBusNamespace>, Resource.DefinitionWithTags<WithCreate>,
+            ServiceBusNamespace.DefinitionStages.WithSku, ServiceBusNamespace.DefinitionStages.WithQueue,
+            ServiceBusNamespace.DefinitionStages.WithTopic, ServiceBusNamespace.DefinitionStages.WithAuthorizationRule {
         }
     }
 
     /**
      * The template for a Service Bus namespace update operation, containing all the settings that can be modified.
      */
-    interface Update extends
-        Appliable<ServiceBusNamespace>,
-        Resource.UpdateWithTags<Update>,
-        ServiceBusNamespace.UpdateStages.WithSku,
-        ServiceBusNamespace.UpdateStages.WithQueue,
-        ServiceBusNamespace.UpdateStages.WithTopic,
-        ServiceBusNamespace.UpdateStages.WithAuthorizationRule {
+    interface Update extends Appliable<ServiceBusNamespace>, Resource.UpdateWithTags<Update>,
+        ServiceBusNamespace.UpdateStages.WithSku, ServiceBusNamespace.UpdateStages.WithQueue,
+        ServiceBusNamespace.UpdateStages.WithTopic, ServiceBusNamespace.UpdateStages.WithAuthorizationRule {
     }
 
     /**
@@ -251,6 +247,7 @@ public interface ServiceBusNamespace extends
              * @return next stage of the Service Bus namespace update
              */
             Update withNewSendRule(String name);
+
             /**
              * Creates a listen authorization rule for the Service Bus namespace.
              *
@@ -258,6 +255,7 @@ public interface ServiceBusNamespace extends
              * @return next stage of the Service Bus namespace update
              */
             Update withNewListenRule(String name);
+
             /**
              * Creates a manage authorization rule for the Service Bus namespace.
              *
@@ -265,6 +263,7 @@ public interface ServiceBusNamespace extends
              * @return next stage of the Service Bus namespace update
              */
             Update withNewManageRule(String name);
+
             /**
              * Removes an authorization rule from the Service Bus namespace.
              *

@@ -21,14 +21,14 @@ public final class LocationsImpl implements Locations {
 
     private final com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager;
 
-    public LocationsImpl(
-        LocationsClient innerClient, com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
+    public LocationsImpl(LocationsClient innerClient,
+        com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public CheckNameAvailabilityResponse checkNameAvailability(
-        String locationName, CheckNameAvailabilityRequest parameters) {
+    public CheckNameAvailabilityResponse checkNameAvailability(String locationName,
+        CheckNameAvailabilityRequest parameters) {
         CheckNameAvailabilityResponseInner inner = this.serviceClient().checkNameAvailability(locationName, parameters);
         if (inner != null) {
             return new CheckNameAvailabilityResponseImpl(inner, this.manager());
@@ -37,15 +37,12 @@ public final class LocationsImpl implements Locations {
         }
     }
 
-    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        String locationName, CheckNameAvailabilityRequest parameters, Context context) {
-        Response<CheckNameAvailabilityResponseInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(locationName, parameters, context);
+    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(String locationName,
+        CheckNameAvailabilityRequest parameters, Context context) {
+        Response<CheckNameAvailabilityResponseInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(locationName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

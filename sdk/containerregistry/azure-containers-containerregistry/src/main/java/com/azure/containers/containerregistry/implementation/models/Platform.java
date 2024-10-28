@@ -52,7 +52,8 @@ public final class Platform implements JsonSerializable<Platform> {
     private List<String> features;
 
     /** Creates an instance of Platform class. */
-    public Platform() {}
+    public Platform() {
+    }
 
     /**
      * Get the architecture property: Specifies the CPU architecture, for example amd64 or ppc64le.
@@ -203,33 +204,32 @@ public final class Platform implements JsonSerializable<Platform> {
      * @throws IOException If an error occurs while reading the Platform.
      */
     public static Platform fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    Platform deserializedPlatform = new Platform();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            Platform deserializedPlatform = new Platform();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("architecture".equals(fieldName)) {
-                            deserializedPlatform.architecture = reader.getString();
-                        } else if ("os".equals(fieldName)) {
-                            deserializedPlatform.os = reader.getString();
-                        } else if ("os.version".equals(fieldName)) {
-                            deserializedPlatform.osVersion = reader.getString();
-                        } else if ("os.features".equals(fieldName)) {
-                            List<String> osFeatures = reader.readArray(reader1 -> reader1.getString());
-                            deserializedPlatform.osFeatures = osFeatures;
-                        } else if ("variant".equals(fieldName)) {
-                            deserializedPlatform.variant = reader.getString();
-                        } else if ("features".equals(fieldName)) {
-                            List<String> features = reader.readArray(reader1 -> reader1.getString());
-                            deserializedPlatform.features = features;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("architecture".equals(fieldName)) {
+                    deserializedPlatform.architecture = reader.getString();
+                } else if ("os".equals(fieldName)) {
+                    deserializedPlatform.os = reader.getString();
+                } else if ("os.version".equals(fieldName)) {
+                    deserializedPlatform.osVersion = reader.getString();
+                } else if ("os.features".equals(fieldName)) {
+                    List<String> osFeatures = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPlatform.osFeatures = osFeatures;
+                } else if ("variant".equals(fieldName)) {
+                    deserializedPlatform.variant = reader.getString();
+                } else if ("features".equals(fieldName)) {
+                    List<String> features = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPlatform.features = features;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedPlatform;
-                });
+            return deserializedPlatform;
+        });
     }
 }

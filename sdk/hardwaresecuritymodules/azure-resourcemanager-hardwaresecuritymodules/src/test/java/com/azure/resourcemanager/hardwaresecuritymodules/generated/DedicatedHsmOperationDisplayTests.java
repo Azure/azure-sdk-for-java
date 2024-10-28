@@ -23,7 +23,9 @@ public final class DedicatedHsmOperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DedicatedHsmOperationDisplay model = new DedicatedHsmOperationDisplay().withProvider("mefqsgzvahapjyzh")
-            .withResource("gqzcjr").withOperation("djzlmwlx").withDescription("ug");
+            .withResource("gqzcjr")
+            .withOperation("djzlmwlx")
+            .withDescription("ug");
         model = BinaryData.fromObject(model).toObject(DedicatedHsmOperationDisplay.class);
         Assertions.assertEquals("mefqsgzvahapjyzh", model.provider());
         Assertions.assertEquals("gqzcjr", model.resource());

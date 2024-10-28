@@ -35,7 +35,8 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
         try {
             dataFeed = super.createDataFeed(httpClient, serviceVersion);
 
-            Optional<DataFeedMetric> optMetric = dataFeed.getSchema().getMetrics()
+            Optional<DataFeedMetric> optMetric = dataFeed.getSchema()
+                .getMetrics()
                 .stream()
                 .filter(m -> m.getName().equalsIgnoreCase("cost"))
                 .findFirst();
@@ -43,8 +44,9 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
             final DataFeedMetric costMetric = optMetric.get();
             final String costMetricId = costMetric.getId();
 
-            StepVerifier.create(client.createDetectionConfig(costMetricId,
-                CreateDetectionConfigurationForWholeSeriesInput.INSTANCE.detectionConfiguration))
+            StepVerifier
+                .create(client.createDetectionConfig(costMetricId,
+                    CreateDetectionConfigurationForWholeSeriesInput.INSTANCE.detectionConfiguration))
                 .assertNext(configuration -> {
                     id.set(configuration.getId());
                     super.assertCreateDetectionConfigurationForWholeSeriesOutput(configuration, costMetricId);
@@ -54,9 +56,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
 
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
-                StepVerifier.create(client.deleteDetectionConfig(id.get()))
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(client.deleteDetectionConfig(id.get())).expectComplete().verify(DEFAULT_TIMEOUT);
             }
             if (dataFeed != null) {
                 super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
@@ -68,14 +68,15 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
     public void createDetectionConfigurationForSeriesAndGroup(HttpClient httpClient,
-                                                              MetricsAdvisorServiceVersion serviceVersion) {
+        MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
         MetricsAdvisorAdministrationAsyncClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         final AtomicReference<String> id = new AtomicReference<>();
         try {
             dataFeed = super.createDataFeed(httpClient, serviceVersion);
-            Optional<DataFeedMetric> optMetric = dataFeed.getSchema().getMetrics()
+            Optional<DataFeedMetric> optMetric = dataFeed.getSchema()
+                .getMetrics()
                 .stream()
                 .filter(m -> m.getName().equalsIgnoreCase("cost"))
                 .findFirst();
@@ -83,8 +84,9 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
             final DataFeedMetric costMetric = optMetric.get();
             final String costMetricId = costMetric.getId();
 
-            StepVerifier.create(client.createDetectionConfig(costMetricId,
-                CreateDetectionConfigurationForSeriesAndGroupInput.INSTANCE.detectionConfiguration))
+            StepVerifier
+                .create(client.createDetectionConfig(costMetricId,
+                    CreateDetectionConfigurationForSeriesAndGroupInput.INSTANCE.detectionConfiguration))
                 .assertNext(configuration -> {
                     assertNotNull(configuration);
                     id.set(configuration.getId());
@@ -94,9 +96,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
                 .verify(DEFAULT_TIMEOUT);
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
-                StepVerifier.create(client.deleteDetectionConfig(id.get()))
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(client.deleteDetectionConfig(id.get())).expectComplete().verify(DEFAULT_TIMEOUT);
             }
             if (dataFeed != null) {
                 super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
@@ -108,7 +108,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
     public void createDetectionConfigurationForMultipleSeriesAndGroup(HttpClient httpClient,
-                                                                      MetricsAdvisorServiceVersion serviceVersion) {
+        MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
         MetricsAdvisorAdministrationAsyncClient client
             = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
@@ -116,7 +116,8 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
         try {
             dataFeed = super.createDataFeed(httpClient, serviceVersion);
 
-            Optional<DataFeedMetric> optMetric = dataFeed.getSchema().getMetrics()
+            Optional<DataFeedMetric> optMetric = dataFeed.getSchema()
+                .getMetrics()
                 .stream()
                 .filter(m -> m.getName().equalsIgnoreCase("cost"))
                 .findFirst();
@@ -124,18 +125,19 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
             final DataFeedMetric costMetric = optMetric.get();
             final String costMetricId = costMetric.getId();
 
-            StepVerifier.create(client.createDetectionConfig(costMetricId,
-                CreateDetectionConfigurationForMultipleSeriesAndGroupInput.INSTANCE.detectionConfiguration))
+            StepVerifier
+                .create(client.createDetectionConfig(costMetricId,
+                    CreateDetectionConfigurationForMultipleSeriesAndGroupInput.INSTANCE.detectionConfiguration))
                 .assertNext(configuration -> {
                     assertNotNull(configuration);
                     id.set(configuration.getId());
-                    super.assertCreateDetectionConfigurationForMultipleSeriesAndGroupOutput(configuration, costMetricId);
+                    super.assertCreateDetectionConfigurationForMultipleSeriesAndGroupOutput(configuration,
+                        costMetricId);
                 })
                 .expectComplete()
                 .verify(DEFAULT_TIMEOUT);
 
-            StepVerifier.create(client.listDetectionConfigs(costMetricId,
-                new ListDetectionConfigsOptions()))
+            StepVerifier.create(client.listDetectionConfigs(costMetricId, new ListDetectionConfigsOptions()))
                 // Expect 2 config: Default + the one just created.
                 .assertNext(Assertions::assertNotNull)
                 .assertNext(Assertions::assertNotNull)
@@ -143,9 +145,7 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
                 .verify(DEFAULT_TIMEOUT);
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
-                StepVerifier.create(client.deleteDetectionConfig(id.get()))
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(client.deleteDetectionConfig(id.get())).expectComplete().verify(DEFAULT_TIMEOUT);
             }
             if (dataFeed != null) {
                 super.deleteDateFeed(dataFeed, httpClient, serviceVersion);
@@ -164,7 +164,8 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
         try {
             dataFeed = super.createDataFeed(httpClient, serviceVersion);
 
-            Optional<DataFeedMetric> optMetric = dataFeed.getSchema().getMetrics()
+            Optional<DataFeedMetric> optMetric = dataFeed.getSchema()
+                .getMetrics()
                 .stream()
                 .filter(m -> m.getName().equalsIgnoreCase("cost"))
                 .findFirst();
@@ -174,36 +175,26 @@ public class DetectionConfigurationAsyncTest extends DetectionConfigurationTestB
 
             final AnomalyDetectionConfiguration[] configs = new AnomalyDetectionConfiguration[1];
             StepVerifier.create(client.createDetectionConfig(costMetricId,
-                UpdateDetectionConfigurationInput.INSTANCE.detectionConfiguration))
-                .assertNext(configuration -> {
+                UpdateDetectionConfigurationInput.INSTANCE.detectionConfiguration)).assertNext(configuration -> {
                     assertNotNull(configuration);
                     configs[0] = configuration;
-                })
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT);
+                }).expectComplete().verify(DEFAULT_TIMEOUT);
 
             assertNotNull(configs[0]);
             AnomalyDetectionConfiguration config = configs[0];
-            config.removeSingleSeriesDetectionCondition(UpdateDetectionConfigurationInput
-                .INSTANCE
-                .seriesKeyToRemoveOnUpdate);
+            config.removeSingleSeriesDetectionCondition(
+                UpdateDetectionConfigurationInput.INSTANCE.seriesKeyToRemoveOnUpdate);
 
-            config.addSeriesGroupDetectionCondition(UpdateDetectionConfigurationInput
-                .INSTANCE
-                .seriesGroupConditionToAddOnUpdate);
+            config.addSeriesGroupDetectionCondition(
+                UpdateDetectionConfigurationInput.INSTANCE.seriesGroupConditionToAddOnUpdate);
 
-            StepVerifier.create(client.updateDetectionConfig(config))
-                .assertNext(configuration -> {
-                    id.set(configuration.getId());
-                    super.assertUpdateDetectionConfigurationOutput(configuration, costMetricId);
-                })
-                .expectComplete()
-                .verify(DEFAULT_TIMEOUT);
+            StepVerifier.create(client.updateDetectionConfig(config)).assertNext(configuration -> {
+                id.set(configuration.getId());
+                super.assertUpdateDetectionConfigurationOutput(configuration, costMetricId);
+            }).expectComplete().verify(DEFAULT_TIMEOUT);
         } finally {
             if (!CoreUtils.isNullOrEmpty(id.get())) {
-                StepVerifier.create(client.deleteDetectionConfig(id.get()))
-                    .expectComplete()
-                    .verify(DEFAULT_TIMEOUT);
+                StepVerifier.create(client.deleteDetectionConfig(id.get())).expectComplete().verify(DEFAULT_TIMEOUT);
             }
             if (dataFeed != null) {
                 super.deleteDateFeed(dataFeed, httpClient, serviceVersion);

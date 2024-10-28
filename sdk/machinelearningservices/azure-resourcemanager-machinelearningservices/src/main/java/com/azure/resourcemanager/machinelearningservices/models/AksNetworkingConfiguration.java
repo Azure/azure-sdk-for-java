@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Advance configuration for AKS networking. */
 @Fluent
 public final class AksNetworkingConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AksNetworkingConfiguration.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AksNetworkingConfiguration.class);
 
     /*
      * Virtual network subnet resource ID the compute nodes belong to

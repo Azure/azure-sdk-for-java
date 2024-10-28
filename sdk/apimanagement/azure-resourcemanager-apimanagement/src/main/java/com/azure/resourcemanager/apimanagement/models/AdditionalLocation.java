@@ -293,14 +293,12 @@ public final class AdditionalLocation {
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model AdditionalLocation"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property location in model AdditionalLocation"));
         }
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model AdditionalLocation"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sku in model AdditionalLocation"));
         } else {
             sku().validate();
         }

@@ -47,8 +47,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @param client the instance of the service client containing this operation class.
      */
     DataSourcesClientImpl(OperationalInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DataSourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DataSourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,76 +59,52 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
     public interface DataSourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataSources/{dataSourceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataSources/{dataSourceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataSourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("dataSourceName") String dataSourceName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<DataSourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("dataSourceName") String dataSourceName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") DataSourceInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") DataSourceInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataSources/{dataSourceName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataSources/{dataSourceName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("dataSourceName") String dataSourceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("dataSourceName") String dataSourceName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataSources/{dataSourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataSources/{dataSourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataSourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("dataSourceName") String dataSourceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DataSourceInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("dataSourceName") String dataSourceName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataSources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/dataSources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataSourceListResult>> listByWorkspace(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$skiptoken") String skiptoken,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DataSourceListResult>> listByWorkspace(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("$filter") String filter, @QueryParam("$skiptoken") String skiptoken,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataSourceListResult>> listByWorkspaceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -144,13 +120,11 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @return datasources under OMS Workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataSourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String dataSourceName, DataSourceInner parameters) {
+    private Mono<Response<DataSourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String dataSourceName, DataSourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -163,10 +137,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter dataSourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -176,19 +148,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            dataSourceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                dataSourceName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -206,17 +167,11 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @return datasources under OMS Workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataSourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String dataSourceName,
-        DataSourceInner parameters,
-        Context context) {
+    private Mono<Response<DataSourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String dataSourceName, DataSourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -229,10 +184,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter dataSourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -242,17 +195,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                dataSourceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, workspaceName, dataSourceName,
+            apiVersion, this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -268,8 +212,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @return datasources under OMS Workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataSourceInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String dataSourceName, DataSourceInner parameters) {
+    private Mono<DataSourceInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String dataSourceName, DataSourceInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, dataSourceName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -288,12 +232,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @return datasources under OMS Workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataSourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String dataSourceName,
-        DataSourceInner parameters,
-        Context context) {
+    public Response<DataSourceInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String dataSourceName, DataSourceInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, dataSourceName, parameters, context)
             .block();
     }
@@ -311,8 +251,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @return datasources under OMS Workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataSourceInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String dataSourceName, DataSourceInner parameters) {
+    public DataSourceInner createOrUpdate(String resourceGroupName, String workspaceName, String dataSourceName,
+        DataSourceInner parameters) {
         return createOrUpdateWithResponse(resourceGroupName, workspaceName, dataSourceName, parameters, Context.NONE)
             .getValue();
     }
@@ -329,13 +269,11 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String dataSourceName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String dataSourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -348,24 +286,13 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter dataSourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            dataSourceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                dataSourceName, apiVersion, this.client.getSubscriptionId(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -382,13 +309,11 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String dataSourceName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String dataSourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -401,22 +326,13 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter dataSourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                dataSourceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, workspaceName, dataSourceName, apiVersion,
+            this.client.getSubscriptionId(), context);
     }
 
     /**
@@ -449,8 +365,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String dataSourceName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String dataSourceName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, dataSourceName, context).block();
     }
 
@@ -481,13 +397,11 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @return a datasource instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataSourceInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String dataSourceName) {
+    private Mono<Response<DataSourceInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String dataSourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -500,26 +414,14 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter dataSourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            dataSourceName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                dataSourceName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -536,13 +438,11 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @return a datasource instance along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataSourceInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String dataSourceName, Context context) {
+    private Mono<Response<DataSourceInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String dataSourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -555,24 +455,14 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter dataSourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                dataSourceName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, workspaceName, dataSourceName, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -605,8 +495,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      * @return a datasource instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataSourceInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String dataSourceName, Context context) {
+    public Response<DataSourceInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String dataSourceName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, dataSourceName, context).block();
     }
 
@@ -640,13 +530,11 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataSourceInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName, String filter, String skiptoken) {
+    private Mono<PagedResponse<DataSourceInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName, String filter, String skiptoken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -659,36 +547,16 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByWorkspace(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            workspaceName,
-                            filter,
-                            skiptoken,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<DataSourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), resourceGroupName, workspaceName,
+                filter, skiptoken, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<DataSourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -707,13 +575,11 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataSourceInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName, String filter, String skiptoken, Context context) {
+    private Mono<PagedResponse<DataSourceInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName, String filter, String skiptoken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -726,34 +592,17 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                workspaceName,
-                filter,
-                skiptoken,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByWorkspace(this.client.getEndpoint(), resourceGroupName, workspaceName, filter, skiptoken, apiVersion,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -770,8 +619,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataSourceInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName, String filter, String skiptoken) {
+    private PagedFlux<DataSourceInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
+        String filter, String skiptoken) {
         return new PagedFlux<>(
             () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, filter, skiptoken),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink));
@@ -790,8 +639,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataSourceInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName, String filter) {
+    private PagedFlux<DataSourceInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
+        String filter) {
         final String skiptoken = null;
         return new PagedFlux<>(
             () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, filter, skiptoken),
@@ -813,8 +662,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataSourceInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName, String filter, String skiptoken, Context context) {
+    private PagedFlux<DataSourceInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
+        String filter, String skiptoken, Context context) {
         return new PagedFlux<>(
             () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, filter, skiptoken, context),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink, context));
@@ -833,8 +682,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataSourceInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, String filter) {
+    public PagedIterable<DataSourceInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        String filter) {
         final String skiptoken = null;
         return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName, filter, skiptoken));
     }
@@ -854,8 +703,8 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
      *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataSourceInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, String filter, String skiptoken, Context context) {
+    public PagedIterable<DataSourceInner> listByWorkspace(String resourceGroupName, String workspaceName, String filter,
+        String skiptoken, Context context) {
         return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName, filter, skiptoken, context));
     }
 
@@ -876,23 +725,14 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DataSourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DataSourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -914,23 +754,13 @@ public final class DataSourcesClientImpl implements DataSourcesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }
