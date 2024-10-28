@@ -14,6 +14,7 @@ import japicmp.model.JApiClass;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -62,9 +63,11 @@ public class Main {
         List<ChangeLog> changeLogs = ChangeLog.fromClasses(classes);
         StringBuilder breakingChange = new StringBuilder();
         StringBuilder newFeature = new StringBuilder();
+        List<String> breakingChangeItems = new ArrayList<>();
         changeLogs.forEach(x -> {
             if (x.isClassLevelChanged()) {
                 breakingChange.append(x.getBreakingChange());
+                breakingChangeItems.add(x.getBreakingChange());
             }
         });
         changeLogs.forEach(x -> {
@@ -87,7 +90,7 @@ public class Main {
             (newFeature.length() > 0 ? NEW_FEATURE_TITLE + newFeature.toString().replace(namespaces.getBase() + ".", "") : "");
 
         JSONObject json = new JSONObject();
-        json.put("breakingChanges", breakingChange);
+        json.put("breakingChanges", breakingChangeItems);
         json.put("changelog", changelog);
 
         System.out.println(json.toString());
