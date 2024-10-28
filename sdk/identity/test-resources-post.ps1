@@ -42,7 +42,6 @@ $azBuildToolsRootPom = "$PSScriptRoot/../../eng/code-quality-reports/pom.xml" | 
 $funcAppRoot = "$PSScriptRoot/live-test-apps/identity-test-function" | Resolve-Path
 $funcAppPom = "$funcAppRoot/pom.xml" | Resolve-Path
 
-az login --service-principal -u $(getVariable('IDENTITY_CLIENT_ID')) -p $(getVariable('IDENTITY_CLIENT_SECRET')) --tenant $(getVariable('IDENTITY_TENANT_ID'))
 az account set --subscription $(getVariable('IDENTITY_SUBSCRIPTION_ID'))
 
 
