@@ -41,11 +41,9 @@ public class MySqlManagerTest extends TestProxyTestBase {
 
         resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile)
-            .withDefaultSubscription();
+            .authenticate(credential, profile).withDefaultSubscription();
 
-        mysqlManager = MySqlManager
-            .configure()
+        mysqlManager = MySqlManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
@@ -106,7 +104,7 @@ public class MySqlManagerTest extends TestProxyTestBase {
      * The provided server type value 'Azure Database for MySQL - Single Server' is invalid.
      * So add function for registration provider.
      *
-     * @param resourceManager the resource manager
+     * @param resourceManager           the resource manager
      * @param resourceProviderNamespace the namespace of resource provider
      */
     private static void registerProvider(ResourceManager resourceManager, String resourceProviderNamespace) {

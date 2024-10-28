@@ -53,18 +53,18 @@ public class MediaServicesTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        ResourceManager resourceManager = ResourceManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        ResourceManager resourceManager = ResourceManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
 
-        StorageManager storageManager = StorageManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        StorageManager storageManager = StorageManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
 
-        MediaServicesManager manager = MediaServicesManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
 
@@ -73,9 +73,7 @@ public class MediaServicesTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroup = testResourceGroup;
         } else {
-            resourceManager.resourceGroups().define(resourceGroup)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroup).withRegion(REGION).create();
         }
 
         try {

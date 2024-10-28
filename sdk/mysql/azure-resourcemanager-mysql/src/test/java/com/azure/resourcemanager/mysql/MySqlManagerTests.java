@@ -55,8 +55,7 @@ public class MySqlManagerTests extends TestProxyTestBase {
             .authenticate(credential, profile)
             .withDefaultSubscription();
 
-        mysqlManager = MySqlManager
-            .configure()
+        mysqlManager = MySqlManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
