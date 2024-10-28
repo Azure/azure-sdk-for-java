@@ -27,15 +27,12 @@ public class AzureRedisCredentials implements RedisCredentials {
      * Create instance of Azure Redis Credentials
      */
     public AzureRedisCredentials(String username, PasswordlessProperties passwordlessProperties) {
-        Objects.requireNonNull(passwordlessProperties, "PasswordlessProperties is required");
-        azureAuthenticationTemplate = new AzureAuthenticationTemplate();
-        azureAuthenticationTemplate.init(passwordlessProperties.toPasswordlessProperties());
-        this.username = resolveUsername(azureAuthenticationTemplate, username);
+        this(username, passwordlessProperties, (TokenCredentialProvider) null);
     }
 
     public AzureRedisCredentials(String username,
-                                 TokenCredentialProvider tokenCredentialProvider,
-                                 PasswordlessProperties passwordlessProperties) {
+                                 PasswordlessProperties passwordlessProperties,
+                                 TokenCredentialProvider tokenCredentialProvider) {
         Objects.requireNonNull(passwordlessProperties, "PasswordlessProperties is required");
         azureAuthenticationTemplate = new AzureAuthenticationTemplate(tokenCredentialProvider, null);
         Properties properties = passwordlessProperties.toPasswordlessProperties();

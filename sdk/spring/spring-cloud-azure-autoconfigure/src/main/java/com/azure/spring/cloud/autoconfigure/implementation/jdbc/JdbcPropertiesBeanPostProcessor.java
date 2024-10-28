@@ -2,15 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
 
-import com.azure.core.credential.TokenCredential;
-import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
-import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
-import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.passwordless.properties.AzureJdbcPasswordlessProperties;
 import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
-import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -39,7 +34,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
-import static com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider.PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPasswordlessPropertiesUtils.enhancePasswordlessProperties;
 
 
 /**
@@ -48,7 +43,6 @@ import static com.azure.spring.cloud.service.implementation.identity.credential.
 class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentAware, ApplicationContextAware, PriorityOrdered {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcPropertiesBeanPostProcessor.class);
-    private static final String SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME = SpringTokenCredentialProvider.class.getName();
     private GenericApplicationContext applicationContext;
     private Environment environment;
 
@@ -147,24 +141,8 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
     private Map<String, String> buildEnhancedProperties(String passwordlessPropertiesPrefix, DatabaseType databaseType, AzureJdbcPasswordlessProperties properties) {
         Map<String, String> result = new HashMap<>();
-        String tokenCredentialBeanName = properties.getCredential().getTokenCredentialBeanName();
-        if (StringUtils.hasText(tokenCredentialBeanName)) {
-            AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(result, tokenCredentialBeanName);
-        } else {
-            TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(properties.toPasswordlessProperties()));
-            TokenCredential tokenCredential = tokenCredentialProvider.get();
-
-            tokenCredentialBeanName = PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME + "." + passwordlessPropertiesPrefix;
-            AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(result, tokenCredentialBeanName);
-            applicationContext.registerBean(tokenCredentialBeanName, TokenCredential.class, () -> tokenCredential);
-        }
-
-        LOGGER.debug("Add SpringTokenCredentialProvider as the default token credential provider.");
-        AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(result, SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
-        AuthProperty.AUTHORITY_HOST.setProperty(result, properties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-
+        enhancePasswordlessProperties(applicationContext, passwordlessPropertiesPrefix, properties, result);
         databaseType.setDefaultEnhancedProperties(result);
-
         return result;
     }
 

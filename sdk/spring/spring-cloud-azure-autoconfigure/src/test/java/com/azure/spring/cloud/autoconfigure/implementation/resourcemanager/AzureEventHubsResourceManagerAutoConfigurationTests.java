@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.resourcemanager;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.resourcemanager.implementation.connectionstring.EventHubsArmConnectionStringProvider;
@@ -96,7 +97,7 @@ class AzureEventHubsResourceManagerAutoConfigurationTests {
     })
     void testNotCreateProviderBeanWhenMissingPropertiesConfigured(String missingProperty) {
         this.contextRunner
-            .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class)
+            .withUserConfiguration(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class, AzureGlobalPropertiesAutoConfiguration.class)
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
             .withPropertyValues(
                 "spring.cloud.azure.profile.tenant-id=test-tenant",

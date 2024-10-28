@@ -3,17 +3,13 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.data.redis;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
 import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProviders;
-import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.passwordless.properties.AzureRedisPasswordlessProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.data.redis.lettuce.AzureRedisCredentials;
 import com.azure.spring.cloud.core.implementation.util.AzurePasswordlessPropertiesUtils;
-import com.azure.spring.cloud.core.properties.PasswordlessProperties;
-import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisCredentials;
 import io.lettuce.core.RedisCredentialsProvider;
@@ -32,18 +28,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.data.redis.connection.RedisConfiguration;
 import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnection;
 import org.springframework.data.redis.connection.lettuce.RedisCredentialsProviderFactory;
-import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.Properties;
 
-import static com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider.PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME;
+import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPasswordlessPropertiesUtils.enhancePasswordlessProperties;
 
 
 /**
@@ -75,15 +69,15 @@ public class AzureLettucePasswordlessAutoConfiguration {
 
     @Bean(name = "azureRedisCredentials")
     @ConditionalOnMissingBean
-    @DependsOn("springTokenCredentialProviderContextProvider")
     AzureRedisCredentials azureRedisCredentials(RedisProperties redisProperties,
                                                 AzureRedisPasswordlessProperties azureRedisPasswordlessProperties,
                                                 AzureGlobalProperties azureGlobalProperties) {
         Properties properties = azureRedisPasswordlessProperties.toPasswordlessProperties();
-        enhancePasswordlessProperties(properties, azureRedisPasswordlessProperties);
+        enhancePasswordlessProperties(applicationContext, "spring.data.redis.azure",
+            azureRedisPasswordlessProperties, properties);
         TokenCredentialProvider provider = TokenCredentialProviders.createInstance(new TokenCredentialProviderOptions(properties));
-        return new AzureRedisCredentials(redisProperties.getUsername(), provider,
-            mergeAzureProperties(azureGlobalProperties, azureRedisPasswordlessProperties));
+        return new AzureRedisCredentials(redisProperties.getUsername(),
+            mergeAzureProperties(azureGlobalProperties, azureRedisPasswordlessProperties), provider);
     }
 
     @Bean(name = "azureLettuceClientConfigurationBuilderCustomizer")
@@ -108,30 +102,5 @@ public class AzureLettucePasswordlessAutoConfiguration {
         AzureRedisPasswordlessProperties mergedProperties = new AzureRedisPasswordlessProperties();
         AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(azureGlobalProperties, azurePasswordlessProperties, mergedProperties);
         return mergedProperties;
-    }
-
-    private void enhancePasswordlessProperties(Properties properties, PasswordlessProperties passwordlessProperties) {
-        if (!passwordlessProperties.isPasswordlessEnabled()) {
-            if (!passwordlessProperties.isPasswordlessEnabled()) {
-                LOGGER.debug("Feature passwordless authentication is not enabled(spring.data.redis.azure.passwordless-enabled=false), "
-                    + "skip enhancing Redis properties.");
-                return;
-            }
-        }
-
-        String tokenCredentialBeanName = passwordlessProperties.getCredential().getTokenCredentialBeanName();
-        if (StringUtils.hasText(tokenCredentialBeanName)) {
-            AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(properties, tokenCredentialBeanName);
-        } else {
-            TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(properties));
-            TokenCredential tokenCredential = tokenCredentialProvider.get();
-
-            tokenCredentialBeanName = PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME + ".spring.data.redis.azure";
-            AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(properties, tokenCredentialBeanName);
-            applicationContext.registerBean(tokenCredentialBeanName, TokenCredential.class, () -> tokenCredential);
-        }
-
-        AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(properties, SpringTokenCredentialProvider.class.getName());
-        AuthProperty.AUTHORITY_HOST.setProperty(properties, passwordlessProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
     }
 }

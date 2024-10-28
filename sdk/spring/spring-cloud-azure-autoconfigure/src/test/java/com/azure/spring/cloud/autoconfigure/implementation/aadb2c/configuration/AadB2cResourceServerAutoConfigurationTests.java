@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration;
 
+import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.AadB2cConstants;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadIssuerJwsKeySelector;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadTrustedIssuerRepository;
@@ -9,6 +10,7 @@ import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.properties.AadB2cProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security.jwt.AadB2cTrustedIssuerRepository;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
@@ -42,7 +44,8 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
 
     private WebApplicationContextRunner getResourceServerContextRunner() {
         return new WebApplicationContextRunner()
-            .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
+            .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class,
+                OAuth2LoginAuthenticationFilter.class))
             .withConfiguration(AutoConfigurations.of(
                 AzureGlobalPropertiesAutoConfiguration.class,
                 WebResourceServerTestApp.class,
@@ -57,6 +60,7 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
         return new WebApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(
                 WebOAuth2ClientTestApp.class,
+                TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
                 AzureGlobalPropertiesAutoConfiguration.class,
                 AadB2cResourceServerAutoConfiguration.class,
                 HttpMessageConvertersAutoConfiguration.class,
