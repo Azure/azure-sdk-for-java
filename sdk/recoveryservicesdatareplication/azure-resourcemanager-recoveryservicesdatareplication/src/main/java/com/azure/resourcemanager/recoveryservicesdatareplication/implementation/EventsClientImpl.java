@@ -30,17 +30,23 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.E
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.EventModelCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EventsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EventsClient.
+ */
 public final class EventsClientImpl implements EventsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EventsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of EventsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EventsClientImpl(DataReplicationMgmtClientImpl client) {
@@ -85,9 +91,9 @@ public final class EventsClientImpl implements EventsClient {
 
     /**
      * Gets the event.
-     *
-     * <p>Gets the details of the event.
-     *
+     * 
+     * Gets the details of the event.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param eventName The event name.
@@ -126,9 +132,9 @@ public final class EventsClientImpl implements EventsClient {
 
     /**
      * Gets the event.
-     *
-     * <p>Gets the details of the event.
-     *
+     * 
+     * Gets the details of the event.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param eventName The event name.
@@ -167,9 +173,9 @@ public final class EventsClientImpl implements EventsClient {
 
     /**
      * Gets the event.
-     *
-     * <p>Gets the details of the event.
-     *
+     * 
+     * Gets the details of the event.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param eventName The event name.
@@ -186,9 +192,9 @@ public final class EventsClientImpl implements EventsClient {
 
     /**
      * Gets the event.
-     *
-     * <p>Gets the details of the event.
-     *
+     * 
+     * Gets the details of the event.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param eventName The event name.
@@ -206,9 +212,9 @@ public final class EventsClientImpl implements EventsClient {
 
     /**
      * Gets the event.
-     *
-     * <p>Gets the details of the event.
-     *
+     * 
+     * Gets the details of the event.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param eventName The event name.
@@ -224,9 +230,9 @@ public final class EventsClientImpl implements EventsClient {
 
     /**
      * Lists the events.
-     *
-     * <p>Gets the list of events in the given vault.
-     *
+     * 
+     * Gets the list of events in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param filter Filter string.
@@ -234,8 +240,8 @@ public final class EventsClientImpl implements EventsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of events in the given vault along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list of events in the given vault along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventModelInner>> listSinglePageAsync(String resourceGroupName, String vaultName,
@@ -266,9 +272,9 @@ public final class EventsClientImpl implements EventsClient {
 
     /**
      * Lists the events.
-     *
-     * <p>Gets the list of events in the given vault.
-     *
+     * 
+     * Gets the list of events in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param filter Filter string.
@@ -277,8 +283,8 @@ public final class EventsClientImpl implements EventsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of events in the given vault along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list of events in the given vault along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventModelInner>> listSinglePageAsync(String resourceGroupName, String vaultName,
@@ -309,9 +315,9 @@ public final class EventsClientImpl implements EventsClient {
 
     /**
      * Lists the events.
-     *
-     * <p>Gets the list of events in the given vault.
-     *
+     * 
+     * Gets the list of events in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param filter Filter string.
@@ -330,9 +336,9 @@ public final class EventsClientImpl implements EventsClient {
 
     /**
      * Lists the events.
-     *
-     * <p>Gets the list of events in the given vault.
-     *
+     * 
+     * Gets the list of events in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -350,9 +356,9 @@ public final class EventsClientImpl implements EventsClient {
 
     /**
      * Lists the events.
-     *
-     * <p>Gets the list of events in the given vault.
-     *
+     * 
+     * Gets the list of events in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param filter Filter string.
@@ -373,9 +379,9 @@ public final class EventsClientImpl implements EventsClient {
 
     /**
      * Lists the events.
-     *
-     * <p>Gets the list of events in the given vault.
-     *
+     * 
+     * Gets the list of events in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -392,9 +398,9 @@ public final class EventsClientImpl implements EventsClient {
 
     /**
      * Lists the events.
-     *
-     * <p>Gets the list of events in the given vault.
-     *
+     * 
+     * Gets the list of events in the given vault.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param filter Filter string.
@@ -413,9 +419,8 @@ public final class EventsClientImpl implements EventsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -439,9 +444,8 @@ public final class EventsClientImpl implements EventsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

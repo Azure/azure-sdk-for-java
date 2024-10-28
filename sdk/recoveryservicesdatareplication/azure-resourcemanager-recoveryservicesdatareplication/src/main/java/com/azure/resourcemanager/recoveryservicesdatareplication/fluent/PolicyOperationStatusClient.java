@@ -10,13 +10,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.OperationStatusInner;
 
-/** An instance of this class provides access to all the operations defined in PolicyOperationStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PolicyOperationStatusClient.
+ */
 public interface PolicyOperationStatusClient {
     /**
      * Gets the policy operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the policy.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.
@@ -33,9 +35,9 @@ public interface PolicyOperationStatusClient {
 
     /**
      * Gets the policy operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the policy.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param policyName The policy name.

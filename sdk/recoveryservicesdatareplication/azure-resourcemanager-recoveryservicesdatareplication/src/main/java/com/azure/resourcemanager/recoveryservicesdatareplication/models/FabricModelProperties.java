@@ -6,55 +6,57 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Fabric model properties. */
+/**
+ * Fabric model properties.
+ */
 @Fluent
-public final class FabricModelProperties {
+public final class FabricModelProperties implements JsonSerializable<FabricModelProperties> {
     /*
      * Gets or sets the provisioning state of the fabric.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Gets or sets the service endpoint.
      */
-    @JsonProperty(value = "serviceEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceEndpoint;
 
     /*
      * Gets or sets the service resource Id.
      */
-    @JsonProperty(value = "serviceResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceResourceId;
 
     /*
      * Gets or sets the fabric health.
      */
-    @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private HealthStatus health;
 
     /*
      * Gets or sets the list of health errors.
      */
-    @JsonProperty(value = "healthErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthErrorModel> healthErrors;
 
     /*
      * Fabric model custom properties.
      */
-    @JsonProperty(value = "customProperties", required = true)
     private FabricModelCustomProperties customProperties;
 
-    /** Creates an instance of FabricModelProperties class. */
+    /**
+     * Creates an instance of FabricModelProperties class.
+     */
     public FabricModelProperties() {
     }
 
     /**
      * Get the provisioningState property: Gets or sets the provisioning state of the fabric.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -63,7 +65,7 @@ public final class FabricModelProperties {
 
     /**
      * Get the serviceEndpoint property: Gets or sets the service endpoint.
-     *
+     * 
      * @return the serviceEndpoint value.
      */
     public String serviceEndpoint() {
@@ -72,7 +74,7 @@ public final class FabricModelProperties {
 
     /**
      * Get the serviceResourceId property: Gets or sets the service resource Id.
-     *
+     * 
      * @return the serviceResourceId value.
      */
     public String serviceResourceId() {
@@ -81,7 +83,7 @@ public final class FabricModelProperties {
 
     /**
      * Get the health property: Gets or sets the fabric health.
-     *
+     * 
      * @return the health value.
      */
     public HealthStatus health() {
@@ -90,7 +92,7 @@ public final class FabricModelProperties {
 
     /**
      * Get the healthErrors property: Gets or sets the list of health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthErrorModel> healthErrors() {
@@ -99,7 +101,7 @@ public final class FabricModelProperties {
 
     /**
      * Get the customProperties property: Fabric model custom properties.
-     *
+     * 
      * @return the customProperties value.
      */
     public FabricModelCustomProperties customProperties() {
@@ -108,7 +110,7 @@ public final class FabricModelProperties {
 
     /**
      * Set the customProperties property: Fabric model custom properties.
-     *
+     * 
      * @param customProperties the customProperties value to set.
      * @return the FabricModelProperties object itself.
      */
@@ -119,7 +121,7 @@ public final class FabricModelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -127,12 +129,63 @@ public final class FabricModelProperties {
             healthErrors().forEach(e -> e.validate());
         }
         if (customProperties() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property customProperties in model FabricModelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property customProperties in model FabricModelProperties"));
         } else {
             customProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FabricModelProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("customProperties", this.customProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FabricModelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FabricModelProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FabricModelProperties.
+     */
+    public static FabricModelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FabricModelProperties deserializedFabricModelProperties = new FabricModelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("customProperties".equals(fieldName)) {
+                    deserializedFabricModelProperties.customProperties = FabricModelCustomProperties.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFabricModelProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("serviceEndpoint".equals(fieldName)) {
+                    deserializedFabricModelProperties.serviceEndpoint = reader.getString();
+                } else if ("serviceResourceId".equals(fieldName)) {
+                    deserializedFabricModelProperties.serviceResourceId = reader.getString();
+                } else if ("health".equals(fieldName)) {
+                    deserializedFabricModelProperties.health = HealthStatus.fromString(reader.getString());
+                } else if ("healthErrors".equals(fieldName)) {
+                    List<HealthErrorModel> healthErrors
+                        = reader.readArray(reader1 -> HealthErrorModel.fromJson(reader1));
+                    deserializedFabricModelProperties.healthErrors = healthErrors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFabricModelProperties;
+        });
+    }
 }

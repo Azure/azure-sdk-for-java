@@ -5,87 +5,85 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Dra model properties. */
+/**
+ * Dra model properties.
+ */
 @Fluent
-public final class DraModelProperties {
+public final class DraModelProperties implements JsonSerializable<DraModelProperties> {
     /*
      * Gets or sets the Dra correlation Id.
      */
-    @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
     /*
      * Gets or sets the machine Id where Dra is running.
      */
-    @JsonProperty(value = "machineId", required = true)
     private String machineId;
 
     /*
      * Gets or sets the machine name where Dra is running.
      */
-    @JsonProperty(value = "machineName", required = true)
     private String machineName;
 
     /*
      * Identity model.
      */
-    @JsonProperty(value = "authenticationIdentity", required = true)
     private IdentityModel authenticationIdentity;
 
     /*
      * Identity model.
      */
-    @JsonProperty(value = "resourceAccessIdentity", required = true)
     private IdentityModel resourceAccessIdentity;
 
     /*
      * Gets or sets a value indicating whether Dra is responsive.
      */
-    @JsonProperty(value = "isResponsive", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isResponsive;
 
     /*
      * Gets or sets the time when last heartbeat was sent by the Dra.
      */
-    @JsonProperty(value = "lastHeartbeat", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastHeartbeat;
 
     /*
      * Gets or sets the Dra version.
      */
-    @JsonProperty(value = "versionNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String versionNumber;
 
     /*
      * Gets or sets the provisioning state of the Dra.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Gets or sets the list of health errors.
      */
-    @JsonProperty(value = "healthErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthErrorModel> healthErrors;
 
     /*
      * Dra model custom properties.
      */
-    @JsonProperty(value = "customProperties", required = true)
     private DraModelCustomProperties customProperties;
 
-    /** Creates an instance of DraModelProperties class. */
+    /**
+     * Creates an instance of DraModelProperties class.
+     */
     public DraModelProperties() {
     }
 
     /**
      * Get the correlationId property: Gets or sets the Dra correlation Id.
-     *
+     * 
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -94,7 +92,7 @@ public final class DraModelProperties {
 
     /**
      * Get the machineId property: Gets or sets the machine Id where Dra is running.
-     *
+     * 
      * @return the machineId value.
      */
     public String machineId() {
@@ -103,7 +101,7 @@ public final class DraModelProperties {
 
     /**
      * Set the machineId property: Gets or sets the machine Id where Dra is running.
-     *
+     * 
      * @param machineId the machineId value to set.
      * @return the DraModelProperties object itself.
      */
@@ -114,7 +112,7 @@ public final class DraModelProperties {
 
     /**
      * Get the machineName property: Gets or sets the machine name where Dra is running.
-     *
+     * 
      * @return the machineName value.
      */
     public String machineName() {
@@ -123,7 +121,7 @@ public final class DraModelProperties {
 
     /**
      * Set the machineName property: Gets or sets the machine name where Dra is running.
-     *
+     * 
      * @param machineName the machineName value to set.
      * @return the DraModelProperties object itself.
      */
@@ -134,7 +132,7 @@ public final class DraModelProperties {
 
     /**
      * Get the authenticationIdentity property: Identity model.
-     *
+     * 
      * @return the authenticationIdentity value.
      */
     public IdentityModel authenticationIdentity() {
@@ -143,7 +141,7 @@ public final class DraModelProperties {
 
     /**
      * Set the authenticationIdentity property: Identity model.
-     *
+     * 
      * @param authenticationIdentity the authenticationIdentity value to set.
      * @return the DraModelProperties object itself.
      */
@@ -154,7 +152,7 @@ public final class DraModelProperties {
 
     /**
      * Get the resourceAccessIdentity property: Identity model.
-     *
+     * 
      * @return the resourceAccessIdentity value.
      */
     public IdentityModel resourceAccessIdentity() {
@@ -163,7 +161,7 @@ public final class DraModelProperties {
 
     /**
      * Set the resourceAccessIdentity property: Identity model.
-     *
+     * 
      * @param resourceAccessIdentity the resourceAccessIdentity value to set.
      * @return the DraModelProperties object itself.
      */
@@ -174,7 +172,7 @@ public final class DraModelProperties {
 
     /**
      * Get the isResponsive property: Gets or sets a value indicating whether Dra is responsive.
-     *
+     * 
      * @return the isResponsive value.
      */
     public Boolean isResponsive() {
@@ -183,7 +181,7 @@ public final class DraModelProperties {
 
     /**
      * Get the lastHeartbeat property: Gets or sets the time when last heartbeat was sent by the Dra.
-     *
+     * 
      * @return the lastHeartbeat value.
      */
     public OffsetDateTime lastHeartbeat() {
@@ -192,7 +190,7 @@ public final class DraModelProperties {
 
     /**
      * Get the versionNumber property: Gets or sets the Dra version.
-     *
+     * 
      * @return the versionNumber value.
      */
     public String versionNumber() {
@@ -201,7 +199,7 @@ public final class DraModelProperties {
 
     /**
      * Get the provisioningState property: Gets or sets the provisioning state of the Dra.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -210,7 +208,7 @@ public final class DraModelProperties {
 
     /**
      * Get the healthErrors property: Gets or sets the list of health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthErrorModel> healthErrors() {
@@ -219,7 +217,7 @@ public final class DraModelProperties {
 
     /**
      * Get the customProperties property: Dra model custom properties.
-     *
+     * 
      * @return the customProperties value.
      */
     public DraModelCustomProperties customProperties() {
@@ -228,7 +226,7 @@ public final class DraModelProperties {
 
     /**
      * Set the customProperties property: Dra model custom properties.
-     *
+     * 
      * @param customProperties the customProperties value to set.
      * @return the DraModelProperties object itself.
      */
@@ -239,27 +237,29 @@ public final class DraModelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (machineId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property machineId in model DraModelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property machineId in model DraModelProperties"));
         }
         if (machineName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property machineName in model DraModelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property machineName in model DraModelProperties"));
         }
         if (authenticationIdentity() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property authenticationIdentity in model DraModelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property authenticationIdentity in model DraModelProperties"));
         } else {
             authenticationIdentity().validate();
         }
         if (resourceAccessIdentity() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property resourceAccessIdentity in model DraModelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resourceAccessIdentity in model DraModelProperties"));
         } else {
             resourceAccessIdentity().validate();
         }
@@ -267,12 +267,77 @@ public final class DraModelProperties {
             healthErrors().forEach(e -> e.validate());
         }
         if (customProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property customProperties in model DraModelProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property customProperties in model DraModelProperties"));
         } else {
             customProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DraModelProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("machineId", this.machineId);
+        jsonWriter.writeStringField("machineName", this.machineName);
+        jsonWriter.writeJsonField("authenticationIdentity", this.authenticationIdentity);
+        jsonWriter.writeJsonField("resourceAccessIdentity", this.resourceAccessIdentity);
+        jsonWriter.writeJsonField("customProperties", this.customProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DraModelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DraModelProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DraModelProperties.
+     */
+    public static DraModelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DraModelProperties deserializedDraModelProperties = new DraModelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("machineId".equals(fieldName)) {
+                    deserializedDraModelProperties.machineId = reader.getString();
+                } else if ("machineName".equals(fieldName)) {
+                    deserializedDraModelProperties.machineName = reader.getString();
+                } else if ("authenticationIdentity".equals(fieldName)) {
+                    deserializedDraModelProperties.authenticationIdentity = IdentityModel.fromJson(reader);
+                } else if ("resourceAccessIdentity".equals(fieldName)) {
+                    deserializedDraModelProperties.resourceAccessIdentity = IdentityModel.fromJson(reader);
+                } else if ("customProperties".equals(fieldName)) {
+                    deserializedDraModelProperties.customProperties = DraModelCustomProperties.fromJson(reader);
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedDraModelProperties.correlationId = reader.getString();
+                } else if ("isResponsive".equals(fieldName)) {
+                    deserializedDraModelProperties.isResponsive = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lastHeartbeat".equals(fieldName)) {
+                    deserializedDraModelProperties.lastHeartbeat = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("versionNumber".equals(fieldName)) {
+                    deserializedDraModelProperties.versionNumber = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDraModelProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("healthErrors".equals(fieldName)) {
+                    List<HealthErrorModel> healthErrors
+                        = reader.readArray(reader1 -> HealthErrorModel.fromJson(reader1));
+                    deserializedDraModelProperties.healthErrors = healthErrors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDraModelProperties;
+        });
+    }
 }

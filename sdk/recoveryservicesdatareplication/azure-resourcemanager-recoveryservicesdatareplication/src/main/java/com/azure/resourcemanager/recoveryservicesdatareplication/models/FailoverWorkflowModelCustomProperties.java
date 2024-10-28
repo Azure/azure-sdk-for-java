@@ -5,29 +5,52 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-/** Failover workflow model custom properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("FailoverWorkflowDetails")
+/**
+ * Failover workflow model custom properties.
+ */
 @Immutable
 public final class FailoverWorkflowModelCustomProperties extends WorkflowModelCustomProperties {
     /*
+     * Gets or sets the instance type.
+     */
+    private String instanceType = "FailoverWorkflowDetails";
+
+    /*
      * Gets or sets the failed over protected item details.
      */
-    @JsonProperty(value = "protectedItemDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<FailoverProtectedItemProperties> protectedItemDetails;
 
-    /** Creates an instance of FailoverWorkflowModelCustomProperties class. */
+    /*
+     * Gets or sets any custom properties of the affected object.
+     */
+    private Map<String, String> affectedObjectDetails;
+
+    /**
+     * Creates an instance of FailoverWorkflowModelCustomProperties class.
+     */
     public FailoverWorkflowModelCustomProperties() {
     }
 
     /**
+     * Get the instanceType property: Gets or sets the instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the protectedItemDetails property: Gets or sets the failed over protected item details.
-     *
+     * 
      * @return the protectedItemDetails value.
      */
     public List<FailoverProtectedItemProperties> protectedItemDetails() {
@@ -35,15 +58,68 @@ public final class FailoverWorkflowModelCustomProperties extends WorkflowModelCu
     }
 
     /**
+     * Get the affectedObjectDetails property: Gets or sets any custom properties of the affected object.
+     * 
+     * @return the affectedObjectDetails value.
+     */
+    @Override
+    public Map<String, String> affectedObjectDetails() {
+        return this.affectedObjectDetails;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (protectedItemDetails() != null) {
             protectedItemDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FailoverWorkflowModelCustomProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FailoverWorkflowModelCustomProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FailoverWorkflowModelCustomProperties.
+     */
+    public static FailoverWorkflowModelCustomProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FailoverWorkflowModelCustomProperties deserializedFailoverWorkflowModelCustomProperties
+                = new FailoverWorkflowModelCustomProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("affectedObjectDetails".equals(fieldName)) {
+                    Map<String, String> affectedObjectDetails = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFailoverWorkflowModelCustomProperties.affectedObjectDetails = affectedObjectDetails;
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedFailoverWorkflowModelCustomProperties.instanceType = reader.getString();
+                } else if ("protectedItemDetails".equals(fieldName)) {
+                    List<FailoverProtectedItemProperties> protectedItemDetails
+                        = reader.readArray(reader1 -> FailoverProtectedItemProperties.fromJson(reader1));
+                    deserializedFailoverWorkflowModelCustomProperties.protectedItemDetails = protectedItemDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFailoverWorkflowModelCustomProperties;
+        });
     }
 }
