@@ -41,8 +41,8 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
      * @param client the instance of the service client containing this operation class.
      */
     CalculateRefundsClientImpl(AzureReservationApiImpl client) {
-        this.service =
-            RestProxy.create(CalculateRefundsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(CalculateRefundsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,16 +53,13 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
     @Host("{$host}")
     @ServiceInterface(name = "AzureReservationApiC")
     public interface CalculateRefundsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/calculateRefund")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CalculateRefundResponseInner>> post(
-            @HostParam("$host") String endpoint,
-            @PathParam("reservationOrderId") String reservationOrderId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") CalculateRefundRequest body,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<CalculateRefundResponseInner>> post(@HostParam("$host") String endpoint,
+            @PathParam("reservationOrderId") String reservationOrderId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CalculateRefundRequest body, @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -80,13 +77,11 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CalculateRefundResponseInner>> postWithResponseAsync(
-        String reservationOrderId, CalculateRefundRequest body) {
+    private Mono<Response<CalculateRefundResponseInner>> postWithResponseAsync(String reservationOrderId,
+        CalculateRefundRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -99,10 +94,8 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
         }
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.post(this.client.getEndpoint(), reservationOrderId, apiVersion, body, accept, context))
+        return FluxUtil.withContext(
+            context -> service.post(this.client.getEndpoint(), reservationOrderId, apiVersion, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -121,13 +114,11 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CalculateRefundResponseInner>> postWithResponseAsync(
-        String reservationOrderId, CalculateRefundRequest body, Context context) {
+    private Mono<Response<CalculateRefundResponseInner>> postWithResponseAsync(String reservationOrderId,
+        CalculateRefundRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -177,8 +168,8 @@ public final class CalculateRefundsClientImpl implements CalculateRefundsClient 
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CalculateRefundResponseInner> postWithResponse(
-        String reservationOrderId, CalculateRefundRequest body, Context context) {
+    public Response<CalculateRefundResponseInner> postWithResponse(String reservationOrderId,
+        CalculateRefundRequest body, Context context) {
         return postWithResponseAsync(reservationOrderId, body, context).block();
     }
 

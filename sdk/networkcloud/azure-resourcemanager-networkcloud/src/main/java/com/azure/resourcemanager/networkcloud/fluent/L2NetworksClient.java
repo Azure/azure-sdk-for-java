@@ -89,8 +89,8 @@ public interface L2NetworksClient {
      * @return properties of the provided layer 2 (L2) network along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<L2NetworkInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String l2NetworkName, Context context);
+    Response<L2NetworkInner> getByResourceGroupWithResponse(String resourceGroupName, String l2NetworkName,
+        Context context);
 
     /**
      * Retrieve the layer 2 (L2) network.
@@ -122,8 +122,8 @@ public interface L2NetworksClient {
      *     domain set up for layer-2 resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<L2NetworkInner>, L2NetworkInner> beginCreateOrUpdate(
-        String resourceGroupName, String l2NetworkName, L2NetworkInner l2NetworkParameters);
+    SyncPoller<PollResult<L2NetworkInner>, L2NetworkInner> beginCreateOrUpdate(String resourceGroupName,
+        String l2NetworkName, L2NetworkInner l2NetworkParameters);
 
     /**
      * Create or update the layer 2 (L2) network.
@@ -141,8 +141,8 @@ public interface L2NetworksClient {
      *     domain set up for layer-2 resources.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<L2NetworkInner>, L2NetworkInner> beginCreateOrUpdate(
-        String resourceGroupName, String l2NetworkName, L2NetworkInner l2NetworkParameters, Context context);
+    SyncPoller<PollResult<L2NetworkInner>, L2NetworkInner> beginCreateOrUpdate(String resourceGroupName,
+        String l2NetworkName, L2NetworkInner l2NetworkParameters, Context context);
 
     /**
      * Create or update the layer 2 (L2) network.
@@ -175,8 +175,8 @@ public interface L2NetworksClient {
      * @return l2Network represents a network that utilizes a single isolation domain set up for layer-2 resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    L2NetworkInner createOrUpdate(
-        String resourceGroupName, String l2NetworkName, L2NetworkInner l2NetworkParameters, Context context);
+    L2NetworkInner createOrUpdate(String resourceGroupName, String l2NetworkName, L2NetworkInner l2NetworkParameters,
+        Context context);
 
     /**
      * Delete the layer 2 (L2) network.
@@ -254,11 +254,8 @@ public interface L2NetworksClient {
      *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<L2NetworkInner> updateWithResponse(
-        String resourceGroupName,
-        String l2NetworkName,
-        L2NetworkPatchParameters l2NetworkUpdateParameters,
-        Context context);
+    Response<L2NetworkInner> updateWithResponse(String resourceGroupName, String l2NetworkName,
+        L2NetworkPatchParameters l2NetworkUpdateParameters, Context context);
 
     /**
      * Patch the layer 2 (L2) network.

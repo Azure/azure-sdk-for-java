@@ -32,39 +32,27 @@ public final class GenerateReservationDetailsReportsByBillingProfileIdMockTests 
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"status\":\"Failed\",\"properties\":{\"reportUrl\":\"TotalReservedQuantity\",\"validUntil\":\"2021-08-13T04:52:01Z\"}}";
+        String responseStr
+            = "{\"status\":\"Failed\",\"properties\":{\"reportUrl\":\"TotalReservedQuantity\",\"validUntil\":\"2021-08-13T04:52:01Z\"}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationStatus response =
-            manager
-                .generateReservationDetailsReports()
-                .byBillingProfileId("rudhzmmesckdl", "agzrcxfa", "lc", "xwmdboxd", com.azure.core.util.Context.NONE);
+        OperationStatus response = manager.generateReservationDetailsReports()
+            .byBillingProfileId("rudhzmmesckdl", "agzrcxfa", "lc", "xwmdboxd", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(OperationStatusType.FAILED, response.status());
         Assertions.assertEquals(ReservationReportSchema.TOTAL_RESERVED_QUANTITY, response.reportUrl());

@@ -57,8 +57,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * @return the specified shared private link resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SharedPrivateLinkResourceInner> getWithResponse(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context);
+    Response<SharedPrivateLinkResourceInner> getWithResponse(String sharedPrivateLinkResourceName,
+        String resourceGroupName, String resourceName, Context context);
 
     /**
      * Get the specified shared private link resource.
@@ -72,8 +72,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * @return the specified shared private link resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedPrivateLinkResourceInner get(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName);
+    SharedPrivateLinkResourceInner get(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName);
 
     /**
      * Create or update a shared private link resource.
@@ -89,9 +89,7 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
-        String sharedPrivateLinkResourceName,
-        String resourceGroupName,
-        String resourceName,
+        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName,
         SharedPrivateLinkResourceInner parameters);
 
     /**
@@ -109,11 +107,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
-        String sharedPrivateLinkResourceName,
-        String resourceGroupName,
-        String resourceName,
-        SharedPrivateLinkResourceInner parameters,
-        Context context);
+        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName,
+        SharedPrivateLinkResourceInner parameters, Context context);
 
     /**
      * Create or update a shared private link resource.
@@ -128,11 +123,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * @return describes a Shared Private Link Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedPrivateLinkResourceInner createOrUpdate(
-        String sharedPrivateLinkResourceName,
-        String resourceGroupName,
-        String resourceName,
-        SharedPrivateLinkResourceInner parameters);
+    SharedPrivateLinkResourceInner createOrUpdate(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName, SharedPrivateLinkResourceInner parameters);
 
     /**
      * Create or update a shared private link resource.
@@ -148,12 +140,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * @return describes a Shared Private Link Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedPrivateLinkResourceInner createOrUpdate(
-        String sharedPrivateLinkResourceName,
-        String resourceGroupName,
-        String resourceName,
-        SharedPrivateLinkResourceInner parameters,
-        Context context);
+    SharedPrivateLinkResourceInner createOrUpdate(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName, SharedPrivateLinkResourceInner parameters, Context context);
 
     /**
      * Delete the specified shared private link resource.
@@ -167,8 +155,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName);
 
     /**
      * Delete the specified shared private link resource.
@@ -183,8 +171,8 @@ public interface SignalRSharedPrivateLinkResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Delete the specified shared private link resource.

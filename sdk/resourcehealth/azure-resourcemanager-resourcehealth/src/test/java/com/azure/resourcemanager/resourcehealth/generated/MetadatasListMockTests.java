@@ -32,34 +32,24 @@ public final class MetadatasListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"ciayzriykhya\",\"dependsOn\":[\"jlb\",\"xqvkjlmxhomdyn\",\"dwdigumb\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\",\"Alerts\",\"Alerts\"],\"supportedValues\":[{\"id\":\"a\",\"displayName\":\"sdzhezww\",\"resourceTypes\":[\"qyuvvfonkp\",\"hqyikvy\"]}]},\"id\":\"uyav\",\"name\":\"uwmncs\",\"type\":\"tijfybvp\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"displayName\":\"ciayzriykhya\",\"dependsOn\":[\"jlb\",\"xqvkjlmxhomdyn\",\"dwdigumb\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\",\"Alerts\",\"Alerts\"],\"supportedValues\":[{\"id\":\"a\",\"displayName\":\"sdzhezww\",\"resourceTypes\":[\"qyuvvfonkp\",\"hqyikvy\"]}]},\"id\":\"uyav\",\"name\":\"uwmncs\",\"type\":\"tijfybvp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ResourceHealthManager manager =
-            ResourceHealthManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ResourceHealthManager manager = ResourceHealthManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<MetadataEntity> response = manager.metadatas().list(com.azure.core.util.Context.NONE);
 
@@ -68,7 +58,7 @@ public final class MetadatasListMockTests {
         Assertions.assertEquals(Scenario.ALERTS, response.iterator().next().applicableScenarios().get(0));
         Assertions.assertEquals("a", response.iterator().next().supportedValues().get(0).id());
         Assertions.assertEquals("sdzhezww", response.iterator().next().supportedValues().get(0).displayName());
-        Assertions
-            .assertEquals("qyuvvfonkp", response.iterator().next().supportedValues().get(0).resourceTypes().get(0));
+        Assertions.assertEquals("qyuvvfonkp",
+            response.iterator().next().supportedValues().get(0).resourceTypes().get(0));
     }
 }

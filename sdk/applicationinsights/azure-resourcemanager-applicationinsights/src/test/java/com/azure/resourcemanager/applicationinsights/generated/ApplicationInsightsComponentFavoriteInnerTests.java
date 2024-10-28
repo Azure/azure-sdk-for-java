@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationInsightsComponentFavoriteInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentFavoriteInner model =
-            BinaryData
-                .fromString(
-                    "{\"Name\":\"dzxibqeojnxqbzvd\",\"Config\":\"t\",\"Version\":\"deicbtwnpzao\",\"FavoriteId\":\"uhrhcffcyddgl\",\"FavoriteType\":\"shared\",\"SourceType\":\"jqkwpyeicx\",\"TimeModified\":\"ciwqvhk\",\"Tags\":[\"uigdtopbobjog\",\"m\",\"w\"],\"Category\":\"m\",\"IsGeneratedFromTemplate\":true,\"UserId\":\"z\"}")
-                .toObject(ApplicationInsightsComponentFavoriteInner.class);
+        ApplicationInsightsComponentFavoriteInner model = BinaryData.fromString(
+            "{\"Name\":\"dzxibqeojnxqbzvd\",\"Config\":\"t\",\"Version\":\"deicbtwnpzao\",\"FavoriteId\":\"uhrhcffcyddgl\",\"FavoriteType\":\"shared\",\"SourceType\":\"jqkwpyeicx\",\"TimeModified\":\"ciwqvhk\",\"Tags\":[\"uigdtopbobjog\",\"m\",\"w\"],\"Category\":\"m\",\"IsGeneratedFromTemplate\":true,\"UserId\":\"z\"}")
+            .toObject(ApplicationInsightsComponentFavoriteInner.class);
         Assertions.assertEquals("dzxibqeojnxqbzvd", model.name());
         Assertions.assertEquals("t", model.config());
         Assertions.assertEquals("deicbtwnpzao", model.version());
@@ -30,9 +28,8 @@ public final class ApplicationInsightsComponentFavoriteInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationInsightsComponentFavoriteInner model =
-            new ApplicationInsightsComponentFavoriteInner()
-                .withName("dzxibqeojnxqbzvd")
+        ApplicationInsightsComponentFavoriteInner model
+            = new ApplicationInsightsComponentFavoriteInner().withName("dzxibqeojnxqbzvd")
                 .withConfig("t")
                 .withVersion("deicbtwnpzao")
                 .withFavoriteType(FavoriteType.SHARED)

@@ -36,63 +36,51 @@ public final class WorkflowsCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"githubWorkflowProfile\":{\"repositoryOwner\":\"ywpnvjt\",\"repositoryName\":\"nermcl\",\"branchName\":\"lphox\",\"dockerfile\":\"crpab\",\"dockerBuildContext\":\"epsbjtazqu\",\"namespace\":\"wpmueefj\",\"aksResourceId\":\"kqujidsuyono\",\"prURL\":\"laocqxtccmg\",\"pullNumber\":1054992005,\"prStatus\":\"removed\",\"authStatus\":\"NotFound\"},\"artifactGenerationProperties\":{\"generationLanguage\":\"rust\",\"languageVersion\":\"vwfudwpzntxhd\",\"builderVersion\":\"lrqjbhckfr\",\"port\":\"rxsbkyvp\",\"appName\":\"anuzbpzkafkuw\",\"dockerfileOutputDirectory\":\"rnwb\",\"manifestOutputDirectory\":\"hhseyv\",\"dockerfileGenerationMode\":\"disabled\",\"manifestGenerationMode\":\"disabled\",\"manifestType\":\"helm\",\"imageName\":\"spkdee\",\"namespace\":\"ofmxagkvtmelmqkr\",\"imageTag\":\"hvljuahaquh\"}},\"location\":\"hmdua\",\"tags\":{\"rcrgvx\":\"xqpvfadmw\"},\"id\":\"vgomz\",\"name\":\"fmisg\",\"type\":\"bnbbeldawkz\"}";
+        String responseStr
+            = "{\"properties\":{\"githubWorkflowProfile\":{\"repositoryOwner\":\"ywpnvjt\",\"repositoryName\":\"nermcl\",\"branchName\":\"lphox\",\"dockerfile\":\"crpab\",\"dockerBuildContext\":\"epsbjtazqu\",\"namespace\":\"wpmueefj\",\"aksResourceId\":\"kqujidsuyono\",\"prURL\":\"laocqxtccmg\",\"pullNumber\":1054992005,\"prStatus\":\"removed\",\"authStatus\":\"NotFound\"},\"artifactGenerationProperties\":{\"generationLanguage\":\"rust\",\"languageVersion\":\"vwfudwpzntxhd\",\"builderVersion\":\"lrqjbhckfr\",\"port\":\"rxsbkyvp\",\"appName\":\"anuzbpzkafkuw\",\"dockerfileOutputDirectory\":\"rnwb\",\"manifestOutputDirectory\":\"hhseyv\",\"dockerfileGenerationMode\":\"disabled\",\"manifestGenerationMode\":\"disabled\",\"manifestType\":\"helm\",\"imageName\":\"spkdee\",\"namespace\":\"ofmxagkvtmelmqkr\",\"imageTag\":\"hvljuahaquh\"}},\"location\":\"hmdua\",\"tags\":{\"rcrgvx\":\"xqpvfadmw\"},\"id\":\"vgomz\",\"name\":\"fmisg\",\"type\":\"bnbbeldawkz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevHubManager manager =
-            DevHubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevHubManager manager = DevHubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Workflow response =
-            manager
-                .workflows()
-                .define("ckzywbiexzfeyue")
-                .withRegion("tfhvpesapskrdqmh")
-                .withExistingResourceGroup("yazttbtwwrqpue")
-                .withTags(mapOf("zxuutkncwscwsvl", "htldwk", "vnm", "otogtwrupqs", "eil", "cykvceo"))
-                .withRepositoryOwner("xujwbhqwalmuzyo")
-                .withRepositoryName("epdkzja")
-                .withBranchName("ux")
-                .withDockerfile("d")
-                .withDockerBuildContext("avxbniwdjswztsdb")
-                .withNamespace("xytxhpzxbz")
-                .withAksResourceId("b")
-                .withGenerationLanguage(GenerationLanguage.RUST)
-                .withLanguageVersion("ovplw")
-                .withBuilderVersion("hvgyuguosvmk")
-                .withPort("sxqu")
-                .withAppName("fpl")
-                .withDockerfileOutputDirectory("gsxnkjzkdeslpv")
-                .withManifestOutputDirectory("pwiyig")
-                .withDockerfileGenerationMode(DockerfileGenerationMode.ENABLED)
-                .withManifestGenerationMode(ManifestGenerationMode.ENABLED)
-                .withManifestType(GenerationManifestType.HELM)
-                .withImageName("aiuebbaumnyqu")
-                .withNamespaceArtifactGenerationPropertiesNamespace("deoj")
-                .withImageTag("bckhsmtxpsi")
-                .create();
+        Workflow response = manager.workflows()
+            .define("ckzywbiexzfeyue")
+            .withRegion("tfhvpesapskrdqmh")
+            .withExistingResourceGroup("yazttbtwwrqpue")
+            .withTags(mapOf("zxuutkncwscwsvl", "htldwk", "vnm", "otogtwrupqs", "eil", "cykvceo"))
+            .withRepositoryOwner("xujwbhqwalmuzyo")
+            .withRepositoryName("epdkzja")
+            .withBranchName("ux")
+            .withDockerfile("d")
+            .withDockerBuildContext("avxbniwdjswztsdb")
+            .withNamespace("xytxhpzxbz")
+            .withAksResourceId("b")
+            .withGenerationLanguage(GenerationLanguage.RUST)
+            .withLanguageVersion("ovplw")
+            .withBuilderVersion("hvgyuguosvmk")
+            .withPort("sxqu")
+            .withAppName("fpl")
+            .withDockerfileOutputDirectory("gsxnkjzkdeslpv")
+            .withManifestOutputDirectory("pwiyig")
+            .withDockerfileGenerationMode(DockerfileGenerationMode.ENABLED)
+            .withManifestGenerationMode(ManifestGenerationMode.ENABLED)
+            .withManifestType(GenerationManifestType.HELM)
+            .withImageName("aiuebbaumnyqu")
+            .withNamespaceArtifactGenerationPropertiesNamespace("deoj")
+            .withImageTag("bckhsmtxpsi")
+            .create();
 
         Assertions.assertEquals("hmdua", response.location());
         Assertions.assertEquals("xqpvfadmw", response.tags().get("rcrgvx"));

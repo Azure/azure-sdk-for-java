@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Docker container settings. */
 @Fluent
 public final class ContainerSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ContainerSettings.class);
 
     /*
      * Information about docker image and docker registry to download the
@@ -77,10 +78,8 @@ public final class ContainerSettings {
      */
     public void validate() {
         if (imageSourceRegistry() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property imageSourceRegistry in model ContainerSettings"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property imageSourceRegistry in model ContainerSettings"));
         } else {
             imageSourceRegistry().validate();
         }

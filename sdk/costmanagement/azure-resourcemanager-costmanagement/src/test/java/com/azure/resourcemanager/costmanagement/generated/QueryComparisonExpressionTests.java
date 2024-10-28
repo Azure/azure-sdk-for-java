@@ -13,10 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryComparisonExpressionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryComparisonExpression model =
-            BinaryData
-                .fromString("{\"name\":\"cewiipfpub\",\"operator\":\"In\",\"values\":[\"wwiftohqkvpuv\",\"sgplsakn\"]}")
-                .toObject(QueryComparisonExpression.class);
+        QueryComparisonExpression model = BinaryData
+            .fromString("{\"name\":\"cewiipfpub\",\"operator\":\"In\",\"values\":[\"wwiftohqkvpuv\",\"sgplsakn\"]}")
+            .toObject(QueryComparisonExpression.class);
         Assertions.assertEquals("cewiipfpub", model.name());
         Assertions.assertEquals(QueryOperatorType.IN, model.operator());
         Assertions.assertEquals("wwiftohqkvpuv", model.values().get(0));
@@ -24,11 +23,9 @@ public final class QueryComparisonExpressionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryComparisonExpression model =
-            new QueryComparisonExpression()
-                .withName("cewiipfpub")
-                .withOperator(QueryOperatorType.IN)
-                .withValues(Arrays.asList("wwiftohqkvpuv", "sgplsakn"));
+        QueryComparisonExpression model = new QueryComparisonExpression().withName("cewiipfpub")
+            .withOperator(QueryOperatorType.IN)
+            .withValues(Arrays.asList("wwiftohqkvpuv", "sgplsakn"));
         model = BinaryData.fromObject(model).toObject(QueryComparisonExpression.class);
         Assertions.assertEquals("cewiipfpub", model.name());
         Assertions.assertEquals(QueryOperatorType.IN, model.operator());

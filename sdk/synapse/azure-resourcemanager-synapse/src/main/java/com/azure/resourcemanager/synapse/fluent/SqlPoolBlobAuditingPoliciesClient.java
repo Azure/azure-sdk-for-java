@@ -28,8 +28,8 @@ public interface SqlPoolBlobAuditingPoliciesClient {
      * @return a SQL pool's blob auditing policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlPoolBlobAuditingPolicyInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    Response<SqlPoolBlobAuditingPolicyInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context);
 
     /**
      * Get a SQL pool's blob auditing policy
@@ -63,12 +63,8 @@ public interface SqlPoolBlobAuditingPoliciesClient {
      * @return a Sql pool blob auditing policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlPoolBlobAuditingPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SqlPoolBlobAuditingPolicyInner parameters,
-        Context context);
+    Response<SqlPoolBlobAuditingPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, SqlPoolBlobAuditingPolicyInner parameters, Context context);
 
     /**
      * Creates or updates a SQL pool's blob auditing policy
@@ -85,8 +81,8 @@ public interface SqlPoolBlobAuditingPoliciesClient {
      * @return a Sql pool blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolBlobAuditingPolicyInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolBlobAuditingPolicyInner parameters);
+    SqlPoolBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SqlPoolBlobAuditingPolicyInner parameters);
 
     /**
      * Lists auditing settings of a Sql pool.
@@ -100,8 +96,8 @@ public interface SqlPoolBlobAuditingPoliciesClient {
      * @return a list of Sql pool auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlPoolBlobAuditingPolicyInner> listBySqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName);
+    PagedIterable<SqlPoolBlobAuditingPolicyInner> listBySqlPool(String resourceGroupName, String workspaceName,
+        String sqlPoolName);
 
     /**
      * Lists auditing settings of a Sql pool.
@@ -116,6 +112,6 @@ public interface SqlPoolBlobAuditingPoliciesClient {
      * @return a list of Sql pool auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlPoolBlobAuditingPolicyInner> listBySqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<SqlPoolBlobAuditingPolicyInner> listBySqlPool(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context);
 }

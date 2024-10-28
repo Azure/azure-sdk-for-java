@@ -74,10 +74,8 @@ public final class L2NetworkAttachmentConfiguration {
      */
     public void validate() {
         if (networkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkId in model L2NetworkAttachmentConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkId in model L2NetworkAttachmentConfiguration"));
         }
     }
 

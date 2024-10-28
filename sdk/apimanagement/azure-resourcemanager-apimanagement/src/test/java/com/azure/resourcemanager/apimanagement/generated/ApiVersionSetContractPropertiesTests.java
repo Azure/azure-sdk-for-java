@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiVersionSetContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiVersionSetContractProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"guqigijiitns\",\"versioningScheme\":\"Segment\",\"description\":\"zdesygr\",\"versionQueryName\":\"waiufanra\",\"versionHeaderName\":\"fueqfrojs\"}")
-                .toObject(ApiVersionSetContractProperties.class);
+        ApiVersionSetContractProperties model = BinaryData.fromString(
+            "{\"displayName\":\"guqigijiitns\",\"versioningScheme\":\"Segment\",\"description\":\"zdesygr\",\"versionQueryName\":\"waiufanra\",\"versionHeaderName\":\"fueqfrojs\"}")
+            .toObject(ApiVersionSetContractProperties.class);
         Assertions.assertEquals("zdesygr", model.description());
         Assertions.assertEquals("waiufanra", model.versionQueryName());
         Assertions.assertEquals("fueqfrojs", model.versionHeaderName());
@@ -26,13 +24,11 @@ public final class ApiVersionSetContractPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiVersionSetContractProperties model =
-            new ApiVersionSetContractProperties()
-                .withDescription("zdesygr")
-                .withVersionQueryName("waiufanra")
-                .withVersionHeaderName("fueqfrojs")
-                .withDisplayName("guqigijiitns")
-                .withVersioningScheme(VersioningScheme.SEGMENT);
+        ApiVersionSetContractProperties model = new ApiVersionSetContractProperties().withDescription("zdesygr")
+            .withVersionQueryName("waiufanra")
+            .withVersionHeaderName("fueqfrojs")
+            .withDisplayName("guqigijiitns")
+            .withVersioningScheme(VersioningScheme.SEGMENT);
         model = BinaryData.fromObject(model).toObject(ApiVersionSetContractProperties.class);
         Assertions.assertEquals("zdesygr", model.description());
         Assertions.assertEquals("waiufanra", model.versionQueryName());

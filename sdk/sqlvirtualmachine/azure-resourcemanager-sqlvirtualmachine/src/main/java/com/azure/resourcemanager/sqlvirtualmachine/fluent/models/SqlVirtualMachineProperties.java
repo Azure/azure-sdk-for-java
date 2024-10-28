@@ -388,8 +388,8 @@ public final class SqlVirtualMachineProperties {
      * @param keyVaultCredentialSettings the keyVaultCredentialSettings value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
-    public SqlVirtualMachineProperties withKeyVaultCredentialSettings(
-        KeyVaultCredentialSettings keyVaultCredentialSettings) {
+    public SqlVirtualMachineProperties
+        withKeyVaultCredentialSettings(KeyVaultCredentialSettings keyVaultCredentialSettings) {
         this.keyVaultCredentialSettings = keyVaultCredentialSettings;
         return this;
     }
@@ -430,8 +430,8 @@ public final class SqlVirtualMachineProperties {
      * @param storageConfigurationSettings the storageConfigurationSettings value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
-    public SqlVirtualMachineProperties withStorageConfigurationSettings(
-        StorageConfigurationSettings storageConfigurationSettings) {
+    public SqlVirtualMachineProperties
+        withStorageConfigurationSettings(StorageConfigurationSettings storageConfigurationSettings) {
         this.storageConfigurationSettings = storageConfigurationSettings;
         return this;
     }

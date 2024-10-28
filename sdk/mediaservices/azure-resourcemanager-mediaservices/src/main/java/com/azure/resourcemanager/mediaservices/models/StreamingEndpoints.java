@@ -53,8 +53,8 @@ public interface StreamingEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a streaming endpoint along with {@link Response}.
      */
-    Response<StreamingEndpoint> getWithResponse(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context);
+    Response<StreamingEndpoint> getWithResponse(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context);
 
     /**
      * Get StreamingEndpoint
@@ -114,8 +114,8 @@ public interface StreamingEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<StreamingEndpointSkuInfoListResult> skusWithResponse(
-        String resourceGroupName, String accountName, String streamingEndpointName, Context context);
+    Response<StreamingEndpointSkuInfoListResult> skusWithResponse(String resourceGroupName, String accountName,
+        String streamingEndpointName, Context context);
 
     /**
      * List StreamingEndpoint skus
@@ -203,10 +203,7 @@ public interface StreamingEndpoints {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void scale(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
+    void scale(String resourceGroupName, String accountName, String streamingEndpointName,
         StreamingEntityScaleUnit parameters);
 
     /**
@@ -223,12 +220,8 @@ public interface StreamingEndpoints {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void scale(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        StreamingEntityScaleUnit parameters,
-        Context context);
+    void scale(String resourceGroupName, String accountName, String streamingEndpointName,
+        StreamingEntityScaleUnit parameters, Context context);
 
     /**
      * Get operation status.
@@ -244,8 +237,8 @@ public interface StreamingEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a streaming endpoint operation status along with {@link Response}.
      */
-    Response<AsyncOperationResult> asyncOperationWithResponse(
-        String resourceGroupName, String accountName, String operationId, Context context);
+    Response<AsyncOperationResult> asyncOperationWithResponse(String resourceGroupName, String accountName,
+        String operationId, Context context);
 
     /**
      * Get operation status.
@@ -277,12 +270,8 @@ public interface StreamingEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a streaming endpoint operation status along with {@link Response}.
      */
-    Response<StreamingEndpoint> operationLocationWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String streamingEndpointName,
-        String operationId,
-        Context context);
+    Response<StreamingEndpoint> operationLocationWithResponse(String resourceGroupName, String accountName,
+        String streamingEndpointName, String operationId, Context context);
 
     /**
      * Get operation status.
@@ -298,8 +287,8 @@ public interface StreamingEndpoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a streaming endpoint operation status.
      */
-    StreamingEndpoint operationLocation(
-        String resourceGroupName, String accountName, String streamingEndpointName, String operationId);
+    StreamingEndpoint operationLocation(String resourceGroupName, String accountName, String streamingEndpointName,
+        String operationId);
 
     /**
      * Get StreamingEndpoint

@@ -44,12 +44,14 @@ public final class ConfigurationsGetNodeWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure().withHttpClient(httpClient)
+        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ServerConfiguration response = manager.configurations()
-            .getNodeWithResponse("nkww", "pp", "flcxoga", com.azure.core.util.Context.NONE).getValue();
+            .getNodeWithResponse("nkww", "pp", "flcxoga", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("onz", response.value());
     }

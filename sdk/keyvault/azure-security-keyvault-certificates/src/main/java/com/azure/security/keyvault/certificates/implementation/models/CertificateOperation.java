@@ -13,7 +13,9 @@ import com.azure.json.JsonWriter;
 import com.azure.security.keyvault.certificates.models.CertificateOperationError;
 import java.io.IOException;
 
-/** A certificate operation is returned in case of asynchronous requests. */
+/**
+ * A certificate operation is returned in case of asynchronous requests.
+ */
 @Fluent
 public final class CertificateOperation implements JsonSerializable<CertificateOperation> {
     /*
@@ -61,12 +63,15 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      */
     private String requestId;
 
-    /** Creates an instance of CertificateOperation class. */
-    public CertificateOperation() {}
+    /**
+     * Creates an instance of CertificateOperation class.
+     */
+    public CertificateOperation() {
+    }
 
     /**
      * Get the id property: The certificate id.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -75,7 +80,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Get the issuerParameters property: Parameters for the issuer of the X509 component of a certificate.
-     *
+     * 
      * @return the issuerParameters value.
      */
     public IssuerParameters getIssuerParameters() {
@@ -84,7 +89,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Set the issuerParameters property: Parameters for the issuer of the X509 component of a certificate.
-     *
+     * 
      * @param issuerParameters the issuerParameters value to set.
      * @return the CertificateOperation object itself.
      */
@@ -95,7 +100,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Get the csr property: The certificate signing request (CSR) that is being used in the certificate operation.
-     *
+     * 
      * @return the csr value.
      */
     public byte[] getCsr() {
@@ -104,7 +109,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Set the csr property: The certificate signing request (CSR) that is being used in the certificate operation.
-     *
+     * 
      * @param csr the csr value to set.
      * @return the CertificateOperation object itself.
      */
@@ -115,7 +120,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Get the cancellationRequested property: Indicates if cancellation was requested on the certificate operation.
-     *
+     * 
      * @return the cancellationRequested value.
      */
     public Boolean isCancellationRequested() {
@@ -124,7 +129,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Set the cancellationRequested property: Indicates if cancellation was requested on the certificate operation.
-     *
+     * 
      * @param cancellationRequested the cancellationRequested value to set.
      * @return the CertificateOperation object itself.
      */
@@ -135,7 +140,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Get the status property: Status of the certificate operation.
-     *
+     * 
      * @return the status value.
      */
     public String getStatus() {
@@ -144,7 +149,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Set the status property: Status of the certificate operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the CertificateOperation object itself.
      */
@@ -155,7 +160,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Get the statusDetails property: The status details of the certificate operation.
-     *
+     * 
      * @return the statusDetails value.
      */
     public String getStatusDetails() {
@@ -164,7 +169,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Set the statusDetails property: The status details of the certificate operation.
-     *
+     * 
      * @param statusDetails the statusDetails value to set.
      * @return the CertificateOperation object itself.
      */
@@ -175,7 +180,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Get the error property: Error encountered, if any, during the certificate operation.
-     *
+     * 
      * @return the error value.
      */
     public CertificateOperationError getError() {
@@ -184,7 +189,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Set the error property: Error encountered, if any, during the certificate operation.
-     *
+     * 
      * @param error the error value to set.
      * @return the CertificateOperation object itself.
      */
@@ -195,7 +200,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Get the target property: Location which contains the result of the certificate operation.
-     *
+     * 
      * @return the target value.
      */
     public String getTarget() {
@@ -204,7 +209,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Set the target property: Location which contains the result of the certificate operation.
-     *
+     * 
      * @param target the target value to set.
      * @return the CertificateOperation object itself.
      */
@@ -215,7 +220,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Get the requestId property: Identifier for the certificate operation.
-     *
+     * 
      * @return the requestId value.
      */
     public String getRequestId() {
@@ -224,7 +229,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Set the requestId property: Identifier for the certificate operation.
-     *
+     * 
      * @param requestId the requestId value to set.
      * @return the CertificateOperation object itself.
      */
@@ -233,6 +238,9 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -249,45 +257,43 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
 
     /**
      * Reads an instance of CertificateOperation from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of CertificateOperation if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CertificateOperation.
      */
     public static CertificateOperation fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CertificateOperation deserializedCertificateOperation = new CertificateOperation();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CertificateOperation deserializedCertificateOperation = new CertificateOperation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedCertificateOperation.id = reader.getString();
-                        } else if ("issuer".equals(fieldName)) {
-                            deserializedCertificateOperation.issuerParameters = IssuerParameters.fromJson(reader);
-                        } else if ("csr".equals(fieldName)) {
-                            deserializedCertificateOperation.csr = reader.getBinary();
-                        } else if ("cancellation_requested".equals(fieldName)) {
-                            deserializedCertificateOperation.cancellationRequested =
-                                    reader.getNullable(JsonReader::getBoolean);
-                        } else if ("status".equals(fieldName)) {
-                            deserializedCertificateOperation.status = reader.getString();
-                        } else if ("status_details".equals(fieldName)) {
-                            deserializedCertificateOperation.statusDetails = reader.getString();
-                        } else if ("error".equals(fieldName)) {
-                            deserializedCertificateOperation.error = CertificateOperationError.fromJson(reader);
-                        } else if ("target".equals(fieldName)) {
-                            deserializedCertificateOperation.target = reader.getString();
-                        } else if ("request_id".equals(fieldName)) {
-                            deserializedCertificateOperation.requestId = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("id".equals(fieldName)) {
+                    deserializedCertificateOperation.id = reader.getString();
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedCertificateOperation.issuerParameters = IssuerParameters.fromJson(reader);
+                } else if ("csr".equals(fieldName)) {
+                    deserializedCertificateOperation.csr = reader.getBinary();
+                } else if ("cancellation_requested".equals(fieldName)) {
+                    deserializedCertificateOperation.cancellationRequested = reader.getNullable(JsonReader::getBoolean);
+                } else if ("status".equals(fieldName)) {
+                    deserializedCertificateOperation.status = reader.getString();
+                } else if ("status_details".equals(fieldName)) {
+                    deserializedCertificateOperation.statusDetails = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedCertificateOperation.error = CertificateOperationError.fromJson(reader);
+                } else if ("target".equals(fieldName)) {
+                    deserializedCertificateOperation.target = reader.getString();
+                } else if ("request_id".equals(fieldName)) {
+                    deserializedCertificateOperation.requestId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCertificateOperation;
-                });
+            return deserializedCertificateOperation;
+        });
     }
 }

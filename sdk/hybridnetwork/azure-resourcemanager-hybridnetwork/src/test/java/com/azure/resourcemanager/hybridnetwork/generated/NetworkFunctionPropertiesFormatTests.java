@@ -27,7 +27,9 @@ public final class NetworkFunctionPropertiesFormatTests {
     public void testSerialize() throws Exception {
         NetworkFunctionPropertiesFormat model = new NetworkFunctionPropertiesFormat()
             .withNetworkFunctionDefinitionVersionResourceReference(new DeploymentResourceIdReference())
-            .withNfviType(NfviType.AZURE_OPERATOR_NEXUS).withNfviId("rlovmclwhijcoej").withAllowSoftwareUpdate(true)
+            .withNfviType(NfviType.AZURE_OPERATOR_NEXUS)
+            .withNfviId("rlovmclwhijcoej")
+            .withAllowSoftwareUpdate(true)
             .withRoleOverrideValues(Arrays.asList("qsqsy", "bkbfkgukdkex", "ppofmxaxcfjpgdd"));
         model = BinaryData.fromObject(model).toObject(NetworkFunctionPropertiesFormat.class);
         Assertions.assertEquals(NfviType.AZURE_OPERATOR_NEXUS, model.nfviType());

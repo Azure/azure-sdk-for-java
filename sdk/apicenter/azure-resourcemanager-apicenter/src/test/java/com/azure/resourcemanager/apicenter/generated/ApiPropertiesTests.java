@@ -38,8 +38,10 @@ public final class ApiPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiProperties model = new ApiProperties().withTitle("kthfui").withKind(ApiKind.REST)
-            .withDescription("dsfcpkvxodpuoz").withSummary("zydagfuaxbezyiuo")
+        ApiProperties model = new ApiProperties().withTitle("kthfui")
+            .withKind(ApiKind.REST)
+            .withDescription("dsfcpkvxodpuoz")
+            .withSummary("zydagfuaxbezyiuo")
             .withTermsOfService(new TermsOfService().withUrl("hrdxwzywqsmbs"))
             .withExternalDocumentation(Arrays.asList(
                 new ExternalDocumentation().withTitle("imoryocfsfksym").withDescription("ys").withUrl("kiiuxhqyudxor")))

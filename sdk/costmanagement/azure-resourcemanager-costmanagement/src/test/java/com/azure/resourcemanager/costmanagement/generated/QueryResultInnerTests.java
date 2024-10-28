@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"nextLink\":\"synljphuopxodl\",\"columns\":[{\"name\":\"torzih\",\"type\":\"osjswsr\"}],\"rows\":[[\"datazrpzb\",\"datahckqqzqioxiy\",\"datauiizynke\",\"datayatrwy\"],[\"datamibzyhwitsmypyyn\"],[\"datadpumnzgmw\"],[\"datamabiknsorgjhxb\",\"datadtlwwrlkd\"]]},\"sku\":\"ncvokotllxdyhg\",\"eTag\":\"ocogj\",\"location\":\"tdtbnnhadooc\",\"tags\":{\"amqgxqquezikyw\":\"cikhnv\",\"lla\":\"gxk\",\"z\":\"melwuipiccjz\",\"vvcnayr\":\"v\"},\"id\":\"yrnxxmueedn\",\"name\":\"rdvstkwqqtch\",\"type\":\"alm\"}")
-                .toObject(QueryResultInner.class);
+        QueryResultInner model = BinaryData.fromString(
+            "{\"properties\":{\"nextLink\":\"synljphuopxodl\",\"columns\":[{\"name\":\"torzih\",\"type\":\"osjswsr\"}],\"rows\":[[\"datazrpzb\",\"datahckqqzqioxiy\",\"datauiizynke\",\"datayatrwy\"],[\"datamibzyhwitsmypyyn\"],[\"datadpumnzgmw\"],[\"datamabiknsorgjhxb\",\"datadtlwwrlkd\"]]},\"sku\":\"ncvokotllxdyhg\",\"eTag\":\"ocogj\",\"location\":\"tdtbnnhadooc\",\"tags\":{\"amqgxqquezikyw\":\"cikhnv\",\"lla\":\"gxk\",\"z\":\"melwuipiccjz\",\"vvcnayr\":\"v\"},\"id\":\"yrnxxmueedn\",\"name\":\"rdvstkwqqtch\",\"type\":\"alm\"}")
+            .toObject(QueryResultInner.class);
         Assertions.assertEquals("tdtbnnhadooc", model.location());
         Assertions.assertEquals("cikhnv", model.tags().get("amqgxqquezikyw"));
         Assertions.assertEquals("synljphuopxodl", model.nextLink());
@@ -29,19 +27,13 @@ public final class QueryResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryResultInner model =
-            new QueryResultInner()
-                .withLocation("tdtbnnhadooc")
-                .withTags(mapOf("amqgxqquezikyw", "cikhnv", "lla", "gxk", "z", "melwuipiccjz", "vvcnayr", "v"))
-                .withNextLink("synljphuopxodl")
-                .withColumns(Arrays.asList(new QueryColumn().withName("torzih").withType("osjswsr")))
-                .withRows(
-                    Arrays
-                        .asList(
-                            Arrays.asList("datazrpzb", "datahckqqzqioxiy", "datauiizynke", "datayatrwy"),
-                            Arrays.asList("datamibzyhwitsmypyyn"),
-                            Arrays.asList("datadpumnzgmw"),
-                            Arrays.asList("datamabiknsorgjhxb", "datadtlwwrlkd")));
+        QueryResultInner model = new QueryResultInner().withLocation("tdtbnnhadooc")
+            .withTags(mapOf("amqgxqquezikyw", "cikhnv", "lla", "gxk", "z", "melwuipiccjz", "vvcnayr", "v"))
+            .withNextLink("synljphuopxodl")
+            .withColumns(Arrays.asList(new QueryColumn().withName("torzih").withType("osjswsr")))
+            .withRows(Arrays.asList(Arrays.asList("datazrpzb", "datahckqqzqioxiy", "datauiizynke", "datayatrwy"),
+                Arrays.asList("datamibzyhwitsmypyyn"), Arrays.asList("datadpumnzgmw"),
+                Arrays.asList("datamabiknsorgjhxb", "datadtlwwrlkd")));
         model = BinaryData.fromObject(model).toObject(QueryResultInner.class);
         Assertions.assertEquals("tdtbnnhadooc", model.location());
         Assertions.assertEquals("cikhnv", model.tags().get("amqgxqquezikyw"));

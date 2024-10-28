@@ -23,8 +23,8 @@ public interface VNetPeerings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the workspace vNet Peering along with {@link Response}.
      */
-    Response<VirtualNetworkPeering> getWithResponse(
-        String resourceGroupName, String workspaceName, String peeringName, Context context);
+    Response<VirtualNetworkPeering> getWithResponse(String resourceGroupName, String workspaceName, String peeringName,
+        Context context);
 
     /**
      * Gets the workspace vNet Peering.
@@ -92,8 +92,8 @@ public interface VNetPeerings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return gets all virtual network peerings under a workspace as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<VirtualNetworkPeering> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<VirtualNetworkPeering> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Gets the workspace vNet Peering.

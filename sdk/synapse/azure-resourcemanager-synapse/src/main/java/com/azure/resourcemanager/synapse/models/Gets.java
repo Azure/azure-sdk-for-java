@@ -24,12 +24,8 @@ public interface Gets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration runtime start operation status along with {@link Response}.
      */
-    Response<IntegrationRuntimeOperationStatus> integrationRuntimeStartWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId,
-        Context context);
+    Response<IntegrationRuntimeOperationStatus> integrationRuntimeStartWithResponse(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, String integrationRuntimeOperationId, Context context);
 
     /**
      * Get integration runtime start operation status
@@ -45,11 +41,8 @@ public interface Gets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration runtime start operation status.
      */
-    IntegrationRuntimeOperationStatus integrationRuntimeStart(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId);
+    IntegrationRuntimeOperationStatus integrationRuntimeStart(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String integrationRuntimeOperationId);
 
     /**
      * Get integration runtime stop operation status
@@ -66,12 +59,8 @@ public interface Gets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration runtime stop operation status along with {@link Response}.
      */
-    Response<IntegrationRuntimeStopOperationStatus> integrationRuntimeStopWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId,
-        Context context);
+    Response<IntegrationRuntimeStopOperationStatus> integrationRuntimeStopWithResponse(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, String integrationRuntimeOperationId, Context context);
 
     /**
      * Get integration runtime stop operation status
@@ -87,11 +76,8 @@ public interface Gets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration runtime stop operation status.
      */
-    IntegrationRuntimeStopOperationStatus integrationRuntimeStop(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId);
+    IntegrationRuntimeStopOperationStatus integrationRuntimeStop(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String integrationRuntimeOperationId);
 
     /**
      * Get integration runtime enable interactivequery operation status
@@ -109,11 +95,8 @@ public interface Gets {
      * @return an integration runtime enable interactivequery operation status along with {@link Response}.
      */
     Response<IntegrationRuntimeEnableinteractivequery> integrationRuntimeEnableInteractivequeryWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId,
-        Context context);
+        String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        String integrationRuntimeOperationId, Context context);
 
     /**
      * Get integration runtime enable interactivequery operation status
@@ -129,9 +112,6 @@ public interface Gets {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration runtime enable interactivequery operation status.
      */
-    IntegrationRuntimeEnableinteractivequery integrationRuntimeEnableInteractivequery(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId);
+    IntegrationRuntimeEnableinteractivequery integrationRuntimeEnableInteractivequery(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, String integrationRuntimeOperationId);
 }

@@ -37,59 +37,46 @@ public final class MyWorkbooksCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"kind\":\"user\",\"properties\":{\"displayName\":\"urrxxgewpktv\",\"serializedData\":\"ylkmqp\",\"version\":\"yhlfb\",\"timeModified\":\"wgcloxoebqinji\",\"category\":\"nwjfu\",\"tags\":[\"afcba\",\"hpzpo\"],\"userId\":\"iyjwpfilkmkkho\",\"sourceId\":\"dndviauogp\",\"storageUri\":\"artvti\"},\"identity\":{\"userAssignedIdentities\":{\"principalId\":\"chnmna\",\"tenantId\":\"nxhkxjqi\"},\"type\":\"None\"},\"id\":\"llndnpd\",\"name\":\"rpqaf\",\"type\":\"fugsnnfhyetefy\",\"etag\":{\"vmfqhppubo\":\"boi\"},\"location\":\"sepdfgk\",\"tags\":{\"c\":\"herngb\",\"obkauxofsh\":\"uahokq\",\"whslwkoj\":\"phwpnulaiywzej\"}}";
+        String responseStr
+            = "{\"kind\":\"user\",\"properties\":{\"displayName\":\"urrxxgewpktv\",\"serializedData\":\"ylkmqp\",\"version\":\"yhlfb\",\"timeModified\":\"wgcloxoebqinji\",\"category\":\"nwjfu\",\"tags\":[\"afcba\",\"hpzpo\"],\"userId\":\"iyjwpfilkmkkho\",\"sourceId\":\"dndviauogp\",\"storageUri\":\"artvti\"},\"identity\":{\"userAssignedIdentities\":{\"principalId\":\"chnmna\",\"tenantId\":\"nxhkxjqi\"},\"type\":\"None\"},\"id\":\"llndnpd\",\"name\":\"rpqaf\",\"type\":\"fugsnnfhyetefy\",\"etag\":{\"vmfqhppubo\":\"boi\"},\"location\":\"sepdfgk\",\"tags\":{\"c\":\"herngb\",\"obkauxofsh\":\"uahokq\",\"whslwkoj\":\"phwpnulaiywzej\"}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApplicationInsightsManager manager =
-            ApplicationInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        MyWorkbook response =
-            manager
-                .myWorkbooks()
-                .define("j")
-                .withRegion("qwm")
-                .withExistingResourceGroup("xtiv")
-                .withTags(mapOf("ynpdkvgfab", "njmxmcuqudtcvcl", "uzphdugnei", "iyji"))
-                .withIdentity(
-                    new MyWorkbookManagedIdentity()
-                        .withUserAssignedIdentities(new MyWorkbookUserAssignedIdentities())
-                        .withType(MyWorkbookManagedIdentityType.NONE))
-                .withName("gox")
-                .withType("jiuqhibtozi")
-                .withEtag(mapOf("nykzcugswvxwlm", "ucfotangcf"))
-                .withKind(Kind.SHARED)
-                .withDisplayName("ibg")
-                .withSerializedData("jxgpnrhgovfg")
-                .withVersion("kqmhhaowjr")
-                .withCategory("fvxcnqmxqpswo")
-                .withTagsPropertiesTags(Arrays.asList("khlg", "dhbemzqkzszu", "iwtglxxhljfpg"))
-                .withSourceId("pqcbfrmbodthsq")
-                .withStorageUri("vriibakclacjfr")
-                .withSourceIdParameter("qw")
-                .create();
+        MyWorkbook response = manager.myWorkbooks()
+            .define("j")
+            .withRegion("qwm")
+            .withExistingResourceGroup("xtiv")
+            .withTags(mapOf("ynpdkvgfab", "njmxmcuqudtcvcl", "uzphdugnei", "iyji"))
+            .withIdentity(
+                new MyWorkbookManagedIdentity().withUserAssignedIdentities(new MyWorkbookUserAssignedIdentities())
+                    .withType(MyWorkbookManagedIdentityType.NONE))
+            .withName("gox")
+            .withType("jiuqhibtozi")
+            .withEtag(mapOf("nykzcugswvxwlm", "ucfotangcf"))
+            .withKind(Kind.SHARED)
+            .withDisplayName("ibg")
+            .withSerializedData("jxgpnrhgovfg")
+            .withVersion("kqmhhaowjr")
+            .withCategory("fvxcnqmxqpswo")
+            .withTagsPropertiesTags(Arrays.asList("khlg", "dhbemzqkzszu", "iwtglxxhljfpg"))
+            .withSourceId("pqcbfrmbodthsq")
+            .withStorageUri("vriibakclacjfr")
+            .withSourceIdParameter("qw")
+            .create();
 
         Assertions.assertEquals("sepdfgk", response.location());
         Assertions.assertEquals("herngb", response.tags().get("c"));

@@ -727,7 +727,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
         ServiceEndpointPolicyDefinitionInner serviceEndpointPolicyDefinitions) {
         return beginCreateOrUpdateAsync(resourceGroupName, serviceEndpointPolicyName,
             serviceEndpointPolicyDefinitionName, serviceEndpointPolicyDefinitions).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -750,7 +750,7 @@ public final class ServiceEndpointPolicyDefinitionsClientImpl implements Service
         ServiceEndpointPolicyDefinitionInner serviceEndpointPolicyDefinitions, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serviceEndpointPolicyName,
             serviceEndpointPolicyDefinitionName, serviceEndpointPolicyDefinitions, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+                .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

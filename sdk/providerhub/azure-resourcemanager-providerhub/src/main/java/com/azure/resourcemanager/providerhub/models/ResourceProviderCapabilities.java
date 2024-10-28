@@ -101,16 +101,12 @@ public final class ResourceProviderCapabilities {
      */
     public void validate() {
         if (quotaId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property quotaId in model ResourceProviderCapabilities"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property quotaId in model ResourceProviderCapabilities"));
         }
         if (effect() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property effect in model ResourceProviderCapabilities"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property effect in model ResourceProviderCapabilities"));
         }
     }
 

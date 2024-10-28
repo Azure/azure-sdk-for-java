@@ -64,8 +64,8 @@ public interface Accounts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return account details along with {@link Response}.
      */
-    Response<AccountResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<AccountResource> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Returns account resource for a given name.

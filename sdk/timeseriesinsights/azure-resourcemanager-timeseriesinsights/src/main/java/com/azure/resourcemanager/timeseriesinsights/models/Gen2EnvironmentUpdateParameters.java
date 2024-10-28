@@ -61,8 +61,8 @@ public final class Gen2EnvironmentUpdateParameters extends EnvironmentUpdatePara
      * @param storageConfiguration the storageConfiguration value to set.
      * @return the Gen2EnvironmentUpdateParameters object itself.
      */
-    public Gen2EnvironmentUpdateParameters withStorageConfiguration(
-        Gen2StorageConfigurationMutableProperties storageConfiguration) {
+    public Gen2EnvironmentUpdateParameters
+        withStorageConfiguration(Gen2StorageConfigurationMutableProperties storageConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new Gen2EnvironmentMutableProperties();
         }
@@ -87,8 +87,8 @@ public final class Gen2EnvironmentUpdateParameters extends EnvironmentUpdatePara
      * @param warmStoreConfiguration the warmStoreConfiguration value to set.
      * @return the Gen2EnvironmentUpdateParameters object itself.
      */
-    public Gen2EnvironmentUpdateParameters withWarmStoreConfiguration(
-        WarmStoreConfigurationProperties warmStoreConfiguration) {
+    public Gen2EnvironmentUpdateParameters
+        withWarmStoreConfiguration(WarmStoreConfigurationProperties warmStoreConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new Gen2EnvironmentMutableProperties();
         }

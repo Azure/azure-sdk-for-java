@@ -159,11 +159,8 @@ public interface Schedule {
     ScheduleInner innerModel();
 
     /** The entirety of the Schedule definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The Schedule definition stages. */
@@ -206,16 +203,10 @@ public interface Schedule {
          * The stage of the Schedule definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithStatus,
-                DefinitionStages.WithTaskType,
-                DefinitionStages.WithWeeklyRecurrence,
-                DefinitionStages.WithDailyRecurrence,
-                DefinitionStages.WithHourlyRecurrence,
-                DefinitionStages.WithTimeZoneId,
-                DefinitionStages.WithNotificationSettings,
-                DefinitionStages.WithTargetResourceId {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithStatus,
+            DefinitionStages.WithTaskType, DefinitionStages.WithWeeklyRecurrence, DefinitionStages.WithDailyRecurrence,
+            DefinitionStages.WithHourlyRecurrence, DefinitionStages.WithTimeZoneId,
+            DefinitionStages.WithNotificationSettings, DefinitionStages.WithTargetResourceId {
             /**
              * Executes the create request.
              *

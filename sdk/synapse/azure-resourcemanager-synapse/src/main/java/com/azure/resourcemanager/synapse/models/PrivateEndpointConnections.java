@@ -22,8 +22,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection along with {@link Response}.
      */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String workspaceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Gets a private endpoint connection.
@@ -63,8 +63,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    OperationResource delete(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context);
+    OperationResource delete(String resourceGroupName, String workspaceName, String privateEndpointConnectionName,
+        Context context);
 
     /**
      * Lists private endpoint connection in workspace.

@@ -98,17 +98,17 @@ public final class AnswerCallOptions {
         return this;
     }
 
-     /**
-     * Set the operationContext.
-     *
-     * @param operationContext the operationContext to set
-     * @return the AnswerCallOptions object itself.
-     */
+    /**
+    * Set the operationContext.
+    *
+    * @param operationContext the operationContext to set
+    * @return the AnswerCallOptions object itself.
+    */
     public AnswerCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
-    
+
     /**
      * Get the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
      *

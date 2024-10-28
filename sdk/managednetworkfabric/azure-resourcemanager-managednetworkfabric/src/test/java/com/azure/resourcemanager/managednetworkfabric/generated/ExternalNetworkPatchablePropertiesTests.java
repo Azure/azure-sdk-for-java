@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ExternalNetworkPatchablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExternalNetworkPatchableProperties model =
-            BinaryData
-                .fromString(
-                    "{\"importRoutePolicyId\":\"euscplhyv\",\"exportRoutePolicyId\":\"xlyzkxit\",\"importRoutePolicy\":{\"importIpv4RoutePolicyId\":\"ezsvkolrupjov\",\"importIpv6RoutePolicyId\":\"zsayebrazw\"},\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"zbtz\",\"exportIpv6RoutePolicyId\":\"kykipfsdyepfnoc\"}}")
-                .toObject(ExternalNetworkPatchableProperties.class);
+        ExternalNetworkPatchableProperties model = BinaryData.fromString(
+            "{\"importRoutePolicyId\":\"euscplhyv\",\"exportRoutePolicyId\":\"xlyzkxit\",\"importRoutePolicy\":{\"importIpv4RoutePolicyId\":\"ezsvkolrupjov\",\"importIpv6RoutePolicyId\":\"zsayebrazw\"},\"exportRoutePolicy\":{\"exportIpv4RoutePolicyId\":\"zbtz\",\"exportIpv6RoutePolicyId\":\"kykipfsdyepfnoc\"}}")
+            .toObject(ExternalNetworkPatchableProperties.class);
         Assertions.assertEquals("euscplhyv", model.importRoutePolicyId());
         Assertions.assertEquals("xlyzkxit", model.exportRoutePolicyId());
         Assertions.assertEquals("ezsvkolrupjov", model.importRoutePolicy().importIpv4RoutePolicyId());
@@ -28,18 +26,13 @@ public final class ExternalNetworkPatchablePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExternalNetworkPatchableProperties model =
-            new ExternalNetworkPatchableProperties()
-                .withImportRoutePolicyId("euscplhyv")
+        ExternalNetworkPatchableProperties model
+            = new ExternalNetworkPatchableProperties().withImportRoutePolicyId("euscplhyv")
                 .withExportRoutePolicyId("xlyzkxit")
-                .withImportRoutePolicy(
-                    new ImportRoutePolicy()
-                        .withImportIpv4RoutePolicyId("ezsvkolrupjov")
-                        .withImportIpv6RoutePolicyId("zsayebrazw"))
-                .withExportRoutePolicy(
-                    new ExportRoutePolicy()
-                        .withExportIpv4RoutePolicyId("zbtz")
-                        .withExportIpv6RoutePolicyId("kykipfsdyepfnoc"));
+                .withImportRoutePolicy(new ImportRoutePolicy().withImportIpv4RoutePolicyId("ezsvkolrupjov")
+                    .withImportIpv6RoutePolicyId("zsayebrazw"))
+                .withExportRoutePolicy(new ExportRoutePolicy().withExportIpv4RoutePolicyId("zbtz")
+                    .withExportIpv6RoutePolicyId("kykipfsdyepfnoc"));
         model = BinaryData.fromObject(model).toObject(ExternalNetworkPatchableProperties.class);
         Assertions.assertEquals("euscplhyv", model.importRoutePolicyId());
         Assertions.assertEquals("xlyzkxit", model.exportRoutePolicyId());

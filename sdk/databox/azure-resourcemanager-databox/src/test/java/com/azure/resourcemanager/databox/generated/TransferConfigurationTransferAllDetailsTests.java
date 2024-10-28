@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TransferConfigurationTransferAllDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TransferConfigurationTransferAllDetails model =
-            BinaryData
-                .fromString(
-                    "{\"include\":{\"dataAccountType\":\"ManagedDisk\",\"transferAllBlobs\":false,\"transferAllFiles\":false}}")
-                .toObject(TransferConfigurationTransferAllDetails.class);
+        TransferConfigurationTransferAllDetails model = BinaryData.fromString(
+            "{\"include\":{\"dataAccountType\":\"ManagedDisk\",\"transferAllBlobs\":false,\"transferAllFiles\":false}}")
+            .toObject(TransferConfigurationTransferAllDetails.class);
         Assertions.assertEquals(DataAccountType.MANAGED_DISK, model.include().dataAccountType());
         Assertions.assertEquals(false, model.include().transferAllBlobs());
         Assertions.assertEquals(false, model.include().transferAllFiles());
@@ -25,13 +23,10 @@ public final class TransferConfigurationTransferAllDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransferConfigurationTransferAllDetails model =
-            new TransferConfigurationTransferAllDetails()
-                .withInclude(
-                    new TransferAllDetails()
-                        .withDataAccountType(DataAccountType.MANAGED_DISK)
-                        .withTransferAllBlobs(false)
-                        .withTransferAllFiles(false));
+        TransferConfigurationTransferAllDetails model = new TransferConfigurationTransferAllDetails()
+            .withInclude(new TransferAllDetails().withDataAccountType(DataAccountType.MANAGED_DISK)
+                .withTransferAllBlobs(false)
+                .withTransferAllFiles(false));
         model = BinaryData.fromObject(model).toObject(TransferConfigurationTransferAllDetails.class);
         Assertions.assertEquals(DataAccountType.MANAGED_DISK, model.include().dataAccountType());
         Assertions.assertEquals(false, model.include().transferAllBlobs());

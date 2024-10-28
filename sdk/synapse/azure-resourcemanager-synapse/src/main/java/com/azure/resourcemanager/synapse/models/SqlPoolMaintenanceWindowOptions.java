@@ -24,12 +24,8 @@ public interface SqlPoolMaintenanceWindowOptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of SQL pool's available maintenance windows along with {@link Response}.
      */
-    Response<MaintenanceWindowOptions> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowOptionsName,
-        Context context);
+    Response<MaintenanceWindowOptions> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String maintenanceWindowOptionsName, Context context);
 
     /**
      * SQL pool's available maintenance windows.
@@ -45,6 +41,6 @@ public interface SqlPoolMaintenanceWindowOptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of SQL pool's available maintenance windows.
      */
-    MaintenanceWindowOptions get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowOptionsName);
+    MaintenanceWindowOptions get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String maintenanceWindowOptionsName);
 }

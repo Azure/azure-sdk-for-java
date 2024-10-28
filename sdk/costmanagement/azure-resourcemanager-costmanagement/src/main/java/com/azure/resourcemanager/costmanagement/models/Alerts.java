@@ -176,8 +176,8 @@ public interface Alerts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of alerts along with {@link Response}.
      */
-    Response<AlertsResult> listExternalWithResponse(
-        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, Context context);
+    Response<AlertsResult> listExternalWithResponse(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId, Context context);
 
     /**
      * Lists the Alerts for external cloud provider type defined.

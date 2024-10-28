@@ -87,14 +87,16 @@ public final class ArtifactStoreImpl implements ArtifactStore, ArtifactStore.Def
     }
 
     public ArtifactStore create() {
-        this.innerObject = serviceManager.serviceClient().getArtifactStores().createOrUpdate(resourceGroupName,
-            publisherName, artifactStoreName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactStores()
+            .createOrUpdate(resourceGroupName, publisherName, artifactStoreName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ArtifactStore create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getArtifactStores().createOrUpdate(resourceGroupName,
-            publisherName, artifactStoreName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactStores()
+            .createOrUpdate(resourceGroupName, publisherName, artifactStoreName, this.innerModel(), context);
         return this;
     }
 
@@ -110,14 +112,16 @@ public final class ArtifactStoreImpl implements ArtifactStore, ArtifactStore.Def
     }
 
     public ArtifactStore apply() {
-        this.innerObject = serviceManager.serviceClient().getArtifactStores()
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactStores()
             .updateWithResponse(resourceGroupName, publisherName, artifactStoreName, updateParameters, Context.NONE)
             .getValue();
         return this;
     }
 
     public ArtifactStore apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getArtifactStores()
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactStores()
             .updateWithResponse(resourceGroupName, publisherName, artifactStoreName, updateParameters, context)
             .getValue();
         return this;
@@ -133,14 +137,18 @@ public final class ArtifactStoreImpl implements ArtifactStore, ArtifactStore.Def
     }
 
     public ArtifactStore refresh() {
-        this.innerObject = serviceManager.serviceClient().getArtifactStores()
-            .getWithResponse(resourceGroupName, publisherName, artifactStoreName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactStores()
+            .getWithResponse(resourceGroupName, publisherName, artifactStoreName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ArtifactStore refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getArtifactStores()
-            .getWithResponse(resourceGroupName, publisherName, artifactStoreName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactStores()
+            .getWithResponse(resourceGroupName, publisherName, artifactStoreName, context)
+            .getValue();
         return this;
     }
 

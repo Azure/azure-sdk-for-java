@@ -46,8 +46,8 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of define the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(
-        String resourceGroupName, String clusterName, ClusterInner body, Context context);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreate(String resourceGroupName, String clusterName,
+        ClusterInner body, Context context);
 
     /**
      * Implements cluster PUT method.
@@ -95,8 +95,8 @@ public interface ClustersClient {
      * @return define the cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterName, Context context);
+    Response<ClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Gets a cluster.
@@ -128,8 +128,8 @@ public interface ClustersClient {
      * @return define the cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> updateWithResponse(
-        String resourceGroupName, String clusterName, ResourcePatch body, Context context);
+    Response<ClusterInner> updateWithResponse(String resourceGroupName, String clusterName, ResourcePatch body,
+        Context context);
 
     /**
      * Updates a cluster.
@@ -176,8 +176,8 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, Boolean force, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, Boolean force,
+        Context context);
 
     /**
      * Deletes an cluster.

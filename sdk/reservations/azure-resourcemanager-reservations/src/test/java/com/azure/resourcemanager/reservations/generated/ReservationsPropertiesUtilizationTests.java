@@ -12,19 +12,15 @@ import java.util.Arrays;
 public final class ReservationsPropertiesUtilizationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReservationsPropertiesUtilization model =
-            BinaryData
-                .fromString(
-                    "{\"trend\":\"hmenevfyexfwhybc\",\"aggregates\":[{\"grain\":53.581215,\"grainUnit\":\"c\",\"value\":88.85056,\"valueUnit\":\"nnaamdectehfiqsc\"},{\"grain\":55.374454,\"grainUnit\":\"vhezrkgqhcj\",\"value\":92.9146,\"valueUnit\":\"vgmkqsleyyvxyqjp\"}]}")
-                .toObject(ReservationsPropertiesUtilization.class);
+        ReservationsPropertiesUtilization model = BinaryData.fromString(
+            "{\"trend\":\"hmenevfyexfwhybc\",\"aggregates\":[{\"grain\":53.581215,\"grainUnit\":\"c\",\"value\":88.85056,\"valueUnit\":\"nnaamdectehfiqsc\"},{\"grain\":55.374454,\"grainUnit\":\"vhezrkgqhcj\",\"value\":92.9146,\"valueUnit\":\"vgmkqsleyyvxyqjp\"}]}")
+            .toObject(ReservationsPropertiesUtilization.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReservationsPropertiesUtilization model =
-            new ReservationsPropertiesUtilization()
-                .withAggregates(
-                    Arrays.asList(new ReservationUtilizationAggregates(), new ReservationUtilizationAggregates()));
+        ReservationsPropertiesUtilization model = new ReservationsPropertiesUtilization().withAggregates(
+            Arrays.asList(new ReservationUtilizationAggregates(), new ReservationUtilizationAggregates()));
         model = BinaryData.fromObject(model).toObject(ReservationsPropertiesUtilization.class);
     }
 }

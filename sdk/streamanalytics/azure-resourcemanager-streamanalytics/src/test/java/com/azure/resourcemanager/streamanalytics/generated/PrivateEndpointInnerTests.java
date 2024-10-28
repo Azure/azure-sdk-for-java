@@ -26,10 +26,11 @@ public final class PrivateEndpointInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointInner model = new PrivateEndpointInner().withProperties(new PrivateEndpointProperties()
-            .withManualPrivateLinkServiceConnections(Arrays.asList(new PrivateLinkServiceConnection()
-                .withPrivateLinkServiceId("uzbpzkafku").withGroupIds(Arrays.asList("rnwb", "ehhseyvjusrts"))
-                .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState()))));
+        PrivateEndpointInner model = new PrivateEndpointInner()
+            .withProperties(new PrivateEndpointProperties().withManualPrivateLinkServiceConnections(
+                Arrays.asList(new PrivateLinkServiceConnection().withPrivateLinkServiceId("uzbpzkafku")
+                    .withGroupIds(Arrays.asList("rnwb", "ehhseyvjusrts"))
+                    .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState()))));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointInner.class);
         Assertions.assertEquals("uzbpzkafku",
             model.properties().manualPrivateLinkServiceConnections().get(0).privateLinkServiceId());

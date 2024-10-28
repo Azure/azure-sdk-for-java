@@ -44,9 +44,10 @@ public final class AzureLargeInstancesShutdownMockTests {
             return Mono.just(httpResponse);
         }));
 
-        LargeInstanceManager manager = LargeInstanceManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        LargeInstanceManager manager = LargeInstanceManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         OperationStatusResult response
             = manager.azureLargeInstances().shutdown("beldawkzbaliourq", "akauha", com.azure.core.util.Context.NONE);

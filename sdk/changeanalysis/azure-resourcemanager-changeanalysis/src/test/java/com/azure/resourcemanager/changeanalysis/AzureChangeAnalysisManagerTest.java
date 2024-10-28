@@ -37,16 +37,16 @@ public class AzureChangeAnalysisManagerTest extends TestProxyTestBase {
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         resourceManager = ResourceManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile)
-            .withDefaultSubscription();
+          .configure()
+          .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+          .authenticate(credential, profile)
+          .withDefaultSubscription();
 
         azureChangeAnalysisManager = AzureChangeAnalysisManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .authenticate(credential, profile);
+          .configure()
+          .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+          .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+          .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -54,10 +54,7 @@ public class AzureChangeAnalysisManagerTest extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -73,8 +70,8 @@ public class AzureChangeAnalysisManagerTest extends TestProxyTestBase {
     public void test() {
         // @embedmeStart
         OffsetDateTime nowDateTime = OffsetDateTime.now();
-        Assertions.assertTrue(azureChangeAnalysisManager.changes()
-            .list(nowDateTime.minusWeeks(2), nowDateTime).stream().count() > 0);
+        Assertions.assertTrue(
+            azureChangeAnalysisManager.changes().list(nowDateTime.minusWeeks(2), nowDateTime).stream().count() > 0);
         // @embedmeEnd
     }
 

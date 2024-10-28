@@ -41,8 +41,8 @@ public interface SqlPoolReplicationLinks {
      * @return represents the response to a List Sql pool replication link request as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<ReplicationLink> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<ReplicationLink> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Get SQL pool replication link by name
@@ -59,8 +59,8 @@ public interface SqlPoolReplicationLinks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool replication link by name along with {@link Response}.
      */
-    Response<ReplicationLink> getByNameWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String linkId, Context context);
+    Response<ReplicationLink> getByNameWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String linkId, Context context);
 
     /**
      * Get SQL pool replication link by name

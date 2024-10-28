@@ -17,12 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class KustoPoolInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KustoPoolInner model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"name\":\"Storage"
-                        + " optimized\",\"capacity\":882727572,\"size\":\"Large\"},\"properties\":{\"state\":\"Creating\",\"provisioningState\":\"Moving\",\"uri\":\"kdfrdbiqmrjgeihf\",\"dataIngestionUri\":\"ggwfiwz\",\"stateReason\":\"mjpb\",\"optimizedAutoscale\":{\"version\":1813948953,\"isEnabled\":true,\"minimum\":1564431663,\"maximum\":342558293},\"enableStreamingIngest\":false,\"enablePurge\":false,\"languageExtensions\":{\"value\":[]},\"workspaceUID\":\"yfqi\"},\"etag\":\"xhnpo\",\"location\":\"qwcabvnui\",\"tags\":{\"fjlrxwtoauk\":\"yaswlpaugmr\"},\"id\":\"fkvcisi\",\"name\":\"moaedsxj\",\"type\":\"uivedwcgyeewxeiq\"}")
-                .toObject(KustoPoolInner.class);
+        KustoPoolInner model = BinaryData.fromString("{\"sku\":{\"name\":\"Storage"
+            + " optimized\",\"capacity\":882727572,\"size\":\"Large\"},\"properties\":{\"state\":\"Creating\",\"provisioningState\":\"Moving\",\"uri\":\"kdfrdbiqmrjgeihf\",\"dataIngestionUri\":\"ggwfiwz\",\"stateReason\":\"mjpb\",\"optimizedAutoscale\":{\"version\":1813948953,\"isEnabled\":true,\"minimum\":1564431663,\"maximum\":342558293},\"enableStreamingIngest\":false,\"enablePurge\":false,\"languageExtensions\":{\"value\":[]},\"workspaceUID\":\"yfqi\"},\"etag\":\"xhnpo\",\"location\":\"qwcabvnui\",\"tags\":{\"fjlrxwtoauk\":\"yaswlpaugmr\"},\"id\":\"fkvcisi\",\"name\":\"moaedsxj\",\"type\":\"uivedwcgyeewxeiq\"}")
+            .toObject(KustoPoolInner.class);
         Assertions.assertEquals("qwcabvnui", model.location());
         Assertions.assertEquals("yaswlpaugmr", model.tags().get("fjlrxwtoauk"));
         Assertions.assertEquals(SkuName.STORAGE_OPTIMIZED, model.sku().name());
@@ -39,21 +36,16 @@ public final class KustoPoolInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KustoPoolInner model =
-            new KustoPoolInner()
-                .withLocation("qwcabvnui")
-                .withTags(mapOf("fjlrxwtoauk", "yaswlpaugmr"))
-                .withSku(
-                    new AzureSku().withName(SkuName.STORAGE_OPTIMIZED).withCapacity(882727572).withSize(SkuSize.LARGE))
-                .withOptimizedAutoscale(
-                    new OptimizedAutoscale()
-                        .withVersion(1813948953)
-                        .withIsEnabled(true)
-                        .withMinimum(1564431663)
-                        .withMaximum(342558293))
-                .withEnableStreamingIngest(false)
-                .withEnablePurge(false)
-                .withWorkspaceUid("yfqi");
+        KustoPoolInner model = new KustoPoolInner().withLocation("qwcabvnui")
+            .withTags(mapOf("fjlrxwtoauk", "yaswlpaugmr"))
+            .withSku(new AzureSku().withName(SkuName.STORAGE_OPTIMIZED).withCapacity(882727572).withSize(SkuSize.LARGE))
+            .withOptimizedAutoscale(new OptimizedAutoscale().withVersion(1813948953)
+                .withIsEnabled(true)
+                .withMinimum(1564431663)
+                .withMaximum(342558293))
+            .withEnableStreamingIngest(false)
+            .withEnablePurge(false)
+            .withWorkspaceUid("yfqi");
         model = BinaryData.fromObject(model).toObject(KustoPoolInner.class);
         Assertions.assertEquals("qwcabvnui", model.location());
         Assertions.assertEquals("yaswlpaugmr", model.tags().get("fjlrxwtoauk"));

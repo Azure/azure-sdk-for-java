@@ -115,10 +115,8 @@ public interface SharedPrivateLinkResource {
          * The stage of the SharedPrivateLinkResource definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithGroupId,
-                DefinitionStages.WithPrivateLinkResourceId,
-                DefinitionStages.WithRequestMessage {
+        interface WithCreate extends DefinitionStages.WithGroupId, DefinitionStages.WithPrivateLinkResourceId,
+            DefinitionStages.WithRequestMessage {
             /**
              * Executes the create request.
              *

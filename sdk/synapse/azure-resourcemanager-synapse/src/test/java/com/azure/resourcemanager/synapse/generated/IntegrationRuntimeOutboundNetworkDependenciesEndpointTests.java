@@ -13,9 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeOutboundNetworkDependenciesEndpoint model =
-            BinaryData
-                .fromString("{\"domainName\":\"vyjtcvu\",\"endpointDetails\":[{\"port\":1264024384}]}")
+        IntegrationRuntimeOutboundNetworkDependenciesEndpoint model
+            = BinaryData.fromString("{\"domainName\":\"vyjtcvu\",\"endpointDetails\":[{\"port\":1264024384}]}")
                 .toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpoint.class);
         Assertions.assertEquals("vyjtcvu", model.domainName());
         Assertions.assertEquals(1264024384, model.endpointDetails().get(0).port());
@@ -23,13 +22,10 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeOutboundNetworkDependenciesEndpoint model =
-            new IntegrationRuntimeOutboundNetworkDependenciesEndpoint()
-                .withDomainName("vyjtcvu")
-                .withEndpointDetails(
-                    Arrays
-                        .asList(
-                            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(1264024384)));
+        IntegrationRuntimeOutboundNetworkDependenciesEndpoint model
+            = new IntegrationRuntimeOutboundNetworkDependenciesEndpoint().withDomainName("vyjtcvu")
+                .withEndpointDetails(Arrays
+                    .asList(new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(1264024384)));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpoint.class);
         Assertions.assertEquals("vyjtcvu", model.domainName());
         Assertions.assertEquals(1264024384, model.endpointDetails().get(0).port());

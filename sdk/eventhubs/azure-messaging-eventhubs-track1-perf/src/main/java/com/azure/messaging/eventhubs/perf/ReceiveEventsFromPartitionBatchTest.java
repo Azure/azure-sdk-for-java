@@ -33,19 +33,17 @@ public class ReceiveEventsFromPartitionBatchTest extends ServiceBatchTest<EventH
         eventDataBytes = Util.generateString(options.getMessageSize()).getBytes(StandardCharsets.UTF_8);
     }
 
-
     @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(Mono.defer(() -> Util.preLoadEvents(eventHubClient, options.getPartitionId() != null
-                ? String.valueOf(options.getPartitionId()) : null , eventDataBytes, options.getEvents())));
+        return super.globalSetupAsync().then(Mono.defer(() -> Util.preLoadEvents(eventHubClient,
+            options.getPartitionId() != null ? String.valueOf(options.getPartitionId()) : null, eventDataBytes,
+            options.getEvents())));
     }
 
     @Override
     public Mono<Void> setupAsync() {
         return super.setupAsync().then(Mono.empty());
     }
-
 
     /**
      * Cleans up the receivers.
@@ -74,14 +72,13 @@ public class ReceiveEventsFromPartitionBatchTest extends ServiceBatchTest<EventH
 
     @Override
     public Mono<Integer> runBatchAsync() {
-        return Mono.fromFuture(receiver.receive(options.getCount()))
-            .map(receivedEvents -> {
-                int receivedSize = 0;
-                for (EventData eventData : receivedEvents) {
-                    Objects.requireNonNull(eventData, "'eventData' cannot be null");
-                    receivedSize++;
-                }
-                return receivedSize;
-            });
+        return Mono.fromFuture(receiver.receive(options.getCount())).map(receivedEvents -> {
+            int receivedSize = 0;
+            for (EventData eventData : receivedEvents) {
+                Objects.requireNonNull(eventData, "'eventData' cannot be null");
+                receivedSize++;
+            }
+            return receivedSize;
+        });
     }
 }

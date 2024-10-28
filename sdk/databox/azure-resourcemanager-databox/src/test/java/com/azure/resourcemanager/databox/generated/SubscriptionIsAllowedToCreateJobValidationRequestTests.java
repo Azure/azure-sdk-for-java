@@ -10,16 +10,15 @@ import com.azure.resourcemanager.databox.models.SubscriptionIsAllowedToCreateJob
 public final class SubscriptionIsAllowedToCreateJobValidationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubscriptionIsAllowedToCreateJobValidationRequest model =
-            BinaryData
-                .fromString("{\"validationType\":\"ValidateSubscriptionIsAllowedToCreateJob\"}")
+        SubscriptionIsAllowedToCreateJobValidationRequest model
+            = BinaryData.fromString("{\"validationType\":\"ValidateSubscriptionIsAllowedToCreateJob\"}")
                 .toObject(SubscriptionIsAllowedToCreateJobValidationRequest.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubscriptionIsAllowedToCreateJobValidationRequest model =
-            new SubscriptionIsAllowedToCreateJobValidationRequest();
+        SubscriptionIsAllowedToCreateJobValidationRequest model
+            = new SubscriptionIsAllowedToCreateJobValidationRequest();
         model = BinaryData.fromObject(model).toObject(SubscriptionIsAllowedToCreateJobValidationRequest.class);
     }
 }

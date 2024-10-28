@@ -53,7 +53,8 @@ public class AzureBlobContainerRecordingStorage extends RecordingStorage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("recordingStorageType", recordingStorageType != null ? recordingStorageType.toString() : null);
+        jsonWriter.writeStringField("recordingStorageType",
+            recordingStorageType != null ? recordingStorageType.toString() : null);
         jsonWriter.writeStringField("recordingDestinationContainerUrl", recordingDestinationContainerUrl);
         return jsonWriter.writeEndObject();
     }

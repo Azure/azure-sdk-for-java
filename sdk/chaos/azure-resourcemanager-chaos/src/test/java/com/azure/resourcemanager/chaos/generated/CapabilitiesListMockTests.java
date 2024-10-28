@@ -44,12 +44,14 @@ public final class CapabilitiesListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ChaosManager manager = ChaosManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ChaosManager manager = ChaosManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Capability> response = manager.capabilities().list("hxicslfaoqz", "iyylhalnswhccsp", "kaivwit",
-            "scywuggwoluhc", "bwemhairs", "rgzdwmsweyp", com.azure.core.util.Context.NONE);
+        PagedIterable<Capability> response = manager.capabilities()
+            .list("hxicslfaoqz", "iyylhalnswhccsp", "kaivwit", "scywuggwoluhc", "bwemhairs", "rgzdwmsweyp",
+                com.azure.core.util.Context.NONE);
 
     }
 }

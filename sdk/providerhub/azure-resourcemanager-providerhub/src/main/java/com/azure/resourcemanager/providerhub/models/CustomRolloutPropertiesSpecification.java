@@ -24,16 +24,16 @@ public final class CustomRolloutPropertiesSpecification extends CustomRolloutSpe
 
     /** {@inheritDoc} */
     @Override
-    public CustomRolloutPropertiesSpecification withProviderRegistration(
-        CustomRolloutSpecificationProviderRegistration providerRegistration) {
+    public CustomRolloutPropertiesSpecification
+        withProviderRegistration(CustomRolloutSpecificationProviderRegistration providerRegistration) {
         super.withProviderRegistration(providerRegistration);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public CustomRolloutPropertiesSpecification withResourceTypeRegistrations(
-        List<ResourceTypeRegistrationInner> resourceTypeRegistrations) {
+    public CustomRolloutPropertiesSpecification
+        withResourceTypeRegistrations(List<ResourceTypeRegistrationInner> resourceTypeRegistrations) {
         super.withResourceTypeRegistrations(resourceTypeRegistrations);
         return this;
     }

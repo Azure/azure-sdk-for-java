@@ -107,8 +107,8 @@ public interface Workspaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Response<ListWorkspaceKeysResult> listKeysWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<ListWorkspaceKeysResult> listKeysWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Resync all the keys associated with this workspace. This includes keys for the storage account, app insights and
@@ -179,8 +179,8 @@ public interface Workspaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    Response<NotebookAccessTokenResult> listNotebookAccessTokenWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<NotebookAccessTokenResult> listNotebookAccessTokenWithResponse(String resourceGroupName,
+        String workspaceName, Context context);
 
     /**
      * Gets the properties of the specified machine learning workspace.

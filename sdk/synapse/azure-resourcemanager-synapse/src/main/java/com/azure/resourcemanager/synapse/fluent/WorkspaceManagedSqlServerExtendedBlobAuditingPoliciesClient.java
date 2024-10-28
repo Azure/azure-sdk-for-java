@@ -34,8 +34,8 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient {
      * @return a workspace SQL server's extended blob auditing policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExtendedServerBlobAuditingPolicyInner> getWithResponse(
-        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName, Context context);
+    Response<ExtendedServerBlobAuditingPolicyInner> getWithResponse(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName, Context context);
 
     /**
      * Get server's extended blob auditing policy.
@@ -51,8 +51,8 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient {
      * @return a workspace SQL server's extended blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExtendedServerBlobAuditingPolicyInner get(
-        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName);
+    ExtendedServerBlobAuditingPolicyInner get(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName);
 
     /**
      * Create or Update server's extended blob auditing policy.
@@ -70,11 +70,8 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String workspaceName,
-            BlobAuditingPolicyName blobAuditingPolicyName,
-            ExtendedServerBlobAuditingPolicyInner parameters);
+        beginCreateOrUpdate(String resourceGroupName, String workspaceName,
+            BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters);
 
     /**
      * Create or Update server's extended blob auditing policy.
@@ -93,11 +90,8 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExtendedServerBlobAuditingPolicyInner>, ExtendedServerBlobAuditingPolicyInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String workspaceName,
-            BlobAuditingPolicyName blobAuditingPolicyName,
-            ExtendedServerBlobAuditingPolicyInner parameters,
+        beginCreateOrUpdate(String resourceGroupName, String workspaceName,
+            BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters,
             Context context);
 
     /**
@@ -115,11 +109,8 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient {
      * @return an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExtendedServerBlobAuditingPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
-        ExtendedServerBlobAuditingPolicyInner parameters);
+    ExtendedServerBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters);
 
     /**
      * Create or Update server's extended blob auditing policy.
@@ -137,11 +128,8 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient {
      * @return an extended server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExtendedServerBlobAuditingPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
-        ExtendedServerBlobAuditingPolicyInner parameters,
+    ExtendedServerBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName, ExtendedServerBlobAuditingPolicyInner parameters,
         Context context);
 
     /**
@@ -157,8 +145,8 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient {
      * @return a list of server extended auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExtendedServerBlobAuditingPolicyInner> listByWorkspace(
-        String resourceGroupName, String workspaceName);
+    PagedIterable<ExtendedServerBlobAuditingPolicyInner> listByWorkspace(String resourceGroupName,
+        String workspaceName);
 
     /**
      * List server's extended blob auditing policies.
@@ -174,6 +162,6 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient {
      * @return a list of server extended auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExtendedServerBlobAuditingPolicyInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<ExtendedServerBlobAuditingPolicyInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 }

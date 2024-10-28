@@ -4,8 +4,7 @@ package io.clientcore.core.json.implementation.jackson.core.io;
 import java.util.Arrays;
 
 @SuppressWarnings("cast")
-public final class CharTypes
-{
+public final class CharTypes {
     protected final static char[] HC = "0123456789ABCDEF".toCharArray();
     protected final static byte[] HB;
     static {
@@ -193,14 +192,29 @@ public final class CharTypes
         }
     }
 
-    public static int[] getInputCodeLatin1() { return sInputCodes; }
-    public static int[] getInputCodeUtf8() { return sInputCodesUTF8; }
+    public static int[] getInputCodeLatin1() {
+        return sInputCodes;
+    }
 
-    public static int[] getInputCodeLatin1JsNames() { return sInputCodesJsNames; }
-    public static int[] getInputCodeUtf8JsNames() { return sInputCodesUtf8JsNames; }
+    public static int[] getInputCodeUtf8() {
+        return sInputCodesUTF8;
+    }
 
-    public static int[] getInputCodeComment() { return sInputCodesComment; }
-    public static int[] getInputCodeWS() { return sInputCodesWS; }
+    public static int[] getInputCodeLatin1JsNames() {
+        return sInputCodesJsNames;
+    }
+
+    public static int[] getInputCodeUtf8JsNames() {
+        return sInputCodesUtf8JsNames;
+    }
+
+    public static int[] getInputCodeComment() {
+        return sInputCodesComment;
+    }
+
+    public static int[] getInputCodeWS() {
+        return sInputCodesWS;
+    }
 
     /**
      * Accessor for getting a read-only encoding table for first 128 Unicode
@@ -211,7 +225,9 @@ public final class CharTypes
      *
      * @return 128-entry {@code int[]} that contains escape definitions
      */
-    public static int[] get7BitOutputEscapes() { return sOutputEscapes128; }
+    public static int[] get7BitOutputEscapes() {
+        return sOutputEscapes128;
+    }
 
     /**
      * Alternative to {@link #get7BitOutputEscapes()} when a non-standard quote character
@@ -231,16 +247,14 @@ public final class CharTypes
         return AltEscapes.instance.escapesFor(quoteChar);
     }
 
-    public static int charToHex(int ch)
-    {
+    public static int charToHex(int ch) {
         // 08-Nov-2019, tatu: As per [core#540] and [core#578], changed to
         //   force masking here so caller need not do that.
         return sHexValues[ch & 0xFF];
     }
 
     // @since 2.13
-    public static char hexToChar(int ch)
-    {
+    public static char hexToChar(int ch) {
         return HC[ch];
     }
 
@@ -253,8 +267,7 @@ public final class CharTypes
      *
      * @param content Unescaped String value to append with escaping applied
      */
-    public static void appendQuoted(StringBuilder sb, String content)
-    {
+    public static void appendQuoted(StringBuilder sb, String content) {
         final int[] escCodes = sOutputEscapes128;
         int escLen = escCodes.length;
         for (int i = 0, len = content.length(); i < len; ++i) {
@@ -320,4 +333,3 @@ public final class CharTypes
         }
     }
 }
-

@@ -169,11 +169,13 @@ public interface DataMaskingRule {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The DataMaskingRule definition stages. */
     interface DefinitionStages {
         /** The first stage of the DataMaskingRule definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the DataMaskingRule definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -186,22 +188,15 @@ public interface DataMaskingRule {
              */
             WithCreate withExistingSqlPool(String resourceGroupName, String workspaceName, String sqlPoolName);
         }
+
         /**
          * The stage of the DataMaskingRule definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithAliasName,
-                DefinitionStages.WithRuleState,
-                DefinitionStages.WithSchemaName,
-                DefinitionStages.WithTableName,
-                DefinitionStages.WithColumnName,
-                DefinitionStages.WithMaskingFunction,
-                DefinitionStages.WithNumberFrom,
-                DefinitionStages.WithNumberTo,
-                DefinitionStages.WithPrefixSize,
-                DefinitionStages.WithSuffixSize,
-                DefinitionStages.WithReplacementString {
+        interface WithCreate extends DefinitionStages.WithAliasName, DefinitionStages.WithRuleState,
+            DefinitionStages.WithSchemaName, DefinitionStages.WithTableName, DefinitionStages.WithColumnName,
+            DefinitionStages.WithMaskingFunction, DefinitionStages.WithNumberFrom, DefinitionStages.WithNumberTo,
+            DefinitionStages.WithPrefixSize, DefinitionStages.WithSuffixSize, DefinitionStages.WithReplacementString {
             /**
              * Executes the create request.
              *
@@ -217,6 +212,7 @@ public interface DataMaskingRule {
              */
             DataMaskingRule create(Context context);
         }
+
         /** The stage of the DataMaskingRule definition allowing to specify aliasName. */
         interface WithAliasName {
             /**
@@ -227,6 +223,7 @@ public interface DataMaskingRule {
              */
             WithCreate withAliasName(String aliasName);
         }
+
         /** The stage of the DataMaskingRule definition allowing to specify ruleState. */
         interface WithRuleState {
             /**
@@ -243,6 +240,7 @@ public interface DataMaskingRule {
              */
             WithCreate withRuleState(DataMaskingRuleState ruleState);
         }
+
         /** The stage of the DataMaskingRule definition allowing to specify schemaName. */
         interface WithSchemaName {
             /**
@@ -253,6 +251,7 @@ public interface DataMaskingRule {
              */
             WithCreate withSchemaName(String schemaName);
         }
+
         /** The stage of the DataMaskingRule definition allowing to specify tableName. */
         interface WithTableName {
             /**
@@ -263,6 +262,7 @@ public interface DataMaskingRule {
              */
             WithCreate withTableName(String tableName);
         }
+
         /** The stage of the DataMaskingRule definition allowing to specify columnName. */
         interface WithColumnName {
             /**
@@ -273,6 +273,7 @@ public interface DataMaskingRule {
              */
             WithCreate withColumnName(String columnName);
         }
+
         /** The stage of the DataMaskingRule definition allowing to specify maskingFunction. */
         interface WithMaskingFunction {
             /**
@@ -283,6 +284,7 @@ public interface DataMaskingRule {
              */
             WithCreate withMaskingFunction(DataMaskingFunction maskingFunction);
         }
+
         /** The stage of the DataMaskingRule definition allowing to specify numberFrom. */
         interface WithNumberFrom {
             /**
@@ -295,6 +297,7 @@ public interface DataMaskingRule {
              */
             WithCreate withNumberFrom(String numberFrom);
         }
+
         /** The stage of the DataMaskingRule definition allowing to specify numberTo. */
         interface WithNumberTo {
             /**
@@ -307,6 +310,7 @@ public interface DataMaskingRule {
              */
             WithCreate withNumberTo(String numberTo);
         }
+
         /** The stage of the DataMaskingRule definition allowing to specify prefixSize. */
         interface WithPrefixSize {
             /**
@@ -319,6 +323,7 @@ public interface DataMaskingRule {
              */
             WithCreate withPrefixSize(String prefixSize);
         }
+
         /** The stage of the DataMaskingRule definition allowing to specify suffixSize. */
         interface WithSuffixSize {
             /**
@@ -331,6 +336,7 @@ public interface DataMaskingRule {
              */
             WithCreate withSuffixSize(String suffixSize);
         }
+
         /** The stage of the DataMaskingRule definition allowing to specify replacementString. */
         interface WithReplacementString {
             /**
@@ -344,6 +350,7 @@ public interface DataMaskingRule {
             WithCreate withReplacementString(String replacementString);
         }
     }
+
     /**
      * Begins update for the DataMaskingRule resource.
      *
@@ -352,18 +359,10 @@ public interface DataMaskingRule {
     DataMaskingRule.Update update();
 
     /** The template for DataMaskingRule update. */
-    interface Update
-        extends UpdateStages.WithAliasName,
-            UpdateStages.WithRuleState,
-            UpdateStages.WithSchemaName,
-            UpdateStages.WithTableName,
-            UpdateStages.WithColumnName,
-            UpdateStages.WithMaskingFunction,
-            UpdateStages.WithNumberFrom,
-            UpdateStages.WithNumberTo,
-            UpdateStages.WithPrefixSize,
-            UpdateStages.WithSuffixSize,
-            UpdateStages.WithReplacementString {
+    interface Update extends UpdateStages.WithAliasName, UpdateStages.WithRuleState, UpdateStages.WithSchemaName,
+        UpdateStages.WithTableName, UpdateStages.WithColumnName, UpdateStages.WithMaskingFunction,
+        UpdateStages.WithNumberFrom, UpdateStages.WithNumberTo, UpdateStages.WithPrefixSize,
+        UpdateStages.WithSuffixSize, UpdateStages.WithReplacementString {
         /**
          * Executes the update request.
          *
@@ -379,6 +378,7 @@ public interface DataMaskingRule {
          */
         DataMaskingRule apply(Context context);
     }
+
     /** The DataMaskingRule update stages. */
     interface UpdateStages {
         /** The stage of the DataMaskingRule update allowing to specify aliasName. */
@@ -391,6 +391,7 @@ public interface DataMaskingRule {
              */
             Update withAliasName(String aliasName);
         }
+
         /** The stage of the DataMaskingRule update allowing to specify ruleState. */
         interface WithRuleState {
             /**
@@ -407,6 +408,7 @@ public interface DataMaskingRule {
              */
             Update withRuleState(DataMaskingRuleState ruleState);
         }
+
         /** The stage of the DataMaskingRule update allowing to specify schemaName. */
         interface WithSchemaName {
             /**
@@ -417,6 +419,7 @@ public interface DataMaskingRule {
              */
             Update withSchemaName(String schemaName);
         }
+
         /** The stage of the DataMaskingRule update allowing to specify tableName. */
         interface WithTableName {
             /**
@@ -427,6 +430,7 @@ public interface DataMaskingRule {
              */
             Update withTableName(String tableName);
         }
+
         /** The stage of the DataMaskingRule update allowing to specify columnName. */
         interface WithColumnName {
             /**
@@ -437,6 +441,7 @@ public interface DataMaskingRule {
              */
             Update withColumnName(String columnName);
         }
+
         /** The stage of the DataMaskingRule update allowing to specify maskingFunction. */
         interface WithMaskingFunction {
             /**
@@ -447,6 +452,7 @@ public interface DataMaskingRule {
              */
             Update withMaskingFunction(DataMaskingFunction maskingFunction);
         }
+
         /** The stage of the DataMaskingRule update allowing to specify numberFrom. */
         interface WithNumberFrom {
             /**
@@ -459,6 +465,7 @@ public interface DataMaskingRule {
              */
             Update withNumberFrom(String numberFrom);
         }
+
         /** The stage of the DataMaskingRule update allowing to specify numberTo. */
         interface WithNumberTo {
             /**
@@ -471,6 +478,7 @@ public interface DataMaskingRule {
              */
             Update withNumberTo(String numberTo);
         }
+
         /** The stage of the DataMaskingRule update allowing to specify prefixSize. */
         interface WithPrefixSize {
             /**
@@ -483,6 +491,7 @@ public interface DataMaskingRule {
              */
             Update withPrefixSize(String prefixSize);
         }
+
         /** The stage of the DataMaskingRule update allowing to specify suffixSize. */
         interface WithSuffixSize {
             /**
@@ -495,6 +504,7 @@ public interface DataMaskingRule {
              */
             Update withSuffixSize(String suffixSize);
         }
+
         /** The stage of the DataMaskingRule update allowing to specify replacementString. */
         interface WithReplacementString {
             /**
@@ -508,6 +518,7 @@ public interface DataMaskingRule {
             Update withReplacementString(String replacementString);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

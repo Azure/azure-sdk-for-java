@@ -113,17 +113,16 @@ public interface PrivateEndpointConnection {
     PrivateEndpointConnectionInner innerModel();
 
     /** The entirety of the PrivateEndpointConnection definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The PrivateEndpointConnection definition stages. */
     interface DefinitionStages {
         /** The first stage of the PrivateEndpointConnection definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the PrivateEndpointConnection definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -142,6 +141,7 @@ public interface PrivateEndpointConnection {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the PrivateEndpointConnection definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -153,16 +153,14 @@ public interface PrivateEndpointConnection {
              */
             WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
+
         /**
          * The stage of the PrivateEndpointConnection definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithPrivateEndpoint,
-                DefinitionStages.WithPrivateLinkServiceConnectionState,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithSku {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithPrivateEndpoint,
+            DefinitionStages.WithPrivateLinkServiceConnectionState, DefinitionStages.WithIdentity,
+            DefinitionStages.WithSku {
             /**
              * Executes the create request.
              *
@@ -178,6 +176,7 @@ public interface PrivateEndpointConnection {
              */
             PrivateEndpointConnection create(Context context);
         }
+
         /** The stage of the PrivateEndpointConnection definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -188,6 +187,7 @@ public interface PrivateEndpointConnection {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the PrivateEndpointConnection definition allowing to specify privateEndpoint. */
         interface WithPrivateEndpoint {
             /**
@@ -198,6 +198,7 @@ public interface PrivateEndpointConnection {
              */
             WithCreate withPrivateEndpoint(PrivateEndpoint privateEndpoint);
         }
+
         /**
          * The stage of the PrivateEndpointConnection definition allowing to specify privateLinkServiceConnectionState.
          */
@@ -213,6 +214,7 @@ public interface PrivateEndpointConnection {
             WithCreate withPrivateLinkServiceConnectionState(
                 PrivateLinkServiceConnectionState privateLinkServiceConnectionState);
         }
+
         /** The stage of the PrivateEndpointConnection definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -223,6 +225,7 @@ public interface PrivateEndpointConnection {
              */
             WithCreate withIdentity(Identity identity);
         }
+
         /** The stage of the PrivateEndpointConnection definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -234,6 +237,7 @@ public interface PrivateEndpointConnection {
             WithCreate withSku(Sku sku);
         }
     }
+
     /**
      * Begins update for the PrivateEndpointConnection resource.
      *
@@ -242,12 +246,8 @@ public interface PrivateEndpointConnection {
     PrivateEndpointConnection.Update update();
 
     /** The template for PrivateEndpointConnection update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithPrivateEndpoint,
-            UpdateStages.WithPrivateLinkServiceConnectionState,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithSku {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithPrivateEndpoint,
+        UpdateStages.WithPrivateLinkServiceConnectionState, UpdateStages.WithIdentity, UpdateStages.WithSku {
         /**
          * Executes the update request.
          *
@@ -263,6 +263,7 @@ public interface PrivateEndpointConnection {
          */
         PrivateEndpointConnection apply(Context context);
     }
+
     /** The PrivateEndpointConnection update stages. */
     interface UpdateStages {
         /** The stage of the PrivateEndpointConnection update allowing to specify tags. */
@@ -275,6 +276,7 @@ public interface PrivateEndpointConnection {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the PrivateEndpointConnection update allowing to specify privateEndpoint. */
         interface WithPrivateEndpoint {
             /**
@@ -285,6 +287,7 @@ public interface PrivateEndpointConnection {
              */
             Update withPrivateEndpoint(PrivateEndpoint privateEndpoint);
         }
+
         /** The stage of the PrivateEndpointConnection update allowing to specify privateLinkServiceConnectionState. */
         interface WithPrivateLinkServiceConnectionState {
             /**
@@ -298,6 +301,7 @@ public interface PrivateEndpointConnection {
             Update withPrivateLinkServiceConnectionState(
                 PrivateLinkServiceConnectionState privateLinkServiceConnectionState);
         }
+
         /** The stage of the PrivateEndpointConnection update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -308,6 +312,7 @@ public interface PrivateEndpointConnection {
              */
             Update withIdentity(Identity identity);
         }
+
         /** The stage of the PrivateEndpointConnection update allowing to specify sku. */
         interface WithSku {
             /**
@@ -319,6 +324,7 @@ public interface PrivateEndpointConnection {
             Update withSku(Sku sku);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

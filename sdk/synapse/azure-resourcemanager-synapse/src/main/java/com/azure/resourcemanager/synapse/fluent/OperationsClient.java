@@ -29,8 +29,8 @@ public interface OperationsClient {
      * @return check name availability response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest request, Context context);
+    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest request,
+        Context context);
 
     /**
      * Check name availability
@@ -87,8 +87,8 @@ public interface OperationsClient {
      * @return the result of an operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getLocationHeaderResultWithResponse(
-        String resourceGroupName, String workspaceName, String operationId, Context context);
+    Response<Void> getLocationHeaderResultWithResponse(String resourceGroupName, String workspaceName,
+        String operationId, Context context);
 
     /**
      * Get operation result
@@ -120,8 +120,8 @@ public interface OperationsClient {
      * @return the status of an operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationResourceInner> getAzureAsyncHeaderResultWithResponse(
-        String resourceGroupName, String workspaceName, String operationId, Context context);
+    Response<OperationResourceInner> getAzureAsyncHeaderResultWithResponse(String resourceGroupName,
+        String workspaceName, String operationId, Context context);
 
     /**
      * Get operation status
@@ -137,6 +137,6 @@ public interface OperationsClient {
      * @return the status of an operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationResourceInner getAzureAsyncHeaderResult(
-        String resourceGroupName, String workspaceName, String operationId);
+    OperationResourceInner getAzureAsyncHeaderResult(String resourceGroupName, String workspaceName,
+        String operationId);
 }

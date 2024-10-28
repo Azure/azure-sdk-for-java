@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Test;
 public final class AzureDevOpsOrgMetadataTests {
     @Test
     public void testDeserialize() {
-        AzureDevOpsOrgMetadata model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"cryuan\",\"autoDiscovery\":\"Disabled\",\"projects\":[{\"name\":\"xtayr\",\"autoDiscovery\":\"Disabled\",\"repos\":[\"fp\",\"rqobmtuk\",\"nryrtihf\",\"tijbpzvgnwzsymgl\"]},{\"name\":\"fcyzkohdbihanufh\",\"autoDiscovery\":\"Disabled\",\"repos\":[\"s\"]},{\"name\":\"ithxqhabifpi\",\"autoDiscovery\":\"Disabled\",\"repos\":[\"byscnp\"]},{\"name\":\"uhivyqniw\",\"autoDiscovery\":\"Disabled\",\"repos\":[\"xvd\"]}]}")
-                .toObject(AzureDevOpsOrgMetadata.class);
+        AzureDevOpsOrgMetadata model = BinaryData.fromString(
+            "{\"name\":\"cryuan\",\"autoDiscovery\":\"Disabled\",\"projects\":[{\"name\":\"xtayr\",\"autoDiscovery\":\"Disabled\",\"repos\":[\"fp\",\"rqobmtuk\",\"nryrtihf\",\"tijbpzvgnwzsymgl\"]},{\"name\":\"fcyzkohdbihanufh\",\"autoDiscovery\":\"Disabled\",\"repos\":[\"s\"]},{\"name\":\"ithxqhabifpi\",\"autoDiscovery\":\"Disabled\",\"repos\":[\"byscnp\"]},{\"name\":\"uhivyqniw\",\"autoDiscovery\":\"Disabled\",\"repos\":[\"xvd\"]}]}")
+            .toObject(AzureDevOpsOrgMetadata.class);
         Assertions.assertEquals("cryuan", model.name());
         Assertions.assertEquals(AutoDiscovery.DISABLED, model.autoDiscovery());
         Assertions.assertEquals("xtayr", model.projects().get(0).name());
@@ -29,29 +27,21 @@ public final class AzureDevOpsOrgMetadataTests {
 
     @Test
     public void testSerialize() {
-        AzureDevOpsOrgMetadata model =
-            new AzureDevOpsOrgMetadata()
-                .withName("cryuan")
-                .withAutoDiscovery(AutoDiscovery.DISABLED)
-                .withProjects(
-                    Arrays
-                        .asList(
-                            new AzureDevOpsProjectMetadata()
-                                .withName("xtayr")
-                                .withAutoDiscovery(AutoDiscovery.DISABLED)
-                                .withRepos(Arrays.asList("fp", "rqobmtuk", "nryrtihf", "tijbpzvgnwzsymgl")),
-                            new AzureDevOpsProjectMetadata()
-                                .withName("fcyzkohdbihanufh")
-                                .withAutoDiscovery(AutoDiscovery.DISABLED)
-                                .withRepos(Arrays.asList("s")),
-                            new AzureDevOpsProjectMetadata()
-                                .withName("ithxqhabifpi")
-                                .withAutoDiscovery(AutoDiscovery.DISABLED)
-                                .withRepos(Arrays.asList("byscnp")),
-                            new AzureDevOpsProjectMetadata()
-                                .withName("uhivyqniw")
-                                .withAutoDiscovery(AutoDiscovery.DISABLED)
-                                .withRepos(Arrays.asList("xvd"))));
+        AzureDevOpsOrgMetadata model = new AzureDevOpsOrgMetadata().withName("cryuan")
+            .withAutoDiscovery(AutoDiscovery.DISABLED)
+            .withProjects(Arrays.asList(
+                new AzureDevOpsProjectMetadata().withName("xtayr")
+                    .withAutoDiscovery(AutoDiscovery.DISABLED)
+                    .withRepos(Arrays.asList("fp", "rqobmtuk", "nryrtihf", "tijbpzvgnwzsymgl")),
+                new AzureDevOpsProjectMetadata().withName("fcyzkohdbihanufh")
+                    .withAutoDiscovery(AutoDiscovery.DISABLED)
+                    .withRepos(Arrays.asList("s")),
+                new AzureDevOpsProjectMetadata().withName("ithxqhabifpi")
+                    .withAutoDiscovery(AutoDiscovery.DISABLED)
+                    .withRepos(Arrays.asList("byscnp")),
+                new AzureDevOpsProjectMetadata().withName("uhivyqniw")
+                    .withAutoDiscovery(AutoDiscovery.DISABLED)
+                    .withRepos(Arrays.asList("xvd"))));
         model = BinaryData.fromObject(model).toObject(AzureDevOpsOrgMetadata.class);
         Assertions.assertEquals("cryuan", model.name());
         Assertions.assertEquals(AutoDiscovery.DISABLED, model.autoDiscovery());

@@ -36,46 +36,28 @@ public final class ApiDiagnosticsListByServiceMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"alwaysLog\":\"allErrors\",\"loggerId\":\"tvudeylpbybki\",\"sampling\":{\"samplingType\":\"fixed\",\"percentage\":16.235122034861682},\"frontend\":{\"request\":{\"headers\":[\"dj\",\"au\",\"fshznu\",\"ttuhaaax\"],\"body\":{\"bytes\":487545221},\"dataMasking\":{\"queryParams\":[{},{},{}],\"headers\":[{}]}},\"response\":{\"headers\":[\"rmbecx\",\"towagehxu\",\"hwesrtja\"],\"body\":{\"bytes\":1206184930},\"dataMasking\":{\"queryParams\":[{},{},{}],\"headers\":[{},{}]}}},\"backend\":{\"request\":{\"headers\":[\"vspsaneyvae\",\"piobnhrfbrjokjwq\",\"mraqnilppqcaig\"],\"body\":{\"bytes\":1770516064},\"dataMasking\":{\"queryParams\":[{}],\"headers\":[{},{},{},{}]}},\"response\":{\"headers\":[\"zseodtqfdrslzymq\"],\"body\":{\"bytes\":1075713452},\"dataMasking\":{\"queryParams\":[{},{}],\"headers\":[{},{},{}]}}},\"logClientIp\":true,\"httpCorrelationProtocol\":\"Legacy\",\"verbosity\":\"verbose\",\"operationNameFormat\":\"Url\",\"metrics\":false},\"id\":\"wneqjxzizebjr\",\"name\":\"hgd\",\"type\":\"tubwggxzsshxli\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"alwaysLog\":\"allErrors\",\"loggerId\":\"tvudeylpbybki\",\"sampling\":{\"samplingType\":\"fixed\",\"percentage\":16.235122034861682},\"frontend\":{\"request\":{\"headers\":[\"dj\",\"au\",\"fshznu\",\"ttuhaaax\"],\"body\":{\"bytes\":487545221},\"dataMasking\":{\"queryParams\":[{},{},{}],\"headers\":[{}]}},\"response\":{\"headers\":[\"rmbecx\",\"towagehxu\",\"hwesrtja\"],\"body\":{\"bytes\":1206184930},\"dataMasking\":{\"queryParams\":[{},{},{}],\"headers\":[{},{}]}}},\"backend\":{\"request\":{\"headers\":[\"vspsaneyvae\",\"piobnhrfbrjokjwq\",\"mraqnilppqcaig\"],\"body\":{\"bytes\":1770516064},\"dataMasking\":{\"queryParams\":[{}],\"headers\":[{},{},{},{}]}},\"response\":{\"headers\":[\"zseodtqfdrslzymq\"],\"body\":{\"bytes\":1075713452},\"dataMasking\":{\"queryParams\":[{},{}],\"headers\":[{},{},{}]}}},\"logClientIp\":true,\"httpCorrelationProtocol\":\"Legacy\",\"verbosity\":\"verbose\",\"operationNameFormat\":\"Url\",\"metrics\":false},\"id\":\"wneqjxzizebjr\",\"name\":\"hgd\",\"type\":\"tubwggxzsshxli\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DiagnosticContract> response =
-            manager
-                .apiDiagnostics()
-                .listByService(
-                    "uzjd",
-                    "rgyzcslazp",
-                    "kqoyimxpggk",
-                    "teagbgac",
-                    491443006,
-                    1845023161,
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<DiagnosticContract> response = manager.apiDiagnostics()
+            .listByService("uzjd", "rgyzcslazp", "kqoyimxpggk", "teagbgac", 491443006, 1845023161,
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(AlwaysLog.ALL_ERRORS, response.iterator().next().alwaysLog());
         Assertions.assertEquals("tvudeylpbybki", response.iterator().next().loggerId());

@@ -48,9 +48,8 @@ public final class SshPublicKey {
      */
     public void validate() {
         if (keyData() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyData in model SshPublicKey"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyData in model SshPublicKey"));
         }
     }
 

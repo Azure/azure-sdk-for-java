@@ -19,8 +19,7 @@ public final class ProductWikisOperationsImpl implements ProductWikisOperations 
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public ProductWikisOperationsImpl(
-        ProductWikisOperationsClient innerClient,
+    public ProductWikisOperationsImpl(ProductWikisOperationsClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,16 +30,10 @@ public final class ProductWikisOperationsImpl implements ProductWikisOperations 
         return Utils.mapPage(inner, inner1 -> new WikiContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WikiContract> list(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
-        PagedIterable<WikiContractInner> inner =
-            this.serviceClient().list(resourceGroupName, serviceName, productId, filter, top, skip, context);
+    public PagedIterable<WikiContract> list(String resourceGroupName, String serviceName, String productId,
+        String filter, Integer top, Integer skip, Context context) {
+        PagedIterable<WikiContractInner> inner
+            = this.serviceClient().list(resourceGroupName, serviceName, productId, filter, top, skip, context);
         return Utils.mapPage(inner, inner1 -> new WikiContractImpl(inner1, this.manager()));
     }
 

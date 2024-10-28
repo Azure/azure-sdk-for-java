@@ -37,13 +37,13 @@ public class GetBatchJobScheduleOptions extends BatchBaseOptions {
         return this;
     }
 
-     /**
-     * Gets the HTTP options for conditional requests based on modification time.
-     *
-     * <p>The request conditions allow you to specify conditions that must be met for the request to be processed.
-     *
-     * @return The HTTP options for conditional requests.
-     */
+    /**
+    * Gets the HTTP options for conditional requests based on modification time.
+    *
+    * <p>The request conditions allow you to specify conditions that must be met for the request to be processed.
+    *
+    * @return The HTTP options for conditional requests.
+    */
     public RequestConditions getRequestConditions() {
         return requestConditions;
     }

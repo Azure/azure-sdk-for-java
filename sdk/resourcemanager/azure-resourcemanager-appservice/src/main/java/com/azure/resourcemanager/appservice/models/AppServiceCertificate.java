@@ -63,12 +63,8 @@ public interface AppServiceCertificate
     HostingEnvironmentProfile hostingEnvironmentProfile();
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithCertificate,
-            DefinitionStages.WithPfxFilePassword,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCertificate,
+        DefinitionStages.WithPfxFilePassword, DefinitionStages.WithCreate {
     }
 
     /** Grouping of all the site definition stages. */
@@ -115,6 +111,7 @@ public interface AppServiceCertificate
              */
             WithCreate withExistingCertificateOrder(AppServiceCertificateOrder certificateOrder);
         }
+
         /** An app service certificate definition allowing PFX certificate password to be set. */
         interface WithPfxFilePassword {
             /**

@@ -65,9 +65,8 @@ public final class PrivateEndpointAcl extends NetworkAcl {
     public void validate() {
         super.validate();
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model PrivateEndpointAcl"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model PrivateEndpointAcl"));
         }
     }
 

@@ -210,22 +210,16 @@ public final class OpenidConnectProviderContractProperties {
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model OpenidConnectProviderContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property displayName in model OpenidConnectProviderContractProperties"));
         }
         if (metadataEndpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property metadataEndpoint in model OpenidConnectProviderContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property metadataEndpoint in model OpenidConnectProviderContractProperties"));
         }
         if (clientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientId in model OpenidConnectProviderContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property clientId in model OpenidConnectProviderContractProperties"));
         }
     }
 

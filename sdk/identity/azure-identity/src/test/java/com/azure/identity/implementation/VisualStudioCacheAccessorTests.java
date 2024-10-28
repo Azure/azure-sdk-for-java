@@ -17,7 +17,8 @@ public class VisualStudioCacheAccessorTests {
     public void testReadJsonFile() throws Exception {
         // setup
 
-        try (MockedStatic<VisualStudioCacheAccessor> cacheAccessorMockedStatic = mockStatic(VisualStudioCacheAccessor.class)) {
+        try (MockedStatic<VisualStudioCacheAccessor> cacheAccessorMockedStatic
+            = mockStatic(VisualStudioCacheAccessor.class)) {
             String path = getPath("settings.json");
             cacheAccessorMockedStatic.when(VisualStudioCacheAccessor::getSettingsPath).thenReturn(path);
             VisualStudioCacheAccessor cacheAccessor = new VisualStudioCacheAccessor();
@@ -28,7 +29,7 @@ public class VisualStudioCacheAccessorTests {
     }
 
     private String getPath(String filename) {
-        String path =  getClass().getClassLoader().getResource(filename).getPath();
+        String path = getClass().getClassLoader().getResource(filename).getPath();
         if (path.contains(":")) {
             path = path.substring(1);
         }

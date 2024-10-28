@@ -22,34 +22,31 @@ public final class NotificationsImpl implements Notifications {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public NotificationsImpl(
-        NotificationsClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public NotificationsImpl(NotificationsClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<NotificationContract> listByService(String resourceGroupName, String serviceName) {
-        PagedIterable<NotificationContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName);
+        PagedIterable<NotificationContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName);
         return Utils.mapPage(inner, inner1 -> new NotificationContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<NotificationContract> listByService(
-        String resourceGroupName, String serviceName, Integer top, Integer skip, Context context) {
-        PagedIterable<NotificationContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, top, skip, context);
+    public PagedIterable<NotificationContract> listByService(String resourceGroupName, String serviceName, Integer top,
+        Integer skip, Context context) {
+        PagedIterable<NotificationContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, top, skip, context);
         return Utils.mapPage(inner, inner1 -> new NotificationContractImpl(inner1, this.manager()));
     }
 
-    public Response<NotificationContract> getWithResponse(
-        String resourceGroupName, String serviceName, NotificationName notificationName, Context context) {
-        Response<NotificationContractInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, notificationName, context);
+    public Response<NotificationContract> getWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, Context context) {
+        Response<NotificationContractInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, notificationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NotificationContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -65,31 +62,22 @@ public final class NotificationsImpl implements Notifications {
         }
     }
 
-    public Response<NotificationContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        NotificationName notificationName,
-        String ifMatch,
-        Context context) {
-        Response<NotificationContractInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(resourceGroupName, serviceName, notificationName, ifMatch, context);
+    public Response<NotificationContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String ifMatch, Context context) {
+        Response<NotificationContractInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, notificationName, ifMatch, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NotificationContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public NotificationContract createOrUpdate(
-        String resourceGroupName, String serviceName, NotificationName notificationName) {
-        NotificationContractInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, notificationName);
+    public NotificationContract createOrUpdate(String resourceGroupName, String serviceName,
+        NotificationName notificationName) {
+        NotificationContractInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, serviceName, notificationName);
         if (inner != null) {
             return new NotificationContractImpl(inner, this.manager());
         } else {

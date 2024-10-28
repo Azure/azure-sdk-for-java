@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AudioAnalyzerPresetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AudioAnalyzerPreset model =
-            BinaryData
-                .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.AudioAnalyzerPreset\",\"audioLanguage\":\"udtjuewbc\",\"mode\":\"Standard\",\"experimentalOptions\":{\"bvpa\":\"whcjyxcc\",\"px\":\"akkud\",\"stcyohpfkyrkdbd\":\"wjplma\"}}")
-                .toObject(AudioAnalyzerPreset.class);
+        AudioAnalyzerPreset model = BinaryData.fromString(
+            "{\"@odata.type\":\"#Microsoft.Media.AudioAnalyzerPreset\",\"audioLanguage\":\"udtjuewbc\",\"mode\":\"Standard\",\"experimentalOptions\":{\"bvpa\":\"whcjyxcc\",\"px\":\"akkud\",\"stcyohpfkyrkdbd\":\"wjplma\"}}")
+            .toObject(AudioAnalyzerPreset.class);
         Assertions.assertEquals("udtjuewbc", model.audioLanguage());
         Assertions.assertEquals(AudioAnalysisMode.STANDARD, model.mode());
         Assertions.assertEquals("whcjyxcc", model.experimentalOptions().get("bvpa"));
@@ -26,11 +24,9 @@ public final class AudioAnalyzerPresetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AudioAnalyzerPreset model =
-            new AudioAnalyzerPreset()
-                .withAudioLanguage("udtjuewbc")
-                .withMode(AudioAnalysisMode.STANDARD)
-                .withExperimentalOptions(mapOf("bvpa", "whcjyxcc", "px", "akkud", "stcyohpfkyrkdbd", "wjplma"));
+        AudioAnalyzerPreset model = new AudioAnalyzerPreset().withAudioLanguage("udtjuewbc")
+            .withMode(AudioAnalysisMode.STANDARD)
+            .withExperimentalOptions(mapOf("bvpa", "whcjyxcc", "px", "akkud", "stcyohpfkyrkdbd", "wjplma"));
         model = BinaryData.fromObject(model).toObject(AudioAnalyzerPreset.class);
         Assertions.assertEquals("udtjuewbc", model.audioLanguage());
         Assertions.assertEquals(AudioAnalysisMode.STANDARD, model.mode());

@@ -36,8 +36,7 @@ class RouteFilterImpl
 
     @Override
     protected Mono<RouteFilterInner> createInner() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getRouteFilters()
             .createOrUpdateAsync(resourceGroupName(), name(), innerModel());
@@ -54,21 +53,12 @@ class RouteFilterImpl
         }
 
         if (this.innerModel().peerings() != null) {
-            this.peerings =
-                this
-                    .innerModel()
-                    .peerings()
-                    .stream()
-                    .collect(
-                        Collectors
-                            .toMap(
-                                ExpressRouteCircuitPeeringInner::name,
-                                peering ->
-                                    new ExpressRouteCircuitPeeringImpl<>(
-                                        this,
-                                        peering,
-                                        manager().serviceClient().getExpressRouteCircuitPeerings(),
-                                        peering.peeringType())));
+            this.peerings = this.innerModel()
+                .peerings()
+                .stream()
+                .collect(Collectors.toMap(ExpressRouteCircuitPeeringInner::name,
+                    peering -> new ExpressRouteCircuitPeeringImpl<>(this, peering,
+                        manager().serviceClient().getExpressRouteCircuitPeerings(), peering.peeringType())));
         } else {
             this.peerings = new HashMap<>();
         }
@@ -81,8 +71,7 @@ class RouteFilterImpl
 
     @Override
     protected Mono<RouteFilterInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getRouteFilters()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
@@ -90,14 +79,11 @@ class RouteFilterImpl
 
     @Override
     public Mono<RouteFilter> refreshAsync() {
-        return super
-            .refreshAsync()
-            .map(
-                routeFilter -> {
-                    RouteFilterImpl impl = (RouteFilterImpl) routeFilter;
-                    impl.initializeChildrenFromInner();
-                    return impl;
-                });
+        return super.refreshAsync().map(routeFilter -> {
+            RouteFilterImpl impl = (RouteFilterImpl) routeFilter;
+            impl.initializeChildrenFromInner();
+            return impl;
+        });
     }
 
     @Override

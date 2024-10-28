@@ -75,8 +75,8 @@ public interface CommunicationsGatewaysClient {
      * @return a CommunicationsGateway along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CommunicationsGatewayInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String communicationsGatewayName, Context context);
+    Response<CommunicationsGatewayInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String communicationsGatewayName, Context context);
 
     /**
      * Get a CommunicationsGateway.
@@ -120,9 +120,7 @@ public interface CommunicationsGatewaysClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommunicationsGatewayInner>, CommunicationsGatewayInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String communicationsGatewayName,
-        CommunicationsGatewayInner resource,
+        String resourceGroupName, String communicationsGatewayName, CommunicationsGatewayInner resource,
         Context context);
 
     /**
@@ -137,8 +135,8 @@ public interface CommunicationsGatewaysClient {
      * @return a CommunicationsGateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommunicationsGatewayInner createOrUpdate(
-        String resourceGroupName, String communicationsGatewayName, CommunicationsGatewayInner resource);
+    CommunicationsGatewayInner createOrUpdate(String resourceGroupName, String communicationsGatewayName,
+        CommunicationsGatewayInner resource);
 
     /**
      * Create a CommunicationsGateway.
@@ -153,11 +151,8 @@ public interface CommunicationsGatewaysClient {
      * @return a CommunicationsGateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommunicationsGatewayInner createOrUpdate(
-        String resourceGroupName,
-        String communicationsGatewayName,
-        CommunicationsGatewayInner resource,
-        Context context);
+    CommunicationsGatewayInner createOrUpdate(String resourceGroupName, String communicationsGatewayName,
+        CommunicationsGatewayInner resource, Context context);
 
     /**
      * Delete a CommunicationsGateway.
@@ -184,8 +179,8 @@ public interface CommunicationsGatewaysClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String communicationsGatewayName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String communicationsGatewayName,
+        Context context);
 
     /**
      * Delete a CommunicationsGateway.
@@ -225,11 +220,8 @@ public interface CommunicationsGatewaysClient {
      * @return a CommunicationsGateway resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CommunicationsGatewayInner> updateWithResponse(
-        String resourceGroupName,
-        String communicationsGatewayName,
-        CommunicationsGatewayUpdate properties,
-        Context context);
+    Response<CommunicationsGatewayInner> updateWithResponse(String resourceGroupName, String communicationsGatewayName,
+        CommunicationsGatewayUpdate properties, Context context);
 
     /**
      * Update a CommunicationsGateway.
@@ -243,6 +235,6 @@ public interface CommunicationsGatewaysClient {
      * @return a CommunicationsGateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommunicationsGatewayInner update(
-        String resourceGroupName, String communicationsGatewayName, CommunicationsGatewayUpdate properties);
+    CommunicationsGatewayInner update(String resourceGroupName, String communicationsGatewayName,
+        CommunicationsGatewayUpdate properties);
 }

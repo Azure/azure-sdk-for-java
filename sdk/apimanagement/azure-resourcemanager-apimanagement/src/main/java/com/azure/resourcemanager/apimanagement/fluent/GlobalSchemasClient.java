@@ -47,8 +47,8 @@ public interface GlobalSchemasClient {
      * @return the response of the list schema operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GlobalSchemaContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<GlobalSchemaContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Schema specified by its identifier.
@@ -63,8 +63,8 @@ public interface GlobalSchemasClient {
      * @return the entity state (Etag) version of the Schema specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GlobalSchemasGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String schemaId, Context context);
+    GlobalSchemasGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String schemaId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Schema specified by its identifier.
@@ -92,8 +92,8 @@ public interface GlobalSchemasClient {
      * @return the details of the Schema specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GlobalSchemasGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String schemaId, Context context);
+    GlobalSchemasGetResponse getWithResponse(String resourceGroupName, String serviceName, String schemaId,
+        Context context);
 
     /**
      * Gets the details of the Schema specified by its identifier.
@@ -141,12 +141,8 @@ public interface GlobalSchemasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GlobalSchemaContractInner>, GlobalSchemaContractInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String schemaId,
-        GlobalSchemaContractInner parameters,
-        String ifMatch,
-        Context context);
+        String resourceGroupName, String serviceName, String schemaId, GlobalSchemaContractInner parameters,
+        String ifMatch, Context context);
 
     /**
      * Creates new or updates existing specified Schema of the API Management service instance.
@@ -161,8 +157,8 @@ public interface GlobalSchemasClient {
      * @return global Schema Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GlobalSchemaContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String schemaId, GlobalSchemaContractInner parameters);
+    GlobalSchemaContractInner createOrUpdate(String resourceGroupName, String serviceName, String schemaId,
+        GlobalSchemaContractInner parameters);
 
     /**
      * Creates new or updates existing specified Schema of the API Management service instance.
@@ -179,13 +175,8 @@ public interface GlobalSchemasClient {
      * @return global Schema Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GlobalSchemaContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String schemaId,
-        GlobalSchemaContractInner parameters,
-        String ifMatch,
-        Context context);
+    GlobalSchemaContractInner createOrUpdate(String resourceGroupName, String serviceName, String schemaId,
+        GlobalSchemaContractInner parameters, String ifMatch, Context context);
 
     /**
      * Deletes specific Schema.
@@ -202,8 +193,8 @@ public interface GlobalSchemasClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String schemaId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String schemaId, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific Schema.

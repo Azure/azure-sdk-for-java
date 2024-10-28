@@ -10,9 +10,8 @@ import com.azure.resourcemanager.synapse.models.LinkedIntegrationRuntimeType;
 public final class LinkedIntegrationRuntimeTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedIntegrationRuntimeType model =
-            BinaryData
-                .fromString("{\"authorizationType\":\"LinkedIntegrationRuntimeType\"}")
+        LinkedIntegrationRuntimeType model
+            = BinaryData.fromString("{\"authorizationType\":\"LinkedIntegrationRuntimeType\"}")
                 .toObject(LinkedIntegrationRuntimeType.class);
     }
 

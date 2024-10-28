@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CommitmentPeriodTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommitmentPeriod model =
-            BinaryData
-                .fromString(
-                    "{\"tier\":\"gjqppy\",\"count\":768184156,\"quota\":{\"quantity\":2863905998828514603,\"unit\":\"yhgfipnsx\"},\"startDate\":\"cwaekrrjre\",\"endDate\":\"xt\"}")
-                .toObject(CommitmentPeriod.class);
+        CommitmentPeriod model = BinaryData.fromString(
+            "{\"tier\":\"gjqppy\",\"count\":768184156,\"quota\":{\"quantity\":2863905998828514603,\"unit\":\"yhgfipnsx\"},\"startDate\":\"cwaekrrjre\",\"endDate\":\"xt\"}")
+            .toObject(CommitmentPeriod.class);
         Assertions.assertEquals("gjqppy", model.tier());
         Assertions.assertEquals(768184156, model.count());
     }

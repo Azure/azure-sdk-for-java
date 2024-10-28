@@ -41,14 +41,8 @@ public interface NamedValues {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged NamedValue list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<NamedValueContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean isKeyVaultRefreshFailed,
-        Context context);
+    PagedIterable<NamedValueContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Boolean isKeyVaultRefreshFailed, Context context);
 
     /**
      * Gets the entity state (Etag) version of the named value specified by its identifier.
@@ -62,8 +56,8 @@ public interface NamedValues {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the named value specified by its identifier.
      */
-    NamedValuesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String namedValueId, Context context);
+    NamedValuesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String namedValueId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the named value specified by its identifier.
@@ -89,8 +83,8 @@ public interface NamedValues {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the named value specified by its identifier.
      */
-    Response<NamedValueContract> getWithResponse(
-        String resourceGroupName, String serviceName, String namedValueId, Context context);
+    Response<NamedValueContract> getWithResponse(String resourceGroupName, String serviceName, String namedValueId,
+        Context context);
 
     /**
      * Gets the details of the named value specified by its identifier.
@@ -119,8 +113,8 @@ public interface NamedValues {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String namedValueId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String namedValueId, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific named value from the API Management service instance.
@@ -148,8 +142,8 @@ public interface NamedValues {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the secret of the named value specified by its identifier.
      */
-    Response<NamedValueSecretContract> listValueWithResponse(
-        String resourceGroupName, String serviceName, String namedValueId, Context context);
+    Response<NamedValueSecretContract> listValueWithResponse(String resourceGroupName, String serviceName,
+        String namedValueId, Context context);
 
     /**
      * Gets the secret of the named value specified by its identifier.
@@ -189,8 +183,8 @@ public interface NamedValues {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return namedValue details.
      */
-    NamedValueContract refreshSecret(
-        String resourceGroupName, String serviceName, String namedValueId, Context context);
+    NamedValueContract refreshSecret(String resourceGroupName, String serviceName, String namedValueId,
+        Context context);
 
     /**
      * Gets the details of the named value specified by its identifier.

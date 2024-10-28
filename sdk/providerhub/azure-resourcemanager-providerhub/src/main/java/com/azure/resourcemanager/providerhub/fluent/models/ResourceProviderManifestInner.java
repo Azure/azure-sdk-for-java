@@ -124,8 +124,8 @@ public final class ResourceProviderManifestInner {
      * @param providerAuthentication the providerAuthentication value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
-    public ResourceProviderManifestInner withProviderAuthentication(
-        ResourceProviderManifestProviderAuthentication providerAuthentication) {
+    public ResourceProviderManifestInner
+        withProviderAuthentication(ResourceProviderManifestProviderAuthentication providerAuthentication) {
         this.providerAuthentication = providerAuthentication;
         return this;
     }
@@ -145,8 +145,8 @@ public final class ResourceProviderManifestInner {
      * @param providerAuthorizations the providerAuthorizations value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
-    public ResourceProviderManifestInner withProviderAuthorizations(
-        List<ResourceProviderAuthorization> providerAuthorizations) {
+    public ResourceProviderManifestInner
+        withProviderAuthorizations(List<ResourceProviderAuthorization> providerAuthorizations) {
         this.providerAuthorizations = providerAuthorizations;
         return this;
     }
@@ -266,8 +266,8 @@ public final class ResourceProviderManifestInner {
      * @param requestHeaderOptions the requestHeaderOptions value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
-    public ResourceProviderManifestInner withRequestHeaderOptions(
-        ResourceProviderManifestRequestHeaderOptions requestHeaderOptions) {
+    public ResourceProviderManifestInner
+        withRequestHeaderOptions(ResourceProviderManifestRequestHeaderOptions requestHeaderOptions) {
         this.requestHeaderOptions = requestHeaderOptions;
         return this;
     }
@@ -367,8 +367,8 @@ public final class ResourceProviderManifestInner {
      * @param globalNotificationEndpoints the globalNotificationEndpoints value to set.
      * @return the ResourceProviderManifestInner object itself.
      */
-    public ResourceProviderManifestInner withGlobalNotificationEndpoints(
-        List<ResourceProviderEndpoint> globalNotificationEndpoints) {
+    public ResourceProviderManifestInner
+        withGlobalNotificationEndpoints(List<ResourceProviderEndpoint> globalNotificationEndpoints) {
         this.globalNotificationEndpoints = globalNotificationEndpoints;
         return this;
     }

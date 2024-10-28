@@ -52,8 +52,7 @@ public abstract class AbstractKeyVaultKeylessSignature extends SignatureSpi {
     // such as ECDSASignature#engineGetParameter.
     @Override
     @Deprecated
-    protected Object engineGetParameter(String param)
-        throws InvalidParameterException {
+    protected Object engineGetParameter(String param) throws InvalidParameterException {
         throw new UnsupportedOperationException("getParameter() not supported");
     }
 
@@ -61,8 +60,7 @@ public abstract class AbstractKeyVaultKeylessSignature extends SignatureSpi {
     // such as RSAPSSSignature#engineSetParameter.
     @Override
     @Deprecated
-    protected void engineSetParameter(String param, Object value)
-        throws InvalidParameterException {
+    protected void engineSetParameter(String param, Object value) throws InvalidParameterException {
         throw new UnsupportedOperationException("setParameter() not supported");
     }
 
@@ -74,7 +72,8 @@ public abstract class AbstractKeyVaultKeylessSignature extends SignatureSpi {
             keyId = ((KeyVaultPrivateKey) privateKey).getKid();
             keyVaultClient = ((KeyVaultPrivateKey) privateKey).getKeyVaultClient();
         } else {
-            throw new UnsupportedOperationException("engineInitSign() not supported which private key is not instance of KeyVaultPrivateKey");
+            throw new UnsupportedOperationException(
+                "engineInitSign() not supported which private key is not instance of KeyVaultPrivateKey");
         }
     }
 

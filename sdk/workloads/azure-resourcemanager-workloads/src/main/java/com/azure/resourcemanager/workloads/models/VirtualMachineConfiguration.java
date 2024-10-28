@@ -100,24 +100,18 @@ public final class VirtualMachineConfiguration {
      */
     public void validate() {
         if (vmSize() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vmSize in model VirtualMachineConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property vmSize in model VirtualMachineConfiguration"));
         }
         if (imageReference() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property imageReference in model VirtualMachineConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property imageReference in model VirtualMachineConfiguration"));
         } else {
             imageReference().validate();
         }
         if (osProfile() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property osProfile in model VirtualMachineConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property osProfile in model VirtualMachineConfiguration"));
         } else {
             osProfile().validate();
         }

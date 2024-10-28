@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class UserAssignedPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedProperties model =
-            BinaryData.fromString("{\"resourceId\":\"skghsauuimj\"}").toObject(UserAssignedProperties.class);
+        UserAssignedProperties model
+            = BinaryData.fromString("{\"resourceId\":\"skghsauuimj\"}").toObject(UserAssignedProperties.class);
         Assertions.assertEquals("skghsauuimj", model.resourceId());
     }
 

@@ -110,22 +110,18 @@ public final class FarmBeatsImpl implements FarmBeats, FarmBeats.Definition, Far
     }
 
     public FarmBeats create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFarmBeatsModels()
-                .createOrUpdateWithResponse(resourceGroupName, farmBeatsResourceName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFarmBeatsModels()
+            .createOrUpdateWithResponse(resourceGroupName, farmBeatsResourceName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public FarmBeats create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFarmBeatsModels()
-                .createOrUpdateWithResponse(resourceGroupName, farmBeatsResourceName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFarmBeatsModels()
+            .createOrUpdateWithResponse(resourceGroupName, farmBeatsResourceName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -141,20 +137,16 @@ public final class FarmBeatsImpl implements FarmBeats, FarmBeats.Definition, Far
     }
 
     public FarmBeats apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFarmBeatsModels()
-                .update(resourceGroupName, farmBeatsResourceName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFarmBeatsModels()
+            .update(resourceGroupName, farmBeatsResourceName, updateBody, Context.NONE);
         return this;
     }
 
     public FarmBeats apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFarmBeatsModels()
-                .update(resourceGroupName, farmBeatsResourceName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFarmBeatsModels()
+            .update(resourceGroupName, farmBeatsResourceName, updateBody, context);
         return this;
     }
 
@@ -166,22 +158,18 @@ public final class FarmBeatsImpl implements FarmBeats, FarmBeats.Definition, Far
     }
 
     public FarmBeats refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFarmBeatsModels()
-                .getByResourceGroupWithResponse(resourceGroupName, farmBeatsResourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFarmBeatsModels()
+            .getByResourceGroupWithResponse(resourceGroupName, farmBeatsResourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FarmBeats refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFarmBeatsModels()
-                .getByResourceGroupWithResponse(resourceGroupName, farmBeatsResourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFarmBeatsModels()
+            .getByResourceGroupWithResponse(resourceGroupName, farmBeatsResourceName, context)
+            .getValue();
         return this;
     }
 

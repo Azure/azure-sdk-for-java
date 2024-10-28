@@ -117,10 +117,8 @@ public interface ManagedPrivateEndpoint {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithPrivateLinkResourceId,
-                DefinitionStages.WithPrivateLinkResourceRegion,
-                DefinitionStages.WithGroupId,
-                DefinitionStages.WithRequestMessage {
+            extends DefinitionStages.WithPrivateLinkResourceId, DefinitionStages.WithPrivateLinkResourceRegion,
+            DefinitionStages.WithGroupId, DefinitionStages.WithRequestMessage {
             /**
              * Executes the create request.
              *
@@ -194,11 +192,8 @@ public interface ManagedPrivateEndpoint {
     ManagedPrivateEndpoint.Update update();
 
     /** The template for ManagedPrivateEndpoint update. */
-    interface Update
-        extends UpdateStages.WithPrivateLinkResourceId,
-            UpdateStages.WithPrivateLinkResourceRegion,
-            UpdateStages.WithGroupId,
-            UpdateStages.WithRequestMessage {
+    interface Update extends UpdateStages.WithPrivateLinkResourceId, UpdateStages.WithPrivateLinkResourceRegion,
+        UpdateStages.WithGroupId, UpdateStages.WithRequestMessage {
         /**
          * Executes the update request.
          *

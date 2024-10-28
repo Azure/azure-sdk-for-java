@@ -58,9 +58,7 @@ public final class PhoneNumberIdentifier extends CommunicationIdentifier {
 
         PhoneNumberIdentifier phoneId = (PhoneNumberIdentifier) that;
 
-        return getRawId() == null
-            || phoneId.getRawId() == null
-            || getRawId().equals(phoneId.getRawId());
+        return getRawId() == null || phoneId.getRawId() == null || getRawId().equals(phoneId.getRawId());
     }
 
     @Override

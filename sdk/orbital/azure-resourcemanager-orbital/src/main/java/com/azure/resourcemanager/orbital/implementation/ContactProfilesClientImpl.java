@@ -54,8 +54,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @param client the instance of the service client containing this operation class.
      */
     ContactProfilesClientImpl(AzureOrbitalImpl client) {
-        this.service =
-            RestProxy.create(ContactProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ContactProfilesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,109 +66,80 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureOrbitalContactP")
     public interface ContactProfilesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles/{contactProfileName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles/{contactProfileName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContactProfileInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ContactProfileInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("contactProfileName") String contactProfileName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("contactProfileName") String contactProfileName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles/{contactProfileName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles/{contactProfileName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("contactProfileName") String contactProfileName,
-            @BodyParam("application/json") ContactProfileInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ContactProfileInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles/{contactProfileName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles/{contactProfileName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("contactProfileName") String contactProfileName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("contactProfileName") String contactProfileName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles/{contactProfileName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles/{contactProfileName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateTags(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> updateTags(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("contactProfileName") String contactProfileName,
-            @BodyParam("application/json") TagsObject parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") TagsObject parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Orbital/contactProfiles")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContactProfileListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skiptoken") String skiptoken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ContactProfileListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$skiptoken") String skiptoken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Orbital/contactProfiles")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ContactProfileListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ContactProfileListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skiptoken") String skiptoken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$skiptoken") String skiptoken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContactProfileListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ContactProfileListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -183,23 +154,19 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ContactProfileInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String contactProfileName) {
+    private Mono<Response<ContactProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String contactProfileName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (contactProfileName == null) {
             return Mono
@@ -207,17 +174,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            contactProfileName,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), contactProfileName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -234,23 +192,19 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ContactProfileInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String contactProfileName, Context context) {
+    private Mono<Response<ContactProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String contactProfileName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (contactProfileName == null) {
             return Mono
@@ -258,15 +212,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                contactProfileName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), contactProfileName, accept, context);
     }
 
     /**
@@ -297,8 +244,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @return the specified contact Profile in a specified resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ContactProfileInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String contactProfileName, Context context) {
+    public Response<ContactProfileInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String contactProfileName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, contactProfileName, context).block();
     }
 
@@ -330,23 +277,19 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     scheduling a contact along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String contactProfileName, ContactProfileInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String contactProfileName, ContactProfileInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (contactProfileName == null) {
             return Mono
@@ -359,18 +302,9 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            contactProfileName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), contactProfileName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -388,23 +322,19 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     scheduling a contact along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String contactProfileName, ContactProfileInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String contactProfileName, ContactProfileInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (contactProfileName == null) {
             return Mono
@@ -417,16 +347,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                contactProfileName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), contactProfileName, parameters, accept, context);
     }
 
     /**
@@ -442,18 +364,12 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ContactProfileInner>, ContactProfileInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String contactProfileName, ContactProfileInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, contactProfileName, parameters);
-        return this
-            .client
-            .<ContactProfileInner, ContactProfileInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ContactProfileInner.class,
-                ContactProfileInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<ContactProfileInner>, ContactProfileInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String contactProfileName, ContactProfileInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, contactProfileName, parameters);
+        return this.client.<ContactProfileInner, ContactProfileInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ContactProfileInner.class, ContactProfileInner.class, this.client.getContext());
     }
 
     /**
@@ -473,12 +389,10 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     private PollerFlux<PollResult<ContactProfileInner>, ContactProfileInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String contactProfileName, ContactProfileInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, contactProfileName, parameters, context);
-        return this
-            .client
-            .<ContactProfileInner, ContactProfileInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ContactProfileInner.class, ContactProfileInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, contactProfileName, parameters, context);
+        return this.client.<ContactProfileInner, ContactProfileInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ContactProfileInner.class, ContactProfileInner.class, context);
     }
 
     /**
@@ -494,8 +408,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginCreateOrUpdate(
-        String resourceGroupName, String contactProfileName, ContactProfileInner parameters) {
+    public SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner>
+        beginCreateOrUpdate(String resourceGroupName, String contactProfileName, ContactProfileInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, contactProfileName, parameters).getSyncPoller();
     }
 
@@ -515,8 +429,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginCreateOrUpdate(
         String resourceGroupName, String contactProfileName, ContactProfileInner parameters, Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, contactProfileName, parameters, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, contactProfileName, parameters, context)
             .getSyncPoller();
     }
 
@@ -533,10 +446,9 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     scheduling a contact on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContactProfileInner> createOrUpdateAsync(
-        String resourceGroupName, String contactProfileName, ContactProfileInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, contactProfileName, parameters)
-            .last()
+    private Mono<ContactProfileInner> createOrUpdateAsync(String resourceGroupName, String contactProfileName,
+        ContactProfileInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, contactProfileName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -554,10 +466,9 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     scheduling a contact on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContactProfileInner> createOrUpdateAsync(
-        String resourceGroupName, String contactProfileName, ContactProfileInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, contactProfileName, parameters, context)
-            .last()
+    private Mono<ContactProfileInner> createOrUpdateAsync(String resourceGroupName, String contactProfileName,
+        ContactProfileInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, contactProfileName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -574,8 +485,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContactProfileInner createOrUpdate(
-        String resourceGroupName, String contactProfileName, ContactProfileInner parameters) {
+    public ContactProfileInner createOrUpdate(String resourceGroupName, String contactProfileName,
+        ContactProfileInner parameters) {
         return createOrUpdateAsync(resourceGroupName, contactProfileName, parameters).block();
     }
 
@@ -593,8 +504,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContactProfileInner createOrUpdate(
-        String resourceGroupName, String contactProfileName, ContactProfileInner parameters, Context context) {
+    public ContactProfileInner createOrUpdate(String resourceGroupName, String contactProfileName,
+        ContactProfileInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, contactProfileName, parameters, context).block();
     }
 
@@ -609,23 +520,19 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String contactProfileName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String contactProfileName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (contactProfileName == null) {
             return Mono
@@ -633,17 +540,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            contactProfileName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), contactProfileName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -659,23 +557,19 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String contactProfileName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String contactProfileName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (contactProfileName == null) {
             return Mono
@@ -683,15 +577,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                contactProfileName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), contactProfileName, accept, context);
     }
 
     /**
@@ -707,10 +594,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String contactProfileName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, contactProfileName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -725,13 +610,12 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String contactProfileName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String contactProfileName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, contactProfileName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -761,8 +645,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String contactProfileName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String contactProfileName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, contactProfileName, context).getSyncPoller();
     }
 
@@ -778,8 +662,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String contactProfileName) {
-        return beginDeleteAsync(resourceGroupName, contactProfileName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, contactProfileName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -796,8 +679,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String contactProfileName, Context context) {
-        return beginDeleteAsync(resourceGroupName, contactProfileName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, contactProfileName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -843,23 +725,19 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     scheduling a contact along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
-        String resourceGroupName, String contactProfileName, TagsObject parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName,
+        String contactProfileName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (contactProfileName == null) {
             return Mono
@@ -872,18 +750,9 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            contactProfileName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.updateTags(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), contactProfileName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -901,23 +770,19 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     scheduling a contact along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
-        String resourceGroupName, String contactProfileName, TagsObject parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName,
+        String contactProfileName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (contactProfileName == null) {
             return Mono
@@ -930,16 +795,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                contactProfileName,
-                parameters,
-                accept,
-                context);
+        return service.updateTags(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), contactProfileName, parameters, accept, context);
     }
 
     /**
@@ -955,18 +812,12 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTagsAsync(
-        String resourceGroupName, String contactProfileName, TagsObject parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, contactProfileName, parameters);
-        return this
-            .client
-            .<ContactProfileInner, ContactProfileInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ContactProfileInner.class,
-                ContactProfileInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<ContactProfileInner>, ContactProfileInner>
+        beginUpdateTagsAsync(String resourceGroupName, String contactProfileName, TagsObject parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateTagsWithResponseAsync(resourceGroupName, contactProfileName, parameters);
+        return this.client.<ContactProfileInner, ContactProfileInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ContactProfileInner.class, ContactProfileInner.class, this.client.getContext());
     }
 
     /**
@@ -986,12 +837,10 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     private PollerFlux<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTagsAsync(
         String resourceGroupName, String contactProfileName, TagsObject parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, contactProfileName, parameters, context);
-        return this
-            .client
-            .<ContactProfileInner, ContactProfileInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ContactProfileInner.class, ContactProfileInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateTagsWithResponseAsync(resourceGroupName, contactProfileName, parameters, context);
+        return this.client.<ContactProfileInner, ContactProfileInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ContactProfileInner.class, ContactProfileInner.class, context);
     }
 
     /**
@@ -1007,8 +856,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTags(
-        String resourceGroupName, String contactProfileName, TagsObject parameters) {
+    public SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTags(String resourceGroupName,
+        String contactProfileName, TagsObject parameters) {
         return this.beginUpdateTagsAsync(resourceGroupName, contactProfileName, parameters).getSyncPoller();
     }
 
@@ -1026,8 +875,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     of the configurations required for scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTags(
-        String resourceGroupName, String contactProfileName, TagsObject parameters, Context context) {
+    public SyncPoller<PollResult<ContactProfileInner>, ContactProfileInner> beginUpdateTags(String resourceGroupName,
+        String contactProfileName, TagsObject parameters, Context context) {
         return this.beginUpdateTagsAsync(resourceGroupName, contactProfileName, parameters, context).getSyncPoller();
     }
 
@@ -1044,10 +893,9 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     scheduling a contact on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContactProfileInner> updateTagsAsync(
-        String resourceGroupName, String contactProfileName, TagsObject parameters) {
-        return beginUpdateTagsAsync(resourceGroupName, contactProfileName, parameters)
-            .last()
+    private Mono<ContactProfileInner> updateTagsAsync(String resourceGroupName, String contactProfileName,
+        TagsObject parameters) {
+        return beginUpdateTagsAsync(resourceGroupName, contactProfileName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1065,10 +913,9 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     scheduling a contact on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ContactProfileInner> updateTagsAsync(
-        String resourceGroupName, String contactProfileName, TagsObject parameters, Context context) {
-        return beginUpdateTagsAsync(resourceGroupName, contactProfileName, parameters, context)
-            .last()
+    private Mono<ContactProfileInner> updateTagsAsync(String resourceGroupName, String contactProfileName,
+        TagsObject parameters, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, contactProfileName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1103,8 +950,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     scheduling a contact.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ContactProfileInner updateTags(
-        String resourceGroupName, String contactProfileName, TagsObject parameters, Context context) {
+    public ContactProfileInner updateTags(String resourceGroupName, String contactProfileName, TagsObject parameters,
+        Context context) {
         return updateTagsAsync(resourceGroupName, contactProfileName, parameters, context).block();
     }
 
@@ -1124,38 +971,19 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContactProfileInner>> listSinglePageAsync(String skiptoken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            skiptoken,
-                            accept,
-                            context))
-            .<PagedResponse<ContactProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), skiptoken, accept, context))
+            .<PagedResponse<ContactProfileInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1176,36 +1004,20 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContactProfileInner>> listSinglePageAsync(String skiptoken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                skiptoken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), skiptoken,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1222,8 +1034,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ContactProfileInner> listAsync(String skiptoken) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(skiptoken), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(skiptoken),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1236,8 +1048,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ContactProfileInner> listAsync() {
         final String skiptoken = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(skiptoken), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(skiptoken),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1255,8 +1067,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ContactProfileInner> listAsync(String skiptoken, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(skiptoken, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(skiptoken, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
@@ -1306,46 +1117,26 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ContactProfileInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String skiptoken) {
+    private Mono<PagedResponse<ContactProfileInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String skiptoken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            skiptoken,
-                            accept,
-                            context))
-            .<PagedResponse<ContactProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), skiptoken, accept, context))
+            .<PagedResponse<ContactProfileInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1365,44 +1156,27 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ContactProfileInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String skiptoken, Context context) {
+    private Mono<PagedResponse<ContactProfileInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String skiptoken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                skiptoken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), skiptoken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1420,8 +1194,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ContactProfileInner> listByResourceGroupAsync(String resourceGroupName, String skiptoken) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, skiptoken),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, skiptoken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -1437,8 +1210,7 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ContactProfileInner> listByResourceGroupAsync(String resourceGroupName) {
         final String skiptoken = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, skiptoken),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, skiptoken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -1457,10 +1229,9 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @return response for the ListContactProfiles API service call as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ContactProfileInner> listByResourceGroupAsync(
-        String resourceGroupName, String skiptoken, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, skiptoken, context),
+    private PagedFlux<ContactProfileInner> listByResourceGroupAsync(String resourceGroupName, String skiptoken,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, skiptoken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -1494,8 +1265,8 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      * @return response for the ListContactProfiles API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ContactProfileInner> listByResourceGroup(
-        String resourceGroupName, String skiptoken, Context context) {
+    public PagedIterable<ContactProfileInner> listByResourceGroup(String resourceGroupName, String skiptoken,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, skiptoken, context));
     }
 
@@ -1516,24 +1287,15 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ContactProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ContactProfileInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1550,30 +1312,20 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ContactProfileInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ContactProfileInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1593,23 +1345,13 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ContactProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ContactProfileInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1631,23 +1373,13 @@ public final class ContactProfilesClientImpl implements ContactProfilesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

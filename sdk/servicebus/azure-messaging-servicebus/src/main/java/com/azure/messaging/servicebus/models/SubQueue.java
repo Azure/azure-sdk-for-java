@@ -28,7 +28,7 @@ public enum SubQueue {
      * This is builder for creating {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient} to
      * consume dead-letter messages from Service Bus entity.
      */
-     DEAD_LETTER_QUEUE,
+    DEAD_LETTER_QUEUE,
 
     /**
      * Connect to a queue or subscription's transfer dead-letter queue.

@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SignalRUsageListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SignalRUsageList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"ndnvo\",\"currentValue\":4292877192766299113,\"limit\":3293446474919179561,\"name\":{\"value\":\"kcglhslaz\",\"localizedValue\":\"yggdtjixh\"},\"unit\":\"uofqwe\"}],\"nextLink\":\"hmenevfyexfwhybc\"}")
-                .toObject(SignalRUsageList.class);
+        SignalRUsageList model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"ndnvo\",\"currentValue\":4292877192766299113,\"limit\":3293446474919179561,\"name\":{\"value\":\"kcglhslaz\",\"localizedValue\":\"yggdtjixh\"},\"unit\":\"uofqwe\"}],\"nextLink\":\"hmenevfyexfwhybc\"}")
+            .toObject(SignalRUsageList.class);
         Assertions.assertEquals("ndnvo", model.value().get(0).id());
         Assertions.assertEquals(4292877192766299113L, model.value().get(0).currentValue());
         Assertions.assertEquals(3293446474919179561L, model.value().get(0).limit());
@@ -30,18 +28,11 @@ public final class SignalRUsageListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SignalRUsageList model =
-            new SignalRUsageList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SignalRUsageInner()
-                                .withId("ndnvo")
-                                .withCurrentValue(4292877192766299113L)
-                                .withLimit(3293446474919179561L)
-                                .withName(new SignalRUsageName().withValue("kcglhslaz").withLocalizedValue("yggdtjixh"))
-                                .withUnit("uofqwe")))
-                .withNextLink("hmenevfyexfwhybc");
+        SignalRUsageList model = new SignalRUsageList().withValue(Arrays.asList(new SignalRUsageInner().withId("ndnvo")
+            .withCurrentValue(4292877192766299113L)
+            .withLimit(3293446474919179561L)
+            .withName(new SignalRUsageName().withValue("kcglhslaz").withLocalizedValue("yggdtjixh"))
+            .withUnit("uofqwe"))).withNextLink("hmenevfyexfwhybc");
         model = BinaryData.fromObject(model).toObject(SignalRUsageList.class);
         Assertions.assertEquals("ndnvo", model.value().get(0).id());
         Assertions.assertEquals(4292877192766299113L, model.value().get(0).currentValue());

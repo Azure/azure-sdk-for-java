@@ -56,13 +56,8 @@ public interface ManagementGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the management group along with {@link Response}.
      */
-    Response<ManagementGroup> getWithResponse(
-        String groupId,
-        ManagementGroupExpandType expand,
-        Boolean recurse,
-        String filter,
-        String cacheControl,
-        Context context);
+    Response<ManagementGroup> getWithResponse(String groupId, ManagementGroupExpandType expand, Boolean recurse,
+        String filter, String cacheControl, Context context);
 
     /**
      * Get the details of the management group.
@@ -102,11 +97,8 @@ public interface ManagementGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the management group details.
      */
-    ManagementGroup createOrUpdate(
-        String groupId,
-        CreateManagementGroupRequest createManagementGroupRequest,
-        String cacheControl,
-        Context context);
+    ManagementGroup createOrUpdate(String groupId, CreateManagementGroupRequest createManagementGroupRequest,
+        String cacheControl, Context context);
 
     /**
      * Update a management group.
@@ -121,8 +113,8 @@ public interface ManagementGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the management group details along with {@link Response}.
      */
-    Response<ManagementGroup> updateWithResponse(
-        String groupId, PatchManagementGroupRequest patchGroupRequest, String cacheControl, Context context);
+    Response<ManagementGroup> updateWithResponse(String groupId, PatchManagementGroupRequest patchGroupRequest,
+        String cacheControl, Context context);
 
     /**
      * Update a management group.

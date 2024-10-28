@@ -76,7 +76,8 @@ public final class RegistryArtifactAsync {
      * @param httpPipeline HttpPipeline that the HTTP requests and responses flow through.
      * @param version {@link ContainerRegistryServiceVersion} of the service to be used when making requests.
      */
-    RegistryArtifactAsync(String repositoryName, String tagOrDigest, HttpPipeline httpPipeline, String endpoint, String version) {
+    RegistryArtifactAsync(String repositoryName, String tagOrDigest, HttpPipeline httpPipeline, String endpoint,
+        String version) {
         Objects.requireNonNull(repositoryName, "'repositoryName' cannot be null.");
         if (repositoryName.isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'repositoryName' can't be empty"));
@@ -91,10 +92,9 @@ public final class RegistryArtifactAsync {
         this.fullyQualifiedReference = formatFullyQualifiedReference(endpoint, repositoryName, tagOrDigest);
         this.endpoint = endpoint;
         this.repositoryName = repositoryName;
-        this.digestMono = isDigest(tagOrDigest) ? Mono.just(tagOrDigest)
-            : Mono.defer(() -> getTagProperties(tagOrDigest)
-                .map(a -> a.getDigest())
-                .cache());
+        this.digestMono = isDigest(tagOrDigest)
+            ? Mono.just(tagOrDigest)
+            : Mono.defer(() -> getTagProperties(tagOrDigest).map(a -> a.getDigest()).cache());
     }
 
     /**
@@ -230,7 +230,7 @@ public final class RegistryArtifactAsync {
         return withContext(context -> getManifestPropertiesWithResponse(context));
     }
 
-    private  Mono<Response<ArtifactManifestProperties>> getManifestPropertiesWithResponse(Context context) {
+    private Mono<Response<ArtifactManifestProperties>> getManifestPropertiesWithResponse(Context context) {
         return digestMono
             .flatMap(res -> serviceClient.getManifestPropertiesWithResponseAsync(getRepositoryName(), res, context))
             .<Response<ArtifactManifestProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
@@ -394,7 +394,8 @@ public final class RegistryArtifactAsync {
             (token, pageSize) -> withContext(context -> listTagPropertiesNextSinglePageAsync(token, context)));
     }
 
-    private  Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesSinglePageAsync(Integer pageSize, ArtifactTagOrder order, Context context) {
+    private Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesSinglePageAsync(Integer pageSize,
+        ArtifactTagOrder order, Context context) {
         if (pageSize != null && pageSize < 0) {
             return monoError(LOGGER, new IllegalArgumentException("'pageSize' cannot be negative."));
         }
@@ -402,13 +403,15 @@ public final class RegistryArtifactAsync {
         final String orderString = order.equals(ArtifactTagOrder.NONE) ? null : order.toString();
 
         return digestMono
-            .flatMap(digest -> serviceClient.getTagsSinglePageAsync(getRepositoryName(), null, pageSize, orderString, digest, context))
+            .flatMap(digest -> serviceClient.getTagsSinglePageAsync(getRepositoryName(), null, pageSize, orderString,
+                digest, context))
             .map(digest -> UtilsImpl.getPagedResponseWithContinuationToken(digest,
                 baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName())))
             .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
-    private Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<ArtifactTagProperties>> listTagPropertiesNextSinglePageAsync(String nextLink,
+        Context context) {
         return serviceClient.getTagsNextSinglePageAsync(nextLink, context)
             .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
                 baseValues -> UtilsImpl.getTagProperties(baseValues, getRepositoryName())))
@@ -440,13 +443,13 @@ public final class RegistryArtifactAsync {
      * @throws NullPointerException thrown if {@code tagProperties} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ArtifactTagProperties>> updateTagPropertiesWithResponse(
-            String tag, ArtifactTagProperties tagProperties) {
+    public Mono<Response<ArtifactTagProperties>> updateTagPropertiesWithResponse(String tag,
+        ArtifactTagProperties tagProperties) {
         return withContext(context -> updateTagPropertiesWithResponse(tag, tagProperties, context));
     }
 
-    private Mono<Response<ArtifactTagProperties>> updateTagPropertiesWithResponse(
-        String tag, ArtifactTagProperties tagProperties, Context context) {
+    private Mono<Response<ArtifactTagProperties>> updateTagPropertiesWithResponse(String tag,
+        ArtifactTagProperties tagProperties, Context context) {
         if (tag == null) {
             return monoError(LOGGER, new NullPointerException("'tag' cannot be null."));
         }
@@ -459,13 +462,14 @@ public final class RegistryArtifactAsync {
             return monoError(LOGGER, new NullPointerException("'tagProperties' cannot be null."));
         }
 
-        TagWriteableProperties writeableProperties = new TagWriteableProperties()
-            .setDeleteEnabled(tagProperties.isDeleteEnabled())
-            .setListEnabled(tagProperties.isListEnabled())
-            .setReadEnabled(tagProperties.isReadEnabled())
-            .setWriteEnabled(tagProperties.isWriteEnabled());
+        TagWriteableProperties writeableProperties
+            = new TagWriteableProperties().setDeleteEnabled(tagProperties.isDeleteEnabled())
+                .setListEnabled(tagProperties.isListEnabled())
+                .setReadEnabled(tagProperties.isReadEnabled())
+                .setWriteEnabled(tagProperties.isWriteEnabled());
 
-        return serviceClient.updateTagAttributesWithResponseAsync(getRepositoryName(), tag, writeableProperties, context)
+        return serviceClient
+            .updateTagAttributesWithResponseAsync(getRepositoryName(), tag, writeableProperties, context)
             .<Response<ArtifactTagProperties>>map(internalResponse -> new SimpleResponse<>(internalResponse,
                 ArtifactTagPropertiesHelper.create(internalResponse.getValue())))
             .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
@@ -521,21 +525,22 @@ public final class RegistryArtifactAsync {
      * @throws NullPointerException thrown if the {@code manifestProperties} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponse(ArtifactManifestProperties manifestProperties) {
+    public Mono<Response<ArtifactManifestProperties>>
+        updateManifestPropertiesWithResponse(ArtifactManifestProperties manifestProperties) {
         return withContext(context -> updateManifestPropertiesWithResponse(manifestProperties, context));
     }
 
-    private Mono<Response<ArtifactManifestProperties>> updateManifestPropertiesWithResponse(
-        ArtifactManifestProperties manifestProperties, Context context) {
+    private Mono<Response<ArtifactManifestProperties>>
+        updateManifestPropertiesWithResponse(ArtifactManifestProperties manifestProperties, Context context) {
         if (manifestProperties == null) {
             return monoError(LOGGER, new NullPointerException("'value' cannot be null."));
         }
 
-        ManifestWriteableProperties writeableProperties = new ManifestWriteableProperties()
-            .setDeleteEnabled(manifestProperties.isDeleteEnabled())
-            .setListEnabled(manifestProperties.isListEnabled())
-            .setWriteEnabled(manifestProperties.isWriteEnabled())
-            .setReadEnabled(manifestProperties.isReadEnabled());
+        ManifestWriteableProperties writeableProperties
+            = new ManifestWriteableProperties().setDeleteEnabled(manifestProperties.isDeleteEnabled())
+                .setListEnabled(manifestProperties.isListEnabled())
+                .setWriteEnabled(manifestProperties.isWriteEnabled())
+                .setReadEnabled(manifestProperties.isReadEnabled());
 
         return digestMono
             .flatMap(digest -> serviceClient.updateManifestPropertiesWithResponseAsync(getRepositoryName(), digest,
@@ -569,7 +574,6 @@ public final class RegistryArtifactAsync {
     public Mono<ArtifactManifestProperties> updateManifestProperties(ArtifactManifestProperties manifestProperties) {
         return updateManifestPropertiesWithResponse(manifestProperties).flatMap(FluxUtil::toMono);
     }
-
 
     /**
      * Gets the Azure Container Registry service endpoint.

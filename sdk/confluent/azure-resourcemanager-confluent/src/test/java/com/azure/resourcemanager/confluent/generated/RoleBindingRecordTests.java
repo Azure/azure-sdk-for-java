@@ -29,10 +29,16 @@ public final class RoleBindingRecordTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoleBindingRecord model = new RoleBindingRecord().withKind("vhelxprglyatdd").withId("cbcuejrjxgciqi")
-            .withMetadata(new MetadataEntity().withSelf("osx").withResourceName("qrhzoymibmrqyib")
-                .withCreatedAt("wfluszdt").withUpdatedAt("rkwofyyvoqa").withDeletedAt("iexpbtgiwbwo"))
-            .withPrincipal("washr").withRoleName("tkcnqxwb").withCrnPattern("kulpiujwaasi");
+        RoleBindingRecord model = new RoleBindingRecord().withKind("vhelxprglyatdd")
+            .withId("cbcuejrjxgciqi")
+            .withMetadata(new MetadataEntity().withSelf("osx")
+                .withResourceName("qrhzoymibmrqyib")
+                .withCreatedAt("wfluszdt")
+                .withUpdatedAt("rkwofyyvoqa")
+                .withDeletedAt("iexpbtgiwbwo"))
+            .withPrincipal("washr")
+            .withRoleName("tkcnqxwb")
+            .withCrnPattern("kulpiujwaasi");
         model = BinaryData.fromObject(model).toObject(RoleBindingRecord.class);
         Assertions.assertEquals("vhelxprglyatdd", model.kind());
         Assertions.assertEquals("cbcuejrjxgciqi", model.id());

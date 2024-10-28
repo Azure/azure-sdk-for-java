@@ -131,15 +131,12 @@ public final class BackendContractProperties extends BackendBaseParameters {
     public void validate() {
         super.validate();
         if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property url in model BackendContractProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property url in model BackendContractProperties"));
         }
         if (protocol() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property protocol in model BackendContractProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property protocol in model BackendContractProperties"));
         }
     }
 

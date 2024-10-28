@@ -20,8 +20,8 @@ public interface NameAvailabilities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the check availability result along with {@link Response}.
      */
-    Response<CheckNameAvailabilityResponse> checkLocalWithResponse(
-        String location, CheckNameAvailabilityRequest body, Context context);
+    Response<CheckNameAvailabilityResponse> checkLocalWithResponse(String location, CheckNameAvailabilityRequest body,
+        Context context);
 
     /**
      * Check whether the resource name is available in the given region.

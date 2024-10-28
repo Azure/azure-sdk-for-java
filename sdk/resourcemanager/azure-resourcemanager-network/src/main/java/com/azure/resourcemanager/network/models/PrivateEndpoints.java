@@ -16,15 +16,9 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 
 /** Entry point for private endpoints management API. */
-public interface PrivateEndpoints extends
-    SupportsListing<PrivateEndpoint>,
-    SupportsCreating<PrivateEndpoint.DefinitionStages.Blank>,
-    SupportsDeletingById,
-    SupportsListingByResourceGroup<PrivateEndpoint>,
-    SupportsGettingByResourceGroup<PrivateEndpoint>,
-    SupportsGettingById<PrivateEndpoint>,
-    SupportsDeletingByResourceGroup,
-    SupportsBatchCreation<PrivateEndpoint>,
-    SupportsBatchDeletion,
-    HasManager<NetworkManager> {
+public interface PrivateEndpoints extends SupportsListing<PrivateEndpoint>,
+    SupportsCreating<PrivateEndpoint.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsListingByResourceGroup<PrivateEndpoint>, SupportsGettingByResourceGroup<PrivateEndpoint>,
+    SupportsGettingById<PrivateEndpoint>, SupportsDeletingByResourceGroup, SupportsBatchCreation<PrivateEndpoint>,
+    SupportsBatchDeletion, HasManager<NetworkManager> {
 }

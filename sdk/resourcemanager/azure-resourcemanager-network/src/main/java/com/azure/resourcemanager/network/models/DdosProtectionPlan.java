@@ -16,10 +16,8 @@ import java.util.List;
 
 /** DDoS protection plan. */
 @Fluent
-public interface DdosProtectionPlan
-    extends GroupableResource<NetworkManager, DdosProtectionPlanInner>,
-        Refreshable<DdosProtectionPlan>,
-        Updatable<DdosProtectionPlan.Update> {
+public interface DdosProtectionPlan extends GroupableResource<NetworkManager, DdosProtectionPlanInner>,
+    Refreshable<DdosProtectionPlan>, Updatable<DdosProtectionPlan.Update> {
     /**
      * @return the resource GUID property of the DDoS protection plan resource. It uniquely identifies a resource, even
      *     if the user changes its name or migrate the resource across subscriptions or resource groups.

@@ -267,8 +267,8 @@ public final class FluxConfigurationInner extends ProxyResource {
      * @param configurationProtectedSettings the configurationProtectedSettings value to set.
      * @return the FluxConfigurationInner object itself.
      */
-    public FluxConfigurationInner withConfigurationProtectedSettings(
-        Map<String, String> configurationProtectedSettings) {
+    public FluxConfigurationInner
+        withConfigurationProtectedSettings(Map<String, String> configurationProtectedSettings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new FluxConfigurationProperties();
         }

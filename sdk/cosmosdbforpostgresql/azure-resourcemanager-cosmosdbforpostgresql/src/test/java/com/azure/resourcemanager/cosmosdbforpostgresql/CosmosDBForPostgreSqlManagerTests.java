@@ -54,10 +54,7 @@ public class CosmosDBForPostgreSqlManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -72,21 +69,19 @@ public class CosmosDBForPostgreSqlManagerTests extends TestProxyTestBase {
     @LiveOnly
     public void testCreateCluster() {
         Cluster cluster = null;
-        String  randomPadding = randomPadding();
+        String randomPadding = randomPadding();
         try {
             String clusterName = "cluster" + randomPadding;
             String adminPwd = "Pass@" + randomPadding;
             // @embedmeStart
-            cluster = cosmosDBForPostgreSqlManager
-                .clusters()
+            cluster = cosmosDBForPostgreSqlManager.clusters()
                 .define(clusterName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .withAdministratorLoginPassword(adminPwd)
                 .withPostgresqlVersion("15")
                 .withCitusVersion("12.1")
-                .withMaintenanceWindow(new MaintenanceWindow()
-                    .withCustomWindow("Disabled")
+                .withMaintenanceWindow(new MaintenanceWindow().withCustomWindow("Disabled")
                     .withDayOfWeek(0)
                     .withStartHour(0)
                     .withStartMinute(0))
@@ -105,7 +100,8 @@ public class CosmosDBForPostgreSqlManagerTests extends TestProxyTestBase {
             // @embedmeEnd
             cluster.refresh();
             Assertions.assertEquals(cluster.name(), clusterName);
-            Assertions.assertEquals(cluster.name(), cosmosDBForPostgreSqlManager.clusters().getById(cluster.id()).name());
+            Assertions.assertEquals(cluster.name(),
+                cosmosDBForPostgreSqlManager.clusters().getById(cluster.id()).name());
             Assertions.assertTrue(cosmosDBForPostgreSqlManager.clusters().list().stream().findAny().isPresent());
         } finally {
             if (cluster != null) {

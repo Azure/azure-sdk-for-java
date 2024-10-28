@@ -22,62 +22,40 @@ public final class ServiceFabricSchedulesImpl implements ServiceFabricSchedules 
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    public ServiceFabricSchedulesImpl(
-        ServiceFabricSchedulesClient innerClient,
+    public ServiceFabricSchedulesImpl(ServiceFabricSchedulesClient innerClient,
         com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Schedule> list(
-        String resourceGroupName, String labName, String username, String serviceFabricName) {
-        PagedIterable<ScheduleInner> inner =
-            this.serviceClient().list(resourceGroupName, labName, username, serviceFabricName);
+    public PagedIterable<Schedule> list(String resourceGroupName, String labName, String username,
+        String serviceFabricName) {
+        PagedIterable<ScheduleInner> inner
+            = this.serviceClient().list(resourceGroupName, labName, username, serviceFabricName);
         return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Schedule> list(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
-        PagedIterable<ScheduleInner> inner =
-            this
-                .serviceClient()
-                .list(resourceGroupName, labName, username, serviceFabricName, expand, filter, top, orderby, context);
+    public PagedIterable<Schedule> list(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String expand, String filter, Integer top, String orderby, Context context) {
+        PagedIterable<ScheduleInner> inner = this.serviceClient()
+            .list(resourceGroupName, labName, username, serviceFabricName, expand, filter, top, orderby, context);
         return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
-    public Response<Schedule> getWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        String expand,
-        Context context) {
-        Response<ScheduleInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, labName, username, serviceFabricName, name, expand, context);
+    public Response<Schedule> getWithResponse(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, String expand, Context context) {
+        Response<ScheduleInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, labName, username, serviceFabricName, name, expand, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ScheduleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Schedule get(
-        String resourceGroupName, String labName, String username, String serviceFabricName, String name) {
+    public Schedule get(String resourceGroupName, String labName, String username, String serviceFabricName,
+        String name) {
         ScheduleInner inner = this.serviceClient().get(resourceGroupName, labName, username, serviceFabricName, name);
         if (inner != null) {
             return new ScheduleImpl(inner, this.manager());
@@ -86,41 +64,23 @@ public final class ServiceFabricSchedulesImpl implements ServiceFabricSchedules 
         }
     }
 
-    public Response<Schedule> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleInner schedule,
-        Context context) {
-        Response<ScheduleInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, labName, username, serviceFabricName, name, schedule, context);
+    public Response<Schedule> createOrUpdateWithResponse(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, ScheduleInner schedule, Context context) {
+        Response<ScheduleInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, labName, username, serviceFabricName, name, schedule,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ScheduleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Schedule createOrUpdate(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleInner schedule) {
-        ScheduleInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(resourceGroupName, labName, username, serviceFabricName, name, schedule);
+    public Schedule createOrUpdate(String resourceGroupName, String labName, String username, String serviceFabricName,
+        String name, ScheduleInner schedule) {
+        ScheduleInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, labName, username, serviceFabricName, name, schedule);
         if (inner != null) {
             return new ScheduleImpl(inner, this.manager());
         } else {
@@ -128,55 +88,33 @@ public final class ServiceFabricSchedulesImpl implements ServiceFabricSchedules 
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> deleteWithResponse(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, Context context) {
+        return this.serviceClient()
             .deleteWithResponse(resourceGroupName, labName, username, serviceFabricName, name, context);
     }
 
-    public void delete(
-        String resourceGroupName, String labName, String username, String serviceFabricName, String name) {
+    public void delete(String resourceGroupName, String labName, String username, String serviceFabricName,
+        String name) {
         this.serviceClient().delete(resourceGroupName, labName, username, serviceFabricName, name);
     }
 
-    public Response<Schedule> updateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleFragment schedule,
-        Context context) {
-        Response<ScheduleInner> inner =
-            this
-                .serviceClient()
-                .updateWithResponse(resourceGroupName, labName, username, serviceFabricName, name, schedule, context);
+    public Response<Schedule> updateWithResponse(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, ScheduleFragment schedule, Context context) {
+        Response<ScheduleInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, labName, username, serviceFabricName, name, schedule, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ScheduleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Schedule update(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleFragment schedule) {
-        ScheduleInner inner =
-            this.serviceClient().update(resourceGroupName, labName, username, serviceFabricName, name, schedule);
+    public Schedule update(String resourceGroupName, String labName, String username, String serviceFabricName,
+        String name, ScheduleFragment schedule) {
+        ScheduleInner inner
+            = this.serviceClient().update(resourceGroupName, labName, username, serviceFabricName, name, schedule);
         if (inner != null) {
             return new ScheduleImpl(inner, this.manager());
         } else {
@@ -184,18 +122,13 @@ public final class ServiceFabricSchedulesImpl implements ServiceFabricSchedules 
         }
     }
 
-    public void execute(
-        String resourceGroupName, String labName, String username, String serviceFabricName, String name) {
+    public void execute(String resourceGroupName, String labName, String username, String serviceFabricName,
+        String name) {
         this.serviceClient().execute(resourceGroupName, labName, username, serviceFabricName, name);
     }
 
-    public void execute(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        Context context) {
+    public void execute(String resourceGroupName, String labName, String username, String serviceFabricName,
+        String name, Context context) {
         this.serviceClient().execute(resourceGroupName, labName, username, serviceFabricName, name, context);
     }
 

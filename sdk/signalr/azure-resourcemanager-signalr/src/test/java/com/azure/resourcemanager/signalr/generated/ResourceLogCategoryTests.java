@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceLogCategoryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceLogCategory model =
-            BinaryData
-                .fromString("{\"name\":\"qknp\",\"enabled\":\"gnepttwqmsni\"}")
-                .toObject(ResourceLogCategory.class);
+        ResourceLogCategory model = BinaryData.fromString("{\"name\":\"qknp\",\"enabled\":\"gnepttwqmsni\"}")
+            .toObject(ResourceLogCategory.class);
         Assertions.assertEquals("qknp", model.name());
         Assertions.assertEquals("gnepttwqmsni", model.enabled());
     }

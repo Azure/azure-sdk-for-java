@@ -65,10 +65,8 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
         final String vnetBName = Utils.randomResourceName(azureResourceManager, "net", 15);
 
         final String[] vmNames = Utils.randomResourceNames(azureResourceManager, "vm", 15, 2);
-        final String[] vmIPAddresses = new String[]{
-                /* within subnetA */ "10.0.0.8",
-                /* within subnetB */ "10.1.0.8"
-        };
+        final String[] vmIPAddresses
+            = new String[] { /* within subnetA */ "10.0.0.8", /* within subnetB */ "10.1.0.8" };
 
         final String peeringABName = Utils.randomResourceName(azureResourceManager, "peer", 15);
         final String rootname = "tirekicker";
@@ -81,17 +79,19 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
             // Define two virtual networks to peer and put the virtual machines in, at specific IP addresses
             List<Creatable<Network>> networkDefinitions = new ArrayList<>();
 
-            networkDefinitions.add(azureResourceManager.networks().define(vnetAName)
-                    .withRegion(region)
-                    .withNewResourceGroup(resourceGroupName)
-                    .withAddressSpace("10.0.0.0/27")
-                    .withSubnet("subnetA", "10.0.0.0/27"));
+            networkDefinitions.add(azureResourceManager.networks()
+                .define(vnetAName)
+                .withRegion(region)
+                .withNewResourceGroup(resourceGroupName)
+                .withAddressSpace("10.0.0.0/27")
+                .withSubnet("subnetA", "10.0.0.0/27"));
 
-            networkDefinitions.add(azureResourceManager.networks().define(vnetBName)
-                    .withRegion(region)
-                    .withNewResourceGroup(resourceGroupName)
-                    .withAddressSpace("10.1.0.0/27")
-                    .withSubnet("subnetB", "10.1.0.0/27"));
+            networkDefinitions.add(azureResourceManager.networks()
+                .define(vnetBName)
+                .withRegion(region)
+                .withNewResourceGroup(resourceGroupName)
+                .withAddressSpace("10.1.0.0/27")
+                .withSubnet("subnetB", "10.1.0.0/27"));
 
             //=============================================================
             // Define a couple of Linux VMs and place them in each of the networks
@@ -99,22 +99,23 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
             List<Creatable<VirtualMachine>> vmDefinitions = new ArrayList<>();
 
             for (int i = 0; i < networkDefinitions.size(); i++) {
-                vmDefinitions.add(azureResourceManager.virtualMachines().define(vmNames[i])
-                        .withRegion(region)
-                        .withExistingResourceGroup(resourceGroupName)
-                        .withNewPrimaryNetwork(networkDefinitions.get(i))
-                        .withPrimaryPrivateIPAddressStatic(vmIPAddresses[i])
-                        .withoutPrimaryPublicIPAddress()
-                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUsername(rootname)
-                        .withRootPassword(password)
+                vmDefinitions.add(azureResourceManager.virtualMachines()
+                    .define(vmNames[i])
+                    .withRegion(region)
+                    .withExistingResourceGroup(resourceGroupName)
+                    .withNewPrimaryNetwork(networkDefinitions.get(i))
+                    .withPrimaryPrivateIPAddressStatic(vmIPAddresses[i])
+                    .withoutPrimaryPublicIPAddress()
+                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                    .withRootUsername(rootname)
+                    .withRootPassword(password)
 
-                        // Extension currently needed for network watcher support
-                        .defineNewExtension("packetCapture")
-                        .withPublisher("Microsoft.Azure.NetworkWatcher")
-                        .withType("NetworkWatcherAgentLinux")
-                        .withVersion("1.4")
-                        .attach());
+                    // Extension currently needed for network watcher support
+                    .defineNewExtension("packetCapture")
+                    .withPublisher("Microsoft.Azure.NetworkWatcher")
+                    .withType("NetworkWatcherAgentLinux")
+                    .withVersion("1.4")
+                    .attach());
             }
 
             // Create the VMs in parallel for better performance
@@ -133,15 +134,10 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
             Utils.print(networkA);
             Utils.print(networkB);
 
-            System.out.println(
-                    "Peering the networks using default settings...\n"
-                            + "- Network access enabled\n"
-                            + "- Traffic forwarding disabled\n"
-                            + "- Gateway use (transit) by the remote network disabled");
+            System.out.println("Peering the networks using default settings...\n" + "- Network access enabled\n"
+                + "- Traffic forwarding disabled\n" + "- Gateway use (transit) by the remote network disabled");
 
-            NetworkPeering peeringAB = networkA.peerings().define(peeringABName)
-                    .withRemoteNetwork(networkB)
-                    .create();
+            NetworkPeering peeringAB = networkA.peerings().define(peeringABName).withRemoteNetwork(networkB).create();
 
             Utils.print(networkA);
             Utils.print(networkB);
@@ -151,10 +147,12 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
 
             // Azure Network Watcher enabled by default
             // https://azure.microsoft.com/updates/azure-network-watcher-will-be-enabled-by-default-for-subscriptions-containing-virtual-networks/
-            NetworkWatcher networkWatcher = azureResourceManager.networkWatchers().list().stream()
-                .filter(nw -> nw.region() == region).findFirst()
-                .orElseGet(() -> azureResourceManager
-                    .networkWatchers()
+            NetworkWatcher networkWatcher = azureResourceManager.networkWatchers()
+                .list()
+                .stream()
+                .filter(nw -> nw.region() == region)
+                .findFirst()
+                .orElseGet(() -> azureResourceManager.networkWatchers()
                     .define(networkWatcherName)
                     .withRegion(region)
                     .withExistingResourceGroup(resourceGroupName)
@@ -162,28 +160,27 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
 
             // Verify bi-directional connectivity between the VMs on port 22 (SSH enabled by default on Linux VMs)
             Executable<ConnectivityCheck> connectivityAtoB = networkWatcher.checkConnectivity()
-                    .toDestinationAddress(vmIPAddresses[1])
-                    .toDestinationPort(22)
-                    .fromSourceVirtualMachine(vmA);
+                .toDestinationAddress(vmIPAddresses[1])
+                .toDestinationPort(22)
+                .fromSourceVirtualMachine(vmA);
             System.out.println("Connectivity from A to B: " + connectivityAtoB.execute().connectionStatus());
 
             Executable<ConnectivityCheck> connectivityBtoA = networkWatcher.checkConnectivity()
-                    .toDestinationAddress(vmIPAddresses[0])
-                    .toDestinationPort(22)
-                    .fromSourceVirtualMachine(vmB);
+                .toDestinationAddress(vmIPAddresses[0])
+                .toDestinationPort(22)
+                .fromSourceVirtualMachine(vmB);
             System.out.println("Connectivity from B to A: " + connectivityBtoA.execute().connectionStatus());
 
             // Change the peering to allow access between A and B
             System.out.println("Changing the peering to disable access between A and B...");
-            peeringAB.update()
-                    .withoutAccessFromEitherNetwork()
-                    .apply();
+            peeringAB.update().withoutAccessFromEitherNetwork().apply();
 
             Utils.print(networkA);
             Utils.print(networkB);
 
             // Verify connectivity no longer possible between A and B
-            System.out.println("Peering configuration changed.\nNow, A should be unreachable from B, and B should be unreachable from A...");
+            System.out.println(
+                "Peering configuration changed.\nNow, A should be unreachable from B, and B should be unreachable from A...");
             System.out.println("Connectivity from A to B: " + connectivityAtoB.execute().connectionStatus());
             System.out.println("Connectivity from B to A: " + connectivityBtoA.execute().connectionStatus());
 
@@ -217,8 +214,7 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

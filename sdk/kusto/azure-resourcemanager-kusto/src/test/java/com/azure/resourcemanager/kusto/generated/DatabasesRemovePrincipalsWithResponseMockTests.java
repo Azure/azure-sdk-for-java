@@ -35,62 +35,42 @@ public final class DatabasesRemovePrincipalsWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"role\":\"Admin\",\"name\":\"dfgkmtdh\",\"type\":\"User\",\"fqn\":\"gb\",\"email\":\"juahokqto\",\"appId\":\"auxofshfph\",\"tenantName\":\"nulaiywzejywhsl\"},{\"role\":\"Monitor\",\"name\":\"ojpllndnpdwrpqaf\",\"type\":\"User\",\"fqn\":\"gsnnf\",\"email\":\"et\",\"appId\":\"ypococtfjgtixr\",\"tenantName\":\"zuyt\"},{\"role\":\"UnrestrictedViewer\",\"name\":\"mlmuowol\",\"type\":\"User\",\"fqn\":\"iropionszon\",\"email\":\"ngajinnixjawrtmj\",\"appId\":\"myccx\",\"tenantName\":\"hcoxov\"},{\"role\":\"Viewer\",\"name\":\"khenlus\",\"type\":\"App\",\"fqn\":\"dtjxtxrdcqt\",\"email\":\"idttgepus\",\"appId\":\"yjtcvuwk\",\"tenantName\":\"iziesfuughtuq\"}]}";
+        String responseStr
+            = "{\"value\":[{\"role\":\"Admin\",\"name\":\"dfgkmtdh\",\"type\":\"User\",\"fqn\":\"gb\",\"email\":\"juahokqto\",\"appId\":\"auxofshfph\",\"tenantName\":\"nulaiywzejywhsl\"},{\"role\":\"Monitor\",\"name\":\"ojpllndnpdwrpqaf\",\"type\":\"User\",\"fqn\":\"gsnnf\",\"email\":\"et\",\"appId\":\"ypococtfjgtixr\",\"tenantName\":\"zuyt\"},{\"role\":\"UnrestrictedViewer\",\"name\":\"mlmuowol\",\"type\":\"User\",\"fqn\":\"iropionszon\",\"email\":\"ngajinnixjawrtmj\",\"appId\":\"myccx\",\"tenantName\":\"hcoxov\"},{\"role\":\"Viewer\",\"name\":\"khenlus\",\"type\":\"App\",\"fqn\":\"dtjxtxrdcqt\",\"email\":\"idttgepus\",\"appId\":\"yjtcvuwk\",\"tenantName\":\"iziesfuughtuq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        KustoManager manager =
-            KustoManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        KustoManager manager = KustoManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DatabasePrincipalListResult response =
-            manager
-                .databases()
-                .removePrincipalsWithResponse(
-                    "fbcgwgcloxoebqin",
-                    "ipnwj",
-                    "ujqlafcbahh",
-                    new DatabasePrincipalListRequest()
-                        .withValue(
-                            Arrays
-                                .asList(
-                                    new DatabasePrincipalInner()
-                                        .withRole(DatabasePrincipalRole.VIEWER)
-                                        .withName("foiyjwpfilk")
-                                        .withType(DatabasePrincipalType.GROUP)
-                                        .withFqn("holvdn")
-                                        .withEmail("iauogphuartv")
-                                        .withAppId("ukyefchnmnahmnxh"),
-                                    new DatabasePrincipalInner()
-                                        .withRole(DatabasePrincipalRole.UNRESTRICTED_VIEWER)
-                                        .withName("oxffif")
-                                        .withType(DatabasePrincipalType.USER)
-                                        .withFqn("rsnewmozqvbubqma")
-                                        .withEmail("sycxhxzgaz")
-                                        .withAppId("abo"))),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        DatabasePrincipalListResult response = manager.databases()
+            .removePrincipalsWithResponse("fbcgwgcloxoebqin", "ipnwj", "ujqlafcbahh",
+                new DatabasePrincipalListRequest().withValue(Arrays.asList(
+                    new DatabasePrincipalInner().withRole(DatabasePrincipalRole.VIEWER)
+                        .withName("foiyjwpfilk")
+                        .withType(DatabasePrincipalType.GROUP)
+                        .withFqn("holvdn")
+                        .withEmail("iauogphuartv")
+                        .withAppId("ukyefchnmnahmnxh"),
+                    new DatabasePrincipalInner().withRole(DatabasePrincipalRole.UNRESTRICTED_VIEWER)
+                        .withName("oxffif")
+                        .withType(DatabasePrincipalType.USER)
+                        .withFqn("rsnewmozqvbubqma")
+                        .withEmail("sycxhxzgaz")
+                        .withAppId("abo"))),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(DatabasePrincipalRole.ADMIN, response.value().get(0).role());
         Assertions.assertEquals("dfgkmtdh", response.value().get(0).name());

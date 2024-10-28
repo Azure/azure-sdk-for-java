@@ -28,10 +28,10 @@ public class Slf4jLoggerShimIT {
 
     @BeforeEach
     public void setupLogLevels() {
-        slf4jLoggerShimITLogLevel = System.setProperty(
-            LOG_LEVEL_PREFIX + "io.clientcore.core.implementation.util.Slf4jLoggerShimIT", "debug");
-        slf4jLoggerShimLogLevel = System.setProperty(
-            LOG_LEVEL_PREFIX + "io.clientcore.core.implementation.util.Slf4jLoggerShim", "info");
+        slf4jLoggerShimITLogLevel = System
+            .setProperty(LOG_LEVEL_PREFIX + "io.clientcore.core.implementation.util.Slf4jLoggerShimIT", "debug");
+        slf4jLoggerShimLogLevel
+            = System.setProperty(LOG_LEVEL_PREFIX + "io.clientcore.core.implementation.util.Slf4jLoggerShim", "info");
     }
 
     @AfterEach

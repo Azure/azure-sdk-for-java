@@ -76,10 +76,8 @@ public final class ApiManagementServiceSkuProperties {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ApiManagementServiceSkuProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model ApiManagementServiceSkuProperties"));
         }
     }
 

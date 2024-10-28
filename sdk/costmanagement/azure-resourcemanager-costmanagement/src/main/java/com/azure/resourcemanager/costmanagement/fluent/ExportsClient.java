@@ -149,8 +149,8 @@ public interface ExportsClient {
      * @return an export resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExportInner> createOrUpdateWithResponse(
-        String scope, String exportName, ExportInner parameters, Context context);
+    Response<ExportInner> createOrUpdateWithResponse(String scope, String exportName, ExportInner parameters,
+        Context context);
 
     /**
      * The operation to create or update a export. Update operation requires latest eTag to be set in the request. You
@@ -309,8 +309,8 @@ public interface ExportsClient {
      * @return result of listing the run history of an export along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExportExecutionListResultInner> getExecutionHistoryWithResponse(
-        String scope, String exportName, Context context);
+    Response<ExportExecutionListResultInner> getExecutionHistoryWithResponse(String scope, String exportName,
+        Context context);
 
     /**
      * The operation to get the run history of an export for the defined scope and export name.

@@ -49,16 +49,19 @@ public final class SitesCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Site response
-            = manager.sites().define("db").withRegion("aknokzwjjzrl").withExistingResourceGroup("nfzndscxmxeat")
-                .withTags(mapOf("zyyfy", "l", "jivyqlkjuv", "pqsixymmp", "zdbpqv", "mbmslzoyov", "kcvtl", "befgvmxn"))
-                .withProperties(new SitePropertiesFormat()
-                    .withNfvis(Arrays.asList(new NfvIs().withName("ibqbnaomhjrm"), new NfvIs().withName("hmaxljalfi"))))
-                .create();
+        Site response = manager.sites()
+            .define("db")
+            .withRegion("aknokzwjjzrl")
+            .withExistingResourceGroup("nfzndscxmxeat")
+            .withTags(mapOf("zyyfy", "l", "jivyqlkjuv", "pqsixymmp", "zdbpqv", "mbmslzoyov", "kcvtl", "befgvmxn"))
+            .withProperties(new SitePropertiesFormat()
+                .withNfvis(Arrays.asList(new NfvIs().withName("ibqbnaomhjrm"), new NfvIs().withName("hmaxljalfi"))))
+            .create();
 
         Assertions.assertEquals("lhkalehpavawugi", response.location());
         Assertions.assertEquals("iogqgdminictte", response.tags().get("johiyg"));

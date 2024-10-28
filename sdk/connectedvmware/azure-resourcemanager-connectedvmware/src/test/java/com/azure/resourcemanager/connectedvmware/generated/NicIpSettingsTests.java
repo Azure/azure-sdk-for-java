@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NicIpSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NicIpSettings model =
-            BinaryData
-                .fromString(
-                    "{\"allocationMethod\":\"random\",\"dnsServers\":[\"vfelfktgplcrpwj\"],\"gateway\":[\"noigbrnjwmwk\",\"nbsazejjoqkag\"],\"ipAddress\":\"sxtta\",\"subnetMask\":\"zxnfaaz\",\"primaryWinsServer\":\"dtnkdmkq\",\"secondaryWinsServer\":\"lwuenvrkp\",\"ipAddressInfo\":[{\"allocationMethod\":\"ibreb\",\"ipAddress\":\"aysjkixqtnqttez\",\"subnetMask\":\"fffiak\"},{\"allocationMethod\":\"pqqmted\",\"ipAddress\":\"mmji\",\"subnetMask\":\"eozphv\"},{\"allocationMethod\":\"uyqncygupkvipmd\",\"ipAddress\":\"wx\",\"subnetMask\":\"pevzhfst\"},{\"allocationMethod\":\"xhojuj\",\"ipAddress\":\"pelmcuvhixbjxyf\",\"subnetMask\":\"yl\"}]}")
-                .toObject(NicIpSettings.class);
+        NicIpSettings model = BinaryData.fromString(
+            "{\"allocationMethod\":\"random\",\"dnsServers\":[\"vfelfktgplcrpwj\"],\"gateway\":[\"noigbrnjwmwk\",\"nbsazejjoqkag\"],\"ipAddress\":\"sxtta\",\"subnetMask\":\"zxnfaaz\",\"primaryWinsServer\":\"dtnkdmkq\",\"secondaryWinsServer\":\"lwuenvrkp\",\"ipAddressInfo\":[{\"allocationMethod\":\"ibreb\",\"ipAddress\":\"aysjkixqtnqttez\",\"subnetMask\":\"fffiak\"},{\"allocationMethod\":\"pqqmted\",\"ipAddress\":\"mmji\",\"subnetMask\":\"eozphv\"},{\"allocationMethod\":\"uyqncygupkvipmd\",\"ipAddress\":\"wx\",\"subnetMask\":\"pevzhfst\"},{\"allocationMethod\":\"xhojuj\",\"ipAddress\":\"pelmcuvhixbjxyf\",\"subnetMask\":\"yl\"}]}")
+            .toObject(NicIpSettings.class);
         Assertions.assertEquals(IpAddressAllocationMethod.RANDOM, model.allocationMethod());
         Assertions.assertEquals("vfelfktgplcrpwj", model.dnsServers().get(0));
         Assertions.assertEquals("noigbrnjwmwk", model.gateway().get(0));
@@ -27,13 +25,11 @@ public final class NicIpSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NicIpSettings model =
-            new NicIpSettings()
-                .withAllocationMethod(IpAddressAllocationMethod.RANDOM)
-                .withDnsServers(Arrays.asList("vfelfktgplcrpwj"))
-                .withGateway(Arrays.asList("noigbrnjwmwk", "nbsazejjoqkag"))
-                .withIpAddress("sxtta")
-                .withSubnetMask("zxnfaaz");
+        NicIpSettings model = new NicIpSettings().withAllocationMethod(IpAddressAllocationMethod.RANDOM)
+            .withDnsServers(Arrays.asList("vfelfktgplcrpwj"))
+            .withGateway(Arrays.asList("noigbrnjwmwk", "nbsazejjoqkag"))
+            .withIpAddress("sxtta")
+            .withSubnetMask("zxnfaaz");
         model = BinaryData.fromObject(model).toObject(NicIpSettings.class);
         Assertions.assertEquals(IpAddressAllocationMethod.RANDOM, model.allocationMethod());
         Assertions.assertEquals("vfelfktgplcrpwj", model.dnsServers().get(0));

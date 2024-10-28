@@ -22,8 +22,8 @@ public interface GenerateDetailedCostReports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the long running operation for cost detailed report.
      */
-    GenerateDetailedCostReportOperationResult createOperation(
-        String scope, GenerateDetailedCostReportDefinition parameters);
+    GenerateDetailedCostReportOperationResult createOperation(String scope,
+        GenerateDetailedCostReportDefinition parameters);
 
     /**
      * Generates the detailed cost report for provided date range, billing period(only enterprise customers) or Invoice
@@ -40,6 +40,6 @@ public interface GenerateDetailedCostReports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the long running operation for cost detailed report.
      */
-    GenerateDetailedCostReportOperationResult createOperation(
-        String scope, GenerateDetailedCostReportDefinition parameters, Context context);
+    GenerateDetailedCostReportOperationResult createOperation(String scope,
+        GenerateDetailedCostReportDefinition parameters, Context context);
 }

@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkloadGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadGroupProperties model =
-            BinaryData
-                .fromString(
-                    "{\"minResourcePercent\":1527085818,\"maxResourcePercent\":1296747978,\"minResourcePercentPerRequest\":84.31488864287606,\"maxResourcePercentPerRequest\":21.38076853827919,\"importance\":\"yo\",\"queryExecutionTimeout\":853520386}")
-                .toObject(WorkloadGroupProperties.class);
+        WorkloadGroupProperties model = BinaryData.fromString(
+            "{\"minResourcePercent\":1527085818,\"maxResourcePercent\":1296747978,\"minResourcePercentPerRequest\":84.31488864287606,\"maxResourcePercentPerRequest\":21.38076853827919,\"importance\":\"yo\",\"queryExecutionTimeout\":853520386}")
+            .toObject(WorkloadGroupProperties.class);
         Assertions.assertEquals(1527085818, model.minResourcePercent());
         Assertions.assertEquals(1296747978, model.maxResourcePercent());
         Assertions.assertEquals(84.31488864287606, model.minResourcePercentPerRequest());
@@ -26,14 +24,12 @@ public final class WorkloadGroupPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadGroupProperties model =
-            new WorkloadGroupProperties()
-                .withMinResourcePercent(1527085818)
-                .withMaxResourcePercent(1296747978)
-                .withMinResourcePercentPerRequest(84.31488864287606)
-                .withMaxResourcePercentPerRequest(21.38076853827919D)
-                .withImportance("yo")
-                .withQueryExecutionTimeout(853520386);
+        WorkloadGroupProperties model = new WorkloadGroupProperties().withMinResourcePercent(1527085818)
+            .withMaxResourcePercent(1296747978)
+            .withMinResourcePercentPerRequest(84.31488864287606)
+            .withMaxResourcePercentPerRequest(21.38076853827919D)
+            .withImportance("yo")
+            .withQueryExecutionTimeout(853520386);
         model = BinaryData.fromObject(model).toObject(WorkloadGroupProperties.class);
         Assertions.assertEquals(1527085818, model.minResourcePercent());
         Assertions.assertEquals(1296747978, model.maxResourcePercent());

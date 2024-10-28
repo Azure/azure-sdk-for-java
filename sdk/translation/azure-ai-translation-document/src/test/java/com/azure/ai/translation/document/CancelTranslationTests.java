@@ -30,8 +30,7 @@ public class CancelTranslationTests extends DocumentTranslationClientTestBase {
         targetInputs.add(targetInput);
         BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
         SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-                documentTranslationClient
-                        .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Cancel Translation
         String translationId = poller.poll().getValue().getId();

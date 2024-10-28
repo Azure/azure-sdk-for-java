@@ -41,12 +41,13 @@ public final class CloudHsmClusterPrivateEndpointConnectionsDeleteMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure().withHttpClient(httpClient)
+        HardwareSecurityModulesManager manager = HardwareSecurityModulesManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.cloudHsmClusterPrivateEndpointConnections().delete("ghhavgrvkffo", "jzhpjbibgjmfx", "mv",
-            com.azure.core.util.Context.NONE);
+        manager.cloudHsmClusterPrivateEndpointConnections()
+            .delete("ghhavgrvkffo", "jzhpjbibgjmfx", "mv", com.azure.core.util.Context.NONE);
 
     }
 }

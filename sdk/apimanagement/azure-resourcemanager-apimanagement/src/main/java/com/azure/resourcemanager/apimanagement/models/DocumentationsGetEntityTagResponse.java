@@ -19,11 +19,7 @@ public final class DocumentationsGetEntityTagResponse extends ResponseBase<Docum
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public DocumentationsGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
+    public DocumentationsGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
         DocumentationsGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

@@ -32,40 +32,27 @@ public final class SqlPoolSensitivityLabelsListCurrentMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"schemaName\":\"waivmuqkevzg\",\"tableName\":\"panhxmpdxxze\",\"columnName\":\"wzjwotnxlkfhg\",\"labelName\":\"rfo\",\"labelId\":\"wecr\",\"informationType\":\"hpcselqxovp\",\"informationTypeId\":\"ibuk\",\"isDisabled\":true,\"rank\":\"Critical\"},\"managedBy\":\"rmlccmet\",\"id\":\"scz\",\"name\":\"vfqbqna\",\"type\":\"dsyenzsieuscpl\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"schemaName\":\"waivmuqkevzg\",\"tableName\":\"panhxmpdxxze\",\"columnName\":\"wzjwotnxlkfhg\",\"labelName\":\"rfo\",\"labelId\":\"wecr\",\"informationType\":\"hpcselqxovp\",\"informationTypeId\":\"ibuk\",\"isDisabled\":true,\"rank\":\"Critical\"},\"managedBy\":\"rmlccmet\",\"id\":\"scz\",\"name\":\"vfqbqna\",\"type\":\"dsyenzsieuscpl\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SensitivityLabel> response =
-            manager
-                .sqlPoolSensitivityLabels()
-                .listCurrent(
-                    "cgubsrtmdylper", "ilttjzgczfcmfpfb", "detres", "gvtshu", com.azure.core.util.Context.NONE);
+        PagedIterable<SensitivityLabel> response = manager.sqlPoolSensitivityLabels()
+            .listCurrent("cgubsrtmdylper", "ilttjzgczfcmfpfb", "detres", "gvtshu", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("rfo", response.iterator().next().labelName());
         Assertions.assertEquals("wecr", response.iterator().next().labelId());

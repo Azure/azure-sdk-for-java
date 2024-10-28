@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Assertions;
 public final class L3NetworkListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        L3NetworkList model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"invkjjxdxrbuu\",\"value\":[{\"extendedLocation\":{\"name\":\"lewyhmlwpaz\",\"type\":\"zpof\"},\"properties\":{\"associatedResourceIds\":[\"kwyfzqwhxxbuyqax\"],\"clusterId\":\"eqz\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"iolxor\",\"hybridAksClustersAssociatedIds\":[\"tolmncwsobqw\"],\"hybridAksIpamEnabled\":\"True\",\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"dcfhucqdpf\",\"ipAllocationType\":\"IPV6\",\"ipv4ConnectedPrefix\":\"sbjjc\",\"ipv6ConnectedPrefix\":\"vxb\",\"l3IsolationDomainId\":\"t\",\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[\"ncormrlxqtvcof\",\"dflvkg\",\"u\",\"gdknnqv\"],\"vlan\":378347416305968829},\"location\":\"qntorudsgsahmkyc\",\"tags\":{\"s\":\"uwjuetaeburuvdmo\",\"tpuqujmq\":\"zlxwabmqoefkifr\",\"jcntuj\":\"gkfbtndoaong\"},\"id\":\"tcje\",\"name\":\"ftwwaezkojvdc\",\"type\":\"zfoqouicybxar\"},{\"extendedLocation\":{\"name\":\"gszufoxciqopid\",\"type\":\"amcio\"},\"properties\":{\"associatedResourceIds\":[\"haz\",\"khnzbonlw\",\"toego\",\"dwbwhkszzcmrvexz\"],\"clusterId\":\"bt\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"ra\",\"hybridAksClustersAssociatedIds\":[\"koowtl\",\"nguxawqaldsy\",\"uximerqfobw\",\"znkbykutwpfhpagm\"],\"hybridAksIpamEnabled\":\"False\",\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"nfd\",\"ipAllocationType\":\"IPV6\",\"ipv4ConnectedPrefix\":\"kgtdlmkkze\",\"ipv6ConnectedPrefix\":\"l\",\"l3IsolationDomainId\":\"ewpusdsttwvogvb\",\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"ngqqmoakuf\",\"m\",\"zr\",\"rdgrtw\"],\"vlan\":1523837111721006893},\"location\":\"uzkopbminrfd\",\"tags\":{\"mlmz\":\"uhhziuiefozbhdm\",\"ae\":\"hoftr\"},\"id\":\"u\",\"name\":\"ah\",\"type\":\"icslfaoq\"}]}")
-                .toObject(L3NetworkList.class);
+        L3NetworkList model = BinaryData.fromString(
+            "{\"nextLink\":\"invkjjxdxrbuu\",\"value\":[{\"extendedLocation\":{\"name\":\"lewyhmlwpaz\",\"type\":\"zpof\"},\"properties\":{\"associatedResourceIds\":[\"kwyfzqwhxxbuyqax\"],\"clusterId\":\"eqz\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"iolxor\",\"hybridAksClustersAssociatedIds\":[\"tolmncwsobqw\"],\"hybridAksIpamEnabled\":\"True\",\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"dcfhucqdpf\",\"ipAllocationType\":\"IPV6\",\"ipv4ConnectedPrefix\":\"sbjjc\",\"ipv6ConnectedPrefix\":\"vxb\",\"l3IsolationDomainId\":\"t\",\"provisioningState\":\"Provisioning\",\"virtualMachinesAssociatedIds\":[\"ncormrlxqtvcof\",\"dflvkg\",\"u\",\"gdknnqv\"],\"vlan\":378347416305968829},\"location\":\"qntorudsgsahmkyc\",\"tags\":{\"s\":\"uwjuetaeburuvdmo\",\"tpuqujmq\":\"zlxwabmqoefkifr\",\"jcntuj\":\"gkfbtndoaong\"},\"id\":\"tcje\",\"name\":\"ftwwaezkojvdc\",\"type\":\"zfoqouicybxar\"},{\"extendedLocation\":{\"name\":\"gszufoxciqopid\",\"type\":\"amcio\"},\"properties\":{\"associatedResourceIds\":[\"haz\",\"khnzbonlw\",\"toego\",\"dwbwhkszzcmrvexz\"],\"clusterId\":\"bt\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"ra\",\"hybridAksClustersAssociatedIds\":[\"koowtl\",\"nguxawqaldsy\",\"uximerqfobw\",\"znkbykutwpfhpagm\"],\"hybridAksIpamEnabled\":\"False\",\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"nfd\",\"ipAllocationType\":\"IPV6\",\"ipv4ConnectedPrefix\":\"kgtdlmkkze\",\"ipv6ConnectedPrefix\":\"l\",\"l3IsolationDomainId\":\"ewpusdsttwvogvb\",\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"ngqqmoakuf\",\"m\",\"zr\",\"rdgrtw\"],\"vlan\":1523837111721006893},\"location\":\"uzkopbminrfd\",\"tags\":{\"mlmz\":\"uhhziuiefozbhdm\",\"ae\":\"hoftr\"},\"id\":\"u\",\"name\":\"ah\",\"type\":\"icslfaoq\"}]}")
+            .toObject(L3NetworkList.class);
         Assertions.assertEquals("invkjjxdxrbuu", model.nextLink());
         Assertions.assertEquals("qntorudsgsahmkyc", model.value().get(0).location());
         Assertions.assertEquals("uwjuetaeburuvdmo", model.value().get(0).tags().get("s"));
@@ -41,22 +39,14 @@ public final class L3NetworkListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        L3NetworkList model =
-            new L3NetworkList()
-                .withNextLink("invkjjxdxrbuu")
+        L3NetworkList model
+            = new L3NetworkList().withNextLink("invkjjxdxrbuu")
                 .withValue(
                     Arrays
                         .asList(
-                            new L3NetworkInner()
-                                .withLocation("qntorudsgsahmkyc")
-                                .withTags(
-                                    mapOf(
-                                        "s",
-                                        "uwjuetaeburuvdmo",
-                                        "tpuqujmq",
-                                        "zlxwabmqoefkifr",
-                                        "jcntuj",
-                                        "gkfbtndoaong"))
+                            new L3NetworkInner().withLocation("qntorudsgsahmkyc")
+                                .withTags(mapOf("s", "uwjuetaeburuvdmo", "tpuqujmq", "zlxwabmqoefkifr", "jcntuj",
+                                    "gkfbtndoaong"))
                                 .withExtendedLocation(new ExtendedLocation().withName("lewyhmlwpaz").withType("zpof"))
                                 .withHybridAksIpamEnabled(HybridAksIpamEnabled.TRUE)
                                 .withHybridAksPluginType(HybridAksPluginType.DPDK)
@@ -66,8 +56,7 @@ public final class L3NetworkListTests {
                                 .withIpv6ConnectedPrefix("vxb")
                                 .withL3IsolationDomainId("t")
                                 .withVlan(378347416305968829L),
-                            new L3NetworkInner()
-                                .withLocation("uzkopbminrfd")
+                            new L3NetworkInner().withLocation("uzkopbminrfd")
                                 .withTags(mapOf("mlmz", "uhhziuiefozbhdm", "ae", "hoftr"))
                                 .withExtendedLocation(
                                     new ExtendedLocation().withName("gszufoxciqopid").withType("amcio"))

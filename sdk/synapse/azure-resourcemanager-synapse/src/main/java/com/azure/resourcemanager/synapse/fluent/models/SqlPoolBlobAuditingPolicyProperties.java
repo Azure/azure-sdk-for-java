@@ -425,10 +425,8 @@ public final class SqlPoolBlobAuditingPolicyProperties {
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model SqlPoolBlobAuditingPolicyProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property state in model SqlPoolBlobAuditingPolicyProperties"));
         }
     }
 

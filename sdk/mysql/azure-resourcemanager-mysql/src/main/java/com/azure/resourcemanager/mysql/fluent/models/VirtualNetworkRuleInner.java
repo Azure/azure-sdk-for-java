@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** A virtual network rule. */
 @Fluent
 public final class VirtualNetworkRuleInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkRuleInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualNetworkRuleInner.class);
 
     /*
      * Resource properties.

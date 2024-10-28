@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DataLakeAnalytics")
 @Fluent
 public final class DataLakeAnalytics extends Compute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataLakeAnalytics.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DataLakeAnalytics.class);
 
     /*
      * The properties property.

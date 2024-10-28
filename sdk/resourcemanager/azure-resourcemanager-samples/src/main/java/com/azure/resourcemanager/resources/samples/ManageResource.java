@@ -37,54 +37,47 @@ public final class ManageResource {
         final String resourceName2 = Utils.randomResourceName(azureResourceManager, "rn2", 24);
         try {
 
-
             //=============================================================
             // Create resource group.
 
             System.out.println("Creating a resource group with name: " + rgName);
 
-            azureResourceManager.resourceGroups().define(rgName)
-                    .withRegion(Region.US_WEST)
-                    .create();
-
+            azureResourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST).create();
 
             //=============================================================
             // Create storage account.
 
             System.out.println("Creating a storage account with name: " + resourceName1);
 
-            StorageAccount storageAccount = azureResourceManager.storageAccounts().define(resourceName1)
-                    .withRegion(Region.US_WEST)
-                    .withExistingResourceGroup(rgName)
-                    .create();
+            StorageAccount storageAccount = azureResourceManager.storageAccounts()
+                .define(resourceName1)
+                .withRegion(Region.US_WEST)
+                .withExistingResourceGroup(rgName)
+                .create();
 
             System.out.println("Storage account created: " + storageAccount.id());
-
 
             //=============================================================
             // Update - set the sku name
 
             System.out.println("Updating the storage account with name: " + resourceName1);
 
-            storageAccount.update()
-                    .withSku(StorageAccountSkuType.STANDARD_RAGRS)
-                    .apply();
+            storageAccount.update().withSku(StorageAccountSkuType.STANDARD_RAGRS).apply();
 
             System.out.println("Updated the storage account with name: " + resourceName1);
-
 
             //=============================================================
             // Create another storage account.
 
             System.out.println("Creating another storage account with name: " + resourceName2);
 
-            StorageAccount storageAccount2 = azureResourceManager.storageAccounts().define(resourceName2)
-                    .withRegion(Region.US_WEST)
-                    .withExistingResourceGroup(rgName)
-                    .create();
+            StorageAccount storageAccount2 = azureResourceManager.storageAccounts()
+                .define(resourceName2)
+                .withRegion(Region.US_WEST)
+                .withExistingResourceGroup(rgName)
+                .create();
 
             System.out.println("Storage account created: " + storageAccount2.id());
-
 
             //=============================================================
             // List storage accounts.
@@ -94,7 +87,6 @@ public final class ManageResource {
             for (StorageAccount sAccount : azureResourceManager.storageAccounts().list()) {
                 System.out.println("Storage account: " + sAccount.name());
             }
-
 
             //=============================================================
             // Delete a storage accounts.
@@ -134,8 +126,7 @@ public final class ManageResource {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

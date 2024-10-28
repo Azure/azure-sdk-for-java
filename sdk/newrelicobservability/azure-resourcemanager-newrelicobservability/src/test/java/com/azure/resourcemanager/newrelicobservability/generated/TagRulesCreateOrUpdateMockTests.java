@@ -53,18 +53,23 @@ public final class TagRulesCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure().withHttpClient(httpClient)
+        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        TagRule response = manager.tagRules().define("hfjx").withExistingMonitor("himdbl", "gwimfn")
+        TagRule response = manager.tagRules()
+            .define("hfjx")
+            .withExistingMonitor("himdbl", "gwimfn")
             .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.DISABLED)
                 .withSendSubscriptionLogs(SendSubscriptionLogsStatus.DISABLED)
                 .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
                 .withFilteringTags(Arrays.asList(
-                    new FilteringTag().withName("kzikfjawneaivxwc").withValue("lpcirelsf")
+                    new FilteringTag().withName("kzikfjawneaivxwc")
+                        .withValue("lpcirelsf")
                         .withAction(TagAction.EXCLUDE),
-                    new FilteringTag().withName("wabfatkl").withValue("xbjhwuaanozjosph")
+                    new FilteringTag().withName("wabfatkl")
+                        .withValue("xbjhwuaanozjosph")
                         .withAction(TagAction.INCLUDE))))
             .withMetricRules(new MetricRulesInner().withSendMetrics(SendMetricsStatus.DISABLED)
                 .withFilteringTags(

@@ -42,8 +42,8 @@ public interface KustoPoolDatabasesClient {
      * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseInner> listByKustoPool(
-        String resourceGroupName, String workspaceName, String kustoPoolName, Context context);
+    PagedIterable<DatabaseInner> listByKustoPool(String resourceGroupName, String workspaceName, String kustoPoolName,
+        Context context);
 
     /**
      * Returns a database.
@@ -59,8 +59,8 @@ public interface KustoPoolDatabasesClient {
      * @return class representing a Kusto database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context);
+    Response<DatabaseInner> getWithResponse(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, Context context);
 
     /**
      * Returns a database.
@@ -91,12 +91,8 @@ public interface KustoPoolDatabasesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String kustoPoolName, String databaseName, DatabaseInner parameters);
 
     /**
      * Creates or updates a database.
@@ -113,13 +109,8 @@ public interface KustoPoolDatabasesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters,
-        Context context);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String kustoPoolName, String databaseName, DatabaseInner parameters, Context context);
 
     /**
      * Creates or updates a database.
@@ -135,12 +126,8 @@ public interface KustoPoolDatabasesClient {
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters);
+    DatabaseInner createOrUpdate(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, DatabaseInner parameters);
 
     /**
      * Creates or updates a database.
@@ -157,13 +144,8 @@ public interface KustoPoolDatabasesClient {
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters,
-        Context context);
+    DatabaseInner createOrUpdate(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, DatabaseInner parameters, Context context);
 
     /**
      * Updates a database.
@@ -179,12 +161,8 @@ public interface KustoPoolDatabasesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, DatabaseInner parameters);
 
     /**
      * Updates a database.
@@ -201,13 +179,8 @@ public interface KustoPoolDatabasesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters,
-        Context context);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, DatabaseInner parameters, Context context);
 
     /**
      * Updates a database.
@@ -223,11 +196,7 @@ public interface KustoPoolDatabasesClient {
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
+    DatabaseInner update(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
         DatabaseInner parameters);
 
     /**
@@ -245,13 +214,8 @@ public interface KustoPoolDatabasesClient {
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DatabaseInner parameters,
-        Context context);
+    DatabaseInner update(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
+        DatabaseInner parameters, Context context);
 
     /**
      * Deletes the database with the given name.
@@ -266,8 +230,8 @@ public interface KustoPoolDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName);
 
     /**
      * Deletes the database with the given name.
@@ -283,8 +247,8 @@ public interface KustoPoolDatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, Context context);
 
     /**
      * Deletes the database with the given name.
@@ -313,6 +277,6 @@ public interface KustoPoolDatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context);
+    void delete(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
+        Context context);
 }

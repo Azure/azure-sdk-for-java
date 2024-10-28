@@ -134,18 +134,14 @@ public final class ProvisioningServiceDescriptionInner extends Resource {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model ProvisioningServiceDescriptionInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model ProvisioningServiceDescriptionInner"));
         } else {
             properties().validate();
         }
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sku in model ProvisioningServiceDescriptionInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sku in model ProvisioningServiceDescriptionInner"));
         } else {
             sku().validate();
         }

@@ -24,15 +24,9 @@ public class StreamingDataParserUnitTests {
     //region Audio
     @Test
     public void parseAudioData() {
-        String audioJson = "{"
-            + "\"kind\": \"AudioData\","
-            + "\"audioData\": {"
-            + "\"timestamp\": \"2022-10-03T19:16:12.925Z\","
-            + "\"participantRawID\": \"participantId\","
-            + "\"data\": \"AQIDBAU=\","
-            + "\"silent\": false"
-            + "}"
-            + "}";
+        String audioJson = "{" + "\"kind\": \"AudioData\"," + "\"audioData\": {"
+            + "\"timestamp\": \"2022-10-03T19:16:12.925Z\"," + "\"participantRawID\": \"participantId\","
+            + "\"data\": \"AQIDBAU=\"," + "\"silent\": false" + "}" + "}";
         AudioData audioData = (AudioData) StreamingDataParser.parse(audioJson);
         assertNotNull(audioData);
         checkAudioData(audioData);
@@ -40,13 +34,8 @@ public class StreamingDataParserUnitTests {
 
     @Test
     public void parseAudioDataNoParticipantNoSilent() {
-        String audioJson = "{"
-            + "\"kind\": \"AudioData\","
-            + "\"audioData\": {"
-            + "\"timestamp\": \"2022-10-03T19:16:12.925Z\","
-            + "\"data\": \"AQIDBAU=\""
-            + "}"
-            + "}";
+        String audioJson = "{" + "\"kind\": \"AudioData\"," + "\"audioData\": {"
+            + "\"timestamp\": \"2022-10-03T19:16:12.925Z\"," + "\"data\": \"AQIDBAU=\"" + "}" + "}";
         AudioData audioData = (AudioData) StreamingDataParser.parse(audioJson);
         assertNotNull(audioData);
         checkAudioDataNoParticipant(audioData);
@@ -54,16 +43,9 @@ public class StreamingDataParserUnitTests {
 
     @Test
     public void parseAudioMetadata() {
-        String metadataJson = "{"
-            + " \"kind\": \"AudioMetadata\","
-            + "\"audioMetadata\": {"
-            + "\"subscriptionId\": \"subscriptionId\","
-            + "\"encoding\": \"PCM\","
-            + "\"sampleRate\": 8,"
-            + "\"channels\": 2,"
-            + "\"length\": 100"
-            + "}"
-            + "}";
+        String metadataJson
+            = "{" + " \"kind\": \"AudioMetadata\"," + "\"audioMetadata\": {" + "\"subscriptionId\": \"subscriptionId\","
+                + "\"encoding\": \"PCM\"," + "\"sampleRate\": 8," + "\"channels\": 2," + "\"length\": 100" + "}" + "}";
         AudioMetadata audioMetadata = (AudioMetadata) StreamingDataParser.parse(metadataJson);
         assertNotNull(audioMetadata);
         checkAudioMetadata(audioMetadata);
@@ -93,7 +75,8 @@ public class StreamingDataParserUnitTests {
     @Test
     public void parseBinaryArrayAudioMetadata() {
         String jsonMetadata = createAudioMetadataJson();
-        AudioMetadata audioMetadata = (AudioMetadata) StreamingDataParser.parse(jsonMetadata.getBytes(StandardCharsets.UTF_8));
+        AudioMetadata audioMetadata
+            = (AudioMetadata) StreamingDataParser.parse(jsonMetadata.getBytes(StandardCharsets.UTF_8));
         checkAudioMetadata(audioMetadata);
     }
 
@@ -121,7 +104,7 @@ public class StreamingDataParserUnitTests {
 
     private String createAudioMetadataJson() {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            JsonWriter writer = JsonProviders.createWriter(outputStream)) {
             writer.writeStartObject();
             writer.writeStringField("kind", "AudioMetadata");
             writer.writeStartObject("audioMetadata");
@@ -142,7 +125,7 @@ public class StreamingDataParserUnitTests {
 
     private String createAudioDataJson() {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            JsonWriter writer = JsonProviders.createWriter(outputStream)) {
             writer.writeStartObject();
             writer.writeStringField("kind", "AudioData");
             writer.writeStartObject("audioData");
@@ -164,33 +147,11 @@ public class StreamingDataParserUnitTests {
     // region Transcription
     @Test
     public void parseTranscriptionData() {
-        String transcriptionJson =
-            "{"
-               + "\"kind\":\"TranscriptionData\","
-                + "\"transcriptionData\":"
-                + "{"
-                    + "\"text\":\"Hello World!\","
-                    + "\"format\":\"display\","
-                    + "\"confidence\":0.98,"
-                    + "\"offset\":1,"
-                    + "\"duration\":2,"
-                    + "\"words\":"
-                    + "["
-                        + "{"
-                            + "\"text\":\"Hello\","
-                            + "\"offset\":1,"
-                            + "\"duration\":1"
-                        + "},"
-                        + "{"
-                            + "\"text\":\"World\","
-                            + "\"offset\":6,"
-                            + "\"duration\":1"
-                        + "}"
-                    + "],"
-                    + "\"participantRawID\":\"abc12345\","
-                    + "\"resultStatus\":\"final\""
-                + "}"
-            + "}";
+        String transcriptionJson = "{" + "\"kind\":\"TranscriptionData\"," + "\"transcriptionData\":" + "{"
+            + "\"text\":\"Hello World!\"," + "\"format\":\"display\"," + "\"confidence\":0.98," + "\"offset\":1,"
+            + "\"duration\":2," + "\"words\":" + "[" + "{" + "\"text\":\"Hello\"," + "\"offset\":1," + "\"duration\":1"
+            + "}," + "{" + "\"text\":\"World\"," + "\"offset\":6," + "\"duration\":1" + "}" + "],"
+            + "\"participantRawID\":\"abc12345\"," + "\"resultStatus\":\"final\"" + "}" + "}";
         TranscriptionData transcriptionData = (TranscriptionData) StreamingDataParser.parse(transcriptionJson);
         assertNotNull(transcriptionData);
         validateTranscriptionData(transcriptionData);
@@ -198,18 +159,11 @@ public class StreamingDataParserUnitTests {
 
     @Test
     public void parseTranscriptionMetadata() {
-        String transcriptionMetadataJson =
-            "{"
-                + "\"kind\":\"TranscriptionMetadata\","
-                + "\"transcriptionMetadata\":"
-                + "{"
-                + "\"subscriptionId\":\"subscriptionId\","
-                + "\"locale\":\"en-US\","
-                + "\"callConnectionId\":\"callConnectionId\","
-                + "\"correlationId\":\"correlationId\""
-                + "}"
-                + "}";
-        TranscriptionMetadata transcriptionMetadata = (TranscriptionMetadata) StreamingDataParser.parse(transcriptionMetadataJson);
+        String transcriptionMetadataJson = "{" + "\"kind\":\"TranscriptionMetadata\"," + "\"transcriptionMetadata\":"
+            + "{" + "\"subscriptionId\":\"subscriptionId\"," + "\"locale\":\"en-US\","
+            + "\"callConnectionId\":\"callConnectionId\"," + "\"correlationId\":\"correlationId\"" + "}" + "}";
+        TranscriptionMetadata transcriptionMetadata
+            = (TranscriptionMetadata) StreamingDataParser.parse(transcriptionMetadataJson);
         assertNotNull(transcriptionMetadata);
         validateTranscriptionMetadata(transcriptionMetadata);
     }
@@ -217,28 +171,32 @@ public class StreamingDataParserUnitTests {
     @Test
     public void parseBinaryTranscriptionData() {
         String jsonData = createTranscriptionDataJson();
-        TranscriptionData transcriptionData = (TranscriptionData) StreamingDataParser.parse(BinaryData.fromString(jsonData));
+        TranscriptionData transcriptionData
+            = (TranscriptionData) StreamingDataParser.parse(BinaryData.fromString(jsonData));
         validateTranscriptionData(transcriptionData);
     }
 
     @Test
     public void parseBinaryTranscriptionMetadata() {
         String jsonMetadata = createTranscriptionMetadataJson();
-        TranscriptionMetadata transcriptionMetadata = (TranscriptionMetadata) StreamingDataParser.parse(BinaryData.fromString(jsonMetadata));
+        TranscriptionMetadata transcriptionMetadata
+            = (TranscriptionMetadata) StreamingDataParser.parse(BinaryData.fromString(jsonMetadata));
         validateTranscriptionMetadata(transcriptionMetadata);
     }
 
     @Test
     public void parseBinaryArrayTranscriptionData() {
         String jsonData = createTranscriptionDataJson();
-        TranscriptionData transcriptionData = (TranscriptionData) StreamingDataParser.parse(jsonData.getBytes(StandardCharsets.UTF_8));
+        TranscriptionData transcriptionData
+            = (TranscriptionData) StreamingDataParser.parse(jsonData.getBytes(StandardCharsets.UTF_8));
         validateTranscriptionData(transcriptionData);
     }
 
     @Test
     public void parseBinaryArrayTranscriptionMetadata() {
         String jsonMetadata = createTranscriptionMetadataJson();
-        TranscriptionMetadata transcriptionMetadata = (TranscriptionMetadata) StreamingDataParser.parse(jsonMetadata.getBytes(StandardCharsets.UTF_8));
+        TranscriptionMetadata transcriptionMetadata
+            = (TranscriptionMetadata) StreamingDataParser.parse(jsonMetadata.getBytes(StandardCharsets.UTF_8));
         validateTranscriptionMetadata(transcriptionMetadata);
     }
 
@@ -275,7 +233,7 @@ public class StreamingDataParserUnitTests {
 
     private String createTranscriptionMetadataJson() {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            JsonWriter writer = JsonProviders.createWriter(outputStream)) {
             writer.writeStartObject();
             writer.writeStringField("kind", "TranscriptionMetadata");
             writer.writeStartObject("transcriptionMetadata");
@@ -294,7 +252,7 @@ public class StreamingDataParserUnitTests {
 
     private String createTranscriptionDataJson() {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            JsonWriter writer = JsonProviders.createWriter(outputStream)) {
             writer.writeStartObject();
             writer.writeStringField("kind", "TranscriptionData");
             writer.writeStartObject("transcriptionData");

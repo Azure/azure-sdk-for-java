@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactsPropertiesContactProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactsPropertiesContactProfile model =
-            BinaryData.fromString("{\"id\":\"kwh\"}").toObject(ContactsPropertiesContactProfile.class);
+        ContactsPropertiesContactProfile model
+            = BinaryData.fromString("{\"id\":\"kwh\"}").toObject(ContactsPropertiesContactProfile.class);
         Assertions.assertEquals("kwh", model.id());
     }
 

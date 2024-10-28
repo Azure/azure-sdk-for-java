@@ -72,8 +72,8 @@ public interface FileServers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a File Server.
      */
-    Response<FileServer> getWithResponse(
-        String resourceGroupName, String workspaceName, String fileServerName, Context context);
+    Response<FileServer> getWithResponse(String resourceGroupName, String workspaceName, String fileServerName,
+        Context context);
 
     /**
      * Gets a list of File Servers associated with the specified workspace.
@@ -101,8 +101,8 @@ public interface FileServers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of File Servers associated with the specified workspace.
      */
-    PagedIterable<FileServer> listByWorkspace(
-        String resourceGroupName, String workspaceName, Integer maxResults, Context context);
+    PagedIterable<FileServer> listByWorkspace(String resourceGroupName, String workspaceName, Integer maxResults,
+        Context context);
 
     /**
      * Gets information about a File Server.

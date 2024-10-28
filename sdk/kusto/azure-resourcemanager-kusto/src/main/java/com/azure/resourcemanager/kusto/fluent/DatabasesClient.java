@@ -34,8 +34,8 @@ public interface DatabasesClient {
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName, String clusterName, CheckNameRequest resourceName, Context context);
+    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        CheckNameRequest resourceName, Context context);
 
     /**
      * Checks that the databases resource name is valid and is not already in use.
@@ -49,8 +49,8 @@ public interface DatabasesClient {
      * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String resourceGroupName, String clusterName, CheckNameRequest resourceName);
+    CheckNameResultInner checkNameAvailability(String resourceGroupName, String clusterName,
+        CheckNameRequest resourceName);
 
     /**
      * Returns the list of databases of the given Kusto cluster.
@@ -81,8 +81,8 @@ public interface DatabasesClient {
      * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseInner> listByCluster(
-        String resourceGroupName, String clusterName, Integer top, String skiptoken, Context context);
+    PagedIterable<DatabaseInner> listByCluster(String resourceGroupName, String clusterName, Integer top,
+        String skiptoken, Context context);
 
     /**
      * Returns a database.
@@ -97,8 +97,8 @@ public interface DatabasesClient {
      * @return class representing a Kusto database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseInner> getWithResponse(
-        String resourceGroupName, String clusterName, String databaseName, Context context);
+    Response<DatabaseInner> getWithResponse(String resourceGroupName, String clusterName, String databaseName,
+        Context context);
 
     /**
      * Returns a database.
@@ -127,8 +127,8 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters);
 
     /**
      * Creates or updates a database.
@@ -146,13 +146,8 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters, CallerRole callerRole, Context context);
 
     /**
      * Creates or updates a database.
@@ -167,8 +162,8 @@ public interface DatabasesClient {
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner createOrUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters);
+    DatabaseInner createOrUpdate(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters);
 
     /**
      * Creates or updates a database.
@@ -186,13 +181,8 @@ public interface DatabasesClient {
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context);
+    DatabaseInner createOrUpdate(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters, CallerRole callerRole, Context context);
 
     /**
      * Updates a database.
@@ -207,8 +197,8 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseInner parameters);
 
     /**
      * Updates a database.
@@ -226,13 +216,8 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseInner parameters, CallerRole callerRole, Context context);
 
     /**
      * Updates a database.
@@ -265,13 +250,8 @@ public interface DatabasesClient {
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner update(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context);
+    DatabaseInner update(String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters,
+        CallerRole callerRole, Context context);
 
     /**
      * Deletes the database with the given name.
@@ -300,8 +280,8 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String databaseName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String databaseName,
+        Context context);
 
     /**
      * Deletes the database with the given name.
@@ -342,8 +322,8 @@ public interface DatabasesClient {
      * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabasePrincipalInner> listPrincipals(
-        String resourceGroupName, String clusterName, String databaseName);
+    PagedIterable<DatabasePrincipalInner> listPrincipals(String resourceGroupName, String clusterName,
+        String databaseName);
 
     /**
      * Returns a list of database principals of the given Kusto cluster and database.
@@ -358,8 +338,8 @@ public interface DatabasesClient {
      * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabasePrincipalInner> listPrincipals(
-        String resourceGroupName, String clusterName, String databaseName, Context context);
+    PagedIterable<DatabasePrincipalInner> listPrincipals(String resourceGroupName, String clusterName,
+        String databaseName, Context context);
 
     /**
      * Add Database principals permissions.
@@ -375,12 +355,8 @@ public interface DatabasesClient {
      * @return the list Kusto database principals operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabasePrincipalListResultInner> addPrincipalsWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToAdd,
-        Context context);
+    Response<DatabasePrincipalListResultInner> addPrincipalsWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, DatabasePrincipalListRequest databasePrincipalsToAdd, Context context);
 
     /**
      * Add Database principals permissions.
@@ -395,10 +371,7 @@ public interface DatabasesClient {
      * @return the list Kusto database principals operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabasePrincipalListResultInner addPrincipals(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
+    DatabasePrincipalListResultInner addPrincipals(String resourceGroupName, String clusterName, String databaseName,
         DatabasePrincipalListRequest databasePrincipalsToAdd);
 
     /**
@@ -415,11 +388,8 @@ public interface DatabasesClient {
      * @return the list Kusto database principals operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabasePrincipalListResultInner> removePrincipalsWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToRemove,
+    Response<DatabasePrincipalListResultInner> removePrincipalsWithResponse(String resourceGroupName,
+        String clusterName, String databaseName, DatabasePrincipalListRequest databasePrincipalsToRemove,
         Context context);
 
     /**
@@ -435,9 +405,6 @@ public interface DatabasesClient {
      * @return the list Kusto database principals operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabasePrincipalListResultInner removePrincipals(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
+    DatabasePrincipalListResultInner removePrincipals(String resourceGroupName, String clusterName, String databaseName,
         DatabasePrincipalListRequest databasePrincipalsToRemove);
 }

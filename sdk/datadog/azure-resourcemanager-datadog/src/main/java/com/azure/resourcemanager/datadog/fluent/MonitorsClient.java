@@ -60,8 +60,8 @@ public interface MonitorsClient {
      * @return the default api key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatadogApiKeyInner> getDefaultKeyWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<DatadogApiKeyInner> getDefaultKeyWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Get the default api key.
@@ -89,8 +89,8 @@ public interface MonitorsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> setDefaultKeyWithResponse(
-        String resourceGroupName, String monitorName, DatadogApiKeyInner body, Context context);
+    Response<Void> setDefaultKeyWithResponse(String resourceGroupName, String monitorName, DatadogApiKeyInner body,
+        Context context);
 
     /**
      * Set the default api key.
@@ -156,8 +156,8 @@ public interface MonitorsClient {
      * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LinkedResourceInner> listLinkedResources(
-        String resourceGroupName, String monitorName, Context context);
+    PagedIterable<LinkedResourceInner> listLinkedResources(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * List the resources currently being monitored by the Datadog monitor resource.
@@ -184,8 +184,8 @@ public interface MonitorsClient {
      * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MonitoredResourceInner> listMonitoredResources(
-        String resourceGroupName, String monitorName, Context context);
+    PagedIterable<MonitoredResourceInner> listMonitoredResources(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * List all monitors under the specified subscription.
@@ -246,8 +246,8 @@ public interface MonitorsClient {
      * @return the properties of a specific monitor resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatadogMonitorResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<DatadogMonitorResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Get the properties of a specific monitor resource.
@@ -273,8 +273,8 @@ public interface MonitorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginCreate(
-        String resourceGroupName, String monitorName);
+    SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
+        beginCreate(String resourceGroupName, String monitorName);
 
     /**
      * Create a monitor resource.
@@ -289,8 +289,8 @@ public interface MonitorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginCreate(
-        String resourceGroupName, String monitorName, DatadogMonitorResourceInner body, Context context);
+    SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
+        beginCreate(String resourceGroupName, String monitorName, DatadogMonitorResourceInner body, Context context);
 
     /**
      * Create a monitor resource.
@@ -318,8 +318,8 @@ public interface MonitorsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatadogMonitorResourceInner create(
-        String resourceGroupName, String monitorName, DatadogMonitorResourceInner body, Context context);
+    DatadogMonitorResourceInner create(String resourceGroupName, String monitorName, DatadogMonitorResourceInner body,
+        Context context);
 
     /**
      * Update a monitor resource.
@@ -332,8 +332,8 @@ public interface MonitorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner> beginUpdate(
-        String resourceGroupName, String monitorName);
+    SyncPoller<PollResult<DatadogMonitorResourceInner>, DatadogMonitorResourceInner>
+        beginUpdate(String resourceGroupName, String monitorName);
 
     /**
      * Update a monitor resource.
@@ -377,8 +377,8 @@ public interface MonitorsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatadogMonitorResourceInner update(
-        String resourceGroupName, String monitorName, DatadogMonitorResourceUpdateParameters body, Context context);
+    DatadogMonitorResourceInner update(String resourceGroupName, String monitorName,
+        DatadogMonitorResourceUpdateParameters body, Context context);
 
     /**
      * Delete a monitor resource.
@@ -444,8 +444,8 @@ public interface MonitorsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatadogSetPasswordLinkInner> refreshSetPasswordLinkWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<DatadogSetPasswordLinkInner> refreshSetPasswordLinkWithResponse(String resourceGroupName,
+        String monitorName, Context context);
 
     /**
      * Refresh the set password link and return a latest one.

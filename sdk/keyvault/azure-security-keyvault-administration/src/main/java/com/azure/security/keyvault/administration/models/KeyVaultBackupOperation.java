@@ -26,8 +26,7 @@ public final class KeyVaultBackupOperation extends KeyVaultLongRunningOperation 
      * @param azureStorageBlobContainerUrl The Azure blob storage container URI which contains the backup.
      */
     public KeyVaultBackupOperation(String status, String statusDetails, KeyVaultAdministrationError error,
-                                   String operationId, OffsetDateTime startTime, OffsetDateTime endTime,
-                                   String azureStorageBlobContainerUrl) {
+        String operationId, OffsetDateTime startTime, OffsetDateTime endTime, String azureStorageBlobContainerUrl) {
         super(status, statusDetails, error, operationId, startTime, endTime);
         this.azureStorageBlobContainerUrl = azureStorageBlobContainerUrl;
     }

@@ -18,14 +18,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 /** Entry point to DDoS protection plans management. */
 @Fluent
 public interface DdosProtectionPlans
-    extends SupportsCreating<DdosProtectionPlan.DefinitionStages.Blank>,
-        SupportsListing<DdosProtectionPlan>,
-        SupportsListingByResourceGroup<DdosProtectionPlan>,
-        SupportsGettingByResourceGroup<DdosProtectionPlan>,
-        SupportsGettingById<DdosProtectionPlan>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<DdosProtectionPlan>,
-        SupportsBatchDeletion,
-        HasManager<NetworkManager> {
+    extends SupportsCreating<DdosProtectionPlan.DefinitionStages.Blank>, SupportsListing<DdosProtectionPlan>,
+    SupportsListingByResourceGroup<DdosProtectionPlan>, SupportsGettingByResourceGroup<DdosProtectionPlan>,
+    SupportsGettingById<DdosProtectionPlan>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<DdosProtectionPlan>, SupportsBatchDeletion, HasManager<NetworkManager> {
 }

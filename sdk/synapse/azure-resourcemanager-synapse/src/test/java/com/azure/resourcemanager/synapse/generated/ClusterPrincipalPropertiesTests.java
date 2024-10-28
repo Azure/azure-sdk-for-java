@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterPrincipalPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPrincipalProperties model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"h\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"omew\",\"principalType\":\"User\",\"tenantName\":\"tl\",\"principalName\":\"hqawmo\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"cz\"}")
-                .toObject(ClusterPrincipalProperties.class);
+        ClusterPrincipalProperties model = BinaryData.fromString(
+            "{\"principalId\":\"h\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"omew\",\"principalType\":\"User\",\"tenantName\":\"tl\",\"principalName\":\"hqawmo\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"cz\"}")
+            .toObject(ClusterPrincipalProperties.class);
         Assertions.assertEquals("h", model.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, model.role());
         Assertions.assertEquals("omew", model.tenantId());
@@ -26,12 +24,10 @@ public final class ClusterPrincipalPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPrincipalProperties model =
-            new ClusterPrincipalProperties()
-                .withPrincipalId("h")
-                .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
-                .withTenantId("omew")
-                .withPrincipalType(PrincipalType.USER);
+        ClusterPrincipalProperties model = new ClusterPrincipalProperties().withPrincipalId("h")
+            .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
+            .withTenantId("omew")
+            .withPrincipalType(PrincipalType.USER);
         model = BinaryData.fromObject(model).toObject(ClusterPrincipalProperties.class);
         Assertions.assertEquals("h", model.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, model.role());

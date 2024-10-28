@@ -35,13 +35,8 @@ public interface AnalyticsItemsClient {
      * @return a list of Analytics Items defined within an Application Insights component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<ApplicationInsightsComponentAnalyticsItemInner>> listWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ItemScope scope,
-        ItemTypeParameter type,
-        Boolean includeContent,
+    Response<List<ApplicationInsightsComponentAnalyticsItemInner>> listWithResponse(String resourceGroupName,
+        String resourceName, ItemScopePath scopePath, ItemScope scope, ItemTypeParameter type, Boolean includeContent,
         Context context);
 
     /**
@@ -57,8 +52,8 @@ public interface AnalyticsItemsClient {
      * @return a list of Analytics Items defined within an Application Insights component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    List<ApplicationInsightsComponentAnalyticsItemInner> list(
-        String resourceGroupName, String resourceName, ItemScopePath scopePath);
+    List<ApplicationInsightsComponentAnalyticsItemInner> list(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath);
 
     /**
      * Gets a specific Analytics Items defined within an Application Insights component.
@@ -76,13 +71,8 @@ public interface AnalyticsItemsClient {
      * @return a specific Analytics Items defined within an Application Insights component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentAnalyticsItemInner> getWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        String id,
-        String name,
-        Context context);
+    Response<ApplicationInsightsComponentAnalyticsItemInner> getWithResponse(String resourceGroupName,
+        String resourceName, ItemScopePath scopePath, String id, String name, Context context);
 
     /**
      * Gets a specific Analytics Items defined within an Application Insights component.
@@ -97,8 +87,8 @@ public interface AnalyticsItemsClient {
      * @return a specific Analytics Items defined within an Application Insights component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentAnalyticsItemInner get(
-        String resourceGroupName, String resourceName, ItemScopePath scopePath);
+    ApplicationInsightsComponentAnalyticsItemInner get(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath);
 
     /**
      * Adds or Updates a specific Analytics Item within an Application Insights component.
@@ -119,13 +109,9 @@ public interface AnalyticsItemsClient {
      *     with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentAnalyticsItemInner> putWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ApplicationInsightsComponentAnalyticsItemInner itemProperties,
-        Boolean overrideItem,
-        Context context);
+    Response<ApplicationInsightsComponentAnalyticsItemInner> putWithResponse(String resourceGroupName,
+        String resourceName, ItemScopePath scopePath, ApplicationInsightsComponentAnalyticsItemInner itemProperties,
+        Boolean overrideItem, Context context);
 
     /**
      * Adds or Updates a specific Analytics Item within an Application Insights component.
@@ -142,11 +128,8 @@ public interface AnalyticsItemsClient {
      * @return properties that define an Analytics item that is associated to an Application Insights component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentAnalyticsItemInner put(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ApplicationInsightsComponentAnalyticsItemInner itemProperties);
+    ApplicationInsightsComponentAnalyticsItemInner put(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath, ApplicationInsightsComponentAnalyticsItemInner itemProperties);
 
     /**
      * Deletes a specific Analytics Items defined within an Application Insights component.
@@ -164,13 +147,8 @@ public interface AnalyticsItemsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        String id,
-        String name,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, ItemScopePath scopePath, String id,
+        String name, Context context);
 
     /**
      * Deletes a specific Analytics Items defined within an Application Insights component.

@@ -123,15 +123,10 @@ public interface OpenidConnectProviderContract {
          * The stage of the OpenidConnectProviderContract definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDisplayName,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithMetadataEndpoint,
-                DefinitionStages.WithClientId,
-                DefinitionStages.WithClientSecret,
-                DefinitionStages.WithUseInTestConsole,
-                DefinitionStages.WithUseInApiDocumentation,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithDisplayName, DefinitionStages.WithDescription,
+            DefinitionStages.WithMetadataEndpoint, DefinitionStages.WithClientId, DefinitionStages.WithClientSecret,
+            DefinitionStages.WithUseInTestConsole, DefinitionStages.WithUseInApiDocumentation,
+            DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -251,15 +246,9 @@ public interface OpenidConnectProviderContract {
     OpenidConnectProviderContract.Update update();
 
     /** The template for OpenidConnectProviderContract update. */
-    interface Update
-        extends UpdateStages.WithDisplayName,
-            UpdateStages.WithDescription,
-            UpdateStages.WithMetadataEndpoint,
-            UpdateStages.WithClientId,
-            UpdateStages.WithClientSecret,
-            UpdateStages.WithUseInTestConsole,
-            UpdateStages.WithUseInApiDocumentation,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithDisplayName, UpdateStages.WithDescription,
+        UpdateStages.WithMetadataEndpoint, UpdateStages.WithClientId, UpdateStages.WithClientSecret,
+        UpdateStages.WithUseInTestConsole, UpdateStages.WithUseInApiDocumentation, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

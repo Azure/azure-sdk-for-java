@@ -31,12 +31,8 @@ public interface AccessPoliciesClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessPolicyResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
-        AccessPolicyCreateOrUpdateParameters parameters,
-        Context context);
+    Response<AccessPolicyResourceInner> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
+        String accessPolicyName, AccessPolicyCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Create or update an access policy in the specified environment.
@@ -52,10 +48,7 @@ public interface AccessPoliciesClient {
      * @return an access policy is used to grant users and applications access to the environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessPolicyResourceInner createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
+    AccessPolicyResourceInner createOrUpdate(String resourceGroupName, String environmentName, String accessPolicyName,
         AccessPolicyCreateOrUpdateParameters parameters);
 
     /**
@@ -73,8 +66,8 @@ public interface AccessPoliciesClient {
      * @return the access policy with the specified name in the specified environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessPolicyResourceInner> getWithResponse(
-        String resourceGroupName, String environmentName, String accessPolicyName, Context context);
+    Response<AccessPolicyResourceInner> getWithResponse(String resourceGroupName, String environmentName,
+        String accessPolicyName, Context context);
 
     /**
      * Gets the access policy with the specified name in the specified environment.
@@ -109,12 +102,8 @@ public interface AccessPoliciesClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessPolicyResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
-        AccessPolicyUpdateParameters accessPolicyUpdateParameters,
-        Context context);
+    Response<AccessPolicyResourceInner> updateWithResponse(String resourceGroupName, String environmentName,
+        String accessPolicyName, AccessPolicyUpdateParameters accessPolicyUpdateParameters, Context context);
 
     /**
      * Updates the access policy with the specified name in the specified subscription, resource group, and environment.
@@ -131,10 +120,7 @@ public interface AccessPoliciesClient {
      * @return an access policy is used to grant users and applications access to the environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessPolicyResourceInner update(
-        String resourceGroupName,
-        String environmentName,
-        String accessPolicyName,
+    AccessPolicyResourceInner update(String resourceGroupName, String environmentName, String accessPolicyName,
         AccessPolicyUpdateParameters accessPolicyUpdateParameters);
 
     /**
@@ -152,8 +138,8 @@ public interface AccessPoliciesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String accessPolicyName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String accessPolicyName,
+        Context context);
 
     /**
      * Deletes the access policy with the specified name in the specified subscription, resource group, and environment.
@@ -183,8 +169,8 @@ public interface AccessPoliciesClient {
      * @return the response of the List access policies operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessPolicyListResponseInner> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context);
+    Response<AccessPolicyListResponseInner> listByEnvironmentWithResponse(String resourceGroupName,
+        String environmentName, Context context);
 
     /**
      * Lists all the available access policies associated with the environment.

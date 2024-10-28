@@ -15,10 +15,8 @@ import java.time.OffsetDateTime;
  * An immutable client-side representation of a deployment operation.
  */
 @Fluent
-public interface DeploymentOperation extends
-        Indexable,
-        Refreshable<DeploymentOperation>,
-        HasInnerModel<DeploymentOperationInner> {
+public interface DeploymentOperation
+    extends Indexable, Refreshable<DeploymentOperation>, HasInnerModel<DeploymentOperationInner> {
 
     /**
      * @return the deployment operation id

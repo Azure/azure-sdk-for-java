@@ -22,8 +22,8 @@ public interface ApiIssueAttachments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Issue Attachment list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IssueAttachmentContract> listByService(
-        String resourceGroupName, String serviceName, String apiId, String issueId);
+    PagedIterable<IssueAttachmentContract> listByService(String resourceGroupName, String serviceName, String apiId,
+        String issueId);
 
     /**
      * Lists all attachments for the Issue associated with the specified API.
@@ -44,15 +44,8 @@ public interface ApiIssueAttachments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Issue Attachment list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IssueAttachmentContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<IssueAttachmentContract> listByService(String resourceGroupName, String serviceName, String apiId,
+        String issueId, String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
@@ -68,13 +61,8 @@ public interface ApiIssueAttachments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
      */
-    ApiIssueAttachmentsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String attachmentId,
-        Context context);
+    ApiIssueAttachmentsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String issueId, String attachmentId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the issue Attachment for an API specified by its identifier.
@@ -104,13 +92,8 @@ public interface ApiIssueAttachments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the issue Attachment for an API specified by its identifier.
      */
-    Response<IssueAttachmentContract> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String attachmentId,
-        Context context);
+    Response<IssueAttachmentContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String issueId, String attachmentId, Context context);
 
     /**
      * Gets the details of the issue Attachment for an API specified by its identifier.
@@ -125,8 +108,8 @@ public interface ApiIssueAttachments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the issue Attachment for an API specified by its identifier.
      */
-    IssueAttachmentContract get(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String attachmentId);
+    IssueAttachmentContract get(String resourceGroupName, String serviceName, String apiId, String issueId,
+        String attachmentId);
 
     /**
      * Deletes the specified comment from an Issue.
@@ -144,14 +127,8 @@ public interface ApiIssueAttachments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String attachmentId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String issueId,
+        String attachmentId, String ifMatch, Context context);
 
     /**
      * Deletes the specified comment from an Issue.
@@ -167,12 +144,7 @@ public interface ApiIssueAttachments {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String attachmentId,
+    void delete(String resourceGroupName, String serviceName, String apiId, String issueId, String attachmentId,
         String ifMatch);
 
     /**

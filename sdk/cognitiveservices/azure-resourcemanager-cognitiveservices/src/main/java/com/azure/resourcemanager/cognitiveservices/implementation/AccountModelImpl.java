@@ -21,8 +21,7 @@ public final class AccountModelImpl implements AccountModel {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    AccountModelImpl(
-        AccountModelInner innerObject,
+    AccountModelImpl(AccountModelInner innerObject,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -32,46 +32,28 @@ public final class DimensionsByExternalCloudProviderTypeMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"sasbhu\",\"filterEnabled\":true,\"groupingEnabled\":true,\"data\":[\"emslynsqyrp\",\"oobrlttyms\"],\"total\":657212299,\"category\":\"qdnfwqzdz\",\"usageStart\":\"2021-08-06T08:12:13Z\",\"usageEnd\":\"2021-07-15T09:02:03Z\",\"nextLink\":\"hnfhqlyvijouwi\"},\"sku\":\"xoyzunbix\",\"eTag\":\"ti\",\"location\":\"vcpwpgclrc\",\"tags\":{\"pmyyefrpmpdnqq\":\"soxfrken\"},\"id\":\"ka\",\"name\":\"ao\",\"type\":\"vmm\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"description\":\"sasbhu\",\"filterEnabled\":true,\"groupingEnabled\":true,\"data\":[\"emslynsqyrp\",\"oobrlttyms\"],\"total\":657212299,\"category\":\"qdnfwqzdz\",\"usageStart\":\"2021-08-06T08:12:13Z\",\"usageEnd\":\"2021-07-15T09:02:03Z\",\"nextLink\":\"hnfhqlyvijouwi\"},\"sku\":\"xoyzunbix\",\"eTag\":\"ti\",\"location\":\"vcpwpgclrc\",\"tags\":{\"pmyyefrpmpdnqq\":\"soxfrken\"},\"id\":\"ka\",\"name\":\"ao\",\"type\":\"vmm\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Dimension> response =
-            manager
-                .dimensions()
-                .byExternalCloudProviderType(
-                    ExternalCloudProviderType.EXTERNAL_BILLING_ACCOUNTS,
-                    "hyrmewipmvekdx",
-                    "kuqgsjjxundxgket",
-                    "zhhzjhfjmhvvmu",
-                    "gpmuneqsxvmhfbuz",
-                    1911590455,
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<Dimension> response = manager.dimensions()
+            .byExternalCloudProviderType(ExternalCloudProviderType.EXTERNAL_BILLING_ACCOUNTS, "hyrmewipmvekdx",
+                "kuqgsjjxundxgket", "zhhzjhfjmhvvmu", "gpmuneqsxvmhfbuz", 1911590455, com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("vcpwpgclrc", response.iterator().next().location());
         Assertions.assertEquals("soxfrken", response.iterator().next().tags().get("pmyyefrpmpdnqq"));

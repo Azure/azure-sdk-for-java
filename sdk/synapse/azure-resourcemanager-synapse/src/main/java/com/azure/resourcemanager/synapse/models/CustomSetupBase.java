@@ -19,8 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "CmdkeySetup", value = CmdkeySetup.class),
     @JsonSubTypes.Type(name = "EnvironmentVariableSetup", value = EnvironmentVariableSetup.class),
-    @JsonSubTypes.Type(name = "ComponentSetup", value = ComponentSetup.class)
-})
+    @JsonSubTypes.Type(name = "ComponentSetup", value = ComponentSetup.class) })
 @Immutable
 public class CustomSetupBase {
     /** Creates an instance of CustomSetupBase class. */

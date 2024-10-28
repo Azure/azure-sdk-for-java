@@ -21,8 +21,10 @@ public final class AzureMachineLearningServiceInputColumnTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMachineLearningServiceInputColumn model = new AzureMachineLearningServiceInputColumn()
-            .withName("zdzucerscdntnevf").withDataType("jmygtdsslswtmwer").withMapTo(539976297);
+        AzureMachineLearningServiceInputColumn model
+            = new AzureMachineLearningServiceInputColumn().withName("zdzucerscdntnevf")
+                .withDataType("jmygtdsslswtmwer")
+                .withMapTo(539976297);
         model = BinaryData.fromObject(model).toObject(AzureMachineLearningServiceInputColumn.class);
         Assertions.assertEquals("zdzucerscdntnevf", model.name());
         Assertions.assertEquals("jmygtdsslswtmwer", model.dataType());

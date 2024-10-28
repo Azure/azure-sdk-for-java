@@ -20,8 +20,8 @@ public final class UsersGetResponse extends ResponseBase<UsersGetHeaders, UserCo
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public UsersGetResponse(
-        HttpRequest request, int statusCode, HttpHeaders rawHeaders, UserContractInner value, UsersGetHeaders headers) {
+    public UsersGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, UserContractInner value,
+        UsersGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

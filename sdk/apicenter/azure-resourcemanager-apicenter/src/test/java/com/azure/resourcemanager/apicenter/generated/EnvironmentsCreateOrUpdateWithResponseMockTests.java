@@ -50,13 +50,16 @@ public final class EnvironmentsCreateOrUpdateWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Environment response = manager.environments().define("coezbrhubskh")
+        Environment response = manager.environments()
+            .define("coezbrhubskh")
             .withExistingWorkspace("qkdlw", "qfbumlkxtrqjf", "mlmbtxhwgfwsrta")
-            .withProperties(new EnvironmentProperties().withTitle("ygo").withDescription("kkqfqjbvle")
+            .withProperties(new EnvironmentProperties().withTitle("ygo")
+                .withDescription("kkqfqjbvle")
                 .withKind(EnvironmentKind.STAGING)
                 .withServer(new EnvironmentServer().withType(EnvironmentServerType.KONG_API_GATEWAY)
                     .withManagementPortalUri(Arrays.asList("qtqzfavyv", "qqybarye", "ayjkqa")))
