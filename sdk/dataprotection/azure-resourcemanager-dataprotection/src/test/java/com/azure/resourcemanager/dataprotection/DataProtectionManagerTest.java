@@ -56,7 +56,7 @@ public class DataProtectionManagerTest extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = getIdentityTestCredential(super.interceptorManager);
+        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         resourceManager = ResourceManager.configure()
