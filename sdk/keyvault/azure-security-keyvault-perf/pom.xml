@@ -20,7 +20,6 @@
   <properties>
     <perf.test.mainClass>com.azure.security.keyvault.App</perf.test.mainClass>
     <perf.test.imageName>azure-security-keyvault-perf</perf.test.imageName>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

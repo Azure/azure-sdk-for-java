@@ -49,7 +49,6 @@
       --add-opens com.azure.communication.common/com.azure.communication.common.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <doclintMissingInclusion>-</doclintMissingInclusion>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

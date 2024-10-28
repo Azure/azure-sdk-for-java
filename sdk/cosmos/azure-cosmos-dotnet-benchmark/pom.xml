@@ -44,6 +44,7 @@ Licensed under the MIT License.
 
     <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
     <doclintMissingInclusion>-</doclintMissingInclusion>
+    <spotless.skip>true</spotless.skip>
   </properties>
 
   <dependencies>

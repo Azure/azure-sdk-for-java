@@ -250,7 +250,7 @@
 
     <!-- Disables Spotless linting. -->
     <!-- Spotless is disabled by default until all libraries are manually updated, after that this setting will be removed. -->
-    <spotless.skip>true</spotless.skip>
+    <spotless.skip>false</spotless.skip>
 
     <!-- Skips Spotless applying code style formatting. -->
     <spotless.apply.skip>false</spotless.apply.skip>

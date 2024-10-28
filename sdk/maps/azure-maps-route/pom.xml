@@ -50,7 +50,6 @@
     </javaModulesSurefireArgLine>
     <jacoco.min.linecoverage>0.0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.0</jacoco.min.branchcoverage>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

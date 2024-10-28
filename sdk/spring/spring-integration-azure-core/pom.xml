@@ -36,6 +36,7 @@
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
     <jacoco.skip>true</jacoco.skip>
+    <spotless.skip>true</spotless.skip>
   </properties>
   <dependencies>
     <dependency>

@@ -41,6 +41,7 @@
   <properties>
     <cosmos.spark.skip>false</cosmos.spark.skip>
     <cosmos-spark-version>3.3</cosmos-spark-version>
+    <spotless.skip>true</spotless.skip>
   </properties>
 
   <build>

@@ -64,8 +64,6 @@
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
     <spotbugs.excludes>**/aalto/**/*.java,**/stax2/**/*.java</spotbugs.excludes>
-
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <developers>

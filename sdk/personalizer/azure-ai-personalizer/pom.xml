@@ -42,7 +42,6 @@
 
     <jacoco.min.branchcoverage>0.27</jacoco.min.branchcoverage>
     <doclintMissingInclusion>-</doclintMissingInclusion>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

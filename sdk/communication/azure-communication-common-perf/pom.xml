@@ -22,7 +22,6 @@
 
     <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
     <doclint>all,-missing</doclint>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>
