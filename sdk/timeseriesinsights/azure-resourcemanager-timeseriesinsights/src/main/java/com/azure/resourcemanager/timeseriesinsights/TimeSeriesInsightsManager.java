@@ -42,7 +42,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to TimeSeriesInsightsManager. Time Series Insights client. */
+/**
+ * Entry point to TimeSeriesInsightsManager.
+ * Time Series Insights client.
+ */
 public final class TimeSeriesInsightsManager {
     private Operations operations;
 
@@ -68,7 +71,7 @@ public final class TimeSeriesInsightsManager {
 
     /**
      * Creates an instance of TimeSeriesInsights service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the TimeSeriesInsights service API instance.
@@ -81,7 +84,7 @@ public final class TimeSeriesInsightsManager {
 
     /**
      * Creates an instance of TimeSeriesInsights service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the TimeSeriesInsights service API instance.
@@ -94,14 +97,16 @@ public final class TimeSeriesInsightsManager {
 
     /**
      * Gets a Configurable instance that can be used to create TimeSeriesInsightsManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new TimeSeriesInsightsManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -173,8 +178,8 @@ public final class TimeSeriesInsightsManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -216,7 +221,7 @@ public final class TimeSeriesInsightsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.timeseriesinsights")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -264,7 +269,7 @@ public final class TimeSeriesInsightsManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -276,7 +281,7 @@ public final class TimeSeriesInsightsManager {
 
     /**
      * Gets the resource collection API of Environments.
-     *
+     * 
      * @return Resource collection API of Environments.
      */
     public Environments environments() {
@@ -288,7 +293,7 @@ public final class TimeSeriesInsightsManager {
 
     /**
      * Gets the resource collection API of EventSources.
-     *
+     * 
      * @return Resource collection API of EventSources.
      */
     public EventSources eventSources() {
@@ -300,7 +305,7 @@ public final class TimeSeriesInsightsManager {
 
     /**
      * Gets the resource collection API of ReferenceDataSets. It manages ReferenceDataSetResource.
-     *
+     * 
      * @return Resource collection API of ReferenceDataSets.
      */
     public ReferenceDataSets referenceDataSets() {
@@ -312,7 +317,7 @@ public final class TimeSeriesInsightsManager {
 
     /**
      * Gets the resource collection API of AccessPolicies. It manages AccessPolicyResource.
-     *
+     * 
      * @return Resource collection API of AccessPolicies.
      */
     public AccessPolicies accessPolicies() {
@@ -323,8 +328,10 @@ public final class TimeSeriesInsightsManager {
     }
 
     /**
-     * @return Wrapped service client TimeSeriesInsightsClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client TimeSeriesInsightsClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client TimeSeriesInsightsClient.
      */
     public TimeSeriesInsightsClient serviceClient() {
         return this.clientObject;

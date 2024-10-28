@@ -1,14 +1,302 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2024-10-28)
+
+- Azure Resource Manager TimeSeriesInsights client library for Java. This package contains Microsoft Azure SDK for TimeSeriesInsights Management SDK. Time Series Insights client. Package tag package-2020-05-15. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+#### `models.OperationDisplay` was modified
 
-### Bugs Fixed
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
-### Other Changes
+#### `models.EventSourceResource` was modified
+
+* `kind()` was added
+
+#### `models.EventSourceMutableProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Gen2EnvironmentUpdateParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `kind()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.LocalTimestamp` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AccessPolicyCreateOrUpdateParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Gen1EnvironmentCreateOrUpdateParameters` was modified
+
+* `kind()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AzureEventSourceProperties` was modified
+
+* `creationTime()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `time()` was added
+* `provisioningState()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `type()` was added
+
+#### `models.Gen1EnvironmentResource` was modified
+
+* `name()` was added
+* `id()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `kind()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `type()` was added
+
+#### `models.Gen2StorageConfigurationMutableProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.MetricAvailability` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Gen2StorageConfigurationInput` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.IngressEnvironmentStatus` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.LogSpecification` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ServiceSpecification` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.EnvironmentResourceProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `provisioningState()` was added
+* `creationTime()` was added
+
+#### `models.EnvironmentResource` was modified
+
+* `kind()` was added
+
+#### `models.EventHubEventSourceResource` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `kind()` was added
+* `name()` was added
+* `id()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `type()` was added
+
+#### `models.Sku` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ReferenceDataSetCreateOrUpdateParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.EnvironmentUpdateParameters` was modified
+
+* `kind()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Gen2StorageConfigurationOutput` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.WarmStoreConfigurationProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ReferenceDataSetUpdateParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Gen1EnvironmentUpdateParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `kind()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OperationListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.CreateOrUpdateTrackedResourceProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ResourceProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ReferenceDataSetKeyProperty` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.EnvironmentStateDetails` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.EventHubEventSourceCreateOrUpdateParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `kind()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.WarmStorageEnvironmentStatus` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.EventSourceCreateOrUpdateParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `kind()` was added
+
+#### `models.Gen2EnvironmentResource` was modified
+
+* `id()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `name()` was added
+* `type()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `kind()` was added
+
+#### `models.MetricSpecification` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.IoTHubEventSourceCommonProperties` was modified
+
+* `type()` was added
+* `time()` was added
+* `creationTime()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `provisioningState()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.EnvironmentCreateOrUpdateParameters` was modified
+
+* `kind()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Gen2EnvironmentCreateOrUpdateParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `kind()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.IoTHubEventSourceResource` was modified
+
+* `type()` was added
+* `id()` was added
+* `name()` was added
+* `kind()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.EventSourceUpdateParameters` was modified
+
+* `kind()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.EventHubEventSourceUpdateParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `kind()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.AccessPolicyUpdateParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.EnvironmentStatus` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Dimension` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.IoTHubEventSourceCreateOrUpdateParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `kind()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.IoTHubEventSourceUpdateParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `kind()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.TimeSeriesIdProperty` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.EventSourceCommonProperties` was modified
+
+* `provisioningState()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `creationTime()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.LocalTimestampTimeZoneOffset` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.EventHubEventSourceCommonProperties` was modified
+
+* `type()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `provisioningState()` was added
+* `creationTime()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `time()` was added
 
 ## 1.0.0-beta.2 (2023-02-27)
 
