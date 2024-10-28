@@ -71,6 +71,22 @@ extends:
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          PreSteps:
+            - task: AzureCLI@2
+              displayName: Set OIDC variables
+              env:
+                ARM_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
+                ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+                ARM_TENANT_ID: $(ARM_TENANT_ID)
+              inputs:
+                azureSubscription: azure-sdk-tests
+                scriptType: pscore
+                scriptLocation: inlineScript
+                addSpnToEnvironment: true
+                inlineScript: |
+                  Write-Host "##vso[task.setvariable variable=ARM_CLIENT_ID;issecret=true]$($env:servicePrincipalId)"
+                  Write-Host "##vso[task.setvariable variable=ARM_TENANT_ID;issecret=true]$($env:tenantId)"
+                  Write-Host "##vso[task.setvariable variable=ARM_OIDC_TOKEN;issecret=true]$($env:idToken)"
           CalledFromClient: true
           ServiceDirectory: identity
           SupportedClouds: 'Public,UsGov,China'
