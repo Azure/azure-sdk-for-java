@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The encryption keySource (provider). Possible values (case-insensitive): Microsoft.Keyvault. */
+/**
+ * The encryption keySource (provider). Possible values (case-insensitive): Microsoft.Keyvault.
+ */
 public final class EncryptionKeySource extends ExpandableStringEnum<EncryptionKeySource> {
-    /** Static value Microsoft.Keyvault for EncryptionKeySource. */
+    /**
+     * Static value Microsoft.Keyvault for EncryptionKeySource.
+     */
     public static final EncryptionKeySource MICROSOFT_KEYVAULT = fromString("Microsoft.Keyvault");
 
     /**
      * Creates a new instance of EncryptionKeySource value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class EncryptionKeySource extends ExpandableStringEnum<EncryptionKe
 
     /**
      * Creates or finds a EncryptionKeySource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EncryptionKeySource.
      */
-    @JsonCreator
     public static EncryptionKeySource fromString(String name) {
         return fromString(name, EncryptionKeySource.class);
     }
 
     /**
      * Gets known EncryptionKeySource values.
-     *
+     * 
      * @return known EncryptionKeySource values.
      */
     public static Collection<EncryptionKeySource> values() {

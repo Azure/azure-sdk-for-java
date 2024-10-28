@@ -5,47 +5,51 @@
 package com.azure.resourcemanager.managementgroups.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managementgroups.models.EntityParentGroupInfo;
 import com.azure.resourcemanager.managementgroups.models.Permissions;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The entity. */
+/**
+ * The entity.
+ */
 @Fluent
-public final class EntityInfoInner {
+public final class EntityInfoInner implements JsonSerializable<EntityInfoInner> {
     /*
-     * The fully qualified ID for the entity.  For example,
+     * The fully qualified ID for the entity. For example,
      * /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The type of the resource. For example, Microsoft.Management/managementGroups
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The name of the entity. For example, 00000000-0000-0000-0000-000000000000
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The generic properties of an entity.
      */
-    @JsonProperty(value = "properties")
     private EntityInfoProperties innerProperties;
 
-    /** Creates an instance of EntityInfoInner class. */
+    /**
+     * Creates an instance of EntityInfoInner class.
+     */
     public EntityInfoInner() {
     }
 
     /**
      * Get the id property: The fully qualified ID for the entity. For example,
      * /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -54,7 +58,7 @@ public final class EntityInfoInner {
 
     /**
      * Get the type property: The type of the resource. For example, Microsoft.Management/managementGroups.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -63,7 +67,7 @@ public final class EntityInfoInner {
 
     /**
      * Get the name property: The name of the entity. For example, 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -72,7 +76,7 @@ public final class EntityInfoInner {
 
     /**
      * Get the innerProperties property: The generic properties of an entity.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EntityInfoProperties innerProperties() {
@@ -82,7 +86,7 @@ public final class EntityInfoInner {
     /**
      * Get the tenantId property: The AAD Tenant ID associated with the entity. For example,
      * 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -92,7 +96,7 @@ public final class EntityInfoInner {
     /**
      * Set the tenantId property: The AAD Tenant ID associated with the entity. For example,
      * 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the EntityInfoInner object itself.
      */
@@ -106,7 +110,7 @@ public final class EntityInfoInner {
 
     /**
      * Get the displayName property: The friendly name of the management group.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -115,7 +119,7 @@ public final class EntityInfoInner {
 
     /**
      * Set the displayName property: The friendly name of the management group.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the EntityInfoInner object itself.
      */
@@ -129,7 +133,7 @@ public final class EntityInfoInner {
 
     /**
      * Get the parent property: (Optional) The ID of the parent management group.
-     *
+     * 
      * @return the parent value.
      */
     public EntityParentGroupInfo parent() {
@@ -138,7 +142,7 @@ public final class EntityInfoInner {
 
     /**
      * Set the parent property: (Optional) The ID of the parent management group.
-     *
+     * 
      * @param parent the parent value to set.
      * @return the EntityInfoInner object itself.
      */
@@ -152,7 +156,7 @@ public final class EntityInfoInner {
 
     /**
      * Get the permissions property: The users specific permissions to this item.
-     *
+     * 
      * @return the permissions value.
      */
     public Permissions permissions() {
@@ -161,7 +165,7 @@ public final class EntityInfoInner {
 
     /**
      * Set the permissions property: The users specific permissions to this item.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the EntityInfoInner object itself.
      */
@@ -175,7 +179,7 @@ public final class EntityInfoInner {
 
     /**
      * Get the inheritedPermissions property: The users specific permissions to this item.
-     *
+     * 
      * @return the inheritedPermissions value.
      */
     public Permissions inheritedPermissions() {
@@ -184,7 +188,7 @@ public final class EntityInfoInner {
 
     /**
      * Set the inheritedPermissions property: The users specific permissions to this item.
-     *
+     * 
      * @param inheritedPermissions the inheritedPermissions value to set.
      * @return the EntityInfoInner object itself.
      */
@@ -198,7 +202,7 @@ public final class EntityInfoInner {
 
     /**
      * Get the numberOfDescendants property: Number of Descendants.
-     *
+     * 
      * @return the numberOfDescendants value.
      */
     public Integer numberOfDescendants() {
@@ -207,7 +211,7 @@ public final class EntityInfoInner {
 
     /**
      * Set the numberOfDescendants property: Number of Descendants.
-     *
+     * 
      * @param numberOfDescendants the numberOfDescendants value to set.
      * @return the EntityInfoInner object itself.
      */
@@ -220,11 +224,9 @@ public final class EntityInfoInner {
     }
 
     /**
-     * Get the numberOfChildren property: Number of Children
-     *
-     * <p>Number of children is the number of Groups and Subscriptions that are exactly one level underneath the current
-     * Group.
-     *
+     * Get the numberOfChildren property: Number of children is the number of Groups and Subscriptions that are exactly
+     * one level underneath the current Group.
+     * 
      * @return the numberOfChildren value.
      */
     public Integer numberOfChildren() {
@@ -232,11 +234,9 @@ public final class EntityInfoInner {
     }
 
     /**
-     * Set the numberOfChildren property: Number of Children
-     *
-     * <p>Number of children is the number of Groups and Subscriptions that are exactly one level underneath the current
-     * Group.
-     *
+     * Set the numberOfChildren property: Number of children is the number of Groups and Subscriptions that are exactly
+     * one level underneath the current Group.
+     * 
      * @param numberOfChildren the numberOfChildren value to set.
      * @return the EntityInfoInner object itself.
      */
@@ -249,10 +249,9 @@ public final class EntityInfoInner {
     }
 
     /**
-     * Get the numberOfChildGroups property: Number of Child Groups
-     *
-     * <p>Number of children is the number of Groups that are exactly one level underneath the current Group.
-     *
+     * Get the numberOfChildGroups property: Number of children is the number of Groups that are exactly one level
+     * underneath the current Group.
+     * 
      * @return the numberOfChildGroups value.
      */
     public Integer numberOfChildGroups() {
@@ -260,10 +259,9 @@ public final class EntityInfoInner {
     }
 
     /**
-     * Set the numberOfChildGroups property: Number of Child Groups
-     *
-     * <p>Number of children is the number of Groups that are exactly one level underneath the current Group.
-     *
+     * Set the numberOfChildGroups property: Number of children is the number of Groups that are exactly one level
+     * underneath the current Group.
+     * 
      * @param numberOfChildGroups the numberOfChildGroups value to set.
      * @return the EntityInfoInner object itself.
      */
@@ -278,7 +276,7 @@ public final class EntityInfoInner {
     /**
      * Get the parentDisplayNameChain property: The parent display name chain from the root group to the immediate
      * parent.
-     *
+     * 
      * @return the parentDisplayNameChain value.
      */
     public List<String> parentDisplayNameChain() {
@@ -288,7 +286,7 @@ public final class EntityInfoInner {
     /**
      * Set the parentDisplayNameChain property: The parent display name chain from the root group to the immediate
      * parent.
-     *
+     * 
      * @param parentDisplayNameChain the parentDisplayNameChain value to set.
      * @return the EntityInfoInner object itself.
      */
@@ -302,7 +300,7 @@ public final class EntityInfoInner {
 
     /**
      * Get the parentNameChain property: The parent name chain from the root group to the immediate parent.
-     *
+     * 
      * @return the parentNameChain value.
      */
     public List<String> parentNameChain() {
@@ -311,7 +309,7 @@ public final class EntityInfoInner {
 
     /**
      * Set the parentNameChain property: The parent name chain from the root group to the immediate parent.
-     *
+     * 
      * @param parentNameChain the parentNameChain value to set.
      * @return the EntityInfoInner object itself.
      */
@@ -325,12 +323,54 @@ public final class EntityInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityInfoInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EntityInfoInner.
+     */
+    public static EntityInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityInfoInner deserializedEntityInfoInner = new EntityInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEntityInfoInner.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEntityInfoInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEntityInfoInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEntityInfoInner.innerProperties = EntityInfoProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityInfoInner;
+        });
     }
 }

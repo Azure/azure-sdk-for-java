@@ -32,17 +32,23 @@ import com.azure.resourcemanager.managementgroups.fluent.models.SubscriptionUnde
 import com.azure.resourcemanager.managementgroups.models.ListSubscriptionUnderManagementGroup;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagementGroupSubscriptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagementGroupSubscriptionsClient.
+ */
 public final class ManagementGroupSubscriptionsClientImpl implements ManagementGroupSubscriptionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ManagementGroupSubscriptionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ManagementGroupsApiImpl client;
 
     /**
      * Initializes an instance of ManagementGroupSubscriptionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ManagementGroupSubscriptionsClientImpl(ManagementGroupsApiImpl client) {
@@ -104,16 +110,16 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Associates existing subscription with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of subscription under management group along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SubscriptionUnderManagementGroupInner>> createWithResponseAsync(String groupId,
@@ -137,17 +143,17 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Associates existing subscription with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of subscription under management group along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SubscriptionUnderManagementGroupInner>> createWithResponseAsync(String groupId,
@@ -170,7 +176,7 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Associates existing subscription with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -187,11 +193,11 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Associates existing subscription with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -206,7 +212,7 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Associates existing subscription with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,11 +228,11 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * De-associates subscription from the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -253,11 +259,11 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * De-associates subscription from the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -285,7 +291,7 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * De-associates subscription from the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -301,11 +307,11 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * De-associates subscription from the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -320,7 +326,7 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * De-associates subscription from the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -335,16 +341,16 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Retrieves details about given subscription which is associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of subscription under management group along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SubscriptionUnderManagementGroupInner>> getSubscriptionWithResponseAsync(String groupId,
@@ -368,17 +374,17 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Retrieves details about given subscription which is associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of subscription under management group along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SubscriptionUnderManagementGroupInner>> getSubscriptionWithResponseAsync(String groupId,
@@ -401,7 +407,7 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Retrieves details about given subscription which is associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -418,11 +424,11 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Retrieves details about given subscription which is associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -437,7 +443,7 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Retrieves details about given subscription which is associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @param subscriptionId Subscription ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -453,16 +459,16 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Retrieves details about all subscriptions which are associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of all subscriptions under management group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionUnderManagementGroupInner>>
@@ -485,17 +491,17 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Retrieves details about all subscriptions which are associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of all subscriptions under management group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionUnderManagementGroupInner>>
@@ -518,11 +524,11 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Retrieves details about all subscriptions which are associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -537,7 +543,7 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Retrieves details about all subscriptions which are associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -553,11 +559,11 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Retrieves details about all subscriptions which are associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -573,7 +579,7 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Retrieves details about all subscriptions which are associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -588,11 +594,11 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Retrieves details about all subscriptions which are associated with the management group.
-     *
+     * 
      * @param groupId Management Group ID.
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -607,14 +613,13 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of all subscriptions under management group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionUnderManagementGroupInner>>
@@ -637,15 +642,14 @@ public final class ManagementGroupSubscriptionsClientImpl implements ManagementG
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of all subscriptions under management group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionUnderManagementGroupInner>>

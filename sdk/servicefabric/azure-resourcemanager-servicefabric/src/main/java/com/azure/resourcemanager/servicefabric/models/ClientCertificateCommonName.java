@@ -6,30 +6,31 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the client certificate details using common name.
  */
 @Fluent
-public final class ClientCertificateCommonName {
+public final class ClientCertificateCommonName implements JsonSerializable<ClientCertificateCommonName> {
     /*
-     * Indicates if the client certificate has admin access to the cluster. Non admin clients can perform only read
-     * only operations on the cluster.
+     * Indicates if the client certificate has admin access to the cluster. Non admin clients can perform only read only
+     * operations on the cluster.
      */
-    @JsonProperty(value = "isAdmin", required = true)
     private boolean isAdmin;
 
     /*
      * The common name of the client certificate.
      */
-    @JsonProperty(value = "certificateCommonName", required = true)
     private String certificateCommonName;
 
     /*
      * The issuer thumbprint of the client certificate.
      */
-    @JsonProperty(value = "certificateIssuerThumbprint", required = true)
     private String certificateIssuerThumbprint;
 
     /**
@@ -107,14 +108,59 @@ public final class ClientCertificateCommonName {
      */
     public void validate() {
         if (certificateCommonName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property certificateCommonName in model ClientCertificateCommonName"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property certificateCommonName in model ClientCertificateCommonName"));
         }
         if (certificateIssuerThumbprint() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property certificateIssuerThumbprint in model ClientCertificateCommonName"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property certificateIssuerThumbprint in model ClientCertificateCommonName"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClientCertificateCommonName.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isAdmin", this.isAdmin);
+        jsonWriter.writeStringField("certificateCommonName", this.certificateCommonName);
+        jsonWriter.writeStringField("certificateIssuerThumbprint", this.certificateIssuerThumbprint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientCertificateCommonName from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientCertificateCommonName if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClientCertificateCommonName.
+     */
+    public static ClientCertificateCommonName fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientCertificateCommonName deserializedClientCertificateCommonName = new ClientCertificateCommonName();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isAdmin".equals(fieldName)) {
+                    deserializedClientCertificateCommonName.isAdmin = reader.getBoolean();
+                } else if ("certificateCommonName".equals(fieldName)) {
+                    deserializedClientCertificateCommonName.certificateCommonName = reader.getString();
+                } else if ("certificateIssuerThumbprint".equals(fieldName)) {
+                    deserializedClientCertificateCommonName.certificateIssuerThumbprint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientCertificateCommonName;
+        });
+    }
 }
