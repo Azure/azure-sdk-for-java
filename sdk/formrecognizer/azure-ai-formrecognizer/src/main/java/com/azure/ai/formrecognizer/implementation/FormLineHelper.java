@@ -12,7 +12,8 @@ import com.azure.ai.formrecognizer.models.FormLine;
 public final class FormLineHelper {
     private static FormLineAccessor accessor;
 
-    private FormLineHelper() { }
+    private FormLineHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link FormLine} instance.

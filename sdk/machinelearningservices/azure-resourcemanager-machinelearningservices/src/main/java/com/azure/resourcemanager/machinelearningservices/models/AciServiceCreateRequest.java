@@ -17,7 +17,8 @@ import java.util.Map;
 @JsonTypeName("ACI")
 @Fluent
 public final class AciServiceCreateRequest extends CreateServiceRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AciServiceCreateRequest.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AciServiceCreateRequest.class);
 
     /*
      * The container resource requirements.
@@ -100,8 +101,8 @@ public final class AciServiceCreateRequest extends CreateServiceRequest {
      * @param containerResourceRequirements the containerResourceRequirements value to set.
      * @return the AciServiceCreateRequest object itself.
      */
-    public AciServiceCreateRequest withContainerResourceRequirements(
-        ContainerResourceRequirements containerResourceRequirements) {
+    public AciServiceCreateRequest
+        withContainerResourceRequirements(ContainerResourceRequirements containerResourceRequirements) {
         this.containerResourceRequirements = containerResourceRequirements;
         return this;
     }
@@ -301,8 +302,8 @@ public final class AciServiceCreateRequest extends CreateServiceRequest {
      * @param encryptionProperties the encryptionProperties value to set.
      * @return the AciServiceCreateRequest object itself.
      */
-    public AciServiceCreateRequest withEncryptionProperties(
-        AciServiceCreateRequestEncryptionProperties encryptionProperties) {
+    public AciServiceCreateRequest
+        withEncryptionProperties(AciServiceCreateRequestEncryptionProperties encryptionProperties) {
         this.encryptionProperties = encryptionProperties;
         return this;
     }
@@ -337,8 +338,8 @@ public final class AciServiceCreateRequest extends CreateServiceRequest {
 
     /** {@inheritDoc} */
     @Override
-    public AciServiceCreateRequest withEnvironmentImageRequest(
-        CreateServiceRequestEnvironmentImageRequest environmentImageRequest) {
+    public AciServiceCreateRequest
+        withEnvironmentImageRequest(CreateServiceRequestEnvironmentImageRequest environmentImageRequest) {
         super.withEnvironmentImageRequest(environmentImageRequest);
         return this;
     }

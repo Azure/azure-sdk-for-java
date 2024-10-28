@@ -21,7 +21,7 @@ public final class DevCenterTests extends DevCenterClientTestBase {
 
     @Test
     public void testDevCenterListProjects() {
-        List<DevCenterProject> projects = devCenterClient.listProjects().stream().collect(Collectors.toList());        
+        List<DevCenterProject> projects = devCenterClient.listProjects().stream().collect(Collectors.toList());
         Assertions.assertEquals(1, projects.size());
         Assertions.assertEquals(projectName, projects.get(0).getName());
     }

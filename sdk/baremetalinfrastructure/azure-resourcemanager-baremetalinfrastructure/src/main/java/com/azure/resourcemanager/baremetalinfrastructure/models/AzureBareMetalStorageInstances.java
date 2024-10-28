@@ -84,8 +84,8 @@ public interface AzureBareMetalStorageInstances {
      * @return an Azure Bare Metal Storage instance for the specified subscription, resource group, and instance name
      *     along with {@link Response}.
      */
-    Response<AzureBareMetalStorageInstance> getByResourceGroupWithResponse(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Context context);
+    Response<AzureBareMetalStorageInstance> getByResourceGroupWithResponse(String resourceGroupName,
+        String azureBareMetalStorageInstanceName, Context context);
 
     /**
      * Gets an Azure Bare Metal Storage instance.
@@ -100,8 +100,8 @@ public interface AzureBareMetalStorageInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Bare Metal Storage instance for the specified subscription, resource group, and instance name.
      */
-    AzureBareMetalStorageInstance getByResourceGroup(
-        String resourceGroupName, String azureBareMetalStorageInstanceName);
+    AzureBareMetalStorageInstance getByResourceGroup(String resourceGroupName,
+        String azureBareMetalStorageInstanceName);
 
     /**
      * Delete an AzureBareMetalStorageInstance.
@@ -115,8 +115,8 @@ public interface AzureBareMetalStorageInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String azureBareMetalStorageInstanceName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String azureBareMetalStorageInstanceName,
+        Context context);
 
     /**
      * Delete an AzureBareMetalStorageInstance.

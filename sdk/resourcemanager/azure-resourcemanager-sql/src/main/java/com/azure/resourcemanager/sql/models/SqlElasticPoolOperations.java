@@ -10,17 +10,15 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 
 /** A representation of the Azure SQL Elastic Pool operations. */
 @Fluent
-public interface SqlElasticPoolOperations
-    extends SupportsCreating<SqlElasticPoolOperations.DefinitionStages.WithSqlServer>,
-        SqlChildrenOperations<SqlElasticPool> {
+public interface SqlElasticPoolOperations extends
+    SupportsCreating<SqlElasticPoolOperations.DefinitionStages.WithSqlServer>, SqlChildrenOperations<SqlElasticPool> {
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface SqlElasticPoolOperationsDefinition
-        extends SqlElasticPoolOperations.DefinitionStages.WithSqlServer,
-            SqlElasticPoolOperations.DefinitionStages.WithEdition,
-            SqlElasticPoolOperations.DefinitionStages.WithBasicEdition,
-            SqlElasticPoolOperations.DefinitionStages.WithStandardEdition,
-            SqlElasticPoolOperations.DefinitionStages.WithPremiumEdition {
+    interface SqlElasticPoolOperationsDefinition extends SqlElasticPoolOperations.DefinitionStages.WithSqlServer,
+        SqlElasticPoolOperations.DefinitionStages.WithEdition,
+        SqlElasticPoolOperations.DefinitionStages.WithBasicEdition,
+        SqlElasticPoolOperations.DefinitionStages.WithStandardEdition,
+        SqlElasticPoolOperations.DefinitionStages.WithPremiumEdition {
     }
 
     /** Grouping of all the SQL Elastic Pool definition stages. */
@@ -35,8 +33,8 @@ public interface SqlElasticPoolOperations
              * @param location the parent SQL server location
              * @return The next stage of the definition.
              */
-            SqlElasticPoolOperations.DefinitionStages.WithEdition withExistingSqlServer(
-                String resourceGroupName, String sqlServerName, String location);
+            SqlElasticPoolOperations.DefinitionStages.WithEdition withExistingSqlServer(String resourceGroupName,
+                String sqlServerName, String location);
 
             /**
              * Sets the parent SQL server for the new Elastic Pool.
@@ -104,8 +102,8 @@ public interface SqlElasticPoolOperations
              * @param eDTU maximum eDTU a database in the pool can consume
              * @return The next stage of the definition.
              */
-            SqlElasticPoolOperations.DefinitionStages.WithBasicEdition withDatabaseDtuMax(
-                SqlElasticPoolBasicMaxEDTUs eDTU);
+            SqlElasticPoolOperations.DefinitionStages.WithBasicEdition
+                withDatabaseDtuMax(SqlElasticPoolBasicMaxEDTUs eDTU);
 
             /**
              * Sets the minimum number of eDTU for each database in the pool are regardless of its activity.
@@ -113,8 +111,8 @@ public interface SqlElasticPoolOperations
              * @param eDTU minimum eDTU for all SQL Azure databases
              * @return The next stage of the definition.
              */
-            SqlElasticPoolOperations.DefinitionStages.WithBasicEdition withDatabaseDtuMin(
-                SqlElasticPoolBasicMinEDTUs eDTU);
+            SqlElasticPoolOperations.DefinitionStages.WithBasicEdition
+                withDatabaseDtuMin(SqlElasticPoolBasicMinEDTUs eDTU);
         }
 
         /** The SQL Elastic Pool definition to set the eDTU and storage capacity limits for a standard pool. */
@@ -125,8 +123,8 @@ public interface SqlElasticPoolOperations
              * @param eDTU total shared eDTU for the SQL Azure Database Elastic Pool
              * @return The next stage of the definition.
              */
-            SqlElasticPoolOperations.DefinitionStages.WithStandardEdition withReservedDtu(
-                SqlElasticPoolStandardEDTUs eDTU);
+            SqlElasticPoolOperations.DefinitionStages.WithStandardEdition
+                withReservedDtu(SqlElasticPoolStandardEDTUs eDTU);
 
             /**
              * Sets the maximum number of eDTU a database in the pool can consume.
@@ -134,8 +132,8 @@ public interface SqlElasticPoolOperations
              * @param eDTU maximum eDTU a database in the pool can consume
              * @return The next stage of the definition.
              */
-            SqlElasticPoolOperations.DefinitionStages.WithStandardEdition withDatabaseDtuMax(
-                SqlElasticPoolStandardMaxEDTUs eDTU);
+            SqlElasticPoolOperations.DefinitionStages.WithStandardEdition
+                withDatabaseDtuMax(SqlElasticPoolStandardMaxEDTUs eDTU);
 
             /**
              * Sets the minimum number of eDTU for each database in the pool are regardless of its activity.
@@ -143,8 +141,8 @@ public interface SqlElasticPoolOperations
              * @param eDTU minimum eDTU for all SQL Azure databases
              * @return The next stage of the definition.
              */
-            SqlElasticPoolOperations.DefinitionStages.WithStandardEdition withDatabaseDtuMin(
-                SqlElasticPoolStandardMinEDTUs eDTU);
+            SqlElasticPoolOperations.DefinitionStages.WithStandardEdition
+                withDatabaseDtuMin(SqlElasticPoolStandardMinEDTUs eDTU);
 
             /**
              * Sets the storage capacity for the SQL Azure Database Elastic Pool.
@@ -152,8 +150,8 @@ public interface SqlElasticPoolOperations
              * @param storageCapacity storage capacity for the SQL Azure Database Elastic Pool
              * @return The next stage of the definition.
              */
-            SqlElasticPoolOperations.DefinitionStages.WithStandardEdition withStorageCapacity(
-                SqlElasticPoolStandardStorage storageCapacity);
+            SqlElasticPoolOperations.DefinitionStages.WithStandardEdition
+                withStorageCapacity(SqlElasticPoolStandardStorage storageCapacity);
         }
 
         /** The SQL Elastic Pool definition to set the eDTU and storage capacity limits for a premium pool. */
@@ -164,8 +162,8 @@ public interface SqlElasticPoolOperations
              * @param eDTU total shared eDTU for the SQL Azure Database Elastic Pool
              * @return The next stage of the definition.
              */
-            SqlElasticPoolOperations.DefinitionStages.WithPremiumEdition withReservedDtu(
-                SqlElasticPoolPremiumEDTUs eDTU);
+            SqlElasticPoolOperations.DefinitionStages.WithPremiumEdition
+                withReservedDtu(SqlElasticPoolPremiumEDTUs eDTU);
 
             /**
              * Sets the maximum number of eDTU a database in the pool can consume.
@@ -173,8 +171,8 @@ public interface SqlElasticPoolOperations
              * @param eDTU maximum eDTU a database in the pool can consume
              * @return The next stage of the definition.
              */
-            SqlElasticPoolOperations.DefinitionStages.WithPremiumEdition withDatabaseDtuMax(
-                SqlElasticPoolPremiumMaxEDTUs eDTU);
+            SqlElasticPoolOperations.DefinitionStages.WithPremiumEdition
+                withDatabaseDtuMax(SqlElasticPoolPremiumMaxEDTUs eDTU);
 
             /**
              * Sets the minimum number of eDTU for each database in the pool are regardless of its activity.
@@ -182,8 +180,8 @@ public interface SqlElasticPoolOperations
              * @param eDTU minimum eDTU for all SQL Azure databases
              * @return The next stage of the definition.
              */
-            SqlElasticPoolOperations.DefinitionStages.WithPremiumEdition withDatabaseDtuMin(
-                SqlElasticPoolPremiumMinEDTUs eDTU);
+            SqlElasticPoolOperations.DefinitionStages.WithPremiumEdition
+                withDatabaseDtuMin(SqlElasticPoolPremiumMinEDTUs eDTU);
 
             /**
              * Sets the storage capacity for the SQL Azure Database Elastic Pool.
@@ -191,8 +189,8 @@ public interface SqlElasticPoolOperations
              * @param storageCapacity storage capacity for the SQL Azure Database Elastic Pool
              * @return The next stage of the definition.
              */
-            SqlElasticPoolOperations.DefinitionStages.WithPremiumEdition withStorageCapacity(
-                SqlElasticPoolPremiumSorage storageCapacity);
+            SqlElasticPoolOperations.DefinitionStages.WithPremiumEdition
+                withStorageCapacity(SqlElasticPoolPremiumSorage storageCapacity);
         }
 
         /** The SQL Elastic Pool definition to set the minimum capacity for database. */
@@ -262,21 +260,20 @@ public interface SqlElasticPoolOperations
              * @param databaseName the name of the new SQL Database
              * @return the first stage of the new SQL Database definition
              */
-            SqlDatabase.DefinitionStages.WithExistingDatabaseAfterElasticPool<WithCreate> defineDatabase(
-                String databaseName);
+            SqlDatabase.DefinitionStages.WithExistingDatabaseAfterElasticPool<WithCreate>
+                defineDatabase(String databaseName);
         }
 
         /**
          * A SQL Server definition with sufficient inputs to create a new SQL Elastic Pool in the cloud, but exposing
          * additional optional inputs to specify.
          */
-        interface WithCreate
-            extends SqlElasticPoolOperations.DefinitionStages.WithDatabaseMinCapacity,
-                SqlElasticPoolOperations.DefinitionStages.WithDatabaseMaxCapacity,
-                SqlElasticPoolOperations.DefinitionStages.WithStorageCapacity,
-                SqlElasticPoolOperations.DefinitionStages.WithDatabase,
-                Resource.DefinitionWithTags<SqlElasticPoolOperations.DefinitionStages.WithCreate>,
-                Creatable<SqlElasticPool> {
+        interface WithCreate extends SqlElasticPoolOperations.DefinitionStages.WithDatabaseMinCapacity,
+            SqlElasticPoolOperations.DefinitionStages.WithDatabaseMaxCapacity,
+            SqlElasticPoolOperations.DefinitionStages.WithStorageCapacity,
+            SqlElasticPoolOperations.DefinitionStages.WithDatabase,
+            Resource.DefinitionWithTags<SqlElasticPoolOperations.DefinitionStages.WithCreate>,
+            Creatable<SqlElasticPool> {
         }
     }
 

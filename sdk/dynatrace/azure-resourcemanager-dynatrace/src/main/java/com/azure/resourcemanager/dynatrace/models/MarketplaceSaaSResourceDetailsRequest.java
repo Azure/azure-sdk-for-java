@@ -48,10 +48,8 @@ public final class MarketplaceSaaSResourceDetailsRequest {
      */
     public void validate() {
         if (tenantId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property tenantId in model MarketplaceSaaSResourceDetailsRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property tenantId in model MarketplaceSaaSResourceDetailsRequest"));
         }
     }
 

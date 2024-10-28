@@ -123,16 +123,12 @@ public final class SharedAccessSignatureAuthorizationRuleInner {
      */
     public void validate() {
         if (keyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyName in model SharedAccessSignatureAuthorizationRuleInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyName in model SharedAccessSignatureAuthorizationRuleInner"));
         }
         if (rights() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property rights in model SharedAccessSignatureAuthorizationRuleInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property rights in model SharedAccessSignatureAuthorizationRuleInner"));
         }
     }
 

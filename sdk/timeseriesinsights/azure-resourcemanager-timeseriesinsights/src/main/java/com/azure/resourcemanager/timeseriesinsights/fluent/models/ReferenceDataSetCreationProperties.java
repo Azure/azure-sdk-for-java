@@ -73,8 +73,8 @@ public class ReferenceDataSetCreationProperties {
      * @param dataStringComparisonBehavior the dataStringComparisonBehavior value to set.
      * @return the ReferenceDataSetCreationProperties object itself.
      */
-    public ReferenceDataSetCreationProperties withDataStringComparisonBehavior(
-        DataStringComparisonBehavior dataStringComparisonBehavior) {
+    public ReferenceDataSetCreationProperties
+        withDataStringComparisonBehavior(DataStringComparisonBehavior dataStringComparisonBehavior) {
         this.dataStringComparisonBehavior = dataStringComparisonBehavior;
         return this;
     }
@@ -86,10 +86,8 @@ public class ReferenceDataSetCreationProperties {
      */
     public void validate() {
         if (keyProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyProperties in model ReferenceDataSetCreationProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyProperties in model ReferenceDataSetCreationProperties"));
         } else {
             keyProperties().forEach(e -> e.validate());
         }

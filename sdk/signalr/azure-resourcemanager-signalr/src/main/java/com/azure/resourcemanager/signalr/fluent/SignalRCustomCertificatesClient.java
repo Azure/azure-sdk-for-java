@@ -55,8 +55,8 @@ public interface SignalRCustomCertificatesClient {
      * @return a custom certificate along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomCertificateInner> getWithResponse(
-        String resourceGroupName, String resourceName, String certificateName, Context context);
+    Response<CustomCertificateInner> getWithResponse(String resourceGroupName, String resourceName,
+        String certificateName, Context context);
 
     /**
      * Get a custom certificate.
@@ -85,8 +85,8 @@ public interface SignalRCustomCertificatesClient {
      * @return the {@link SyncPoller} for polling of a custom certificate.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomCertificateInner>, CustomCertificateInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, String certificateName, CustomCertificateInner parameters);
+    SyncPoller<PollResult<CustomCertificateInner>, CustomCertificateInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, String certificateName, CustomCertificateInner parameters);
 
     /**
      * Create or update a custom certificate.
@@ -102,12 +102,8 @@ public interface SignalRCustomCertificatesClient {
      * @return the {@link SyncPoller} for polling of a custom certificate.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CustomCertificateInner>, CustomCertificateInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
-        CustomCertificateInner parameters,
-        Context context);
+    SyncPoller<PollResult<CustomCertificateInner>, CustomCertificateInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, String certificateName, CustomCertificateInner parameters, Context context);
 
     /**
      * Create or update a custom certificate.
@@ -122,8 +118,8 @@ public interface SignalRCustomCertificatesClient {
      * @return a custom certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomCertificateInner createOrUpdate(
-        String resourceGroupName, String resourceName, String certificateName, CustomCertificateInner parameters);
+    CustomCertificateInner createOrUpdate(String resourceGroupName, String resourceName, String certificateName,
+        CustomCertificateInner parameters);
 
     /**
      * Create or update a custom certificate.
@@ -139,12 +135,8 @@ public interface SignalRCustomCertificatesClient {
      * @return a custom certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomCertificateInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String certificateName,
-        CustomCertificateInner parameters,
-        Context context);
+    CustomCertificateInner createOrUpdate(String resourceGroupName, String resourceName, String certificateName,
+        CustomCertificateInner parameters, Context context);
 
     /**
      * Delete a custom certificate.
@@ -159,8 +151,8 @@ public interface SignalRCustomCertificatesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String certificateName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String certificateName,
+        Context context);
 
     /**
      * Delete a custom certificate.

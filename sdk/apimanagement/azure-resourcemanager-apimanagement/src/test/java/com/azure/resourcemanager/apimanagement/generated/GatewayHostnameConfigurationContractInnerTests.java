@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GatewayHostnameConfigurationContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayHostnameConfigurationContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"hostname\":\"xvgjbfi\",\"certificateId\":\"pn\",\"negotiateClientCertificate\":true,\"tls10Enabled\":true,\"tls11Enabled\":true,\"http2Enabled\":false},\"id\":\"wmtqsmoxsaz\",\"name\":\"xej\",\"type\":\"wecy\"}")
-                .toObject(GatewayHostnameConfigurationContractInner.class);
+        GatewayHostnameConfigurationContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"hostname\":\"xvgjbfi\",\"certificateId\":\"pn\",\"negotiateClientCertificate\":true,\"tls10Enabled\":true,\"tls11Enabled\":true,\"http2Enabled\":false},\"id\":\"wmtqsmoxsaz\",\"name\":\"xej\",\"type\":\"wecy\"}")
+            .toObject(GatewayHostnameConfigurationContractInner.class);
         Assertions.assertEquals("xvgjbfi", model.hostname());
         Assertions.assertEquals("pn", model.certificateId());
         Assertions.assertEquals(true, model.negotiateClientCertificate());
@@ -26,9 +24,8 @@ public final class GatewayHostnameConfigurationContractInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayHostnameConfigurationContractInner model =
-            new GatewayHostnameConfigurationContractInner()
-                .withHostname("xvgjbfi")
+        GatewayHostnameConfigurationContractInner model
+            = new GatewayHostnameConfigurationContractInner().withHostname("xvgjbfi")
                 .withCertificateId("pn")
                 .withNegotiateClientCertificate(true)
                 .withTls10Enabled(true)

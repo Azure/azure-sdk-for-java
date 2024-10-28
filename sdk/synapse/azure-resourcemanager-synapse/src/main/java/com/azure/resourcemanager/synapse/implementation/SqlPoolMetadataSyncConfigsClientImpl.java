@@ -41,10 +41,8 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolMetadataSyncConfigsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    SqlPoolMetadataSyncConfigsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SqlPoolMetadataSyncConfigsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,38 +53,27 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolMetadataSyncConfigsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/metadataSync/config")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/metadataSync/config")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetadataSyncConfigInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MetadataSyncConfigInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/metadataSync/config")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/metadataSync/config")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MetadataSyncConfigInner>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<MetadataSyncConfigInner>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("sqlPoolName") String sqlPoolName,
             @BodyParam("application/json") MetadataSyncConfigInner metadataSyncConfiguration,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -104,19 +91,15 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MetadataSyncConfigInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private Mono<Response<MetadataSyncConfigInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -131,18 +114,8 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -162,19 +135,15 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MetadataSyncConfigInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    private Mono<Response<MetadataSyncConfigInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -189,16 +158,8 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, accept, context);
     }
 
     /**
@@ -235,8 +196,8 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
      * @return the metadata sync configuration for a SQL pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetadataSyncConfigInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
+    public Response<MetadataSyncConfigInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, context).block();
     }
 
@@ -273,22 +234,15 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
      * @return metadata sync configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MetadataSyncConfigInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        MetadataSyncConfigInner metadataSyncConfiguration) {
+    private Mono<Response<MetadataSyncConfigInner>> createWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, MetadataSyncConfigInner metadataSyncConfiguration) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -301,10 +255,8 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
         if (metadataSyncConfiguration == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter metadataSyncConfiguration is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter metadataSyncConfiguration is required and cannot be null."));
         } else {
             metadataSyncConfiguration.validate();
         }
@@ -312,18 +264,8 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            metadataSyncConfiguration,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                    resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -343,23 +285,15 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
      * @return metadata sync configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MetadataSyncConfigInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        MetadataSyncConfigInner metadataSyncConfiguration,
-        Context context) {
+    private Mono<Response<MetadataSyncConfigInner>> createWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, MetadataSyncConfigInner metadataSyncConfiguration, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -372,27 +306,16 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
         if (metadataSyncConfiguration == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter metadataSyncConfiguration is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter metadataSyncConfiguration is required and cannot be null."));
         } else {
             metadataSyncConfiguration.validate();
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                metadataSyncConfiguration,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, metadataSyncConfiguration, accept, context);
     }
 
     /**
@@ -410,11 +333,8 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
      * @return metadata sync configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MetadataSyncConfigInner> createAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        MetadataSyncConfigInner metadataSyncConfiguration) {
+    private Mono<MetadataSyncConfigInner> createAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, MetadataSyncConfigInner metadataSyncConfiguration) {
         return createWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -435,15 +355,10 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
      * @return metadata sync configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetadataSyncConfigInner> createWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        MetadataSyncConfigInner metadataSyncConfiguration,
-        Context context) {
-        return createWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration, context)
-            .block();
+    public Response<MetadataSyncConfigInner> createWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, MetadataSyncConfigInner metadataSyncConfiguration, Context context) {
+        return createWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration,
+            context).block();
     }
 
     /**
@@ -461,13 +376,9 @@ public final class SqlPoolMetadataSyncConfigsClientImpl implements SqlPoolMetada
      * @return metadata sync configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetadataSyncConfigInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    public MetadataSyncConfigInner create(String resourceGroupName, String workspaceName, String sqlPoolName,
         MetadataSyncConfigInner metadataSyncConfiguration) {
-        return createWithResponse(
-                resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration, Context.NONE)
-            .getValue();
+        return createWithResponse(resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration,
+            Context.NONE).getValue();
     }
 }

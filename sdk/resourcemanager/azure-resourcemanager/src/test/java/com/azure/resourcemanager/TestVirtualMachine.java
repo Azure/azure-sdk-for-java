@@ -17,24 +17,23 @@ import reactor.core.publisher.Mono;
 public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMachines> {
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
+        final String vmName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
 
         final VirtualMachine[] vms = new VirtualMachine[1];
 
-        Mono<VirtualMachine> resourceStream =
-            virtualMachines
-                .define(vmName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup()
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                .withAdminUsername("testuser")
-                .withAdminPassword(ResourceManagerTestProxyTestBase.password())
-                .withNewDataDisk(150)
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .createAsync();
+        Mono<VirtualMachine> resourceStream = virtualMachines.define(vmName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup()
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+            .withAdminUsername("testuser")
+            .withAdminPassword(ResourceManagerTestProxyTestBase.password())
+            .withNewDataDisk(150)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .createAsync();
 
         vms[0] = resourceStream.block();
 
@@ -51,7 +50,10 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
 
     @Override
     public VirtualMachine updateResource(VirtualMachine resource) throws Exception {
-        resource = resource.update().withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4")).withNewDataDisk(100).apply();
+        resource = resource.update()
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withNewDataDisk(100)
+            .apply();
         return resource;
     }
 

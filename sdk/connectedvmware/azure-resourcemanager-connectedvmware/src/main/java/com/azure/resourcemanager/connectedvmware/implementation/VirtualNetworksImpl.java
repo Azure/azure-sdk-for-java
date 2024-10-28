@@ -21,22 +21,18 @@ public final class VirtualNetworksImpl implements VirtualNetworks {
 
     private final com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager;
 
-    public VirtualNetworksImpl(
-        VirtualNetworksClient innerClient,
+    public VirtualNetworksImpl(VirtualNetworksClient innerClient,
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<VirtualNetwork> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualNetworkName, Context context) {
-        Response<VirtualNetworkInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, context);
+    public Response<VirtualNetwork> getByResourceGroupWithResponse(String resourceGroupName, String virtualNetworkName,
+        Context context) {
+        Response<VirtualNetworkInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VirtualNetworkImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -83,19 +79,13 @@ public final class VirtualNetworksImpl implements VirtualNetworks {
     public VirtualNetwork getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String virtualNetworkName = Utils.getValueFromIdByName(id, "virtualNetworks");
         if (virtualNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, Context.NONE).getValue();
     }
@@ -103,19 +93,13 @@ public final class VirtualNetworksImpl implements VirtualNetworks {
     public Response<VirtualNetwork> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String virtualNetworkName = Utils.getValueFromIdByName(id, "virtualNetworks");
         if (virtualNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, virtualNetworkName, context);
     }
@@ -123,19 +107,13 @@ public final class VirtualNetworksImpl implements VirtualNetworks {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String virtualNetworkName = Utils.getValueFromIdByName(id, "virtualNetworks");
         if (virtualNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
         }
         Boolean localForce = null;
         this.delete(resourceGroupName, virtualNetworkName, localForce, Context.NONE);
@@ -144,19 +122,13 @@ public final class VirtualNetworksImpl implements VirtualNetworks {
     public void deleteByIdWithResponse(String id, Boolean force, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String virtualNetworkName = Utils.getValueFromIdByName(id, "virtualNetworks");
         if (virtualNetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualNetworks'.", id)));
         }
         this.delete(resourceGroupName, virtualNetworkName, force, context);
     }

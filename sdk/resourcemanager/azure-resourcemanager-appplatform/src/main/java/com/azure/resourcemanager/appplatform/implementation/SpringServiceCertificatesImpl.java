@@ -17,9 +17,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
-public class SpringServiceCertificatesImpl
-    extends ExternalChildResourcesNonCachedImpl<
-    SpringServiceCertificateImpl, SpringServiceCertificate, CertificateResourceInner, SpringServiceImpl, SpringService>
+public class SpringServiceCertificatesImpl extends
+    ExternalChildResourcesNonCachedImpl<SpringServiceCertificateImpl, SpringServiceCertificate, CertificateResourceInner, SpringServiceImpl, SpringService>
     implements SpringServiceCertificates {
     SpringServiceCertificatesImpl(SpringServiceImpl parent) {
         super(parent, parent.taskGroup(), "SpringServiceCertificate");
@@ -42,8 +41,7 @@ public class SpringServiceCertificatesImpl
 
     @Override
     public Mono<SpringServiceCertificate> getByNameAsync(String name) {
-        return inner().getAsync(parent().resourceGroupName(), parent().name(), name)
-            .map(this::wrapModel);
+        return inner().getAsync(parent().resourceGroupName(), parent().name(), name).map(this::wrapModel);
     }
 
     SpringServiceCertificateImpl wrapModel(CertificateResourceInner inner) {
@@ -87,7 +85,8 @@ public class SpringServiceCertificatesImpl
 
     @Override
     public PagedFlux<SpringServiceCertificate> listAsync() {
-        return PagedConverter.mapPage(inner().listAsync(parent().resourceGroupName(), parent().name()), this::wrapModel);
+        return PagedConverter.mapPage(inner().listAsync(parent().resourceGroupName(), parent().name()),
+            this::wrapModel);
     }
 
     public CertificatesClient inner() {
@@ -95,9 +94,8 @@ public class SpringServiceCertificatesImpl
     }
 
     SpringServiceCertificate prepareCreateOrUpdate(String name, CertificateProperties properties) {
-        return prepareInlineDefine(
-            new SpringServiceCertificateImpl(
-                name, parent(), new CertificateResourceInner().withProperties(properties)));
+        return prepareInlineDefine(new SpringServiceCertificateImpl(name, parent(),
+            new CertificateResourceInner().withProperties(properties)));
     }
 
     void prepareDelete(String name) {

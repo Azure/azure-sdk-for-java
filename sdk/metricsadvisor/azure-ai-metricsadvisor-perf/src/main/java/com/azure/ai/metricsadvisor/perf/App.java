@@ -34,11 +34,7 @@ public class App {
      * @param args the command line arguments ro run performance tests with.
      */
     public static void main(String[] args) {
-        PerfStressProgram.run(
-            new Class<?>[] {
-                AnomaliesListTest.class,
-                IncidentsListTest.class,
-                RootCauseListTest.class
-            }, args);
+        PerfStressProgram
+            .run(new Class<?>[] { AnomaliesListTest.class, IncidentsListTest.class, RootCauseListTest.class }, args);
     }
 }

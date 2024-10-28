@@ -13,25 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class FollowerDatabaseListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FollowerDatabaseListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"clusterResourceId\":\"yqyybxubmdna\",\"attachedDatabaseConfigurationName\":\"cbq\",\"databaseName\":\"e\"}]}")
-                .toObject(FollowerDatabaseListResult.class);
+        FollowerDatabaseListResult model = BinaryData.fromString(
+            "{\"value\":[{\"clusterResourceId\":\"yqyybxubmdna\",\"attachedDatabaseConfigurationName\":\"cbq\",\"databaseName\":\"e\"}]}")
+            .toObject(FollowerDatabaseListResult.class);
         Assertions.assertEquals("yqyybxubmdna", model.value().get(0).kustoPoolResourceId());
         Assertions.assertEquals("cbq", model.value().get(0).attachedDatabaseConfigurationName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FollowerDatabaseListResult model =
-            new FollowerDatabaseListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new FollowerDatabaseDefinitionInner()
-                                .withKustoPoolResourceId("yqyybxubmdna")
-                                .withAttachedDatabaseConfigurationName("cbq")));
+        FollowerDatabaseListResult model = new FollowerDatabaseListResult()
+            .withValue(Arrays.asList(new FollowerDatabaseDefinitionInner().withKustoPoolResourceId("yqyybxubmdna")
+                .withAttachedDatabaseConfigurationName("cbq")));
         model = BinaryData.fromObject(model).toObject(FollowerDatabaseListResult.class);
         Assertions.assertEquals("yqyybxubmdna", model.value().get(0).kustoPoolResourceId());
         Assertions.assertEquals("cbq", model.value().get(0).attachedDatabaseConfigurationName());

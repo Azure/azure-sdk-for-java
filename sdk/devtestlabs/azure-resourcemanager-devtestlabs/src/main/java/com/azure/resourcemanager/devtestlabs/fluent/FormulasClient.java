@@ -45,14 +45,8 @@ public interface FormulasClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FormulaInner> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<FormulaInner> list(String resourceGroupName, String labName, String expand, String filter,
+        Integer top, String orderby, Context context);
 
     /**
      * Get formula.
@@ -68,8 +62,8 @@ public interface FormulasClient {
      * @return formula along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FormulaInner> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<FormulaInner> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context);
 
     /**
      * Get formula.
@@ -99,8 +93,8 @@ public interface FormulasClient {
      *     parameters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String name, FormulaInner formula);
+    SyncPoller<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdate(String resourceGroupName, String labName,
+        String name, FormulaInner formula);
 
     /**
      * Create or replace an existing formula. This operation can take a while to complete.
@@ -117,8 +111,8 @@ public interface FormulasClient {
      *     parameters.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String name, FormulaInner formula, Context context);
+    SyncPoller<PollResult<FormulaInner>, FormulaInner> beginCreateOrUpdate(String resourceGroupName, String labName,
+        String name, FormulaInner formula, Context context);
 
     /**
      * Create or replace an existing formula. This operation can take a while to complete.
@@ -149,8 +143,8 @@ public interface FormulasClient {
      * @return a formula for creating a VM, specifying an image base and other parameters.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FormulaInner createOrUpdate(
-        String resourceGroupName, String labName, String name, FormulaInner formula, Context context);
+    FormulaInner createOrUpdate(String resourceGroupName, String labName, String name, FormulaInner formula,
+        Context context);
 
     /**
      * Delete formula.
@@ -194,8 +188,8 @@ public interface FormulasClient {
      * @return a formula for creating a VM, specifying an image base and other parameters along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FormulaInner> updateWithResponse(
-        String resourceGroupName, String labName, String name, FormulaFragment formula, Context context);
+    Response<FormulaInner> updateWithResponse(String resourceGroupName, String labName, String name,
+        FormulaFragment formula, Context context);
 
     /**
      * Allows modifying tags of formulas. All other properties will be ignored.

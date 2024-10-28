@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ExportRecurrencePeriodTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExportRecurrencePeriod model =
-            BinaryData
-                .fromString("{\"from\":\"2020-12-30T11:27:59Z\",\"to\":\"2021-04-12T18:02:31Z\"}")
+        ExportRecurrencePeriod model
+            = BinaryData.fromString("{\"from\":\"2020-12-30T11:27:59Z\",\"to\":\"2021-04-12T18:02:31Z\"}")
                 .toObject(ExportRecurrencePeriod.class);
         Assertions.assertEquals(OffsetDateTime.parse("2020-12-30T11:27:59Z"), model.from());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T18:02:31Z"), model.to());
@@ -22,9 +21,8 @@ public final class ExportRecurrencePeriodTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExportRecurrencePeriod model =
-            new ExportRecurrencePeriod()
-                .withFrom(OffsetDateTime.parse("2020-12-30T11:27:59Z"))
+        ExportRecurrencePeriod model
+            = new ExportRecurrencePeriod().withFrom(OffsetDateTime.parse("2020-12-30T11:27:59Z"))
                 .withTo(OffsetDateTime.parse("2021-04-12T18:02:31Z"));
         model = BinaryData.fromObject(model).toObject(ExportRecurrencePeriod.class);
         Assertions.assertEquals(OffsetDateTime.parse("2020-12-30T11:27:59Z"), model.from());

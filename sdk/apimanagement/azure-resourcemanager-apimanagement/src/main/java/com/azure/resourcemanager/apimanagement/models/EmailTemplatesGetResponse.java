@@ -21,12 +21,8 @@ public final class EmailTemplatesGetResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public EmailTemplatesGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        EmailTemplateContractInner value,
-        EmailTemplatesGetHeaders headers) {
+    public EmailTemplatesGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        EmailTemplateContractInner value, EmailTemplatesGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

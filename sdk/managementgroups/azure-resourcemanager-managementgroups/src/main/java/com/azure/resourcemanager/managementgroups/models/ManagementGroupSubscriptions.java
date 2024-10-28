@@ -23,8 +23,8 @@ public interface ManagementGroupSubscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of subscription under management group along with {@link Response}.
      */
-    Response<SubscriptionUnderManagementGroup> createWithResponse(
-        String groupId, String subscriptionId, String cacheControl, Context context);
+    Response<SubscriptionUnderManagementGroup> createWithResponse(String groupId, String subscriptionId,
+        String cacheControl, Context context);
 
     /**
      * Associates existing subscription with the management group.
@@ -77,8 +77,8 @@ public interface ManagementGroupSubscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of subscription under management group along with {@link Response}.
      */
-    Response<SubscriptionUnderManagementGroup> getSubscriptionWithResponse(
-        String groupId, String subscriptionId, String cacheControl, Context context);
+    Response<SubscriptionUnderManagementGroup> getSubscriptionWithResponse(String groupId, String subscriptionId,
+        String cacheControl, Context context);
 
     /**
      * Retrieves details about given subscription which is associated with the management group.
@@ -116,6 +116,6 @@ public interface ManagementGroupSubscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of all subscriptions under management group as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SubscriptionUnderManagementGroup> getSubscriptionsUnderManagementGroup(
-        String groupId, String skiptoken, Context context);
+    PagedIterable<SubscriptionUnderManagementGroup> getSubscriptionsUnderManagementGroup(String groupId,
+        String skiptoken, Context context);
 }

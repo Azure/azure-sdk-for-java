@@ -36,8 +36,8 @@ public interface Replicas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list replicas as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Replica> listByConfigurationStore(
-        String resourceGroupName, String configStoreName, String skipToken, Context context);
+    PagedIterable<Replica> listByConfigurationStore(String resourceGroupName, String configStoreName, String skipToken,
+        Context context);
 
     /**
      * Gets the properties of the specified replica.
@@ -51,8 +51,8 @@ public interface Replicas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified replica along with {@link Response}.
      */
-    Response<Replica> getWithResponse(
-        String resourceGroupName, String configStoreName, String replicaName, Context context);
+    Response<Replica> getWithResponse(String resourceGroupName, String configStoreName, String replicaName,
+        Context context);
 
     /**
      * Gets the properties of the specified replica.

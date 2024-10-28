@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskDetails model =
-            BinaryData
-                .fromString(
-                    "{\"sku\":{\"name\":\"Standard_LRS\"},\"sizeGB\":5612595688544592348,\"minimumSupportedDiskCount\":8451324547573976029,\"maximumSupportedDiskCount\":4274110393583912034,\"iopsReadWrite\":5470433313051888734,\"mbpsReadWrite\":7911846487069687431,\"diskTier\":\"nwzsymg\"}")
-                .toObject(DiskDetails.class);
+        DiskDetails model = BinaryData.fromString(
+            "{\"sku\":{\"name\":\"Standard_LRS\"},\"sizeGB\":5612595688544592348,\"minimumSupportedDiskCount\":8451324547573976029,\"maximumSupportedDiskCount\":4274110393583912034,\"iopsReadWrite\":5470433313051888734,\"mbpsReadWrite\":7911846487069687431,\"diskTier\":\"nwzsymg\"}")
+            .toObject(DiskDetails.class);
         Assertions.assertEquals(DiskSkuName.STANDARD_LRS, model.sku().name());
         Assertions.assertEquals(5612595688544592348L, model.sizeGB());
         Assertions.assertEquals(8451324547573976029L, model.minimumSupportedDiskCount());
@@ -29,15 +27,13 @@ public final class DiskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskDetails model =
-            new DiskDetails()
-                .withSku(new DiskSku().withName(DiskSkuName.STANDARD_LRS))
-                .withSizeGB(5612595688544592348L)
-                .withMinimumSupportedDiskCount(8451324547573976029L)
-                .withMaximumSupportedDiskCount(4274110393583912034L)
-                .withIopsReadWrite(5470433313051888734L)
-                .withMbpsReadWrite(7911846487069687431L)
-                .withDiskTier("nwzsymg");
+        DiskDetails model = new DiskDetails().withSku(new DiskSku().withName(DiskSkuName.STANDARD_LRS))
+            .withSizeGB(5612595688544592348L)
+            .withMinimumSupportedDiskCount(8451324547573976029L)
+            .withMaximumSupportedDiskCount(4274110393583912034L)
+            .withIopsReadWrite(5470433313051888734L)
+            .withMbpsReadWrite(7911846487069687431L)
+            .withDiskTier("nwzsymg");
         model = BinaryData.fromObject(model).toObject(DiskDetails.class);
         Assertions.assertEquals(DiskSkuName.STANDARD_LRS, model.sku().name());
         Assertions.assertEquals(5612595688544592348L, model.sizeGB());

@@ -79,8 +79,8 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfStress
             throw new RuntimeException(e);
         }
 
-        final StorageUri storageUri = new StorageUri(URI.create(String.format(FORMAT_BASE_URI,
-            storageCredentials.getAccountName())));
+        final StorageUri storageUri
+            = new StorageUri(URI.create(String.format(FORMAT_BASE_URI, storageCredentials.getAccountName())));
         final CloudBlobClient client = new CloudBlobClient(storageUri, storageCredentials);
 
         try {
@@ -96,14 +96,14 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfStress
         partitionProcessorMap = new ConcurrentHashMap<>();
         processorFactory = new SampleEventProcessorFactory(partitionProcessorMap);
 
-        final ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder(eventhubsConnectionString)
-            .setEventHubName(eventHubName);
+        final ConnectionStringBuilder connectionStringBuilder
+            = new ConnectionStringBuilder(eventhubsConnectionString).setEventHubName(eventHubName);
 
         this.scheduler = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() * 4);
 
-        final EventProcessorHost.EventProcessorHostBuilder.OptionalStep builder =
-            EventProcessorHost.EventProcessorHostBuilder.newBuilder(
-                    connectionStringBuilder.getEndpoint().toString(), options.getConsumerGroup())
+        final EventProcessorHost.EventProcessorHostBuilder.OptionalStep builder
+            = EventProcessorHost.EventProcessorHostBuilder
+                .newBuilder(connectionStringBuilder.getEndpoint().toString(), options.getConsumerGroup())
                 .useAzureStorageCheckpointLeaseManager(storageCredentials, CONTAINER_NAME, "perf")
                 .useEventHubConnectionString(connectionStringBuilder.toString())
                 .setExecutor(scheduler);
@@ -114,8 +114,8 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfStress
         eventProcessorOptions.setMaxBatchSize(options.getBatchSize());
 
         try {
-            eventHubClient = EventHubClient
-                .createFromConnectionStringSync(connectionStringBuilder.toString(), scheduler);
+            eventHubClient
+                = EventHubClient.createFromConnectionStringSync(connectionStringBuilder.toString(), scheduler);
         } catch (IOException | EventHubException e) {
             throw new RuntimeException(e);
         }
@@ -123,15 +123,13 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfStress
 
     @Override
     public Mono<Void> setupAsync() {
-        return super.setupAsync()
-            .then(Mono.defer(() -> Mono.fromFuture(eventHubClient.getRuntimeInformation())
-                .map(eventHubRuntimeInformation -> {
-                    for (String id : eventHubRuntimeInformation.getPartitionIds()) {
-                        partitionProcessorMap.put(id, new SamplePartitionProcessor(this));
-                    }
-                    return Mono.empty();
-                })))
-            .then(Mono.defer(() -> {
+        return super.setupAsync().then(
+            Mono.defer(() -> Mono.fromFuture(eventHubClient.getRuntimeInformation()).map(eventHubRuntimeInformation -> {
+                for (String id : eventHubRuntimeInformation.getPartitionIds()) {
+                    partitionProcessorMap.put(id, new SamplePartitionProcessor(this));
+                }
+                return Mono.empty();
+            }))).then(Mono.defer(() -> {
                 eventProcessorHost.registerEventProcessorFactory(processorFactory, eventProcessorOptions);
                 return Mono.empty();
             }));
@@ -148,8 +146,8 @@ public class EventProcessorStorageTest extends EventPerfTest<EventHubsPerfStress
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(Mono.defer(() -> Util.preLoadEvents(eventHubClient, options.getPartitionId() != null
-                ? String.valueOf(options.getPartitionId()) : null , eventDataBytes, options.getEvents())));
+        return super.globalSetupAsync().then(Mono.defer(() -> Util.preLoadEvents(eventHubClient,
+            options.getPartitionId() != null ? String.valueOf(options.getPartitionId()) : null, eventDataBytes,
+            options.getEvents())));
     }
 }

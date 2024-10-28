@@ -175,18 +175,16 @@ public interface ConfigurationStore {
     ConfigurationStoreInner innerModel();
 
     /** The entirety of the ConfigurationStore definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithSku, DefinitionStages.WithCreate {
     }
+
     /** The ConfigurationStore definition stages. */
     interface DefinitionStages {
         /** The first stage of the ConfigurationStore definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ConfigurationStore definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -205,6 +203,7 @@ public interface ConfigurationStore {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the ConfigurationStore definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -215,6 +214,7 @@ public interface ConfigurationStore {
              */
             WithSku withExistingResourceGroup(String resourceGroupName);
         }
+
         /** The stage of the ConfigurationStore definition allowing to specify sku. */
         interface WithSku {
             /**
@@ -225,19 +225,15 @@ public interface ConfigurationStore {
              */
             WithCreate withSku(Sku sku);
         }
+
         /**
          * The stage of the ConfigurationStore definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithEncryption,
-                DefinitionStages.WithPublicNetworkAccess,
-                DefinitionStages.WithDisableLocalAuth,
-                DefinitionStages.WithSoftDeleteRetentionInDays,
-                DefinitionStages.WithEnablePurgeProtection,
-                DefinitionStages.WithCreateMode {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithEncryption, DefinitionStages.WithPublicNetworkAccess,
+            DefinitionStages.WithDisableLocalAuth, DefinitionStages.WithSoftDeleteRetentionInDays,
+            DefinitionStages.WithEnablePurgeProtection, DefinitionStages.WithCreateMode {
             /**
              * Executes the create request.
              *
@@ -253,6 +249,7 @@ public interface ConfigurationStore {
              */
             ConfigurationStore create(Context context);
         }
+
         /** The stage of the ConfigurationStore definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -263,6 +260,7 @@ public interface ConfigurationStore {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ConfigurationStore definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -273,6 +271,7 @@ public interface ConfigurationStore {
              */
             WithCreate withIdentity(ResourceIdentity identity);
         }
+
         /** The stage of the ConfigurationStore definition allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -283,6 +282,7 @@ public interface ConfigurationStore {
              */
             WithCreate withEncryption(EncryptionProperties encryption);
         }
+
         /** The stage of the ConfigurationStore definition allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -295,6 +295,7 @@ public interface ConfigurationStore {
              */
             WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
+
         /** The stage of the ConfigurationStore definition allowing to specify disableLocalAuth. */
         interface WithDisableLocalAuth {
             /**
@@ -306,6 +307,7 @@ public interface ConfigurationStore {
              */
             WithCreate withDisableLocalAuth(Boolean disableLocalAuth);
         }
+
         /** The stage of the ConfigurationStore definition allowing to specify softDeleteRetentionInDays. */
         interface WithSoftDeleteRetentionInDays {
             /**
@@ -318,6 +320,7 @@ public interface ConfigurationStore {
              */
             WithCreate withSoftDeleteRetentionInDays(Integer softDeleteRetentionInDays);
         }
+
         /** The stage of the ConfigurationStore definition allowing to specify enablePurgeProtection. */
         interface WithEnablePurgeProtection {
             /**
@@ -330,6 +333,7 @@ public interface ConfigurationStore {
              */
             WithCreate withEnablePurgeProtection(Boolean enablePurgeProtection);
         }
+
         /** The stage of the ConfigurationStore definition allowing to specify createMode. */
         interface WithCreateMode {
             /**
@@ -341,6 +345,7 @@ public interface ConfigurationStore {
             WithCreate withCreateMode(CreateMode createMode);
         }
     }
+
     /**
      * Begins update for the ConfigurationStore resource.
      *
@@ -349,14 +354,9 @@ public interface ConfigurationStore {
     ConfigurationStore.Update update();
 
     /** The template for ConfigurationStore update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithSku,
-            UpdateStages.WithEncryption,
-            UpdateStages.WithDisableLocalAuth,
-            UpdateStages.WithPublicNetworkAccess,
-            UpdateStages.WithEnablePurgeProtection {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithSku,
+        UpdateStages.WithEncryption, UpdateStages.WithDisableLocalAuth, UpdateStages.WithPublicNetworkAccess,
+        UpdateStages.WithEnablePurgeProtection {
         /**
          * Executes the update request.
          *
@@ -372,6 +372,7 @@ public interface ConfigurationStore {
          */
         ConfigurationStore apply(Context context);
     }
+
     /** The ConfigurationStore update stages. */
     interface UpdateStages {
         /** The stage of the ConfigurationStore update allowing to specify tags. */
@@ -384,6 +385,7 @@ public interface ConfigurationStore {
              */
             Update withTags(Map<String, String> tags);
         }
+
         /** The stage of the ConfigurationStore update allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -394,6 +396,7 @@ public interface ConfigurationStore {
              */
             Update withIdentity(ResourceIdentity identity);
         }
+
         /** The stage of the ConfigurationStore update allowing to specify sku. */
         interface WithSku {
             /**
@@ -404,6 +407,7 @@ public interface ConfigurationStore {
              */
             Update withSku(Sku sku);
         }
+
         /** The stage of the ConfigurationStore update allowing to specify encryption. */
         interface WithEncryption {
             /**
@@ -414,6 +418,7 @@ public interface ConfigurationStore {
              */
             Update withEncryption(EncryptionProperties encryption);
         }
+
         /** The stage of the ConfigurationStore update allowing to specify disableLocalAuth. */
         interface WithDisableLocalAuth {
             /**
@@ -425,6 +430,7 @@ public interface ConfigurationStore {
              */
             Update withDisableLocalAuth(Boolean disableLocalAuth);
         }
+
         /** The stage of the ConfigurationStore update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
@@ -437,6 +443,7 @@ public interface ConfigurationStore {
              */
             Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
         }
+
         /** The stage of the ConfigurationStore update allowing to specify enablePurgeProtection. */
         interface WithEnablePurgeProtection {
             /**
@@ -450,6 +457,7 @@ public interface ConfigurationStore {
             Update withEnablePurgeProtection(Boolean enablePurgeProtection);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

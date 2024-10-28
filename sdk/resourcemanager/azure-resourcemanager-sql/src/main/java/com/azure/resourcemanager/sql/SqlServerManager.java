@@ -32,11 +32,8 @@ public class SqlServerManager extends Manager<SqlManagementClient> {
      * @param profile The AzureProfile to use.
      */
     protected SqlServerManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(
-            httpPipeline,
-            profile,
-            new SqlManagementClientBuilder()
-                .pipeline(httpPipeline)
+        super(httpPipeline, profile,
+            new SqlManagementClientBuilder().pipeline(httpPipeline)
                 .subscriptionId(profile.getSubscriptionId())
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .buildClient());

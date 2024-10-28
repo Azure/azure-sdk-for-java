@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ReportConfigDatasetConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReportConfigDatasetConfiguration model =
-            BinaryData
-                .fromString("{\"columns\":[\"qwpgrjbzn\",\"rcjxvsnbyxqabn\"]}")
+        ReportConfigDatasetConfiguration model
+            = BinaryData.fromString("{\"columns\":[\"qwpgrjbzn\",\"rcjxvsnbyxqabn\"]}")
                 .toObject(ReportConfigDatasetConfiguration.class);
         Assertions.assertEquals("qwpgrjbzn", model.columns().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReportConfigDatasetConfiguration model =
-            new ReportConfigDatasetConfiguration().withColumns(Arrays.asList("qwpgrjbzn", "rcjxvsnbyxqabn"));
+        ReportConfigDatasetConfiguration model
+            = new ReportConfigDatasetConfiguration().withColumns(Arrays.asList("qwpgrjbzn", "rcjxvsnbyxqabn"));
         model = BinaryData.fromObject(model).toObject(ReportConfigDatasetConfiguration.class);
         Assertions.assertEquals("qwpgrjbzn", model.columns().get(0));
     }

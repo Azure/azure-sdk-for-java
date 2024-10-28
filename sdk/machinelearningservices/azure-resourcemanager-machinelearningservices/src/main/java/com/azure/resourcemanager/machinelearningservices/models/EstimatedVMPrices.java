@@ -13,7 +13,8 @@ import java.util.List;
 /** The estimated price info for using a VM. */
 @Fluent
 public final class EstimatedVMPrices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EstimatedVMPrices.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(EstimatedVMPrices.class);
 
     /*
      * Three lettered code specifying the currency of the VM price. Example:
@@ -103,20 +104,16 @@ public final class EstimatedVMPrices {
      */
     public void validate() {
         if (billingCurrency() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property billingCurrency in model EstimatedVMPrices"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property billingCurrency in model EstimatedVMPrices"));
         }
         if (unitOfMeasure() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property unitOfMeasure in model EstimatedVMPrices"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property unitOfMeasure in model EstimatedVMPrices"));
         }
         if (values() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property values in model EstimatedVMPrices"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property values in model EstimatedVMPrices"));
         } else {
             values().forEach(e -> e.validate());
         }

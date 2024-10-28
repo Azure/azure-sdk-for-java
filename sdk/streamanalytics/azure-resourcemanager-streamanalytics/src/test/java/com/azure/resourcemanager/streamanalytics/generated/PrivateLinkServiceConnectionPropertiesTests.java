@@ -22,9 +22,10 @@ public final class PrivateLinkServiceConnectionPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkServiceConnectionProperties model = new PrivateLinkServiceConnectionProperties()
-            .withPrivateLinkServiceId("xrmcqibycnojvk").withGroupIds(Arrays.asList("fqsgzvahapjy"))
-            .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState());
+        PrivateLinkServiceConnectionProperties model
+            = new PrivateLinkServiceConnectionProperties().withPrivateLinkServiceId("xrmcqibycnojvk")
+                .withGroupIds(Arrays.asList("fqsgzvahapjy"))
+                .withPrivateLinkServiceConnectionState(new PrivateLinkConnectionState());
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionProperties.class);
         Assertions.assertEquals("xrmcqibycnojvk", model.privateLinkServiceId());
         Assertions.assertEquals("fqsgzvahapjy", model.groupIds().get(0));

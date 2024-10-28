@@ -10,9 +10,8 @@ import com.azure.resourcemanager.datadog.models.CreateResourceSupportedPropertie
 public final class CreateResourceSupportedPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateResourceSupportedProperties model =
-            BinaryData
-                .fromString("{\"name\":\"wyahuxinpmqnja\",\"creationSupported\":true}")
+        CreateResourceSupportedProperties model
+            = BinaryData.fromString("{\"name\":\"wyahuxinpmqnja\",\"creationSupported\":true}")
                 .toObject(CreateResourceSupportedProperties.class);
     }
 

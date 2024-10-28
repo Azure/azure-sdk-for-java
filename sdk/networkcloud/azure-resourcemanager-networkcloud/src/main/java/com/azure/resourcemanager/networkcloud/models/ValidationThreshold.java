@@ -100,14 +100,12 @@ public final class ValidationThreshold {
      */
     public void validate() {
         if (grouping() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property grouping in model ValidationThreshold"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property grouping in model ValidationThreshold"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ValidationThreshold"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model ValidationThreshold"));
         }
     }
 

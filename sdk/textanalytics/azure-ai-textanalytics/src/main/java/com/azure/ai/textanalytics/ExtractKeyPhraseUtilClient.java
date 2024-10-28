@@ -78,18 +78,18 @@ class ExtractKeyPhraseUtilClient {
             final TextDocumentInput textDocumentInput = new TextDocumentInput("0", document);
             textDocumentInput.setLanguage(language);
             return extractKeyPhrasesWithResponse(Collections.singletonList(textDocumentInput), null)
-                    .map(resultCollectionResponse -> {
-                        KeyPhrasesCollection keyPhrasesCollection = null;
-                        // for each loop will have only one entry inside
-                        for (ExtractKeyPhraseResult keyPhraseResult : resultCollectionResponse.getValue()) {
-                            if (keyPhraseResult.isError()) {
-                                throw LOGGER.logExceptionAsError(toTextAnalyticsException(keyPhraseResult.getError()));
-                            }
-                            keyPhrasesCollection = new KeyPhrasesCollection(keyPhraseResult.getKeyPhrases(),
-                                keyPhraseResult.getKeyPhrases().getWarnings());
+                .map(resultCollectionResponse -> {
+                    KeyPhrasesCollection keyPhrasesCollection = null;
+                    // for each loop will have only one entry inside
+                    for (ExtractKeyPhraseResult keyPhraseResult : resultCollectionResponse.getValue()) {
+                        if (keyPhraseResult.isError()) {
+                            throw LOGGER.logExceptionAsError(toTextAnalyticsException(keyPhraseResult.getError()));
                         }
-                        return keyPhrasesCollection;
-                    });
+                        keyPhrasesCollection = new KeyPhrasesCollection(keyPhraseResult.getKeyPhrases(),
+                            keyPhraseResult.getKeyPhrases().getWarnings());
+                    }
+                    return keyPhrasesCollection;
+                });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -103,8 +103,8 @@ class ExtractKeyPhraseUtilClient {
      *
      * @return A mono {@link Response} that contains {@link ExtractKeyPhrasesResultCollection}.
      */
-    Mono<Response<ExtractKeyPhrasesResultCollection>> extractKeyPhrasesWithResponse(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
+    Mono<Response<ExtractKeyPhrasesResultCollection>>
+        extractKeyPhrasesWithResponse(Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         try {
             return withContext(context -> getExtractedKeyPhrasesResponse(documents, options, context));
         } catch (RuntimeException ex) {
@@ -129,32 +129,28 @@ class ExtractKeyPhraseUtilClient {
         options = options == null ? new TextAnalyticsRequestOptions() : options;
 
         if (service != null) {
-            return service.analyzeTextWithResponseAsync(
-                new AnalyzeTextKeyPhraseExtractionInput()
-                    .setParameters(
-                        new KeyPhraseTaskParameters()
-                            .setModelVersion(options.getModelVersion())
+            return service
+                .analyzeTextWithResponseAsync(
+                    new AnalyzeTextKeyPhraseExtractionInput()
+                        .setParameters(new KeyPhraseTaskParameters().setModelVersion(options.getModelVersion())
                             .setLoggingOptOut(options.isServiceLogsDisabled()))
-                    .setAnalysisInput(
-                        new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
-                options.isIncludeStatistics(),
-                getNotNullContext(context))
-                .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
-                    getDocumentCount(documents)))
+                        .setAnalysisInput(
+                            new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
+                    options.isIncludeStatistics(), getNotNullContext(context))
+                .doOnSubscribe(
+                    ignoredValue -> LOGGER.info("A batch of documents with count - {}", getDocumentCount(documents)))
                 .doOnSuccess(response -> LOGGER.info("A batch of key phrases output - {}", response.getValue()))
                 .doOnError(error -> LOGGER.warning("Failed to extract key phrases - {}", error))
                 .map(Utility::toResultCollectionResponseLanguageApi)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
-        return legacyService.keyPhrasesWithResponseAsync(
-            new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options.getModelVersion(),
-            options.isIncludeStatistics(),
-            options.isServiceLogsDisabled(),
-            getNotNullContext(context))
-            .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of document with count - {}",
-                getDocumentCount(documents)))
+        return legacyService
+            .keyPhrasesWithResponseAsync(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
+                options.getModelVersion(), options.isIncludeStatistics(), options.isServiceLogsDisabled(),
+                getNotNullContext(context))
+            .doOnSubscribe(
+                ignoredValue -> LOGGER.info("A batch of document with count - {}", getDocumentCount(documents)))
             .doOnSuccess(response -> LOGGER.info("A batch of key phrases output - {}", response.getValue()))
             .doOnError(error -> LOGGER.warning("Failed to extract key phrases - {}", error))
             .map(Utility::toResultCollectionResponseLegacyApi)
@@ -181,19 +177,14 @@ class ExtractKeyPhraseUtilClient {
             return (service != null)
                 ? toResultCollectionResponseLanguageApi(service.analyzeTextWithResponse(
                     new AnalyzeTextKeyPhraseExtractionInput()
-                        .setParameters(
-                            new KeyPhraseTaskParameters()
-                                .setModelVersion(options.getModelVersion())
-                                .setLoggingOptOut(options.isServiceLogsDisabled()))
+                        .setParameters(new KeyPhraseTaskParameters().setModelVersion(options.getModelVersion())
+                            .setLoggingOptOut(options.isServiceLogsDisabled()))
                         .setAnalysisInput(
                             new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
-                    options.isIncludeStatistics(),
-                    context))
+                    options.isIncludeStatistics(), context))
                 : toResultCollectionResponseLegacyApi(legacyService.keyPhrasesWithResponseSync(
                     new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                    options.getModelVersion(),
-                    options.isIncludeStatistics(),
-                    options.isServiceLogsDisabled(),
+                    options.getModelVersion(), options.isIncludeStatistics(), options.isServiceLogsDisabled(),
                     context));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
@@ -203,8 +194,8 @@ class ExtractKeyPhraseUtilClient {
     private void throwIfCallingNotAvailableFeatureInOptions(TextAnalyticsRequestOptions options) {
         if (options != null && options.isServiceLogsDisabled()) {
             throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
-                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
+                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs", serviceVersion,
+                    TextAnalyticsServiceVersion.V3_1));
         }
     }
 }

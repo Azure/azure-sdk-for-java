@@ -52,11 +52,8 @@ public interface PolicyModel {
     PolicyModelInner innerModel();
 
     /** The entirety of the PolicyModel definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
     /** The PolicyModel definition stages. */

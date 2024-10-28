@@ -78,16 +78,12 @@ public class ServiceProperties {
      */
     public void validate() {
         if (targetLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetLocation in model ServiceProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property targetLocation in model ServiceProperties"));
         }
         if (targetSubscriptionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetSubscriptionId in model ServiceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetSubscriptionId in model ServiceProperties"));
         }
     }
 

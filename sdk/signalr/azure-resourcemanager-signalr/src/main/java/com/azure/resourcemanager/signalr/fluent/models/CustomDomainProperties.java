@@ -91,16 +91,12 @@ public final class CustomDomainProperties {
      */
     public void validate() {
         if (domainName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property domainName in model CustomDomainProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property domainName in model CustomDomainProperties"));
         }
         if (customCertificate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customCertificate in model CustomDomainProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property customCertificate in model CustomDomainProperties"));
         } else {
             customCertificate().validate();
         }

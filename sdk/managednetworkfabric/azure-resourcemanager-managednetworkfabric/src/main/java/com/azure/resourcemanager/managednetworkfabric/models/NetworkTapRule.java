@@ -162,11 +162,8 @@ public interface NetworkTapRule {
     NetworkTapRuleInner innerModel();
 
     /** The entirety of the NetworkTapRule definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The NetworkTapRule definition stages. */
@@ -209,14 +206,10 @@ public interface NetworkTapRule {
          * The stage of the NetworkTapRule definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithPollingIntervalInSeconds,
-                DefinitionStages.WithConfigurationType,
-                DefinitionStages.WithTapRulesUrl,
-                DefinitionStages.WithMatchConfigurations,
-                DefinitionStages.WithDynamicMatchConfigurations,
-                DefinitionStages.WithAnnotation {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithPollingIntervalInSeconds,
+            DefinitionStages.WithConfigurationType, DefinitionStages.WithTapRulesUrl,
+            DefinitionStages.WithMatchConfigurations, DefinitionStages.WithDynamicMatchConfigurations,
+            DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
              *
@@ -319,13 +312,8 @@ public interface NetworkTapRule {
     NetworkTapRule.Update update();
 
     /** The template for NetworkTapRule update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithConfigurationType,
-            UpdateStages.WithTapRulesUrl,
-            UpdateStages.WithMatchConfigurations,
-            UpdateStages.WithDynamicMatchConfigurations,
-            UpdateStages.WithAnnotation {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithConfigurationType, UpdateStages.WithTapRulesUrl,
+        UpdateStages.WithMatchConfigurations, UpdateStages.WithDynamicMatchConfigurations, UpdateStages.WithAnnotation {
         /**
          * Executes the update request.
          *

@@ -20,8 +20,8 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the connectivity status.
      */
-    ConnectivityCheckResponse performConnectivityCheckAsync(
-        String resourceGroupName, String serviceName, ConnectivityCheckRequest connectivityCheckRequestParams);
+    ConnectivityCheckResponse performConnectivityCheckAsync(String resourceGroupName, String serviceName,
+        ConnectivityCheckRequest connectivityCheckRequestParams);
 
     /**
      * Performs a connectivity check between the API Management service and a given destination, and returns metrics for
@@ -36,9 +36,6 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the connectivity status.
      */
-    ConnectivityCheckResponse performConnectivityCheckAsync(
-        String resourceGroupName,
-        String serviceName,
-        ConnectivityCheckRequest connectivityCheckRequestParams,
-        Context context);
+    ConnectivityCheckResponse performConnectivityCheckAsync(String resourceGroupName, String serviceName,
+        ConnectivityCheckRequest connectivityCheckRequestParams, Context context);
 }

@@ -39,10 +39,8 @@ import java.util.TreeSet;
 
 /** Implementation for Subnet and its create and update interfaces. */
 class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
-    implements Subnet,
-        Subnet.Definition<Network.DefinitionStages.WithCreateAndSubnet>,
-        Subnet.UpdateDefinition<Network.Update>,
-        Subnet.Update {
+    implements Subnet, Subnet.Definition<Network.DefinitionStages.WithCreateAndSubnet>,
+    Subnet.UpdateDefinition<Network.Update>, Subnet.Update {
 
     SubnetImpl(SubnetInner inner, NetworkImpl parent) {
         super(inner, parent);
@@ -192,13 +190,10 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
             }
         }
         if (!found) {
-            this
-                .innerModel()
+            this.innerModel()
                 .serviceEndpoints()
-                .add(
-                    new ServiceEndpointPropertiesFormat()
-                        .withService(service.toString())
-                        .withLocations(new ArrayList<String>()));
+                .add(new ServiceEndpointPropertiesFormat().withService(service.toString())
+                    .withLocations(new ArrayList<String>()));
         }
         return this;
     }
@@ -365,17 +360,14 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
         }
         String takenIPAddress = cidr.split("/")[0];
 
-        IpAddressAvailabilityResultInner result =
-            this
-                .parent()
-                .manager()
-                .serviceClient()
-                .getVirtualNetworks()
-                .checkIpAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
+        IpAddressAvailabilityResultInner result = this.parent()
+            .manager()
+            .serviceClient()
+            .getVirtualNetworks()
+            .checkIpAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
         if (result == null
             // there's a case when user doesn't have the permission to query, result.availableIpAddresses() will be null
-            || result.availableIpAddresses() == null
-        ) {
+            || result.availableIpAddresses() == null) {
             return ipAddresses;
         }
 

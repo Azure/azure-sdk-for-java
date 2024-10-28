@@ -24,8 +24,8 @@ public interface ApiOperationPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of policy configuration at the API Operation level along with {@link Response}.
      */
-    Response<PolicyCollection> listByOperationWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String operationId, Context context);
+    Response<PolicyCollection> listByOperationWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String operationId, Context context);
 
     /**
      * Get the list of policy configuration at the API Operation level.
@@ -59,13 +59,8 @@ public interface ApiOperationPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the API operation policy specified by its identifier.
      */
-    ApiOperationPoliciesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        PolicyIdName policyId,
-        Context context);
+    ApiOperationPoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String operationId, PolicyIdName policyId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the API operation policy specified by its identifier.
@@ -81,8 +76,8 @@ public interface ApiOperationPolicies {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void getEntityTag(
-        String resourceGroupName, String serviceName, String apiId, String operationId, PolicyIdName policyId);
+    void getEntityTag(String resourceGroupName, String serviceName, String apiId, String operationId,
+        PolicyIdName policyId);
 
     /**
      * Get the policy configuration at the API Operation level.
@@ -101,14 +96,8 @@ public interface ApiOperationPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy configuration at the API Operation level.
      */
-    Response<PolicyContract> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
-        Context context);
+    Response<PolicyContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String operationId, PolicyIdName policyId, PolicyExportFormat format, Context context);
 
     /**
      * Get the policy configuration at the API Operation level.
@@ -125,8 +114,8 @@ public interface ApiOperationPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy configuration at the API Operation level.
      */
-    PolicyContract get(
-        String resourceGroupName, String serviceName, String apiId, String operationId, PolicyIdName policyId);
+    PolicyContract get(String resourceGroupName, String serviceName, String apiId, String operationId,
+        PolicyIdName policyId);
 
     /**
      * Deletes the policy configuration at the Api Operation.
@@ -146,14 +135,8 @@ public interface ApiOperationPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        PolicyIdName policyId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String operationId,
+        PolicyIdName policyId, String ifMatch, Context context);
 
     /**
      * Deletes the policy configuration at the Api Operation.
@@ -171,12 +154,7 @@ public interface ApiOperationPolicies {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        PolicyIdName policyId,
+    void delete(String resourceGroupName, String serviceName, String apiId, String operationId, PolicyIdName policyId,
         String ifMatch);
 
     /**

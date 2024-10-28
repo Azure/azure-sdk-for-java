@@ -50,10 +50,8 @@ public final class RestorableDroppedSqlPoolListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model RestorableDroppedSqlPoolListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model RestorableDroppedSqlPoolListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

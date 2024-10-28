@@ -33,32 +33,29 @@ public class TestOrchestratorTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
-        final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+      final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+      final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+      
+      resourceManager = ResourceManager.configure()
+          .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+          .authenticate(credential, profile)
+          .withDefaultSubscription();
 
-        resourceManager = ResourceManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile)
-            .withDefaultSubscription();
-
-        loadTestManager = LoadTestManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .authenticate(credential, profile);
-
-        String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
-        testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
-        if (testEnv) {
-            resourceGroupName = testResourceGroup;
-        } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(LOCATION)
-                .create();
-        }
+      loadTestManager = LoadTestManager
+          .configure()
+          .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+          .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+          .authenticate(credential, profile);
+      
+      String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
+      testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
+      if (testEnv) {
+          resourceGroupName = testResourceGroup;
+      } else {
+          resourceManager.resourceGroups().define(resourceGroupName).withRegion(LOCATION).create();
+      }
     }
+
     @Override
     protected void afterTest() {
         if (!testEnv) {
@@ -69,7 +66,8 @@ public class TestOrchestratorTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void startTest() {
-        ResourceOperations resourceOperations = new ResourceOperations(LOCATION.toString(), resourceGroupName, RESOURCE_NAME);
+        ResourceOperations resourceOperations
+            = new ResourceOperations(LOCATION.toString(), resourceGroupName, RESOURCE_NAME);
         resourceOperations.create(loadTestManager);
         resourceOperations.get(loadTestManager);
         resourceOperations.update(loadTestManager);

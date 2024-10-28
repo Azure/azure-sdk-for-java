@@ -65,8 +65,8 @@ public final class IssueCommentContractImpl
 
     private String updateIfMatch;
 
-    public IssueCommentContractImpl withExistingIssue(
-        String resourceGroupName, String serviceName, String apiId, String issueId) {
+    public IssueCommentContractImpl withExistingIssue(String resourceGroupName, String serviceName, String apiId,
+        String issueId) {
         this.resourceGroupName = resourceGroupName;
         this.serviceName = serviceName;
         this.apiId = apiId;
@@ -75,38 +75,20 @@ public final class IssueCommentContractImpl
     }
 
     public IssueCommentContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssueComments()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    apiId,
-                    issueId,
-                    commentId,
-                    this.innerModel(),
-                    createIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssueComments()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, issueId, commentId, this.innerModel(),
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IssueCommentContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssueComments()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    apiId,
-                    issueId,
-                    commentId,
-                    this.innerModel(),
-                    createIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssueComments()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, issueId, commentId, this.innerModel(),
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
@@ -123,43 +105,24 @@ public final class IssueCommentContractImpl
     }
 
     public IssueCommentContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssueComments()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    apiId,
-                    issueId,
-                    commentId,
-                    this.innerModel(),
-                    updateIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssueComments()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, issueId, commentId, this.innerModel(),
+                updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IssueCommentContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssueComments()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    apiId,
-                    issueId,
-                    commentId,
-                    this.innerModel(),
-                    updateIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssueComments()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, issueId, commentId, this.innerModel(),
+                updateIfMatch, context)
+            .getValue();
         return this;
     }
 
-    IssueCommentContractImpl(
-        IssueCommentContractInner innerObject,
+    IssueCommentContractImpl(IssueCommentContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -171,22 +134,18 @@ public final class IssueCommentContractImpl
     }
 
     public IssueCommentContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssueComments()
-                .getWithResponse(resourceGroupName, serviceName, apiId, issueId, commentId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssueComments()
+            .getWithResponse(resourceGroupName, serviceName, apiId, issueId, commentId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IssueCommentContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiIssueComments()
-                .getWithResponse(resourceGroupName, serviceName, apiId, issueId, commentId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiIssueComments()
+            .getWithResponse(resourceGroupName, serviceName, apiId, issueId, commentId, context)
+            .getValue();
         return this;
     }
 

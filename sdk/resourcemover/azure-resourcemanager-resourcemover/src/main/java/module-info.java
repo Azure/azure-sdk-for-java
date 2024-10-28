@@ -10,10 +10,6 @@ module com.azure.resourcemanager.resourcemover {
     exports com.azure.resourcemanager.resourcemover.fluent.models;
     exports com.azure.resourcemanager.resourcemover.models;
 
-    opens com.azure.resourcemanager.resourcemover.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.resourcemover.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.resourcemover.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.resourcemover.models to com.azure.core, com.fasterxml.jackson.databind;
 }

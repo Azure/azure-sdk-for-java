@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IpMatchConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpMatchCondition model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SourceIP\",\"prefixType\":\"Prefix\",\"ipPrefixValues\":[\"hcvsqltnzoi\"],\"ipGroupNames\":[\"xgnxfyqonmpqoxwd\",\"fdbxiqxeiiqbim\"]}")
-                .toObject(IpMatchCondition.class);
+        IpMatchCondition model = BinaryData.fromString(
+            "{\"type\":\"SourceIP\",\"prefixType\":\"Prefix\",\"ipPrefixValues\":[\"hcvsqltnzoi\"],\"ipGroupNames\":[\"xgnxfyqonmpqoxwd\",\"fdbxiqxeiiqbim\"]}")
+            .toObject(IpMatchCondition.class);
         Assertions.assertEquals(SourceDestinationType.SOURCE_IP, model.type());
         Assertions.assertEquals(PrefixType.PREFIX, model.prefixType());
         Assertions.assertEquals("hcvsqltnzoi", model.ipPrefixValues().get(0));
@@ -27,12 +25,10 @@ public final class IpMatchConditionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpMatchCondition model =
-            new IpMatchCondition()
-                .withType(SourceDestinationType.SOURCE_IP)
-                .withPrefixType(PrefixType.PREFIX)
-                .withIpPrefixValues(Arrays.asList("hcvsqltnzoi"))
-                .withIpGroupNames(Arrays.asList("xgnxfyqonmpqoxwd", "fdbxiqxeiiqbim"));
+        IpMatchCondition model = new IpMatchCondition().withType(SourceDestinationType.SOURCE_IP)
+            .withPrefixType(PrefixType.PREFIX)
+            .withIpPrefixValues(Arrays.asList("hcvsqltnzoi"))
+            .withIpGroupNames(Arrays.asList("xgnxfyqonmpqoxwd", "fdbxiqxeiiqbim"));
         model = BinaryData.fromObject(model).toObject(IpMatchCondition.class);
         Assertions.assertEquals(SourceDestinationType.SOURCE_IP, model.type());
         Assertions.assertEquals(PrefixType.PREFIX, model.prefixType());

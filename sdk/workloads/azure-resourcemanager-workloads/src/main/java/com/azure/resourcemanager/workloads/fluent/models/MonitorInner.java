@@ -200,8 +200,8 @@ public final class MonitorInner extends Resource {
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the MonitorInner object itself.
      */
-    public MonitorInner withManagedResourceGroupConfiguration(
-        ManagedRGConfiguration managedResourceGroupConfiguration) {
+    public MonitorInner
+        withManagedResourceGroupConfiguration(ManagedRGConfiguration managedResourceGroupConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MonitorProperties();
         }

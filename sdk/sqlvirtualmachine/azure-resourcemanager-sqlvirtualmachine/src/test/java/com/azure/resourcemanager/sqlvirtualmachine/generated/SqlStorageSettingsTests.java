@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlStorageSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlStorageSettings model =
-            BinaryData
-                .fromString("{\"luns\":[186143874,2120884016],\"defaultFilePath\":\"qn\"}")
-                .toObject(SqlStorageSettings.class);
+        SqlStorageSettings model = BinaryData.fromString("{\"luns\":[186143874,2120884016],\"defaultFilePath\":\"qn\"}")
+            .toObject(SqlStorageSettings.class);
         Assertions.assertEquals(186143874, model.luns().get(0));
         Assertions.assertEquals("qn", model.defaultFilePath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlStorageSettings model =
-            new SqlStorageSettings().withLuns(Arrays.asList(186143874, 2120884016)).withDefaultFilePath("qn");
+        SqlStorageSettings model
+            = new SqlStorageSettings().withLuns(Arrays.asList(186143874, 2120884016)).withDefaultFilePath("qn");
         model = BinaryData.fromObject(model).toObject(SqlStorageSettings.class);
         Assertions.assertEquals(186143874, model.luns().get(0));
         Assertions.assertEquals("qn", model.defaultFilePath());

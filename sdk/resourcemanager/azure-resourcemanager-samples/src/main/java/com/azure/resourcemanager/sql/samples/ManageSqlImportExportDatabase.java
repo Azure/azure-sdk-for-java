@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.sql.samples;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
@@ -43,25 +42,26 @@ public final class ManageSqlImportExportDatabase {
 
             // ============================================================
             // Create a SQL Server with one database from a sample.
-            SqlServer sqlServer = azureResourceManager.sqlServers().define(sqlServerName)
+            SqlServer sqlServer = azureResourceManager.sqlServers()
+                .define(sqlServerName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withAdministratorLogin(administratorLogin)
                 .withAdministratorPassword(administratorPassword)
                 .defineDatabase(dbFromSampleName)
-                    .fromSample(SampleName.ADVENTURE_WORKS_LT)
-                    .withBasicEdition()
-                    .attach()
+                .fromSample(SampleName.ADVENTURE_WORKS_LT)
+                .withBasicEdition()
+                .attach()
                 .create();
             Utils.print(sqlServer);
 
-            SqlDatabase dbFromSample = sqlServer.databases()
-                .get(dbFromSampleName);
+            SqlDatabase dbFromSample = sqlServer.databases().get(dbFromSampleName);
             Utils.print(dbFromSample);
 
             // ============================================================
             // Export a database from a SQL server created above to a new storage account within the same resource group.
-            System.out.println("Exporting a database from a SQL server created above to a new storage account within the same resource group.");
+            System.out.println(
+                "Exporting a database from a SQL server created above to a new storage account within the same resource group.");
 
             Creatable<StorageAccount> storageAccountCreatable = azureResourceManager.storageAccounts()
                 .define(storageName)
@@ -71,20 +71,22 @@ public final class ManageSqlImportExportDatabase {
             dbFromSample.exportTo(storageAccountCreatable, "container-name", "dbfromsample.bacpac")
                 .withSqlAdministratorLoginAndPassword(administratorLogin, administratorPassword)
                 .execute();
-            StorageAccount storageAccount = azureResourceManager.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
+            StorageAccount storageAccount
+                = azureResourceManager.storageAccounts().getByResourceGroup(sqlServer.resourceGroupName(), storageName);
 
             // ============================================================
             // Import a database within a new elastic pool from a storage account container created above.
-            System.out.println("Importing a database within a new elastic pool from a storage account container created above.");
+            System.out.println(
+                "Importing a database within a new elastic pool from a storage account container created above.");
 
             SqlDatabase dbFromImport = sqlServer.databases()
                 .define("db-from-import1")
-                    .defineElasticPool("epi")
-                        .withStandardPool()
-                        .attach()
-                    .importFrom(storageAccount, "container-name", "dbfromsample.bacpac")
-                        .withSqlAdministratorLoginAndPassword(administratorLogin, administratorPassword)
-                    .create();
+                .defineElasticPool("epi")
+                .withStandardPool()
+                .attach()
+                .importFrom(storageAccount, "container-name", "dbfromsample.bacpac")
+                .withSqlAdministratorLoginAndPassword(administratorLogin, administratorPassword)
+                .create();
             Utils.print(dbFromImport);
 
             // Delete the database.
@@ -93,17 +95,14 @@ public final class ManageSqlImportExportDatabase {
 
             // ============================================================
             // Create an empty database within an elastic pool.
-            SqlDatabase dbEmpty = sqlServer.databases()
-                .define("db-from-import2")
-                .withExistingElasticPool("epi")
-                .create();
+            SqlDatabase dbEmpty
+                = sqlServer.databases().define("db-from-import2").withExistingElasticPool("epi").create();
 
             // ============================================================
             // Import data from a BACPAC to an empty database within an elastic pool.
             System.out.println("Importing data from a BACPAC to an empty database within an elastic pool.");
 
-            dbEmpty
-                .importBacpac(storageAccount, "container-name", "dbfromsample.bacpac")
+            dbEmpty.importBacpac(storageAccount, "container-name", "dbfromsample.bacpac")
                 .withSqlAdministratorLoginAndPassword(administratorLogin, administratorPassword)
                 .execute();
             Utils.print(dbFromImport);
@@ -136,7 +135,6 @@ public final class ManageSqlImportExportDatabase {
         }
     }
 
-
     /**
      * Main entry point.
      * @param args the parameters
@@ -149,8 +147,7 @@ public final class ManageSqlImportExportDatabase {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

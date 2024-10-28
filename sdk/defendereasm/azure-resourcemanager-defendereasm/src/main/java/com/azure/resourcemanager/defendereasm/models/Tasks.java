@@ -21,8 +21,8 @@ public interface Tasks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return task details along with {@link Response}.
      */
-    Response<TaskResource> getByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, String taskId, Context context);
+    Response<TaskResource> getByWorkspaceWithResponse(String resourceGroupName, String workspaceName, String taskId,
+        Context context);
 
     /**
      * Returns a task in the given workspace.

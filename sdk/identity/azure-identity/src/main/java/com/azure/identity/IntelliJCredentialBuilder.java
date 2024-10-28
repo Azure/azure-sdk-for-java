@@ -84,7 +84,7 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudi
         if (CoreUtils.isNullOrEmpty(databasePath)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The KeePass database path is either empty or not configured."
-                                                 + " Please configure it on the builder."));
+                    + " Please configure it on the builder."));
         }
         this.identityClientOptions.setIntelliJKeePassDatabasePath(databasePath);
         return this;
@@ -100,8 +100,8 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudi
      * @return An updated instance of this builder with the additional tenants configured.
      */
     public IntelliJCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -115,7 +115,8 @@ public class IntelliJCredentialBuilder extends CredentialBuilderBase<VisualStudi
      * @return An updated instance of this builder with the additional tenants configured.
      */
     public IntelliJCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 

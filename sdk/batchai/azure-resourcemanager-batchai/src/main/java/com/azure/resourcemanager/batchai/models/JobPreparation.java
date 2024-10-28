@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Job preparation settings. */
 @Fluent
 public final class JobPreparation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobPreparation.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(JobPreparation.class);
 
     /*
      * The command line to execute. If containerSettings is specified on the
@@ -51,9 +52,8 @@ public final class JobPreparation {
      */
     public void validate() {
         if (commandLine() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property commandLine in model JobPreparation"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property commandLine in model JobPreparation"));
         }
     }
 }

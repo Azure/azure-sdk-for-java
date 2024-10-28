@@ -61,24 +61,34 @@ public final class OrganizationResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrganizationResourceInner model
-            = new OrganizationResourceInner().withLocation("ddhsgcbacphe").withTags(mapOf("ndlik", "tynqgoul"))
-                .withProperties(new LiftrBaseDataOrganizationProperties()
-                    .withMarketplace(new LiftrBaseMarketplaceDetails().withSubscriptionId("jofxqe")
-                        .withSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START)
-                        .withOfferDetails(new LiftrBaseOfferDetails().withPublisherId("aeqjhqjbasvms")
-                            .withOfferId("jqul").withPlanId("gsntnbybkzgcwr").withPlanName("lxxwrljdouskc")
-                            .withTermUnit("kocrcjdkwtnhx").withTermId("jbiksqrglssai")))
-                    .withUser(new LiftrBaseUserDetails().withFirstName("qpjwnzlljfm").withLastName("pee")
-                        .withEmailAddress("vmgxsab").withUpn("qduujitcjczdz").withPhoneNumber("ndhkrw"))
-                    .withPartnerOrganizationProperties(new LiftrBaseDataPartnerOrganizationProperties()
-                        .withOrganizationId("dsbdkvwrwjf").withWorkspaceId("snhu").withOrganizationName("je")
-                        .withWorkspaceName("mrldhu").withSingleSignOnProperties(
+        OrganizationResourceInner model = new OrganizationResourceInner().withLocation("ddhsgcbacphe")
+            .withTags(mapOf("ndlik", "tynqgoul"))
+            .withProperties(new LiftrBaseDataOrganizationProperties()
+                .withMarketplace(new LiftrBaseMarketplaceDetails().withSubscriptionId("jofxqe")
+                    .withSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START)
+                    .withOfferDetails(new LiftrBaseOfferDetails().withPublisherId("aeqjhqjbasvms")
+                        .withOfferId("jqul")
+                        .withPlanId("gsntnbybkzgcwr")
+                        .withPlanName("lxxwrljdouskc")
+                        .withTermUnit("kocrcjdkwtnhx")
+                        .withTermId("jbiksqrglssai")))
+                .withUser(new LiftrBaseUserDetails().withFirstName("qpjwnzlljfm")
+                    .withLastName("pee")
+                    .withEmailAddress("vmgxsab")
+                    .withUpn("qduujitcjczdz")
+                    .withPhoneNumber("ndhkrw"))
+                .withPartnerOrganizationProperties(
+                    new LiftrBaseDataPartnerOrganizationProperties().withOrganizationId("dsbdkvwrwjf")
+                        .withWorkspaceId("snhu")
+                        .withOrganizationName("je")
+                        .withWorkspaceName("mrldhu")
+                        .withSingleSignOnProperties(
                             new LiftrBaseSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.INITIAL)
-                                .withEnterpriseAppId("atqxho").withSingleSignOnUrl("geablgphuticndvk")
+                                .withEnterpriseAppId("atqxho")
+                                .withSingleSignOnUrl("geablgphuticndvk")
                                 .withAadDomains(Arrays.asList("wyiftyhxhur", "k", "tyxolniwpwc")))))
-                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("lryplwckbasyy", new UserAssignedIdentity())));
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("lryplwckbasyy", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(OrganizationResourceInner.class);
         Assertions.assertEquals("ddhsgcbacphe", model.location());
         Assertions.assertEquals("tynqgoul", model.tags().get("ndlik"));

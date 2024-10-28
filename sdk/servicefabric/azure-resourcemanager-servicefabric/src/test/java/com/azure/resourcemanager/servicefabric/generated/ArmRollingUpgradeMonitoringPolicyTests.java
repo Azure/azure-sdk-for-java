@@ -27,8 +27,11 @@ public final class ArmRollingUpgradeMonitoringPolicyTests {
     public void testSerialize() throws Exception {
         ArmRollingUpgradeMonitoringPolicy model
             = new ArmRollingUpgradeMonitoringPolicy().withFailureAction(ArmUpgradeFailureAction.MANUAL)
-                .withHealthCheckWaitDuration("ovasrruvwbhsqfsu").withHealthCheckStableDuration("gjb")
-                .withHealthCheckRetryTimeout("xb").withUpgradeTimeout("bsrfbj").withUpgradeDomainTimeout("twss");
+                .withHealthCheckWaitDuration("ovasrruvwbhsqfsu")
+                .withHealthCheckStableDuration("gjb")
+                .withHealthCheckRetryTimeout("xb")
+                .withUpgradeTimeout("bsrfbj")
+                .withUpgradeDomainTimeout("twss");
         model = BinaryData.fromObject(model).toObject(ArmRollingUpgradeMonitoringPolicy.class);
         Assertions.assertEquals(ArmUpgradeFailureAction.MANUAL, model.failureAction());
         Assertions.assertEquals("ovasrruvwbhsqfsu", model.healthCheckWaitDuration());

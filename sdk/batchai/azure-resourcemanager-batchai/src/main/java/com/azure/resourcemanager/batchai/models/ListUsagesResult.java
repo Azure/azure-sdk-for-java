@@ -14,7 +14,8 @@ import java.util.List;
 /** The List Usages operation response. */
 @Immutable
 public final class ListUsagesResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListUsagesResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ListUsagesResult.class);
 
     /*
      * The list of compute resource usages.

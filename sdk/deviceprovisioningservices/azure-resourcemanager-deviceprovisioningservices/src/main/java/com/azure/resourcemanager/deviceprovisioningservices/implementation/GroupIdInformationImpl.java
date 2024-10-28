@@ -13,8 +13,7 @@ public final class GroupIdInformationImpl implements GroupIdInformation {
 
     private final com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager;
 
-    GroupIdInformationImpl(
-        GroupIdInformationInner innerObject,
+    GroupIdInformationImpl(GroupIdInformationInner innerObject,
         com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

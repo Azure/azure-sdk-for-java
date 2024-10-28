@@ -36,8 +36,7 @@ public class RedisConfigurationTests {
 
     @Test
     public void testConfigurationUtils() {
-        RedisConfiguration configuration = new RedisConfiguration()
-            .withRdbBackupEnabled("true")
+        RedisConfiguration configuration = new RedisConfiguration().withRdbBackupEnabled("true")
             .withAofBackupEnabled("true")
             .withAofStorageConnectionString0("connection");
 
@@ -52,8 +51,7 @@ public class RedisConfigurationTests {
         Assertions.assertEquals("connection", configuration1.aofStorageConnectionString0());
         Assertions.assertTrue(CoreUtils.isNullOrEmpty(configuration1.additionalProperties()));
 
-        configuration
-            .withAdditionalProperties(Collections.singletonMap("key1", "value1"));
+        configuration.withAdditionalProperties(Collections.singletonMap("key1", "value1"));
         map = ConfigurationUtils.toMap(configuration);
         Assertions.assertEquals(4, map.size());
         Assertions.assertEquals("value1", map.get("key1"));
@@ -97,7 +95,11 @@ public class RedisConfigurationTests {
 
         getFieldsWithJsonProperty(false).forEach((key, value) -> {
             sb.append("        if (configuration.").append(value.getName()).append("() != null) {\n");
-            sb.append("            map.put(\"").append(key).append("\", configuration.").append(value.getName()).append("());\n");
+            sb.append("            map.put(\"")
+                .append(key)
+                .append("\", configuration.")
+                .append(value.getName())
+                .append("());\n");
             sb.append("        }\n");
         });
 
@@ -123,8 +125,8 @@ public class RedisConfigurationTests {
         sb.append("    }\n");
 
         sb.append("    switch (key) {\n");
-        getFieldsWithJsonProperty(true).forEach((key, value) -> sb.append(writeSwitchCase(key, value,
-            "configuration." + setterMethodName(value) + "(value)")));
+        getFieldsWithJsonProperty(true).forEach((key, value) -> sb
+            .append(writeSwitchCase(key, value, "configuration." + setterMethodName(value) + "(value)")));
         sb.append("        default:\n");
         sb.append("            if (configuration.additionalProperties() == null) {\n");
         sb.append("                configuration.withAdditionalProperties(new HashMap<>());\n");
@@ -152,8 +154,8 @@ public class RedisConfigurationTests {
         sb.append("    }\n");
 
         sb.append("    switch (key) {\n");
-        getFieldsWithJsonProperty(true).forEach((key, value) -> sb.append(writeSwitchCase(key, value,
-            "configuration." + setterMethodName(value) + "(null)")));
+        getFieldsWithJsonProperty(true).forEach((key, value) -> sb
+            .append(writeSwitchCase(key, value, "configuration." + setterMethodName(value) + "(null)")));
         sb.append("        default:\n");
         sb.append("            break;\n");
         sb.append("    }\n");
@@ -179,7 +181,9 @@ public class RedisConfigurationTests {
 
     private static Map<String, Field> getFieldsWithJsonProperty(boolean modifiable) throws IOException {
         Class<?> aClass = RedisConfiguration.class;
-        String content = new String(Files.readAllBytes(Paths.get("../../resourcemanager/azure-resourcemanager-redis/src/main/java/com/azure/resourcemanager/redis/models/RedisConfiguration.java")), Charset.defaultCharset());
+        String content = new String(Files.readAllBytes(Paths.get(
+            "../../resourcemanager/azure-resourcemanager-redis/src/main/java/com/azure/resourcemanager/redis/models/RedisConfiguration.java")),
+            Charset.defaultCharset());
         Stream<Field> fields = Stream.of(aClass.getDeclaredFields())
             .filter(f -> toJsonField(f, content).exists || fromJsonField(f, content).exists);
         if (modifiable) {
@@ -187,26 +191,27 @@ public class RedisConfigurationTests {
                 // Appearance in `toJson` method means the field is modifiable.
                 .filter(f -> toJsonField(f, content).exists);
         }
-        return fields.collect(Collectors.toMap(
-            f -> {
-                FieldInfo fromJsonField = fromJsonField(f, content);
-                if (fromJsonField.exists) {
-                    return fromJsonField.serializedName;
-                }
-                FieldInfo toJsonField = toJsonField(f, content);
-                if (toJsonField.exists) {
-                    return toJsonField.serializedName;
-                }
-                throw new IllegalStateException("Shouldn't reach here, as we've already made sure that either fromJsonField or toJsonField exists.");
-            },
-            Function.identity()));
+        return fields.collect(Collectors.toMap(f -> {
+            FieldInfo fromJsonField = fromJsonField(f, content);
+            if (fromJsonField.exists) {
+                return fromJsonField.serializedName;
+            }
+            FieldInfo toJsonField = toJsonField(f, content);
+            if (toJsonField.exists) {
+                return toJsonField.serializedName;
+            }
+            throw new IllegalStateException(
+                "Shouldn't reach here, as we've already made sure that either fromJsonField or toJsonField exists.");
+        }, Function.identity()));
     }
 
     private static FieldInfo fromJsonField(Field f, String content) {
         // e.g. if ("rdb-backup-enabled".equals(fieldName)) {
         //        deserializedRedisConfiguration.rdbBackupEnabled = reader.getString();
         //      }
-        Pattern fromJsonFieldPattern = Pattern.compile("if \\(\"([\\w|-]+)\"\\.equals\\(fieldName\\)\\) \\{\\W*[\\w]+\\." + f.getName() + " = reader.getString\\(\\);");
+        Pattern fromJsonFieldPattern
+            = Pattern.compile("if \\(\"([\\w|-]+)\"\\.equals\\(fieldName\\)\\) \\{\\W*[\\w]+\\." + f.getName()
+                + " = reader.getString\\(\\);");
         Matcher matcher = fromJsonFieldPattern.matcher(content);
         FieldInfo fieldInfo = new FieldInfo();
         if (matcher.find()) {

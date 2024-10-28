@@ -63,76 +63,55 @@ public final class ReplicasClientImpl implements ReplicasClient {
     @Host("{$host}")
     @ServiceInterface(name = "AppConfigurationMana")
     public interface ReplicasService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReplicaListResult>> listByConfigurationStore(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReplicaListResult>> listByConfigurationStore(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReplicaInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReplicaInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @PathParam("replicaName") String replicaName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
             @PathParam("replicaName") String replicaName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ReplicaInner replicaCreationParameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("replicaName") String replicaName,
-            @BodyParam("application/json") ReplicaInner replicaCreationParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @PathParam("replicaName") String replicaName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/replicas/{replicaName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("replicaName") String replicaName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ReplicaListResult>> listByConfigurationStoreNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -150,19 +129,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicaInner>> listByConfigurationStoreSinglePageAsync(
-        String resourceGroupName, String configStoreName, String skipToken) {
+    private Mono<PagedResponse<ReplicaInner>> listByConfigurationStoreSinglePageAsync(String resourceGroupName,
+        String configStoreName, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -175,26 +150,10 @@ public final class ReplicasClientImpl implements ReplicasClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByConfigurationStore(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<ReplicaInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByConfigurationStore(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, configStoreName, this.client.getApiVersion(), skipToken, accept, context))
+            .<PagedResponse<ReplicaInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -214,19 +173,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicaInner>> listByConfigurationStoreSinglePageAsync(
-        String resourceGroupName, String configStoreName, String skipToken, Context context) {
+    private Mono<PagedResponse<ReplicaInner>> listByConfigurationStoreSinglePageAsync(String resourceGroupName,
+        String configStoreName, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -239,24 +194,10 @@ public final class ReplicasClientImpl implements ReplicasClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByConfigurationStore(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByConfigurationStore(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                configStoreName, this.client.getApiVersion(), skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -273,8 +214,8 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the result of a request to list replicas as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReplicaInner> listByConfigurationStoreAsync(
-        String resourceGroupName, String configStoreName, String skipToken) {
+    private PagedFlux<ReplicaInner> listByConfigurationStoreAsync(String resourceGroupName, String configStoreName,
+        String skipToken) {
         return new PagedFlux<>(
             () -> listByConfigurationStoreSinglePageAsync(resourceGroupName, configStoreName, skipToken),
             nextLink -> listByConfigurationStoreNextSinglePageAsync(nextLink));
@@ -313,8 +254,8 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the result of a request to list replicas as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ReplicaInner> listByConfigurationStoreAsync(
-        String resourceGroupName, String configStoreName, String skipToken, Context context) {
+    private PagedFlux<ReplicaInner> listByConfigurationStoreAsync(String resourceGroupName, String configStoreName,
+        String skipToken, Context context) {
         return new PagedFlux<>(
             () -> listByConfigurationStoreSinglePageAsync(resourceGroupName, configStoreName, skipToken, context),
             nextLink -> listByConfigurationStoreNextSinglePageAsync(nextLink, context));
@@ -351,8 +292,8 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the result of a request to list replicas as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ReplicaInner> listByConfigurationStore(
-        String resourceGroupName, String configStoreName, String skipToken, Context context) {
+    public PagedIterable<ReplicaInner> listByConfigurationStore(String resourceGroupName, String configStoreName,
+        String skipToken, Context context) {
         return new PagedIterable<>(
             listByConfigurationStoreAsync(resourceGroupName, configStoreName, skipToken, context));
     }
@@ -370,19 +311,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicaInner>> getWithResponseAsync(
-        String resourceGroupName, String configStoreName, String replicaName) {
+    private Mono<Response<ReplicaInner>> getWithResponseAsync(String resourceGroupName, String configStoreName,
+        String replicaName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -397,18 +334,8 @@ public final class ReplicasClientImpl implements ReplicasClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            replicaName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), replicaName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -426,19 +353,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReplicaInner>> getWithResponseAsync(
-        String resourceGroupName, String configStoreName, String replicaName, Context context) {
+    private Mono<Response<ReplicaInner>> getWithResponseAsync(String resourceGroupName, String configStoreName,
+        String replicaName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -453,16 +376,8 @@ public final class ReplicasClientImpl implements ReplicasClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                replicaName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), replicaName, accept, context);
     }
 
     /**
@@ -495,8 +410,8 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the properties of the specified replica along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReplicaInner> getWithResponse(
-        String resourceGroupName, String configStoreName, String replicaName, Context context) {
+    public Response<ReplicaInner> getWithResponse(String resourceGroupName, String configStoreName, String replicaName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, configStoreName, replicaName, context).block();
     }
 
@@ -529,19 +444,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the replica resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String configStoreName, String replicaName, ReplicaInner replicaCreationParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String configStoreName,
+        String replicaName, ReplicaInner replicaCreationParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -555,28 +466,16 @@ public final class ReplicasClientImpl implements ReplicasClient {
             return Mono.error(new IllegalArgumentException("Parameter replicaName is required and cannot be null."));
         }
         if (replicaCreationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter replicaCreationParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter replicaCreationParameters is required and cannot be null."));
         } else {
             replicaCreationParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            replicaName,
-                            replicaCreationParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), replicaName, replicaCreationParameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -594,23 +493,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the replica resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String configStoreName,
-        String replicaName,
-        ReplicaInner replicaCreationParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String configStoreName,
+        String replicaName, ReplicaInner replicaCreationParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -624,26 +515,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
             return Mono.error(new IllegalArgumentException("Parameter replicaName is required and cannot be null."));
         }
         if (replicaCreationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter replicaCreationParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter replicaCreationParameters is required and cannot be null."));
         } else {
             replicaCreationParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                replicaName,
-                replicaCreationParameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), replicaName, replicaCreationParameters, accept, context);
     }
 
     /**
@@ -659,14 +539,12 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link PollerFlux} for polling of the replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ReplicaInner>, ReplicaInner> beginCreateAsync(
-        String resourceGroupName, String configStoreName, String replicaName, ReplicaInner replicaCreationParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters);
-        return this
-            .client
-            .<ReplicaInner, ReplicaInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ReplicaInner.class, ReplicaInner.class, this.client.getContext());
+    private PollerFlux<PollResult<ReplicaInner>, ReplicaInner> beginCreateAsync(String resourceGroupName,
+        String configStoreName, String replicaName, ReplicaInner replicaCreationParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters);
+        return this.client.<ReplicaInner, ReplicaInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ReplicaInner.class, ReplicaInner.class, this.client.getContext());
     }
 
     /**
@@ -683,20 +561,13 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link PollerFlux} for polling of the replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ReplicaInner>, ReplicaInner> beginCreateAsync(
-        String resourceGroupName,
-        String configStoreName,
-        String replicaName,
-        ReplicaInner replicaCreationParameters,
-        Context context) {
+    private PollerFlux<PollResult<ReplicaInner>, ReplicaInner> beginCreateAsync(String resourceGroupName,
+        String configStoreName, String replicaName, ReplicaInner replicaCreationParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(
-                resourceGroupName, configStoreName, replicaName, replicaCreationParameters, context);
-        return this
-            .client
-            .<ReplicaInner, ReplicaInner>getLroResult(
-                mono, this.client.getHttpPipeline(), ReplicaInner.class, ReplicaInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, configStoreName, replicaName,
+            replicaCreationParameters, context);
+        return this.client.<ReplicaInner, ReplicaInner>getLroResult(mono, this.client.getHttpPipeline(),
+            ReplicaInner.class, ReplicaInner.class, context);
     }
 
     /**
@@ -712,10 +583,9 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link SyncPoller} for polling of the replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreate(
-        String resourceGroupName, String configStoreName, String replicaName, ReplicaInner replicaCreationParameters) {
-        return this
-            .beginCreateAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters)
+    public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreate(String resourceGroupName,
+        String configStoreName, String replicaName, ReplicaInner replicaCreationParameters) {
+        return this.beginCreateAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters)
             .getSyncPoller();
     }
 
@@ -733,12 +603,8 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link SyncPoller} for polling of the replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreate(
-        String resourceGroupName,
-        String configStoreName,
-        String replicaName,
-        ReplicaInner replicaCreationParameters,
-        Context context) {
+    public SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreate(String resourceGroupName,
+        String configStoreName, String replicaName, ReplicaInner replicaCreationParameters, Context context) {
         return this
             .beginCreateAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters, context)
             .getSyncPoller();
@@ -757,10 +623,9 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the replica resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReplicaInner> createAsync(
-        String resourceGroupName, String configStoreName, String replicaName, ReplicaInner replicaCreationParameters) {
-        return beginCreateAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters)
-            .last()
+    private Mono<ReplicaInner> createAsync(String resourceGroupName, String configStoreName, String replicaName,
+        ReplicaInner replicaCreationParameters) {
+        return beginCreateAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -778,12 +643,8 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the replica resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReplicaInner> createAsync(
-        String resourceGroupName,
-        String configStoreName,
-        String replicaName,
-        ReplicaInner replicaCreationParameters,
-        Context context) {
+    private Mono<ReplicaInner> createAsync(String resourceGroupName, String configStoreName, String replicaName,
+        ReplicaInner replicaCreationParameters, Context context) {
         return beginCreateAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -802,8 +663,8 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the replica resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicaInner create(
-        String resourceGroupName, String configStoreName, String replicaName, ReplicaInner replicaCreationParameters) {
+    public ReplicaInner create(String resourceGroupName, String configStoreName, String replicaName,
+        ReplicaInner replicaCreationParameters) {
         return createAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters).block();
     }
 
@@ -821,12 +682,8 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the replica resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReplicaInner create(
-        String resourceGroupName,
-        String configStoreName,
-        String replicaName,
-        ReplicaInner replicaCreationParameters,
-        Context context) {
+    public ReplicaInner create(String resourceGroupName, String configStoreName, String replicaName,
+        ReplicaInner replicaCreationParameters, Context context) {
         return createAsync(resourceGroupName, configStoreName, replicaName, replicaCreationParameters, context).block();
     }
 
@@ -842,19 +699,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String configStoreName, String replicaName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String configStoreName,
+        String replicaName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -869,18 +722,8 @@ public final class ReplicasClientImpl implements ReplicasClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            replicaName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), replicaName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -897,19 +740,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String configStoreName, String replicaName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String configStoreName,
+        String replicaName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -924,16 +763,8 @@ public final class ReplicasClientImpl implements ReplicasClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                replicaName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), replicaName, accept, context);
     }
 
     /**
@@ -948,14 +779,12 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String configStoreName, String replicaName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, configStoreName, replicaName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String configStoreName,
+        String replicaName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, configStoreName, replicaName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -971,14 +800,13 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String configStoreName, String replicaName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String configStoreName,
+        String replicaName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, configStoreName, replicaName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, configStoreName, replicaName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -993,8 +821,8 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String configStoreName, String replicaName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
+        String replicaName) {
         return this.beginDeleteAsync(resourceGroupName, configStoreName, replicaName).getSyncPoller();
     }
 
@@ -1011,8 +839,8 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String configStoreName, String replicaName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
+        String replicaName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, configStoreName, replicaName, context).getSyncPoller();
     }
 
@@ -1029,8 +857,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String configStoreName, String replicaName) {
-        return beginDeleteAsync(resourceGroupName, configStoreName, replicaName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, configStoreName, replicaName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1047,10 +874,9 @@ public final class ReplicasClientImpl implements ReplicasClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String configStoreName, String replicaName, Context context) {
-        return beginDeleteAsync(resourceGroupName, configStoreName, replicaName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String configStoreName, String replicaName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, configStoreName, replicaName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1102,24 +928,15 @@ public final class ReplicasClientImpl implements ReplicasClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByConfigurationStoreNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ReplicaInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ReplicaInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1136,29 +953,19 @@ public final class ReplicasClientImpl implements ReplicasClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicaInner>> listByConfigurationStoreNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ReplicaInner>> listByConfigurationStoreNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByConfigurationStoreNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByConfigurationStoreNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

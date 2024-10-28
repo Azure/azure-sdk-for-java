@@ -50,10 +50,8 @@ public final class GroupIdInformationInner extends ProxyResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model GroupIdInformationInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model GroupIdInformationInner"));
         } else {
             properties().validate();
         }

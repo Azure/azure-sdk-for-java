@@ -3,7 +3,6 @@
 
 package com.azure.communication.phonenumbers.models;
 
-
 /** 
  * The ReleasePhoneNumberResult model. 
  */

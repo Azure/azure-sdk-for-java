@@ -54,11 +54,8 @@ public final class CreateOrderLimitForSubscriptionValidationRequest extends Vali
     public void validate() {
         super.validate();
         if (deviceType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deviceType in model"
-                            + " CreateOrderLimitForSubscriptionValidationRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property deviceType in model" + " CreateOrderLimitForSubscriptionValidationRequest"));
         }
     }
 

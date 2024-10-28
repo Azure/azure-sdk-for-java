@@ -96,8 +96,8 @@ public final class WorkspacePatchProperties {
      * @param managedVirtualNetworkSettings the managedVirtualNetworkSettings value to set.
      * @return the WorkspacePatchProperties object itself.
      */
-    public WorkspacePatchProperties withManagedVirtualNetworkSettings(
-        ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+    public WorkspacePatchProperties
+        withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
         this.managedVirtualNetworkSettings = managedVirtualNetworkSettings;
         return this;
     }
@@ -117,8 +117,8 @@ public final class WorkspacePatchProperties {
      * @param workspaceRepositoryConfiguration the workspaceRepositoryConfiguration value to set.
      * @return the WorkspacePatchProperties object itself.
      */
-    public WorkspacePatchProperties withWorkspaceRepositoryConfiguration(
-        WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
+    public WorkspacePatchProperties
+        withWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
         this.workspaceRepositoryConfiguration = workspaceRepositoryConfiguration;
         return this;
     }

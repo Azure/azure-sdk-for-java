@@ -24,8 +24,8 @@ public final class ArtifactsImpl implements Artifacts {
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    public ArtifactsImpl(
-        ArtifactsClient innerClient, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    public ArtifactsImpl(ArtifactsClient innerClient,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -35,36 +35,19 @@ public final class ArtifactsImpl implements Artifacts {
         return Utils.mapPage(inner, inner1 -> new ArtifactImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Artifact> list(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
-        PagedIterable<ArtifactInner> inner =
-            this
-                .serviceClient()
-                .list(resourceGroupName, labName, artifactSourceName, expand, filter, top, orderby, context);
+    public PagedIterable<Artifact> list(String resourceGroupName, String labName, String artifactSourceName,
+        String expand, String filter, Integer top, String orderby, Context context) {
+        PagedIterable<ArtifactInner> inner = this.serviceClient()
+            .list(resourceGroupName, labName, artifactSourceName, expand, filter, top, orderby, context);
         return Utils.mapPage(inner, inner1 -> new ArtifactImpl(inner1, this.manager()));
     }
 
-    public Response<Artifact> getWithResponse(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        String expand,
-        Context context) {
-        Response<ArtifactInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, labName, artifactSourceName, name, expand, context);
+    public Response<Artifact> getWithResponse(String resourceGroupName, String labName, String artifactSourceName,
+        String name, String expand, Context context) {
+        Response<ArtifactInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, labName, artifactSourceName, name, expand, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ArtifactImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -80,39 +63,24 @@ public final class ArtifactsImpl implements Artifacts {
         }
     }
 
-    public Response<ArmTemplateInfo> generateArmTemplateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        GenerateArmTemplateRequest generateArmTemplateRequest,
+    public Response<ArmTemplateInfo> generateArmTemplateWithResponse(String resourceGroupName, String labName,
+        String artifactSourceName, String name, GenerateArmTemplateRequest generateArmTemplateRequest,
         Context context) {
-        Response<ArmTemplateInfoInner> inner =
-            this
-                .serviceClient()
-                .generateArmTemplateWithResponse(
-                    resourceGroupName, labName, artifactSourceName, name, generateArmTemplateRequest, context);
+        Response<ArmTemplateInfoInner> inner = this.serviceClient()
+            .generateArmTemplateWithResponse(resourceGroupName, labName, artifactSourceName, name,
+                generateArmTemplateRequest, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ArmTemplateInfoImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ArmTemplateInfo generateArmTemplate(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        GenerateArmTemplateRequest generateArmTemplateRequest) {
-        ArmTemplateInfoInner inner =
-            this
-                .serviceClient()
-                .generateArmTemplate(resourceGroupName, labName, artifactSourceName, name, generateArmTemplateRequest);
+    public ArmTemplateInfo generateArmTemplate(String resourceGroupName, String labName, String artifactSourceName,
+        String name, GenerateArmTemplateRequest generateArmTemplateRequest) {
+        ArmTemplateInfoInner inner = this.serviceClient()
+            .generateArmTemplate(resourceGroupName, labName, artifactSourceName, name, generateArmTemplateRequest);
         if (inner != null) {
             return new ArmTemplateInfoImpl(inner, this.manager());
         } else {

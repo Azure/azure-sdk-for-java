@@ -23,9 +23,10 @@ public final class AzureCoreVhdImageArtifactProfileTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureCoreVhdImageArtifactProfile model = new AzureCoreVhdImageArtifactProfile()
-            .withArtifactStore(new ReferencedResource().withId("lwexxwl")).withVhdArtifactProfile(
-                new VhdImageArtifactProfile().withVhdName("cwyhahno").withVhdVersion("rkywuhpsvfuu"));
+        AzureCoreVhdImageArtifactProfile model
+            = new AzureCoreVhdImageArtifactProfile().withArtifactStore(new ReferencedResource().withId("lwexxwl"))
+                .withVhdArtifactProfile(
+                    new VhdImageArtifactProfile().withVhdName("cwyhahno").withVhdVersion("rkywuhpsvfuu"));
         model = BinaryData.fromObject(model).toObject(AzureCoreVhdImageArtifactProfile.class);
         Assertions.assertEquals("lwexxwl", model.artifactStore().id());
         Assertions.assertEquals("cwyhahno", model.vhdArtifactProfile().vhdName());

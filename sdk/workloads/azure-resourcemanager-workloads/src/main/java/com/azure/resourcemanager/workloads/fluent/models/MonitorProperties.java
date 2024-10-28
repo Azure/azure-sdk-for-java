@@ -179,8 +179,8 @@ public final class MonitorProperties {
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the MonitorProperties object itself.
      */
-    public MonitorProperties withManagedResourceGroupConfiguration(
-        ManagedRGConfiguration managedResourceGroupConfiguration) {
+    public MonitorProperties
+        withManagedResourceGroupConfiguration(ManagedRGConfiguration managedResourceGroupConfiguration) {
         this.managedResourceGroupConfiguration = managedResourceGroupConfiguration;
         return this;
     }

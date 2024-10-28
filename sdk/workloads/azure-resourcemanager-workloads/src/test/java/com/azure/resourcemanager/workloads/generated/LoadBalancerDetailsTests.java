@@ -10,8 +10,8 @@ import com.azure.resourcemanager.workloads.models.LoadBalancerDetails;
 public final class LoadBalancerDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LoadBalancerDetails model =
-            BinaryData.fromString("{\"id\":\"jqkwpyeicx\"}").toObject(LoadBalancerDetails.class);
+        LoadBalancerDetails model
+            = BinaryData.fromString("{\"id\":\"jqkwpyeicx\"}").toObject(LoadBalancerDetails.class);
     }
 
     @org.junit.jupiter.api.Test

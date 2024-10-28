@@ -19,6 +19,7 @@
   <properties>
     <src.dir>src/main/java</src.dir>
     <doclintMissingInclusion>-</doclintMissingInclusion>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <distributionManagement>

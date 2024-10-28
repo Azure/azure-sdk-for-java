@@ -210,8 +210,8 @@ public final class SelfHostedIntegrationRuntimeStatusTypeProperties {
      * @param nodes the nodes value to set.
      * @return the SelfHostedIntegrationRuntimeStatusTypeProperties object itself.
      */
-    public SelfHostedIntegrationRuntimeStatusTypeProperties withNodes(
-        List<SelfHostedIntegrationRuntimeNodeInner> nodes) {
+    public SelfHostedIntegrationRuntimeStatusTypeProperties
+        withNodes(List<SelfHostedIntegrationRuntimeNodeInner> nodes) {
         this.nodes = nodes;
         return this;
     }

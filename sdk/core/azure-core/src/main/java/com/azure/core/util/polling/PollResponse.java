@@ -55,7 +55,7 @@ public final class PollResponse<T> {
      *
      * &#47;&#47; Lets say we want to crete poll response with status as IN_PROGRESS
      * PollResponse&lt;String&gt; inProgressPollResponse
-     *     = new PollResponse&lt;&gt;&#40;LongRunningOperationStatus.IN_PROGRESS, &quot;mycustom response&quot;,
+     *     = new PollResponse&lt;&gt;&#40;LongRunningOperationStatus.IN_PROGRESS, &quot;my custom response&quot;,
      *     Duration.ofMillis&#40;2000&#41;&#41;;
      * </pre>
      * <!-- end com.azure.core.util.polling.pollresponse.status.value.retryAfter.properties -->

@@ -97,20 +97,16 @@ public final class ReplicaImpl implements Replica, Replica.Definition, Replica.U
     }
 
     public Replica create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRReplicas()
-                .createOrUpdate(resourceGroupName, resourceName, replicaName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRReplicas()
+            .createOrUpdate(resourceGroupName, resourceName, replicaName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Replica create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRReplicas()
-                .createOrUpdate(resourceGroupName, resourceName, replicaName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRReplicas()
+            .createOrUpdate(resourceGroupName, resourceName, replicaName, this.innerModel(), context);
         return this;
     }
 
@@ -125,20 +121,16 @@ public final class ReplicaImpl implements Replica, Replica.Definition, Replica.U
     }
 
     public Replica apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRReplicas()
-                .update(resourceGroupName, resourceName, replicaName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRReplicas()
+            .update(resourceGroupName, resourceName, replicaName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Replica apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRReplicas()
-                .update(resourceGroupName, resourceName, replicaName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRReplicas()
+            .update(resourceGroupName, resourceName, replicaName, this.innerModel(), context);
         return this;
     }
 
@@ -151,22 +143,18 @@ public final class ReplicaImpl implements Replica, Replica.Definition, Replica.U
     }
 
     public Replica refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRReplicas()
-                .getWithResponse(resourceGroupName, resourceName, replicaName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRReplicas()
+            .getWithResponse(resourceGroupName, resourceName, replicaName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Replica refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSignalRReplicas()
-                .getWithResponse(resourceGroupName, resourceName, replicaName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSignalRReplicas()
+            .getWithResponse(resourceGroupName, resourceName, replicaName, context)
+            .getValue();
         return this;
     }
 

@@ -52,6 +52,6 @@ public interface BenefitRecommendationsClient {
      * @return result of listing benefit recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BenefitRecommendationModelInner> list(
-        String billingScope, String filter, String orderby, String expand, Context context);
+    PagedIterable<BenefitRecommendationModelInner> list(String billingScope, String filter, String orderby,
+        String expand, Context context);
 }

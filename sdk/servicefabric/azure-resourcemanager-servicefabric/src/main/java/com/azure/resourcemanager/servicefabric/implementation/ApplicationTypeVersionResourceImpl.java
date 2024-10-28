@@ -105,14 +105,17 @@ public final class ApplicationTypeVersionResourceImpl implements ApplicationType
     }
 
     public ApplicationTypeVersionResource create() {
-        this.innerObject = serviceManager.serviceClient().getApplicationTypeVersions().createOrUpdate(resourceGroupName,
-            clusterName, applicationTypeName, version, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypeVersions()
+            .createOrUpdate(resourceGroupName, clusterName, applicationTypeName, version, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public ApplicationTypeVersionResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApplicationTypeVersions().createOrUpdate(resourceGroupName,
-            clusterName, applicationTypeName, version, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypeVersions()
+            .createOrUpdate(resourceGroupName, clusterName, applicationTypeName, version, this.innerModel(), context);
         return this;
     }
 
@@ -128,14 +131,17 @@ public final class ApplicationTypeVersionResourceImpl implements ApplicationType
     }
 
     public ApplicationTypeVersionResource apply() {
-        this.innerObject = serviceManager.serviceClient().getApplicationTypeVersions().createOrUpdate(resourceGroupName,
-            clusterName, applicationTypeName, version, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypeVersions()
+            .createOrUpdate(resourceGroupName, clusterName, applicationTypeName, version, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public ApplicationTypeVersionResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApplicationTypeVersions().createOrUpdate(resourceGroupName,
-            clusterName, applicationTypeName, version, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypeVersions()
+            .createOrUpdate(resourceGroupName, clusterName, applicationTypeName, version, this.innerModel(), context);
         return this;
     }
 
@@ -150,14 +156,18 @@ public final class ApplicationTypeVersionResourceImpl implements ApplicationType
     }
 
     public ApplicationTypeVersionResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getApplicationTypeVersions()
-            .getWithResponse(resourceGroupName, clusterName, applicationTypeName, version, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypeVersions()
+            .getWithResponse(resourceGroupName, clusterName, applicationTypeName, version, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApplicationTypeVersionResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApplicationTypeVersions()
-            .getWithResponse(resourceGroupName, clusterName, applicationTypeName, version, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypeVersions()
+            .getWithResponse(resourceGroupName, clusterName, applicationTypeName, version, context)
+            .getValue();
         return this;
     }
 

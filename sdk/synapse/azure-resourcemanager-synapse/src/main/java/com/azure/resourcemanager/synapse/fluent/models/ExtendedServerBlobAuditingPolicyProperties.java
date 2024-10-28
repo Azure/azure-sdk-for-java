@@ -420,8 +420,8 @@ public final class ExtendedServerBlobAuditingPolicyProperties {
      * @param storageAccountSubscriptionId the storageAccountSubscriptionId value to set.
      * @return the ExtendedServerBlobAuditingPolicyProperties object itself.
      */
-    public ExtendedServerBlobAuditingPolicyProperties withStorageAccountSubscriptionId(
-        UUID storageAccountSubscriptionId) {
+    public ExtendedServerBlobAuditingPolicyProperties
+        withStorageAccountSubscriptionId(UUID storageAccountSubscriptionId) {
         this.storageAccountSubscriptionId = storageAccountSubscriptionId;
         return this;
     }
@@ -443,8 +443,8 @@ public final class ExtendedServerBlobAuditingPolicyProperties {
      * @param isStorageSecondaryKeyInUse the isStorageSecondaryKeyInUse value to set.
      * @return the ExtendedServerBlobAuditingPolicyProperties object itself.
      */
-    public ExtendedServerBlobAuditingPolicyProperties withIsStorageSecondaryKeyInUse(
-        Boolean isStorageSecondaryKeyInUse) {
+    public ExtendedServerBlobAuditingPolicyProperties
+        withIsStorageSecondaryKeyInUse(Boolean isStorageSecondaryKeyInUse) {
         this.isStorageSecondaryKeyInUse = isStorageSecondaryKeyInUse;
         return this;
     }
@@ -486,8 +486,8 @@ public final class ExtendedServerBlobAuditingPolicyProperties {
      * @param isAzureMonitorTargetEnabled the isAzureMonitorTargetEnabled value to set.
      * @return the ExtendedServerBlobAuditingPolicyProperties object itself.
      */
-    public ExtendedServerBlobAuditingPolicyProperties withIsAzureMonitorTargetEnabled(
-        Boolean isAzureMonitorTargetEnabled) {
+    public ExtendedServerBlobAuditingPolicyProperties
+        withIsAzureMonitorTargetEnabled(Boolean isAzureMonitorTargetEnabled) {
         this.isAzureMonitorTargetEnabled = isAzureMonitorTargetEnabled;
         return this;
     }
@@ -563,10 +563,8 @@ public final class ExtendedServerBlobAuditingPolicyProperties {
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model ExtendedServerBlobAuditingPolicyProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property state in model ExtendedServerBlobAuditingPolicyProperties"));
         }
     }
 

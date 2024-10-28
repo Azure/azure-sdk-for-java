@@ -20,8 +20,7 @@ import java.util.Map;
 @JsonTypeName("EventSourceCreateOrUpdateParameters")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Microsoft.EventHub", value = EventHubEventSourceCreateOrUpdateParameters.class),
-    @JsonSubTypes.Type(name = "Microsoft.IoTHub", value = IoTHubEventSourceCreateOrUpdateParameters.class)
-})
+    @JsonSubTypes.Type(name = "Microsoft.IoTHub", value = IoTHubEventSourceCreateOrUpdateParameters.class) })
 @Fluent
 public class EventSourceCreateOrUpdateParameters extends CreateOrUpdateTrackedResourceProperties {
     /*

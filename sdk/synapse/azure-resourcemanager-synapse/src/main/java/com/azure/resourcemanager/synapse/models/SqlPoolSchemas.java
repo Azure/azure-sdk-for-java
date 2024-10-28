@@ -40,8 +40,8 @@ public interface SqlPoolSchemas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schemas of a given SQL pool as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SqlPoolSchema> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter, Context context);
+    PagedIterable<SqlPoolSchema> list(String resourceGroupName, String workspaceName, String sqlPoolName, String filter,
+        Context context);
 
     /**
      * Get Sql Pool schema.
@@ -56,8 +56,8 @@ public interface SqlPoolSchemas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sql Pool schema along with {@link Response}.
      */
-    Response<SqlPoolSchema> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, Context context);
+    Response<SqlPoolSchema> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, Context context);
 
     /**
      * Get Sql Pool schema.

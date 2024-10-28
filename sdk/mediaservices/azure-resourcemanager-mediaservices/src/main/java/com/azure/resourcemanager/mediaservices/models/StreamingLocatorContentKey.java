@@ -147,9 +147,8 @@ public final class StreamingLocatorContentKey {
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model StreamingLocatorContentKey"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model StreamingLocatorContentKey"));
         }
         if (tracks() != null) {
             tracks().forEach(e -> e.validate());

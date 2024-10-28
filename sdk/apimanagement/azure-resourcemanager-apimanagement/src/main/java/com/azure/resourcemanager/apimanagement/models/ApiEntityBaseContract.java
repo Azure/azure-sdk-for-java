@@ -159,8 +159,8 @@ public class ApiEntityBaseContract {
      * @param subscriptionKeyParameterNames the subscriptionKeyParameterNames value to set.
      * @return the ApiEntityBaseContract object itself.
      */
-    public ApiEntityBaseContract withSubscriptionKeyParameterNames(
-        SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
+    public ApiEntityBaseContract
+        withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
         this.subscriptionKeyParameterNames = subscriptionKeyParameterNames;
         return this;
     }

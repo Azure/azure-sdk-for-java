@@ -126,10 +126,8 @@ public final class ResourceLocationDataContract {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ResourceLocationDataContract"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ResourceLocationDataContract"));
         }
     }
 

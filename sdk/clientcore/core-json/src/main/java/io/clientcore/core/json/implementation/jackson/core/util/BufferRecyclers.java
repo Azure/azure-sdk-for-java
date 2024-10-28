@@ -13,8 +13,7 @@ import io.clientcore.core.json.implementation.jackson.core.io.JsonStringEncoder;
  *
  * @since 2.9.2
  */
-public class BufferRecyclers
-{
+public class BufferRecyclers {
     /**
      * System property that is checked to see if recycled buffers (see {@link BufferRecycler})
      * should be tracked, for purpose of forcing release of all such buffers, typically
@@ -39,7 +38,8 @@ public class BufferRecyclers
         boolean trackReusableBuffers = false;
         try {
             trackReusableBuffers = "true".equals(System.getProperty(SYSTEM_PROPERTY_TRACK_REUSABLE_BUFFERS));
-        } catch (SecurityException e) { }
+        } catch (SecurityException e) {
+        }
 
         _bufferRecyclerTracker = trackReusableBuffers ? ThreadLocalBufferManager.instance() : null;
     }
@@ -63,8 +63,7 @@ public class BufferRecyclers
      *
      * @return {@link BufferRecycler} to use
      */
-    public static BufferRecycler getBufferRecycler()
-    {
+    public static BufferRecycler getBufferRecycler() {
         SoftReference<BufferRecycler> ref = _recyclerRef.get();
         BufferRecycler br = (ref == null) ? null : ref.get();
 

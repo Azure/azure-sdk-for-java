@@ -35,32 +35,28 @@ public class KustoManagerTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
-        final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+      final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+      final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+      
+      resourceManager = ResourceManager.configure()
+          .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+          .authenticate(credential, profile)
+          .withDefaultSubscription();
+      
+      kustoManager = KustoManager
+          .configure()
+          .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+          .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+          .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile)
-            .withDefaultSubscription();
-
-        kustoManager = KustoManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-            .authenticate(credential, profile);
-
-        // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
-        String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
-        testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
-        if (testEnv) {
-            resourceGroupName = testResourceGroup;
-        } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
-        }
+      // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
+      String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
+      testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
+      if (testEnv) {
+          resourceGroupName = testResourceGroup;
+      } else {
+          resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
+      }
     }
 
     @Override
@@ -81,8 +77,7 @@ public class KustoManagerTests extends TestProxyTestBase {
                 .define(clusterName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withSku(new AzureSku()
-                    .withName(AzureSkuName.DEV_NO_SLA_STANDARD_E2A_V4)
+                .withSku(new AzureSku().withName(AzureSkuName.DEV_NO_SLA_STANDARD_E2A_V4)
                     .withCapacity(1)
                     .withTier(AzureSkuTier.BASIC))
                 .create();

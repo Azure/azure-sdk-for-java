@@ -47,9 +47,8 @@ public final class NodeInput {
      */
     public void validate() {
         if (nodeName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nodeName in model NodeInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property nodeName in model NodeInput"));
         }
     }
 

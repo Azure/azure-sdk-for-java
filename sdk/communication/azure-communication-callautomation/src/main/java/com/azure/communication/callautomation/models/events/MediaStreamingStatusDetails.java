@@ -12,12 +12,12 @@ public final class MediaStreamingStatusDetails extends ExpandableStringEnum<Medi
     public static final MediaStreamingStatusDetails SUBSCRIPTION_STARTED = fromString("subscriptionStarted");
 
     /** Static value streamConnectionReestablished for MediaStreamingStatusDetails. */
-    public static final MediaStreamingStatusDetails STREAM_CONNECTION_REESTABLISHED =
-            fromString("streamConnectionReestablished");
+    public static final MediaStreamingStatusDetails STREAM_CONNECTION_REESTABLISHED
+        = fromString("streamConnectionReestablished");
 
     /** Static value streamConnectionUnsuccessful for MediaStreamingStatusDetails. */
-    public static final MediaStreamingStatusDetails STREAM_CONNECTION_UNSUCCESSFUL =
-            fromString("streamConnectionUnsuccessful");
+    public static final MediaStreamingStatusDetails STREAM_CONNECTION_UNSUCCESSFUL
+        = fromString("streamConnectionUnsuccessful");
 
     /** Static value streamUrlMissing for MediaStreamingStatusDetails. */
     public static final MediaStreamingStatusDetails STREAM_URL_MISSING = fromString("streamUrlMissing");
@@ -26,12 +26,12 @@ public final class MediaStreamingStatusDetails extends ExpandableStringEnum<Medi
     public static final MediaStreamingStatusDetails SERVICE_SHUTDOWN = fromString("serviceShutdown");
 
     /** Static value streamConnectionInterrupted for MediaStreamingStatusDetails. */
-    public static final MediaStreamingStatusDetails STREAM_CONNECTION_INTERRUPTED =
-            fromString("streamConnectionInterrupted");
+    public static final MediaStreamingStatusDetails STREAM_CONNECTION_INTERRUPTED
+        = fromString("streamConnectionInterrupted");
 
     /** Static value speechServicesConnectionError for MediaStreamingStatusDetails. */
-    public static final MediaStreamingStatusDetails SPEECH_SERVICES_CONNECTION_ERROR =
-            fromString("speechServicesConnectionError");
+    public static final MediaStreamingStatusDetails SPEECH_SERVICES_CONNECTION_ERROR
+        = fromString("speechServicesConnectionError");
 
     /** Static value subscriptionStopped for MediaStreamingStatusDetails. */
     public static final MediaStreamingStatusDetails SUBSCRIPTION_STOPPED = fromString("subscriptionStopped");
@@ -55,8 +55,8 @@ public final class MediaStreamingStatusDetails extends ExpandableStringEnum<Medi
     public static final MediaStreamingStatusDetails SERVICE_TIMEOUT = fromString("serviceTimeout");
 
     /** Static value initialWebSocketConnectionFailed for MediaStreamingStatusDetails. */
-    public static final MediaStreamingStatusDetails INITIAL_WEB_SOCKET_CONNECTION_FAILED =
-            fromString("initialWebSocketConnectionFailed");
+    public static final MediaStreamingStatusDetails INITIAL_WEB_SOCKET_CONNECTION_FAILED
+        = fromString("initialWebSocketConnectionFailed");
 
     /**
      * Creates or finds a MediaStreamingStatusDetails from its string representation.

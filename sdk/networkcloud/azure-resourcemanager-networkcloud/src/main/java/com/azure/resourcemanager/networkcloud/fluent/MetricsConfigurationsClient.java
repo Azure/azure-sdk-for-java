@@ -47,8 +47,8 @@ public interface MetricsConfigurationsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ClusterMetricsConfigurationInner> listByCluster(
-        String resourceGroupName, String clusterName, Context context);
+    PagedIterable<ClusterMetricsConfigurationInner> listByCluster(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Retrieve the metrics configuration of the cluster.
@@ -65,8 +65,8 @@ public interface MetricsConfigurationsClient {
      * @return metrics configuration of the provided cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterMetricsConfigurationInner> getWithResponse(
-        String resourceGroupName, String clusterName, String metricsConfigurationName, Context context);
+    Response<ClusterMetricsConfigurationInner> getWithResponse(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, Context context);
 
     /**
      * Retrieve the metrics configuration of the cluster.
@@ -101,9 +101,7 @@ public interface MetricsConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String metricsConfigurationName,
+        String resourceGroupName, String clusterName, String metricsConfigurationName,
         ClusterMetricsConfigurationInner metricsConfigurationParameters);
 
     /**
@@ -124,11 +122,8 @@ public interface MetricsConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String metricsConfigurationName,
-        ClusterMetricsConfigurationInner metricsConfigurationParameters,
-        Context context);
+        String resourceGroupName, String clusterName, String metricsConfigurationName,
+        ClusterMetricsConfigurationInner metricsConfigurationParameters, Context context);
 
     /**
      * Create or update metrics configuration of the cluster.
@@ -145,11 +140,8 @@ public interface MetricsConfigurationsClient {
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterMetricsConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String metricsConfigurationName,
-        ClusterMetricsConfigurationInner metricsConfigurationParameters);
+    ClusterMetricsConfigurationInner createOrUpdate(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, ClusterMetricsConfigurationInner metricsConfigurationParameters);
 
     /**
      * Create or update metrics configuration of the cluster.
@@ -167,11 +159,8 @@ public interface MetricsConfigurationsClient {
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterMetricsConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String metricsConfigurationName,
-        ClusterMetricsConfigurationInner metricsConfigurationParameters,
+    ClusterMetricsConfigurationInner createOrUpdate(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, ClusterMetricsConfigurationInner metricsConfigurationParameters,
         Context context);
 
     /**
@@ -188,8 +177,8 @@ public interface MetricsConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String metricsConfigurationName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String metricsConfigurationName);
 
     /**
      * Delete the metrics configuration of the cluster.
@@ -206,8 +195,8 @@ public interface MetricsConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String metricsConfigurationName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String metricsConfigurationName, Context context);
 
     /**
      * Delete the metrics configuration of the cluster.
@@ -256,8 +245,8 @@ public interface MetricsConfigurationsClient {
      *     an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginUpdate(
-        String resourceGroupName, String clusterName, String metricsConfigurationName);
+    SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner>
+        beginUpdate(String resourceGroupName, String clusterName, String metricsConfigurationName);
 
     /**
      * Patch metrics configuration of the cluster.
@@ -278,11 +267,8 @@ public interface MetricsConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ClusterMetricsConfigurationInner>, ClusterMetricsConfigurationInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String metricsConfigurationName,
-        ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters,
-        Context context);
+        String resourceGroupName, String clusterName, String metricsConfigurationName,
+        ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters, Context context);
 
     /**
      * Patch metrics configuration of the cluster.
@@ -299,8 +285,8 @@ public interface MetricsConfigurationsClient {
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterMetricsConfigurationInner update(
-        String resourceGroupName, String clusterName, String metricsConfigurationName);
+    ClusterMetricsConfigurationInner update(String resourceGroupName, String clusterName,
+        String metricsConfigurationName);
 
     /**
      * Patch metrics configuration of the cluster.
@@ -319,10 +305,7 @@ public interface MetricsConfigurationsClient {
      * @return clusterMetricsConfiguration represents the metrics configuration of an on-premises Network Cloud cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ClusterMetricsConfigurationInner update(
-        String resourceGroupName,
-        String clusterName,
+    ClusterMetricsConfigurationInner update(String resourceGroupName, String clusterName,
         String metricsConfigurationName,
-        ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters,
-        Context context);
+        ClusterMetricsConfigurationPatchParameters metricsConfigurationUpdateParameters, Context context);
 }

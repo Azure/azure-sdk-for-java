@@ -131,22 +131,16 @@ public class RolloutRequestProperties {
      */
     public void validate() {
         if (buildVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property buildVersion in model RolloutRequestProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property buildVersion in model RolloutRequestProperties"));
         }
         if (targetServiceTopologyId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetServiceTopologyId in model RolloutRequestProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetServiceTopologyId in model RolloutRequestProperties"));
         }
         if (stepGroups() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property stepGroups in model RolloutRequestProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property stepGroups in model RolloutRequestProperties"));
         } else {
             stepGroups().forEach(e -> e.validate());
         }

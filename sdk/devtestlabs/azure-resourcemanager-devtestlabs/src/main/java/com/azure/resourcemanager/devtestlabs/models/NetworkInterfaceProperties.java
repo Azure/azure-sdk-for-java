@@ -250,8 +250,8 @@ public final class NetworkInterfaceProperties {
      * @param sharedPublicIpAddressConfiguration the sharedPublicIpAddressConfiguration value to set.
      * @return the NetworkInterfaceProperties object itself.
      */
-    public NetworkInterfaceProperties withSharedPublicIpAddressConfiguration(
-        SharedPublicIpAddressConfiguration sharedPublicIpAddressConfiguration) {
+    public NetworkInterfaceProperties
+        withSharedPublicIpAddressConfiguration(SharedPublicIpAddressConfiguration sharedPublicIpAddressConfiguration) {
         this.sharedPublicIpAddressConfiguration = sharedPublicIpAddressConfiguration;
         return this;
     }

@@ -42,12 +42,12 @@ public final class MediaStreamingStarted extends CallAutomationEventBase {
         return this.resultInformation;
     }
 
-     /**
-     * Get the mediaStreamingUpdateResult property: Defines the result for audio streaming update with the current status
-     * and the details about the status.
-     *
-     * @return the mediaStreamingUpdateResult value.
-     */
+    /**
+    * Get the mediaStreamingUpdateResult property: Defines the result for audio streaming update with the current status
+    * and the details about the status.
+    *
+    * @return the mediaStreamingUpdateResult value.
+    */
     public MediaStreamingUpdate getMediaStreamingUpdateResult() {
         return this.mediaStreamingUpdateResult;
     }

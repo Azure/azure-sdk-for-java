@@ -14,8 +14,8 @@ public final class AvailableRpOperationImpl implements AvailableRpOperation {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    AvailableRpOperationImpl(
-        AvailableRpOperationInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    AvailableRpOperationImpl(AvailableRpOperationInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

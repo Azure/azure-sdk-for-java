@@ -23,18 +23,17 @@ public class SnapshotsImpl
     }
 
     @Override
-    public Mono<String> grantAccessAsync(
-        String resourceGroupName, String snapshotName, AccessLevel accessLevel, int accessDuration) {
+    public Mono<String> grantAccessAsync(String resourceGroupName, String snapshotName, AccessLevel accessLevel,
+        int accessDuration) {
         GrantAccessData grantAccessDataInner = new GrantAccessData();
         grantAccessDataInner.withAccess(accessLevel).withDurationInSeconds(accessDuration);
-        return inner()
-            .grantAccessAsync(resourceGroupName, snapshotName, grantAccessDataInner)
+        return inner().grantAccessAsync(resourceGroupName, snapshotName, grantAccessDataInner)
             .map(accessUriInner -> accessUriInner.accessSas());
     }
 
     @Override
-    public String grantAccess(
-        String resourceGroupName, String snapshotName, AccessLevel accessLevel, int accessDuration) {
+    public String grantAccess(String resourceGroupName, String snapshotName, AccessLevel accessLevel,
+        int accessDuration) {
         return this.grantAccessAsync(resourceGroupName, snapshotName, accessLevel, accessDuration).block();
     }
 

@@ -39,8 +39,8 @@ public interface AgentPools {
      * @return a list of agent pools for the provided Kubernetes cluster as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<AgentPool> listByKubernetesCluster(
-        String resourceGroupName, String kubernetesClusterName, Context context);
+    PagedIterable<AgentPool> listByKubernetesCluster(String resourceGroupName, String kubernetesClusterName,
+        Context context);
 
     /**
      * Retrieve the Kubernetes cluster agent pool.
@@ -56,8 +56,8 @@ public interface AgentPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided Kubernetes cluster agent pool along with {@link Response}.
      */
-    Response<AgentPool> getWithResponse(
-        String resourceGroupName, String kubernetesClusterName, String agentPoolName, Context context);
+    Response<AgentPool> getWithResponse(String resourceGroupName, String kubernetesClusterName, String agentPoolName,
+        Context context);
 
     /**
      * Retrieve the Kubernetes cluster agent pool.

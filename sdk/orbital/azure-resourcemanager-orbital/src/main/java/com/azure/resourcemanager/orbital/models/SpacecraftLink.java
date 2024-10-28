@@ -168,19 +168,16 @@ public final class SpacecraftLink {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model SpacecraftLink"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model SpacecraftLink"));
         }
         if (direction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property direction in model SpacecraftLink"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property direction in model SpacecraftLink"));
         }
         if (polarization() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property polarization in model SpacecraftLink"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property polarization in model SpacecraftLink"));
         }
         if (authorizations() != null) {
             authorizations().forEach(e -> e.validate());

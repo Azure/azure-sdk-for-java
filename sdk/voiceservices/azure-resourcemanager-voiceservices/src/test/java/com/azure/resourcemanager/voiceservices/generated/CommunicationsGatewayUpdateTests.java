@@ -13,17 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class CommunicationsGatewayUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommunicationsGatewayUpdate model =
-            BinaryData
-                .fromString("{\"tags\":{\"vamih\":\"odepoogin\",\"vyevcciqi\":\"ognarxzxtheotus\"}}")
+        CommunicationsGatewayUpdate model
+            = BinaryData.fromString("{\"tags\":{\"vamih\":\"odepoogin\",\"vyevcciqi\":\"ognarxzxtheotus\"}}")
                 .toObject(CommunicationsGatewayUpdate.class);
         Assertions.assertEquals("odepoogin", model.tags().get("vamih"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommunicationsGatewayUpdate model =
-            new CommunicationsGatewayUpdate().withTags(mapOf("vamih", "odepoogin", "vyevcciqi", "ognarxzxtheotus"));
+        CommunicationsGatewayUpdate model
+            = new CommunicationsGatewayUpdate().withTags(mapOf("vamih", "odepoogin", "vyevcciqi", "ognarxzxtheotus"));
         model = BinaryData.fromObject(model).toObject(CommunicationsGatewayUpdate.class);
         Assertions.assertEquals("odepoogin", model.tags().get("vamih"));
     }

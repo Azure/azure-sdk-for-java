@@ -45,12 +45,16 @@ public final class WorkspacesCreateOrUpdateWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Workspace response = manager.workspaces().define("ntorzihleosjswsr").withExistingService("n", "jphuopxodlqi")
-            .withProperties(new WorkspaceProperties().withTitle("lyzrpzbchckqqzqi").withDescription("iysui")).create();
+        Workspace response = manager.workspaces()
+            .define("ntorzihleosjswsr")
+            .withExistingService("n", "jphuopxodlqi")
+            .withProperties(new WorkspaceProperties().withTitle("lyzrpzbchckqqzqi").withDescription("iysui"))
+            .create();
 
         Assertions.assertEquals("sorgj", response.properties().title());
         Assertions.assertEquals("bldtlww", response.properties().description());

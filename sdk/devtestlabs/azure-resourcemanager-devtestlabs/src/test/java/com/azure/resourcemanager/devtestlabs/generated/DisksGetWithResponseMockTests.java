@@ -31,41 +31,29 @@ public final class DisksGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"diskType\":\"StandardSSD\",\"diskSizeGiB\":157710243,\"leasedByLabVmId\":\"dnpxpkcdpr\",\"diskBlobName\":\"xelyicghflr\",\"diskUri\":\"ssjyghsfx\",\"storageAccountId\":\"bh\",\"createdDate\":\"2021-06-24T15:14:48Z\",\"hostCaching\":\"mqfmefgvqcpd\",\"managedDiskId\":\"gquxweysland\",\"provisioningState\":\"cdjhunhg\",\"uniqueIdentifier\":\"gawnrrnquo\"},\"location\":\"sotirei\",\"tags\":{\"ilbvzmmxcjzl\":\"obfsxstc\",\"abwmvogljsv\":\"uzexokjxebjvbzin\",\"ehaqidoyzltgio\":\"pgidnw\",\"sergdtpe\":\"qoqpepiaeap\"},\"id\":\"nacyheqwb\",\"name\":\"qq\",\"type\":\"cjubkhjozfymcwm\"}";
+        String responseStr
+            = "{\"properties\":{\"diskType\":\"StandardSSD\",\"diskSizeGiB\":157710243,\"leasedByLabVmId\":\"dnpxpkcdpr\",\"diskBlobName\":\"xelyicghflr\",\"diskUri\":\"ssjyghsfx\",\"storageAccountId\":\"bh\",\"createdDate\":\"2021-06-24T15:14:48Z\",\"hostCaching\":\"mqfmefgvqcpd\",\"managedDiskId\":\"gquxweysland\",\"provisioningState\":\"cdjhunhg\",\"uniqueIdentifier\":\"gawnrrnquo\"},\"location\":\"sotirei\",\"tags\":{\"ilbvzmmxcjzl\":\"obfsxstc\",\"abwmvogljsv\":\"uzexokjxebjvbzin\",\"ehaqidoyzltgio\":\"pgidnw\",\"sergdtpe\":\"qoqpepiaeap\"},\"id\":\"nacyheqwb\",\"name\":\"qq\",\"type\":\"cjubkhjozfymcwm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Disk response =
-            manager
-                .disks()
-                .getWithResponse(
-                    "tzamicbig", "cdgzseznux", "euairaabmdlqjb", "dp", "ixlhupm", com.azure.core.util.Context.NONE)
-                .getValue();
+        Disk response = manager.disks()
+            .getWithResponse("tzamicbig", "cdgzseznux", "euairaabmdlqjb", "dp", "ixlhupm",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("sotirei", response.location());
         Assertions.assertEquals("obfsxstc", response.tags().get("ilbvzmmxcjzl"));

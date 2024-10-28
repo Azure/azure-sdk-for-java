@@ -21,16 +21,9 @@ import reactor.core.publisher.Mono;
 /** Entry point to managed disk management API in Azure. */
 @Fluent
 public interface Disks
-    extends SupportsCreating<Disk.DefinitionStages.Blank>,
-        SupportsListing<Disk>,
-        SupportsListingByResourceGroup<Disk>,
-        SupportsGettingByResourceGroup<Disk>,
-        SupportsGettingById<Disk>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<Disk>,
-        SupportsBatchDeletion,
-        HasManager<ComputeManager> {
+    extends SupportsCreating<Disk.DefinitionStages.Blank>, SupportsListing<Disk>, SupportsListingByResourceGroup<Disk>,
+    SupportsGettingByResourceGroup<Disk>, SupportsGettingById<Disk>, SupportsDeletingById,
+    SupportsDeletingByResourceGroup, SupportsBatchCreation<Disk>, SupportsBatchDeletion, HasManager<ComputeManager> {
 
     /**
      * Grants access to a disk.
@@ -52,8 +45,8 @@ public interface Disks
      * @param accessDuration access duration
      * @return a representation of the deferred computation of this call returning a read-only SAS URI to the disk
      */
-    Mono<String> grantAccessAsync(
-        String resourceGroupName, String diskName, AccessLevel accessLevel, int accessDuration);
+    Mono<String> grantAccessAsync(String resourceGroupName, String diskName, AccessLevel accessLevel,
+        int accessDuration);
 
     /**
      * Revoke access granted to a disk.

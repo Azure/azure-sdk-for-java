@@ -34,8 +34,8 @@ public interface BenefitUtilizationSummaries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BenefitUtilizationSummary> listByBillingAccountId(
-        String billingAccountId, GrainParameter grainParameter, String filter, Context context);
+    PagedIterable<BenefitUtilizationSummary> listByBillingAccountId(String billingAccountId,
+        GrainParameter grainParameter, String filter, Context context);
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
@@ -62,12 +62,8 @@ public interface BenefitUtilizationSummaries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BenefitUtilizationSummary> listByBillingProfileId(
-        String billingAccountId,
-        String billingProfileId,
-        GrainParameter grainParameter,
-        String filter,
-        Context context);
+    PagedIterable<BenefitUtilizationSummary> listByBillingProfileId(String billingAccountId, String billingProfileId,
+        GrainParameter grainParameter, String filter, Context context);
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
@@ -92,8 +88,8 @@ public interface BenefitUtilizationSummaries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BenefitUtilizationSummary> listBySavingsPlanOrder(
-        String savingsPlanOrderId, String filter, GrainParameter grainParameter, Context context);
+    PagedIterable<BenefitUtilizationSummary> listBySavingsPlanOrder(String savingsPlanOrderId, String filter,
+        GrainParameter grainParameter, Context context);
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
@@ -120,6 +116,6 @@ public interface BenefitUtilizationSummaries {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of benefit utilization summaries as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BenefitUtilizationSummary> listBySavingsPlanId(
-        String savingsPlanOrderId, String savingsPlanId, String filter, GrainParameter grainParameter, Context context);
+    PagedIterable<BenefitUtilizationSummary> listBySavingsPlanId(String savingsPlanOrderId, String savingsPlanId,
+        String filter, GrainParameter grainParameter, Context context);
 }

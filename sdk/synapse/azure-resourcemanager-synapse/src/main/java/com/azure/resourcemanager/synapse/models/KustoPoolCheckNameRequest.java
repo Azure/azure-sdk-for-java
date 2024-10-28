@@ -75,9 +75,8 @@ public final class KustoPoolCheckNameRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model KustoPoolCheckNameRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model KustoPoolCheckNameRequest"));
         }
     }
 

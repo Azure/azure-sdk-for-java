@@ -20,8 +20,8 @@ public interface PortalSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return descriptions of API Management policies along with {@link Response}.
      */
-    Response<PortalSettingsCollection> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<PortalSettingsCollection> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Lists a collection of portalsettings defined within a service instance..

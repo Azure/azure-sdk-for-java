@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ParametersValueFileInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ParametersValueFileInfo model =
-            BinaryData
-                .fromString("{\"fileName\":\"ruoujmk\",\"parametersValueInfo\":\"datahwqytj\"}")
+        ParametersValueFileInfo model
+            = BinaryData.fromString("{\"fileName\":\"ruoujmk\",\"parametersValueInfo\":\"datahwqytj\"}")
                 .toObject(ParametersValueFileInfo.class);
         Assertions.assertEquals("ruoujmk", model.fileName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParametersValueFileInfo model =
-            new ParametersValueFileInfo().withFileName("ruoujmk").withParametersValueInfo("datahwqytj");
+        ParametersValueFileInfo model
+            = new ParametersValueFileInfo().withFileName("ruoujmk").withParametersValueInfo("datahwqytj");
         model = BinaryData.fromObject(model).toObject(ParametersValueFileInfo.class);
         Assertions.assertEquals("ruoujmk", model.fileName());
     }

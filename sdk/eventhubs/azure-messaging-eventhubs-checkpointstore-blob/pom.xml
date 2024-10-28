@@ -43,6 +43,7 @@
 
       --add-reads com.azure.messaging.eventhubs=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

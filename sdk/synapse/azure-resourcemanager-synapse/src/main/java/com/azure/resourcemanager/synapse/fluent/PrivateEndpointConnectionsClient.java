@@ -29,8 +29,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Gets a private endpoint connection.
@@ -44,8 +44,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionInner get(String resourceGroupName, String workspaceName,
+        String privateEndpointConnectionName);
 
     /**
      * Approve or reject a private endpoint connection.
@@ -61,9 +61,7 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String privateEndpointConnectionName,
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner request);
 
     /**
@@ -81,11 +79,8 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner request,
-        Context context);
+        String resourceGroupName, String workspaceName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner request, Context context);
 
     /**
      * Approve or reject a private endpoint connection.
@@ -100,11 +95,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner request);
+    PrivateEndpointConnectionInner create(String resourceGroupName, String workspaceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner request);
 
     /**
      * Approve or reject a private endpoint connection.
@@ -120,12 +112,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner request,
-        Context context);
+    PrivateEndpointConnectionInner create(String resourceGroupName, String workspaceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner request, Context context);
 
     /**
      * Delete a private endpoint connection.
@@ -139,8 +127,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationResourceInner>, OperationResourceInner> beginDelete(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName);
+    SyncPoller<PollResult<OperationResourceInner>, OperationResourceInner> beginDelete(String resourceGroupName,
+        String workspaceName, String privateEndpointConnectionName);
 
     /**
      * Delete a private endpoint connection.
@@ -155,8 +143,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationResourceInner>, OperationResourceInner> beginDelete(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context);
+    SyncPoller<PollResult<OperationResourceInner>, OperationResourceInner> beginDelete(String resourceGroupName,
+        String workspaceName, String privateEndpointConnectionName, Context context);
 
     /**
      * Delete a private endpoint connection.
@@ -185,8 +173,8 @@ public interface PrivateEndpointConnectionsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationResourceInner delete(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context);
+    OperationResourceInner delete(String resourceGroupName, String workspaceName, String privateEndpointConnectionName,
+        Context context);
 
     /**
      * Lists private endpoint connection in workspace.

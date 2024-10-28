@@ -111,7 +111,8 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        final CommunicationIdentifierModel identifier = CommunicationIdentifierConverter.convert(communicationIdentifier);
+        final CommunicationIdentifierModel identifier
+            = CommunicationIdentifierConverter.convert(communicationIdentifier);
         jsonWriter.writeJsonField("communicationIdentifier", identifier);
         jsonWriter.writeStringField("displayName", displayName);
         jsonWriter.writeStringField("startDateTime", shareHistoryTime.toString());
@@ -133,7 +134,8 @@ public final class ChatParticipant implements JsonSerializable<ChatParticipant> 
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("communicationIdentifier".equals(fieldName)) {
-                    final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
+                    final CommunicationIdentifierModel identifier
+                        = reader.readObject(CommunicationIdentifierModel::fromJson);
                     participant.communicationIdentifier = CommunicationIdentifierConverter.convert(identifier);
                 } else if ("displayName".equals(fieldName)) {
                     participant.displayName = reader.getString();

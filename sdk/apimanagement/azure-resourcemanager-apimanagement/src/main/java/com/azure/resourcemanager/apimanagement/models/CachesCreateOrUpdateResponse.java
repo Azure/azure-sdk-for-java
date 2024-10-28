@@ -20,12 +20,8 @@ public final class CachesCreateOrUpdateResponse extends ResponseBase<CachesCreat
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public CachesCreateOrUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        CacheContractInner value,
-        CachesCreateOrUpdateHeaders headers) {
+    public CachesCreateOrUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        CacheContractInner value, CachesCreateOrUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

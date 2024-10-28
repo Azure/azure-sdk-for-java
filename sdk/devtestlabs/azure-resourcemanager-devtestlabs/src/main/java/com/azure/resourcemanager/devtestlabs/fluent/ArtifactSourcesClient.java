@@ -43,14 +43,8 @@ public interface ArtifactSourcesClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ArtifactSourceInner> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<ArtifactSourceInner> list(String resourceGroupName, String labName, String expand, String filter,
+        Integer top, String orderby, Context context);
 
     /**
      * Get artifact source.
@@ -66,8 +60,8 @@ public interface ArtifactSourcesClient {
      * @return artifact source along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ArtifactSourceInner> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<ArtifactSourceInner> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context);
 
     /**
      * Get artifact source.
@@ -97,8 +91,8 @@ public interface ArtifactSourcesClient {
      * @return properties of an artifact source along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ArtifactSourceInner> createOrUpdateWithResponse(
-        String resourceGroupName, String labName, String name, ArtifactSourceInner artifactSource, Context context);
+    Response<ArtifactSourceInner> createOrUpdateWithResponse(String resourceGroupName, String labName, String name,
+        ArtifactSourceInner artifactSource, Context context);
 
     /**
      * Create or replace an existing artifact source.
@@ -113,8 +107,8 @@ public interface ArtifactSourcesClient {
      * @return properties of an artifact source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ArtifactSourceInner createOrUpdate(
-        String resourceGroupName, String labName, String name, ArtifactSourceInner artifactSource);
+    ArtifactSourceInner createOrUpdate(String resourceGroupName, String labName, String name,
+        ArtifactSourceInner artifactSource);
 
     /**
      * Delete artifact source.
@@ -158,8 +152,8 @@ public interface ArtifactSourcesClient {
      * @return properties of an artifact source along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ArtifactSourceInner> updateWithResponse(
-        String resourceGroupName, String labName, String name, ArtifactSourceFragment artifactSource, Context context);
+    Response<ArtifactSourceInner> updateWithResponse(String resourceGroupName, String labName, String name,
+        ArtifactSourceFragment artifactSource, Context context);
 
     /**
      * Allows modifying tags of artifact sources. All other properties will be ignored.
@@ -174,6 +168,6 @@ public interface ArtifactSourcesClient {
      * @return properties of an artifact source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ArtifactSourceInner update(
-        String resourceGroupName, String labName, String name, ArtifactSourceFragment artifactSource);
+    ArtifactSourceInner update(String resourceGroupName, String labName, String name,
+        ArtifactSourceFragment artifactSource);
 }

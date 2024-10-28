@@ -35,52 +35,37 @@ public final class NotificationChannelsCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"webHookUrl\":\"nqjilaywk\",\"emailRecipient\":\"wm\",\"notificationLocale\":\"yrilmhxdqaolf\",\"description\":\"nkkbjpjvlywltmfw\",\"events\":[{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"Cost\"},{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"AutoShutdown\"}],\"createdDate\":\"2020-12-28T05:44:09Z\",\"provisioningState\":\"ocrdzgczeunt\",\"uniqueIdentifier\":\"dnc\"},\"location\":\"q\",\"tags\":{\"gyrihlgm\":\"ekoifuvnyttzgi\",\"lkndrndpgfjodh\":\"behlqtxnr\"},\"id\":\"aqotwfhipxwgsabv\",\"name\":\"ipowza\",\"type\":\"czuumljcir\"}";
+        String responseStr
+            = "{\"properties\":{\"webHookUrl\":\"nqjilaywk\",\"emailRecipient\":\"wm\",\"notificationLocale\":\"yrilmhxdqaolf\",\"description\":\"nkkbjpjvlywltmfw\",\"events\":[{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"Cost\"},{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"AutoShutdown\"}],\"createdDate\":\"2020-12-28T05:44:09Z\",\"provisioningState\":\"ocrdzgczeunt\",\"uniqueIdentifier\":\"dnc\"},\"location\":\"q\",\"tags\":{\"gyrihlgm\":\"ekoifuvnyttzgi\",\"lkndrndpgfjodh\":\"behlqtxnr\"},\"id\":\"aqotwfhipxwgsabv\",\"name\":\"ipowza\",\"type\":\"czuumljcir\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NotificationChannel response =
-            manager
-                .notificationChannels()
-                .define("eamc")
-                .withRegion("hbgxvel")
-                .withExistingLab("etfgcwvrrmdqntyc", "awthvmaxgnu")
-                .withTags(mapOf("mnitmujd", "lnx", "lyymffhmjpddny", "vm", "mzjqrbr", "fzuvrzmz"))
-                .withWebhookUrl("udf")
-                .withEmailRecipient("cehokw")
-                .withNotificationLocale("qtwloes")
-                .withDescription("ggvrbnyrukoilaci")
-                .withEvents(
-                    Arrays
-                        .asList(
-                            new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN),
-                            new Event().withEventName(NotificationChannelEventType.COST)))
-                .create();
+        NotificationChannel response = manager.notificationChannels()
+            .define("eamc")
+            .withRegion("hbgxvel")
+            .withExistingLab("etfgcwvrrmdqntyc", "awthvmaxgnu")
+            .withTags(mapOf("mnitmujd", "lnx", "lyymffhmjpddny", "vm", "mzjqrbr", "fzuvrzmz"))
+            .withWebhookUrl("udf")
+            .withEmailRecipient("cehokw")
+            .withNotificationLocale("qtwloes")
+            .withDescription("ggvrbnyrukoilaci")
+            .withEvents(Arrays.asList(new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN),
+                new Event().withEventName(NotificationChannelEventType.COST)))
+            .create();
 
         Assertions.assertEquals("q", response.location());
         Assertions.assertEquals("ekoifuvnyttzgi", response.tags().get("gyrihlgm"));

@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"uuid\":\"orgguf\",\"vCenterId\":\"aomtbghhavgrvkff\",\"moRefId\":\"jzhpjbibgjmfx\",\"inventoryItemId\":\"vfcluyovwxnbkfe\",\"moName\":\"xscyhwzdgirujbz\",\"customResourceName\":\"mvzzbtdcqvp\",\"statuses\":[{\"type\":\"jviylwdshfs\",\"status\":\"rbgyefry\",\"reason\":\"gaojf\",\"message\":\"nc\",\"severity\":\"mrfhirctymox\",\"lastUpdatedAt\":\"2021-09-02T06:19:11Z\"},{\"type\":\"ipiwy\",\"status\":\"uh\",\"reason\":\"cpqjlihhyu\",\"message\":\"skasdvlmfwdgzxu\",\"severity\":\"cvpa\",\"lastUpdatedAt\":\"2021-10-14T22:40:57Z\"},{\"type\":\"euzvx\",\"status\":\"i\",\"reason\":\"nhn\",\"message\":\"xifqjzgxm\",\"severity\":\"ublwpcesutrg\",\"lastUpdatedAt\":\"2020-12-26T09:45:30Z\"},{\"type\":\"uutpwoqhih\",\"status\":\"qg\",\"reason\":\"pnfqntcyp\",\"message\":\"jv\",\"severity\":\"imwkslircizj\",\"lastUpdatedAt\":\"2021-01-01T11:30:07Z\"}],\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"type\":\"acvlhv\",\"name\":\"dyftumrtwna\"},\"kind\":\"lbiw\",\"location\":\"ojgcyzt\",\"tags\":{\"baeqphc\":\"z\",\"gaifmvik\":\"qnrnrpxehuwryk\",\"xcv\":\"bydvkhbejdz\"},\"id\":\"srhnjivo\",\"name\":\"v\",\"type\":\"novqfzge\"}")
-                .toObject(VirtualNetworkInner.class);
+        VirtualNetworkInner model = BinaryData.fromString(
+            "{\"properties\":{\"uuid\":\"orgguf\",\"vCenterId\":\"aomtbghhavgrvkff\",\"moRefId\":\"jzhpjbibgjmfx\",\"inventoryItemId\":\"vfcluyovwxnbkfe\",\"moName\":\"xscyhwzdgirujbz\",\"customResourceName\":\"mvzzbtdcqvp\",\"statuses\":[{\"type\":\"jviylwdshfs\",\"status\":\"rbgyefry\",\"reason\":\"gaojf\",\"message\":\"nc\",\"severity\":\"mrfhirctymox\",\"lastUpdatedAt\":\"2021-09-02T06:19:11Z\"},{\"type\":\"ipiwy\",\"status\":\"uh\",\"reason\":\"cpqjlihhyu\",\"message\":\"skasdvlmfwdgzxu\",\"severity\":\"cvpa\",\"lastUpdatedAt\":\"2021-10-14T22:40:57Z\"},{\"type\":\"euzvx\",\"status\":\"i\",\"reason\":\"nhn\",\"message\":\"xifqjzgxm\",\"severity\":\"ublwpcesutrg\",\"lastUpdatedAt\":\"2020-12-26T09:45:30Z\"},{\"type\":\"uutpwoqhih\",\"status\":\"qg\",\"reason\":\"pnfqntcyp\",\"message\":\"jv\",\"severity\":\"imwkslircizj\",\"lastUpdatedAt\":\"2021-01-01T11:30:07Z\"}],\"provisioningState\":\"Deleting\"},\"extendedLocation\":{\"type\":\"acvlhv\",\"name\":\"dyftumrtwna\"},\"kind\":\"lbiw\",\"location\":\"ojgcyzt\",\"tags\":{\"baeqphc\":\"z\",\"gaifmvik\":\"qnrnrpxehuwryk\",\"xcv\":\"bydvkhbejdz\"},\"id\":\"srhnjivo\",\"name\":\"v\",\"type\":\"novqfzge\"}")
+            .toObject(VirtualNetworkInner.class);
         Assertions.assertEquals("ojgcyzt", model.location());
         Assertions.assertEquals("z", model.tags().get("baeqphc"));
         Assertions.assertEquals("acvlhv", model.extendedLocation().type());
@@ -31,15 +29,13 @@ public final class VirtualNetworkInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkInner model =
-            new VirtualNetworkInner()
-                .withLocation("ojgcyzt")
-                .withTags(mapOf("baeqphc", "z", "gaifmvik", "qnrnrpxehuwryk", "xcv", "bydvkhbejdz"))
-                .withExtendedLocation(new ExtendedLocation().withType("acvlhv").withName("dyftumrtwna"))
-                .withKind("lbiw")
-                .withVCenterId("aomtbghhavgrvkff")
-                .withMoRefId("jzhpjbibgjmfx")
-                .withInventoryItemId("vfcluyovwxnbkfe");
+        VirtualNetworkInner model = new VirtualNetworkInner().withLocation("ojgcyzt")
+            .withTags(mapOf("baeqphc", "z", "gaifmvik", "qnrnrpxehuwryk", "xcv", "bydvkhbejdz"))
+            .withExtendedLocation(new ExtendedLocation().withType("acvlhv").withName("dyftumrtwna"))
+            .withKind("lbiw")
+            .withVCenterId("aomtbghhavgrvkff")
+            .withMoRefId("jzhpjbibgjmfx")
+            .withInventoryItemId("vfcluyovwxnbkfe");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkInner.class);
         Assertions.assertEquals("ojgcyzt", model.location());
         Assertions.assertEquals("z", model.tags().get("baeqphc"));

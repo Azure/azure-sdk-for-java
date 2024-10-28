@@ -21,8 +21,8 @@ public interface NotificationRegistrations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the notification registration details along with {@link Response}.
      */
-    Response<NotificationRegistration> getWithResponse(
-        String providerNamespace, String notificationRegistrationName, Context context);
+    Response<NotificationRegistration> getWithResponse(String providerNamespace, String notificationRegistrationName,
+        Context context);
 
     /**
      * Gets the notification registration details.
@@ -47,8 +47,8 @@ public interface NotificationRegistrations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteByResourceGroupWithResponse(
-        String providerNamespace, String notificationRegistrationName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String providerNamespace, String notificationRegistrationName,
+        Context context);
 
     /**
      * Deletes a notification registration.

@@ -74,10 +74,8 @@ public final class DataImportDetails {
      */
     public void validate() {
         if (accountDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property accountDetails in model DataImportDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property accountDetails in model DataImportDetails"));
         } else {
             accountDetails().validate();
         }

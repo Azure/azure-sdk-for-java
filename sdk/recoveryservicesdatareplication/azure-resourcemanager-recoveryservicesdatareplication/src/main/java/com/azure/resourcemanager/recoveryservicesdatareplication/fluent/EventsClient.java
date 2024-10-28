@@ -28,8 +28,8 @@ public interface EventsClient {
      * @return the details of the event along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventModelInner> getWithResponse(
-        String resourceGroupName, String vaultName, String eventName, Context context);
+    Response<EventModelInner> getWithResponse(String resourceGroupName, String vaultName, String eventName,
+        Context context);
 
     /**
      * Gets the event.
@@ -78,6 +78,6 @@ public interface EventsClient {
      * @return the list of events in the given vault as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EventModelInner> list(
-        String resourceGroupName, String vaultName, String filter, String continuationToken, Context context);
+    PagedIterable<EventModelInner> list(String resourceGroupName, String vaultName, String filter,
+        String continuationToken, Context context);
 }

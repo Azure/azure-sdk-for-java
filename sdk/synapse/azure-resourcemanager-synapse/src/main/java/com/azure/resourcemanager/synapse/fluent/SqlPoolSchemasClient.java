@@ -45,8 +45,8 @@ public interface SqlPoolSchemasClient {
      * @return schemas of a given SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlPoolSchemaInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter, Context context);
+    PagedIterable<SqlPoolSchemaInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String filter, Context context);
 
     /**
      * Get Sql Pool schema.
@@ -62,8 +62,8 @@ public interface SqlPoolSchemasClient {
      * @return sql Pool schema along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlPoolSchemaInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, Context context);
+    Response<SqlPoolSchemaInner> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, Context context);
 
     /**
      * Get Sql Pool schema.

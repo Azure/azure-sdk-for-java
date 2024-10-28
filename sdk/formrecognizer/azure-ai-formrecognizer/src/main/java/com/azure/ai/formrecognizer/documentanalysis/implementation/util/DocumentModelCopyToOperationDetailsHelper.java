@@ -21,7 +21,8 @@ public final class DocumentModelCopyToOperationDetailsHelper {
      *
      * @param addressValueAccessor The accessor.
      */
-    public static void setAccessor(final DocumentModelCopyToOperationDetailsHelper.DocumentModelCopyToOperationDetailsAccessor addressValueAccessor) {
+    public static void setAccessor(
+        final DocumentModelCopyToOperationDetailsHelper.DocumentModelCopyToOperationDetailsAccessor addressValueAccessor) {
         accessor = addressValueAccessor;
     }
 

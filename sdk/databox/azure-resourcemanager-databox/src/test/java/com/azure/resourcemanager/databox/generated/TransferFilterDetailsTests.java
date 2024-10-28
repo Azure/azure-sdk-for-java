@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TransferFilterDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TransferFilterDetails model =
-            BinaryData
-                .fromString(
-                    "{\"dataAccountType\":\"ManagedDisk\",\"blobFilterDetails\":{\"blobPrefixList\":[\"ftutqxlngxlefgu\",\"nxkrx\",\"qmi\",\"tthzrvqd\"],\"blobPathList\":[\"hjybigehoqfbo\"],\"containerList\":[\"anyktzlcuiywg\",\"ywgndrv\",\"nhzgpphrcgyn\",\"ocpecfvmmco\"]},\"azureFileFilterDetails\":{\"filePrefixList\":[\"lzevgbmqjqab\",\"y\",\"mivkwlzuvcc\",\"wnfnbacf\"],\"filePathList\":[\"l\",\"bxetqgtzxdpn\",\"bqqwxrj\",\"eallnwsubisnj\"],\"fileShareList\":[\"mngnzscxaqw\"]},\"filterFileDetails\":[{\"filterFileType\":\"AzureFile\",\"filterFilePath\":\"cbonqvpk\"},{\"filterFileType\":\"AzureFile\",\"filterFilePath\":\"rxnjeaseipheofl\"},{\"filterFileType\":\"AzureBlob\",\"filterFilePath\":\"eyy\"},{\"filterFileType\":\"AzureFile\",\"filterFilePath\":\"nj\"}]}")
-                .toObject(TransferFilterDetails.class);
+        TransferFilterDetails model = BinaryData.fromString(
+            "{\"dataAccountType\":\"ManagedDisk\",\"blobFilterDetails\":{\"blobPrefixList\":[\"ftutqxlngxlefgu\",\"nxkrx\",\"qmi\",\"tthzrvqd\"],\"blobPathList\":[\"hjybigehoqfbo\"],\"containerList\":[\"anyktzlcuiywg\",\"ywgndrv\",\"nhzgpphrcgyn\",\"ocpecfvmmco\"]},\"azureFileFilterDetails\":{\"filePrefixList\":[\"lzevgbmqjqab\",\"y\",\"mivkwlzuvcc\",\"wnfnbacf\"],\"filePathList\":[\"l\",\"bxetqgtzxdpn\",\"bqqwxrj\",\"eallnwsubisnj\"],\"fileShareList\":[\"mngnzscxaqw\"]},\"filterFileDetails\":[{\"filterFileType\":\"AzureFile\",\"filterFilePath\":\"cbonqvpk\"},{\"filterFileType\":\"AzureFile\",\"filterFilePath\":\"rxnjeaseipheofl\"},{\"filterFileType\":\"AzureBlob\",\"filterFilePath\":\"eyy\"},{\"filterFileType\":\"AzureFile\",\"filterFilePath\":\"nj\"}]}")
+            .toObject(TransferFilterDetails.class);
         Assertions.assertEquals(DataAccountType.MANAGED_DISK, model.dataAccountType());
         Assertions.assertEquals("ftutqxlngxlefgu", model.blobFilterDetails().blobPrefixList().get(0));
         Assertions.assertEquals("hjybigehoqfbo", model.blobFilterDetails().blobPathList().get(0));
@@ -35,34 +33,23 @@ public final class TransferFilterDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransferFilterDetails model =
-            new TransferFilterDetails()
-                .withDataAccountType(DataAccountType.MANAGED_DISK)
-                .withBlobFilterDetails(
-                    new BlobFilterDetails()
-                        .withBlobPrefixList(Arrays.asList("ftutqxlngxlefgu", "nxkrx", "qmi", "tthzrvqd"))
-                        .withBlobPathList(Arrays.asList("hjybigehoqfbo"))
-                        .withContainerList(Arrays.asList("anyktzlcuiywg", "ywgndrv", "nhzgpphrcgyn", "ocpecfvmmco")))
-                .withAzureFileFilterDetails(
-                    new AzureFileFilterDetails()
-                        .withFilePrefixList(Arrays.asList("lzevgbmqjqab", "y", "mivkwlzuvcc", "wnfnbacf"))
-                        .withFilePathList(Arrays.asList("l", "bxetqgtzxdpn", "bqqwxrj", "eallnwsubisnj"))
-                        .withFileShareList(Arrays.asList("mngnzscxaqw")))
-                .withFilterFileDetails(
-                    Arrays
-                        .asList(
-                            new FilterFileDetails()
-                                .withFilterFileType(FilterFileType.AZURE_FILE)
-                                .withFilterFilePath("cbonqvpk"),
-                            new FilterFileDetails()
-                                .withFilterFileType(FilterFileType.AZURE_FILE)
-                                .withFilterFilePath("rxnjeaseipheofl"),
-                            new FilterFileDetails()
-                                .withFilterFileType(FilterFileType.AZURE_BLOB)
-                                .withFilterFilePath("eyy"),
-                            new FilterFileDetails()
-                                .withFilterFileType(FilterFileType.AZURE_FILE)
-                                .withFilterFilePath("nj")));
+        TransferFilterDetails model
+            = new TransferFilterDetails().withDataAccountType(DataAccountType.MANAGED_DISK)
+                .withBlobFilterDetails(new BlobFilterDetails()
+                    .withBlobPrefixList(Arrays.asList("ftutqxlngxlefgu", "nxkrx", "qmi", "tthzrvqd"))
+                    .withBlobPathList(Arrays.asList("hjybigehoqfbo"))
+                    .withContainerList(Arrays.asList("anyktzlcuiywg", "ywgndrv", "nhzgpphrcgyn", "ocpecfvmmco")))
+                .withAzureFileFilterDetails(new AzureFileFilterDetails()
+                    .withFilePrefixList(Arrays.asList("lzevgbmqjqab", "y", "mivkwlzuvcc", "wnfnbacf"))
+                    .withFilePathList(Arrays.asList("l", "bxetqgtzxdpn", "bqqwxrj", "eallnwsubisnj"))
+                    .withFileShareList(Arrays.asList("mngnzscxaqw")))
+                .withFilterFileDetails(Arrays.asList(
+                    new FilterFileDetails().withFilterFileType(FilterFileType.AZURE_FILE)
+                        .withFilterFilePath("cbonqvpk"),
+                    new FilterFileDetails().withFilterFileType(FilterFileType.AZURE_FILE)
+                        .withFilterFilePath("rxnjeaseipheofl"),
+                    new FilterFileDetails().withFilterFileType(FilterFileType.AZURE_BLOB).withFilterFilePath("eyy"),
+                    new FilterFileDetails().withFilterFileType(FilterFileType.AZURE_FILE).withFilterFilePath("nj")));
         model = BinaryData.fromObject(model).toObject(TransferFilterDetails.class);
         Assertions.assertEquals(DataAccountType.MANAGED_DISK, model.dataAccountType());
         Assertions.assertEquals("ftutqxlngxlefgu", model.blobFilterDetails().blobPrefixList().get(0));

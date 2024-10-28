@@ -78,8 +78,8 @@ public interface KubernetesClusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the provided the Kubernetes cluster along with {@link Response}.
      */
-    Response<KubernetesCluster> getByResourceGroupWithResponse(
-        String resourceGroupName, String kubernetesClusterName, Context context);
+    Response<KubernetesCluster> getByResourceGroupWithResponse(String resourceGroupName, String kubernetesClusterName,
+        Context context);
 
     /**
      * Retrieve the Kubernetes cluster.
@@ -135,9 +135,7 @@ public interface KubernetesClusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult restartNode(
-        String resourceGroupName,
-        String kubernetesClusterName,
+    OperationStatusResult restartNode(String resourceGroupName, String kubernetesClusterName,
         KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters);
 
     /**
@@ -154,11 +152,8 @@ public interface KubernetesClusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult restartNode(
-        String resourceGroupName,
-        String kubernetesClusterName,
-        KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters,
-        Context context);
+    OperationStatusResult restartNode(String resourceGroupName, String kubernetesClusterName,
+        KubernetesClusterRestartNodeParameters kubernetesClusterRestartNodeParameters, Context context);
 
     /**
      * Retrieve the Kubernetes cluster.

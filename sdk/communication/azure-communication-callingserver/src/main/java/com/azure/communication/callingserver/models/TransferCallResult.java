@@ -18,8 +18,8 @@ public final class TransferCallResult {
     private final String operationContext;
 
     static {
-        TransferCallResponseConstructorProxy.setAccessor(
-            new TransferCallResponseConstructorProxy.TransferCallResponseConstructorAccessor() {
+        TransferCallResponseConstructorProxy
+            .setAccessor(new TransferCallResponseConstructorProxy.TransferCallResponseConstructorAccessor() {
                 @Override
                 public TransferCallResult create(TransferCallResponseInternal internalHeaders) {
                     return new TransferCallResult(internalHeaders);

@@ -46,15 +46,8 @@ public interface ArtifactsClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ArtifactInner> list(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<ArtifactInner> list(String resourceGroupName, String labName, String artifactSourceName,
+        String expand, String filter, Integer top, String orderby, Context context);
 
     /**
      * Get artifact.
@@ -71,13 +64,8 @@ public interface ArtifactsClient {
      * @return artifact along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ArtifactInner> getWithResponse(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        String expand,
-        Context context);
+    Response<ArtifactInner> getWithResponse(String resourceGroupName, String labName, String artifactSourceName,
+        String name, String expand, Context context);
 
     /**
      * Get artifact.
@@ -110,13 +98,8 @@ public interface ArtifactsClient {
      * @return information about a generated ARM template along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ArmTemplateInfoInner> generateArmTemplateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        GenerateArmTemplateRequest generateArmTemplateRequest,
-        Context context);
+    Response<ArmTemplateInfoInner> generateArmTemplateWithResponse(String resourceGroupName, String labName,
+        String artifactSourceName, String name, GenerateArmTemplateRequest generateArmTemplateRequest, Context context);
 
     /**
      * Generates an ARM template for the given artifact, uploads the required files to a storage account, and validates
@@ -133,10 +116,6 @@ public interface ArtifactsClient {
      * @return information about a generated ARM template.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ArmTemplateInfoInner generateArmTemplate(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        GenerateArmTemplateRequest generateArmTemplateRequest);
+    ArmTemplateInfoInner generateArmTemplate(String resourceGroupName, String labName, String artifactSourceName,
+        String name, GenerateArmTemplateRequest generateArmTemplateRequest);
 }

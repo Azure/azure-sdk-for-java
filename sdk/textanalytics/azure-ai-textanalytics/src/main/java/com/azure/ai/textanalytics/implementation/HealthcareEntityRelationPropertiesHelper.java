@@ -14,7 +14,8 @@ import com.azure.core.util.IterableStream;
 public final class HealthcareEntityRelationPropertiesHelper {
     private static HealthcareEntityRelationAccessor accessor;
 
-    private HealthcareEntityRelationPropertiesHelper() { }
+    private HealthcareEntityRelationPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link HealthcareEntityRelation} instance.
@@ -22,8 +23,10 @@ public final class HealthcareEntityRelationPropertiesHelper {
     public interface HealthcareEntityRelationAccessor {
         void setRelationType(HealthcareEntityRelation healthcareEntityRelation,
             HealthcareEntityRelationType relationType);
+
         void setRoles(HealthcareEntityRelation healthcareEntityRelation,
             IterableStream<HealthcareEntityRelationRole> roles);
+
         void setConfidenceScore(HealthcareEntityRelation healthcareEntityRelation, double confidenceScore);
     }
 

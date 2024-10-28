@@ -42,10 +42,9 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
         this.sessionLink = session.getLink();
         this.hasIdleTimeout = sessionIdleTimeout != null;
         if (hasIdleTimeout) {
-            this.disposables.add(Flux.switchOnNext(idleTimerProcessor.map(__ -> Mono.delay(sessionIdleTimeout)))
-                .subscribe(v -> {
-                    withLinkInfo(logger.atInfo())
-                        .addKeyValue("timeout", sessionIdleTimeout)
+            this.disposables
+                .add(Flux.switchOnNext(idleTimerProcessor.map(__ -> Mono.delay(sessionIdleTimeout))).subscribe(v -> {
+                    withLinkInfo(logger.atInfo()).addKeyValue("timeout", sessionIdleTimeout)
                         .log("Did not a receive message within timeout.");
                     idleTimeoutSink.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST);
                 }));
@@ -85,20 +84,18 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
         } else {
             endpointStates = sessionLink.getEndpointStates();
         }
-        return endpointStates
-            .onErrorResume(e -> {
-                withLinkInfo(logger.atWarning()).log("Error occurred. Ending session {}.", sessionId, e);
-                return Mono.empty();
-            });
+        return endpointStates.onErrorResume(e -> {
+            withLinkInfo(logger.atWarning()).log("Error occurred. Ending session {}.", sessionId, e);
+            return Mono.empty();
+        });
     }
 
     @Override
     public Flux<Message> receive() {
         if (hasIdleTimeout) {
-            return sessionLink.receive()
-                .doOnNext(m -> {
-                    idleTimerSink.next(true);
-                });
+            return sessionLink.receive().doOnNext(m -> {
+                idleTimerSink.next(true);
+            });
         } else {
             return sessionLink.receive();
         }
@@ -128,21 +125,23 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
 
     @Override
     public Mono<Void> addCredits(int credits) {
-        return monoError(logger, new UnsupportedOperationException("addCredits(int) should not be called in V2 route."));
+        return monoError(logger,
+            new UnsupportedOperationException("addCredits(int) should not be called in V2 route."));
     }
 
     @Override
     public int getCredits() {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("getCredits() should not be called in V2 route."));
+        throw logger
+            .logExceptionAsError(new UnsupportedOperationException("getCredits() should not be called in V2 route."));
     }
 
     @Override
     public void setEmptyCreditListener(Supplier<Integer> creditSupplier) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("setEmptyCreditListener should not be called in V2 route."));
+        throw logger.logExceptionAsError(
+            new UnsupportedOperationException("setEmptyCreditListener should not be called in V2 route."));
     }
 
     private LoggingEventBuilder withLinkInfo(LoggingEventBuilder builder) {
-        return builder.addKeyValue(SESSION_ID_KEY, sessionId)
-            .addKeyValue(LINK_NAME_KEY, getLinkName());
+        return builder.addKeyValue(SESSION_ID_KEY, sessionId).addKeyValue(LINK_NAME_KEY, getLinkName());
     }
 }

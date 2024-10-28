@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountResourceSystemDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountResourceSystemData model =
-            BinaryData
-                .fromString(
-                    "{\"createdByType\":\"Key\",\"createdAt\":\"2021-06-19T00:38:01Z\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-12-05T14:26:12Z\"}")
-                .toObject(AccountResourceSystemData.class);
+        AccountResourceSystemData model = BinaryData.fromString(
+            "{\"createdByType\":\"Key\",\"createdAt\":\"2021-06-19T00:38:01Z\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-12-05T14:26:12Z\"}")
+            .toObject(AccountResourceSystemData.class);
         Assertions.assertEquals(CreatedByType.KEY, model.createdByType());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-19T00:38:01Z"), model.createdAt());
         Assertions.assertEquals(CreatedByType.APPLICATION, model.lastModifiedByType());
@@ -26,12 +24,10 @@ public final class AccountResourceSystemDataTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountResourceSystemData model =
-            new AccountResourceSystemData()
-                .withCreatedByType(CreatedByType.KEY)
-                .withCreatedAt(OffsetDateTime.parse("2021-06-19T00:38:01Z"))
-                .withLastModifiedByType(CreatedByType.APPLICATION)
-                .withLastModifiedAt(OffsetDateTime.parse("2021-12-05T14:26:12Z"));
+        AccountResourceSystemData model = new AccountResourceSystemData().withCreatedByType(CreatedByType.KEY)
+            .withCreatedAt(OffsetDateTime.parse("2021-06-19T00:38:01Z"))
+            .withLastModifiedByType(CreatedByType.APPLICATION)
+            .withLastModifiedAt(OffsetDateTime.parse("2021-12-05T14:26:12Z"));
         model = BinaryData.fromObject(model).toObject(AccountResourceSystemData.class);
         Assertions.assertEquals(CreatedByType.KEY, model.createdByType());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-19T00:38:01Z"), model.createdAt());

@@ -201,8 +201,8 @@ public final class SubscriptionProperties {
      * @param deadLetteringOnFilterEvaluationExceptions the deadLetteringOnFilterEvaluationExceptions value to set.
      * @return the SubscriptionProperties object itself.
      */
-    public SubscriptionProperties setEnableDeadLetteringOnFilterEvaluationExceptions(
-            boolean deadLetteringOnFilterEvaluationExceptions) {
+    public SubscriptionProperties
+        setEnableDeadLetteringOnFilterEvaluationExceptions(boolean deadLetteringOnFilterEvaluationExceptions) {
         description.setDeadLetteringOnFilterEvaluationExceptions(deadLetteringOnFilterEvaluationExceptions);
         return this;
     }

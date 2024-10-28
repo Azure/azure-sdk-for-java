@@ -111,14 +111,16 @@ public final class InstanceImpl implements Instance, Instance.Definition, Instan
     }
 
     public Instance create() {
-        this.innerObject = serviceManager.serviceClient().getInstances().create(resourceGroupName, accountName,
-            instanceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getInstances()
+            .create(resourceGroupName, accountName, instanceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Instance create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getInstances().create(resourceGroupName, accountName,
-            instanceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getInstances()
+            .create(resourceGroupName, accountName, instanceName, this.innerModel(), context);
         return this;
     }
 
@@ -134,14 +136,16 @@ public final class InstanceImpl implements Instance, Instance.Definition, Instan
     }
 
     public Instance apply() {
-        this.innerObject = serviceManager.serviceClient().getInstances()
+        this.innerObject = serviceManager.serviceClient()
+            .getInstances()
             .updateWithResponse(resourceGroupName, accountName, instanceName, updateTagUpdatePayload, Context.NONE)
             .getValue();
         return this;
     }
 
     public Instance apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getInstances()
+        this.innerObject = serviceManager.serviceClient()
+            .getInstances()
             .updateWithResponse(resourceGroupName, accountName, instanceName, updateTagUpdatePayload, context)
             .getValue();
         return this;
@@ -156,14 +160,18 @@ public final class InstanceImpl implements Instance, Instance.Definition, Instan
     }
 
     public Instance refresh() {
-        this.innerObject = serviceManager.serviceClient().getInstances()
-            .getWithResponse(resourceGroupName, accountName, instanceName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInstances()
+            .getWithResponse(resourceGroupName, accountName, instanceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Instance refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getInstances()
-            .getWithResponse(resourceGroupName, accountName, instanceName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getInstances()
+            .getWithResponse(resourceGroupName, accountName, instanceName, context)
+            .getValue();
         return this;
     }
 

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterPrincipalAssignmentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPrincipalAssignmentInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"principalId\":\"wnlzafwxu\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"hgookrtalvnbwgpb\",\"principalType\":\"App\",\"tenantName\":\"luclvdjjuk\",\"principalName\":\"dnqodx\",\"provisioningState\":\"Running\",\"aadObjectId\":\"hqfaqnvz\"},\"id\":\"gyipem\",\"name\":\"hgav\",\"type\":\"czuejdtxptl\"}")
-                .toObject(ClusterPrincipalAssignmentInner.class);
+        ClusterPrincipalAssignmentInner model = BinaryData.fromString(
+            "{\"properties\":{\"principalId\":\"wnlzafwxu\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"hgookrtalvnbwgpb\",\"principalType\":\"App\",\"tenantName\":\"luclvdjjuk\",\"principalName\":\"dnqodx\",\"provisioningState\":\"Running\",\"aadObjectId\":\"hqfaqnvz\"},\"id\":\"gyipem\",\"name\":\"hgav\",\"type\":\"czuejdtxptl\"}")
+            .toObject(ClusterPrincipalAssignmentInner.class);
         Assertions.assertEquals("wnlzafwxu", model.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, model.role());
         Assertions.assertEquals("hgookrtalvnbwgpb", model.tenantId());
@@ -26,12 +24,10 @@ public final class ClusterPrincipalAssignmentInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPrincipalAssignmentInner model =
-            new ClusterPrincipalAssignmentInner()
-                .withPrincipalId("wnlzafwxu")
-                .withRole(ClusterPrincipalRole.ALL_DATABASES_ADMIN)
-                .withTenantId("hgookrtalvnbwgpb")
-                .withPrincipalType(PrincipalType.APP);
+        ClusterPrincipalAssignmentInner model = new ClusterPrincipalAssignmentInner().withPrincipalId("wnlzafwxu")
+            .withRole(ClusterPrincipalRole.ALL_DATABASES_ADMIN)
+            .withTenantId("hgookrtalvnbwgpb")
+            .withPrincipalType(PrincipalType.APP);
         model = BinaryData.fromObject(model).toObject(ClusterPrincipalAssignmentInner.class);
         Assertions.assertEquals("wnlzafwxu", model.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, model.role());

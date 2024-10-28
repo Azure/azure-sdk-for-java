@@ -17,7 +17,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Databricks")
 @Fluent
 public final class DatabricksComputeSecrets extends ComputeSecretsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabricksComputeSecrets.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DatabricksComputeSecrets.class);
 
     /*
      * access token for databricks account.

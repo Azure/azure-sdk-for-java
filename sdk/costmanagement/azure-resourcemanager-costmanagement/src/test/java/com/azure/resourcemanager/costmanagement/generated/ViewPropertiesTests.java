@@ -27,11 +27,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ViewPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ViewProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"mrldhu\",\"scope\":\"zzd\",\"createdOn\":\"2021-02-05T21:48:33Z\",\"modifiedOn\":\"2021-07-06T17:21:07Z\",\"dateRange\":\"cdgea\",\"currency\":\"gphuticndvka\",\"query\":{\"type\":\"Usage\",\"timeframe\":\"YearToDate\",\"timePeriod\":{\"from\":\"2021-02-22T11:39:16Z\",\"to\":\"2021-02-09T20:02:29Z\"},\"dataSet\":{\"granularity\":\"Daily\",\"aggregation\":{},\"grouping\":[],\"sorting\":[]},\"includeMonetaryCommitment\":true},\"chart\":\"Area\",\"accumulated\":\"false\",\"metric\":\"ActualCost\",\"kpis\":[{\"type\":\"Budget\",\"id\":\"kgiawxklryplwck\",\"enabled\":false},{\"type\":\"Budget\",\"id\":\"nddhsgcbacph\",\"enabled\":false},{\"type\":\"Forecast\",\"id\":\"nqgoulzndli\",\"enabled\":false},{\"type\":\"Forecast\",\"id\":\"fgibmadgakeq\",\"enabled\":false}],\"pivots\":[{\"type\":\"TagKey\",\"name\":\"e\"},{\"type\":\"Dimension\",\"name\":\"bciqfouflm\"},{\"type\":\"Dimension\",\"name\":\"smodmgloug\"},{\"type\":\"TagKey\",\"name\":\"tmut\"}]}")
-                .toObject(ViewProperties.class);
+        ViewProperties model = BinaryData.fromString(
+            "{\"displayName\":\"mrldhu\",\"scope\":\"zzd\",\"createdOn\":\"2021-02-05T21:48:33Z\",\"modifiedOn\":\"2021-07-06T17:21:07Z\",\"dateRange\":\"cdgea\",\"currency\":\"gphuticndvka\",\"query\":{\"type\":\"Usage\",\"timeframe\":\"YearToDate\",\"timePeriod\":{\"from\":\"2021-02-22T11:39:16Z\",\"to\":\"2021-02-09T20:02:29Z\"},\"dataSet\":{\"granularity\":\"Daily\",\"aggregation\":{},\"grouping\":[],\"sorting\":[]},\"includeMonetaryCommitment\":true},\"chart\":\"Area\",\"accumulated\":\"false\",\"metric\":\"ActualCost\",\"kpis\":[{\"type\":\"Budget\",\"id\":\"kgiawxklryplwck\",\"enabled\":false},{\"type\":\"Budget\",\"id\":\"nddhsgcbacph\",\"enabled\":false},{\"type\":\"Forecast\",\"id\":\"nqgoulzndli\",\"enabled\":false},{\"type\":\"Forecast\",\"id\":\"fgibmadgakeq\",\"enabled\":false}],\"pivots\":[{\"type\":\"TagKey\",\"name\":\"e\"},{\"type\":\"Dimension\",\"name\":\"bciqfouflm\"},{\"type\":\"Dimension\",\"name\":\"smodmgloug\"},{\"type\":\"TagKey\",\"name\":\"tmut\"}]}")
+            .toObject(ViewProperties.class);
         Assertions.assertEquals("mrldhu", model.displayName());
         Assertions.assertEquals("zzd", model.scope());
         Assertions.assertEquals(ChartType.AREA, model.chart());
@@ -52,39 +50,29 @@ public final class ViewPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ViewProperties model =
-            new ViewProperties()
-                .withDisplayName("mrldhu")
+        ViewProperties model
+            = new ViewProperties().withDisplayName("mrldhu")
                 .withScope("zzd")
                 .withChart(ChartType.AREA)
                 .withAccumulated(AccumulatedType.FALSE)
                 .withMetric(MetricType.ACTUAL_COST)
-                .withKpis(
-                    Arrays
-                        .asList(
-                            new KpiProperties().withType(KpiType.BUDGET).withId("kgiawxklryplwck").withEnabled(false),
-                            new KpiProperties().withType(KpiType.BUDGET).withId("nddhsgcbacph").withEnabled(false),
-                            new KpiProperties().withType(KpiType.FORECAST).withId("nqgoulzndli").withEnabled(false),
-                            new KpiProperties().withType(KpiType.FORECAST).withId("fgibmadgakeq").withEnabled(false)))
-                .withPivots(
-                    Arrays
-                        .asList(
-                            new PivotProperties().withType(PivotType.TAG_KEY).withName("e"),
-                            new PivotProperties().withType(PivotType.DIMENSION).withName("bciqfouflm"),
-                            new PivotProperties().withType(PivotType.DIMENSION).withName("smodmgloug"),
-                            new PivotProperties().withType(PivotType.TAG_KEY).withName("tmut")))
+                .withKpis(Arrays.asList(
+                    new KpiProperties().withType(KpiType.BUDGET).withId("kgiawxklryplwck").withEnabled(false),
+                    new KpiProperties().withType(KpiType.BUDGET).withId("nddhsgcbacph").withEnabled(false),
+                    new KpiProperties().withType(KpiType.FORECAST).withId("nqgoulzndli").withEnabled(false),
+                    new KpiProperties().withType(KpiType.FORECAST).withId("fgibmadgakeq").withEnabled(false)))
+                .withPivots(Arrays.asList(new PivotProperties().withType(PivotType.TAG_KEY).withName("e"),
+                    new PivotProperties().withType(PivotType.DIMENSION).withName("bciqfouflm"),
+                    new PivotProperties().withType(PivotType.DIMENSION).withName("smodmgloug"),
+                    new PivotProperties().withType(PivotType.TAG_KEY).withName("tmut")))
                 .withType(ReportType.USAGE)
                 .withTimeframe(ReportTimeframeType.YEAR_TO_DATE)
-                .withTimePeriod(
-                    new ReportConfigTimePeriod()
-                        .withFrom(OffsetDateTime.parse("2021-02-22T11:39:16Z"))
-                        .withTo(OffsetDateTime.parse("2021-02-09T20:02:29Z")))
-                .withDataSet(
-                    new ReportConfigDataset()
-                        .withGranularity(ReportGranularityType.DAILY)
-                        .withAggregation(mapOf())
-                        .withGrouping(Arrays.asList())
-                        .withSorting(Arrays.asList()))
+                .withTimePeriod(new ReportConfigTimePeriod().withFrom(OffsetDateTime.parse("2021-02-22T11:39:16Z"))
+                    .withTo(OffsetDateTime.parse("2021-02-09T20:02:29Z")))
+                .withDataSet(new ReportConfigDataset().withGranularity(ReportGranularityType.DAILY)
+                    .withAggregation(mapOf())
+                    .withGrouping(Arrays.asList())
+                    .withSorting(Arrays.asList()))
                 .withIncludeMonetaryCommitment(true);
         model = BinaryData.fromObject(model).toObject(ViewProperties.class);
         Assertions.assertEquals("mrldhu", model.displayName());

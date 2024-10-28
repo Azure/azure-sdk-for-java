@@ -33,7 +33,8 @@ public final class ArtifactManifestInnerTests {
             .withTags(mapOf("cypsxjv", "nfqn", "zjxvydfcea", "oimwkslirc", "gdyftumrtwna", "vlhv"))
             .withProperties(new ArtifactManifestPropertiesFormat()
                 .withArtifacts(Arrays.asList(new ManifestArtifactFormat().withArtifactName("pcesutrg")
-                    .withArtifactType(ArtifactType.UNKNOWN).withArtifactVersion("uutpwoqhih"))));
+                    .withArtifactType(ArtifactType.UNKNOWN)
+                    .withArtifactVersion("uutpwoqhih"))));
         model = BinaryData.fromObject(model).toObject(ArtifactManifestInner.class);
         Assertions.assertEquals("qg", model.location());
         Assertions.assertEquals("nfqn", model.tags().get("cypsxjv"));

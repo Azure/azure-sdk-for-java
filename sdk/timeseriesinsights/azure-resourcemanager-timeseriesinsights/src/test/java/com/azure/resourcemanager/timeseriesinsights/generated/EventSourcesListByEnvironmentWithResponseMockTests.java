@@ -30,40 +30,28 @@ public final class EventSourcesListByEnvironmentWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"kind\":\"EventSourceResource\",\"location\":\"mh\",\"tags\":{\"wqapnedgfbcvk\":\"yjrxsagafcnih\",\"pkeqdcvdrhvoo\":\"vq\",\"dopcjwvnh\":\"sotbob\",\"mgxcxrslpm\":\"ld\"},\"id\":\"twuoegrpkhjwni\",\"name\":\"qsluicp\",\"type\":\"ggkzzlvmbmpa\"},{\"kind\":\"EventSourceResource\",\"location\":\"modfvuefywsbpfvm\",\"tags\":{\"yzvqt\":\"rfouyftaakcpw\",\"zksmondj\":\"nubexk\"},\"id\":\"quxvypomgkop\",\"name\":\"whojvp\",\"type\":\"jqg\"},{\"kind\":\"EventSourceResource\",\"location\":\"ysmocmbqfqvmkcxo\",\"tags\":{\"kcbcue\":\"vhelxprglyatdd\",\"hos\":\"rjxgciqib\",\"ibahwflus\":\"sdqrhzoymibmrq\"},\"id\":\"dtmhrkwofyyvoqa\",\"name\":\"piexpbtgiw\",\"type\":\"wo\"}]}";
+        String responseStr
+            = "{\"value\":[{\"kind\":\"EventSourceResource\",\"location\":\"mh\",\"tags\":{\"wqapnedgfbcvk\":\"yjrxsagafcnih\",\"pkeqdcvdrhvoo\":\"vq\",\"dopcjwvnh\":\"sotbob\",\"mgxcxrslpm\":\"ld\"},\"id\":\"twuoegrpkhjwni\",\"name\":\"qsluicp\",\"type\":\"ggkzzlvmbmpa\"},{\"kind\":\"EventSourceResource\",\"location\":\"modfvuefywsbpfvm\",\"tags\":{\"yzvqt\":\"rfouyftaakcpw\",\"zksmondj\":\"nubexk\"},\"id\":\"quxvypomgkop\",\"name\":\"whojvp\",\"type\":\"jqg\"},{\"kind\":\"EventSourceResource\",\"location\":\"ysmocmbqfqvmkcxo\",\"tags\":{\"kcbcue\":\"vhelxprglyatdd\",\"hos\":\"rjxgciqib\",\"ibahwflus\":\"sdqrhzoymibmrq\"},\"id\":\"dtmhrkwofyyvoqa\",\"name\":\"piexpbtgiw\",\"type\":\"wo\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        TimeSeriesInsightsManager manager =
-            TimeSeriesInsightsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        TimeSeriesInsightsManager manager = TimeSeriesInsightsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        EventSourceListResponse response =
-            manager
-                .eventSources()
-                .listByEnvironmentWithResponse("wkfvhqcrailvp", "ppfufl", com.azure.core.util.Context.NONE)
-                .getValue();
+        EventSourceListResponse response = manager.eventSources()
+            .listByEnvironmentWithResponse("wkfvhqcrailvp", "ppfufl", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("mh", response.value().get(0).location());
         Assertions.assertEquals("yjrxsagafcnih", response.value().get(0).tags().get("wqapnedgfbcvk"));

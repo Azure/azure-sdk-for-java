@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PortGroupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PortGroupProperties model =
-            BinaryData
-                .fromString("{\"name\":\"jx\",\"ports\":[\"tf\",\"jgicgaao\",\"pttaqutd\",\"wemxswvruunzz\"]}")
+        PortGroupProperties model
+            = BinaryData.fromString("{\"name\":\"jx\",\"ports\":[\"tf\",\"jgicgaao\",\"pttaqutd\",\"wemxswvruunzz\"]}")
                 .toObject(PortGroupProperties.class);
         Assertions.assertEquals("jx", model.name());
         Assertions.assertEquals("tf", model.ports().get(0));
@@ -22,10 +21,8 @@ public final class PortGroupPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PortGroupProperties model =
-            new PortGroupProperties()
-                .withName("jx")
-                .withPorts(Arrays.asList("tf", "jgicgaao", "pttaqutd", "wemxswvruunzz"));
+        PortGroupProperties model = new PortGroupProperties().withName("jx")
+            .withPorts(Arrays.asList("tf", "jgicgaao", "pttaqutd", "wemxswvruunzz"));
         model = BinaryData.fromObject(model).toObject(PortGroupProperties.class);
         Assertions.assertEquals("jx", model.name());
         Assertions.assertEquals("tf", model.ports().get(0));

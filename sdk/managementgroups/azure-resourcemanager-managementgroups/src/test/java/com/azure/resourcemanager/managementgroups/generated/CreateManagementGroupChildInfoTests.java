@@ -10,11 +10,9 @@ import com.azure.resourcemanager.managementgroups.models.CreateManagementGroupCh
 public final class CreateManagementGroupChildInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateManagementGroupChildInfo model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"/subscriptions\",\"id\":\"xkqpxo\",\"name\":\"jionpimexgstxgc\",\"displayName\":\"dg\",\"children\":[{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"vdjwzrlovm\",\"name\":\"whijcoejctbza\",\"displayName\":\"qsycbkbfkgu\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"ppofmxaxcfjpgdd\",\"name\":\"c\",\"displayName\":\"xhvpmoue\",\"children\":[]},{\"type\":\"/subscriptions\",\"id\":\"bqe\",\"name\":\"nxqbzvddn\",\"displayName\":\"ndei\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"zao\",\"name\":\"uhrhcffcyddgl\",\"displayName\":\"t\",\"children\":[]}]}")
-                .toObject(CreateManagementGroupChildInfo.class);
+        CreateManagementGroupChildInfo model = BinaryData.fromString(
+            "{\"type\":\"/subscriptions\",\"id\":\"xkqpxo\",\"name\":\"jionpimexgstxgc\",\"displayName\":\"dg\",\"children\":[{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"vdjwzrlovm\",\"name\":\"whijcoejctbza\",\"displayName\":\"qsycbkbfkgu\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"ppofmxaxcfjpgdd\",\"name\":\"c\",\"displayName\":\"xhvpmoue\",\"children\":[]},{\"type\":\"/subscriptions\",\"id\":\"bqe\",\"name\":\"nxqbzvddn\",\"displayName\":\"ndei\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"zao\",\"name\":\"uhrhcffcyddgl\",\"displayName\":\"t\",\"children\":[]}]}")
+            .toObject(CreateManagementGroupChildInfo.class);
     }
 
     @org.junit.jupiter.api.Test

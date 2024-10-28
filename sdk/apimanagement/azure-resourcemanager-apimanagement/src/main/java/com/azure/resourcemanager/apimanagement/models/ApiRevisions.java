@@ -39,12 +39,6 @@ public interface ApiRevisions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged API Revision list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ApiRevisionContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<ApiRevisionContract> listByService(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context);
 }

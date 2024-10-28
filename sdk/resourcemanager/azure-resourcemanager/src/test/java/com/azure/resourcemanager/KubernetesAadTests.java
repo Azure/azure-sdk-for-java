@@ -36,21 +36,10 @@ public class KubernetesAadTests extends ResourceManagerTestProxyTestBase {
     private final Region region = Region.US_WEST3;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List< HttpPipelinePolicy > policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -86,15 +75,15 @@ public class KubernetesAadTests extends ResourceManagerTestProxyTestBase {
         ActiveDirectoryGroup group = null;
         try {
             // Azure AD integration with AAD group
-            group = azureResourceManager.accessManagement().activeDirectoryGroups()
+            group = azureResourceManager.accessManagement()
+                .activeDirectoryGroups()
                 .define(groupName)
                 .withEmailAlias(groupName)
                 .withMember(userId)
                 .create();
 
             // create
-            KubernetesCluster kubernetesCluster = azureResourceManager
-                .kubernetesClusters()
+            KubernetesCluster kubernetesCluster = azureResourceManager.kubernetesClusters()
                 .define(aksName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
@@ -103,11 +92,11 @@ public class KubernetesAadTests extends ResourceManagerTestProxyTestBase {
                 .withAzureActiveDirectoryGroup(group.id())
                 .disableLocalAccounts()
                 .defineAgentPool(agentPoolName)
-                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
-                    .withAgentPoolVirtualMachineCount(1)
-                    .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                    .withOSDiskSizeInGB(30)
-                    .attach()
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
+                .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                .withOSDiskSizeInGB(30)
+                .attach()
                 .withDnsPrefix("mp1" + dnsPrefix)
                 .create();
 
@@ -119,29 +108,25 @@ public class KubernetesAadTests extends ResourceManagerTestProxyTestBase {
             List<CredentialResult> credentialResults = kubernetesCluster.userKubeConfigs();
             Assertions.assertFalse(credentialResults.isEmpty());
 
-            kubernetesCluster.update()
-                .enableLocalAccounts()
-                .apply();
+            kubernetesCluster.update().enableLocalAccounts().apply();
 
             Assertions.assertTrue(kubernetesCluster.isLocalAccountsEnabled());
 
             azureResourceManager.kubernetesClusters().deleteById(kubernetesCluster.id());
 
-
             // create and then update
-            kubernetesCluster = azureResourceManager
-                .kubernetesClusters()
+            kubernetesCluster = azureResourceManager.kubernetesClusters()
                 .define(aksName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withDefaultVersion()
                 .withSystemAssignedManagedServiceIdentity()
                 .defineAgentPool(agentPoolName)
-                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
-                    .withAgentPoolVirtualMachineCount(1)
-                    .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                    .withOSDiskSizeInGB(30)
-                    .attach()
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
+                .withAgentPoolVirtualMachineCount(1)
+                .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                .withOSDiskSizeInGB(30)
+                .attach()
                 .withDnsPrefix("mp1" + dnsPrefix)
                 .create();
 
@@ -149,10 +134,7 @@ public class KubernetesAadTests extends ResourceManagerTestProxyTestBase {
             Assertions.assertTrue(kubernetesCluster.isLocalAccountsEnabled());
 
             // Since kubernetes version 1.25, disableLocalAccounts can only be set on Azure AD integration enabled cluster.
-            kubernetesCluster.update()
-                .withAzureActiveDirectoryGroup(group.id())
-                .disableLocalAccounts()
-                .apply();
+            kubernetesCluster.update().withAzureActiveDirectoryGroup(group.id()).disableLocalAccounts().apply();
 
             Assertions.assertFalse(kubernetesCluster.isLocalAccountsEnabled());
 

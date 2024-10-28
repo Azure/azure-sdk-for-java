@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DtlEnvironmentListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DtlEnvironmentList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"rimrs\",\"parameters\":[{},{},{}]},\"armTemplateDisplayName\":\"ecj\",\"resourceGroupId\":\"islstv\",\"createdByUser\":\"ylw\",\"provisioningState\":\"zaum\",\"uniqueIdentifier\":\"oohgu\"},\"location\":\"fuzboyjathwtzolb\",\"tags\":{\"xmeb\":\"wm\",\"veabfqxnmwmqtib\":\"jscjpahl\",\"jaeukmrsieekpn\":\"yijddtvqcttad\",\"pibudqwyxebeybpm\":\"zaapmudqmeqwi\"},\"id\":\"znrtffyaqit\",\"name\":\"hheioqaqhvseuf\",\"type\":\"qyrxp\"}],\"nextLink\":\"cgq\"}")
-                .toObject(DtlEnvironmentList.class);
+        DtlEnvironmentList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"deploymentProperties\":{\"armTemplateId\":\"rimrs\",\"parameters\":[{},{},{}]},\"armTemplateDisplayName\":\"ecj\",\"resourceGroupId\":\"islstv\",\"createdByUser\":\"ylw\",\"provisioningState\":\"zaum\",\"uniqueIdentifier\":\"oohgu\"},\"location\":\"fuzboyjathwtzolb\",\"tags\":{\"xmeb\":\"wm\",\"veabfqxnmwmqtib\":\"jscjpahl\",\"jaeukmrsieekpn\":\"yijddtvqcttad\",\"pibudqwyxebeybpm\":\"zaapmudqmeqwi\"},\"id\":\"znrtffyaqit\",\"name\":\"hheioqaqhvseuf\",\"type\":\"qyrxp\"}],\"nextLink\":\"cgq\"}")
+            .toObject(DtlEnvironmentList.class);
         Assertions.assertEquals("fuzboyjathwtzolb", model.value().get(0).location());
         Assertions.assertEquals("wm", model.value().get(0).tags().get("xmeb"));
         Assertions.assertEquals("rimrs", model.value().get(0).deploymentProperties().armTemplateId());
@@ -31,34 +29,15 @@ public final class DtlEnvironmentListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DtlEnvironmentList model =
-            new DtlEnvironmentList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DtlEnvironmentInner()
-                                .withLocation("fuzboyjathwtzolb")
-                                .withTags(
-                                    mapOf(
-                                        "xmeb",
-                                        "wm",
-                                        "veabfqxnmwmqtib",
-                                        "jscjpahl",
-                                        "jaeukmrsieekpn",
-                                        "yijddtvqcttad",
-                                        "pibudqwyxebeybpm",
-                                        "zaapmudqmeqwi"))
-                                .withDeploymentProperties(
-                                    new EnvironmentDeploymentProperties()
-                                        .withArmTemplateId("rimrs")
-                                        .withParameters(
-                                            Arrays
-                                                .asList(
-                                                    new ArmTemplateParameterProperties(),
-                                                    new ArmTemplateParameterProperties(),
-                                                    new ArmTemplateParameterProperties())))
-                                .withArmTemplateDisplayName("ecj")))
-                .withNextLink("cgq");
+        DtlEnvironmentList model = new DtlEnvironmentList()
+            .withValue(Arrays.asList(new DtlEnvironmentInner().withLocation("fuzboyjathwtzolb")
+                .withTags(mapOf("xmeb", "wm", "veabfqxnmwmqtib", "jscjpahl", "jaeukmrsieekpn", "yijddtvqcttad",
+                    "pibudqwyxebeybpm", "zaapmudqmeqwi"))
+                .withDeploymentProperties(new EnvironmentDeploymentProperties().withArmTemplateId("rimrs")
+                    .withParameters(Arrays.asList(new ArmTemplateParameterProperties(),
+                        new ArmTemplateParameterProperties(), new ArmTemplateParameterProperties())))
+                .withArmTemplateDisplayName("ecj")))
+            .withNextLink("cgq");
         model = BinaryData.fromObject(model).toObject(DtlEnvironmentList.class);
         Assertions.assertEquals("fuzboyjathwtzolb", model.value().get(0).location());
         Assertions.assertEquals("wm", model.value().get(0).tags().get("xmeb"));

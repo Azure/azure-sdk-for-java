@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ForecastColumnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ForecastColumn model =
-            BinaryData.fromString("{\"name\":\"ktrmgucnapkt\",\"type\":\"ellwptfdy\"}").toObject(ForecastColumn.class);
+        ForecastColumn model = BinaryData.fromString("{\"name\":\"ktrmgucnapkt\",\"type\":\"ellwptfdy\"}")
+            .toObject(ForecastColumn.class);
         Assertions.assertEquals("ktrmgucnapkt", model.name());
         Assertions.assertEquals("ellwptfdy", model.type());
     }

@@ -23,7 +23,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous BatchDocumentTranslationClient type. */
 @ServiceClient(builder = BatchDocumentTranslationClientBuilder.class, isAsync = true)
 public final class BatchDocumentTranslationAsyncClient {
-    @Generated private final DocumentTranslationsImpl serviceClient;
+    @Generated
+    private final DocumentTranslationsImpl serviceClient;
 
     /**
      * Initializes an instance of BatchDocumentTranslationAsyncClient class.
@@ -252,8 +253,8 @@ public final class BatchDocumentTranslationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDocumentStatusWithResponse(
-            String id, String documentId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDocumentStatusWithResponse(String id, String documentId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getDocumentStatusWithResponseAsync(id, documentId, requestOptions);
     }
 

@@ -45,15 +45,8 @@ public interface Products {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Products list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ProductContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean expandGroups,
-        String tags,
-        Context context);
+    PagedIterable<ProductContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Boolean expandGroups, String tags, Context context);
 
     /**
      * Gets the entity state (Etag) version of the product specified by its identifier.
@@ -67,8 +60,8 @@ public interface Products {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the product specified by its identifier.
      */
-    ProductsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String productId, Context context);
+    ProductsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String productId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the product specified by its identifier.
@@ -94,8 +87,8 @@ public interface Products {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the product specified by its identifier.
      */
-    Response<ProductContract> getWithResponse(
-        String resourceGroupName, String serviceName, String productId, Context context);
+    Response<ProductContract> getWithResponse(String resourceGroupName, String serviceName, String productId,
+        Context context);
 
     /**
      * Gets the details of the product specified by its identifier.
@@ -125,13 +118,8 @@ public interface Products {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String ifMatch,
-        Boolean deleteSubscriptions,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String productId, String ifMatch,
+        Boolean deleteSubscriptions, Context context);
 
     /**
      * Delete product.
@@ -180,14 +168,8 @@ public interface Products {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<TagResourceContract> listByTags(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean includeNotTaggedProducts,
-        Context context);
+    PagedIterable<TagResourceContract> listByTags(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Boolean includeNotTaggedProducts, Context context);
 
     /**
      * Gets the details of the product specified by its identifier.

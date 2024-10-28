@@ -105,20 +105,16 @@ public final class ShipmentPickUpRequest {
      */
     public void validate() {
         if (startTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property startTime in model ShipmentPickUpRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property startTime in model ShipmentPickUpRequest"));
         }
         if (endTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endTime in model ShipmentPickUpRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property endTime in model ShipmentPickUpRequest"));
         }
         if (shipmentLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property shipmentLocation in model ShipmentPickUpRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property shipmentLocation in model ShipmentPickUpRequest"));
         }
     }
 

@@ -54,8 +54,8 @@ public interface GatewaysClient {
      * @return paged Gateway list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GatewayContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<GatewayContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Gateway specified by its identifier.
@@ -71,8 +71,8 @@ public interface GatewaysClient {
      * @return the entity state (Etag) version of the Gateway specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewaysGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, Context context);
+    GatewaysGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Gateway specified by its identifier.
@@ -102,8 +102,8 @@ public interface GatewaysClient {
      * @return the details of the Gateway specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewaysGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, Context context);
+    GatewaysGetResponse getWithResponse(String resourceGroupName, String serviceName, String gatewayId,
+        Context context);
 
     /**
      * Gets the details of the Gateway specified by its identifier.
@@ -136,13 +136,8 @@ public interface GatewaysClient {
      * @return gateway details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewaysCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        GatewayContractInner parameters,
-        String ifMatch,
-        Context context);
+    GatewaysCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, GatewayContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or updates a Gateway to be used in Api Management instance.
@@ -158,8 +153,8 @@ public interface GatewaysClient {
      * @return gateway details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String gatewayId, GatewayContractInner parameters);
+    GatewayContractInner createOrUpdate(String resourceGroupName, String serviceName, String gatewayId,
+        GatewayContractInner parameters);
 
     /**
      * Updates the details of the gateway specified by its identifier.
@@ -178,13 +173,8 @@ public interface GatewaysClient {
      * @return gateway details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewaysUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String ifMatch,
-        GatewayContractInner parameters,
-        Context context);
+    GatewaysUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String gatewayId,
+        String ifMatch, GatewayContractInner parameters, Context context);
 
     /**
      * Updates the details of the gateway specified by its identifier.
@@ -202,11 +192,7 @@ public interface GatewaysClient {
      * @return gateway details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String ifMatch,
+    GatewayContractInner update(String resourceGroupName, String serviceName, String gatewayId, String ifMatch,
         GatewayContractInner parameters);
 
     /**
@@ -225,8 +211,8 @@ public interface GatewaysClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String gatewayId, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific Gateway.
@@ -258,8 +244,8 @@ public interface GatewaysClient {
      * @return gateway authentication keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewaysListKeysResponse listKeysWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, Context context);
+    GatewaysListKeysResponse listKeysWithResponse(String resourceGroupName, String serviceName, String gatewayId,
+        Context context);
 
     /**
      * Retrieves gateway keys.
@@ -291,12 +277,8 @@ public interface GatewaysClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> regenerateKeyWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        GatewayKeyRegenerationRequestContract parameters,
-        Context context);
+    Response<Void> regenerateKeyWithResponse(String resourceGroupName, String serviceName, String gatewayId,
+        GatewayKeyRegenerationRequestContract parameters, Context context);
 
     /**
      * Regenerates specified gateway key invalidating any tokens created with it.
@@ -311,10 +293,7 @@ public interface GatewaysClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void regenerateKey(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
+    void regenerateKey(String resourceGroupName, String serviceName, String gatewayId,
         GatewayKeyRegenerationRequestContract parameters);
 
     /**
@@ -332,12 +311,8 @@ public interface GatewaysClient {
      * @return the Shared Access Authorization Token for the gateway along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GatewayTokenContractInner> generateTokenWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        GatewayTokenRequestContract parameters,
-        Context context);
+    Response<GatewayTokenContractInner> generateTokenWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, GatewayTokenRequestContract parameters, Context context);
 
     /**
      * Gets the Shared Access Authorization Token for the gateway.
@@ -353,6 +328,6 @@ public interface GatewaysClient {
      * @return the Shared Access Authorization Token for the gateway.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayTokenContractInner generateToken(
-        String resourceGroupName, String serviceName, String gatewayId, GatewayTokenRequestContract parameters);
+    GatewayTokenContractInner generateToken(String resourceGroupName, String serviceName, String gatewayId,
+        GatewayTokenRequestContract parameters);
 }

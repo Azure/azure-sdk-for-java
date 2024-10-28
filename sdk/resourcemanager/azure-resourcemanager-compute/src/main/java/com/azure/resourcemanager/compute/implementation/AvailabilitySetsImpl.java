@@ -16,9 +16,8 @@ import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** The implementation for AvailabilitySets. */
-public class AvailabilitySetsImpl
-    extends GroupableResourcesImpl<
-        AvailabilitySet, AvailabilitySetImpl, AvailabilitySetInner, AvailabilitySetsClient, ComputeManager>
+public class AvailabilitySetsImpl extends
+    GroupableResourcesImpl<AvailabilitySet, AvailabilitySetImpl, AvailabilitySetInner, AvailabilitySetsClient, ComputeManager>
     implements AvailabilitySets {
 
     public AvailabilitySetsImpl(final ComputeManager computeManager) {
@@ -32,7 +31,8 @@ public class AvailabilitySetsImpl
 
     @Override
     public PagedFlux<AvailabilitySet> listAsync() {
-        return PagedConverter.mapPage(this.manager().serviceClient().getAvailabilitySets().listAsync(), this::wrapModel);
+        return PagedConverter.mapPage(this.manager().serviceClient().getAvailabilitySets().listAsync(),
+            this::wrapModel);
     }
 
     @Override
@@ -43,8 +43,8 @@ public class AvailabilitySetsImpl
     @Override
     public PagedFlux<AvailabilitySet> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }

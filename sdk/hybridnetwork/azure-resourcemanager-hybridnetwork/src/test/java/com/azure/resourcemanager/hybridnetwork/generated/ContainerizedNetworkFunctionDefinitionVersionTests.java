@@ -21,9 +21,10 @@ public final class ContainerizedNetworkFunctionDefinitionVersionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContainerizedNetworkFunctionDefinitionVersion model = new ContainerizedNetworkFunctionDefinitionVersion()
-            .withDescription("cxy").withDeployParameters("hdjhlimmbcx")
-            .withNetworkFunctionTemplate(new ContainerizedNetworkFunctionTemplate());
+        ContainerizedNetworkFunctionDefinitionVersion model
+            = new ContainerizedNetworkFunctionDefinitionVersion().withDescription("cxy")
+                .withDeployParameters("hdjhlimmbcx")
+                .withNetworkFunctionTemplate(new ContainerizedNetworkFunctionTemplate());
         model = BinaryData.fromObject(model).toObject(ContainerizedNetworkFunctionDefinitionVersion.class);
         Assertions.assertEquals("cxy", model.description());
         Assertions.assertEquals("hdjhlimmbcx", model.deployParameters());

@@ -100,22 +100,16 @@ public final class EncryptionV2KeyVaultProperties {
      */
     public void validate() {
         if (keyVaultUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultUri in model EncryptionV2KeyVaultProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyVaultUri in model EncryptionV2KeyVaultProperties"));
         }
         if (keyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyName in model EncryptionV2KeyVaultProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyName in model EncryptionV2KeyVaultProperties"));
         }
         if (keyVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVersion in model EncryptionV2KeyVaultProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyVersion in model EncryptionV2KeyVaultProperties"));
         }
     }
 

@@ -15,8 +15,8 @@ public final class SkuDescriptionImpl implements SkuDescription {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    SkuDescriptionImpl(
-        SkuDescriptionInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    SkuDescriptionImpl(SkuDescriptionInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -41,23 +41,26 @@ import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the ConfidentialLedgerCertificateClient type. */
 @ServiceClientBuilder(
-        serviceClients = {ConfidentialLedgerCertificateClient.class, ConfidentialLedgerCertificateAsyncClient.class})
+    serviceClients = { ConfidentialLedgerCertificateClient.class, ConfidentialLedgerCertificateAsyncClient.class })
 public final class ConfidentialLedgerCertificateClientBuilder
-        implements HttpTrait<ConfidentialLedgerCertificateClientBuilder>,
-                ConfigurationTrait<ConfidentialLedgerCertificateClientBuilder>,
-                TokenCredentialTrait<ConfidentialLedgerCertificateClientBuilder> {
-    @Generated private static final String SDK_NAME = "name";
-
-    @Generated private static final String SDK_VERSION = "version";
+    implements HttpTrait<ConfidentialLedgerCertificateClientBuilder>,
+    ConfigurationTrait<ConfidentialLedgerCertificateClientBuilder>,
+    TokenCredentialTrait<ConfidentialLedgerCertificateClientBuilder> {
+    @Generated
+    private static final String SDK_NAME = "name";
 
     @Generated
-    private static final String[] DEFAULT_SCOPES = new String[] {"https://confidential-ledger.azure.com/.default"};
+    private static final String SDK_VERSION = "version";
 
     @Generated
-    private final Map<String, String> properties =
-            CoreUtils.getProperties("azure-security-confidentialledger-certificate.properties");
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://confidential-ledger.azure.com/.default" };
 
-    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+    @Generated
+    private final Map<String, String> properties
+        = CoreUtils.getProperties("azure-security-confidentialledger-certificate.properties");
+
+    @Generated
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /** Create an instance of the ConfidentialLedgerCertificateClientBuilder. */
     @Generated
@@ -68,7 +71,8 @@ public final class ConfidentialLedgerCertificateClientBuilder
     /*
      * The HTTP pipeline to send requests through.
      */
-    @Generated private HttpPipeline pipeline;
+    @Generated
+    private HttpPipeline pipeline;
 
     /** {@inheritDoc}. */
     @Generated
@@ -81,7 +85,8 @@ public final class ConfidentialLedgerCertificateClientBuilder
     /*
      * The HTTP client used to send the request.
      */
-    @Generated private HttpClient httpClient;
+    @Generated
+    private HttpClient httpClient;
 
     /** {@inheritDoc}. */
     @Generated
@@ -94,7 +99,8 @@ public final class ConfidentialLedgerCertificateClientBuilder
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    @Generated private HttpLogOptions httpLogOptions;
+    @Generated
+    private HttpLogOptions httpLogOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -108,7 +114,8 @@ public final class ConfidentialLedgerCertificateClientBuilder
      * The client options such as application ID and custom headers to set on a
      * request.
      */
-    @Generated private ClientOptions clientOptions;
+    @Generated
+    private ClientOptions clientOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -121,7 +128,8 @@ public final class ConfidentialLedgerCertificateClientBuilder
     /*
      * The retry options to configure retry policy for failed requests.
      */
-    @Generated private RetryOptions retryOptions;
+    @Generated
+    private RetryOptions retryOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -143,7 +151,8 @@ public final class ConfidentialLedgerCertificateClientBuilder
      * The configuration store that is used during construction of the service
      * client.
      */
-    @Generated private Configuration configuration;
+    @Generated
+    private Configuration configuration;
 
     /** {@inheritDoc}. */
     @Generated
@@ -156,7 +165,8 @@ public final class ConfidentialLedgerCertificateClientBuilder
     /*
      * The TokenCredential used for authentication.
      */
-    @Generated private TokenCredential tokenCredential;
+    @Generated
+    private TokenCredential tokenCredential;
 
     /** {@inheritDoc}. */
     @Generated
@@ -170,7 +180,8 @@ public final class ConfidentialLedgerCertificateClientBuilder
      * The certificate endpoint (or "Identity Service Endpoint" in the Azure
      * portal), for example https://identity.confidential-ledger.core.azure.com
      */
-    @Generated private String certificateEndpoint;
+    @Generated
+    private String certificateEndpoint;
 
     /**
      * Sets The certificate endpoint (or "Identity Service Endpoint" in the Azure portal), for example
@@ -188,7 +199,8 @@ public final class ConfidentialLedgerCertificateClientBuilder
     /*
      * Service version
      */
-    @Generated private ConfidentialLedgerCertificateServiceVersion serviceVersion;
+    @Generated
+    private ConfidentialLedgerCertificateServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
@@ -197,8 +209,8 @@ public final class ConfidentialLedgerCertificateClientBuilder
      * @return the ConfidentialLedgerCertificateClientBuilder.
      */
     @Generated
-    public ConfidentialLedgerCertificateClientBuilder serviceVersion(
-            ConfidentialLedgerCertificateServiceVersion serviceVersion) {
+    public ConfidentialLedgerCertificateClientBuilder
+        serviceVersion(ConfidentialLedgerCertificateServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -207,7 +219,8 @@ public final class ConfidentialLedgerCertificateClientBuilder
      * The retry policy that will attempt to retry failed requests, if
      * applicable.
      */
-    @Generated private RetryPolicy retryPolicy;
+    @Generated
+    private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
@@ -234,16 +247,15 @@ public final class ConfidentialLedgerCertificateClientBuilder
         if (serviceVersion == null) {
             this.serviceVersion = ConfidentialLedgerCertificateServiceVersion.getLatest();
         }
-        ConfidentialLedgerCertificateClientImpl client =
-                new ConfidentialLedgerCertificateClientImpl(
-                        pipeline, JacksonAdapter.createDefaultSerializerAdapter(), certificateEndpoint, serviceVersion);
+        ConfidentialLedgerCertificateClientImpl client = new ConfidentialLedgerCertificateClientImpl(pipeline,
+            JacksonAdapter.createDefaultSerializerAdapter(), certificateEndpoint, serviceVersion);
         return client;
     }
 
     @Generated
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
@@ -262,10 +274,9 @@ public final class ConfidentialLedgerCertificateClientBuilder
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+        policies.addAll(this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .collect(Collectors.toList()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
@@ -273,18 +284,15 @@ public final class ConfidentialLedgerCertificateClientBuilder
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+        policies.addAll(this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .collect(Collectors.toList()));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .clientOptions(clientOptions)
-                        .build();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(clientOptions)
+            .build();
         return httpPipeline;
     }
 
@@ -306,6 +314,6 @@ public final class ConfidentialLedgerCertificateClientBuilder
     @Generated
     public ConfidentialLedgerCertificateClient buildClient() {
         return new ConfidentialLedgerCertificateClient(
-                new ConfidentialLedgerCertificateAsyncClient(buildInnerClient()));
+            new ConfidentialLedgerCertificateAsyncClient(buildInnerClient()));
     }
 }

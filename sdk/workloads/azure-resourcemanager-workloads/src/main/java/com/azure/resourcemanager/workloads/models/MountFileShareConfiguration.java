@@ -83,15 +83,12 @@ public final class MountFileShareConfiguration extends FileShareConfiguration {
     public void validate() {
         super.validate();
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model MountFileShareConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model MountFileShareConfiguration"));
         }
         if (privateEndpointId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property privateEndpointId in model MountFileShareConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property privateEndpointId in model MountFileShareConfiguration"));
         }
     }
 

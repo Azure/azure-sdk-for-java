@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Improved error message when the database provided in the config does not exist - See [PR 42599](https://github.com/Azure/azure-sdk-for-java/pull/42599)
 
 ### 1.0.0-beta.4 (2024-07-26)
 

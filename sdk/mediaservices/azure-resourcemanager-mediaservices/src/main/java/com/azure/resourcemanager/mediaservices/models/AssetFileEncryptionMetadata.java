@@ -101,10 +101,8 @@ public final class AssetFileEncryptionMetadata {
      */
     public void validate() {
         if (assetFileId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property assetFileId in model AssetFileEncryptionMetadata"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property assetFileId in model AssetFileEncryptionMetadata"));
         }
     }
 

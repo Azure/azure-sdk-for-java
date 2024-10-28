@@ -42,8 +42,8 @@ public interface ForecastsClient {
      * @return result of forecast along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ForecastResultInner> usageWithResponse(
-        String scope, ForecastDefinition parameters, String filter, Context context);
+    Response<ForecastResultInner> usageWithResponse(String scope, ForecastDefinition parameters, String filter,
+        Context context);
 
     /**
      * Lists the forecast charges for scope defined.
@@ -91,11 +91,8 @@ public interface ForecastsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ForecastResultInner> externalCloudProviderUsageWithResponse(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        ForecastDefinition parameters,
-        String filter,
-        Context context);
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId,
+        ForecastDefinition parameters, String filter, Context context);
 
     /**
      * Lists the forecast charges for external cloud provider type defined.
@@ -112,8 +109,6 @@ public interface ForecastsClient {
      * @return result of forecast.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ForecastResultInner externalCloudProviderUsage(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        ForecastDefinition parameters);
+    ForecastResultInner externalCloudProviderUsage(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId, ForecastDefinition parameters);
 }

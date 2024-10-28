@@ -27,14 +27,8 @@ public interface OperationStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return async Operation status along with {@link Response}.
      */
-    Response<OperationStatusResult> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        String operationId,
-        Context context);
+    Response<OperationStatusResult> getWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String extensionName, String operationId, Context context);
 
     /**
      * Get Async Operation status.
@@ -52,13 +46,8 @@ public interface OperationStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return async Operation status.
      */
-    OperationStatusResult get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        String operationId);
+    OperationStatusResult get(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String extensionName, String operationId);
 
     /**
      * List Async Operations, currently in progress, in a cluster.
@@ -74,8 +63,8 @@ public interface OperationStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the async operations in progress, in the cluster as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OperationStatusResult> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName);
+    PagedIterable<OperationStatusResult> list(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName);
 
     /**
      * List Async Operations, currently in progress, in a cluster.
@@ -92,6 +81,6 @@ public interface OperationStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the async operations in progress, in the cluster as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OperationStatusResult> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context);
+    PagedIterable<OperationStatusResult> list(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, Context context);
 }

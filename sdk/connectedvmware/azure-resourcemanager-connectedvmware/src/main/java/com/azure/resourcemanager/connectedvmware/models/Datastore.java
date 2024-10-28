@@ -170,11 +170,8 @@ public interface Datastore {
     DatastoreInner innerModel();
 
     /** The entirety of the Datastore definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The Datastore definition stages. */
@@ -218,12 +215,8 @@ public interface Datastore {
          * be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithExtendedLocation,
-                DefinitionStages.WithKind,
-                DefinitionStages.WithVCenterId,
-                DefinitionStages.WithMoRefId,
-                DefinitionStages.WithInventoryItemId {
+            extends DefinitionStages.WithTags, DefinitionStages.WithExtendedLocation, DefinitionStages.WithKind,
+            DefinitionStages.WithVCenterId, DefinitionStages.WithMoRefId, DefinitionStages.WithInventoryItemId {
             /**
              * Executes the create request.
              *

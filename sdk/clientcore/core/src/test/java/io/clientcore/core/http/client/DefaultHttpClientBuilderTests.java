@@ -68,7 +68,7 @@ public class DefaultHttpClientBuilderTests {
     public void buildWithHttpProxy() throws IOException {
         ProxyOptions clientProxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
             new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort())).setCredentials(PROXY_USERNAME,
-            PROXY_PASSWORD);
+                PROXY_PASSWORD);
 
         HttpClient httpClient = new DefaultHttpClientBuilder().proxy(clientProxyOptions).build();
 
@@ -82,7 +82,8 @@ public class DefaultHttpClientBuilderTests {
     @Test
     public void buildWithHttpProxyFromEnvConfiguration() throws IOException {
         Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-            new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY,
+            new TestConfigurationSource()
+                .put(Configuration.PROPERTY_HTTP_PROXY,
                     "http://" + PROXY_USER_INFO + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort())
                 .put("java.net.useSystemProxies", "true")).build();
 
@@ -97,8 +98,10 @@ public class DefaultHttpClientBuilderTests {
 
     @Test
     public void buildWithHttpProxyFromExplicitConfiguration() throws IOException {
-        Configuration configuration = new ConfigurationBuilder().putProperty("http.proxy.hostname",
-            proxyEndpoint.getHost()).putProperty("http.proxy.port", String.valueOf(proxyEndpoint.getPort())).build();
+        Configuration configuration
+            = new ConfigurationBuilder().putProperty("http.proxy.hostname", proxyEndpoint.getHost())
+                .putProperty("http.proxy.port", String.valueOf(proxyEndpoint.getPort()))
+                .build();
 
         HttpClient httpClient = new DefaultHttpClientBuilder().configuration(configuration).build();
 
@@ -122,8 +125,8 @@ public class DefaultHttpClientBuilderTests {
 
     @Test
     public void buildWithInvalidProxyType() {
-        ProxyOptions clientProxyOptions = new ProxyOptions(ProxyOptions.Type.SOCKS5,
-            new InetSocketAddress("test.com", 8080));
+        ProxyOptions clientProxyOptions
+            = new ProxyOptions(ProxyOptions.Type.SOCKS5, new InetSocketAddress("test.com", 8080));
 
         assertThrows(IllegalArgumentException.class,
             () -> new DefaultHttpClientBuilder().proxy(clientProxyOptions).build());
@@ -131,8 +134,8 @@ public class DefaultHttpClientBuilderTests {
 
     @Test
     public void buildWithNullProxyType() throws IOException {
-        ProxyOptions mockPoxyOptions = new ProxyOptions(null,
-            new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()));
+        ProxyOptions mockPoxyOptions
+            = new ProxyOptions(null, new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()));
 
         HttpClient httpClient = new DefaultHttpClientBuilder().proxy(mockPoxyOptions).build();
 

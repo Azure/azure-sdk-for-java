@@ -17,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = CertificateSource.class)
 @JsonTypeName("CertificateSource")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.PemCertificateList", value = PemCertificateList.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.PemCertificateList", value = PemCertificateList.class) })
 @Immutable
 public class CertificateSource {
     /**

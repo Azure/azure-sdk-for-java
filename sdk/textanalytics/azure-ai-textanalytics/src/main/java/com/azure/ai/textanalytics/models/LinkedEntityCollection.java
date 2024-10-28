@@ -20,7 +20,7 @@ public final class LinkedEntityCollection extends IterableStream<LinkedEntity> {
      * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning warnings}.
      */
     public LinkedEntityCollection(IterableStream<LinkedEntity> entities,
-                                  IterableStream<TextAnalyticsWarning> warnings) {
+        IterableStream<TextAnalyticsWarning> warnings) {
         super(entities);
         this.warnings = warnings;
     }

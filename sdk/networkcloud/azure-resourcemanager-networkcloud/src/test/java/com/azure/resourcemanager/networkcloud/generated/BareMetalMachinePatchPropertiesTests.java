@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class BareMetalMachinePatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BareMetalMachinePatchProperties model =
-            BinaryData.fromString("{\"machineDetails\":\"waz\"}").toObject(BareMetalMachinePatchProperties.class);
+        BareMetalMachinePatchProperties model
+            = BinaryData.fromString("{\"machineDetails\":\"waz\"}").toObject(BareMetalMachinePatchProperties.class);
         Assertions.assertEquals("waz", model.machineDetails());
     }
 

@@ -769,7 +769,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String expand = null;
         return getCloudServicePublicIpAddressWithResponseAsync(resourceGroupName, cloudServiceName, roleInstanceName,
             networkInterfaceName, ipConfigurationName, publicIpAddressName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2508,7 +2508,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String expand = null;
         return getVirtualMachineScaleSetPublicIpAddressWithResponseAsync(resourceGroupName, virtualMachineScaleSetName,
             virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIpAddressName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2533,7 +2533,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         String ipConfigurationName, String publicIpAddressName, String expand, Context context) {
         return getVirtualMachineScaleSetPublicIpAddressWithResponseAsync(resourceGroupName, virtualMachineScaleSetName,
             virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIpAddressName, expand, context)
-            .block();
+                .block();
     }
 
     /**
@@ -2557,7 +2557,7 @@ public final class PublicIpAddressesClientImpl implements InnerSupportsGet<Publi
         final String expand = null;
         return getVirtualMachineScaleSetPublicIpAddressWithResponse(resourceGroupName, virtualMachineScaleSetName,
             virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIpAddressName, expand, Context.NONE)
-            .getValue();
+                .getValue();
     }
 
     /**

@@ -12,8 +12,7 @@ public final class DatadogSetPasswordLinkImpl implements DatadogSetPasswordLink 
 
     private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    DatadogSetPasswordLinkImpl(
-        DatadogSetPasswordLinkInner innerObject,
+    DatadogSetPasswordLinkImpl(DatadogSetPasswordLinkInner innerObject,
         com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

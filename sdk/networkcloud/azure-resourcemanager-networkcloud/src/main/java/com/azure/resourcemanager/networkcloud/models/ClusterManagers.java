@@ -76,8 +76,8 @@ public interface ClusterManagers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the provided cluster manager along with {@link Response}.
      */
-    Response<ClusterManager> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterManagerName, Context context);
+    Response<ClusterManager> getByResourceGroupWithResponse(String resourceGroupName, String clusterManagerName,
+        Context context);
 
     /**
      * Retrieve the cluster manager.
