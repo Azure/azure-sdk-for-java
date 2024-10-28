@@ -48,7 +48,9 @@ class QuickPulseDataSender implements Runnable {
 
     private static final long TICKS_AT_EPOCH = 621355968000000000L;
 
-    QuickPulseDataSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs,  ArrayBlockingQueue<MonitoringDataPoint> sendQueue, Supplier<URL> endpointUrl, Supplier<String> instrumentationKey) {
+    QuickPulseDataSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs,
+        ArrayBlockingQueue<MonitoringDataPoint> sendQueue, Supplier<URL> endpointUrl,
+        Supplier<String> instrumentationKey) {
         this.sendQueue = sendQueue;
         this.liveMetricsRestAPIsForClientSDKs = liveMetricsRestAPIsForClientSDKs;
         this.endpointUrl = endpointUrl;
@@ -69,21 +71,22 @@ class QuickPulseDataSender implements Runnable {
                 return;
             }
             if (qpStatus != QuickPulseStatus.QP_IS_ON) {
-                logger.verbose("QuickPulseDataSender is not sending data because QP is "
-                    + qpStatus);
+                logger.verbose("QuickPulseDataSender is not sending data because QP is " + qpStatus);
                 continue;
             }
 
             long sendTime = System.nanoTime();
-            String endpointPrefix = Strings.isNullOrEmpty(redirectEndpointPrefix) ? getQuickPulseEndpoint() : redirectEndpointPrefix;
+            String endpointPrefix
+                = Strings.isNullOrEmpty(redirectEndpointPrefix) ? getQuickPulseEndpoint() : redirectEndpointPrefix;
             List<MonitoringDataPoint> dataPointList = new ArrayList<>();
             dataPointList.add(point);
             Date currentDate = new Date();
             long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
             try {
                 //TODO: populate the saved etag here for filtering
-                Mono<Response<CollectionConfigurationInfo>> responseMono =
-                    liveMetricsRestAPIsForClientSDKs.publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(), "", transmissionTimeInTicks, dataPointList);
+                Mono<Response<CollectionConfigurationInfo>> responseMono
+                    = liveMetricsRestAPIsForClientSDKs.publishNoCustomHeadersWithResponseAsync(endpointPrefix,
+                        instrumentationKey.get(), "", transmissionTimeInTicks, dataPointList);
                 if (responseMono == null) {
                     // this shouldn't happen, the mono should complete with a response or a failure
                     throw new AssertionError("http response mono returned empty");
@@ -92,7 +95,7 @@ class QuickPulseDataSender implements Runnable {
                     PublishHeaders headers = new PublishHeaders(response.getHeaders());
                     String isSubscribed = headers.getXMsQpsSubscribed();
                     this.qpStatus = getQuickPulseStatusFromHeader(isSubscribed);
-                    switch(this.qpStatus) {
+                    switch (this.qpStatus) {
                         case QP_IS_OFF:
                         case QP_IS_ON:
                             lastValidTransmission = sendTime;
@@ -114,7 +117,7 @@ class QuickPulseDataSender implements Runnable {
                     // this shouldn't happen, the mono should complete with a response or a failure
                     throw new AssertionError("http response mono returned empty");
                 }
-
+            
                 if (networkHelper.isSuccess(response)) {
                     QuickPulseHeaderInfo quickPulseHeaderInfo = networkHelper.getQuickPulseHeaderInfo(response);
                     switch (quickPulseHeaderInfo.getQuickPulseStatus()) {
@@ -123,7 +126,7 @@ class QuickPulseDataSender implements Runnable {
                             lastValidTransmission = sendTime;
                             this.quickPulseHeaderInfo = quickPulseHeaderInfo;
                             break;
-
+            
                         case ERROR:
                             onPostError(sendTime);
                             break;

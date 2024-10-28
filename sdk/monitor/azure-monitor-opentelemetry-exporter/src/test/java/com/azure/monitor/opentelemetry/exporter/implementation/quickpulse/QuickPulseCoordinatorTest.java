@@ -23,7 +23,6 @@ class QuickPulseCoordinatorTest {
     private static final HttpHeaderName QPS_SERVICE_ENDPOINT_REDIRECT
         = HttpHeaderName.fromString("x-ms-qps-service-endpoint-redirect-v2");
 
-
     @Test
     void testOnlyPings() throws InterruptedException {
         QuickPulseDataFetcher mockFetcher = mock(QuickPulseDataFetcher.class);
@@ -68,9 +67,7 @@ class QuickPulseCoordinatorTest {
         HttpHeaders rawHeaders = new HttpHeaders();
         rawHeaders.add(QPS_STATUS_HEADER, "false");
         PublishHeaders postHeaders = new PublishHeaders(rawHeaders);
-        Mockito.doReturn(postHeaders)
-            .when(mockSender)
-            .getPostResponseHeaders();
+        Mockito.doReturn(postHeaders).when(mockSender).getPostResponseHeaders();
 
         QuickPulsePingSender mockPingSender = mock(QuickPulsePingSender.class);
         HttpHeaders rawHeadersPingOn = new HttpHeaders();
@@ -80,9 +77,7 @@ class QuickPulseCoordinatorTest {
         HttpHeaders rawHeadersPingOff = new HttpHeaders();
         rawHeadersPingOff.add(QPS_STATUS_HEADER, "off");
         IsSubscribedHeaders pingHeadersOff = new IsSubscribedHeaders(rawHeadersPingOff);
-        Mockito.when(mockPingSender.ping(null))
-            .thenReturn(pingHeadersOn,
-                pingHeadersOff);
+        Mockito.when(mockPingSender.ping(null)).thenReturn(pingHeadersOn, pingHeadersOff);
 
         QuickPulseDataCollector collector = new QuickPulseDataCollector();
         QuickPulseCoordinatorInitData initData = new QuickPulseCoordinatorInitDataBuilder().withDataFetcher(mockFetcher)
@@ -134,12 +129,8 @@ class QuickPulseCoordinatorTest {
         PublishHeaders postHeadersOff = new PublishHeaders(rawPostHeaders);
 
         Mockito.doNothing().when(mockFetcher).prepareQuickPulseDataForSend();
-        Mockito.doReturn(pingHeadersOn)
-            .when(mockPingSender)
-            .ping(any());
-        Mockito.doReturn(postHeadersOff)
-            .when(mockSender)
-            .getPostResponseHeaders();
+        Mockito.doReturn(pingHeadersOn).when(mockPingSender).ping(any());
+        Mockito.doReturn(postHeadersOff).when(mockSender).getPostResponseHeaders();
 
         QuickPulseCoordinatorInitData initData = new QuickPulseCoordinatorInitDataBuilder().withDataFetcher(mockFetcher)
             .withDataSender(mockSender)

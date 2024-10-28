@@ -132,7 +132,7 @@ final class QuickPulseCoordinator implements Runnable {
         if (!Strings.isNullOrEmpty(redirectLink)) {
             qpsServiceRedirectedEndpoint = redirectLink;
         }
-
+    
         long newPollingInterval = currentQuickPulseHeaderInfo.getQpsServicePollingInterval();
         if (newPollingInterval > 0) {
             qpsServicePollingIntervalHintMillis = newPollingInterval;

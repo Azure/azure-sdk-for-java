@@ -65,7 +65,8 @@ class QuickPulsePingSenderTests {
             .tracer(new NoopTracer())
             .build();
         LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
-        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs = builder.pipeline(httpPipeline).buildClient();
+        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
+            = builder.pipeline(httpPipeline).buildClient();
         QuickPulsePingSender quickPulsePingSender
             = new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
                 connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");

@@ -16,9 +16,7 @@ import org.slf4j.MDC;
 import java.io.IOException;
 import java.net.URL;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.function.Supplier;
 
@@ -39,8 +37,8 @@ class QuickPulseDataFetcher {
 
     private final String sdkVersion;
 
-    public QuickPulseDataFetcher(QuickPulseDataCollector collector, ArrayBlockingQueue<MonitoringDataPoint> sendQueue, String roleName, String instanceName,
-        String machineName, String quickPulseId) {
+    public QuickPulseDataFetcher(QuickPulseDataCollector collector, ArrayBlockingQueue<MonitoringDataPoint> sendQueue,
+        String roleName, String instanceName, String machineName, String quickPulseId) {
         this.collector = collector;
         this.sendQueue = sendQueue;
         this.roleName = roleName;
@@ -69,7 +67,7 @@ class QuickPulseDataFetcher {
                 return;
             }
             //String endpointPrefix
-                //= Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
+            //= Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
 
             //HttpRequest request = networkHelper.buildRequest(currentDate, this.getEndpointUrl(endpointPrefix));
             //request.setBody(buildPostEntity(counters));
@@ -140,58 +138,34 @@ class QuickPulseDataFetcher {
         return point;
     }
 
-    private static List<MetricPoint>
-        addMetricsToMonitoringDataPoint(QuickPulseDataCollector.FinalCounters counters) {
+    private static List<MetricPoint> addMetricsToMonitoringDataPoint(QuickPulseDataCollector.FinalCounters counters) {
         List<MetricPoint> metricsList = new ArrayList<>();
 
-        List<String> metricNames = new ArrayList<>(
-            List.of("\\ApplicationInsights\\Requests/Sec",
-                "\\ApplicationInsights\\Requests Failed/Sec",
-                "\\ApplicationInsights\\Requests Succeeded/Sec",
-                "\\ApplicationInsights\\Dependency Calls/Sec",
-                "\\ApplicationInsights\\Dependency Calls Failed/Sec",
-                "\\ApplicationInsights\\Dependency Calls Succeeded/Sec",
-                "\\ApplicationInsights\\Exceptions/Sec",
-                "\\Memory\\Committed Bytes", // TODO: remove old memory counter name when service side makes the UI change
-                "\\Process\\Physical Bytes",
-                "\\Processor(_Total)\\% Processor Time", // TODO: remove old cpu counter name when service side makes the UI change
-                "\\% Process\\Processor Time Normalized")
-        );
-
-        List<Double> values = new ArrayList<>(
-            List.of((double) counters.requests,
-                (double)counters.unsuccessfulRequests,
-                (double)counters.requests - counters.unsuccessfulRequests,
-                (double)counters.rdds,
-                (double)counters.unsuccessfulRdds,
-                (double)counters.rdds - counters.unsuccessfulRequests,
-                (double)counters.exceptions,
-                (double)counters.processPhysicalMemory,
-                (double)counters.processPhysicalMemory,
-                counters.processNormalizedCpuUsage,
-                counters.processNormalizedCpuUsage)
-        );
-
-        for (int i = 0; i < metricNames.size(); i++) {
-            MetricPoint point = new MetricPoint();
-            point.setName(metricNames.get(i));
-            point.setValue(values.get(i));
-            point.setWeight(1);
-            metricsList.add(point);
-        }
-
+        Map<String, Double> metrics = new HashMap<>();
+        metrics.put("\\ApplicationInsights\\Requests/Sec", (double) counters.requests);
         if (counters.requests != 0) {
-            MetricPoint point = new MetricPoint();
-            point.setName("\\ApplicationInsights\\Request Duration");
-            point.setValue(counters.requestsDuration / counters.requests);
-            point.setWeight(1);
-            metricsList.add(point);
+            metrics.put("\\ApplicationInsights\\Request Duration", counters.requestsDuration / counters.requests);
         }
-
+        metrics.put("\\ApplicationInsights\\Requests Failed/Sec", (double) counters.unsuccessfulRequests);
+        metrics.put("\\ApplicationInsights\\Requests Succeeded/Sec",
+            (double) counters.requests - counters.unsuccessfulRequests);
+        metrics.put("\\ApplicationInsights\\Dependency Calls/Sec", (double) counters.rdds);
         if (counters.rdds != 0) {
+            metrics.put("\\ApplicationInsights\\Dependency Call Duration", counters.rddsDuration / counters.rdds);
+        }
+        metrics.put("\\ApplicationInsights\\Dependency Calls Failed/Sec", (double) counters.unsuccessfulRdds);
+        metrics.put("\\ApplicationInsights\\Dependency Calls Succeeded/Sec",
+            (double) counters.rdds - counters.unsuccessfulRequests);
+        metrics.put("\\ApplicationInsights\\Exceptions/Sec", (double) counters.exceptions);
+        metrics.put("\\Memory\\Committed Bytes", (double) counters.processPhysicalMemory); // TODO: remove old memory counter name when service side makes the UI change
+        metrics.put("\\Process\\Physical Bytes", (double) counters.processPhysicalMemory);
+        metrics.put("\\Processor(_Total)\\% Processor Time", counters.processNormalizedCpuUsage); // TODO: remove old cpu counter name when service side makes the UI change
+        metrics.put("\\% Process\\Processor Time Normalized", counters.processNormalizedCpuUsage);
+
+        for (Map.Entry<String, Double> entry : metrics.entrySet()) {
             MetricPoint point = new MetricPoint();
-            point.setName("\\ApplicationInsights\\Dependency Call Duration");
-            point.setValue(counters.rddsDuration / counters.rdds);
+            point.setName(entry.getKey());
+            point.setValue(entry.getValue());
             point.setWeight(1);
             metricsList.add(point);
         }

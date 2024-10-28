@@ -188,7 +188,8 @@ final class QuickPulseDataCollector {
         requestDoc.setResponseCode(requestTelemetry.getResponseCode());
         requestDoc.setName(requestTelemetry.getName());
         requestDoc.setUrl(requestTelemetry.getUrl());
-        requestDoc.setProperties(setCustomDimensions(requestTelemetry.getProperties(), requestTelemetry.getMeasurements()));
+        requestDoc
+            .setProperties(setCustomDimensions(requestTelemetry.getProperties(), requestTelemetry.getMeasurements()));
         synchronized (counters.documentList) {
             if (counters.documentList.size() < Counters.MAX_DOCUMENTS_SIZE) {
                 counters.documentList.add(requestDoc);
@@ -196,7 +197,8 @@ final class QuickPulseDataCollector {
         }
     }
 
-    private static List<KeyValuePairString> setCustomDimensions(@Nullable Map<String, String> properties, @Nullable Map<String, Double> measurements) {
+    private static List<KeyValuePairString> setCustomDimensions(@Nullable Map<String, String> properties,
+        @Nullable Map<String, Double> measurements) {
         List<KeyValuePairString> customDims = new ArrayList<>();
 
         if (properties != null) {

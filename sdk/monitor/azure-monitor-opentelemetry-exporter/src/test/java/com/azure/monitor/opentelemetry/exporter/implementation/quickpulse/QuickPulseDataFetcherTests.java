@@ -27,8 +27,8 @@ class QuickPulseDataFetcherTests {
     @Test
     void testGetCurrentSdkVersion() {
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
-        QuickPulseDataFetcher dataFetcher = new QuickPulseDataFetcher(new QuickPulseDataCollector(), null,
-              null, null, null, null);
+        QuickPulseDataFetcher dataFetcher
+            = new QuickPulseDataFetcher(new QuickPulseDataCollector(), null, null, null, null, null);
         String sdkVersion = dataFetcher.getCurrentSdkVersion();
         assertThat(sdkVersion).isNotNull();
         // TODO: SDK version is hardcoded to unknown - this test seems not be be accurate/useful at the moment
@@ -48,7 +48,8 @@ class QuickPulseDataFetcherTests {
             .tracer(new NoopTracer())
             .build();
         LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
-        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs = builder.pipeline(httpPipeline).buildClient();
+        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
+            = builder.pipeline(httpPipeline).buildClient();
         QuickPulsePingSender quickPulsePingSender
             = new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
                 connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");

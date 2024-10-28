@@ -157,11 +157,11 @@ public final class LiveMetricsRestAPIsForClientSDKs {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceErrorException.class)
         Mono<ResponseBase<PublishHeaders, CollectionConfigurationInfo>> publish(@HostParam("endpoint") String endpoint,
-                                                                                @QueryParam("api-version") String apiVersion, @QueryParam("ikey") String ikey,
-                                                                                @HeaderParam("x-ms-qps-configuration-etag") String configurationEtag,
-                                                                                @HeaderParam("x-ms-qps-transmission-time") Long transmissionTime,
-                                                                                @BodyParam("application/json") List<MonitoringDataPoint> monitoringDataPoints,
-                                                                                @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("ikey") String ikey,
+            @HeaderParam("x-ms-qps-configuration-etag") String configurationEtag,
+            @HeaderParam("x-ms-qps-transmission-time") Long transmissionTime,
+            @BodyParam("application/json") List<MonitoringDataPoint> monitoringDataPoints,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/QuickPulseService.svc/post")
         @ExpectedResponses({ 200 })

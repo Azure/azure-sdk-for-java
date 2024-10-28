@@ -42,7 +42,7 @@ class QuickPulsePingSender {
     //private final HttpPipeline httpPipeline;
     private final LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs;
     //private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
-   // private volatile QuickPulseEnvelope pingEnvelope; // cached for performance
+    // private volatile QuickPulseEnvelope pingEnvelope; // cached for performance
 
     private final Supplier<URL> endpointUrl;
     private final Supplier<String> instrumentationKey;
@@ -57,8 +57,9 @@ class QuickPulsePingSender {
 
     private static final HttpHeaderName QPS_STATUS_HEADER = HttpHeaderName.fromString("x-ms-qps-subscribed");
 
-    QuickPulsePingSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs, Supplier<URL> endpointUrl, Supplier<String> instrumentationKey,
-        String roleName, String instanceName, String machineName, String quickPulseId, String sdkVersion) {
+    QuickPulsePingSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs, Supplier<URL> endpointUrl,
+        Supplier<String> instrumentationKey, String roleName, String instanceName, String machineName,
+        String quickPulseId, String sdkVersion) {
         this.liveMetricsRestAPIsForClientSDKs = liveMetricsRestAPIsForClientSDKs;
         this.endpointUrl = endpointUrl;
         this.instrumentationKey = instrumentationKey;
@@ -88,10 +89,10 @@ class QuickPulsePingSender {
         long sendTime = System.nanoTime();
         Mono<Response<CollectionConfigurationInfo>> responseMono = null;
 
-
         try {
-            responseMono = liveMetricsRestAPIsForClientSDKs.isSubscribedNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey, transmissionTimeInTicks, machineName, instanceName,
-                quickPulseId, roleName, String.valueOf(QuickPulse.QP_INVARIANT_VERSION), "", buildMonitoringDataPoint());
+            responseMono = liveMetricsRestAPIsForClientSDKs.isSubscribedNoCustomHeadersWithResponseAsync(endpointPrefix,
+                instrumentationKey, transmissionTimeInTicks, machineName, instanceName, quickPulseId, roleName,
+                String.valueOf(QuickPulse.QP_INVARIANT_VERSION), "", buildMonitoringDataPoint());
             responseMono.doOnNext(response -> { //do on Success or do on Next??
                 responseHeaders = new IsSubscribedHeaders(response.getHeaders());
                 String isSubscribed = responseHeaders.getXMsQpsSubscribed();
@@ -110,7 +111,6 @@ class QuickPulsePingSender {
         }
         return onPingError(sendTime);
     }
-
 
     // visible for testing
     String getQuickPulsePingUri(String endpointPrefix) {
@@ -138,7 +138,7 @@ class QuickPulsePingSender {
             pingEnvelope.setVersion(sdkVersion);
         }
         pingEnvelope.setTimeStamp("/Date(" + timeInMillis + ")/");
-
+    
         // By default '/' is not escaped in JSON, so we need to escape it manually as the backend requires it.
         return pingEnvelope.toJsonString().replace("/", "\\/");
     }*/

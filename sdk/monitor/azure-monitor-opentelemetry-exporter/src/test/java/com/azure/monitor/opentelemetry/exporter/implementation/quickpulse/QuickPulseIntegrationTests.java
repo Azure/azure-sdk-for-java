@@ -35,7 +35,8 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
 
         LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
         HttpPipeline httpPipeline = getHttpPipeline();
-        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs = builder.pipeline(httpPipeline).buildClient();
+        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
+            = builder.pipeline(httpPipeline).buildClient();
         return new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
             connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");
     }
@@ -43,7 +44,8 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
     private QuickPulsePingSender getQuickPulsePingSenderWithAuthentication() {
         LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
         HttpPipeline httpPipeline = getHttpPipelineWithAuthentication();
-        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs = builder.pipeline(httpPipeline).buildClient();
+        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
+            = builder.pipeline(httpPipeline).buildClient();
         return new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
             connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");
     }
@@ -51,15 +53,18 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
     private QuickPulsePingSender getQuickPulsePingSenderWithValidator(HttpPipelinePolicy validator) {
         LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
         HttpPipeline httpPipeline = getHttpPipeline(validator);
-        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs = builder.pipeline(httpPipeline).buildClient();
+        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
+            = builder.pipeline(httpPipeline).buildClient();
         return new QuickPulsePingSender(liveMetricsRestAPIsForClientSDKs, connectionString::getLiveEndpoint,
             connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");
     }
 
-    private QuickPulseDataSender getQuickPulseDataSenderWithValidator(HttpPipelinePolicy validator, ArrayBlockingQueue<MonitoringDataPoint> sendQueue) {
+    private QuickPulseDataSender getQuickPulseDataSenderWithValidator(HttpPipelinePolicy validator,
+        ArrayBlockingQueue<MonitoringDataPoint> sendQueue) {
         LiveMetricsRestAPIsForClientSDKsBuilder builder = new LiveMetricsRestAPIsForClientSDKsBuilder();
         HttpPipeline httpPipeline = getHttpPipeline(validator);
-        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs = builder.pipeline(httpPipeline).buildClient();
+        LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs
+            = builder.pipeline(httpPipeline).buildClient();
         return new QuickPulseDataSender(liveMetricsRestAPIsForClientSDKs, sendQueue, connectionString::getLiveEndpoint,
             connectionString::getInstrumentationKey);
     }
@@ -110,10 +115,11 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
             = getQuickPulsePingSenderWithValidator(new ValidationPolicy(pingCountDown, expectedPingRequestBody));
         IsSubscribedHeaders pingHeaders = pingSender.ping(null);
 
-        QuickPulseDataSender dataSender = getQuickPulseDataSenderWithValidator(new ValidationPolicy(postCountDown, expectedPostRequestBody), sendQueue);
+        QuickPulseDataSender dataSender = getQuickPulseDataSenderWithValidator(
+            new ValidationPolicy(postCountDown, expectedPostRequestBody), sendQueue);
         QuickPulseDataCollector collector = new QuickPulseDataCollector();
         QuickPulseDataFetcher dataFetcher
-            = new QuickPulseDataFetcher(collector, sendQueue,  null, "instance1", "machine1", null);
+            = new QuickPulseDataFetcher(collector, sendQueue, null, "instance1", "machine1", null);
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(connectionString::getInstrumentationKey);
