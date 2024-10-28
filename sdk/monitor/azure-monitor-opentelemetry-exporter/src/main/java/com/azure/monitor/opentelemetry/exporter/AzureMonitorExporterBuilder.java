@@ -52,7 +52,6 @@ class AzureMonitorExporterBuilder {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorExporterBuilder.class);
 
-    private static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com//.default";
 
     private static final String STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME
