@@ -192,6 +192,7 @@ extends:
                 - reactor_2020
                 - reactor_2022
                 - reactor_2023
+                - reactor_2024
               TestGoals: surefire:test
 
     LiveTestStages:
