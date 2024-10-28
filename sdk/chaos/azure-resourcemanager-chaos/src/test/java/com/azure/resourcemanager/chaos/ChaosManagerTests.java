@@ -41,22 +41,20 @@ public class ChaosManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        resourceManager = ResourceManager
-          .configure()
-          .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-          .authenticate(credential, profile)
-          .withDefaultSubscription();
+        resourceManager = ResourceManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
 
-        chaosManager = ChaosManager
-          .configure()
-          .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-          .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-          .authenticate(credential, profile);
+        chaosManager = ChaosManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .authenticate(credential, profile);
 
-        keyVaultManager = KeyVaultManager
-          .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-          .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-          .authenticate(credential, profile);
+        keyVaultManager = KeyVaultManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");

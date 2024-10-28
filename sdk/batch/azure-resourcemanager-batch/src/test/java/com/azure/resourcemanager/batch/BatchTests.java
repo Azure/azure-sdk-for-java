@@ -58,21 +58,20 @@ public class BatchTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        resourceManager = ResourceManager
-          .configure()
-          .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-          .authenticate(credential, profile)
-          .withDefaultSubscription();
+        resourceManager = ResourceManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
 
-        batchManager = BatchManager
-          .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-          .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-          .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+        batchManager = BatchManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .authenticate(credential, profile);
 
-        storageManager = StorageManager
-          .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-          .withPolicy(new ProviderRegistrationPolicy(resourceManager))
-          .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+        storageManager = StorageManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .authenticate(credential, profile);
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
         testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
@@ -80,8 +79,8 @@ public class BatchTests extends TestProxyTestBase {
             resourceGroup = testResourceGroup;
         } else {
             resourceManager.resourceGroups().define(resourceGroup)
-              .withRegion(REGION)
-              .create();
+                .withRegion(REGION)
+                .create();
         }
     }
 
