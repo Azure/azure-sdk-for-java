@@ -5,51 +5,55 @@
 package com.azure.resourcemanager.reservations.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.models.ExchangeOperationResultStatus;
 import com.azure.resourcemanager.reservations.models.ExchangeResponseProperties;
 import com.azure.resourcemanager.reservations.models.OperationResultError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Exchange operation result. */
+/**
+ * Exchange operation result.
+ */
 @Fluent
-public final class ExchangeOperationResultResponseInner {
+public final class ExchangeOperationResultResponseInner
+    implements JsonSerializable<ExchangeOperationResultResponseInner> {
     /*
      * It should match what is used to GET the operation result.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * It must match the last segment of the id field, and will typically be a GUID / system generated value.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Status of the operation.
      */
-    @JsonProperty(value = "status")
     private ExchangeOperationResultStatus status;
 
     /*
      * Exchange response properties
      */
-    @JsonProperty(value = "properties")
     private ExchangeResponseProperties properties;
 
     /*
      * Required if status == failed or status == canceled.
      */
-    @JsonProperty(value = "error")
     private OperationResultError error;
 
-    /** Creates an instance of ExchangeOperationResultResponseInner class. */
+    /**
+     * Creates an instance of ExchangeOperationResultResponseInner class.
+     */
     public ExchangeOperationResultResponseInner() {
     }
 
     /**
      * Get the id property: It should match what is used to GET the operation result.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -58,7 +62,7 @@ public final class ExchangeOperationResultResponseInner {
 
     /**
      * Set the id property: It should match what is used to GET the operation result.
-     *
+     * 
      * @param id the id value to set.
      * @return the ExchangeOperationResultResponseInner object itself.
      */
@@ -70,7 +74,7 @@ public final class ExchangeOperationResultResponseInner {
     /**
      * Get the name property: It must match the last segment of the id field, and will typically be a GUID / system
      * generated value.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -80,7 +84,7 @@ public final class ExchangeOperationResultResponseInner {
     /**
      * Set the name property: It must match the last segment of the id field, and will typically be a GUID / system
      * generated value.
-     *
+     * 
      * @param name the name value to set.
      * @return the ExchangeOperationResultResponseInner object itself.
      */
@@ -91,7 +95,7 @@ public final class ExchangeOperationResultResponseInner {
 
     /**
      * Get the status property: Status of the operation.
-     *
+     * 
      * @return the status value.
      */
     public ExchangeOperationResultStatus status() {
@@ -100,7 +104,7 @@ public final class ExchangeOperationResultResponseInner {
 
     /**
      * Set the status property: Status of the operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the ExchangeOperationResultResponseInner object itself.
      */
@@ -111,7 +115,7 @@ public final class ExchangeOperationResultResponseInner {
 
     /**
      * Get the properties property: Exchange response properties.
-     *
+     * 
      * @return the properties value.
      */
     public ExchangeResponseProperties properties() {
@@ -120,7 +124,7 @@ public final class ExchangeOperationResultResponseInner {
 
     /**
      * Set the properties property: Exchange response properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ExchangeOperationResultResponseInner object itself.
      */
@@ -131,7 +135,7 @@ public final class ExchangeOperationResultResponseInner {
 
     /**
      * Get the error property: Required if status == failed or status == canceled.
-     *
+     * 
      * @return the error value.
      */
     public OperationResultError error() {
@@ -140,7 +144,7 @@ public final class ExchangeOperationResultResponseInner {
 
     /**
      * Set the error property: Required if status == failed or status == canceled.
-     *
+     * 
      * @param error the error value to set.
      * @return the ExchangeOperationResultResponseInner object itself.
      */
@@ -151,7 +155,7 @@ public final class ExchangeOperationResultResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -161,5 +165,56 @@ public final class ExchangeOperationResultResponseInner {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExchangeOperationResultResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExchangeOperationResultResponseInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExchangeOperationResultResponseInner.
+     */
+    public static ExchangeOperationResultResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExchangeOperationResultResponseInner deserializedExchangeOperationResultResponseInner
+                = new ExchangeOperationResultResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedExchangeOperationResultResponseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedExchangeOperationResultResponseInner.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedExchangeOperationResultResponseInner.status
+                        = ExchangeOperationResultStatus.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedExchangeOperationResultResponseInner.properties
+                        = ExchangeResponseProperties.fromJson(reader);
+                } else if ("error".equals(fieldName)) {
+                    deserializedExchangeOperationResultResponseInner.error = OperationResultError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExchangeOperationResultResponseInner;
+        });
     }
 }

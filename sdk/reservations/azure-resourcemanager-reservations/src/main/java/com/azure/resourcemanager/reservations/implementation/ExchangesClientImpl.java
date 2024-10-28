@@ -31,17 +31,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExchangesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExchangesClient.
+ */
 public final class ExchangesClientImpl implements ExchangesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ExchangesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureReservationApiImpl client;
 
     /**
      * Initializes an instance of ExchangesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExchangesClientImpl(AzureReservationApiImpl client) {
@@ -68,9 +74,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -97,9 +103,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,9 +132,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -146,9 +152,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -168,9 +174,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -185,9 +191,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,9 +209,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -219,9 +225,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,9 +242,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -252,9 +258,9 @@ public final class ExchangesClientImpl implements ExchangesClient {
 
     /**
      * Exchange Reservation(s)
-     *
-     * <p>Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
-     *
+     * 
+     * Returns one or more `Reservations` in exchange for one or more `Reservation` purchases.
+     * 
      * @param body Request containing the refunds and purchases that need to be executed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

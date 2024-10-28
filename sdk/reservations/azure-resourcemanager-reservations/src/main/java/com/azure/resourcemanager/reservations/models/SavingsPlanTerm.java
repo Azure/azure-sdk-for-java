@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Represent savings plan term in ISO 8601 format. */
+/**
+ * Represent savings plan term in ISO 8601 format.
+ */
 public final class SavingsPlanTerm extends ExpandableStringEnum<SavingsPlanTerm> {
-    /** Static value P1Y for SavingsPlanTerm. */
+    /**
+     * Static value P1Y for SavingsPlanTerm.
+     */
     public static final SavingsPlanTerm P1Y = fromString("P1Y");
 
-    /** Static value P3Y for SavingsPlanTerm. */
+    /**
+     * Static value P3Y for SavingsPlanTerm.
+     */
     public static final SavingsPlanTerm P3Y = fromString("P3Y");
 
     /**
      * Creates a new instance of SavingsPlanTerm value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class SavingsPlanTerm extends ExpandableStringEnum<SavingsPlanTerm>
 
     /**
      * Creates or finds a SavingsPlanTerm from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SavingsPlanTerm.
      */
-    @JsonCreator
     public static SavingsPlanTerm fromString(String name) {
         return fromString(name, SavingsPlanTerm.class);
     }
 
     /**
      * Gets known SavingsPlanTerm values.
-     *
+     * 
      * @return known SavingsPlanTerm values.
      */
     public static Collection<SavingsPlanTerm> values() {

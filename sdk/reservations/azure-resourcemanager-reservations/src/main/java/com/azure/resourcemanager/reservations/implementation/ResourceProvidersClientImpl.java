@@ -31,17 +31,23 @@ import com.azure.resourcemanager.reservations.fluent.models.CatalogInner;
 import com.azure.resourcemanager.reservations.models.CatalogsResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureReservationApiImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(AzureReservationApiImpl client) {
@@ -86,11 +92,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Get the regions and skus that are available for RI purchase for the specified Azure subscription.
-     *
+     * 
      * @param subscriptionId Id of the subscription.
      * @param reservedResourceType The type of the resource for which the skus should be provided.
      * @param location Filters the skus based on the location specified in this parameter. This can be an Azure region
-     *     or global.
+     * or global.
      * @param publisherId Publisher id used to get the third party products.
      * @param offerId Offer id used to get the third party products.
      * @param planId Plan id used to get the third party products.
@@ -101,7 +107,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the regions and skus that are available for RI purchase for the specified Azure subscription along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CatalogInner>> listSinglePageAsync(String subscriptionId, String reservedResourceType,
@@ -125,11 +131,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Get the regions and skus that are available for RI purchase for the specified Azure subscription.
-     *
+     * 
      * @param subscriptionId Id of the subscription.
      * @param reservedResourceType The type of the resource for which the skus should be provided.
      * @param location Filters the skus based on the location specified in this parameter. This can be an Azure region
-     *     or global.
+     * or global.
      * @param publisherId Publisher id used to get the third party products.
      * @param offerId Offer id used to get the third party products.
      * @param planId Plan id used to get the third party products.
@@ -141,7 +147,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the regions and skus that are available for RI purchase for the specified Azure subscription along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CatalogInner>> listSinglePageAsync(String subscriptionId, String reservedResourceType,
@@ -166,11 +172,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Get the regions and skus that are available for RI purchase for the specified Azure subscription.
-     *
+     * 
      * @param subscriptionId Id of the subscription.
      * @param reservedResourceType The type of the resource for which the skus should be provided.
      * @param location Filters the skus based on the location specified in this parameter. This can be an Azure region
-     *     or global.
+     * or global.
      * @param publisherId Publisher id used to get the third party products.
      * @param offerId Offer id used to get the third party products.
      * @param planId Plan id used to get the third party products.
@@ -181,7 +187,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the regions and skus that are available for RI purchase for the specified Azure subscription as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CatalogInner> listAsync(String subscriptionId, String reservedResourceType, String location,
@@ -192,13 +198,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Get the regions and skus that are available for RI purchase for the specified Azure subscription.
-     *
+     * 
      * @param subscriptionId Id of the subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the regions and skus that are available for RI purchase for the specified Azure subscription as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CatalogInner> listAsync(String subscriptionId) {
@@ -216,11 +222,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Get the regions and skus that are available for RI purchase for the specified Azure subscription.
-     *
+     * 
      * @param subscriptionId Id of the subscription.
      * @param reservedResourceType The type of the resource for which the skus should be provided.
      * @param location Filters the skus based on the location specified in this parameter. This can be an Azure region
-     *     or global.
+     * or global.
      * @param publisherId Publisher id used to get the third party products.
      * @param offerId Offer id used to get the third party products.
      * @param planId Plan id used to get the third party products.
@@ -232,7 +238,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the regions and skus that are available for RI purchase for the specified Azure subscription as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CatalogInner> listAsync(String subscriptionId, String reservedResourceType, String location,
@@ -244,13 +250,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Get the regions and skus that are available for RI purchase for the specified Azure subscription.
-     *
+     * 
      * @param subscriptionId Id of the subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the regions and skus that are available for RI purchase for the specified Azure subscription as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CatalogInner> list(String subscriptionId) {
@@ -268,11 +274,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Get the regions and skus that are available for RI purchase for the specified Azure subscription.
-     *
+     * 
      * @param subscriptionId Id of the subscription.
      * @param reservedResourceType The type of the resource for which the skus should be provided.
      * @param location Filters the skus based on the location specified in this parameter. This can be an Azure region
-     *     or global.
+     * or global.
      * @param publisherId Publisher id used to get the third party products.
      * @param offerId Offer id used to get the third party products.
      * @param planId Plan id used to get the third party products.
@@ -284,7 +290,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the regions and skus that are available for RI purchase for the specified Azure subscription as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CatalogInner> list(String subscriptionId, String reservedResourceType, String location,
@@ -295,16 +301,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Get list of applicable `Reservation`s.
-     *
-     * <p>Get applicable `Reservation`s that are applied to this subscription or a resource group under this
-     * subscription.
-     *
+     * 
+     * Get applicable `Reservation`s that are applied to this subscription or a resource group under this subscription.
+     * 
      * @param subscriptionId Id of the subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return applicable `Reservation`s that are applied to this subscription or a resource group under this
-     *     subscription along with {@link Response} on successful completion of {@link Mono}.
+     * subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AppliedReservationsInner>> getAppliedReservationListWithResponseAsync(String subscriptionId) {
@@ -325,17 +330,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Get list of applicable `Reservation`s.
-     *
-     * <p>Get applicable `Reservation`s that are applied to this subscription or a resource group under this
-     * subscription.
-     *
+     * 
+     * Get applicable `Reservation`s that are applied to this subscription or a resource group under this subscription.
+     * 
      * @param subscriptionId Id of the subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return applicable `Reservation`s that are applied to this subscription or a resource group under this
-     *     subscription along with {@link Response} on successful completion of {@link Mono}.
+     * subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AppliedReservationsInner>> getAppliedReservationListWithResponseAsync(String subscriptionId,
@@ -356,16 +360,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Get list of applicable `Reservation`s.
-     *
-     * <p>Get applicable `Reservation`s that are applied to this subscription or a resource group under this
-     * subscription.
-     *
+     * 
+     * Get applicable `Reservation`s that are applied to this subscription or a resource group under this subscription.
+     * 
      * @param subscriptionId Id of the subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return applicable `Reservation`s that are applied to this subscription or a resource group under this
-     *     subscription on successful completion of {@link Mono}.
+     * subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AppliedReservationsInner> getAppliedReservationListAsync(String subscriptionId) {
@@ -375,17 +378,16 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Get list of applicable `Reservation`s.
-     *
-     * <p>Get applicable `Reservation`s that are applied to this subscription or a resource group under this
-     * subscription.
-     *
+     * 
+     * Get applicable `Reservation`s that are applied to this subscription or a resource group under this subscription.
+     * 
      * @param subscriptionId Id of the subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return applicable `Reservation`s that are applied to this subscription or a resource group under this
-     *     subscription along with {@link Response}.
+     * subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AppliedReservationsInner> getAppliedReservationListWithResponse(String subscriptionId,
@@ -395,16 +397,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Get list of applicable `Reservation`s.
-     *
-     * <p>Get applicable `Reservation`s that are applied to this subscription or a resource group under this
-     * subscription.
-     *
+     * 
+     * Get applicable `Reservation`s that are applied to this subscription or a resource group under this subscription.
+     * 
      * @param subscriptionId Id of the subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return applicable `Reservation`s that are applied to this subscription or a resource group under this
-     *     subscription.
+     * subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AppliedReservationsInner getAppliedReservationList(String subscriptionId) {
@@ -413,14 +414,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of catalogs and pagination information along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CatalogInner>> getCatalogNextSinglePageAsync(String nextLink) {
@@ -441,15 +441,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of catalogs and pagination information along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CatalogInner>> getCatalogNextSinglePageAsync(String nextLink, Context context) {
