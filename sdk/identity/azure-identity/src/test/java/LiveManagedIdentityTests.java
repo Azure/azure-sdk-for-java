@@ -70,9 +70,9 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         //Setup Env
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
-        String spClientId = configuration.get("IDENTITY_CLIENT_ID");
-        String secret = configuration.get("IDENTITY_CLIENT_SECRET");
-        String tenantId = configuration.get("IDENTITY_TENANT_ID");
+        String spClientId = configuration.get("ARM_CLIENT_ID");
+        String oidc = configuration.get("ARM_OIDC_TOKEN");
+        String tenantId = configuration.get("ARM_TENANT_ID");
         String resourceGroup = configuration.get("IDENTITY_RESOURCE_GROUP");
         String aksCluster = configuration.get("IDENTITY_AKS_CLUSTER_NAME");
         String subscriptionId = configuration.get("IDENTITY_SUBSCRIPTION_ID");
@@ -82,7 +82,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         String azPath = runCommand(pathCommand, "az").trim();
         String kubectlPath = runCommand(pathCommand, "kubectl").trim();
 
-        runCommand(azPath, "login",  "--service-principal", "-u", spClientId, "-p", secret, "--tenant", tenantId);
+        runCommand(azPath, "login", "--federated-token",oidc,  "--service-principal", "-u", spClientId, "--tenant", tenantId);
         runCommand(azPath, "account", "set", "--subscription", subscriptionId);
         runCommand(azPath, "aks", "get-credentials", "--resource-group", resourceGroup, "--name", aksCluster,
             "--overwrite-existing");
