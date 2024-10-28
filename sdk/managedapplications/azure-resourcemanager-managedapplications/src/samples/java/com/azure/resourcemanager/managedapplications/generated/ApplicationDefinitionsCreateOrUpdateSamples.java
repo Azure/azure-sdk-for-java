@@ -8,31 +8,29 @@ import com.azure.resourcemanager.managedapplications.models.ApplicationAuthoriza
 import com.azure.resourcemanager.managedapplications.models.ApplicationLockLevel;
 import java.util.Arrays;
 
-/** Samples for ApplicationDefinitions CreateOrUpdate. */
+/**
+ * Samples for ApplicationDefinitions CreateOrUpdate.
+ */
 public final class ApplicationDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/createOrUpdateApplicationDefinition.json
+     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/
+     * createOrUpdateApplicationDefinition.json
      */
     /**
      * Sample code: Create or update managed application definition.
-     *
+     * 
      * @param manager Entry point to ApplicationManager.
      */
     public static void createOrUpdateManagedApplicationDefinition(
         com.azure.resourcemanager.managedapplications.ApplicationManager manager) {
-        manager
-            .applicationDefinitions()
+        manager.applicationDefinitions()
             .define("myManagedApplicationDef")
             .withRegion((String) null)
             .withExistingResourceGroup("rg")
             .withLockLevel(ApplicationLockLevel.NONE)
             .withDisplayName("myManagedApplicationDef")
-            .withAuthorizations(
-                Arrays
-                    .asList(
-                        new ApplicationAuthorization()
-                            .withPrincipalId("validprincipalguid")
-                            .withRoleDefinitionId("validroleguid")))
+            .withAuthorizations(Arrays.asList(new ApplicationAuthorization().withPrincipalId("validprincipalguid")
+                .withRoleDefinitionId("validroleguid")))
             .withDescription("myManagedApplicationDef description")
             .withPackageFileUri("https://path/to/packagezipfile")
             .create();
