@@ -110,9 +110,8 @@ public final class EventModelInner {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model EventModelInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model EventModelInner"));
         } else {
             properties().validate();
         }

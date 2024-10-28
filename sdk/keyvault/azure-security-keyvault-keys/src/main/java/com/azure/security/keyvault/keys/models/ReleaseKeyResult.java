@@ -11,7 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The release result, containing the released key. */
+/**
+ * The release result, containing the released key.
+ */
 @Immutable
 public final class ReleaseKeyResult implements JsonSerializable<ReleaseKeyResult> {
     /*
@@ -19,18 +21,24 @@ public final class ReleaseKeyResult implements JsonSerializable<ReleaseKeyResult
      */
     private String value;
 
-    /** Creates an instance of ReleaseKeyResult class. */
-    public ReleaseKeyResult() {}
+    /**
+     * Creates an instance of ReleaseKeyResult class.
+     */
+    public ReleaseKeyResult() {
+    }
 
     /**
      * Get the value property: A signed object containing the released key.
-     *
+     * 
      * @return the value value.
      */
     public String getValue() {
         return this.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -39,28 +47,27 @@ public final class ReleaseKeyResult implements JsonSerializable<ReleaseKeyResult
 
     /**
      * Reads an instance of ReleaseKeyResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ReleaseKeyResult if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ReleaseKeyResult.
      */
     public static ReleaseKeyResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    ReleaseKeyResult deserializedReleaseKeyResult = new ReleaseKeyResult();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            ReleaseKeyResult deserializedReleaseKeyResult = new ReleaseKeyResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            deserializedReleaseKeyResult.value = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("value".equals(fieldName)) {
+                    deserializedReleaseKeyResult.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedReleaseKeyResult;
-                });
+            return deserializedReleaseKeyResult;
+        });
     }
 }

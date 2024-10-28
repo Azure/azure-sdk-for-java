@@ -38,17 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VNetPeeringsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VNetPeeringsClient.
+ */
 public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final VNetPeeringsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureDatabricksManagementClientImpl client;
 
     /**
      * Initializes an instance of VNetPeeringsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     VNetPeeringsClientImpl(AzureDatabricksManagementClientImpl client) {
@@ -113,7 +119,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Gets the workspace vNet Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -153,7 +159,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Gets the workspace vNet Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -193,7 +199,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Gets the workspace vNet Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -211,7 +217,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Gets the workspace vNet Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -229,7 +235,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Gets the workspace vNet Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -245,7 +251,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Deletes the workspace vNetPeering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -285,7 +291,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Deletes the workspace vNetPeering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -325,7 +331,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Deletes the workspace vNetPeering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -344,7 +350,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Deletes the workspace vNetPeering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -366,7 +372,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Deletes the workspace vNetPeering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -383,7 +389,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Deletes the workspace vNetPeering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -401,7 +407,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Deletes the workspace vNetPeering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -418,7 +424,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Deletes the workspace vNetPeering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -437,7 +443,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Deletes the workspace vNetPeering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -452,7 +458,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Deletes the workspace vNetPeering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -468,7 +474,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Creates vNet Peering for workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -476,8 +482,8 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a VirtualNetwork resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return peerings in a VirtualNetwork resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -517,7 +523,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Creates vNet Peering for workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -526,8 +532,8 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a VirtualNetwork resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return peerings in a VirtualNetwork resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -566,7 +572,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Creates vNet Peering for workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -589,7 +595,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Creates vNet Peering for workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -613,7 +619,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Creates vNet Peering for workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -634,7 +640,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Creates vNet Peering for workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -657,7 +663,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Creates vNet Peering for workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -677,7 +683,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Creates vNet Peering for workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -697,7 +703,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Creates vNet Peering for workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -716,7 +722,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Creates vNet Peering for workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -736,14 +742,14 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Lists the workspace vNet Peerings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return gets all virtual network peerings under a workspace along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkPeeringInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
@@ -775,7 +781,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Lists the workspace vNet Peerings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -783,7 +789,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return gets all virtual network peerings under a workspace along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkPeeringInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
@@ -815,7 +821,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Lists the workspace vNet Peerings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -831,7 +837,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Lists the workspace vNet Peerings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -849,7 +855,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Lists the workspace vNet Peerings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -864,7 +870,7 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Lists the workspace vNet Peerings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -881,14 +887,13 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return gets all virtual network peerings under a workspace along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkPeeringInner>> listByWorkspaceNextSinglePageAsync(String nextLink) {
@@ -909,15 +914,14 @@ public final class VNetPeeringsClientImpl implements VNetPeeringsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return gets all virtual network peerings under a workspace along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualNetworkPeeringInner>> listByWorkspaceNextSinglePageAsync(String nextLink,

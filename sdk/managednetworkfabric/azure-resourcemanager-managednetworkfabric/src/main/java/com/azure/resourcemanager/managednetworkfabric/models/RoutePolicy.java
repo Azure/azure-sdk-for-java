@@ -134,12 +134,8 @@ public interface RoutePolicy {
     RoutePolicyInner innerModel();
 
     /** The entirety of the RoutePolicy definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithNetworkFabricId,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithNetworkFabricId, DefinitionStages.WithCreate {
     }
 
     /** The RoutePolicy definition stages. */
@@ -193,11 +189,8 @@ public interface RoutePolicy {
          * The stage of the RoutePolicy definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithAddressFamilyType,
-                DefinitionStages.WithStatements,
-                DefinitionStages.WithAnnotation {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithAddressFamilyType,
+            DefinitionStages.WithStatements, DefinitionStages.WithAnnotation {
             /**
              * Executes the create request.
              *

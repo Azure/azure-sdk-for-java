@@ -51,29 +51,36 @@ public final class SubscriptionsCompileQueryWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        StreamAnalyticsManager manager = StreamAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        StreamAnalyticsManager manager = StreamAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         QueryCompilationResult response
             = manager.subscriptions()
-                .compileQueryWithResponse("lchpodbzevwrdn", new CompileQuery().withQuery("fukuvsjcswsmystu")
-                    .withInputs(Arrays.asList(new QueryInput().withName("ypfcvlerchpqbmf").withType("jbabwidf"),
-                        new QueryInput().withName("xsspuunnoxyhk").withType("g")))
-                    .withFunctions(
-                        Arrays.asList(
-                            new QueryFunction().withName("rihpfhoq").withType("aaewdaomdjv").withBindingType("pjxxkzb")
+                .compileQueryWithResponse("lchpodbzevwrdn",
+                    new CompileQuery().withQuery("fukuvsjcswsmystu")
+                        .withInputs(Arrays.asList(new QueryInput().withName("ypfcvlerchpqbmf").withType("jbabwidf"),
+                            new QueryInput().withName("xsspuunnoxyhk").withType("g")))
+                        .withFunctions(Arrays.asList(
+                            new QueryFunction().withName("rihpfhoq")
+                                .withType("aaewdaomdjv")
+                                .withBindingType("pjxxkzb")
                                 .withInputs(Arrays.asList(
                                     new FunctionInput().withDataType("geivsiykzkdncj")
                                         .withIsConfigurationParameter(true),
                                     new FunctionInput().withDataType("bzo").withIsConfigurationParameter(true),
                                     new FunctionInput().withDataType("lapzwyrp").withIsConfigurationParameter(false)))
                                 .withOutput(new FunctionOutput().withDataType("qxepnylbfuaj")),
-                            new QueryFunction().withName("yjt").withType("vofqzhvfc").withBindingType("byfmowuxr")
+                            new QueryFunction().withName("yjt")
+                                .withType("vofqzhvfc")
+                                .withBindingType("byfmowuxr")
                                 .withInputs(Arrays.asList(
                                     new FunctionInput().withDataType("vdwxfzwi").withIsConfigurationParameter(false)))
                                 .withOutput(new FunctionOutput().withDataType("jbhyzsxjrkambtr")),
-                            new QueryFunction().withName("egv").withType("nvuqeqvldspa").withBindingType("tjb")
+                            new QueryFunction().withName("egv")
+                                .withType("nvuqeqvldspa")
+                                .withBindingType("tjb")
                                 .withInputs(Arrays.asList(
                                     new FunctionInput().withDataType("mflvest").withIsConfigurationParameter(false),
                                     new FunctionInput().withDataType("rriloz").withIsConfigurationParameter(true),
@@ -81,11 +88,14 @@ public final class SubscriptionsCompileQueryWithResponseMockTests {
                                     new FunctionInput().withDataType("ziycslevufuztck")
                                         .withIsConfigurationParameter(false)))
                                 .withOutput(new FunctionOutput().withDataType("tqedcgzulwm")),
-                            new QueryFunction().withName("rqzz").withType("rjvpglydzgkrvqee").withBindingType("toepryu")
+                            new QueryFunction().withName("rqzz")
+                                .withType("rjvpglydzgkrvqee")
+                                .withBindingType("toepryu")
                                 .withInputs(Arrays.asList(
                                     new FunctionInput().withDataType("ytp").withIsConfigurationParameter(false)))
                                 .withOutput(new FunctionOutput().withDataType("vzvfvaawzqadfl"))))
-                    .withJobType(JobType.CLOUD).withCompatibilityLevel(CompatibilityLevel.ONE_ZERO),
+                        .withJobType(JobType.CLOUD)
+                        .withCompatibilityLevel(CompatibilityLevel.ONE_ZERO),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 

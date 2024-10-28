@@ -29,8 +29,8 @@ public interface IntegrationRuntimeConnectionInfosClient {
      * @return connection info for an integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeConnectionInfoInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeConnectionInfoInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Get integration runtime connection info
@@ -46,6 +46,6 @@ public interface IntegrationRuntimeConnectionInfosClient {
      * @return connection info for an integration runtime.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeConnectionInfoInner get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    IntegrationRuntimeConnectionInfoInner get(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 }

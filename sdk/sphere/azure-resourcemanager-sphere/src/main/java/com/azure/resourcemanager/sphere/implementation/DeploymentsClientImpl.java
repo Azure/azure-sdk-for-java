@@ -718,8 +718,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, String productName, String deviceGroupName, String deploymentName,
         DeploymentInner resource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName,
-            deploymentName, resource).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+                resource)
+            .getSyncPoller();
     }
 
     /**
@@ -743,8 +745,10 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     public SyncPoller<PollResult<DeploymentInner>, DeploymentInner> beginCreateOrUpdate(String resourceGroupName,
         String catalogName, String productName, String deviceGroupName, String deploymentName, DeploymentInner resource,
         Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName,
-            deploymentName, resource, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
+                resource, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1080,7 +1084,8 @@ public final class DeploymentsClientImpl implements DeploymentsClient {
     private Mono<Void> deleteAsync(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, String deploymentName, Context context) {
         return beginDeleteAsync(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

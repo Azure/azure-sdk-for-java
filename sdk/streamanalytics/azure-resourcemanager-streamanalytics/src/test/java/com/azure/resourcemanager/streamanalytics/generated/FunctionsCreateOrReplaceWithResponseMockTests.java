@@ -49,17 +49,23 @@ public final class FunctionsCreateOrReplaceWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        StreamAnalyticsManager manager = StreamAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        StreamAnalyticsManager manager = StreamAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Function response = manager.functions().define("hbpnaixexccbd")
+        Function response = manager.functions()
+            .define("hbpnaixexccbd")
             .withExistingStreamingjob("tvgbmhrixkwmy", "jejveg")
             .withProperties(new FunctionProperties()
                 .withInputs(Arrays.asList(new FunctionInput().withDataType("wijnh").withIsConfigurationParameter(true),
                     new FunctionInput().withDataType("f").withIsConfigurationParameter(false)))
-                .withOutput(new FunctionOutput().withDataType("fvoow")).withBinding(new FunctionBinding()))
-            .withName("mtg").withIfMatch("afxtsgum").withIfNoneMatch("jglikkxwslolb").create();
+                .withOutput(new FunctionOutput().withDataType("fvoow"))
+                .withBinding(new FunctionBinding()))
+            .withName("mtg")
+            .withIfMatch("afxtsgum")
+            .withIfNoneMatch("jglikkxwslolb")
+            .create();
 
         Assertions.assertEquals("uaibrebqaaysj", response.id());
         Assertions.assertEquals("ktgplcr", response.properties().inputs().get(0).dataType());

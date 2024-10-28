@@ -62,18 +62,25 @@ public final class LocalRulestackResourceListResultTests {
                                 new AzureResourceManagerUserAssignedIdentity().withClientId("swdvzyybycnun")
                                     .withPrincipalId("srtkfa"),
                                 "qukrydxt",
-                                new AzureResourceManagerUserAssignedIdentity()
-                                    .withClientId("uxzejntpsew").withPrincipalId("oi"),
+                                new AzureResourceManagerUserAssignedIdentity().withClientId("uxzejntpsew")
+                                    .withPrincipalId("oi"),
                                 "pjbi",
                                 new AzureResourceManagerUserAssignedIdentity().withClientId("ieoxorggufhyaomt")
                                     .withPrincipalId("hhavgrvkffovjz"))))
-                        .withPanEtag("xum").withPanLocation("ton").withScope(ScopeType.LOCAL)
-                        .withAssociatedSubscriptions(Arrays.asList("udfdlwgg")).withDescription("sb")
-                        .withDefaultMode(DefaultMode.IPS).withMinAppIdVersion("vtgsei")
+                        .withPanEtag("xum")
+                        .withPanLocation("ton")
+                        .withScope(ScopeType.LOCAL)
+                        .withAssociatedSubscriptions(Arrays.asList("udfdlwgg"))
+                        .withDescription("sb")
+                        .withDefaultMode(DefaultMode.IPS)
+                        .withMinAppIdVersion("vtgsei")
                         .withSecurityServices(new SecurityServices().withVulnerabilityProfile("fxqknpirgneptt")
-                            .withAntiSpywareProfile("msniffc").withAntiVirusProfile("qnrojlpijnkrxfrd")
-                            .withUrlFilteringProfile("c").withFileBlockingProfile("tizzronasxif")
-                            .withDnsSubscription("zq").withOutboundUnTrustCertificate("hftwesgog")
+                            .withAntiSpywareProfile("msniffc")
+                            .withAntiVirusProfile("qnrojlpijnkrxfrd")
+                            .withUrlFilteringProfile("c")
+                            .withFileBlockingProfile("tizzronasxif")
+                            .withDnsSubscription("zq")
+                            .withOutboundUnTrustCertificate("hftwesgog")
                             .withOutboundTrustCertificate("honnxkrlgnyhmos")),
                     new LocalRulestackResourceInner().withLocation("t")
                         .withTags(mapOf("ztsfmznbaeqp", "twnawjslbiwkojgc", "qgaifmviklbydv", "chqnrnrpxehuwry",
@@ -83,15 +90,22 @@ public final class LocalRulestackResourceListResultTests {
                             .withUserAssignedIdentities(mapOf("fceacvlhvygd",
                                 new AzureResourceManagerUserAssignedIdentity().withClientId("qntcypsxjvfoimwk")
                                     .withPrincipalId("ircizjxvy"))))
-                        .withPanEtag("gy").withPanLocation("rymsgaojfmw").withScope(ScopeType.LOCAL)
+                        .withPanEtag("gy")
+                        .withPanLocation("rymsgaojfmw")
+                        .withScope(ScopeType.LOCAL)
                         .withAssociatedSubscriptions(Arrays.asList("rfh", "rctym", "xoftpipiwyczu"))
-                        .withDescription("a").withDefaultMode(DefaultMode.IPS).withMinAppIdVersion("lihhyuspskasdvlm")
-                        .withSecurityServices(new SecurityServices().withVulnerabilityProfile("x")
-                            .withAntiSpywareProfile("ucvpamrs").withAntiVirusProfile("uzvx")
-                            .withUrlFilteringProfile("i").withFileBlockingProfile(
-                                "nhn")
-                            .withDnsSubscription("xifqjzgxm").withOutboundUnTrustCertificate("ublwpcesutrg")
-                            .withOutboundTrustCertificate("pauutpw")),
+                        .withDescription("a")
+                        .withDefaultMode(DefaultMode.IPS)
+                        .withMinAppIdVersion("lihhyuspskasdvlm")
+                        .withSecurityServices(
+                            new SecurityServices().withVulnerabilityProfile("x")
+                                .withAntiSpywareProfile("ucvpamrs")
+                                .withAntiVirusProfile("uzvx")
+                                .withUrlFilteringProfile("i")
+                                .withFileBlockingProfile("nhn")
+                                .withDnsSubscription("xifqjzgxm")
+                                .withOutboundUnTrustCertificate("ublwpcesutrg")
+                                .withOutboundTrustCertificate("pauutpw")),
                     new LocalRulestackResourceInner().withLocation("mbtxhwgf")
                         .withTags(mapOf("ezbrhubskh", "tawc", "ookk", "dyg", "fmluiqtqzfavyvn", "fqjbvleo"))
                         .withIdentity(
@@ -99,14 +113,21 @@ public final class LocalRulestackResourceListResultTests {
                                 .withUserAssignedIdentities(mapOf("mlkxtrqjfs",
                                     new AzureResourceManagerUserAssignedIdentity().withClientId("h")
                                         .withPrincipalId("odqkdlwwqfb"))))
-                        .withPanEtag("ltducea").withPanLocation("mczuo").withScope(ScopeType.LOCAL)
-                        .withAssociatedSubscriptions(Arrays.asList("w", "qioknssxmojm")).withDescription("p")
-                        .withDefaultMode(DefaultMode.FIREWALL).withMinAppIdVersion("vk").withSecurityServices(
-                            new SecurityServices().withVulnerabilityProfile("ljyxgtczhe")
-                                .withAntiSpywareProfile("bsdshmkxmaehvbbx").withAntiVirusProfile("iplt")
-                                .withUrlFilteringProfile("htba").withFileBlockingProfile("gx").withDnsSubscription("rc")
-                                .withOutboundUnTrustCertificate("yklyhpluodpvruud")
-                                .withOutboundTrustCertificate("zibt")),
+                        .withPanEtag("ltducea")
+                        .withPanLocation("mczuo")
+                        .withScope(ScopeType.LOCAL)
+                        .withAssociatedSubscriptions(Arrays.asList("w", "qioknssxmojm"))
+                        .withDescription("p")
+                        .withDefaultMode(DefaultMode.FIREWALL)
+                        .withMinAppIdVersion("vk")
+                        .withSecurityServices(new SecurityServices().withVulnerabilityProfile("ljyxgtczhe")
+                            .withAntiSpywareProfile("bsdshmkxmaehvbbx")
+                            .withAntiVirusProfile("iplt")
+                            .withUrlFilteringProfile("htba")
+                            .withFileBlockingProfile("gx")
+                            .withDnsSubscription("rc")
+                            .withOutboundUnTrustCertificate("yklyhpluodpvruud")
+                            .withOutboundTrustCertificate("zibt")),
                     new LocalRulestackResourceInner().withLocation("miloxggdufiqndie")
                         .withTags(mapOf("dotcubiipuip", "ofjchvcyyysf"))
                         .withIdentity(new AzureResourceManagerManagedIdentityProperties()
@@ -115,18 +136,25 @@ public final class LocalRulestackResourceListResultTests {
                                 new AzureResourceManagerUserAssignedIdentity().withClientId("mygdxpgpqch")
                                     .withPrincipalId("zepn"),
                                 "uuepzlrphwzsoldw",
-                                new AzureResourceManagerUserAssignedIdentity()
-                                    .withClientId("ozauorsukokwb").withPrincipalId("lhlv"),
+                                new AzureResourceManagerUserAssignedIdentity().withClientId("ozauorsukokwb")
+                                    .withPrincipalId("lhlv"),
                                 "v",
                                 new AzureResourceManagerUserAssignedIdentity().withClientId("uqdunvmnnrwrbi")
                                     .withPrincipalId("ktalywjhhgdnhxms"))))
-                        .withPanEtag("bhernntiew").withPanLocation("cv").withScope(ScopeType.GLOBAL)
-                        .withAssociatedSubscriptions(Arrays.asList("behwagohb")).withDescription("fkmr")
-                        .withDefaultMode(DefaultMode.IPS).withMinAppIdVersion("vhmxtdrjfu")
+                        .withPanEtag("bhernntiew")
+                        .withPanLocation("cv")
+                        .withScope(ScopeType.GLOBAL)
+                        .withAssociatedSubscriptions(Arrays.asList("behwagohb"))
+                        .withDescription("fkmr")
+                        .withDefaultMode(DefaultMode.IPS)
+                        .withMinAppIdVersion("vhmxtdrjfu")
                         .withSecurityServices(new SecurityServices().withVulnerabilityProfile("bj")
-                            .withAntiSpywareProfile("wzcjznmwcpmgua").withAntiVirusProfile("raufactkahzova")
-                            .withUrlFilteringProfile("ziuxxpshnee").withFileBlockingProfile("lfg")
-                            .withDnsSubscription("qubkw").withOutboundUnTrustCertificate("enr")
+                            .withAntiSpywareProfile("wzcjznmwcpmgua")
+                            .withAntiVirusProfile("raufactkahzova")
+                            .withUrlFilteringProfile("ziuxxpshnee")
+                            .withFileBlockingProfile("lfg")
+                            .withDnsSubscription("qubkw")
+                            .withOutboundUnTrustCertificate("enr")
                             .withOutboundTrustCertificate("utujba"))))
                 .withNextLink("lrri");
         model = BinaryData.fromObject(model).toObject(LocalRulestackResourceListResult.class);

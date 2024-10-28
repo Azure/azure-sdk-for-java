@@ -34,21 +34,10 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestProxyTestBase
     private AzureResourceManager azureResourceManager;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -75,71 +64,58 @@ public class VirtualNetworkGatewayTests extends ResourceManagerTestProxyTestBase
         Region region = nw.region();
         String resourceGroup = nw.resourceGroupName();
 
-        VirtualNetworkGateway vngw1 =
-            azureResourceManager
-                .virtualNetworkGateways()
-                .define(gatewayName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withNewNetwork("10.11.0.0/16", "10.11.255.0/27")
-                .withRouteBasedVpn()
-                .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
-                .create();
+        VirtualNetworkGateway vngw1 = azureResourceManager.virtualNetworkGateways()
+            .define(gatewayName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withNewNetwork("10.11.0.0/16", "10.11.255.0/27")
+            .withRouteBasedVpn()
+            .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+            .create();
 
-        VirtualNetworkGateway vngw2 =
-            azureResourceManager
-                .virtualNetworkGateways()
-                .define(gatewayName + "2")
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .withNewNetwork("10.41.0.0/16", "10.41.255.0/27")
-                .withRouteBasedVpn()
-                .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
-                .create();
-        VirtualNetworkGatewayConnection connection1 =
-            vngw1
-                .connections()
-                .define(connectionName)
-                .withVNetToVNet()
-                .withSecondVirtualNetworkGateway(vngw2)
-                .withSharedKey("MySecretKey")
-                .create();
+        VirtualNetworkGateway vngw2 = azureResourceManager.virtualNetworkGateways()
+            .define(gatewayName + "2")
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .withNewNetwork("10.41.0.0/16", "10.41.255.0/27")
+            .withRouteBasedVpn()
+            .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+            .create();
+        VirtualNetworkGatewayConnection connection1 = vngw1.connections()
+            .define(connectionName)
+            .withVNetToVNet()
+            .withSecondVirtualNetworkGateway(vngw2)
+            .withSharedKey("MySecretKey")
+            .create();
 
         // Create storage account to store troubleshooting information
-        StorageAccount storageAccount =
-            azureResourceManager
-                .storageAccounts()
-                .define("sa" + generateRandomResourceName("", 8))
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroup)
-                .create();
+        StorageAccount storageAccount = azureResourceManager.storageAccounts()
+            .define("sa" + generateRandomResourceName("", 8))
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroup)
+            .create();
 
         // Troubleshoot connection
-        Troubleshooting troubleshooting =
-            nw
-                .troubleshoot()
-                .withTargetResourceId(connection1.id())
-                .withStorageAccount(storageAccount.id())
-                .withStoragePath(storageAccount.endPoints().primary().blob() + "results")
-                .execute();
+        Troubleshooting troubleshooting = nw.troubleshoot()
+            .withTargetResourceId(connection1.id())
+            .withStorageAccount(storageAccount.id())
+            .withStoragePath(storageAccount.endPoints().primary().blob() + "results")
+            .execute();
         Assertions.assertEquals("UnHealthy", troubleshooting.code());
 
         // Create corresponding connection on second gateway to make it work
-        vngw2
-            .connections()
+        vngw2.connections()
             .define(connectionName + "2")
             .withVNetToVNet()
             .withSecondVirtualNetworkGateway(vngw1)
             .withSharedKey("MySecretKey")
             .create();
         ResourceManagerUtils.sleep(Duration.ofSeconds(250));
-        troubleshooting =
-            nw
-                .troubleshoot()
-                .withTargetResourceId(connection1.id())
-                .withStorageAccount(storageAccount.id())
-                .withStoragePath(storageAccount.endPoints().primary().blob() + "results")
-                .execute();
+        troubleshooting = nw.troubleshoot()
+            .withTargetResourceId(connection1.id())
+            .withStorageAccount(storageAccount.id())
+            .withStoragePath(storageAccount.endPoints().primary().blob() + "results")
+            .execute();
         Assertions.assertEquals("Healthy", troubleshooting.code());
 
         azureResourceManager.resourceGroups().deleteByName(resourceGroup);

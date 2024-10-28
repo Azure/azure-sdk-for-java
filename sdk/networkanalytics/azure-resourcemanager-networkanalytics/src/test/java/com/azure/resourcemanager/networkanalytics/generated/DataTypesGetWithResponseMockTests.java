@@ -45,12 +45,14 @@ public final class DataTypesGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NetworkAnalyticsManager manager = NetworkAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkAnalyticsManager manager = NetworkAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataType response = manager.dataTypes()
-            .getWithResponse("mnvdfzn", "daodvxzbncblyl", "stdbhhxsrzdzu", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("mnvdfzn", "daodvxzbncblyl", "stdbhhxsrzdzu", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(DataTypeState.STOPPED, response.properties().state());
         Assertions.assertEquals(1008975068, response.properties().storageOutputRetention());

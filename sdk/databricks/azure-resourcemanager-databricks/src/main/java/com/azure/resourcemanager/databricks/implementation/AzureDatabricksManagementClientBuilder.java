@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the AzureDatabricksManagementClientImpl type. */
+/**
+ * A builder for creating a new instance of the AzureDatabricksManagementClientImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { AzureDatabricksManagementClientImpl.class })
 public final class AzureDatabricksManagementClientBuilder {
     /*
@@ -24,7 +26,7 @@ public final class AzureDatabricksManagementClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the AzureDatabricksManagementClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class AzureDatabricksManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the AzureDatabricksManagementClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class AzureDatabricksManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the AzureDatabricksManagementClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class AzureDatabricksManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the AzureDatabricksManagementClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class AzureDatabricksManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the AzureDatabricksManagementClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class AzureDatabricksManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureDatabricksManagementClientBuilder.
      */
@@ -115,7 +117,7 @@ public final class AzureDatabricksManagementClientBuilder {
 
     /**
      * Builds an instance of AzureDatabricksManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of AzureDatabricksManagementClientImpl.
      */
     public AzureDatabricksManagementClientImpl buildClient() {
@@ -130,7 +132,7 @@ public final class AzureDatabricksManagementClientBuilder {
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
         AzureDatabricksManagementClientImpl client = new AzureDatabricksManagementClientImpl(localPipeline,
-            localSerializerAdapter, localDefaultPollInterval, localEnvironment, subscriptionId, localEndpoint);
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

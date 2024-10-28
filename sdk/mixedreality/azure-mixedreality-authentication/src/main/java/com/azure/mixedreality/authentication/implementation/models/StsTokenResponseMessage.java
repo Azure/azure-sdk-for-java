@@ -20,7 +20,8 @@ public final class StsTokenResponseMessage implements JsonSerializable<StsTokenR
     private String accessToken;
 
     /** Creates an instance of StsTokenResponseMessage class. */
-    public StsTokenResponseMessage() {}
+    public StsTokenResponseMessage() {
+    }
 
     /**
      * Get the accessToken property: An access token for the account.
@@ -59,21 +60,20 @@ public final class StsTokenResponseMessage implements JsonSerializable<StsTokenR
      * @throws IOException If an error occurs while reading the StsTokenResponseMessage.
      */
     public static StsTokenResponseMessage fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    StsTokenResponseMessage deserializedStsTokenResponseMessage = new StsTokenResponseMessage();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            StsTokenResponseMessage deserializedStsTokenResponseMessage = new StsTokenResponseMessage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("AccessToken".equals(fieldName)) {
-                            deserializedStsTokenResponseMessage.accessToken = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("AccessToken".equals(fieldName)) {
+                    deserializedStsTokenResponseMessage.accessToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedStsTokenResponseMessage;
-                });
+            return deserializedStsTokenResponseMessage;
+        });
     }
 }

@@ -86,12 +86,10 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
         if (innerModel() != null) {
             updateKeyRequest.keyProperties = innerModel();
             if (createNewCryptographyClient) {
-                cryptographyClient =
-                    new CryptographyClientBuilder()
-                        .keyIdentifier(innerModel().getId())
-                        .pipeline(httpPipeline)
-                        .serviceVersion(CryptographyServiceVersion.V7_2)
-                        .buildAsyncClient();
+                cryptographyClient = new CryptographyClientBuilder().keyIdentifier(innerModel().getId())
+                    .pipeline(httpPipeline)
+                    .serviceVersion(CryptographyServiceVersion.V7_2)
+                    .buildAsyncClient();
             }
         }
     }
@@ -141,9 +139,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
 
     @Override
     public PagedFlux<Key> listVersionsAsync() {
-        return PagedConverter.mapPage(keyClient
-            .listPropertiesOfKeyVersions(this.name()),
-            this::wrapModel);
+        return PagedConverter.mapPage(keyClient.listPropertiesOfKeyVersions(this.name()), this::wrapModel);
     }
 
     @Override
@@ -257,14 +253,12 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
         } else {
             mono = keyClient.importKey(importKeyRequest);
         }
-        return mono
-            .map(
-                keyVaultKey -> {
-                    this.setInner(keyVaultKey.getProperties());
-                    this.jsonWebKey = keyVaultKey.getKey();
-                    init(true);
-                    return this;
-                });
+        return mono.map(keyVaultKey -> {
+            this.setInner(keyVaultKey.getProperties());
+            this.jsonWebKey = keyVaultKey.getKey();
+            init(true);
+            return this;
+        });
     }
 
     @Override
@@ -272,39 +266,26 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
         UpdateKeyOptions optionsToUpdate = updateKeyRequest;
         Mono<Key> mono = Mono.just(this);
         if (createKeyRequest != null || importKeyRequest != null) {
-            mono =
-                createResourceAsync()
-                    .then(
-                        Mono
-                            .fromCallable(
-                                () -> {
-                                    // merge optionsToUpdate into refreshed updateKeyRequest
-                                    updateKeyRequest
-                                        .keyProperties
-                                        .setEnabled(optionsToUpdate.keyProperties.isEnabled());
-                                    updateKeyRequest
-                                        .keyProperties
-                                        .setExpiresOn(optionsToUpdate.keyProperties.getExpiresOn());
-                                    updateKeyRequest
-                                        .keyProperties
-                                        .setNotBefore(optionsToUpdate.keyProperties.getNotBefore());
-                                    updateKeyRequest.keyProperties.setTags(optionsToUpdate.keyProperties.getTags());
-                                    updateKeyRequest.keyOperations = optionsToUpdate.keyOperations;
-                                    return this;
-                                }));
+            mono = createResourceAsync().then(Mono.fromCallable(() -> {
+                // merge optionsToUpdate into refreshed updateKeyRequest
+                updateKeyRequest.keyProperties.setEnabled(optionsToUpdate.keyProperties.isEnabled());
+                updateKeyRequest.keyProperties.setExpiresOn(optionsToUpdate.keyProperties.getExpiresOn());
+                updateKeyRequest.keyProperties.setNotBefore(optionsToUpdate.keyProperties.getNotBefore());
+                updateKeyRequest.keyProperties.setTags(optionsToUpdate.keyProperties.getTags());
+                updateKeyRequest.keyOperations = optionsToUpdate.keyOperations;
+                return this;
+            }));
         }
-        return mono
-            .then(
-                keyClient
-                    .updateKeyProperties(
-                        updateKeyRequest.keyProperties, updateKeyRequest.keyOperations.toArray(new KeyOperation[0]))
-                    .map(
-                        keyVaultKey -> {
-                            this.setInner(keyVaultKey.getProperties());
-                            this.jsonWebKey = keyVaultKey.getKey();
-                            init(false);
-                            return this;
-                        }));
+        return mono.then(
+            keyClient
+                .updateKeyProperties(updateKeyRequest.keyProperties,
+                    updateKeyRequest.keyOperations.toArray(new KeyOperation[0]))
+                .map(keyVaultKey -> {
+                    this.setInner(keyVaultKey.getProperties());
+                    this.jsonWebKey = keyVaultKey.getKey();
+                    init(false);
+                    return this;
+                }));
     }
 
     @Override

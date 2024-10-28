@@ -45,12 +45,8 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
      * @param client the instance of the service client containing this operation class.
      */
     SqlVirtualMachineTroubleshootsClientImpl(SqlVirtualMachineManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    SqlVirtualMachineTroubleshootsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(SqlVirtualMachineTroubleshootsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,19 +57,15 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
     @Host("{$host}")
     @ServiceInterface(name = "SqlVirtualMachineMan")
     public interface SqlVirtualMachineTroubleshootsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/troubleshoot")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/troubleshoot")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> troubleshoot(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> troubleshoot(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sqlVirtualMachineName") String sqlVirtualMachineName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SqlVmTroubleshootingInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SqlVmTroubleshootingInner parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -91,13 +83,11 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> troubleshootWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> troubleshootWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -108,10 +98,8 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
                 .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -121,17 +109,8 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .troubleshoot(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            sqlVirtualMachineName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.troubleshoot(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineName,
+                    this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -150,13 +129,11 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> troubleshootWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> troubleshootWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -167,10 +144,8 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
                 .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -179,16 +154,8 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .troubleshoot(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                sqlVirtualMachineName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.troubleshoot(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -206,16 +173,11 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlVmTroubleshootingInner>, SqlVmTroubleshootingInner> beginTroubleshootAsync(
         String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            troubleshootWithResponseAsync(resourceGroupName, sqlVirtualMachineName, parameters);
-        return this
-            .client
-            .<SqlVmTroubleshootingInner, SqlVmTroubleshootingInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SqlVmTroubleshootingInner.class,
-                SqlVmTroubleshootingInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = troubleshootWithResponseAsync(resourceGroupName, sqlVirtualMachineName, parameters);
+        return this.client.<SqlVmTroubleshootingInner, SqlVmTroubleshootingInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SqlVmTroubleshootingInner.class, SqlVmTroubleshootingInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -235,16 +197,10 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
     private PollerFlux<PollResult<SqlVmTroubleshootingInner>, SqlVmTroubleshootingInner> beginTroubleshootAsync(
         String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            troubleshootWithResponseAsync(resourceGroupName, sqlVirtualMachineName, parameters, context);
-        return this
-            .client
-            .<SqlVmTroubleshootingInner, SqlVmTroubleshootingInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SqlVmTroubleshootingInner.class,
-                SqlVmTroubleshootingInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = troubleshootWithResponseAsync(resourceGroupName, sqlVirtualMachineName, parameters, context);
+        return this.client.<SqlVmTroubleshootingInner, SqlVmTroubleshootingInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SqlVmTroubleshootingInner.class, SqlVmTroubleshootingInner.class, context);
     }
 
     /**
@@ -281,8 +237,7 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlVmTroubleshootingInner>, SqlVmTroubleshootingInner> beginTroubleshoot(
         String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters, Context context) {
-        return this
-            .beginTroubleshootAsync(resourceGroupName, sqlVirtualMachineName, parameters, context)
+        return this.beginTroubleshootAsync(resourceGroupName, sqlVirtualMachineName, parameters, context)
             .getSyncPoller();
     }
 
@@ -299,10 +254,9 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
      * @return details required for SQL VM troubleshooting on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlVmTroubleshootingInner> troubleshootAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters) {
-        return beginTroubleshootAsync(resourceGroupName, sqlVirtualMachineName, parameters)
-            .last()
+    private Mono<SqlVmTroubleshootingInner> troubleshootAsync(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVmTroubleshootingInner parameters) {
+        return beginTroubleshootAsync(resourceGroupName, sqlVirtualMachineName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -320,10 +274,9 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
      * @return details required for SQL VM troubleshooting on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlVmTroubleshootingInner> troubleshootAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters, Context context) {
-        return beginTroubleshootAsync(resourceGroupName, sqlVirtualMachineName, parameters, context)
-            .last()
+    private Mono<SqlVmTroubleshootingInner> troubleshootAsync(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVmTroubleshootingInner parameters, Context context) {
+        return beginTroubleshootAsync(resourceGroupName, sqlVirtualMachineName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -340,8 +293,8 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
      * @return details required for SQL VM troubleshooting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlVmTroubleshootingInner troubleshoot(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters) {
+    public SqlVmTroubleshootingInner troubleshoot(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVmTroubleshootingInner parameters) {
         return troubleshootAsync(resourceGroupName, sqlVirtualMachineName, parameters).block();
     }
 
@@ -359,8 +312,8 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
      * @return details required for SQL VM troubleshooting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlVmTroubleshootingInner troubleshoot(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters, Context context) {
+    public SqlVmTroubleshootingInner troubleshoot(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVmTroubleshootingInner parameters, Context context) {
         return troubleshootAsync(resourceGroupName, sqlVirtualMachineName, parameters, context).block();
     }
 }

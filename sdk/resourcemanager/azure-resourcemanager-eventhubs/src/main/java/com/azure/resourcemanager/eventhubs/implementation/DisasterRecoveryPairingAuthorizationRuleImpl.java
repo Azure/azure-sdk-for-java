@@ -17,9 +17,8 @@ import java.util.Objects;
 /**
  * Implementation for {@link DisasterRecoveryPairingAuthorizationRule}.
  */
-class DisasterRecoveryPairingAuthorizationRuleImpl
-        extends WrapperImpl<AuthorizationRuleInner>
-        implements DisasterRecoveryPairingAuthorizationRule {
+class DisasterRecoveryPairingAuthorizationRuleImpl extends WrapperImpl<AuthorizationRuleInner>
+    implements DisasterRecoveryPairingAuthorizationRule {
 
     private final EventHubsManager manager;
     private final Ancestors.TwoAncestor ancestor;
@@ -27,7 +26,7 @@ class DisasterRecoveryPairingAuthorizationRuleImpl
     protected DisasterRecoveryPairingAuthorizationRuleImpl(AuthorizationRuleInner inner, EventHubsManager manager) {
         super(inner);
         this.manager = manager;
-        this.ancestor =  new Ancestors().new TwoAncestor(inner.id());
+        this.ancestor = new Ancestors().new TwoAncestor(inner.id());
     }
 
     @Override
@@ -42,11 +41,10 @@ class DisasterRecoveryPairingAuthorizationRuleImpl
 
     @Override
     public Mono<DisasterRecoveryPairingAuthorizationKey> getKeysAsync() {
-        return this.manager.serviceClient().getDisasterRecoveryConfigs()
-            .listKeysAsync(this.ancestor().resourceGroupName(),
-                this.ancestor.ancestor2Name(),
-                this.ancestor().ancestor1Name(),
-                this.name())
+        return this.manager.serviceClient()
+            .getDisasterRecoveryConfigs()
+            .listKeysAsync(this.ancestor().resourceGroupName(), this.ancestor.ancestor2Name(),
+                this.ancestor().ancestor1Name(), this.name())
             .map(DisasterRecoveryPairingAuthorizationKeyImpl::new);
     }
 

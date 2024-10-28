@@ -127,12 +127,8 @@ public interface NetworkPacketBroker {
     NetworkPacketBrokerInner innerModel();
 
     /** The entirety of the NetworkPacketBroker definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithNetworkFabricId,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithNetworkFabricId, DefinitionStages.WithCreate {
     }
 
     /** The NetworkPacketBroker definition stages. */

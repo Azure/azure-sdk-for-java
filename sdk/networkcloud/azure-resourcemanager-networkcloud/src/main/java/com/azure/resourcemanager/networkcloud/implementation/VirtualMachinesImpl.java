@@ -24,8 +24,8 @@ public final class VirtualMachinesImpl implements VirtualMachines {
 
     private final com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager;
 
-    public VirtualMachinesImpl(
-        VirtualMachinesClient innerClient, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
+    public VirtualMachinesImpl(VirtualMachinesClient innerClient,
+        com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -50,15 +50,12 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         return Utils.mapPage(inner, inner1 -> new VirtualMachineImpl(inner1, this.manager()));
     }
 
-    public Response<VirtualMachine> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualMachineName, Context context) {
-        Response<VirtualMachineInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, virtualMachineName, context);
+    public Response<VirtualMachine> getByResourceGroupWithResponse(String resourceGroupName, String virtualMachineName,
+        Context context) {
+        Response<VirtualMachineInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, virtualMachineName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VirtualMachineImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -91,15 +88,10 @@ public final class VirtualMachinesImpl implements VirtualMachines {
         }
     }
 
-    public OperationStatusResult powerOff(
-        String resourceGroupName,
-        String virtualMachineName,
-        VirtualMachinePowerOffParameters virtualMachinePowerOffParameters,
-        Context context) {
-        OperationStatusResultInner inner =
-            this
-                .serviceClient()
-                .powerOff(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters, context);
+    public OperationStatusResult powerOff(String resourceGroupName, String virtualMachineName,
+        VirtualMachinePowerOffParameters virtualMachinePowerOffParameters, Context context) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .powerOff(resourceGroupName, virtualMachineName, virtualMachinePowerOffParameters, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -164,19 +156,13 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     public VirtualMachine getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String virtualMachineName = Utils.getValueFromIdByName(id, "virtualMachines");
         if (virtualMachineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, virtualMachineName, Context.NONE).getValue();
     }
@@ -184,19 +170,13 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     public Response<VirtualMachine> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String virtualMachineName = Utils.getValueFromIdByName(id, "virtualMachines");
         if (virtualMachineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, virtualMachineName, context);
     }
@@ -204,19 +184,13 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String virtualMachineName = Utils.getValueFromIdByName(id, "virtualMachines");
         if (virtualMachineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
         this.delete(resourceGroupName, virtualMachineName, Context.NONE);
     }
@@ -224,19 +198,13 @@ public final class VirtualMachinesImpl implements VirtualMachines {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String virtualMachineName = Utils.getValueFromIdByName(id, "virtualMachines");
         if (virtualMachineName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'virtualMachines'.", id)));
         }
         this.delete(resourceGroupName, virtualMachineName, context);
     }

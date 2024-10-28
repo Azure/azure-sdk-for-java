@@ -21,16 +21,10 @@ import java.util.Collection;
 /** Entry point to application gateway management API in Azure. */
 @Fluent()
 public interface ApplicationGateways
-    extends SupportsCreating<ApplicationGateway.DefinitionStages.Blank>,
-        SupportsListing<ApplicationGateway>,
-        SupportsListingByResourceGroup<ApplicationGateway>,
-        SupportsGettingByResourceGroup<ApplicationGateway>,
-        SupportsGettingById<ApplicationGateway>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<ApplicationGateway>,
-        SupportsBatchDeletion,
-        HasManager<NetworkManager> {
+    extends SupportsCreating<ApplicationGateway.DefinitionStages.Blank>, SupportsListing<ApplicationGateway>,
+    SupportsListingByResourceGroup<ApplicationGateway>, SupportsGettingByResourceGroup<ApplicationGateway>,
+    SupportsGettingById<ApplicationGateway>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<ApplicationGateway>, SupportsBatchDeletion, HasManager<NetworkManager> {
 
     /**
      * Starts the specified application gateways.

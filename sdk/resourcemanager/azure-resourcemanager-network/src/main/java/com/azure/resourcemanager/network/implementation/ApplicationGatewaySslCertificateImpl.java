@@ -16,9 +16,9 @@ import java.util.Base64;
 class ApplicationGatewaySslCertificateImpl
     extends ChildResourceImpl<ApplicationGatewaySslCertificateInner, ApplicationGatewayImpl, ApplicationGateway>
     implements ApplicationGatewaySslCertificate,
-        ApplicationGatewaySslCertificate.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
-        ApplicationGatewaySslCertificate.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewaySslCertificate.Update {
+    ApplicationGatewaySslCertificate.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
+    ApplicationGatewaySslCertificate.UpdateDefinition<ApplicationGateway.Update>,
+    ApplicationGatewaySslCertificate.Update {
 
     ApplicationGatewaySslCertificateImpl(ApplicationGatewaySslCertificateInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);

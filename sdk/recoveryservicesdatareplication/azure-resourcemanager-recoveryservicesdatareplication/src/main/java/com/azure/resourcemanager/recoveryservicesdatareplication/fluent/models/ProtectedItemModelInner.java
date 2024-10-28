@@ -66,10 +66,8 @@ public final class ProtectedItemModelInner extends ProxyResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model ProtectedItemModelInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model ProtectedItemModelInner"));
         } else {
             properties().validate();
         }

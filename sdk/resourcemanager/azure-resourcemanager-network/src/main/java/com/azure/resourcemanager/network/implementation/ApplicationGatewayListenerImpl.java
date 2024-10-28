@@ -23,11 +23,9 @@ import java.util.List;
 
 /** Implementation for ApplicationGatewayListener. */
 class ApplicationGatewayListenerImpl
-    extends ChildResourceImpl<ApplicationGatewayHttpListener, ApplicationGatewayImpl, ApplicationGateway>
-    implements ApplicationGatewayListener,
-        ApplicationGatewayListener.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
-        ApplicationGatewayListener.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayListener.Update {
+    extends ChildResourceImpl<ApplicationGatewayHttpListener, ApplicationGatewayImpl, ApplicationGateway> implements
+    ApplicationGatewayListener, ApplicationGatewayListener.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
+    ApplicationGatewayListener.UpdateDefinition<ApplicationGateway.Update>, ApplicationGatewayListener.Update {
 
     ApplicationGatewayListenerImpl(ApplicationGatewayHttpListener inner, ApplicationGatewayImpl parent) {
         super(inner, parent);
@@ -170,8 +168,8 @@ class ApplicationGatewayListenerImpl
     // Helpers
 
     private ApplicationGatewayListenerImpl withFrontend(String name) {
-        SubResource frontendRef =
-            new SubResource().withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + name);
+        SubResource frontendRef
+            = new SubResource().withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + name);
         this.innerModel().withFrontendIpConfiguration(frontendRef);
         return this;
     }
@@ -191,8 +189,7 @@ class ApplicationGatewayListenerImpl
         String portName = this.parent().frontendPortNameFromNumber(portNumber);
         if (portName == null) {
             // Existing frontend port with this number not found so create one
-            portName = this.parent().manager().resourceManager().internalContext()
-                .randomResourceName("port", 9);
+            portName = this.parent().manager().resourceManager().internalContext().randomResourceName("port", 9);
             this.parent().withFrontendPort(portNumber, portName);
         }
 
@@ -211,11 +208,10 @@ class ApplicationGatewayListenerImpl
         return withSslCertificateFromKeyVaultSecretId(keyVaultSecretId, null);
     }
 
-    private ApplicationGatewayListenerImpl withSslCertificateFromKeyVaultSecretId(
-        String keyVaultSecretId, String name) {
+    private ApplicationGatewayListenerImpl withSslCertificateFromKeyVaultSecretId(String keyVaultSecretId,
+        String name) {
         if (name == null) {
-            name = this.parent().manager().resourceManager().internalContext()
-                .randomResourceName("cert", 10);
+            name = this.parent().manager().resourceManager().internalContext().randomResourceName("cert", 10);
         }
         this.parent().defineSslCertificate(name).withKeyVaultSecretId(keyVaultSecretId).attach();
         return this;
@@ -228,8 +224,7 @@ class ApplicationGatewayListenerImpl
 
     private ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) throws IOException {
         if (name == null) {
-            name = this.parent().manager().resourceManager().internalContext()
-                .randomResourceName("cert", 10);
+            name = this.parent().manager().resourceManager().internalContext().randomResourceName("cert", 10);
         }
         this.parent().defineSslCertificate(name).withPfxFromFile(pfxFile).attach();
         return this.withSslCertificate(name);

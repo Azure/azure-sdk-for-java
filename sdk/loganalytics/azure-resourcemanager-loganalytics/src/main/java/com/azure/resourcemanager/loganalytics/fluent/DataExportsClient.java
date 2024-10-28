@@ -54,12 +54,8 @@ public interface DataExportsClient {
      * @return the top level data export resource container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataExportInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String dataExportName,
-        DataExportInner parameters,
-        Context context);
+    Response<DataExportInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String dataExportName, DataExportInner parameters, Context context);
 
     /**
      * Create or update a data export.
@@ -74,8 +70,8 @@ public interface DataExportsClient {
      * @return the top level data export resource container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataExportInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String dataExportName, DataExportInner parameters);
+    DataExportInner createOrUpdate(String resourceGroupName, String workspaceName, String dataExportName,
+        DataExportInner parameters);
 
     /**
      * Gets a data export instance.
@@ -90,8 +86,8 @@ public interface DataExportsClient {
      * @return a data export instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataExportInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String dataExportName, Context context);
+    Response<DataExportInner> getWithResponse(String resourceGroupName, String workspaceName, String dataExportName,
+        Context context);
 
     /**
      * Gets a data export instance.
@@ -120,8 +116,8 @@ public interface DataExportsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String dataExportName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String dataExportName,
+        Context context);
 
     /**
      * Deletes the specified data export in a given workspace..

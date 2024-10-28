@@ -197,10 +197,8 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model ManagedIntegrationRuntime"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model ManagedIntegrationRuntime"));
         } else {
             innerTypeProperties().validate();
         }

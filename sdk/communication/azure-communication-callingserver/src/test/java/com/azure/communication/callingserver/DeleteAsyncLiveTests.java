@@ -27,7 +27,8 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
     @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void deleteRecordingWithConnectionStringAsyncClient(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
-        CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecordingWithConnectionStringAsyncClient");
+        CallAutomationAsyncClient callAutomationAsyncClient
+            = setupAsyncClient(builder, "deleteRecordingWithConnectionStringAsyncClient");
         deleteRecording(callAutomationAsyncClient);
     }
 
@@ -40,14 +41,14 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
     @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void deleteRecordingWithTokenCredentialAsyncClient(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingTokenCredential(httpClient);
-        CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecordingWithTokenCredentialAsyncClient");
+        CallAutomationAsyncClient callAutomationAsyncClient
+            = setupAsyncClient(builder, "deleteRecordingWithTokenCredentialAsyncClient");
         deleteRecording(callAutomationAsyncClient);
     }
 
     private void deleteRecording(CallAutomationAsyncClient callAutomationAsyncClient) {
-        StepVerifier.create(callAutomationAsyncClient
-            .getCallRecordingAsync()
-            .deleteRecordingWithResponse(RECORDING_DELETE_URL))
+        StepVerifier
+            .create(callAutomationAsyncClient.getCallRecordingAsync().deleteRecordingWithResponse(RECORDING_DELETE_URL))
             .consumeNextWith(response -> assertThat(response.getStatusCode(), is(equalTo(200))))
             .verifyComplete();
     }
@@ -62,9 +63,8 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
     public void deleteRecording401Async(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingInvalidTokenCredential(httpClient);
         CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");
-        StepVerifier.create(callAutomationAsyncClient
-                .getCallRecordingAsync()
-                .deleteRecordingWithResponse(RECORDING_DELETE_URL))
+        StepVerifier
+            .create(callAutomationAsyncClient.getCallRecordingAsync().deleteRecordingWithResponse(RECORDING_DELETE_URL))
             .consumeNextWith(response -> assertThat(response.getStatusCode(), is(equalTo(401))))
             .verifyComplete();
     }
@@ -79,9 +79,9 @@ public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
     public void deleteRecording404Async(HttpClient httpClient) {
         CallAutomationClientBuilder builder = getCallingServerClientUsingConnectionString(httpClient);
         CallAutomationAsyncClient callAutomationAsyncClient = setupAsyncClient(builder, "deleteRecording404Async");
-        StepVerifier.create(callAutomationAsyncClient
-                .getCallRecordingAsync()
-                .deleteRecordingWithResponse(RECORDING_DELETE_URL_404))
+        StepVerifier
+            .create(
+                callAutomationAsyncClient.getCallRecordingAsync().deleteRecordingWithResponse(RECORDING_DELETE_URL_404))
             .consumeNextWith(response -> assertThat(response.getStatusCode(), is(equalTo(404))))
             .verifyComplete();
     }

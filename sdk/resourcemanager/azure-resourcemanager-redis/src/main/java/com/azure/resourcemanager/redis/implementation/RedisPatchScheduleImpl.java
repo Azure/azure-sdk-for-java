@@ -35,21 +35,16 @@ class RedisPatchScheduleImpl
     @Override
     public Mono<RedisPatchSchedule> createResourceAsync() {
         final RedisPatchScheduleImpl self = this;
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getPatchSchedules()
-            .createOrUpdateAsync(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                DefaultName.DEFAULT,
+            .createOrUpdateAsync(this.parent().resourceGroupName(), this.parent().name(), DefaultName.DEFAULT,
                 new RedisPatchScheduleInner().withScheduleEntries(this.innerModel().scheduleEntries()))
-            .map(
-                patchScheduleInner -> {
-                    self.setInner(patchScheduleInner);
-                    return self;
-                });
+            .map(patchScheduleInner -> {
+                self.setInner(patchScheduleInner);
+                return self;
+            });
     }
 
     @Override
@@ -59,8 +54,7 @@ class RedisPatchScheduleImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getPatchSchedules()
@@ -69,8 +63,7 @@ class RedisPatchScheduleImpl
 
     @Override
     protected Mono<RedisPatchScheduleInner> getInnerAsync() {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getPatchSchedules()

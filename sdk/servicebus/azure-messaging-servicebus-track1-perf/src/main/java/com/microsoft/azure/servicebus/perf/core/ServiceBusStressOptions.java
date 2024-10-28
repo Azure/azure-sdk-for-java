@@ -20,7 +20,9 @@ public class ServiceBusStressOptions extends PerfStressOptions {
     @Parameter(names = { "-msb", "--messageSizeBytes" }, description = "Size(in bytes) of one Message")
     private int messagesSizeBytesToSend = 10;
 
-    @Parameter(names = { "-idm", "--isDeleteMode" }, description = "Receiver client is receive_and_delete mode or peek_lock mode")
+    @Parameter(
+        names = { "-idm", "--isDeleteMode" },
+        description = "Receiver client is receive_and_delete mode or peek_lock mode")
     private boolean isDeleteMode = true;
 
     /**

@@ -141,9 +141,8 @@ public final class RackSkuInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model RackSkuInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model RackSkuInner"));
         } else {
             innerProperties().validate();
         }

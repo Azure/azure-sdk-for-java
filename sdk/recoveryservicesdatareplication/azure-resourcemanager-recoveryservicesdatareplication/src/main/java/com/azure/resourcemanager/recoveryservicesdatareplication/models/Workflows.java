@@ -24,8 +24,8 @@ public interface Workflows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the job along with {@link Response}.
      */
-    Response<WorkflowModel> getWithResponse(
-        String resourceGroupName, String vaultName, String jobName, Context context);
+    Response<WorkflowModel> getWithResponse(String resourceGroupName, String vaultName, String jobName,
+        Context context);
 
     /**
      * Gets the job (workflow).
@@ -71,6 +71,6 @@ public interface Workflows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of jobs in the given vault as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkflowModel> list(
-        String resourceGroupName, String vaultName, String filter, String continuationToken, Context context);
+    PagedIterable<WorkflowModel> list(String resourceGroupName, String vaultName, String filter,
+        String continuationToken, Context context);
 }

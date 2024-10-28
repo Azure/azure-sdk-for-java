@@ -38,9 +38,8 @@ public final class OperationsDiscoveriesClientImpl implements OperationsDiscover
      * @param client the instance of the service client containing this operation class.
      */
     OperationsDiscoveriesClientImpl(ResourceMoverServiceApiImpl client) {
-        this.service =
-            RestProxy
-                .create(OperationsDiscoveriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(OperationsDiscoveriesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,15 +50,12 @@ public final class OperationsDiscoveriesClientImpl implements OperationsDiscover
     @Host("{$host}")
     @ServiceInterface(name = "ResourceMoverService")
     public interface OperationsDiscoveriesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.Migrate/operations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationsDiscoveryCollectionInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OperationsDiscoveryCollectionInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -73,10 +69,8 @@ public final class OperationsDiscoveriesClientImpl implements OperationsDiscover
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationsDiscoveryCollectionInner>> getWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
@@ -98,10 +92,8 @@ public final class OperationsDiscoveriesClientImpl implements OperationsDiscover
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationsDiscoveryCollectionInner>> getWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);

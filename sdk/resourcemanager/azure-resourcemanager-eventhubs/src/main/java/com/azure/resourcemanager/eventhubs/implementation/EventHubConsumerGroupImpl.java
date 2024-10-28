@@ -16,18 +16,14 @@ import java.util.Objects;
  * Implementation for {@link EventHubConsumerGroup}.
  */
 class EventHubConsumerGroupImpl
-    extends NestedResourceImpl<EventHubConsumerGroup,
-        ConsumerGroupInner,
-        EventHubConsumerGroupImpl>
-    implements EventHubConsumerGroup,
-        EventHubConsumerGroup.Definition,
-        EventHubConsumerGroup.Update {
+    extends NestedResourceImpl<EventHubConsumerGroup, ConsumerGroupInner, EventHubConsumerGroupImpl>
+    implements EventHubConsumerGroup, EventHubConsumerGroup.Definition, EventHubConsumerGroup.Update {
 
     private Ancestors.TwoAncestor ancestor;
 
     EventHubConsumerGroupImpl(String name, ConsumerGroupInner inner, EventHubsManager manager) {
         super(name, inner, manager);
-        this.ancestor =  new Ancestors().new TwoAncestor(inner.id());
+        this.ancestor = new Ancestors().new TwoAncestor(inner.id());
     }
 
     EventHubConsumerGroupImpl(String name, EventHubsManager manager) {
@@ -77,8 +73,8 @@ class EventHubConsumerGroupImpl
     }
 
     @Override
-    public EventHubConsumerGroupImpl withExistingEventHub(
-        String resourceGroupName, String namespaceName, String eventHubName) {
+    public EventHubConsumerGroupImpl withExistingEventHub(String resourceGroupName, String namespaceName,
+        String eventHubName) {
         this.ancestor = new Ancestors().new TwoAncestor(resourceGroupName, eventHubName, namespaceName);
         return this;
     }
@@ -91,22 +87,20 @@ class EventHubConsumerGroupImpl
 
     @Override
     public Mono<EventHubConsumerGroup> createResourceAsync() {
-        return this.manager.serviceClient().getConsumerGroups()
-                .createOrUpdateAsync(this.ancestor().resourceGroupName(),
-                        this.ancestor().ancestor2Name(),
-                        this.ancestor().ancestor1Name(),
-                        this.name(),
-                        new ConsumerGroupInner().withUserMetadata(innerModel().userMetadata()))
-                .map(innerToFluentMap(this));
+        return this.manager.serviceClient()
+            .getConsumerGroups()
+            .createOrUpdateAsync(this.ancestor().resourceGroupName(), this.ancestor().ancestor2Name(),
+                this.ancestor().ancestor1Name(), this.name(),
+                new ConsumerGroupInner().withUserMetadata(innerModel().userMetadata()))
+            .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<ConsumerGroupInner> getInnerAsync() {
-        return this.manager.serviceClient().getConsumerGroups()
-                .getAsync(this.ancestor().resourceGroupName(),
-                        this.ancestor().ancestor2Name(),
-                        this.ancestor().ancestor1Name(),
-                        this.name());
+        return this.manager.serviceClient()
+            .getConsumerGroups()
+            .getAsync(this.ancestor().resourceGroupName(), this.ancestor().ancestor2Name(),
+                this.ancestor().ancestor1Name(), this.name());
     }
 
     private Ancestors.TwoAncestor ancestor() {

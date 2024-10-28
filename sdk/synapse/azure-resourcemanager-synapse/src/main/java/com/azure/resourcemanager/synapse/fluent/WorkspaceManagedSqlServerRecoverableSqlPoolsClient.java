@@ -64,8 +64,8 @@ public interface WorkspaceManagedSqlServerRecoverableSqlPoolsClient {
      * @return recoverable sql pools for workspace managed sql server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecoverableSqlPoolInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    Response<RecoverableSqlPoolInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context);
 
     /**
      * Get recoverable sql pools for the server.

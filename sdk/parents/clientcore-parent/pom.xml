@@ -237,7 +237,7 @@
 
     <!-- Disables Spotless linting. -->
     <!-- Spotless is disabled by default until all libraries are manually updated, after that this setting will be removed. -->
-    <spotless.skip>true</spotless.skip>
+    <spotless.skip>false</spotless.skip>
 
     <!-- Skips Spotless applying code style formatting. -->
     <spotless.apply.skip>false</spotless.apply.skip>
@@ -442,7 +442,7 @@
         <artifactId>maven-site-plugin</artifactId>
         <version>3.20.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-site-plugin;external_dependency} -->
         <configuration>
-          <relativizeDecorationLinks>false</relativizeDecorationLinks>
+          <relativizeSiteLinks>false</relativizeSiteLinks>
         </configuration>
       </plugin>
 

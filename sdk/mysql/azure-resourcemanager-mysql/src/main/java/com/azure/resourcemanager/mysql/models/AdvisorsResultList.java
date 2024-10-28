@@ -14,7 +14,8 @@ import java.util.List;
 /** A list of query statistics. */
 @Immutable
 public final class AdvisorsResultList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdvisorsResultList.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AdvisorsResultList.class);
 
     /*
      * The list of recommendation action advisors.

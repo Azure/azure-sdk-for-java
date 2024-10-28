@@ -53,7 +53,8 @@ public final class ManagePrivateLink {
      * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(AzureResourceManager azureResourceManager) throws JSchException, UnsupportedEncodingException, MalformedURLException {
+    public static boolean runSample(AzureResourceManager azureResourceManager)
+        throws JSchException, UnsupportedEncodingException, MalformedURLException {
         final boolean validateOnVirtualMachine = true;
 
         final Region region = Region.US_EAST;
@@ -76,7 +77,8 @@ public final class ManagePrivateLink {
 
         try {
             System.out.println("Creating storage account...");
-            StorageAccount storageAccount = azureResourceManager.storageAccounts().define(saName)
+            StorageAccount storageAccount = azureResourceManager.storageAccounts()
+                .define(saName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withSku(StorageAccountSkuType.STANDARD_RAGRS)
@@ -91,7 +93,8 @@ public final class ManagePrivateLink {
             String saDomainNameSecondary = new URL(storageAccount.endPoints().secondary().blob()).getHost();
             System.out.println("Domain Name for Storage Account Blob Secondary: " + saDomainNameSecondary);
 
-            List<PrivateLinkResource> privateLinkResources = storageAccount.listPrivateLinkResources().stream().collect(Collectors.toList());
+            List<PrivateLinkResource> privateLinkResources
+                = storageAccount.listPrivateLinkResources().stream().collect(Collectors.toList());
             for (PrivateLinkResource privateLinkResource : privateLinkResources) {
                 Utils.print(privateLinkResource);
             }
@@ -109,26 +112,28 @@ public final class ManagePrivateLink {
             System.out.println("DNS Zone Name for Storage Account Blob Secondary: " + blobDnsZoneNameSecondary);
 
             System.out.println("Creating virtual network...");
-            Network network = azureResourceManager.networks().define(vnName)
+            Network network = azureResourceManager.networks()
+                .define(vnName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withAddressSpace(vnAddressSpace)
                 .defineSubnet(subnetName)
-                    .withAddressPrefix(vnAddressSpace)
-                    .disableNetworkPoliciesOnPrivateEndpoint()  // disable network policies on private endpoint
-                    .attach()
+                .withAddressPrefix(vnAddressSpace)
+                .disableNetworkPoliciesOnPrivateEndpoint()  // disable network policies on private endpoint
+                .attach()
                 .create();
 
             System.out.println("Creating private endpoint...");
             // private endpoint
-            PrivateEndpoint privateEndpoint = azureResourceManager.privateEndpoints().define(peName)
+            PrivateEndpoint privateEndpoint = azureResourceManager.privateEndpoints()
+                .define(peName)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withSubnetId(network.subnets().get(subnetName).id())
                 .definePrivateLinkServiceConnection(pecName)
-                    .withResourceId(storageAccount.id())
-                    .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)   // primary blob
-                    .attach()
+                .withResourceId(storageAccount.id())
+                .withSubResource(PrivateLinkSubResourceName.STORAGE_BLOB)   // primary blob
+                .attach()
                 .create();
 
             System.out.println("Private Endpoint for Storage Account Blob Endpoint");
@@ -139,14 +144,15 @@ public final class ManagePrivateLink {
 
             System.out.println("Creating private endpoint...");
             // private endpoint
-            PrivateEndpoint privateEndpoint2 = azureResourceManager.privateEndpoints().define(peName2)
+            PrivateEndpoint privateEndpoint2 = azureResourceManager.privateEndpoints()
+                .define(peName2)
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withSubnetId(network.subnets().get(subnetName).id())
                 .definePrivateLinkServiceConnection(pecName2)
-                    .withResourceId(storageAccount.id())
-                    .withSubResource(PrivateLinkSubResourceName.fromString("blob_secondary"))   // secondary blob
-                    .attach()
+                .withResourceId(storageAccount.id())
+                .withSubResource(PrivateLinkSubResourceName.fromString("blob_secondary"))   // secondary blob
+                .attach()
                 .create();
 
             System.out.println("Private Endpoint for Storage Account Blob Secondary Endpoint");
@@ -159,7 +165,8 @@ public final class ManagePrivateLink {
             if (validateOnVirtualMachine) {
                 System.out.println("Creating virtual machine...");
                 // create a test virtual machine
-                virtualMachine = azureResourceManager.virtualMachines().define(vmName)
+                virtualMachine = azureResourceManager.virtualMachines()
+                    .define(vmName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withExistingPrimaryNetwork(network)
@@ -173,11 +180,13 @@ public final class ManagePrivateLink {
                     .create();
 
                 // verify private endpoint not yet works
-                RunCommandResult commandResult = virtualMachine.runShellScript(Collections.singletonList("nslookup " + saDomainName), null);
+                RunCommandResult commandResult
+                    = virtualMachine.runShellScript(Collections.singletonList("nslookup " + saDomainName), null);
                 for (InstanceViewStatus status : commandResult.value()) {
                     System.out.println(status.message());
                 }
-                commandResult = virtualMachine.runShellScript(Collections.singletonList("nslookup " + saDomainNameSecondary), null);
+                commandResult = virtualMachine
+                    .runShellScript(Collections.singletonList("nslookup " + saDomainNameSecondary), null);
                 for (InstanceViewStatus status : commandResult.value()) {
                     System.out.println(status.message());
                 }
@@ -186,31 +195,34 @@ public final class ManagePrivateLink {
 
             System.out.println("Creating private dns zone...");
             // private dns zone
-            PrivateDnsZone privateDnsZone = azureResourceManager.privateDnsZones().define(blobDnsZoneName)
+            PrivateDnsZone privateDnsZone = azureResourceManager.privateDnsZones()
+                .define(blobDnsZoneName)
                 .withExistingResourceGroup(rgName)
                 .defineARecordSet(saDomainName.split(Pattern.quote("."))[0])
-                    .withIPv4Address(saPrivateIp)
-                    .attach()
+                .withIPv4Address(saPrivateIp)
+                .attach()
                 .defineARecordSet(saDomainNameSecondary.split(Pattern.quote("."))[0])
-                    .withIPv4Address(saPrivateIpSecondary)
-                    .attach()
+                .withIPv4Address(saPrivateIpSecondary)
+                .attach()
                 .defineVirtualNetworkLink(vnlName)
-                    .withVirtualNetworkId(network.id())
-                    .attach()
+                .withVirtualNetworkId(network.id())
+                .attach()
                 .create();
 
             Utils.print(privateDnsZone);
 
             System.out.println("Creating private dns zone group...");
             // private dns zone group on private endpoint
-            PrivateDnsZoneGroup privateDnsZoneGroup = privateEndpoint.privateDnsZoneGroups().define(pdzgName)
+            PrivateDnsZoneGroup privateDnsZoneGroup = privateEndpoint.privateDnsZoneGroups()
+                .define(pdzgName)
                 .withPrivateDnsZoneConfigure(pdzcName, privateDnsZone.id())
                 .create();
 
             System.out.println("Private DNS Zone Group Name: " + privateDnsZoneGroup.name());
 
             System.out.println("Creating private dns zone group...");
-            PrivateDnsZoneGroup privateDnsZoneGroup2 = privateEndpoint2.privateDnsZoneGroups().define(pdzgName)
+            PrivateDnsZoneGroup privateDnsZoneGroup2 = privateEndpoint2.privateDnsZoneGroups()
+                .define(pdzgName)
                 .withPrivateDnsZoneConfigure(pdzcName2, privateDnsZone.id())
                 .create();
 
@@ -218,11 +230,13 @@ public final class ManagePrivateLink {
 
             if (validateOnVirtualMachine) {
                 // verify private endpoint works
-                RunCommandResult commandResult = virtualMachine.runShellScript(Collections.singletonList("nslookup " + saDomainName), null);
+                RunCommandResult commandResult
+                    = virtualMachine.runShellScript(Collections.singletonList("nslookup " + saDomainName), null);
                 for (InstanceViewStatus status : commandResult.value()) {
                     System.out.println(status.message());
                 }
-                commandResult = virtualMachine.runShellScript(Collections.singletonList("nslookup " + saDomainNameSecondary), null);
+                commandResult = virtualMachine
+                    .runShellScript(Collections.singletonList("nslookup " + saDomainNameSecondary), null);
                 for (InstanceViewStatus status : commandResult.value()) {
                     System.out.println(status.message());
                 }
@@ -258,8 +272,7 @@ public final class ManagePrivateLink {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

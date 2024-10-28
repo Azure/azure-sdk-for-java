@@ -13,9 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureSku model =
-            BinaryData
-                .fromString("{\"name\":\"Standard_L8as_v3\",\"capacity\":1935250385,\"tier\":\"Basic\"}")
+        AzureSku model
+            = BinaryData.fromString("{\"name\":\"Standard_L8as_v3\",\"capacity\":1935250385,\"tier\":\"Basic\"}")
                 .toObject(AzureSku.class);
         Assertions.assertEquals(AzureSkuName.STANDARD_L8AS_V3, model.name());
         Assertions.assertEquals(1935250385, model.capacity());
@@ -24,11 +23,9 @@ public final class AzureSkuTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSku model =
-            new AzureSku()
-                .withName(AzureSkuName.STANDARD_L8AS_V3)
-                .withCapacity(1935250385)
-                .withTier(AzureSkuTier.BASIC);
+        AzureSku model = new AzureSku().withName(AzureSkuName.STANDARD_L8AS_V3)
+            .withCapacity(1935250385)
+            .withTier(AzureSkuTier.BASIC);
         model = BinaryData.fromObject(model).toObject(AzureSku.class);
         Assertions.assertEquals(AzureSkuName.STANDARD_L8AS_V3, model.name());
         Assertions.assertEquals(1935250385, model.capacity());

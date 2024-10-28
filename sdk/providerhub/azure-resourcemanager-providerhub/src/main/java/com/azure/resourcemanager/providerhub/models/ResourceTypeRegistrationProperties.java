@@ -37,8 +37,8 @@ public final class ResourceTypeRegistrationProperties extends ResourceTypeRegist
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationProperties withExtensionOptions(
-        ResourceTypeRegistrationPropertiesExtensionOptions extensionOptions) {
+    public ResourceTypeRegistrationProperties
+        withExtensionOptions(ResourceTypeRegistrationPropertiesExtensionOptions extensionOptions) {
         super.withExtensionOptions(extensionOptions);
         return this;
     }
@@ -52,8 +52,8 @@ public final class ResourceTypeRegistrationProperties extends ResourceTypeRegist
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationProperties withSwaggerSpecifications(
-        List<SwaggerSpecification> swaggerSpecifications) {
+    public ResourceTypeRegistrationProperties
+        withSwaggerSpecifications(List<SwaggerSpecification> swaggerSpecifications) {
         super.withSwaggerSpecifications(swaggerSpecifications);
         return this;
     }
@@ -67,8 +67,8 @@ public final class ResourceTypeRegistrationProperties extends ResourceTypeRegist
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationProperties withAuthorizationActionMappings(
-        List<AuthorizationActionMapping> authorizationActionMappings) {
+    public ResourceTypeRegistrationProperties
+        withAuthorizationActionMappings(List<AuthorizationActionMapping> authorizationActionMappings) {
         super.withAuthorizationActionMappings(authorizationActionMappings);
         return this;
     }
@@ -110,8 +110,8 @@ public final class ResourceTypeRegistrationProperties extends ResourceTypeRegist
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationProperties withFeaturesRule(
-        ResourceTypeRegistrationPropertiesFeaturesRule featuresRule) {
+    public ResourceTypeRegistrationProperties
+        withFeaturesRule(ResourceTypeRegistrationPropertiesFeaturesRule featuresRule) {
         super.withFeaturesRule(featuresRule);
         return this;
     }
@@ -140,8 +140,7 @@ public final class ResourceTypeRegistrationProperties extends ResourceTypeRegist
     /** {@inheritDoc} */
     @Override
     public ResourceTypeRegistrationProperties withSubscriptionLifecycleNotificationSpecifications(
-        ResourceTypeRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications
-            subscriptionLifecycleNotificationSpecifications) {
+        ResourceTypeRegistrationPropertiesSubscriptionLifecycleNotificationSpecifications subscriptionLifecycleNotificationSpecifications) {
         super.withSubscriptionLifecycleNotificationSpecifications(subscriptionLifecycleNotificationSpecifications);
         return this;
     }
@@ -155,8 +154,8 @@ public final class ResourceTypeRegistrationProperties extends ResourceTypeRegist
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationProperties withIdentityManagement(
-        ResourceTypeRegistrationPropertiesIdentityManagement identityManagement) {
+    public ResourceTypeRegistrationProperties
+        withIdentityManagement(ResourceTypeRegistrationPropertiesIdentityManagement identityManagement) {
         super.withIdentityManagement(identityManagement);
         return this;
     }
@@ -185,16 +184,16 @@ public final class ResourceTypeRegistrationProperties extends ResourceTypeRegist
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationProperties withRequestHeaderOptions(
-        ResourceTypeRegistrationPropertiesRequestHeaderOptions requestHeaderOptions) {
+    public ResourceTypeRegistrationProperties
+        withRequestHeaderOptions(ResourceTypeRegistrationPropertiesRequestHeaderOptions requestHeaderOptions) {
         super.withRequestHeaderOptions(requestHeaderOptions);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationProperties withSubscriptionStateRules(
-        List<SubscriptionStateRule> subscriptionStateRules) {
+    public ResourceTypeRegistrationProperties
+        withSubscriptionStateRules(List<SubscriptionStateRule> subscriptionStateRules) {
         super.withSubscriptionStateRules(subscriptionStateRules);
         return this;
     }
@@ -216,16 +215,16 @@ public final class ResourceTypeRegistrationProperties extends ResourceTypeRegist
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationProperties withResourceMovePolicy(
-        ResourceTypeRegistrationPropertiesResourceMovePolicy resourceMovePolicy) {
+    public ResourceTypeRegistrationProperties
+        withResourceMovePolicy(ResourceTypeRegistrationPropertiesResourceMovePolicy resourceMovePolicy) {
         super.withResourceMovePolicy(resourceMovePolicy);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationProperties withResourceDeletionPolicy(
-        ResourceDeletionPolicy resourceDeletionPolicy) {
+    public ResourceTypeRegistrationProperties
+        withResourceDeletionPolicy(ResourceDeletionPolicy resourceDeletionPolicy) {
         super.withResourceDeletionPolicy(resourceDeletionPolicy);
         return this;
     }

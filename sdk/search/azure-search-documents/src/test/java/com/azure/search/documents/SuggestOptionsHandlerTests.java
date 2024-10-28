@@ -56,8 +56,7 @@ public class SuggestOptionsHandlerTests {
     }
 
     private static SuggestOptions createTestOptions() {
-        return new SuggestOptions()
-            .setFilter("x eq y")
+        return new SuggestOptions().setFilter("x eq y")
             .setHighlightPreTag("<em>")
             .setHighlightPostTag("</em>")
             .setMinimumCoverage(33.3)

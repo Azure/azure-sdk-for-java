@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PngLayerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PngLayer model =
-            BinaryData
-                .fromString("{\"width\":\"imlnwiaaomylw\",\"height\":\"z\",\"label\":\"cse\"}")
-                .toObject(PngLayer.class);
+        PngLayer model = BinaryData.fromString("{\"width\":\"imlnwiaaomylw\",\"height\":\"z\",\"label\":\"cse\"}")
+            .toObject(PngLayer.class);
         Assertions.assertEquals("imlnwiaaomylw", model.width());
         Assertions.assertEquals("z", model.height());
         Assertions.assertEquals("cse", model.label());

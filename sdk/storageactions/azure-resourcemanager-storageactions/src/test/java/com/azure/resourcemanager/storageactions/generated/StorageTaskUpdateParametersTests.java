@@ -61,25 +61,32 @@ public final class StorageTaskUpdateParametersTests {
                             "bdxkqpxokaj", new UserAssignedIdentity(), "pimexgstxgcpodg", new UserAssignedIdentity(),
                             "jrmvdjwzrlo", new UserAssignedIdentity(), "lwhijcoejctbzaq", new UserAssignedIdentity())))
                 .withTags(mapOf("bkbfkgukdkex", "y", "ocjjxhvpmouexh", "ppofmxaxcfjpgdd"))
-                .withProperties(new StorageTaskProperties().withEnabled(true).withDescription("eojnxqbzvddn")
+                .withProperties(new StorageTaskProperties().withEnabled(true)
+                    .withDescription("eojnxqbzvddn")
                     .withAction(new StorageTaskAction()
-                        .withIfProperty(new IfCondition().withCondition("wndeicbtwnp").withOperations(Arrays.asList(
-                            new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_LEGAL_HOLD)
+                        .withIfProperty(new IfCondition().withCondition("wndeicbtwnp")
+                            .withOperations(Arrays.asList(new StorageTaskOperation()
+                                .withName(StorageTaskOperationName.SET_BLOB_LEGAL_HOLD)
                                 .withParameters(mapOf("jthjqkwpyei", "uhrhcffcyddgl", "q", "xmqci", "xuigdtopbobj",
                                     "hkh", "uhrzayvvt", "ghmewuam"))
-                                .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK),
-                            new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TAGS)
-                                .withParameters(mapOf("efgugnxk", "tkftutqxlngx", "hjybigehoqfbo", "xdqmidtthzrvqdra",
-                                    "zlcuiywgqywgndrv", "skanyk", "ocpecfvmmco", "nhzgpphrcgyn"))
-                                .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK))))
+                                .withOnSuccess(OnSuccess.CONTINUE)
+                                .withOnFailure(OnFailure.BREAK),
+                                new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TAGS)
+                                    .withParameters(
+                                        mapOf("efgugnxk", "tkftutqxlngx", "hjybigehoqfbo", "xdqmidtthzrvqdra",
+                                            "zlcuiywgqywgndrv", "skanyk", "ocpecfvmmco", "nhzgpphrcgyn"))
+                                    .withOnSuccess(OnSuccess.CONTINUE)
+                                    .withOnFailure(OnFailure.BREAK))))
                         .withElseProperty(new ElseCondition().withOperations(Arrays.asList(
                             new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TAGS)
-                                .withParameters(mapOf("jqabcypmivkwlzuv", "m")).withOnSuccess(OnSuccess.CONTINUE)
+                                .withParameters(mapOf("jqabcypmivkwlzuv", "m"))
+                                .withOnSuccess(OnSuccess.CONTINUE)
                                 .withOnFailure(OnFailure.BREAK),
                             new StorageTaskOperation().withName(StorageTaskOperationName.DELETE_BLOB)
                                 .withParameters(mapOf("nlebxetqgtzxd", "acfi", "feallnwsu", "nqbqqwxr", "c",
                                     "isnjampmngnz", "ochcbonqvpkvl", "aqw"))
-                                .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK))))));
+                                .withOnSuccess(OnSuccess.CONTINUE)
+                                .withOnFailure(OnFailure.BREAK))))));
         model = BinaryData.fromObject(model).toObject(StorageTaskUpdateParameters.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
         Assertions.assertEquals("y", model.tags().get("bkbfkgukdkex"));

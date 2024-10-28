@@ -76,10 +76,8 @@ public final class SparkConfigurationListResponse {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model SparkConfigurationListResponse"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model SparkConfigurationListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }

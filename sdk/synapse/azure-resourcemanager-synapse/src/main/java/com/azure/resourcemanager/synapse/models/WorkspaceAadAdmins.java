@@ -46,8 +46,8 @@ public interface WorkspaceAadAdmins {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace active directory administrator.
      */
-    WorkspaceAadAdminInfo createOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo);
+    WorkspaceAadAdminInfo createOrUpdate(String resourceGroupName, String workspaceName,
+        WorkspaceAadAdminInfoInner aadAdminInfo);
 
     /**
      * Creates or updates a workspace active directory admin.
@@ -61,8 +61,8 @@ public interface WorkspaceAadAdmins {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace active directory administrator.
      */
-    WorkspaceAadAdminInfo createOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo, Context context);
+    WorkspaceAadAdminInfo createOrUpdate(String resourceGroupName, String workspaceName,
+        WorkspaceAadAdminInfoInner aadAdminInfo, Context context);
 
     /**
      * Deletes a workspace active directory admin.

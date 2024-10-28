@@ -139,8 +139,8 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
      * @param managedResourceGroupConfiguration the managedResourceGroupConfiguration value to set.
      * @return the NetworkFabricControllerProperties object itself.
      */
-    public NetworkFabricControllerProperties withManagedResourceGroupConfiguration(
-        ManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
+    public NetworkFabricControllerProperties
+        withManagedResourceGroupConfiguration(ManagedResourceGroupConfiguration managedResourceGroupConfiguration) {
         this.managedResourceGroupConfiguration = managedResourceGroupConfiguration;
         return this;
     }
@@ -185,8 +185,8 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
      * @param isWorkloadManagementNetworkEnabled the isWorkloadManagementNetworkEnabled value to set.
      * @return the NetworkFabricControllerProperties object itself.
      */
-    public NetworkFabricControllerProperties withIsWorkloadManagementNetworkEnabled(
-        IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled) {
+    public NetworkFabricControllerProperties
+        withIsWorkloadManagementNetworkEnabled(IsWorkloadManagementNetworkEnabled isWorkloadManagementNetworkEnabled) {
         this.isWorkloadManagementNetworkEnabled = isWorkloadManagementNetworkEnabled;
         return this;
     }
@@ -315,8 +315,8 @@ public final class NetworkFabricControllerProperties extends AnnotationResource 
      * @param workloadExpressRouteConnections the workloadExpressRouteConnections value to set.
      * @return the NetworkFabricControllerProperties object itself.
      */
-    public NetworkFabricControllerProperties withWorkloadExpressRouteConnections(
-        List<ExpressRouteConnectionInformation> workloadExpressRouteConnections) {
+    public NetworkFabricControllerProperties
+        withWorkloadExpressRouteConnections(List<ExpressRouteConnectionInformation> workloadExpressRouteConnections) {
         this.workloadExpressRouteConnections = workloadExpressRouteConnections;
         return this;
     }

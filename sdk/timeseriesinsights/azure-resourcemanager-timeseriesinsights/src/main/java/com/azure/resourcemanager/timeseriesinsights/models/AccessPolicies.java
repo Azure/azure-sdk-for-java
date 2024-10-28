@@ -23,8 +23,8 @@ public interface AccessPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the access policy with the specified name in the specified environment along with {@link Response}.
      */
-    Response<AccessPolicyResource> getWithResponse(
-        String resourceGroupName, String environmentName, String accessPolicyName, Context context);
+    Response<AccessPolicyResource> getWithResponse(String resourceGroupName, String environmentName,
+        String accessPolicyName, Context context);
 
     /**
      * Gets the access policy with the specified name in the specified environment.
@@ -55,8 +55,8 @@ public interface AccessPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String accessPolicyName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String accessPolicyName,
+        Context context);
 
     /**
      * Deletes the access policy with the specified name in the specified subscription, resource group, and environment.
@@ -84,8 +84,8 @@ public interface AccessPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List access policies operation along with {@link Response}.
      */
-    Response<AccessPolicyListResponse> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context);
+    Response<AccessPolicyListResponse> listByEnvironmentWithResponse(String resourceGroupName, String environmentName,
+        Context context);
 
     /**
      * Lists all the available access policies associated with the environment.

@@ -25,9 +25,7 @@ public class FeatureMetadata implements JsonSerializable<FeatureMetadata> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeStringField("featureType", featureType)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeStringField("featureType", featureType).writeEndObject();
     }
 
     public static FeatureMetadata fromJson(JsonReader jsonReader) throws IOException {

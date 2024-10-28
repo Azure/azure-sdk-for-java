@@ -17,13 +17,12 @@ import reactor.core.publisher.Mono;
  * The implementation of {@link DeploymentOperations}.
  */
 final class DeploymentOperationsImpl
-        extends ReadableWrappersImpl<DeploymentOperation, DeploymentOperationImpl, DeploymentOperationInner>
-        implements DeploymentOperations {
+    extends ReadableWrappersImpl<DeploymentOperation, DeploymentOperationImpl, DeploymentOperationInner>
+    implements DeploymentOperations {
     private final DeploymentOperationsClient client;
     private final Deployment deployment;
 
-    DeploymentOperationsImpl(final DeploymentOperationsClient client,
-                             final Deployment deployment) {
+    DeploymentOperationsImpl(final DeploymentOperationsClient client, final Deployment deployment) {
         this.client = client;
         this.deployment = deployment;
     }
@@ -54,7 +53,7 @@ final class DeploymentOperationsImpl
 
     @Override
     public PagedFlux<DeploymentOperation> listAsync() {
-        return wrapPageAsync(this.client
-            .listAtManagementGroupScopeAsync(deployment.resourceGroupName(), deployment.name()));
+        return wrapPageAsync(
+            this.client.listAtManagementGroupScopeAsync(deployment.resourceGroupName(), deployment.name()));
     }
 }

@@ -108,17 +108,15 @@ public final class RecoveryServicesDataReplicationManager {
 
     private final DataReplicationMgmtClient clientObject;
 
-    private RecoveryServicesDataReplicationManager(
-        HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
+    private RecoveryServicesDataReplicationManager(HttpPipeline httpPipeline, AzureProfile profile,
+        Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new DataReplicationMgmtClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new DataReplicationMgmtClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -128,8 +126,8 @@ public final class RecoveryServicesDataReplicationManager {
      * @param profile the Azure profile for client.
      * @return the Recovery Services Data Replication service API instance.
      */
-    public static RecoveryServicesDataReplicationManager authenticate(
-        TokenCredential credential, AzureProfile profile) {
+    public static RecoveryServicesDataReplicationManager authenticate(TokenCredential credential,
+        AzureProfile profile) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         return configure().authenticate(credential, profile);
@@ -248,8 +246,8 @@ public final class RecoveryServicesDataReplicationManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -269,15 +267,13 @@ public final class RecoveryServicesDataReplicationManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.recoveryservicesdatareplication")
                 .append("/")
                 .append("1.0.0-beta.1");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -302,31 +298,21 @@ public final class RecoveryServicesDataReplicationManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new RecoveryServicesDataReplicationManager(httpPipeline, profile, defaultPollInterval);
         }
     }
@@ -398,8 +384,8 @@ public final class RecoveryServicesDataReplicationManager {
      */
     public FabricOperationsStatus fabricOperationsStatus() {
         if (this.fabricOperationsStatus == null) {
-            this.fabricOperationsStatus =
-                new FabricOperationsStatusImpl(clientObject.getFabricOperationsStatus(), this);
+            this.fabricOperationsStatus
+                = new FabricOperationsStatusImpl(clientObject.getFabricOperationsStatus(), this);
         }
         return fabricOperationsStatus;
     }
@@ -447,8 +433,8 @@ public final class RecoveryServicesDataReplicationManager {
      */
     public ProtectedItemOperationStatus protectedItemOperationStatus() {
         if (this.protectedItemOperationStatus == null) {
-            this.protectedItemOperationStatus =
-                new ProtectedItemOperationStatusImpl(clientObject.getProtectedItemOperationStatus(), this);
+            this.protectedItemOperationStatus
+                = new ProtectedItemOperationStatusImpl(clientObject.getProtectedItemOperationStatus(), this);
         }
         return protectedItemOperationStatus;
     }
@@ -544,8 +530,8 @@ public final class RecoveryServicesDataReplicationManager {
      */
     public WorkflowOperationStatus workflowOperationStatus() {
         if (this.workflowOperationStatus == null) {
-            this.workflowOperationStatus =
-                new WorkflowOperationStatusImpl(clientObject.getWorkflowOperationStatus(), this);
+            this.workflowOperationStatus
+                = new WorkflowOperationStatusImpl(clientObject.getWorkflowOperationStatus(), this);
         }
         return workflowOperationStatus;
     }

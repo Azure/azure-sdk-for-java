@@ -15,6 +15,7 @@
   <properties>
     <javadocDoclet></javadocDoclet>
     <javadocDocletOptions></javadocDocletOptions>
+    <spotless.skip>true</spotless.skip>
   </properties>
   <dependencies>
     <dependency>

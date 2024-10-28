@@ -30,47 +30,35 @@ public final class SqlPoolWorkloadClassifiersCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"memberName\":\"ieopexelxqdwr\",\"label\":\"yil\",\"context\":\"ibkgxyxyau\",\"startTime\":\"eddobmcnltm\",\"endTime\":\"tkujsqycm\",\"importance\":\"xfabl\"},\"id\":\"gpwb\",\"name\":\"whrialiwrycgn\",\"type\":\"plrr\"}";
+        String responseStr
+            = "{\"properties\":{\"memberName\":\"ieopexelxqdwr\",\"label\":\"yil\",\"context\":\"ibkgxyxyau\",\"startTime\":\"eddobmcnltm\",\"endTime\":\"tkujsqycm\",\"importance\":\"xfabl\"},\"id\":\"gpwb\",\"name\":\"whrialiwrycgn\",\"type\":\"plrr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        WorkloadClassifier response =
-            manager
-                .sqlPoolWorkloadClassifiers()
-                .define("ubhg")
-                .withExistingWorkloadGroup("cmiwdw", "svnmeylajamcajy", "ftpzcrryklleyn", "anhkigglclwalh")
-                .withMemberName("hetxdqcmyctajqz")
-                .withLabel("alec")
-                .withContext("ibiwksdegyxsb")
-                .withStartTime("zvoikvntwczf")
-                .withEndTime("ushlcxpblalh")
-                .withImportance("zpfkis")
-                .create();
+        WorkloadClassifier response = manager.sqlPoolWorkloadClassifiers()
+            .define("ubhg")
+            .withExistingWorkloadGroup("cmiwdw", "svnmeylajamcajy", "ftpzcrryklleyn", "anhkigglclwalh")
+            .withMemberName("hetxdqcmyctajqz")
+            .withLabel("alec")
+            .withContext("ibiwksdegyxsb")
+            .withStartTime("zvoikvntwczf")
+            .withEndTime("ushlcxpblalh")
+            .withImportance("zpfkis")
+            .create();
 
         Assertions.assertEquals("ieopexelxqdwr", response.memberName());
         Assertions.assertEquals("yil", response.label());

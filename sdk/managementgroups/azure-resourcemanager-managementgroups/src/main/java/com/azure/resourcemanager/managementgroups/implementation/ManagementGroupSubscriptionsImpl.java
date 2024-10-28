@@ -21,22 +21,18 @@ public final class ManagementGroupSubscriptionsImpl implements ManagementGroupSu
 
     private final com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager;
 
-    public ManagementGroupSubscriptionsImpl(
-        ManagementGroupSubscriptionsClient innerClient,
+    public ManagementGroupSubscriptionsImpl(ManagementGroupSubscriptionsClient innerClient,
         com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<SubscriptionUnderManagementGroup> createWithResponse(
-        String groupId, String subscriptionId, String cacheControl, Context context) {
-        Response<SubscriptionUnderManagementGroupInner> inner =
-            this.serviceClient().createWithResponse(groupId, subscriptionId, cacheControl, context);
+    public Response<SubscriptionUnderManagementGroup> createWithResponse(String groupId, String subscriptionId,
+        String cacheControl, Context context) {
+        Response<SubscriptionUnderManagementGroupInner> inner
+            = this.serviceClient().createWithResponse(groupId, subscriptionId, cacheControl, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SubscriptionUnderManagementGroupImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -52,8 +48,8 @@ public final class ManagementGroupSubscriptionsImpl implements ManagementGroupSu
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String groupId, String subscriptionId, String cacheControl, Context context) {
+    public Response<Void> deleteWithResponse(String groupId, String subscriptionId, String cacheControl,
+        Context context) {
         return this.serviceClient().deleteWithResponse(groupId, subscriptionId, cacheControl, context);
     }
 
@@ -61,15 +57,12 @@ public final class ManagementGroupSubscriptionsImpl implements ManagementGroupSu
         this.serviceClient().delete(groupId, subscriptionId);
     }
 
-    public Response<SubscriptionUnderManagementGroup> getSubscriptionWithResponse(
-        String groupId, String subscriptionId, String cacheControl, Context context) {
-        Response<SubscriptionUnderManagementGroupInner> inner =
-            this.serviceClient().getSubscriptionWithResponse(groupId, subscriptionId, cacheControl, context);
+    public Response<SubscriptionUnderManagementGroup> getSubscriptionWithResponse(String groupId, String subscriptionId,
+        String cacheControl, Context context) {
+        Response<SubscriptionUnderManagementGroupInner> inner
+            = this.serviceClient().getSubscriptionWithResponse(groupId, subscriptionId, cacheControl, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SubscriptionUnderManagementGroupImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -86,16 +79,18 @@ public final class ManagementGroupSubscriptionsImpl implements ManagementGroupSu
     }
 
     public PagedIterable<SubscriptionUnderManagementGroup> getSubscriptionsUnderManagementGroup(String groupId) {
-        PagedIterable<SubscriptionUnderManagementGroupInner> inner =
-            this.serviceClient().getSubscriptionsUnderManagementGroup(groupId);
-        return Utils.mapPage(inner, inner1 -> new SubscriptionUnderManagementGroupImpl(inner1, this.manager()));
+        PagedIterable<SubscriptionUnderManagementGroupInner> inner
+            = this.serviceClient().getSubscriptionsUnderManagementGroup(groupId);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SubscriptionUnderManagementGroupImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SubscriptionUnderManagementGroup> getSubscriptionsUnderManagementGroup(
-        String groupId, String skiptoken, Context context) {
-        PagedIterable<SubscriptionUnderManagementGroupInner> inner =
-            this.serviceClient().getSubscriptionsUnderManagementGroup(groupId, skiptoken, context);
-        return Utils.mapPage(inner, inner1 -> new SubscriptionUnderManagementGroupImpl(inner1, this.manager()));
+    public PagedIterable<SubscriptionUnderManagementGroup> getSubscriptionsUnderManagementGroup(String groupId,
+        String skiptoken, Context context) {
+        PagedIterable<SubscriptionUnderManagementGroupInner> inner
+            = this.serviceClient().getSubscriptionsUnderManagementGroup(groupId, skiptoken, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SubscriptionUnderManagementGroupImpl(inner1, this.manager()));
     }
 
     private ManagementGroupSubscriptionsClient serviceClient() {

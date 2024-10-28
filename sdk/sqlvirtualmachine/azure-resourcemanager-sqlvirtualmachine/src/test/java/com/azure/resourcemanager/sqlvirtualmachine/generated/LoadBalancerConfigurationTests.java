@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LoadBalancerConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LoadBalancerConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"privateIpAddress\":{\"ipAddress\":\"jye\",\"subnetResourceId\":\"kvnipjoxz\"},\"publicIpAddressResourceId\":\"chgejspodm\",\"loadBalancerResourceId\":\"lzydehojwyahux\",\"probePort\":1511051439,\"sqlVirtualMachineInstances\":[\"njaqwixjspro\",\"vcputegj\"]}")
-                .toObject(LoadBalancerConfiguration.class);
+        LoadBalancerConfiguration model = BinaryData.fromString(
+            "{\"privateIpAddress\":{\"ipAddress\":\"jye\",\"subnetResourceId\":\"kvnipjoxz\"},\"publicIpAddressResourceId\":\"chgejspodm\",\"loadBalancerResourceId\":\"lzydehojwyahux\",\"probePort\":1511051439,\"sqlVirtualMachineInstances\":[\"njaqwixjspro\",\"vcputegj\"]}")
+            .toObject(LoadBalancerConfiguration.class);
         Assertions.assertEquals("jye", model.privateIpAddress().ipAddress());
         Assertions.assertEquals("kvnipjoxz", model.privateIpAddress().subnetResourceId());
         Assertions.assertEquals("chgejspodm", model.publicIpAddressResourceId());
@@ -28,13 +26,12 @@ public final class LoadBalancerConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LoadBalancerConfiguration model =
-            new LoadBalancerConfiguration()
-                .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("jye").withSubnetResourceId("kvnipjoxz"))
-                .withPublicIpAddressResourceId("chgejspodm")
-                .withLoadBalancerResourceId("lzydehojwyahux")
-                .withProbePort(1511051439)
-                .withSqlVirtualMachineInstances(Arrays.asList("njaqwixjspro", "vcputegj"));
+        LoadBalancerConfiguration model = new LoadBalancerConfiguration()
+            .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("jye").withSubnetResourceId("kvnipjoxz"))
+            .withPublicIpAddressResourceId("chgejspodm")
+            .withLoadBalancerResourceId("lzydehojwyahux")
+            .withProbePort(1511051439)
+            .withSqlVirtualMachineInstances(Arrays.asList("njaqwixjspro", "vcputegj"));
         model = BinaryData.fromObject(model).toObject(LoadBalancerConfiguration.class);
         Assertions.assertEquals("jye", model.privateIpAddress().ipAddress());
         Assertions.assertEquals("kvnipjoxz", model.privateIpAddress().subnetResourceId());

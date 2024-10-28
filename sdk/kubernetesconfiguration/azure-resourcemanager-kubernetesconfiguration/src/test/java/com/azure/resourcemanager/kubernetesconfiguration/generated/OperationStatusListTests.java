@@ -10,11 +10,9 @@ import com.azure.resourcemanager.kubernetesconfiguration.models.OperationStatusL
 public final class OperationStatusListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationStatusList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"uhashsfwx\",\"name\":\"owzxcu\",\"status\":\"i\",\"properties\":{\"wfvovbv\":\"oxdjebwpuc\",\"jrwjueiotwm\":\"euecivyhzceuoj\",\"rjaw\":\"dytdxwitx\"}},{\"id\":\"gxhnisk\",\"name\":\"bkpyc\",\"status\":\"klwndnhjdauwhv\",\"properties\":{\"xujznbmpowu\":\"zbtd\",\"lupj\":\"przqlveu\"}},{\"id\":\"fxobbcsws\",\"name\":\"jriplrbpbewtghf\",\"status\":\"blcg\",\"properties\":{\"t\":\"vlvqhjkbegi\",\"aloayqcgwrtzju\":\"mxiebw\",\"txon\":\"gwyzm\",\"rknftguvriuhprwm\":\"mtsavjcbpwxqp\"}}],\"nextLink\":\"xqtayriwwro\"}")
-                .toObject(OperationStatusList.class);
+        OperationStatusList model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"uhashsfwx\",\"name\":\"owzxcu\",\"status\":\"i\",\"properties\":{\"wfvovbv\":\"oxdjebwpuc\",\"jrwjueiotwm\":\"euecivyhzceuoj\",\"rjaw\":\"dytdxwitx\"}},{\"id\":\"gxhnisk\",\"name\":\"bkpyc\",\"status\":\"klwndnhjdauwhv\",\"properties\":{\"xujznbmpowu\":\"zbtd\",\"lupj\":\"przqlveu\"}},{\"id\":\"fxobbcsws\",\"name\":\"jriplrbpbewtghf\",\"status\":\"blcg\",\"properties\":{\"t\":\"vlvqhjkbegi\",\"aloayqcgwrtzju\":\"mxiebw\",\"txon\":\"gwyzm\",\"rknftguvriuhprwm\":\"mtsavjcbpwxqp\"}}],\"nextLink\":\"xqtayriwwro\"}")
+            .toObject(OperationStatusList.class);
     }
 
     @org.junit.jupiter.api.Test

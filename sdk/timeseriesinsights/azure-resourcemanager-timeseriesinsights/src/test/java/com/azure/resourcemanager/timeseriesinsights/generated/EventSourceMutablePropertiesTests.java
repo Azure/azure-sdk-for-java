@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class EventSourceMutablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventSourceMutableProperties model =
-            BinaryData
-                .fromString("{\"timestampPropertyName\":\"fudwpznt\"}")
-                .toObject(EventSourceMutableProperties.class);
+        EventSourceMutableProperties model = BinaryData.fromString("{\"timestampPropertyName\":\"fudwpznt\"}")
+            .toObject(EventSourceMutableProperties.class);
         Assertions.assertEquals("fudwpznt", model.timestampPropertyName());
     }
 

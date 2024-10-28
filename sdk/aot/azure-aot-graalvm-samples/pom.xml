@@ -46,7 +46,6 @@
     <!-- This sample package is not released to maven and revapi checks are not required -->
     <revapi.skip>true</revapi.skip>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software. Microsoft grants you no rights for third party software.]]></legal>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <developers>

@@ -38,7 +38,6 @@
       --add-opens com.azure.security.attestation/com.azure.security.attestation=ALL-UNNAMED
       --add-opens com.azure.security.attestation/com.azure.security.attestation.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

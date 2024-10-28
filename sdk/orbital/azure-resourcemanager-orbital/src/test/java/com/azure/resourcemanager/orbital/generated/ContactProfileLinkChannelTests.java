@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactProfileLinkChannelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactProfileLinkChannel model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"iqzbq\",\"centerFrequencyMHz\":60.36864,\"bandwidthMHz\":82.09639,\"endPoint\":{\"ipAddress\":\"ovm\",\"endPointName\":\"okacspk\",\"port\":\"lhzdobp\",\"protocol\":\"UDP\"},\"modulationConfiguration\":\"flbvvnchrkcciwwz\",\"demodulationConfiguration\":\"qkhr\",\"encodingConfiguration\":\"jiwkuofoskghsau\",\"decodingConfiguration\":\"mjmvxieduugidyjr\"}")
-                .toObject(ContactProfileLinkChannel.class);
+        ContactProfileLinkChannel model = BinaryData.fromString(
+            "{\"name\":\"iqzbq\",\"centerFrequencyMHz\":60.36864,\"bandwidthMHz\":82.09639,\"endPoint\":{\"ipAddress\":\"ovm\",\"endPointName\":\"okacspk\",\"port\":\"lhzdobp\",\"protocol\":\"UDP\"},\"modulationConfiguration\":\"flbvvnchrkcciwwz\",\"demodulationConfiguration\":\"qkhr\",\"encodingConfiguration\":\"jiwkuofoskghsau\",\"decodingConfiguration\":\"mjmvxieduugidyjr\"}")
+            .toObject(ContactProfileLinkChannel.class);
         Assertions.assertEquals("iqzbq", model.name());
         Assertions.assertEquals(60.36864f, model.centerFrequencyMHz());
         Assertions.assertEquals(82.09639f, model.bandwidthMHz());
@@ -33,21 +31,17 @@ public final class ContactProfileLinkChannelTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContactProfileLinkChannel model =
-            new ContactProfileLinkChannel()
-                .withName("iqzbq")
-                .withCenterFrequencyMHz(60.36864f)
-                .withBandwidthMHz(82.09639f)
-                .withEndPoint(
-                    new EndPoint()
-                        .withIpAddress("ovm")
-                        .withEndPointName("okacspk")
-                        .withPort("lhzdobp")
-                        .withProtocol(Protocol.UDP))
-                .withModulationConfiguration("flbvvnchrkcciwwz")
-                .withDemodulationConfiguration("qkhr")
-                .withEncodingConfiguration("jiwkuofoskghsau")
-                .withDecodingConfiguration("mjmvxieduugidyjr");
+        ContactProfileLinkChannel model = new ContactProfileLinkChannel().withName("iqzbq")
+            .withCenterFrequencyMHz(60.36864f)
+            .withBandwidthMHz(82.09639f)
+            .withEndPoint(new EndPoint().withIpAddress("ovm")
+                .withEndPointName("okacspk")
+                .withPort("lhzdobp")
+                .withProtocol(Protocol.UDP))
+            .withModulationConfiguration("flbvvnchrkcciwwz")
+            .withDemodulationConfiguration("qkhr")
+            .withEncodingConfiguration("jiwkuofoskghsau")
+            .withDecodingConfiguration("mjmvxieduugidyjr");
         model = BinaryData.fromObject(model).toObject(ContactProfileLinkChannel.class);
         Assertions.assertEquals("iqzbq", model.name());
         Assertions.assertEquals(60.36864f, model.centerFrequencyMHz());

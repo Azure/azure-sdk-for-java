@@ -76,10 +76,8 @@ public final class IntegrationRuntimeListResponse {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model IntegrationRuntimeListResponse"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model IntegrationRuntimeListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }

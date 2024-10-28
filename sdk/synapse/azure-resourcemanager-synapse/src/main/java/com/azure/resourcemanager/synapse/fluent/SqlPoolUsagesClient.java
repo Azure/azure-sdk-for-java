@@ -43,6 +43,6 @@ public interface SqlPoolUsagesClient {
      * @return sQL pool usages as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlPoolUsageInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<SqlPoolUsageInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 }

@@ -107,29 +107,25 @@ public final class ReferenceDataSetResourceImpl
     }
 
     public ReferenceDataSetResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReferenceDataSets()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, environmentName, referenceDataSetName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReferenceDataSets()
+            .createOrUpdateWithResponse(resourceGroupName, environmentName, referenceDataSetName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ReferenceDataSetResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReferenceDataSets()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, environmentName, referenceDataSetName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReferenceDataSets()
+            .createOrUpdateWithResponse(resourceGroupName, environmentName, referenceDataSetName, createParameters,
+                context)
+            .getValue();
         return this;
     }
 
-    ReferenceDataSetResourceImpl(
-        String name, com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
+    ReferenceDataSetResourceImpl(String name,
+        com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerObject = new ReferenceDataSetResourceInner();
         this.serviceManager = serviceManager;
         this.referenceDataSetName = name;
@@ -142,37 +138,24 @@ public final class ReferenceDataSetResourceImpl
     }
 
     public ReferenceDataSetResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReferenceDataSets()
-                .updateWithResponse(
-                    resourceGroupName,
-                    environmentName,
-                    referenceDataSetName,
-                    updateReferenceDataSetUpdateParameters,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReferenceDataSets()
+            .updateWithResponse(resourceGroupName, environmentName, referenceDataSetName,
+                updateReferenceDataSetUpdateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ReferenceDataSetResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReferenceDataSets()
-                .updateWithResponse(
-                    resourceGroupName,
-                    environmentName,
-                    referenceDataSetName,
-                    updateReferenceDataSetUpdateParameters,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReferenceDataSets()
+            .updateWithResponse(resourceGroupName, environmentName, referenceDataSetName,
+                updateReferenceDataSetUpdateParameters, context)
+            .getValue();
         return this;
     }
 
-    ReferenceDataSetResourceImpl(
-        ReferenceDataSetResourceInner innerObject,
+    ReferenceDataSetResourceImpl(ReferenceDataSetResourceInner innerObject,
         com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -182,22 +165,18 @@ public final class ReferenceDataSetResourceImpl
     }
 
     public ReferenceDataSetResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReferenceDataSets()
-                .getWithResponse(resourceGroupName, environmentName, referenceDataSetName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReferenceDataSets()
+            .getWithResponse(resourceGroupName, environmentName, referenceDataSetName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ReferenceDataSetResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReferenceDataSets()
-                .getWithResponse(resourceGroupName, environmentName, referenceDataSetName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReferenceDataSets()
+            .getWithResponse(resourceGroupName, environmentName, referenceDataSetName, context)
+            .getValue();
         return this;
     }
 
@@ -226,8 +205,8 @@ public final class ReferenceDataSetResourceImpl
         }
     }
 
-    public ReferenceDataSetResourceImpl withDataStringComparisonBehavior(
-        DataStringComparisonBehavior dataStringComparisonBehavior) {
+    public ReferenceDataSetResourceImpl
+        withDataStringComparisonBehavior(DataStringComparisonBehavior dataStringComparisonBehavior) {
         this.createParameters.withDataStringComparisonBehavior(dataStringComparisonBehavior);
         return this;
     }

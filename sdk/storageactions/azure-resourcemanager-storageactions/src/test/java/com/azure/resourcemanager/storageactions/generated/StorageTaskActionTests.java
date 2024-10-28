@@ -40,9 +40,11 @@ public final class StorageTaskActionTests {
         StorageTaskAction model
             = new StorageTaskAction()
                 .withIfProperty(new IfCondition().withCondition("dmgloug")
-                    .withOperations(Arrays.asList(new StorageTaskOperation()
-                        .withName(StorageTaskOperationName.SET_BLOB_TIER).withParameters(mapOf("wgcu", "mutduqktaps"))
-                        .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK))))
+                    .withOperations(Arrays.asList(
+                        new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TIER)
+                            .withParameters(mapOf("wgcu", "mutduqktaps"))
+                            .withOnSuccess(OnSuccess.CONTINUE)
+                            .withOnFailure(OnFailure.BREAK))))
                 .withElseProperty(
                     new ElseCondition()
                         .withOperations(
@@ -51,16 +53,20 @@ public final class StorageTaskActionTests {
                                     new StorageTaskOperation().withName(StorageTaskOperationName.UNDELETE_BLOB)
                                         .withParameters(mapOf("bmdg", "qw", "dgmb", "bjf", "tq", "bexppb",
                                             "algbquxigjyjg", "rolfpfp"))
-                                        .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK),
+                                        .withOnSuccess(OnSuccess.CONTINUE)
+                                        .withOnFailure(OnFailure.BREAK),
                                     new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_EXPIRY)
                                         .withParameters(mapOf("vlejuvfqa", "txilnerkujy", "xgjvtbv", "rlyxwjkcprbnw"))
-                                        .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK),
+                                        .withOnSuccess(OnSuccess.CONTINUE)
+                                        .withOnFailure(OnFailure.BREAK),
                                     new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TAGS)
                                         .withParameters(mapOf("guhmuouqfpr", "uj", "nguitnwuizgazxu", "zw"))
-                                        .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK),
+                                        .withOnSuccess(OnSuccess.CONTINUE)
+                                        .withOnFailure(OnFailure.BREAK),
                                     new StorageTaskOperation().withName(StorageTaskOperationName.UNDELETE_BLOB)
                                         .withParameters(mapOf("rfidfvzwdz", "i", "sdkf", "htymw"))
-                                        .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK))));
+                                        .withOnSuccess(OnSuccess.CONTINUE)
+                                        .withOnFailure(OnFailure.BREAK))));
         model = BinaryData.fromObject(model).toObject(StorageTaskAction.class);
         Assertions.assertEquals("dmgloug", model.ifProperty().condition());
         Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_TIER, model.ifProperty().operations().get(0).name());

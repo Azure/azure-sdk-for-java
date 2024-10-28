@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkspacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkspacesClient.
+ */
 public final class WorkspacesClientImpl implements WorkspacesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkspacesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureDatabricksManagementClientImpl client;
 
     /**
      * Initializes an instance of WorkspacesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkspacesClientImpl(AzureDatabricksManagementClientImpl client) {
@@ -139,7 +145,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -175,7 +181,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -211,7 +217,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,7 +233,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -244,7 +250,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -259,7 +265,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Deletes the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -294,7 +300,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Deletes the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -330,7 +336,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Deletes the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -347,7 +353,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Deletes the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -367,7 +373,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Deletes the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -382,7 +388,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Deletes the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -399,7 +405,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Deletes the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -414,7 +420,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Deletes the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -431,7 +437,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Deletes the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -445,7 +451,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Deletes the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -460,7 +466,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Creates a new workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters Parameters supplied to the create or update a workspace.
@@ -502,7 +508,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Creates a new workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters Parameters supplied to the create or update a workspace.
@@ -544,7 +550,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Creates a new workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters Parameters supplied to the create or update a workspace.
@@ -564,7 +570,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Creates a new workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters Parameters supplied to the create or update a workspace.
@@ -586,7 +592,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Creates a new workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters Parameters supplied to the create or update a workspace.
@@ -603,7 +609,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Creates a new workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters Parameters supplied to the create or update a workspace.
@@ -621,7 +627,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Creates a new workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters Parameters supplied to the create or update a workspace.
@@ -639,7 +645,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Creates a new workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters Parameters supplied to the create or update a workspace.
@@ -658,7 +664,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Creates a new workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters Parameters supplied to the create or update a workspace.
@@ -674,7 +680,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Creates a new workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters Parameters supplied to the create or update a workspace.
@@ -692,7 +698,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The update to the workspace.
@@ -734,7 +740,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The update to the workspace.
@@ -776,7 +782,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The update to the workspace.
@@ -795,7 +801,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The update to the workspace.
@@ -817,7 +823,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The update to the workspace.
@@ -834,7 +840,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The update to the workspace.
@@ -852,7 +858,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The update to the workspace.
@@ -870,7 +876,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The update to the workspace.
@@ -889,7 +895,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The update to the workspace.
@@ -905,7 +911,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param parameters The update to the workspace.
@@ -923,13 +929,13 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets all the workspaces within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the workspaces within a resource group along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkspaceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -957,14 +963,14 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets all the workspaces within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the workspaces within a resource group along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkspaceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -993,7 +999,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets all the workspaces within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
@@ -1008,7 +1014,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets all the workspaces within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1024,7 +1030,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets all the workspaces within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
@@ -1038,7 +1044,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets all the workspaces within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1053,11 +1059,11 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets all the workspaces within a subscription.
-     *
+     * 
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the workspaces within a subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkspaceInner>> listSinglePageAsync() {
@@ -1081,13 +1087,13 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets all the workspaces within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the workspaces within a subscription along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkspaceInner>> listSinglePageAsync(Context context) {
@@ -1109,7 +1115,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets all the workspaces within a subscription.
-     *
+     * 
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the workspaces within a subscription as paginated response with {@link PagedFlux}.
@@ -1122,7 +1128,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets all the workspaces within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
@@ -1137,7 +1143,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets all the workspaces within a subscription.
-     *
+     * 
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the workspaces within a subscription as paginated response with {@link PagedIterable}.
@@ -1149,7 +1155,7 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Gets all the workspaces within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
@@ -1163,9 +1169,8 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1191,9 +1196,8 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
@@ -1219,9 +1223,8 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1247,9 +1250,8 @@ public final class WorkspacesClientImpl implements WorkspacesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.

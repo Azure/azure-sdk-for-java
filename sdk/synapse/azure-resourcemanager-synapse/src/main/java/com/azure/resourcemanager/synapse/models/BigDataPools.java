@@ -24,8 +24,8 @@ public interface BigDataPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Big Data pool along with {@link Response}.
      */
-    Response<BigDataPoolResourceInfo> getWithResponse(
-        String resourceGroupName, String workspaceName, String bigDataPoolName, Context context);
+    Response<BigDataPoolResourceInfo> getWithResponse(String resourceGroupName, String workspaceName,
+        String bigDataPoolName, Context context);
 
     /**
      * Get Big Data pool
@@ -71,8 +71,8 @@ public interface BigDataPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return big Data pool.
      */
-    BigDataPoolResourceInfo delete(
-        String resourceGroupName, String workspaceName, String bigDataPoolName, Context context);
+    BigDataPoolResourceInfo delete(String resourceGroupName, String workspaceName, String bigDataPoolName,
+        Context context);
 
     /**
      * List the Big Data pools in a workspace.
@@ -101,8 +101,8 @@ public interface BigDataPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Big Data pools as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BigDataPoolResourceInfo> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<BigDataPoolResourceInfo> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Get Big Data pool

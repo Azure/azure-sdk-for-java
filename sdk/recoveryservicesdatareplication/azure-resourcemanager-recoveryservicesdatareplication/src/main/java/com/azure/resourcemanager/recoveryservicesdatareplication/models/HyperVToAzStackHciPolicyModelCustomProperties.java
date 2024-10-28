@@ -54,8 +54,8 @@ public final class HyperVToAzStackHciPolicyModelCustomProperties extends PolicyM
      * @param recoveryPointHistoryInMinutes the recoveryPointHistoryInMinutes value to set.
      * @return the HyperVToAzStackHciPolicyModelCustomProperties object itself.
      */
-    public HyperVToAzStackHciPolicyModelCustomProperties withRecoveryPointHistoryInMinutes(
-        int recoveryPointHistoryInMinutes) {
+    public HyperVToAzStackHciPolicyModelCustomProperties
+        withRecoveryPointHistoryInMinutes(int recoveryPointHistoryInMinutes) {
         this.recoveryPointHistoryInMinutes = recoveryPointHistoryInMinutes;
         return this;
     }
@@ -77,8 +77,8 @@ public final class HyperVToAzStackHciPolicyModelCustomProperties extends PolicyM
      * @param crashConsistentFrequencyInMinutes the crashConsistentFrequencyInMinutes value to set.
      * @return the HyperVToAzStackHciPolicyModelCustomProperties object itself.
      */
-    public HyperVToAzStackHciPolicyModelCustomProperties withCrashConsistentFrequencyInMinutes(
-        int crashConsistentFrequencyInMinutes) {
+    public HyperVToAzStackHciPolicyModelCustomProperties
+        withCrashConsistentFrequencyInMinutes(int crashConsistentFrequencyInMinutes) {
         this.crashConsistentFrequencyInMinutes = crashConsistentFrequencyInMinutes;
         return this;
     }
@@ -100,8 +100,8 @@ public final class HyperVToAzStackHciPolicyModelCustomProperties extends PolicyM
      * @param appConsistentFrequencyInMinutes the appConsistentFrequencyInMinutes value to set.
      * @return the HyperVToAzStackHciPolicyModelCustomProperties object itself.
      */
-    public HyperVToAzStackHciPolicyModelCustomProperties withAppConsistentFrequencyInMinutes(
-        int appConsistentFrequencyInMinutes) {
+    public HyperVToAzStackHciPolicyModelCustomProperties
+        withAppConsistentFrequencyInMinutes(int appConsistentFrequencyInMinutes) {
         this.appConsistentFrequencyInMinutes = appConsistentFrequencyInMinutes;
         return this;
     }

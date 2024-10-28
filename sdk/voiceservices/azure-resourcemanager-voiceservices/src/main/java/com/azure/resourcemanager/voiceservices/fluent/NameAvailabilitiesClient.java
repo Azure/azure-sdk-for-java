@@ -25,8 +25,8 @@ public interface NameAvailabilitiesClient {
      * @return the check availability result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResponseInner> checkLocalWithResponse(
-        String location, CheckNameAvailabilityRequest body, Context context);
+    Response<CheckNameAvailabilityResponseInner> checkLocalWithResponse(String location,
+        CheckNameAvailabilityRequest body, Context context);
 
     /**
      * Check whether the resource name is available in the given region.

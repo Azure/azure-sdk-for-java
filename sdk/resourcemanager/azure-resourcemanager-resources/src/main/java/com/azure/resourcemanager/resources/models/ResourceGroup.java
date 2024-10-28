@@ -20,13 +20,8 @@ import reactor.core.publisher.Mono;
  * An immutable client-side representation of an Azure resource group.
  */
 @Fluent
-public interface ResourceGroup extends
-        Indexable,
-        Resource,
-        Refreshable<ResourceGroup>,
-        HasInnerModel<ResourceGroupInner>,
-        Updatable<ResourceGroup.Update>,
-        HasName {
+public interface ResourceGroup extends Indexable, Resource, Refreshable<ResourceGroup>,
+    HasInnerModel<ResourceGroupInner>, Updatable<ResourceGroup.Update>, HasName {
 
     /**
      * @return the provisioning state of the resource group
@@ -49,13 +44,10 @@ public interface ResourceGroup extends
      */
     Mono<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options);
 
-
     /**
      * Container interface for all the definitions that need to be implemented.
      */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCreate {
     }
 
     /**
@@ -73,9 +65,7 @@ public interface ResourceGroup extends
          * resource group in the cloud, but exposing additional optional inputs to
          * specify.
          */
-        interface WithCreate extends
-                Creatable<ResourceGroup>,
-                Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<ResourceGroup>, Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -90,8 +80,6 @@ public interface ResourceGroup extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource group in Azure.
      */
-    interface Update extends
-            Appliable<ResourceGroup>,
-            Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<ResourceGroup>, Resource.UpdateWithTags<Update> {
     }
 }

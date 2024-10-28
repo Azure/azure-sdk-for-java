@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EnvironmentResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"EnvironmentResource\",\"sku\":{\"name\":\"P1\",\"capacity\":1218908818},\"location\":\"umkdosvqwhbmd\",\"tags\":{\"ppbhtqqrolfp\":\"jfddgmbmbe\"},\"id\":\"psalgbqux\",\"name\":\"gjyjgzjaoyfhrtxi\",\"type\":\"n\"}")
-                .toObject(EnvironmentResourceInner.class);
+        EnvironmentResourceInner model = BinaryData.fromString(
+            "{\"kind\":\"EnvironmentResource\",\"sku\":{\"name\":\"P1\",\"capacity\":1218908818},\"location\":\"umkdosvqwhbmd\",\"tags\":{\"ppbhtqqrolfp\":\"jfddgmbmbe\"},\"id\":\"psalgbqux\",\"name\":\"gjyjgzjaoyfhrtxi\",\"type\":\"n\"}")
+            .toObject(EnvironmentResourceInner.class);
         Assertions.assertEquals("umkdosvqwhbmd", model.location());
         Assertions.assertEquals("jfddgmbmbe", model.tags().get("ppbhtqqrolfp"));
         Assertions.assertEquals(SkuName.P1, model.sku().name());
@@ -28,11 +26,9 @@ public final class EnvironmentResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnvironmentResourceInner model =
-            new EnvironmentResourceInner()
-                .withLocation("umkdosvqwhbmd")
-                .withTags(mapOf("ppbhtqqrolfp", "jfddgmbmbe"))
-                .withSku(new Sku().withName(SkuName.P1).withCapacity(1218908818));
+        EnvironmentResourceInner model = new EnvironmentResourceInner().withLocation("umkdosvqwhbmd")
+            .withTags(mapOf("ppbhtqqrolfp", "jfddgmbmbe"))
+            .withSku(new Sku().withName(SkuName.P1).withCapacity(1218908818));
         model = BinaryData.fromObject(model).toObject(EnvironmentResourceInner.class);
         Assertions.assertEquals("umkdosvqwhbmd", model.location());
         Assertions.assertEquals("jfddgmbmbe", model.tags().get("ppbhtqqrolfp"));

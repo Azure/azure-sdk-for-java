@@ -15,11 +15,8 @@ import reactor.core.publisher.Mono;
 
 /** Entry point for Network Watcher API in Azure. */
 @Fluent
-public interface NetworkWatcher
-    extends GroupableResource<NetworkManager, NetworkWatcherInner>,
-        Refreshable<NetworkWatcher>,
-        Updatable<NetworkWatcher.Update>,
-        UpdatableWithTags<NetworkWatcher> {
+public interface NetworkWatcher extends GroupableResource<NetworkManager, NetworkWatcherInner>,
+    Refreshable<NetworkWatcher>, Updatable<NetworkWatcher.Update>, UpdatableWithTags<NetworkWatcher> {
 
     /** @return entry point to manage packet captures associated with network watcher */
     PacketCaptures packetCaptures();

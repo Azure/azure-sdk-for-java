@@ -54,8 +54,8 @@ public final class VMwareToAzStackHciPolicyModelCustomProperties extends PolicyM
      * @param recoveryPointHistoryInMinutes the recoveryPointHistoryInMinutes value to set.
      * @return the VMwareToAzStackHciPolicyModelCustomProperties object itself.
      */
-    public VMwareToAzStackHciPolicyModelCustomProperties withRecoveryPointHistoryInMinutes(
-        int recoveryPointHistoryInMinutes) {
+    public VMwareToAzStackHciPolicyModelCustomProperties
+        withRecoveryPointHistoryInMinutes(int recoveryPointHistoryInMinutes) {
         this.recoveryPointHistoryInMinutes = recoveryPointHistoryInMinutes;
         return this;
     }
@@ -77,8 +77,8 @@ public final class VMwareToAzStackHciPolicyModelCustomProperties extends PolicyM
      * @param crashConsistentFrequencyInMinutes the crashConsistentFrequencyInMinutes value to set.
      * @return the VMwareToAzStackHciPolicyModelCustomProperties object itself.
      */
-    public VMwareToAzStackHciPolicyModelCustomProperties withCrashConsistentFrequencyInMinutes(
-        int crashConsistentFrequencyInMinutes) {
+    public VMwareToAzStackHciPolicyModelCustomProperties
+        withCrashConsistentFrequencyInMinutes(int crashConsistentFrequencyInMinutes) {
         this.crashConsistentFrequencyInMinutes = crashConsistentFrequencyInMinutes;
         return this;
     }
@@ -100,8 +100,8 @@ public final class VMwareToAzStackHciPolicyModelCustomProperties extends PolicyM
      * @param appConsistentFrequencyInMinutes the appConsistentFrequencyInMinutes value to set.
      * @return the VMwareToAzStackHciPolicyModelCustomProperties object itself.
      */
-    public VMwareToAzStackHciPolicyModelCustomProperties withAppConsistentFrequencyInMinutes(
-        int appConsistentFrequencyInMinutes) {
+    public VMwareToAzStackHciPolicyModelCustomProperties
+        withAppConsistentFrequencyInMinutes(int appConsistentFrequencyInMinutes) {
         this.appConsistentFrequencyInMinutes = appConsistentFrequencyInMinutes;
         return this;
     }

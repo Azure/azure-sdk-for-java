@@ -31,14 +31,8 @@ public interface OperationStatusClient {
      * @return async Operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationStatusResultInner> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        String operationId,
-        Context context);
+    Response<OperationStatusResultInner> getWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String extensionName, String operationId, Context context);
 
     /**
      * Get Async Operation status.
@@ -57,13 +51,8 @@ public interface OperationStatusClient {
      * @return async Operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String extensionName,
-        String operationId);
+    OperationStatusResultInner get(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String extensionName, String operationId);
 
     /**
      * List Async Operations, currently in progress, in a cluster.
@@ -80,8 +69,8 @@ public interface OperationStatusClient {
      * @return the async operations in progress, in the cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OperationStatusResultInner> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName);
+    PagedIterable<OperationStatusResultInner> list(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName);
 
     /**
      * List Async Operations, currently in progress, in a cluster.
@@ -99,6 +88,6 @@ public interface OperationStatusClient {
      * @return the async operations in progress, in the cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OperationStatusResultInner> list(
-        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context);
+    PagedIterable<OperationStatusResultInner> list(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, Context context);
 }

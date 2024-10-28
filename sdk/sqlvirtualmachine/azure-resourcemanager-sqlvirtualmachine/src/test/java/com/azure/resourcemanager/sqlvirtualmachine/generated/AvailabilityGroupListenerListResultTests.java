@@ -10,11 +10,9 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.AvailabilityGroupListe
 public final class AvailabilityGroupListenerListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailabilityGroupListenerListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"trg\",\"availabilityGroupName\":\"bpf\",\"loadBalancerConfigurations\":[],\"multiSubnetIpConfigurations\":[],\"createDefaultAvailabilityGroupIfNotExist\":false,\"port\":1078970203},\"id\":\"cjrwzoxxjtfellu\",\"name\":\"fziton\",\"type\":\"eqfpj\"}],\"nextLink\":\"lxofpdvhpfxxypin\"}")
-                .toObject(AvailabilityGroupListenerListResult.class);
+        AvailabilityGroupListenerListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"trg\",\"availabilityGroupName\":\"bpf\",\"loadBalancerConfigurations\":[],\"multiSubnetIpConfigurations\":[],\"createDefaultAvailabilityGroupIfNotExist\":false,\"port\":1078970203},\"id\":\"cjrwzoxxjtfellu\",\"name\":\"fziton\",\"type\":\"eqfpj\"}],\"nextLink\":\"lxofpdvhpfxxypin\"}")
+            .toObject(AvailabilityGroupListenerListResult.class);
     }
 
     @org.junit.jupiter.api.Test

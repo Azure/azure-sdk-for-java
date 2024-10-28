@@ -41,12 +41,14 @@ public final class LocalRulesRefreshCountersWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.localRules().refreshCountersWithResponse("vrbnyrukoil", "ciduwjle", "pjlh", "yxpzruzythqk",
-            com.azure.core.util.Context.NONE);
+        manager.localRules()
+            .refreshCountersWithResponse("vrbnyrukoil", "ciduwjle", "pjlh", "yxpzruzythqk",
+                com.azure.core.util.Context.NONE);
 
     }
 }

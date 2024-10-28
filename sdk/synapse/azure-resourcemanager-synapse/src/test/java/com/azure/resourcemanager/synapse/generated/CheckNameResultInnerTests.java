@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CheckNameResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"nameAvailable\":true,\"name\":\"kglklbyulidwcw\",\"message\":\"zegjonfhjirwgdn\",\"reason\":\"Invalid\"}")
-                .toObject(CheckNameResultInner.class);
+        CheckNameResultInner model = BinaryData.fromString(
+            "{\"nameAvailable\":true,\"name\":\"kglklbyulidwcw\",\"message\":\"zegjonfhjirwgdn\",\"reason\":\"Invalid\"}")
+            .toObject(CheckNameResultInner.class);
         Assertions.assertEquals(true, model.nameAvailable());
         Assertions.assertEquals("kglklbyulidwcw", model.name());
         Assertions.assertEquals("zegjonfhjirwgdn", model.message());
@@ -25,12 +23,10 @@ public final class CheckNameResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CheckNameResultInner model =
-            new CheckNameResultInner()
-                .withNameAvailable(true)
-                .withName("kglklbyulidwcw")
-                .withMessage("zegjonfhjirwgdn")
-                .withReason(Reason.INVALID);
+        CheckNameResultInner model = new CheckNameResultInner().withNameAvailable(true)
+            .withName("kglklbyulidwcw")
+            .withMessage("zegjonfhjirwgdn")
+            .withReason(Reason.INVALID);
         model = BinaryData.fromObject(model).toObject(CheckNameResultInner.class);
         Assertions.assertEquals(true, model.nameAvailable());
         Assertions.assertEquals("kglklbyulidwcw", model.name());

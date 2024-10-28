@@ -21,9 +21,8 @@ import java.util.Arrays;
 import java.util.Collection;
 
 /** Implementation for ApplicationGateways. */
-public class ApplicationGatewaysImpl
-    extends TopLevelModifiableResourcesImpl<
-        ApplicationGateway, ApplicationGatewayImpl, ApplicationGatewayInner, ApplicationGatewaysClient, NetworkManager>
+public class ApplicationGatewaysImpl extends
+    TopLevelModifiableResourcesImpl<ApplicationGateway, ApplicationGatewayImpl, ApplicationGatewayInner, ApplicationGatewaysClient, NetworkManager>
     implements ApplicationGateways {
 
     public ApplicationGatewaysImpl(final NetworkManager networkManager) {
@@ -32,8 +31,7 @@ public class ApplicationGatewaysImpl
 
     @Override
     public ApplicationGatewayImpl define(String name) {
-        return wrapModel(name)
-            .withSize(ApplicationGatewaySkuName.BASIC)
+        return wrapModel(name).withSize(ApplicationGatewaySkuName.BASIC)
             .withTier(ApplicationGatewayTier.BASIC)
             .withInstanceCount(1);
     }
@@ -92,16 +90,11 @@ public class ApplicationGatewaysImpl
         if (applicationGatewayResourceIds == null) {
             return Flux.empty();
         } else {
-            return Flux
-                .fromIterable(applicationGatewayResourceIds)
-                .flatMapDelayError(
-                    id -> {
-                        final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
-                        final String name = ResourceUtils.nameFromResourceId(id);
-                        return this.inner().startAsync(resourceGroupName, name).then(Mono.just(id));
-                    },
-                    32,
-                    32)
+            return Flux.fromIterable(applicationGatewayResourceIds).flatMapDelayError(id -> {
+                final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
+                final String name = ResourceUtils.nameFromResourceId(id);
+                return this.inner().startAsync(resourceGroupName, name).then(Mono.just(id));
+            }, 32, 32)
                 .onErrorMap(AggregatedManagementException::convertToManagementException)
                 .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler());
         }
@@ -112,16 +105,11 @@ public class ApplicationGatewaysImpl
         if (applicationGatewayResourceIds == null) {
             return Flux.empty();
         } else {
-            return Flux
-                .fromIterable(applicationGatewayResourceIds)
-                .flatMapDelayError(
-                    id -> {
-                        final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
-                        final String name = ResourceUtils.nameFromResourceId(id);
-                        return this.inner().stopAsync(resourceGroupName, name).then(Mono.just(id));
-                    },
-                    32,
-                    32)
+            return Flux.fromIterable(applicationGatewayResourceIds).flatMapDelayError(id -> {
+                final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
+                final String name = ResourceUtils.nameFromResourceId(id);
+                return this.inner().stopAsync(resourceGroupName, name).then(Mono.just(id));
+            }, 32, 32)
                 .onErrorMap(AggregatedManagementException::convertToManagementException)
                 .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler());
         }

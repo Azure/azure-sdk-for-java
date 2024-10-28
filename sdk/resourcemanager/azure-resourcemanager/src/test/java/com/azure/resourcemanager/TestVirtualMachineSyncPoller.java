@@ -38,33 +38,37 @@ public class TestVirtualMachineSyncPoller extends TestTemplate<VirtualMachine, V
 
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String rgName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("rg", 10);
-        final String vnetName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vnet", 10);
-        final String nicName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("nic", 10);
+        final String rgName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("rg", 10);
+        final String vnetName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vnet", 10);
+        final String nicName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("nic", 10);
         final String subnetName = "default";
-        final String diskName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("disk", 10);
-        final String ipName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("ip", 10);
-        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
+        final String diskName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("disk", 10);
+        final String ipName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("ip", 10);
+        final String vmName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
         final Region region = Region.US_EAST;
 
         // network
-        Network network =
-            this.networkManager.networks()
-                .define(vnetName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .withAddressSpace("10.0.0.0/27")
-                .withSubnet(subnetName, "10.0.0.0/28")
-                .create();
+        Network network = this.networkManager.networks()
+            .define(vnetName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/27")
+            .withSubnet(subnetName, "10.0.0.0/28")
+            .create();
 
         // public ip address, poll till complete
         logger.info("{} {}", OffsetDateTime.now(), "begin create public IP");
-        Accepted<PublicIpAddress> publicIpAddressAccepted =
-            this.networkManager.publicIpAddresses()
-                .define(ipName)
-                .withRegion(region)
-                .withExistingResourceGroup(rgName)
-                .beginCreate();
+        Accepted<PublicIpAddress> publicIpAddressAccepted = this.networkManager.publicIpAddresses()
+            .define(ipName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .beginCreate();
         logger.info("{} {}", OffsetDateTime.now(), "polling public IP till complete");
         PollResponse<?> publicIpAddressResponse = publicIpAddressAccepted.getSyncPoller().waitForCompletion();
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, publicIpAddressResponse.getStatus());
@@ -73,30 +77,30 @@ public class TestVirtualMachineSyncPoller extends TestTemplate<VirtualMachine, V
 
         // nic and disk
         logger.info("{} {}", OffsetDateTime.now(), "begin create nic");
-        Accepted<NetworkInterface> networkInterfaceAccepted =
-            this.networkManager.networkInterfaces()
-                .define(nicName)
-                .withRegion(region)
-                .withExistingResourceGroup(rgName)
-                .withExistingPrimaryNetwork(network)
-                .withSubnet(subnetName)
-                .withPrimaryPrivateIPAddressDynamic()
-                .withExistingPrimaryPublicIPAddress(publicIpAddress)
-                .beginCreate();
+        Accepted<NetworkInterface> networkInterfaceAccepted = this.networkManager.networkInterfaces()
+            .define(nicName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet(subnetName)
+            .withPrimaryPrivateIPAddressDynamic()
+            .withExistingPrimaryPublicIPAddress(publicIpAddress)
+            .beginCreate();
 
         logger.info("{} {}", OffsetDateTime.now(), "begin create data disk");
-        Accepted<Disk> diskAccepted =
-            virtualMachines.manager().disks()
-                .define(diskName)
-                .withRegion(region)
-                .withExistingResourceGroup(rgName)
-                .withData()
-                .withSizeInGB(100)
-                .withSku(DiskSkuTypes.STANDARD_LRS)
-                .beginCreate();
+        Accepted<Disk> diskAccepted = virtualMachines.manager()
+            .disks()
+            .define(diskName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withData()
+            .withSizeInGB(100)
+            .withSku(DiskSkuTypes.STANDARD_LRS)
+            .beginCreate();
 
         // poll nic and disk
-        LongRunningOperationStatus networkInterfaceLroStatus = networkInterfaceAccepted.getActivationResponse().getStatus();
+        LongRunningOperationStatus networkInterfaceLroStatus
+            = networkInterfaceAccepted.getActivationResponse().getStatus();
         LongRunningOperationStatus diskLroStatus = diskAccepted.getActivationResponse().getStatus();
         SyncPoller<?, NetworkInterface> networkInterfaceSyncPoller = networkInterfaceAccepted.getSyncPoller();
         SyncPoller<?, Disk> diskSyncPoller = diskAccepted.getSyncPoller();
@@ -121,18 +125,16 @@ public class TestVirtualMachineSyncPoller extends TestTemplate<VirtualMachine, V
 
         // virtual machine, poll till complete
         logger.info("{} {}", OffsetDateTime.now(), "begin create vm");
-        Accepted<VirtualMachine> virtualMachineAccepted =
-            virtualMachines
-                .define(vmName)
-                .withRegion(region)
-                .withExistingResourceGroup(rgName)
-                .withExistingPrimaryNetworkInterface(networkInterface)
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
-                .withRootUsername("testuser")
-                .withRootPassword(ResourceManagerTestProxyTestBase.password())
-                .withExistingDataDisk(disk)
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                .beginCreate();
+        Accepted<VirtualMachine> virtualMachineAccepted = virtualMachines.define(vmName)
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withExistingPrimaryNetworkInterface(networkInterface)
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("testuser")
+            .withRootPassword(ResourceManagerTestProxyTestBase.password())
+            .withExistingDataDisk(disk)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .beginCreate();
         logger.info("{} {}", OffsetDateTime.now(), "polling virtual machine till complete");
         PollResponse<?> virtualMachineResponse = virtualMachineAccepted.getSyncPoller().waitForCompletion();
         Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, virtualMachineResponse.getStatus());

@@ -51,7 +51,8 @@ public class CreateCallOptions {
      * @param targets The targets of the call.
      * @param callbackUrl The call back URI.
      */
-    public CreateCallOptions(CommunicationIdentifier source, List<CommunicationIdentifier> targets, String callbackUrl) {
+    public CreateCallOptions(CommunicationIdentifier source, List<CommunicationIdentifier> targets,
+        String callbackUrl) {
         this.source = source;
         this.targets = targets;
         this.callbackUrl = callbackUrl;

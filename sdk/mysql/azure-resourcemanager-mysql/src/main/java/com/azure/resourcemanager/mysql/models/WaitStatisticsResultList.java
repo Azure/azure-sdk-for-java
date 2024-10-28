@@ -14,7 +14,8 @@ import java.util.List;
 /** A list of wait statistics. */
 @Immutable
 public final class WaitStatisticsResultList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WaitStatisticsResultList.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WaitStatisticsResultList.class);
 
     /*
      * The list of wait statistics.

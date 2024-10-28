@@ -34,11 +34,8 @@ public interface IntegrationRuntimesClient {
      * @return integration runtime resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        UpdateIntegrationRuntimeRequest updateIntegrationRuntimeRequest,
+    Response<IntegrationRuntimeResourceInner> updateWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, UpdateIntegrationRuntimeRequest updateIntegrationRuntimeRequest,
         Context context);
 
     /**
@@ -56,11 +53,8 @@ public interface IntegrationRuntimesClient {
      * @return integration runtime resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeResourceInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        UpdateIntegrationRuntimeRequest updateIntegrationRuntimeRequest);
+    IntegrationRuntimeResourceInner update(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, UpdateIntegrationRuntimeRequest updateIntegrationRuntimeRequest);
 
     /**
      * Get integration runtime
@@ -79,12 +73,8 @@ public interface IntegrationRuntimesClient {
      * @return an integration runtime along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeResourceInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String ifNoneMatch,
-        Context context);
+    Response<IntegrationRuntimeResourceInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String ifNoneMatch, Context context);
 
     /**
      * Get integration runtime
@@ -118,9 +108,7 @@ public interface IntegrationRuntimesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IntegrationRuntimeResourceInner>, IntegrationRuntimeResourceInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
+        String resourceGroupName, String workspaceName, String integrationRuntimeName,
         IntegrationRuntimeResourceInner integrationRuntime);
 
     /**
@@ -142,12 +130,8 @@ public interface IntegrationRuntimesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IntegrationRuntimeResourceInner>, IntegrationRuntimeResourceInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeResourceInner integrationRuntime,
-        String ifMatch,
-        Context context);
+        String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        IntegrationRuntimeResourceInner integrationRuntime, String ifMatch, Context context);
 
     /**
      * Create integration runtime
@@ -164,11 +148,8 @@ public interface IntegrationRuntimesClient {
      * @return integration runtime resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeResourceInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeResourceInner integrationRuntime);
+    IntegrationRuntimeResourceInner create(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, IntegrationRuntimeResourceInner integrationRuntime);
 
     /**
      * Create integration runtime
@@ -188,12 +169,8 @@ public interface IntegrationRuntimesClient {
      * @return integration runtime resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeResourceInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeResourceInner integrationRuntime,
-        String ifMatch,
+    IntegrationRuntimeResourceInner create(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, IntegrationRuntimeResourceInner integrationRuntime, String ifMatch,
         Context context);
 
     /**
@@ -210,8 +187,8 @@ public interface IntegrationRuntimesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 
     /**
      * Delete integration runtime
@@ -228,8 +205,8 @@ public interface IntegrationRuntimesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Delete integration runtime
@@ -277,8 +254,8 @@ public interface IntegrationRuntimesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> upgradeWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<Void> upgradeWithResponse(String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        Context context);
 
     /**
      * Upgrade integration runtime
@@ -324,8 +301,8 @@ public interface IntegrationRuntimesClient {
      * @return a list of integration runtime resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IntegrationRuntimeResourceInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<IntegrationRuntimeResourceInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Start integration runtime
@@ -341,8 +318,8 @@ public interface IntegrationRuntimesClient {
      * @return the {@link SyncPoller} for polling of integration runtime status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner> beginStart(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
+        beginStart(String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
     /**
      * Start integration runtime
@@ -359,8 +336,8 @@ public interface IntegrationRuntimesClient {
      * @return the {@link SyncPoller} for polling of integration runtime status response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner> beginStart(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    SyncPoller<PollResult<IntegrationRuntimeStatusResponseInner>, IntegrationRuntimeStatusResponseInner>
+        beginStart(String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
 
     /**
      * Start integration runtime
@@ -376,8 +353,8 @@ public interface IntegrationRuntimesClient {
      * @return integration runtime status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeStatusResponseInner start(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    IntegrationRuntimeStatusResponseInner start(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 
     /**
      * Start integration runtime
@@ -394,8 +371,8 @@ public interface IntegrationRuntimesClient {
      * @return integration runtime status response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeStatusResponseInner start(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    IntegrationRuntimeStatusResponseInner start(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Stop integration runtime
@@ -411,8 +388,8 @@ public interface IntegrationRuntimesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 
     /**
      * Stop integration runtime
@@ -429,8 +406,8 @@ public interface IntegrationRuntimesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Stop integration runtime
@@ -480,8 +457,8 @@ public interface IntegrationRuntimesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner>
-        listOutboundNetworkDependenciesEndpointsWithResponse(
-            String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+        listOutboundNetworkDependenciesEndpointsWithResponse(String resourceGroupName, String workspaceName,
+            String integrationRuntimeName, Context context);
 
     /**
      * Gets list of outbound network dependencies for a given Azure-SSIS integration runtime.
@@ -512,8 +489,8 @@ public interface IntegrationRuntimesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginEnableInteractiveQuery(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    SyncPoller<PollResult<Void>, Void> beginEnableInteractiveQuery(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 
     /**
      * Enable interactive query in integration runtime.
@@ -528,8 +505,8 @@ public interface IntegrationRuntimesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginEnableInteractiveQuery(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginEnableInteractiveQuery(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Enable interactive query in integration runtime.
@@ -556,8 +533,8 @@ public interface IntegrationRuntimesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void enableInteractiveQuery(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    void enableInteractiveQuery(String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        Context context);
 
     /**
      * Disable interactive query in integration runtime.
@@ -571,8 +548,8 @@ public interface IntegrationRuntimesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDisableInteractiveQuery(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    SyncPoller<PollResult<Void>, Void> beginDisableInteractiveQuery(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 
     /**
      * Disable interactive query in integration runtime.
@@ -587,8 +564,8 @@ public interface IntegrationRuntimesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDisableInteractiveQuery(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDisableInteractiveQuery(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Disable interactive query in integration runtime.
@@ -615,6 +592,6 @@ public interface IntegrationRuntimesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void disableInteractiveQuery(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    void disableInteractiveQuery(String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        Context context);
 }

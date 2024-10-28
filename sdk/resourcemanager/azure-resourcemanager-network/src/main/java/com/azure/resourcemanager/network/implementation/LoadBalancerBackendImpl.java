@@ -23,10 +23,8 @@ import java.util.TreeMap;
 
 /** Implementation for LoadBalancerBackend. */
 class LoadBalancerBackendImpl extends ChildResourceImpl<BackendAddressPoolInner, LoadBalancerImpl, LoadBalancer>
-    implements LoadBalancerBackend,
-        LoadBalancerBackend.Definition<LoadBalancer.DefinitionStages.WithCreate>,
-        LoadBalancerBackend.UpdateDefinition<LoadBalancer.Update>,
-        LoadBalancerBackend.Update {
+    implements LoadBalancerBackend, LoadBalancerBackend.Definition<LoadBalancer.DefinitionStages.WithCreate>,
+    LoadBalancerBackend.UpdateDefinition<LoadBalancer.Update>, LoadBalancerBackend.Update {
 
     LoadBalancerBackendImpl(BackendAddressPoolInner inner, LoadBalancerImpl parent) {
         super(inner, parent);

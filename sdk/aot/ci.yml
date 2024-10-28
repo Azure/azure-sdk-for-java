@@ -57,3 +57,5 @@ extends:
     AdditionalModules:
       - name: azure-aot-graalvm-perf
         groupId: com.azure
+      - name: azure-aot-graalvm-samples
+        groupId: com.azure

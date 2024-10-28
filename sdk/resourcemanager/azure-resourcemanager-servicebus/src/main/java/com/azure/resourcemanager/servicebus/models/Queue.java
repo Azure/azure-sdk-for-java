@@ -19,103 +19,124 @@ import java.time.OffsetDateTime;
  * Type representing Service Bus queue.
  */
 @Fluent
-public interface Queue extends
-    IndependentChildResource<ServiceBusManager, SBQueueInner>,
-    Refreshable<Queue>,
-    Updatable<Queue.Update> {
+public interface Queue
+    extends IndependentChildResource<ServiceBusManager, SBQueueInner>, Refreshable<Queue>, Updatable<Queue.Update> {
     /**
      * @return the exact time the queue was created
      */
     OffsetDateTime createdAt();
+
     /**
      * @return last time a message was sent, or the last time there was a receive request to this queue
      */
     OffsetDateTime accessedAt();
+
     /**
      * @return the exact time the queue was updated
      */
     OffsetDateTime updatedAt();
+
     /**
      * @return the maximum size of memory allocated for the queue in megabytes
      */
     long maxSizeInMB();
+
     /**
      * @return current size of the queue, in bytes
      */
     long currentSizeInBytes();
+
     /**
      * @return indicates whether server-side batched operations are enabled
      */
     boolean isBatchedOperationsEnabled();
+
     /**
      * @return indicates whether this queue has dead letter support when a message expires
      */
     boolean isDeadLetteringEnabledForExpiredMessages();
+
     /**
      * @return indicates whether express entities are enabled
      */
     boolean isExpressEnabled();
+
     /**
      * @return indicates whether the queue is to be partitioned across multiple message brokers
      */
     boolean isPartitioningEnabled();
+
     /**
      * @return indicates whether the queue supports sessions
      */
     boolean isSessionEnabled();
+
     /**
      * @return indicates if this queue requires duplicate detection
      */
     boolean isDuplicateDetectionEnabled();
+
     /**
      * @return the duration of peek-lock which is the amount of time that the message is locked for other receivers
      */
     long lockDurationInSeconds();
+
     /**
      * @return the idle duration after which the queue is automatically deleted
      */
     long deleteOnIdleDurationInMinutes();
+
     /**
      * @return the duration after which the message expires, starting from when the message is sent to queue
      */
     Duration defaultMessageTtlDuration();
+
     /**
      * @return the duration of the duplicate detection history
      */
     Duration duplicateMessageDetectionHistoryDuration();
+
     /**
      * @return the maximum number of a message delivery before marking it as dead-lettered
      */
     int maxDeliveryCountBeforeDeadLetteringMessage();
+
     /**
      * @return the number of messages in the queue
      */
     long messageCount();
+
     /**
      * @return number of active messages in the queue
      */
     long activeMessageCount();
+
     /**
      * @return number of messages in the dead-letter queue
      */
     long deadLetterMessageCount();
+
     /**
      * @return number of messages sent to the queue that are yet to be released
      * for consumption
      */
     long scheduledMessageCount();
+
     /**
      * @return number of messages transferred into dead letters
      */
     long transferDeadLetterMessageCount();
+
     /**
      * @return number of messages transferred to another queue, topic, or subscription
      */
     long transferMessageCount();
+
     /**
      * @return the current status of the queue
      */
     EntityStatus status();
+
     /**
      * @return entry point to manage authorization rules for the Service Bus queue
      */
@@ -124,9 +145,7 @@ public interface Queue extends
     /**
      * The entirety of the Service Bus queue definition.
      */
-    interface Definition extends
-            Queue.DefinitionStages.Blank,
-            Queue.DefinitionStages.WithCreate {
+    interface Definition extends Queue.DefinitionStages.Blank, Queue.DefinitionStages.WithCreate {
     }
 
     /**
@@ -311,6 +330,7 @@ public interface Queue extends
              * @return next stage of the queue definition
              */
             WithCreate withNewSendRule(String name);
+
             /**
              * Creates a listen authorization rule for the queue.
              *
@@ -318,6 +338,7 @@ public interface Queue extends
              * @return next stage of the queue definition
              */
             WithCreate withNewListenRule(String name);
+
             /**
              * Creates a manage authorization rule for the queue.
              *
@@ -332,17 +353,11 @@ public interface Queue extends
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends
-            Creatable<Queue>,
-            Queue.DefinitionStages.WithSize,
-            Queue.DefinitionStages.WithPartitioning,
-            Queue.DefinitionStages.WithDeleteOnIdle,
-            Queue.DefinitionStages.WithMessageLockDuration,
-            Queue.DefinitionStages.WithDefaultMessageTTL,
-            Queue.DefinitionStages.WithSession,
-            Queue.DefinitionStages.WithExpressMessage,
-            Queue.DefinitionStages.WithMessageBatching,
-            Queue.DefinitionStages.WithDuplicateMessageDetection,
+        interface WithCreate extends Creatable<Queue>, Queue.DefinitionStages.WithSize,
+            Queue.DefinitionStages.WithPartitioning, Queue.DefinitionStages.WithDeleteOnIdle,
+            Queue.DefinitionStages.WithMessageLockDuration, Queue.DefinitionStages.WithDefaultMessageTTL,
+            Queue.DefinitionStages.WithSession, Queue.DefinitionStages.WithExpressMessage,
+            Queue.DefinitionStages.WithMessageBatching, Queue.DefinitionStages.WithDuplicateMessageDetection,
             Queue.DefinitionStages.WithExpiredMessageMovedToDeadLetterQueue,
             Queue.DefinitionStages.WithMessageMovedToDeadLetterQueueOnMaxDeliveryCount,
             Queue.DefinitionStages.WithAuthorizationRule {
@@ -352,17 +367,10 @@ public interface Queue extends
     /**
      * The template for Service Bus queue update operation, containing all the settings that can be modified.
      */
-    interface Update extends
-        Appliable<Queue>,
-        Queue.UpdateStages.WithSize,
-        Queue.UpdateStages.WithDeleteOnIdle,
-        Queue.UpdateStages.WithMessageLockDuration,
-        Queue.UpdateStages.WithDefaultMessageTTL,
-        Queue.UpdateStages.WithSession,
-        Queue.UpdateStages.WithExpressMessage,
-        Queue.UpdateStages.WithMessageBatching,
-        Queue.UpdateStages.WithDuplicateMessageDetection,
-        Queue.UpdateStages.WithExpiredMessageMovedToDeadLetterQueue,
+    interface Update extends Appliable<Queue>, Queue.UpdateStages.WithSize, Queue.UpdateStages.WithDeleteOnIdle,
+        Queue.UpdateStages.WithMessageLockDuration, Queue.UpdateStages.WithDefaultMessageTTL,
+        Queue.UpdateStages.WithSession, Queue.UpdateStages.WithExpressMessage, Queue.UpdateStages.WithMessageBatching,
+        Queue.UpdateStages.WithDuplicateMessageDetection, Queue.UpdateStages.WithExpiredMessageMovedToDeadLetterQueue,
         Queue.UpdateStages.WithMessageMovedToDeadLetterQueueOnMaxDeliveryCount,
         Queue.UpdateStages.WithAuthorizationRule {
     }
@@ -552,6 +560,7 @@ public interface Queue extends
              * @return next stage of the queue update
              */
             Update withNewSendRule(String name);
+
             /**
              * Creates a listen authorization rule for the queue.
              *
@@ -559,6 +568,7 @@ public interface Queue extends
              * @return next stage of the queue update
              */
             Update withNewListenRule(String name);
+
             /**
              * Creates a manage authorization rule for the queue.
              *

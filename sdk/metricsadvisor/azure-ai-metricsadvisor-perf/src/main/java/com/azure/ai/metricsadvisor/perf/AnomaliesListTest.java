@@ -25,10 +25,7 @@ public class AnomaliesListTest extends ServiceTest<PerfStressOptions> {
     @Override
     public void run() {
         super.metricsAdvisorClient
-            .listAnomaliesForAlert(super.alertConfigId,
-                super.alertId,
-                new ListAnomaliesAlertedOptions(),
-                Context.NONE)
+            .listAnomaliesForAlert(super.alertConfigId, super.alertId, new ListAnomaliesAlertedOptions(), Context.NONE)
             .stream()
             .limit(super.maxListElements)
             .forEach(anomaly -> {
@@ -38,9 +35,7 @@ public class AnomaliesListTest extends ServiceTest<PerfStressOptions> {
     @Override
     public Mono<Void> runAsync() {
         return super.metricsAdvisorAsyncClient
-            .listAnomaliesForAlert(super.alertConfigId,
-                super.alertId,
-                new ListAnomaliesAlertedOptions())
+            .listAnomaliesForAlert(super.alertConfigId, super.alertId, new ListAnomaliesAlertedOptions())
             .take(super.maxListElements)
             .then();
     }

@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class IpCommunityIdListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpCommunityIdList model =
-            BinaryData
-                .fromString("{\"ipCommunityIds\":[\"vlqq\",\"yhbceevogir\",\"pwnqtvuxeu\"]}")
+        IpCommunityIdList model
+            = BinaryData.fromString("{\"ipCommunityIds\":[\"vlqq\",\"yhbceevogir\",\"pwnqtvuxeu\"]}")
                 .toObject(IpCommunityIdList.class);
         Assertions.assertEquals("vlqq", model.ipCommunityIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpCommunityIdList model =
-            new IpCommunityIdList().withIpCommunityIds(Arrays.asList("vlqq", "yhbceevogir", "pwnqtvuxeu"));
+        IpCommunityIdList model
+            = new IpCommunityIdList().withIpCommunityIds(Arrays.asList("vlqq", "yhbceevogir", "pwnqtvuxeu"));
         model = BinaryData.fromObject(model).toObject(IpCommunityIdList.class);
         Assertions.assertEquals("vlqq", model.ipCommunityIds().get(0));
     }

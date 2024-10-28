@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuLocationInfoItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuLocationInfoItem model =
-            BinaryData
-                .fromString("{\"location\":\"xsmlz\",\"zones\":[\"dtxetlgydlh\",\"vlnnpx\",\"b\"]}")
+        SkuLocationInfoItem model
+            = BinaryData.fromString("{\"location\":\"xsmlz\",\"zones\":[\"dtxetlgydlh\",\"vlnnpx\",\"b\"]}")
                 .toObject(SkuLocationInfoItem.class);
         Assertions.assertEquals("xsmlz", model.location());
         Assertions.assertEquals("dtxetlgydlh", model.zones().get(0));
@@ -22,8 +21,8 @@ public final class SkuLocationInfoItemTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuLocationInfoItem model =
-            new SkuLocationInfoItem().withLocation("xsmlz").withZones(Arrays.asList("dtxetlgydlh", "vlnnpx", "b"));
+        SkuLocationInfoItem model
+            = new SkuLocationInfoItem().withLocation("xsmlz").withZones(Arrays.asList("dtxetlgydlh", "vlnnpx", "b"));
         model = BinaryData.fromObject(model).toObject(SkuLocationInfoItem.class);
         Assertions.assertEquals("xsmlz", model.location());
         Assertions.assertEquals("dtxetlgydlh", model.zones().get(0));

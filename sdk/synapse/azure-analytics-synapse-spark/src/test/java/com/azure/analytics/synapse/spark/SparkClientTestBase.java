@@ -76,14 +76,15 @@ public abstract class SparkClientTestBase extends TestProxyTestBase {
                 credential = new DefaultAzureCredentialBuilder().build();
 
                 break;
+
             case LIVE:
                 Configuration config = Configuration.getGlobalConfiguration();
 
-                ChainedTokenCredentialBuilder chainedTokenCredentialBuilder = new ChainedTokenCredentialBuilder()
-                    .addLast(new EnvironmentCredentialBuilder().build())
-                    .addLast(new AzureCliCredentialBuilder().build())
-                    .addLast(new AzureDeveloperCliCredentialBuilder().build())
-                    .addLast(new AzurePowerShellCredentialBuilder().build());
+                ChainedTokenCredentialBuilder chainedTokenCredentialBuilder
+                    = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
+                        .addLast(new AzureCliCredentialBuilder().build())
+                        .addLast(new AzureDeveloperCliCredentialBuilder().build())
+                        .addLast(new AzurePowerShellCredentialBuilder().build());
 
                 String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
                 String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
@@ -95,17 +96,18 @@ public abstract class SparkClientTestBase extends TestProxyTestBase {
                     && !CoreUtils.isNullOrEmpty(tenantId)
                     && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
 
-                    chainedTokenCredentialBuilder.addLast(new AzurePipelinesCredentialBuilder()
-                        .systemAccessToken(systemAccessToken)
-                        .clientId(clientId)
-                        .tenantId(tenantId)
-                        .serviceConnectionId(serviceConnectionId)
-                        .build());
+                    chainedTokenCredentialBuilder
+                        .addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+                            .clientId(clientId)
+                            .tenantId(tenantId)
+                            .serviceConnectionId(serviceConnectionId)
+                            .build());
                 }
 
                 credential = chainedTokenCredentialBuilder.build();
 
                 break;
+
             default:
                 // On PLAYBACK mode
                 credential = new MockTokenCredential();
@@ -118,8 +120,8 @@ public abstract class SparkClientTestBase extends TestProxyTestBase {
 
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
+        policies
+            .add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddDatePolicy());
 
@@ -145,8 +147,7 @@ public abstract class SparkClientTestBase extends TestProxyTestBase {
             interceptorManager.removeSanitizers("AZSDK3425", "AZSDK3430");
         }
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
 

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SsisPackageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SsisPackage model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Package\",\"folderId\":6921489313242944838,\"projectVersion\":958372626502625816,\"projectId\":2450865455344885392,\"parameters\":[{\"id\":9114509081318263307,\"name\":\"ikkgqo\",\"description\":\"wpin\",\"dataType\":\"dvabbxbhmedeilb\",\"required\":true,\"sensitive\":true,\"designDefaultValue\":\"x\",\"defaultValue\":\"rzzihvwypus\",\"sensitiveDefaultValue\":\"jslczwciidj\",\"valueType\":\"lfryvdmvxadqac\",\"valueSet\":false,\"variable\":\"awba\"},{\"id\":4342234065989621574,\"name\":\"t\",\"description\":\"mfczl\",\"dataType\":\"yq\",\"required\":false,\"sensitive\":false,\"designDefaultValue\":\"owoxqmj\",\"defaultValue\":\"jcx\",\"sensitiveDefaultValue\":\"qg\",\"valueType\":\"lusrv\",\"valueSet\":true,\"variable\":\"mjceagbjqvls\"}],\"id\":6263061070290971808,\"name\":\"ashxgonoyjfqi\",\"description\":\"b\"}")
-                .toObject(SsisPackage.class);
+        SsisPackage model = BinaryData.fromString(
+            "{\"type\":\"Package\",\"folderId\":6921489313242944838,\"projectVersion\":958372626502625816,\"projectId\":2450865455344885392,\"parameters\":[{\"id\":9114509081318263307,\"name\":\"ikkgqo\",\"description\":\"wpin\",\"dataType\":\"dvabbxbhmedeilb\",\"required\":true,\"sensitive\":true,\"designDefaultValue\":\"x\",\"defaultValue\":\"rzzihvwypus\",\"sensitiveDefaultValue\":\"jslczwciidj\",\"valueType\":\"lfryvdmvxadqac\",\"valueSet\":false,\"variable\":\"awba\"},{\"id\":4342234065989621574,\"name\":\"t\",\"description\":\"mfczl\",\"dataType\":\"yq\",\"required\":false,\"sensitive\":false,\"designDefaultValue\":\"owoxqmj\",\"defaultValue\":\"jcx\",\"sensitiveDefaultValue\":\"qg\",\"valueType\":\"lusrv\",\"valueSet\":true,\"variable\":\"mjceagbjqvls\"}],\"id\":6263061070290971808,\"name\":\"ashxgonoyjfqi\",\"description\":\"b\"}")
+            .toObject(SsisPackage.class);
         Assertions.assertEquals(6263061070290971808L, model.id());
         Assertions.assertEquals("ashxgonoyjfqi", model.name());
         Assertions.assertEquals("b", model.description());
@@ -40,43 +38,37 @@ public final class SsisPackageTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisPackage model =
-            new SsisPackage()
-                .withId(6263061070290971808L)
-                .withName("ashxgonoyjfqi")
-                .withDescription("b")
-                .withFolderId(6921489313242944838L)
-                .withProjectVersion(958372626502625816L)
-                .withProjectId(2450865455344885392L)
-                .withParameters(
-                    Arrays
-                        .asList(
-                            new SsisParameter()
-                                .withId(9114509081318263307L)
-                                .withName("ikkgqo")
-                                .withDescription("wpin")
-                                .withDataType("dvabbxbhmedeilb")
-                                .withRequired(true)
-                                .withSensitive(true)
-                                .withDesignDefaultValue("x")
-                                .withDefaultValue("rzzihvwypus")
-                                .withSensitiveDefaultValue("jslczwciidj")
-                                .withValueType("lfryvdmvxadqac")
-                                .withValueSet(false)
-                                .withVariable("awba"),
-                            new SsisParameter()
-                                .withId(4342234065989621574L)
-                                .withName("t")
-                                .withDescription("mfczl")
-                                .withDataType("yq")
-                                .withRequired(false)
-                                .withSensitive(false)
-                                .withDesignDefaultValue("owoxqmj")
-                                .withDefaultValue("jcx")
-                                .withSensitiveDefaultValue("qg")
-                                .withValueType("lusrv")
-                                .withValueSet(true)
-                                .withVariable("mjceagbjqvls")));
+        SsisPackage model = new SsisPackage().withId(6263061070290971808L)
+            .withName("ashxgonoyjfqi")
+            .withDescription("b")
+            .withFolderId(6921489313242944838L)
+            .withProjectVersion(958372626502625816L)
+            .withProjectId(2450865455344885392L)
+            .withParameters(Arrays.asList(
+                new SsisParameter().withId(9114509081318263307L)
+                    .withName("ikkgqo")
+                    .withDescription("wpin")
+                    .withDataType("dvabbxbhmedeilb")
+                    .withRequired(true)
+                    .withSensitive(true)
+                    .withDesignDefaultValue("x")
+                    .withDefaultValue("rzzihvwypus")
+                    .withSensitiveDefaultValue("jslczwciidj")
+                    .withValueType("lfryvdmvxadqac")
+                    .withValueSet(false)
+                    .withVariable("awba"),
+                new SsisParameter().withId(4342234065989621574L)
+                    .withName("t")
+                    .withDescription("mfczl")
+                    .withDataType("yq")
+                    .withRequired(false)
+                    .withSensitive(false)
+                    .withDesignDefaultValue("owoxqmj")
+                    .withDefaultValue("jcx")
+                    .withSensitiveDefaultValue("qg")
+                    .withValueType("lusrv")
+                    .withValueSet(true)
+                    .withVariable("mjceagbjqvls")));
         model = BinaryData.fromObject(model).toObject(SsisPackage.class);
         Assertions.assertEquals(6263061070290971808L, model.id());
         Assertions.assertEquals("ashxgonoyjfqi", model.name());

@@ -83,8 +83,8 @@ public class ContactProfilesProperties {
      * @param provisioningState the provisioningState value to set.
      * @return the ContactProfilesProperties object itself.
      */
-    public ContactProfilesProperties withProvisioningState(
-        ContactProfilesPropertiesProvisioningState provisioningState) {
+    public ContactProfilesProperties
+        withProvisioningState(ContactProfilesPropertiesProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -148,8 +148,8 @@ public class ContactProfilesProperties {
      * @param autoTrackingConfiguration the autoTrackingConfiguration value to set.
      * @return the ContactProfilesProperties object itself.
      */
-    public ContactProfilesProperties withAutoTrackingConfiguration(
-        AutoTrackingConfiguration autoTrackingConfiguration) {
+    public ContactProfilesProperties
+        withAutoTrackingConfiguration(AutoTrackingConfiguration autoTrackingConfiguration) {
         this.autoTrackingConfiguration = autoTrackingConfiguration;
         return this;
     }
@@ -191,8 +191,8 @@ public class ContactProfilesProperties {
      * @param networkConfiguration the networkConfiguration value to set.
      * @return the ContactProfilesProperties object itself.
      */
-    public ContactProfilesProperties withNetworkConfiguration(
-        ContactProfilesPropertiesNetworkConfiguration networkConfiguration) {
+    public ContactProfilesProperties
+        withNetworkConfiguration(ContactProfilesPropertiesNetworkConfiguration networkConfiguration) {
         this.networkConfiguration = networkConfiguration;
         return this;
     }
@@ -214,8 +214,8 @@ public class ContactProfilesProperties {
      * @param thirdPartyConfigurations the thirdPartyConfigurations value to set.
      * @return the ContactProfilesProperties object itself.
      */
-    public ContactProfilesProperties withThirdPartyConfigurations(
-        List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations) {
+    public ContactProfilesProperties
+        withThirdPartyConfigurations(List<ContactProfileThirdPartyConfiguration> thirdPartyConfigurations) {
         this.thirdPartyConfigurations = thirdPartyConfigurations;
         return this;
     }
@@ -247,10 +247,8 @@ public class ContactProfilesProperties {
      */
     public void validate() {
         if (networkConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkConfiguration in model ContactProfilesProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkConfiguration in model ContactProfilesProperties"));
         } else {
             networkConfiguration().validate();
         }
@@ -258,9 +256,8 @@ public class ContactProfilesProperties {
             thirdPartyConfigurations().forEach(e -> e.validate());
         }
         if (links() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property links in model ContactProfilesProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property links in model ContactProfilesProperties"));
         } else {
             links().forEach(e -> e.validate());
         }

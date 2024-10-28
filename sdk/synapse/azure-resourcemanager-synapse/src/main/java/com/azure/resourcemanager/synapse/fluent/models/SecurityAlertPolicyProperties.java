@@ -233,10 +233,8 @@ public final class SecurityAlertPolicyProperties {
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model SecurityAlertPolicyProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property state in model SecurityAlertPolicyProperties"));
         }
     }
 

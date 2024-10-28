@@ -21,8 +21,8 @@ public interface SqlVirtualMachineTroubleshoots {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details required for SQL VM troubleshooting.
      */
-    SqlVmTroubleshooting troubleshoot(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters);
+    SqlVmTroubleshooting troubleshoot(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVmTroubleshootingInner parameters);
 
     /**
      * Starts SQL virtual machine troubleshooting.
@@ -37,6 +37,6 @@ public interface SqlVirtualMachineTroubleshoots {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details required for SQL VM troubleshooting.
      */
-    SqlVmTroubleshooting troubleshoot(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters, Context context);
+    SqlVmTroubleshooting troubleshoot(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVmTroubleshootingInner parameters, Context context);
 }

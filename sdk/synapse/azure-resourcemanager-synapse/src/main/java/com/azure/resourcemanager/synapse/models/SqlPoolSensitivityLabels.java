@@ -40,8 +40,8 @@ public interface SqlPoolSensitivityLabels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool sensitivity labels as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SensitivityLabel> listCurrent(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter, Context context);
+    PagedIterable<SensitivityLabel> listCurrent(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String filter, Context context);
 
     /**
      * Update sensitivity labels of a given SQL Pool using an operations batch.
@@ -56,12 +56,8 @@ public interface SqlPoolSensitivityLabels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SensitivityLabelUpdateList parameters,
-        Context context);
+    Response<Void> updateWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SensitivityLabelUpdateList parameters, Context context);
 
     /**
      * Update sensitivity labels of a given SQL Pool using an operations batch.
@@ -74,8 +70,8 @@ public interface SqlPoolSensitivityLabels {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void update(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SensitivityLabelUpdateList parameters);
+    void update(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SensitivityLabelUpdateList parameters);
 
     /**
      * Gets sensitivity labels of a given SQL pool
@@ -109,14 +105,8 @@ public interface SqlPoolSensitivityLabels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sensitivity labels of a given SQL pool as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SensitivityLabel> listRecommended(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        Boolean includeDisabledRecommendations,
-        String skipToken,
-        String filter,
-        Context context);
+    PagedIterable<SensitivityLabel> listRecommended(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Boolean includeDisabledRecommendations, String skipToken, String filter, Context context);
 
     /**
      * Deletes the sensitivity label of a given column in a Sql pool.
@@ -133,14 +123,8 @@ public interface SqlPoolSensitivityLabels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName, Context context);
 
     /**
      * Deletes the sensitivity label of a given column in a Sql pool.
@@ -155,12 +139,7 @@ public interface SqlPoolSensitivityLabels {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
+    void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName,
         String columnName);
 
     /**
@@ -179,14 +158,8 @@ public interface SqlPoolSensitivityLabels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sensitivity label of a given column along with {@link Response}.
      */
-    Response<SensitivityLabel> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelSource sensitivityLabelSource,
+    Response<SensitivityLabel> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName, SensitivityLabelSource sensitivityLabelSource,
         Context context);
 
     /**
@@ -204,14 +177,8 @@ public interface SqlPoolSensitivityLabels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the sensitivity label of a given column.
      */
-    SensitivityLabel get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        SensitivityLabelSource sensitivityLabelSource);
+    SensitivityLabel get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName,
+        String tableName, String columnName, SensitivityLabelSource sensitivityLabelSource);
 
     /**
      * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
@@ -228,14 +195,8 @@ public interface SqlPoolSensitivityLabels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> enableRecommendationWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context);
+    Response<Void> enableRecommendationWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName, Context context);
 
     /**
      * Enables sensitivity recommendations on a given column (recommendations are enabled by default on all columns).
@@ -250,13 +211,8 @@ public interface SqlPoolSensitivityLabels {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void enableRecommendation(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName);
+    void enableRecommendation(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName,
+        String tableName, String columnName);
 
     /**
      * Disables sensitivity recommendations on a given column.
@@ -273,14 +229,8 @@ public interface SqlPoolSensitivityLabels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> disableRecommendationWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context);
+    Response<Void> disableRecommendationWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName, Context context);
 
     /**
      * Disables sensitivity recommendations on a given column.
@@ -295,13 +245,8 @@ public interface SqlPoolSensitivityLabels {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void disableRecommendation(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName);
+    void disableRecommendation(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName,
+        String tableName, String columnName);
 
     /**
      * Deletes the sensitivity label of a given column in a Sql pool.

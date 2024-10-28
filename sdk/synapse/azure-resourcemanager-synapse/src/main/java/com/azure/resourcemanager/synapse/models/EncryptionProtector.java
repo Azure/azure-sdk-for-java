@@ -112,11 +112,13 @@ public interface EncryptionProtector {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The EncryptionProtector definition stages. */
     interface DefinitionStages {
         /** The first stage of the EncryptionProtector definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the EncryptionProtector definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -128,6 +130,7 @@ public interface EncryptionProtector {
              */
             WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
+
         /**
          * The stage of the EncryptionProtector definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -148,6 +151,7 @@ public interface EncryptionProtector {
              */
             EncryptionProtector create(Context context);
         }
+
         /** The stage of the EncryptionProtector definition allowing to specify serverKeyName. */
         interface WithServerKeyName {
             /**
@@ -158,6 +162,7 @@ public interface EncryptionProtector {
              */
             WithCreate withServerKeyName(String serverKeyName);
         }
+
         /** The stage of the EncryptionProtector definition allowing to specify serverKeyType. */
         interface WithServerKeyType {
             /**
@@ -170,6 +175,7 @@ public interface EncryptionProtector {
             WithCreate withServerKeyType(ServerKeyType serverKeyType);
         }
     }
+
     /**
      * Begins update for the EncryptionProtector resource.
      *
@@ -194,6 +200,7 @@ public interface EncryptionProtector {
          */
         EncryptionProtector apply(Context context);
     }
+
     /** The EncryptionProtector update stages. */
     interface UpdateStages {
         /** The stage of the EncryptionProtector update allowing to specify serverKeyName. */
@@ -206,6 +213,7 @@ public interface EncryptionProtector {
              */
             Update withServerKeyName(String serverKeyName);
         }
+
         /** The stage of the EncryptionProtector update allowing to specify serverKeyType. */
         interface WithServerKeyType {
             /**
@@ -218,6 +226,7 @@ public interface EncryptionProtector {
             Update withServerKeyType(ServerKeyType serverKeyType);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

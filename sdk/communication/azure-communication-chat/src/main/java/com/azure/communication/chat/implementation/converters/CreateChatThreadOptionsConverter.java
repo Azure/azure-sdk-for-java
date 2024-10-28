@@ -16,16 +16,15 @@ public final class CreateChatThreadOptionsConverter {
      * Maps from {CreateChatThreadOptions} to
      * {@link com.azure.communication.chat.implementation.models.CreateChatThreadOptions}.
      */
-    public static com.azure.communication.chat.implementation.models.CreateChatThreadOptions convert(
-        CreateChatThreadOptions obj) {
+    public static com.azure.communication.chat.implementation.models.CreateChatThreadOptions
+        convert(CreateChatThreadOptions obj) {
 
         if (obj == null) {
             return null;
         }
 
         com.azure.communication.chat.implementation.models.CreateChatThreadOptions createChatThreadOptions
-            = new com.azure.communication.chat.implementation.models.CreateChatThreadOptions()
-                .setTopic(obj.getTopic())
+            = new com.azure.communication.chat.implementation.models.CreateChatThreadOptions().setTopic(obj.getTopic())
                 .setParticipants(obj.getParticipants()
                     .stream()
                     .map(member -> ChatParticipantConverter.convert(member))

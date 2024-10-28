@@ -37,19 +37,17 @@ class RedisFirewallRuleImpl
     @Override
     public Mono<RedisFirewallRule> createResourceAsync() {
         final RedisFirewallRuleImpl self = this;
-        RedisFirewallRuleCreateParameters parameters =
-            new RedisFirewallRuleCreateParameters().withStartIp(this.startIp()).withEndIp(this.endIp());
-        return this
-            .parent()
+        RedisFirewallRuleCreateParameters parameters
+            = new RedisFirewallRuleCreateParameters().withStartIp(this.startIp()).withEndIp(this.endIp());
+        return this.parent()
             .manager()
             .serviceClient()
             .getFirewallRules()
             .createOrUpdateAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), parameters)
-            .map(
-                redisFirewallRuleInner -> {
-                    self.setInner(redisFirewallRuleInner);
-                    return self;
-                });
+            .map(redisFirewallRuleInner -> {
+                self.setInner(redisFirewallRuleInner);
+                return self;
+            });
     }
 
     @Override
@@ -59,8 +57,7 @@ class RedisFirewallRuleImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getFirewallRules()
@@ -69,8 +66,7 @@ class RedisFirewallRuleImpl
 
     @Override
     protected Mono<RedisFirewallRuleInner> getInnerAsync() {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getFirewallRules()

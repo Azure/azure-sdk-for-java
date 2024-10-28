@@ -1660,8 +1660,10 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     public SyncPoller<PollResult<FabricInner>, FabricInner> beginReassociateGateway(String resourceName,
         String resourceGroupName, String fabricName, FailoverProcessServerRequest failoverProcessServerRequest,
         Context context) {
-        return this.beginReassociateGatewayAsync(resourceName, resourceGroupName, fabricName,
-            failoverProcessServerRequest, context).getSyncPoller();
+        return this
+            .beginReassociateGatewayAsync(resourceName, resourceGroupName, fabricName, failoverProcessServerRequest,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -1682,7 +1684,8 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     private Mono<FabricInner> reassociateGatewayAsync(String resourceName, String resourceGroupName, String fabricName,
         FailoverProcessServerRequest failoverProcessServerRequest) {
         return beginReassociateGatewayAsync(resourceName, resourceGroupName, fabricName, failoverProcessServerRequest)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

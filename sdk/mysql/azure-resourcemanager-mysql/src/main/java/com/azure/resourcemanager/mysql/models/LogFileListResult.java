@@ -14,7 +14,8 @@ import java.util.List;
 /** A list of log files. */
 @Fluent
 public final class LogFileListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogFileListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(LogFileListResult.class);
 
     /*
      * The list of log files.

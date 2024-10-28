@@ -30,8 +30,8 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         final ICryptoTransform inner;
 
         AbstractAesCbcHmacSha2CryptoTransform(String name, byte[] keyMaterial, byte[] initializationVector,
-            byte[] authenticationData, ICryptoTransform.Factory<byte[]> factory)
-            throws InvalidKeyException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, NoSuchPaddingException {
+            byte[] authenticationData, ICryptoTransform.Factory<byte[]> factory) throws InvalidKeyException,
+            NoSuchAlgorithmException, InvalidAlgorithmParameterException, NoSuchPaddingException {
             Tuple3<byte[], byte[], Mac> parameters = getAlgorithmParameters(name, keyMaterial);
             inner = factory.create(parameters.getT1());
             hmacKey = parameters.getT2();
@@ -48,7 +48,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
         private byte[] toBigEndian(long i) {
             byte[] shortRepresentation = BigInteger.valueOf(i).toByteArray();
-            byte[] longRepresentation = new byte[]{0, 0, 0, 0, 0, 0, 0, 0};
+            byte[] longRepresentation = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };
 
             System.arraycopy(shortRepresentation, 0, longRepresentation,
                 longRepresentation.length - shortRepresentation.length, shortRepresentation.length);
@@ -65,8 +65,8 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
             if (algorithm.equalsIgnoreCase(Aes128CbcHmacSha256.ALGORITHM_NAME)) {
                 if ((key.length << 3) < 256) {
-                    throw new IllegalArgumentException(String.format("%s key length in bits %d < 256", algorithm,
-                        key.length << 3));
+                    throw new IllegalArgumentException(
+                        String.format("%s key length in bits %d < 256", algorithm, key.length << 3));
                 }
 
                 hmacKey = new byte[128 >> 3];
@@ -82,8 +82,8 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             } else if (algorithm.equalsIgnoreCase(Aes192CbcHmacSha384.ALGORITHM_NAME)) {
 
                 if ((key.length << 3) < 384) {
-                    throw new IllegalArgumentException(String.format("%s key length in bits %d < 384", algorithm,
-                        key.length << 3));
+                    throw new IllegalArgumentException(
+                        String.format("%s key length in bits %d < 384", algorithm, key.length << 3));
                 }
 
                 hmacKey = new byte[192 >> 3];
@@ -98,8 +98,8 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             } else if (algorithm.equalsIgnoreCase(Aes256CbcHmacSha512.ALGORITHM_NAME)) {
 
                 if ((key.length << 3) < 512) {
-                    throw new IllegalArgumentException(String.format("%s key length in bits %d < 512", algorithm,
-                        key.length << 3));
+                    throw new IllegalArgumentException(
+                        String.format("%s key length in bits %d < 512", algorithm, key.length << 3));
                 }
 
                 hmacKey = new byte[256 >> 3];
@@ -123,14 +123,12 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         private static final ClientLogger LOGGER = new ClientLogger(AesCbcHmacSha2Decryptor.class);
 
         AesCbcHmacSha2Decryptor(String name, byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag,
-                                Provider provider)
-            throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
+            Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
             InvalidAlgorithmParameterException {
             super(name, key, iv, authenticationData, aesKey -> new AesCbc.AesCbcDecryptor(aesKey, iv, provider));
             // Save the tag
             tag = authenticationTag;
         }
-
 
         @Override
         public byte[] doFinal(byte[] input)
@@ -164,7 +162,6 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             super(name, key, iv, authenticationData, aesKey -> new AesCbc.AesCbcEncryptor(aesKey, iv, provider));
         }
 
-
         @Override
         public byte[] doFinal(byte[] input)
             throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException {
@@ -192,8 +189,7 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
     @Override
     public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
-                                            byte[] authenticationTag)
-        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
+        byte[] authenticationTag) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException {
 
         return createDecryptor(key, iv, additionalAuthenticatedData, authenticationTag, null);
@@ -201,9 +197,8 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
     @Override
     public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
-                                            byte[] authenticationTag, Provider provider)
-        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
-        InvalidAlgorithmParameterException {
+        byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException,
+        NoSuchPaddingException, InvalidAlgorithmParameterException {
         if (key == null) {
             throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("No key material"));
         }
@@ -221,13 +216,13 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         }
 
         // Create the Decryptor
-        return new AesCbcHmacSha2Decryptor(getName(), key, iv, additionalAuthenticatedData, authenticationTag, provider);
+        return new AesCbcHmacSha2Decryptor(getName(), key, iv, additionalAuthenticatedData, authenticationTag,
+            provider);
     }
 
     @Override
     public ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
-                                            byte[] authenticationTag)
-        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
+        byte[] authenticationTag) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
         InvalidAlgorithmParameterException {
 
         return createEncryptor(key, iv, additionalAuthenticatedData, null, null);
@@ -235,9 +230,8 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
     @Override
     public ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
-                                            byte[] authenticationTag, Provider provider)
-        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
-        InvalidAlgorithmParameterException {
+        byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException,
+        NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         if (key == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("No key material"));

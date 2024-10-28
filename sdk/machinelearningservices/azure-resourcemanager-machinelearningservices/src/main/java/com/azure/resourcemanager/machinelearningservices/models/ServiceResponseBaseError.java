@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /** The error details. */
 @Immutable
 public final class ServiceResponseBaseError extends ManagementError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceResponseBaseError.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServiceResponseBaseError.class);
 
     /**
      * Validates the instance.

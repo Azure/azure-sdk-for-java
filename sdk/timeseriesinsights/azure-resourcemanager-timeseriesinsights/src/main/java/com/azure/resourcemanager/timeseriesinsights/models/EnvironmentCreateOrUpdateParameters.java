@@ -21,8 +21,7 @@ import java.util.Map;
 @JsonTypeName("EnvironmentCreateOrUpdateParameters")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Gen1", value = Gen1EnvironmentCreateOrUpdateParameters.class),
-    @JsonSubTypes.Type(name = "Gen2", value = Gen2EnvironmentCreateOrUpdateParameters.class)
-})
+    @JsonSubTypes.Type(name = "Gen2", value = Gen2EnvironmentCreateOrUpdateParameters.class) })
 @Fluent
 public class EnvironmentCreateOrUpdateParameters extends CreateOrUpdateTrackedResourceProperties {
     /*
@@ -81,10 +80,8 @@ public class EnvironmentCreateOrUpdateParameters extends CreateOrUpdateTrackedRe
     public void validate() {
         super.validate();
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sku in model EnvironmentCreateOrUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sku in model EnvironmentCreateOrUpdateParameters"));
         } else {
             sku().validate();
         }

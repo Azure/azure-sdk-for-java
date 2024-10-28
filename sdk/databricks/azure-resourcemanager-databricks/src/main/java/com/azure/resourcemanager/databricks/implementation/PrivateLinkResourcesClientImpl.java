@@ -30,17 +30,23 @@ import com.azure.resourcemanager.databricks.models.ErrorInfoException;
 import com.azure.resourcemanager.databricks.models.PrivateLinkResourcesList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public final class PrivateLinkResourcesClientImpl implements PrivateLinkResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateLinkResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureDatabricksManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinkResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkResourcesClientImpl(AzureDatabricksManagementClientImpl client) {
@@ -85,16 +91,16 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * List private link resources
-     *
-     * <p>List private link resources for a given workspace.
-     *
+     * 
+     * List private link resources for a given workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private link resources for a workspace along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GroupIdInformationInner>> listSinglePageAsync(String resourceGroupName,
@@ -126,9 +132,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * List private link resources
-     *
-     * <p>List private link resources for a given workspace.
-     *
+     * 
+     * List private link resources for a given workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -136,7 +142,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private link resources for a workspace along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GroupIdInformationInner>> listSinglePageAsync(String resourceGroupName,
@@ -168,9 +174,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * List private link resources
-     *
-     * <p>List private link resources for a given workspace.
-     *
+     * 
+     * List private link resources for a given workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -186,9 +192,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * List private link resources
-     *
-     * <p>List private link resources for a given workspace.
-     *
+     * 
+     * List private link resources for a given workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -206,9 +212,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * List private link resources
-     *
-     * <p>List private link resources for a given workspace.
-     *
+     * 
+     * List private link resources for a given workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -223,9 +229,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * List private link resources
-     *
-     * <p>List private link resources for a given workspace.
-     *
+     * 
+     * List private link resources for a given workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -242,9 +248,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get the specified private link resource
-     *
-     * <p>Get the specified private link resource for the given group id (sub-resource).
-     *
+     * 
+     * Get the specified private link resource for the given group id (sub-resource).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param groupId The name of the private link resource.
@@ -252,7 +258,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link resource for the given group id (sub-resource) along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GroupIdInformationInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -285,9 +291,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get the specified private link resource
-     *
-     * <p>Get the specified private link resource for the given group id (sub-resource).
-     *
+     * 
+     * Get the specified private link resource for the given group id (sub-resource).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param groupId The name of the private link resource.
@@ -296,7 +302,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link resource for the given group id (sub-resource) along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GroupIdInformationInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -328,9 +334,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get the specified private link resource
-     *
-     * <p>Get the specified private link resource for the given group id (sub-resource).
-     *
+     * 
+     * Get the specified private link resource for the given group id (sub-resource).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param groupId The name of the private link resource.
@@ -338,7 +344,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link resource for the given group id (sub-resource) on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GroupIdInformationInner> getAsync(String resourceGroupName, String workspaceName, String groupId) {
@@ -348,9 +354,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get the specified private link resource
-     *
-     * <p>Get the specified private link resource for the given group id (sub-resource).
-     *
+     * 
+     * Get the specified private link resource for the given group id (sub-resource).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param groupId The name of the private link resource.
@@ -368,9 +374,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get the specified private link resource
-     *
-     * <p>Get the specified private link resource for the given group id (sub-resource).
-     *
+     * 
+     * Get the specified private link resource for the given group id (sub-resource).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param groupId The name of the private link resource.
@@ -386,14 +392,13 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private link resources for a workspace along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GroupIdInformationInner>> listNextSinglePageAsync(String nextLink) {
@@ -413,15 +418,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private link resources for a workspace along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GroupIdInformationInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -71,10 +71,9 @@ public interface LoadBalancerPrivateFrontend extends LoadBalancerFrontend, HasPr
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InDefinitionAlt<ParentT>,
-                HasPrivateIpAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>>,
-                DefinitionStages.WithAvailabilityZone<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinitionAlt<ParentT>,
+            HasPrivateIpAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>>,
+            DefinitionStages.WithAvailabilityZone<ParentT> {
         }
     }
 
@@ -83,10 +82,8 @@ public interface LoadBalancerPrivateFrontend extends LoadBalancerFrontend, HasPr
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithSubnet<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithSubnet<ParentT> {
     }
 
     /** Grouping of private frontend update stages. */
@@ -105,10 +102,8 @@ public interface LoadBalancerPrivateFrontend extends LoadBalancerFrontend, HasPr
     }
 
     /** The entirety of a private frontend update as part of a load balancer update. */
-    interface Update
-        extends Settable<LoadBalancer.Update>,
-            UpdateStages.WithSubnet,
-            HasPrivateIpAddress.UpdateStages.WithPrivateIPAddress<Update> {
+    interface Update extends Settable<LoadBalancer.Update>, UpdateStages.WithSubnet,
+        HasPrivateIpAddress.UpdateStages.WithPrivateIPAddress<Update> {
     }
 
     /** Grouping of private frontend definition stages applicable as part of a load balancer update. */
@@ -160,10 +155,9 @@ public interface LoadBalancerPrivateFrontend extends LoadBalancerFrontend, HasPr
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT>
-            extends Attachable.InUpdateAlt<ParentT>,
-                HasPrivateIpAddress.UpdateDefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>>,
-                WithAvailabilityZone<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InUpdateAlt<ParentT>,
+            HasPrivateIpAddress.UpdateDefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>>,
+            WithAvailabilityZone<ParentT> {
         }
     }
 
@@ -172,9 +166,7 @@ public interface LoadBalancerPrivateFrontend extends LoadBalancerFrontend, HasPr
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT>,
-            UpdateDefinitionStages.WithSubnet<ParentT> {
+    interface UpdateDefinition<ParentT> extends UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithAttach<ParentT>, UpdateDefinitionStages.WithSubnet<ParentT> {
     }
 }

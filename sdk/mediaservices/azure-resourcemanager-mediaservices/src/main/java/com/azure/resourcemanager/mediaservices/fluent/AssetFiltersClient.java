@@ -44,8 +44,8 @@ public interface AssetFiltersClient {
      * @return a collection of AssetFilter items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AssetFilterInner> list(
-        String resourceGroupName, String accountName, String assetName, Context context);
+    PagedIterable<AssetFilterInner> list(String resourceGroupName, String accountName, String assetName,
+        Context context);
 
     /**
      * Get an Asset Filter.
@@ -63,8 +63,8 @@ public interface AssetFiltersClient {
      * @return the details of an Asset Filter associated with the specified Asset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AssetFilterInner> getWithResponse(
-        String resourceGroupName, String accountName, String assetName, String filterName, Context context);
+    Response<AssetFilterInner> getWithResponse(String resourceGroupName, String accountName, String assetName,
+        String filterName, Context context);
 
     /**
      * Get an Asset Filter.
@@ -100,13 +100,8 @@ public interface AssetFiltersClient {
      * @return an Asset Filter along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AssetFilterInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String filterName,
-        AssetFilterInner parameters,
-        Context context);
+    Response<AssetFilterInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String assetName, String filterName, AssetFilterInner parameters, Context context);
 
     /**
      * Create or update an Asset Filter
@@ -124,8 +119,8 @@ public interface AssetFiltersClient {
      * @return an Asset Filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetFilterInner createOrUpdate(
-        String resourceGroupName, String accountName, String assetName, String filterName, AssetFilterInner parameters);
+    AssetFilterInner createOrUpdate(String resourceGroupName, String accountName, String assetName, String filterName,
+        AssetFilterInner parameters);
 
     /**
      * Delete an Asset Filter.
@@ -143,8 +138,8 @@ public interface AssetFiltersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String assetName, String filterName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String assetName, String filterName,
+        Context context);
 
     /**
      * Delete an Asset Filter.
@@ -179,13 +174,8 @@ public interface AssetFiltersClient {
      * @return an Asset Filter along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AssetFilterInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String filterName,
-        AssetFilterInner parameters,
-        Context context);
+    Response<AssetFilterInner> updateWithResponse(String resourceGroupName, String accountName, String assetName,
+        String filterName, AssetFilterInner parameters, Context context);
 
     /**
      * Update an Asset Filter
@@ -203,6 +193,6 @@ public interface AssetFiltersClient {
      * @return an Asset Filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetFilterInner update(
-        String resourceGroupName, String accountName, String assetName, String filterName, AssetFilterInner parameters);
+    AssetFilterInner update(String resourceGroupName, String accountName, String assetName, String filterName,
+        AssetFilterInner parameters);
 }

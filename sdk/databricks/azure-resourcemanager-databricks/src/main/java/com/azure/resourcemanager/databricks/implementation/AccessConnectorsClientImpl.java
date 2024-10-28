@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AccessConnectorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccessConnectorsClient.
+ */
 public final class AccessConnectorsClientImpl implements AccessConnectorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AccessConnectorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureDatabricksManagementClientImpl client;
 
     /**
      * Initializes an instance of AccessConnectorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AccessConnectorsClientImpl(AzureDatabricksManagementClientImpl client) {
@@ -139,7 +145,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -175,7 +181,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param context The context to associate with this operation.
@@ -211,7 +217,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,7 +233,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param context The context to associate with this operation.
@@ -244,7 +250,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -259,7 +265,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Deletes the azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -294,7 +300,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Deletes the azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param context The context to associate with this operation.
@@ -330,7 +336,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Deletes the azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -347,7 +353,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Deletes the azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param context The context to associate with this operation.
@@ -367,7 +373,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Deletes the azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -382,7 +388,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Deletes the azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param context The context to associate with this operation.
@@ -399,7 +405,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Deletes the azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -414,7 +420,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Deletes the azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param context The context to associate with this operation.
@@ -431,7 +437,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Deletes the azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -445,7 +451,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Deletes the azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param context The context to associate with this operation.
@@ -460,7 +466,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Creates or updates azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters Parameters supplied to the create or update an azure databricks accessConnector.
@@ -468,7 +474,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about azure databricks accessConnector along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -503,7 +509,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Creates or updates azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters Parameters supplied to the create or update an azure databricks accessConnector.
@@ -512,7 +518,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about azure databricks accessConnector along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -546,7 +552,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Creates or updates azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters Parameters supplied to the create or update an azure databricks accessConnector.
@@ -566,7 +572,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Creates or updates azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters Parameters supplied to the create or update an azure databricks accessConnector.
@@ -588,7 +594,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Creates or updates azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters Parameters supplied to the create or update an azure databricks accessConnector.
@@ -605,7 +611,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Creates or updates azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters Parameters supplied to the create or update an azure databricks accessConnector.
@@ -623,7 +629,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Creates or updates azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters Parameters supplied to the create or update an azure databricks accessConnector.
@@ -641,7 +647,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Creates or updates azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters Parameters supplied to the create or update an azure databricks accessConnector.
@@ -660,7 +666,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Creates or updates azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters Parameters supplied to the create or update an azure databricks accessConnector.
@@ -677,7 +683,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Creates or updates azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters Parameters supplied to the create or update an azure databricks accessConnector.
@@ -695,7 +701,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Updates an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters The update to the azure databricks accessConnector.
@@ -703,7 +709,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about azure databricks accessConnector along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String connectorName,
@@ -738,7 +744,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Updates an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters The update to the azure databricks accessConnector.
@@ -747,7 +753,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about azure databricks accessConnector along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String connectorName,
@@ -781,7 +787,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Updates an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters The update to the azure databricks accessConnector.
@@ -800,7 +806,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Updates an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters The update to the azure databricks accessConnector.
@@ -822,7 +828,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Updates an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters The update to the azure databricks accessConnector.
@@ -839,7 +845,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Updates an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters The update to the azure databricks accessConnector.
@@ -857,7 +863,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Updates an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters The update to the azure databricks accessConnector.
@@ -875,7 +881,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Updates an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters The update to the azure databricks accessConnector.
@@ -894,7 +900,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Updates an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters The update to the azure databricks accessConnector.
@@ -911,7 +917,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Updates an azure databricks accessConnector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param connectorName The name of the azure databricks accessConnector.
      * @param parameters The update to the azure databricks accessConnector.
@@ -929,13 +935,13 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets all the azure databricks accessConnectors within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the azure databricks accessConnectors within a resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessConnectorInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -963,14 +969,14 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets all the azure databricks accessConnectors within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the azure databricks accessConnectors within a resource group along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessConnectorInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -999,13 +1005,13 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets all the azure databricks accessConnectors within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the azure databricks accessConnectors within a resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return all the azure databricks accessConnectors within a resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessConnectorInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1015,14 +1021,14 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets all the azure databricks accessConnectors within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the azure databricks accessConnectors within a resource group as paginated response with {@link
-     *     PagedFlux}.
+     * @return all the azure databricks accessConnectors within a resource group as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessConnectorInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1032,13 +1038,13 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets all the azure databricks accessConnectors within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the azure databricks accessConnectors within a resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the azure databricks accessConnectors within a resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessConnectorInner> listByResourceGroup(String resourceGroupName) {
@@ -1047,14 +1053,14 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets all the azure databricks accessConnectors within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the azure databricks accessConnectors within a resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the azure databricks accessConnectors within a resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessConnectorInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1063,11 +1069,11 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets all the azure databricks accessConnectors within a subscription.
-     *
+     * 
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the azure databricks accessConnectors within a subscription along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessConnectorInner>> listSinglePageAsync() {
@@ -1091,13 +1097,13 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets all the azure databricks accessConnectors within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the azure databricks accessConnectors within a subscription along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessConnectorInner>> listSinglePageAsync(Context context) {
@@ -1119,11 +1125,11 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets all the azure databricks accessConnectors within a subscription.
-     *
+     * 
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the azure databricks accessConnectors within a subscription as paginated response with {@link
-     *     PagedFlux}.
+     * @return all the azure databricks accessConnectors within a subscription as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessConnectorInner> listAsync() {
@@ -1133,13 +1139,13 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets all the azure databricks accessConnectors within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the azure databricks accessConnectors within a subscription as paginated response with {@link
-     *     PagedFlux}.
+     * @return all the azure databricks accessConnectors within a subscription as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessConnectorInner> listAsync(Context context) {
@@ -1149,11 +1155,11 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets all the azure databricks accessConnectors within a subscription.
-     *
+     * 
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the azure databricks accessConnectors within a subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the azure databricks accessConnectors within a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessConnectorInner> list() {
@@ -1162,13 +1168,13 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Gets all the azure databricks accessConnectors within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the azure databricks accessConnectors within a subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the azure databricks accessConnectors within a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessConnectorInner> list(Context context) {
@@ -1177,14 +1183,13 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of azure databricks accessConnector along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessConnectorInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1206,15 +1211,14 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of azure databricks accessConnector along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessConnectorInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
@@ -1235,14 +1239,13 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of azure databricks accessConnector along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessConnectorInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1264,15 +1267,14 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorInfoException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of azure databricks accessConnector along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessConnectorInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
