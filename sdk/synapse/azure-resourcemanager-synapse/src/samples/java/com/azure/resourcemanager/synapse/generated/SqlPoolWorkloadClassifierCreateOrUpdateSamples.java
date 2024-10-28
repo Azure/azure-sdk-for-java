@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for SqlPoolWorkloadClassifier CreateOrUpdate. */
+/**
+ * Samples for SqlPoolWorkloadClassifier CreateOrUpdate.
+ */
 public final class SqlPoolWorkloadClassifierCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateSqlPoolWorkloadClassifierMin.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * CreateOrUpdateSqlPoolWorkloadClassifierMin.json
      */
     /**
      * Sample code: Create a workload classifier with the required properties specified.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void createAWorkloadClassifierWithTheRequiredPropertiesSpecified(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .sqlPoolWorkloadClassifiers()
+        manager.sqlPoolWorkloadClassifiers()
             .define("wlm_workloadclassifier")
             .withExistingWorkloadGroup("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", "wlm_workloadgroup")
             .withMemberName("dbo")
@@ -25,17 +27,17 @@ public final class SqlPoolWorkloadClassifierCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateSqlPoolWorkloadClassifierMax.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * CreateOrUpdateSqlPoolWorkloadClassifierMax.json
      */
     /**
      * Sample code: Create a workload classifier with all properties specified.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
-    public static void createAWorkloadClassifierWithAllPropertiesSpecified(
-        com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .sqlPoolWorkloadClassifiers()
+    public static void
+        createAWorkloadClassifierWithAllPropertiesSpecified(com.azure.resourcemanager.synapse.SynapseManager manager) {
+        manager.sqlPoolWorkloadClassifiers()
             .define("wlm_workloadclassifier")
             .withExistingWorkloadGroup("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", "wlm_workloadgroup")
             .withMemberName("dbo")

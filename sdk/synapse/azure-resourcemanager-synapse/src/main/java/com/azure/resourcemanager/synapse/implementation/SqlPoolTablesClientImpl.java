@@ -30,17 +30,23 @@ import com.azure.resourcemanager.synapse.fluent.models.SqlPoolTableInner;
 import com.azure.resourcemanager.synapse.models.SqlPoolTableListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolTablesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolTablesClient.
+ */
 public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolTablesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolTablesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolTablesClientImpl(SynapseManagementClientImpl client) {
@@ -57,8 +63,7 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolTablesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SqlPoolTableListResult>> listBySchema(@HostParam("$host") String endpoint,
@@ -68,8 +73,7 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
             @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SqlPoolTableInner>> get(@HostParam("$host") String endpoint,
@@ -89,9 +93,9 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
 
     /**
      * Gets tables of a given schema in a SQL pool
-     *
-     * <p>Gets tables of a given schema in a SQL pool.
-     *
+     * 
+     * Gets tables of a given schema in a SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -101,7 +105,7 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tables of a given schema in a SQL pool along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolTableInner>> listBySchemaSinglePageAsync(String resourceGroupName,
@@ -140,9 +144,9 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
 
     /**
      * Gets tables of a given schema in a SQL pool
-     *
-     * <p>Gets tables of a given schema in a SQL pool.
-     *
+     * 
+     * Gets tables of a given schema in a SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -153,7 +157,7 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tables of a given schema in a SQL pool along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolTableInner>> listBySchemaSinglePageAsync(String resourceGroupName,
@@ -191,9 +195,9 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
 
     /**
      * Gets tables of a given schema in a SQL pool
-     *
-     * <p>Gets tables of a given schema in a SQL pool.
-     *
+     * 
+     * Gets tables of a given schema in a SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -214,9 +218,9 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
 
     /**
      * Gets tables of a given schema in a SQL pool
-     *
-     * <p>Gets tables of a given schema in a SQL pool.
-     *
+     * 
+     * Gets tables of a given schema in a SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -237,9 +241,9 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
 
     /**
      * Gets tables of a given schema in a SQL pool
-     *
-     * <p>Gets tables of a given schema in a SQL pool.
-     *
+     * 
+     * Gets tables of a given schema in a SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -260,9 +264,9 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
 
     /**
      * Gets tables of a given schema in a SQL pool
-     *
-     * <p>Gets tables of a given schema in a SQL pool.
-     *
+     * 
+     * Gets tables of a given schema in a SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -282,9 +286,9 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
 
     /**
      * Gets tables of a given schema in a SQL pool
-     *
-     * <p>Gets tables of a given schema in a SQL pool.
-     *
+     * 
+     * Gets tables of a given schema in a SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -305,7 +309,7 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
 
     /**
      * Get Sql pool table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -353,7 +357,7 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
 
     /**
      * Get Sql pool table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -401,7 +405,7 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
 
     /**
      * Get Sql pool table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -421,7 +425,7 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
 
     /**
      * Get Sql pool table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -442,7 +446,7 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
 
     /**
      * Get Sql pool table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -462,9 +466,8 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -489,9 +492,8 @@ public final class SqlPoolTablesClientImpl implements SqlPoolTablesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

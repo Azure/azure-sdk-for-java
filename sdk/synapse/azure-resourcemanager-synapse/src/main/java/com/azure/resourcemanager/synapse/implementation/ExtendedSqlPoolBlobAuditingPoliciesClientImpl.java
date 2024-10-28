@@ -36,15 +36,19 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ExtendedSqlPoolBlobAuditingPoliciesClient.
  */
 public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements ExtendedSqlPoolBlobAuditingPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ExtendedSqlPoolBlobAuditingPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of ExtendedSqlPoolBlobAuditingPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExtendedSqlPoolBlobAuditingPoliciesClientImpl(SynapseManagementClientImpl client) {
@@ -61,8 +65,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
     @ServiceInterface(name = "SynapseManagementCli")
     public interface ExtendedSqlPoolBlobAuditingPoliciesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/extendedAuditingSettings/{blobAuditingPolicyName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/extendedAuditingSettings/{blobAuditingPolicyName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExtendedSqlPoolBlobAuditingPolicyInner>> get(@HostParam("$host") String endpoint,
@@ -73,8 +76,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/extendedAuditingSettings/{blobAuditingPolicyName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/extendedAuditingSettings/{blobAuditingPolicyName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExtendedSqlPoolBlobAuditingPolicyInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -86,8 +88,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/extendedAuditingSettings")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/extendedAuditingSettings")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExtendedSqlPoolBlobAuditingPolicyListResult>> listBySqlPool(@HostParam("$host") String endpoint,
@@ -106,7 +107,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Gets an extended Sql pool's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -114,7 +115,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an extended Sql pool's blob auditing policy along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExtendedSqlPoolBlobAuditingPolicyInner>> getWithResponseAsync(String resourceGroupName,
@@ -148,7 +149,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Gets an extended Sql pool's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -157,7 +158,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an extended Sql pool's blob auditing policy along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExtendedSqlPoolBlobAuditingPolicyInner>> getWithResponseAsync(String resourceGroupName,
@@ -190,7 +191,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Gets an extended Sql pool's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -208,7 +209,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Gets an extended Sql pool's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -226,7 +227,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Gets an extended Sql pool's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -243,7 +244,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Creates or updates an extended Sql pool's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -251,8 +252,8 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended Sql pool blob auditing policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an extended Sql pool blob auditing policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExtendedSqlPoolBlobAuditingPolicyInner>> createOrUpdateWithResponseAsync(
@@ -293,7 +294,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Creates or updates an extended Sql pool's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -302,8 +303,8 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended Sql pool blob auditing policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an extended Sql pool blob auditing policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExtendedSqlPoolBlobAuditingPolicyInner>> createOrUpdateWithResponseAsync(
@@ -342,7 +343,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Creates or updates an extended Sql pool's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -361,7 +362,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Creates or updates an extended Sql pool's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -381,7 +382,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Creates or updates an extended Sql pool's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -400,7 +401,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Lists extended auditing settings of a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -408,7 +409,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of sql pool extended auditing settings along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExtendedSqlPoolBlobAuditingPolicyInner>>
@@ -443,7 +444,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Lists extended auditing settings of a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -452,7 +453,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of sql pool extended auditing settings along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExtendedSqlPoolBlobAuditingPolicyInner>> listBySqlPoolSinglePageAsync(
@@ -487,7 +488,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Lists extended auditing settings of a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -505,7 +506,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Lists extended auditing settings of a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -525,7 +526,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Lists extended auditing settings of a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -542,7 +543,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Lists extended auditing settings of a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -560,14 +561,13 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of sql pool extended auditing settings along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExtendedSqlPoolBlobAuditingPolicyInner>>
@@ -589,15 +589,14 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesClientImpl implements Exte
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of sql pool extended auditing settings along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ExtendedSqlPoolBlobAuditingPolicyInner>>

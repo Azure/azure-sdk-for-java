@@ -17,7 +17,7 @@ import com.azure.resourcemanager.synapse.fluent.models.ExtendedSqlPoolBlobAuditi
 public interface ExtendedSqlPoolBlobAuditingPoliciesClient {
     /**
      * Gets an extended Sql pool's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -33,7 +33,7 @@ public interface ExtendedSqlPoolBlobAuditingPoliciesClient {
 
     /**
      * Gets an extended Sql pool's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -47,7 +47,7 @@ public interface ExtendedSqlPoolBlobAuditingPoliciesClient {
 
     /**
      * Creates or updates an extended Sql pool's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -64,7 +64,7 @@ public interface ExtendedSqlPoolBlobAuditingPoliciesClient {
 
     /**
      * Creates or updates an extended Sql pool's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -80,7 +80,7 @@ public interface ExtendedSqlPoolBlobAuditingPoliciesClient {
 
     /**
      * Lists extended auditing settings of a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -95,7 +95,7 @@ public interface ExtendedSqlPoolBlobAuditingPoliciesClient {
 
     /**
      * Lists extended auditing settings of a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

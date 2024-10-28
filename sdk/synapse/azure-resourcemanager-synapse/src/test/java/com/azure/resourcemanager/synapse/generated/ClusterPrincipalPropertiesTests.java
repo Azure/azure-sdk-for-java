@@ -14,24 +14,24 @@ public final class ClusterPrincipalPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterPrincipalProperties model = BinaryData.fromString(
-            "{\"principalId\":\"h\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"omew\",\"principalType\":\"User\",\"tenantName\":\"tl\",\"principalName\":\"hqawmo\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"cz\"}")
+            "{\"principalId\":\"odnaienhqhskndn\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"kaa\",\"principalType\":\"User\",\"tenantName\":\"nwf\",\"principalName\":\"nniyopetxi\",\"provisioningState\":\"Failed\",\"aadObjectId\":\"lyxnucaephb\"}")
             .toObject(ClusterPrincipalProperties.class);
-        Assertions.assertEquals("h", model.principalId());
+        Assertions.assertEquals("odnaienhqhskndn", model.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, model.role());
-        Assertions.assertEquals("omew", model.tenantId());
+        Assertions.assertEquals("kaa", model.tenantId());
         Assertions.assertEquals(PrincipalType.USER, model.principalType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPrincipalProperties model = new ClusterPrincipalProperties().withPrincipalId("h")
+        ClusterPrincipalProperties model = new ClusterPrincipalProperties().withPrincipalId("odnaienhqhskndn")
             .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
-            .withTenantId("omew")
+            .withTenantId("kaa")
             .withPrincipalType(PrincipalType.USER);
         model = BinaryData.fromObject(model).toObject(ClusterPrincipalProperties.class);
-        Assertions.assertEquals("h", model.principalId());
+        Assertions.assertEquals("odnaienhqhskndn", model.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, model.role());
-        Assertions.assertEquals("omew", model.tenantId());
+        Assertions.assertEquals("kaa", model.tenantId());
         Assertions.assertEquals(PrincipalType.USER, model.principalType());
     }
 }

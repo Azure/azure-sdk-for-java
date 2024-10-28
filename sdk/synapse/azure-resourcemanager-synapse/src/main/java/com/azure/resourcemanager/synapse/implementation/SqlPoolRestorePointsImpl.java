@@ -31,14 +31,14 @@ public final class SqlPoolRestorePointsImpl implements SqlPoolRestorePoints {
     public PagedIterable<RestorePoint> list(String resourceGroupName, String workspaceName, String sqlPoolName) {
         PagedIterable<RestorePointInner> inner
             = this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName);
-        return Utils.mapPage(inner, inner1 -> new RestorePointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RestorePointImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RestorePoint> list(String resourceGroupName, String workspaceName, String sqlPoolName,
         Context context) {
         PagedIterable<RestorePointInner> inner
             = this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName, context);
-        return Utils.mapPage(inner, inner1 -> new RestorePointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RestorePointImpl(inner1, this.manager()));
     }
 
     public RestorePoint create(String resourceGroupName, String workspaceName, String sqlPoolName,

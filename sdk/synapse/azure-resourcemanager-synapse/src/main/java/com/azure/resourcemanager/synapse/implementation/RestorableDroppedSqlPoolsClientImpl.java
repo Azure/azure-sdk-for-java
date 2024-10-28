@@ -30,17 +30,23 @@ import com.azure.resourcemanager.synapse.fluent.models.RestorableDroppedSqlPoolI
 import com.azure.resourcemanager.synapse.models.RestorableDroppedSqlPoolListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RestorableDroppedSqlPoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RestorableDroppedSqlPoolsClient.
+ */
 public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDroppedSqlPoolsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RestorableDroppedSqlPoolsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of RestorableDroppedSqlPoolsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RestorableDroppedSqlPoolsClientImpl(SynapseManagementClientImpl client) {
@@ -57,8 +63,7 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
     @ServiceInterface(name = "SynapseManagementCli")
     public interface RestorableDroppedSqlPoolsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/restorableDroppedSqlPools/{restorableDroppedSqlPoolId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/restorableDroppedSqlPools/{restorableDroppedSqlPoolId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RestorableDroppedSqlPoolInner>> get(@HostParam("$host") String endpoint,
@@ -68,8 +73,7 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/restorableDroppedSqlPools")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/restorableDroppedSqlPools")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RestorableDroppedSqlPoolListResult>> listByWorkspace(@HostParam("$host") String endpoint,
@@ -80,16 +84,16 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
 
     /**
      * Gets a deleted sql pool that can be restored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param restorableDroppedSqlPoolId The id of the deleted Sql Pool in the form of
-     *     sqlPoolName,deletionTimeInFileTimeFormat.
+     * sqlPoolName,deletionTimeInFileTimeFormat.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted sql pool that can be restored along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a deleted sql pool that can be restored along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RestorableDroppedSqlPoolInner>> getWithResponseAsync(String resourceGroupName,
@@ -123,17 +127,17 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
 
     /**
      * Gets a deleted sql pool that can be restored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param restorableDroppedSqlPoolId The id of the deleted Sql Pool in the form of
-     *     sqlPoolName,deletionTimeInFileTimeFormat.
+     * sqlPoolName,deletionTimeInFileTimeFormat.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted sql pool that can be restored along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a deleted sql pool that can be restored along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RestorableDroppedSqlPoolInner>> getWithResponseAsync(String resourceGroupName,
@@ -166,11 +170,11 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
 
     /**
      * Gets a deleted sql pool that can be restored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param restorableDroppedSqlPoolId The id of the deleted Sql Pool in the form of
-     *     sqlPoolName,deletionTimeInFileTimeFormat.
+     * sqlPoolName,deletionTimeInFileTimeFormat.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -185,11 +189,11 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
 
     /**
      * Gets a deleted sql pool that can be restored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param restorableDroppedSqlPoolId The id of the deleted Sql Pool in the form of
-     *     sqlPoolName,deletionTimeInFileTimeFormat.
+     * sqlPoolName,deletionTimeInFileTimeFormat.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -204,11 +208,11 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
 
     /**
      * Gets a deleted sql pool that can be restored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param restorableDroppedSqlPoolId The id of the deleted Sql Pool in the form of
-     *     sqlPoolName,deletionTimeInFileTimeFormat.
+     * sqlPoolName,deletionTimeInFileTimeFormat.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -222,14 +226,14 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
 
     /**
      * Gets a list of deleted Sql pools that can be restored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of deleted Sql pools that can be restored along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableDroppedSqlPoolInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
@@ -261,7 +265,7 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
 
     /**
      * Gets a list of deleted Sql pools that can be restored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -269,7 +273,7 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of deleted Sql pools that can be restored along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableDroppedSqlPoolInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
@@ -301,7 +305,7 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
 
     /**
      * Gets a list of deleted Sql pools that can be restored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -317,7 +321,7 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
 
     /**
      * Gets a list of deleted Sql pools that can be restored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -334,7 +338,7 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
 
     /**
      * Gets a list of deleted Sql pools that can be restored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -350,7 +354,7 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
 
     /**
      * Gets a list of deleted Sql pools that can be restored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.

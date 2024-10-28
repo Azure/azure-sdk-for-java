@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.OperationResourceInner;
 import com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnectionInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
+ */
 public interface PrivateEndpointConnectionsClient {
     /**
      * Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -34,7 +36,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -49,7 +51,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -66,7 +68,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -84,7 +86,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -100,7 +102,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -117,7 +119,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Delete a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -132,7 +134,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Delete a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -148,7 +150,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Delete a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -162,7 +164,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Delete a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -178,7 +180,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Lists private endpoint connection in workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,7 +193,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Lists private endpoint connection in workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.

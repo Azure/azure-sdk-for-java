@@ -27,17 +27,23 @@ import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeOperati
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeStopOperationStatusInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GetsClient.
+ */
 public final class GetsClientImpl implements GetsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GetsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of GetsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GetsClientImpl(SynapseManagementClientImpl client) {
@@ -53,9 +59,7 @@ public final class GetsClientImpl implements GetsClient {
     @ServiceInterface(name = "SynapseManagementCli")
     public interface GetsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/start/operationstatuses"
-            + "/{integrationRuntimeOperationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/start/operationstatuses/{integrationRuntimeOperationId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeOperationStatusInner>> integrationRuntimeStart(
@@ -67,9 +71,7 @@ public final class GetsClientImpl implements GetsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/stop/operationstatuses"
-            + "/{integrationRuntimeOperationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/stop/operationstatuses/{integrationRuntimeOperationId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeStopOperationStatusInner>> integrationRuntimeStop(
@@ -81,9 +83,7 @@ public final class GetsClientImpl implements GetsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/enableinteractivequery"
-            + "/operationstatuses/{integrationRuntimeOperationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/enableinteractivequery/operationstatuses/{integrationRuntimeOperationId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeEnableinteractivequeryInner>> integrationRuntimeEnableInteractivequery(
@@ -97,9 +97,9 @@ public final class GetsClientImpl implements GetsClient {
 
     /**
      * Get integration runtime start operation status
-     *
-     * <p>Get an integration runtime start operation status.
-     *
+     * 
+     * Get an integration runtime start operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -108,7 +108,7 @@ public final class GetsClientImpl implements GetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration runtime start operation status along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeOperationStatusInner>> integrationRuntimeStartWithResponseAsync(
@@ -148,9 +148,9 @@ public final class GetsClientImpl implements GetsClient {
 
     /**
      * Get integration runtime start operation status
-     *
-     * <p>Get an integration runtime start operation status.
-     *
+     * 
+     * Get an integration runtime start operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -160,7 +160,7 @@ public final class GetsClientImpl implements GetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration runtime start operation status along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeOperationStatusInner>> integrationRuntimeStartWithResponseAsync(
@@ -198,9 +198,9 @@ public final class GetsClientImpl implements GetsClient {
 
     /**
      * Get integration runtime start operation status
-     *
-     * <p>Get an integration runtime start operation status.
-     *
+     * 
+     * Get an integration runtime start operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -219,9 +219,9 @@ public final class GetsClientImpl implements GetsClient {
 
     /**
      * Get integration runtime start operation status
-     *
-     * <p>Get an integration runtime start operation status.
-     *
+     * 
+     * Get an integration runtime start operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -242,9 +242,9 @@ public final class GetsClientImpl implements GetsClient {
 
     /**
      * Get integration runtime start operation status
-     *
-     * <p>Get an integration runtime start operation status.
-     *
+     * 
+     * Get an integration runtime start operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -263,9 +263,9 @@ public final class GetsClientImpl implements GetsClient {
 
     /**
      * Get integration runtime stop operation status
-     *
-     * <p>Get an integration runtime stop operation status.
-     *
+     * 
+     * Get an integration runtime stop operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -274,7 +274,7 @@ public final class GetsClientImpl implements GetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration runtime stop operation status along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeStopOperationStatusInner>> integrationRuntimeStopWithResponseAsync(
@@ -314,9 +314,9 @@ public final class GetsClientImpl implements GetsClient {
 
     /**
      * Get integration runtime stop operation status
-     *
-     * <p>Get an integration runtime stop operation status.
-     *
+     * 
+     * Get an integration runtime stop operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -326,7 +326,7 @@ public final class GetsClientImpl implements GetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration runtime stop operation status along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeStopOperationStatusInner>> integrationRuntimeStopWithResponseAsync(
@@ -364,9 +364,9 @@ public final class GetsClientImpl implements GetsClient {
 
     /**
      * Get integration runtime stop operation status
-     *
-     * <p>Get an integration runtime stop operation status.
-     *
+     * 
+     * Get an integration runtime stop operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -385,9 +385,9 @@ public final class GetsClientImpl implements GetsClient {
 
     /**
      * Get integration runtime stop operation status
-     *
-     * <p>Get an integration runtime stop operation status.
-     *
+     * 
+     * Get an integration runtime stop operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -408,9 +408,9 @@ public final class GetsClientImpl implements GetsClient {
 
     /**
      * Get integration runtime stop operation status
-     *
-     * <p>Get an integration runtime stop operation status.
-     *
+     * 
+     * Get an integration runtime stop operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -429,9 +429,9 @@ public final class GetsClientImpl implements GetsClient {
 
     /**
      * Get integration runtime enable interactivequery operation status
-     *
-     * <p>Get an integration runtime enable interactivequery operation status.
-     *
+     * 
+     * Get an integration runtime enable interactivequery operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -440,7 +440,7 @@ public final class GetsClientImpl implements GetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration runtime enable interactivequery operation status along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeEnableinteractivequeryInner>>
@@ -480,9 +480,9 @@ public final class GetsClientImpl implements GetsClient {
 
     /**
      * Get integration runtime enable interactivequery operation status
-     *
-     * <p>Get an integration runtime enable interactivequery operation status.
-     *
+     * 
+     * Get an integration runtime enable interactivequery operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -492,7 +492,7 @@ public final class GetsClientImpl implements GetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an integration runtime enable interactivequery operation status along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeEnableinteractivequeryInner>>
@@ -531,9 +531,9 @@ public final class GetsClientImpl implements GetsClient {
 
     /**
      * Get integration runtime enable interactivequery operation status
-     *
-     * <p>Get an integration runtime enable interactivequery operation status.
-     *
+     * 
+     * Get an integration runtime enable interactivequery operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -553,9 +553,9 @@ public final class GetsClientImpl implements GetsClient {
 
     /**
      * Get integration runtime enable interactivequery operation status
-     *
-     * <p>Get an integration runtime enable interactivequery operation status.
-     *
+     * 
+     * Get an integration runtime enable interactivequery operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -576,9 +576,9 @@ public final class GetsClientImpl implements GetsClient {
 
     /**
      * Get integration runtime enable interactivequery operation status
-     *
-     * <p>Get an integration runtime enable interactivequery operation status.
-     *
+     * 
+     * Get an integration runtime enable interactivequery operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.

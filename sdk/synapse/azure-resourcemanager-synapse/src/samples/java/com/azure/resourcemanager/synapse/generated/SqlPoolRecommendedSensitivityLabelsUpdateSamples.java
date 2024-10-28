@@ -9,43 +9,36 @@ import com.azure.resourcemanager.synapse.models.RecommendedSensitivityLabelUpdat
 import com.azure.resourcemanager.synapse.models.RecommendedSensitivityLabelUpdateList;
 import java.util.Arrays;
 
-/** Samples for SqlPoolRecommendedSensitivityLabels Update. */
+/**
+ * Samples for SqlPoolRecommendedSensitivityLabels Update.
+ */
 public final class SqlPoolRecommendedSensitivityLabelsUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SensitivityLabelsRecommendedUpdate.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * SensitivityLabelsRecommendedUpdate.json
      */
     /**
      * Sample code: Update recommended sensitivity labels of a given SQL Pool using an operations batch.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void updateRecommendedSensitivityLabelsOfAGivenSQLPoolUsingAnOperationsBatch(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .sqlPoolRecommendedSensitivityLabels()
-            .updateWithResponse(
-                "myRG",
-                "myWorkspace",
-                "mySqlPool",
-                new RecommendedSensitivityLabelUpdateList()
-                    .withOperations(
-                        Arrays
-                            .asList(
-                                new RecommendedSensitivityLabelUpdate()
-                                    .withOp(RecommendedSensitivityLabelUpdateKind.ENABLE)
-                                    .withSchema("dbo")
-                                    .withTable("table1")
-                                    .withColumn("column1"),
-                                new RecommendedSensitivityLabelUpdate()
-                                    .withOp(RecommendedSensitivityLabelUpdateKind.ENABLE)
-                                    .withSchema("dbo")
-                                    .withTable("table2")
-                                    .withColumn("column2"),
-                                new RecommendedSensitivityLabelUpdate()
-                                    .withOp(RecommendedSensitivityLabelUpdateKind.DISABLE)
-                                    .withSchema("dbo")
-                                    .withTable("table1")
-                                    .withColumn("column3"))),
+        manager.sqlPoolRecommendedSensitivityLabels()
+            .updateWithResponse("myRG", "myWorkspace", "mySqlPool",
+                new RecommendedSensitivityLabelUpdateList().withOperations(Arrays.asList(
+                    new RecommendedSensitivityLabelUpdate().withOp(RecommendedSensitivityLabelUpdateKind.ENABLE)
+                        .withSchema("dbo")
+                        .withTable("table1")
+                        .withColumn("column1"),
+                    new RecommendedSensitivityLabelUpdate().withOp(RecommendedSensitivityLabelUpdateKind.ENABLE)
+                        .withSchema("dbo")
+                        .withTable("table2")
+                        .withColumn("column2"),
+                    new RecommendedSensitivityLabelUpdate().withOp(RecommendedSensitivityLabelUpdateKind.DISABLE)
+                        .withSchema("dbo")
+                        .withTable("table1")
+                        .withColumn("column3"))),
                 com.azure.core.util.Context.NONE);
     }
 }

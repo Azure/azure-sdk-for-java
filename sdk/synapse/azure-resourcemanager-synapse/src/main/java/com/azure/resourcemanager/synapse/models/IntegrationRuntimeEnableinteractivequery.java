@@ -6,32 +6,34 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeEnableinteractivequeryInner;
 
-/** An immutable client-side representation of IntegrationRuntimeEnableinteractivequery. */
+/**
+ * An immutable client-side representation of IntegrationRuntimeEnableinteractivequery.
+ */
 public interface IntegrationRuntimeEnableinteractivequery {
     /**
      * Gets the status property: EnableInteractivequery status of Integrationruntimes.
-     *
+     * 
      * @return the status value.
      */
     WorkspaceStatus status();
 
     /**
      * Gets the name property: The operation name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the properties property: The operation properties.
-     *
+     * 
      * @return the properties value.
      */
     Object properties();
 
     /**
      * Gets the error property: The operation error message.
-     *
+     * 
      * @return the error value.
      */
     String error();
@@ -39,7 +41,7 @@ public interface IntegrationRuntimeEnableinteractivequery {
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeEnableinteractivequeryInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     IntegrationRuntimeEnableinteractivequeryInner innerModel();

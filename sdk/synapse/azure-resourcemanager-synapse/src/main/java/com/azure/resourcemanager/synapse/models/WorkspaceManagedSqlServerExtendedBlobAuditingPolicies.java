@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of WorkspaceManagedSqlServerExtendedBlobAuditingPolicies. */
+/**
+ * Resource collection API of WorkspaceManagedSqlServerExtendedBlobAuditingPolicies.
+ */
 public interface WorkspaceManagedSqlServerExtendedBlobAuditingPolicies {
     /**
      * Get server's extended blob auditing policy.
-     *
-     * <p>Get a workspace SQL server's extended blob auditing policy.
-     *
+     * 
+     * Get a workspace SQL server's extended blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -29,9 +31,9 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPolicies {
 
     /**
      * Get server's extended blob auditing policy.
-     *
-     * <p>Get a workspace SQL server's extended blob auditing policy.
-     *
+     * 
+     * Get a workspace SQL server's extended blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param blobAuditingPolicyName The name of the blob auditing policy.
@@ -45,9 +47,9 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPolicies {
 
     /**
      * List server's extended blob auditing policies.
-     *
-     * <p>List workspace managed sql server's extended blob auditing policies.
-     *
+     * 
+     * List workspace managed sql server's extended blob auditing policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,9 +61,9 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPolicies {
 
     /**
      * List server's extended blob auditing policies.
-     *
-     * <p>List workspace managed sql server's extended blob auditing policies.
-     *
+     * 
+     * List workspace managed sql server's extended blob auditing policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -75,9 +77,9 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPolicies {
 
     /**
      * Get server's extended blob auditing policy.
-     *
-     * <p>Get a workspace SQL server's extended blob auditing policy.
-     *
+     * 
+     * Get a workspace SQL server's extended blob auditing policy.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -88,9 +90,9 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPolicies {
 
     /**
      * Get server's extended blob auditing policy.
-     *
-     * <p>Get a workspace SQL server's extended blob auditing policy.
-     *
+     * 
+     * Get a workspace SQL server's extended blob auditing policy.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,7 +104,7 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPolicies {
 
     /**
      * Begins definition for a new ExtendedServerBlobAuditingPolicy resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ExtendedServerBlobAuditingPolicy definition.
      */

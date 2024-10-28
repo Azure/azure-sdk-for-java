@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.fluent.models.KustoPoolPrivateLinkResourcesInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list Kusto Private Link Resources operation response. */
+/**
+ * The list Kusto Private Link Resources operation response.
+ */
 @Fluent
-public final class PrivateLinkResources {
+public final class PrivateLinkResources implements JsonSerializable<PrivateLinkResources> {
     /*
      * The list of Kusto Private Link Resources.
      */
-    @JsonProperty(value = "value")
     private List<KustoPoolPrivateLinkResourcesInner> value;
 
-    /** Creates an instance of PrivateLinkResources class. */
+    /**
+     * Creates an instance of PrivateLinkResources class.
+     */
     public PrivateLinkResources() {
     }
 
     /**
      * Get the value property: The list of Kusto Private Link Resources.
-     *
+     * 
      * @return the value value.
      */
     public List<KustoPoolPrivateLinkResourcesInner> value() {
@@ -33,7 +40,7 @@ public final class PrivateLinkResources {
 
     /**
      * Set the value property: The list of Kusto Private Link Resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateLinkResources object itself.
      */
@@ -44,12 +51,50 @@ public final class PrivateLinkResources {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkResources from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkResources if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateLinkResources.
+     */
+    public static PrivateLinkResources fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkResources deserializedPrivateLinkResources = new PrivateLinkResources();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<KustoPoolPrivateLinkResourcesInner> value
+                        = reader.readArray(reader1 -> KustoPoolPrivateLinkResourcesInner.fromJson(reader1));
+                    deserializedPrivateLinkResources.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkResources;
+        });
     }
 }

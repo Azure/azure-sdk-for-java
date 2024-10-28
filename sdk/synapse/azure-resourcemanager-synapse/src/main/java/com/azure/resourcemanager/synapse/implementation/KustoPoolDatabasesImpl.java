@@ -31,14 +31,14 @@ public final class KustoPoolDatabasesImpl implements KustoPoolDatabases {
         String kustoPoolName) {
         PagedIterable<DatabaseInner> inner
             = this.serviceClient().listByKustoPool(resourceGroupName, workspaceName, kustoPoolName);
-        return Utils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Database> listByKustoPool(String resourceGroupName, String workspaceName, String kustoPoolName,
         Context context) {
         PagedIterable<DatabaseInner> inner
             = this.serviceClient().listByKustoPool(resourceGroupName, workspaceName, kustoPoolName, context);
-        return Utils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatabaseImpl(inner1, this.manager()));
     }
 
     public Response<Database> getWithResponse(String resourceGroupName, String workspaceName, String kustoPoolName,

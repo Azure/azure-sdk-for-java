@@ -11,7 +11,7 @@ public final class TransparentDataEncryptionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TransparentDataEncryptionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"location\":\"lxprglyatddckcbc\",\"properties\":{\"status\":\"Disabled\"},\"id\":\"jxgciqibrh\",\"name\":\"sxsdqrhzoymibm\",\"type\":\"qyib\"},{\"location\":\"wfluszdt\",\"properties\":{\"status\":\"Disabled\"},\"id\":\"wofyyvoqacpiexp\",\"name\":\"tg\",\"type\":\"wbwo\"},{\"location\":\"washr\",\"properties\":{\"status\":\"Disabled\"},\"id\":\"cnqxwbpokulpi\",\"name\":\"jwaa\",\"type\":\"ipqiiobyuqerpq\"}],\"nextLink\":\"qwcciuqg\"}")
+            "{\"value\":[{\"location\":\"areqna\",\"properties\":{\"status\":\"Enabled\"},\"id\":\"gjhkycubeddg\",\"name\":\"sofwqmzqalkrmnji\",\"type\":\"pxacqqudfn\"},{\"location\":\"xbaaabjyv\",\"properties\":{\"status\":\"Disabled\"},\"id\":\"imrzrtuzqog\",\"name\":\"exn\",\"type\":\"vfdnwnwmewzsyyce\"},{\"location\":\"soibjudpfrx\",\"properties\":{\"status\":\"Enabled\"},\"id\":\"zvaytdwkqbr\",\"name\":\"ubpaxhe\",\"type\":\"iilivpdtiirqtd\"},{\"location\":\"axoruzfgsquy\",\"properties\":{\"status\":\"Enabled\"},\"id\":\"xleptramx\",\"name\":\"ezw\",\"type\":\"wnwxuqlcvyd\"}],\"nextLink\":\"atdooaojkniod\"}")
             .toObject(TransparentDataEncryptionListResult.class);
     }
 

@@ -36,15 +36,19 @@ import reactor.core.publisher.Mono;
  */
 public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
     implements PrivateEndpointConnectionsPrivateLinkHubsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateEndpointConnectionsPrivateLinkHubsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateEndpointConnectionsPrivateLinkHubsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateEndpointConnectionsPrivateLinkHubsClientImpl(SynapseManagementClientImpl client) {
@@ -61,8 +65,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
     @ServiceInterface(name = "SynapseManagementCli")
     public interface PrivateEndpointConnectionsPrivateLinkHubsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse"
-            + "/privateLinkHubs/{privateLinkHubName}/privateEndpointConnections")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}/privateEndpointConnections")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionForPrivateLinkHubResourceCollectionResponse>> list(
@@ -73,8 +76,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse"
-            + "/privateLinkHubs/{privateLinkHubName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionForPrivateLinkHubInner>> get(@HostParam("$host") String endpoint,
@@ -95,14 +97,14 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
 
     /**
      * Get all PrivateEndpointConnections in the PrivateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all PrivateEndpointConnections in the PrivateLinkHub along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionForPrivateLinkHubInner>>
@@ -136,7 +138,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
 
     /**
      * Get all PrivateEndpointConnections in the PrivateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -144,7 +146,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all PrivateEndpointConnections in the PrivateLinkHub along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionForPrivateLinkHubInner>>
@@ -177,7 +179,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
 
     /**
      * Get all PrivateEndpointConnections in the PrivateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -194,7 +196,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
 
     /**
      * Get all PrivateEndpointConnections in the PrivateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -212,7 +214,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
 
     /**
      * Get all PrivateEndpointConnections in the PrivateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -228,7 +230,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
 
     /**
      * Get all PrivateEndpointConnections in the PrivateLinkHub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param context The context to associate with this operation.
@@ -245,7 +247,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
 
     /**
      * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateEndpointConnectionName Name of the privateEndpointConnection.
@@ -253,7 +255,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all PrivateEndpointConnection in the PrivateLinkHub by name along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionForPrivateLinkHubInner>> getWithResponseAsync(
@@ -288,7 +290,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
 
     /**
      * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateEndpointConnectionName Name of the privateEndpointConnection.
@@ -297,7 +299,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all PrivateEndpointConnection in the PrivateLinkHub by name along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionForPrivateLinkHubInner>> getWithResponseAsync(
@@ -331,7 +333,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
 
     /**
      * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateEndpointConnectionName Name of the privateEndpointConnection.
@@ -349,7 +351,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
 
     /**
      * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateEndpointConnectionName Name of the privateEndpointConnection.
@@ -368,7 +370,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
 
     /**
      * Get all PrivateEndpointConnection in the PrivateLinkHub by name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName Name of the privateLinkHub.
      * @param privateEndpointConnectionName Name of the privateEndpointConnection.
@@ -386,9 +388,8 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -414,9 +415,8 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsClientImpl
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

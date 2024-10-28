@@ -32,6 +32,7 @@ public final class ReplaceAllIpFirewallRulesRequestTests {
         Assertions.assertEquals("git", model.ipFirewallRules().get("xqhabi").startIpAddress());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
