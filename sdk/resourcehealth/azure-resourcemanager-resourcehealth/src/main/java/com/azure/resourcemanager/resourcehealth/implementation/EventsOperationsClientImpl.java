@@ -30,17 +30,23 @@ import com.azure.resourcemanager.resourcehealth.fluent.models.EventInner;
 import com.azure.resourcemanager.resourcehealth.models.Events;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EventsOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EventsOperationsClient.
+ */
 public final class EventsOperationsClientImpl implements EventsOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EventsOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftResourceHealthImpl client;
 
     /**
      * Initializes an instance of EventsOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EventsOperationsClientImpl(MicrosoftResourceHealthImpl client) {
@@ -105,16 +111,16 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists service health events in the subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listSinglePageAsync(String filter, String queryStartTime) {
@@ -137,17 +143,17 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists service health events in the subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listSinglePageAsync(String filter, String queryStartTime, Context context) {
@@ -170,11 +176,11 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists service health events in the subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -188,7 +194,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists service health events in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List events operation response as paginated response with {@link PagedFlux}.
@@ -203,11 +209,11 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists service health events in the subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -222,7 +228,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists service health events in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List events operation response as paginated response with {@link PagedIterable}.
@@ -236,11 +242,11 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists service health events in the subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -254,16 +260,16 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events in the tenant.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listByTenantIdSinglePageAsync(String filter, String queryStartTime) {
@@ -282,17 +288,17 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events in the tenant.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listByTenantIdSinglePageAsync(String filter, String queryStartTime,
@@ -312,11 +318,11 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events in the tenant.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -330,7 +336,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events in the tenant.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List events operation response as paginated response with {@link PagedFlux}.
@@ -345,11 +351,11 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events in the tenant.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -364,7 +370,7 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events in the tenant.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List events operation response as paginated response with {@link PagedIterable}.
@@ -378,11 +384,11 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events in the tenant.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -396,19 +402,19 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events for given resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listBySingleResourceSinglePageAsync(String resourceUri, String filter) {
@@ -430,20 +436,20 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events for given resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listBySingleResourceSinglePageAsync(String resourceUri, String filter,
@@ -466,14 +472,14 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events for given resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -487,12 +493,12 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events for given resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -507,14 +513,14 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events for given resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -529,12 +535,12 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events for given resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -548,14 +554,14 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events for given resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -569,14 +575,13 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listBySubscriptionIdNextSinglePageAsync(String nextLink) {
@@ -598,15 +603,14 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listBySubscriptionIdNextSinglePageAsync(String nextLink, Context context) {
@@ -626,14 +630,13 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listByTenantIdNextSinglePageAsync(String nextLink) {
@@ -654,15 +657,14 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listByTenantIdNextSinglePageAsync(String nextLink, Context context) {
@@ -682,14 +684,13 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listBySingleResourceNextSinglePageAsync(String nextLink) {
@@ -711,15 +712,14 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listBySingleResourceNextSinglePageAsync(String nextLink, Context context) {

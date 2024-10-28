@@ -5,31 +5,39 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Update for service health event. */
+/**
+ * Update for service health event.
+ */
 @Fluent
-public final class Update {
+public final class Update implements JsonSerializable<Update> {
     /*
      * Summary text for the given update for the service health event.
      */
-    @JsonProperty(value = "summary")
     private String summary;
 
     /*
      * It provides the Timestamp for the given update for the service health event.
      */
-    @JsonProperty(value = "updateDateTime")
     private OffsetDateTime updateDateTime;
 
-    /** Creates an instance of Update class. */
+    /**
+     * Creates an instance of Update class.
+     */
     public Update() {
     }
 
     /**
      * Get the summary property: Summary text for the given update for the service health event.
-     *
+     * 
      * @return the summary value.
      */
     public String summary() {
@@ -38,7 +46,7 @@ public final class Update {
 
     /**
      * Set the summary property: Summary text for the given update for the service health event.
-     *
+     * 
      * @param summary the summary value to set.
      * @return the Update object itself.
      */
@@ -49,7 +57,7 @@ public final class Update {
 
     /**
      * Get the updateDateTime property: It provides the Timestamp for the given update for the service health event.
-     *
+     * 
      * @return the updateDateTime value.
      */
     public OffsetDateTime updateDateTime() {
@@ -58,7 +66,7 @@ public final class Update {
 
     /**
      * Set the updateDateTime property: It provides the Timestamp for the given update for the service health event.
-     *
+     * 
      * @param updateDateTime the updateDateTime value to set.
      * @return the Update object itself.
      */
@@ -69,9 +77,50 @@ public final class Update {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("summary", this.summary);
+        jsonWriter.writeStringField("updateDateTime",
+            this.updateDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.updateDateTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Update from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Update if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Update.
+     */
+    public static Update fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Update deserializedUpdate = new Update();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("summary".equals(fieldName)) {
+                    deserializedUpdate.summary = reader.getString();
+                } else if ("updateDateTime".equals(fieldName)) {
+                    deserializedUpdate.updateDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdate;
+        });
     }
 }
