@@ -30,14 +30,14 @@ public final class LabelsImpl implements Labels {
     public PagedIterable<LabelResource> listByWorkspace(String resourceGroupName, String workspaceName) {
         PagedIterable<LabelResourceInner> inner
             = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new LabelResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabelResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LabelResource> listByWorkspace(String resourceGroupName, String workspaceName,
         Context context) {
         PagedIterable<LabelResourceInner> inner
             = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new LabelResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabelResourceImpl(inner1, this.manager()));
     }
 
     public Response<LabelResource> getByWorkspaceWithResponse(String resourceGroupName, String workspaceName,
