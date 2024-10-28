@@ -55,8 +55,8 @@ public interface PrivateLinkResourcesOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link resource for the given IotHub along with {@link Response}.
      */
-    Response<GroupIdInformation> getWithResponse(
-        String resourceGroupName, String resourceName, String groupId, Context context);
+    Response<GroupIdInformation> getWithResponse(String resourceGroupName, String resourceName, String groupId,
+        Context context);
 
     /**
      * Get the specified private link resource

@@ -123,11 +123,13 @@ public final class AzureSphereMgmtClientBuilder {
     public AzureSphereMgmtClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
             : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
         Duration localDefaultPollInterval
             = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter = (serializerAdapter != null) ? serializerAdapter
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
         AzureSphereMgmtClientImpl client = new AzureSphereMgmtClientImpl(localPipeline, localSerializerAdapter,
             localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);

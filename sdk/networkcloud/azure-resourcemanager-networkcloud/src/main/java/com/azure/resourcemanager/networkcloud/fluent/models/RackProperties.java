@@ -198,24 +198,20 @@ public final class RackProperties {
      */
     public void validate() {
         if (availabilityZone() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property availabilityZone in model RackProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property availabilityZone in model RackProperties"));
         }
         if (rackLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property rackLocation in model RackProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property rackLocation in model RackProperties"));
         }
         if (rackSerialNumber() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property rackSerialNumber in model RackProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property rackSerialNumber in model RackProperties"));
         }
         if (rackSkuId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property rackSkuId in model RackProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property rackSkuId in model RackProperties"));
         }
     }
 

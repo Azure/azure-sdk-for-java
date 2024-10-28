@@ -243,8 +243,8 @@ public final class PercentEscaper {
         } else if (Character.isHighSurrogate(char1)) {
             // High surrogates will occur first in the string.
             if (index == end) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "String contains trailing high surrogate without paired low surrogate."));
+                throw LOGGER.logExceptionAsError(
+                    new IllegalStateException("String contains trailing high surrogate without paired low surrogate."));
             }
 
             char char2 = original.charAt(index);
@@ -252,11 +252,11 @@ public final class PercentEscaper {
                 return Character.toCodePoint(char1, char2);
             }
 
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "String contains high surrogate without trailing low surrogate."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("String contains high surrogate without trailing low surrogate."));
         } else {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "String contains low surrogate without leading high surrogate."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("String contains low surrogate without leading high surrogate."));
         }
     }
 }

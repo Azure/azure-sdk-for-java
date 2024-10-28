@@ -29,7 +29,8 @@ public final class SpringbootsitesPatchTests {
     public void testSerialize() throws Exception {
         SpringbootsitesPatch model = new SpringbootsitesPatch().withLocation("knygjofjddeq")
             .withTags(mapOf("flusarhmof", "eupewnwreitjz", "he", "qhsmyurkdtml", "rcryuanzwuxzdxta", "uksjtxukcdmp"))
-            .withProperties(new SpringbootsitesProperties().withMasterSiteId("jpsq").withMigrateProjectId("mpoyfd")
+            .withProperties(new SpringbootsitesProperties().withMasterSiteId("jpsq")
+                .withMigrateProjectId("mpoyfd")
                 .withProvisioningState(ProvisioningState.SUCCEEDED));
         model = BinaryData.fromObject(model).toObject(SpringbootsitesPatch.class);
         Assertions.assertEquals("knygjofjddeq", model.location());

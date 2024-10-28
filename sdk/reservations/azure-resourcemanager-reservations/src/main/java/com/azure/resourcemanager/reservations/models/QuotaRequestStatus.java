@@ -25,8 +25,8 @@ public interface QuotaRequestStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota request details along with {@link Response}.
      */
-    Response<QuotaRequestDetails> getWithResponse(
-        String subscriptionId, String providerId, String location, String id, Context context);
+    Response<QuotaRequestDetails> getWithResponse(String subscriptionId, String providerId, String location, String id,
+        Context context);
 
     /**
      * For the specified Azure region (location), get the details and status of the quota request by the quota request
@@ -77,12 +77,6 @@ public interface QuotaRequestStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota request details as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<QuotaRequestDetails> list(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String filter,
-        Integer top,
-        String skiptoken,
-        Context context);
+    PagedIterable<QuotaRequestDetails> list(String subscriptionId, String providerId, String location, String filter,
+        Integer top, String skiptoken, Context context);
 }

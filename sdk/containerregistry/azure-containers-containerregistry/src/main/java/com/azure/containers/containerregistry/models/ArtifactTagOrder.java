@@ -24,7 +24,8 @@ public final class ArtifactTagOrder extends ExpandableStringEnum<ArtifactTagOrde
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ArtifactTagOrder() {}
+    public ArtifactTagOrder() {
+    }
 
     /**
      * Creates or finds a ArtifactTagOrder from its string representation.

@@ -30,8 +30,8 @@ public interface ResourceProvidersClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GitHubOAuthInfoResponseInner> gitHubOAuthWithResponse(
-        String location, GitHubOAuthCallRequest parameters, Context context);
+    Response<GitHubOAuthInfoResponseInner> gitHubOAuthWithResponse(String location, GitHubOAuthCallRequest parameters,
+        Context context);
 
     /**
      * Gets GitHubOAuth info used to authenticate users with the Developer Hub GitHub App.
@@ -58,8 +58,8 @@ public interface ResourceProvidersClient {
      * @return singleton response of GitHubOAuth containing along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GitHubOAuthResponseInner> gitHubOAuthCallbackWithResponse(
-        String location, String code, String state, Context context);
+    Response<GitHubOAuthResponseInner> gitHubOAuthCallbackWithResponse(String location, String code, String state,
+        Context context);
 
     /**
      * Callback URL to hit once authenticated with GitHub App to have the service store the OAuth token.
@@ -113,8 +113,8 @@ public interface ResourceProvidersClient {
      *     string&gt; along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Map<String, String>> generatePreviewArtifactsWithResponse(
-        String location, ArtifactGenerationProperties parameters, Context context);
+    Response<Map<String, String>> generatePreviewArtifactsWithResponse(String location,
+        ArtifactGenerationProperties parameters, Context context);
 
     /**
      * Generate preview dockerfile and manifests.

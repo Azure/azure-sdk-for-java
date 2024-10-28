@@ -74,16 +74,12 @@ public final class JitAuthorizationPolicies {
      */
     public void validate() {
         if (principalId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalId in model JitAuthorizationPolicies"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property principalId in model JitAuthorizationPolicies"));
         }
         if (roleDefinitionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property roleDefinitionId in model JitAuthorizationPolicies"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property roleDefinitionId in model JitAuthorizationPolicies"));
         }
     }
 

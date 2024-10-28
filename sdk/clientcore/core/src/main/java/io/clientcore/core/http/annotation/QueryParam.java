@@ -79,12 +79,14 @@ public @interface QueryParam {
      *     value of the parameter annotated with this annotation.
      */
     String value();
+
     /**
      * A value true for this argument indicates that value of {@link QueryParam#value()} is already encoded
      * hence engine should not encode it, by default value will be encoded.
      * @return Whether this query parameter is already encoded.
      */
     boolean encoded() default false;
+
     /**
      * A value true for this argument indicates that value of {@link QueryParam#value()} should not be
      * converted to Json in case it is an array but instead sent as multiple values with same parameter

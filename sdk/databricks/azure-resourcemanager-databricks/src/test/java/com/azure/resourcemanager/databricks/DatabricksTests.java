@@ -38,13 +38,13 @@ public class DatabricksTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        resourceManager = ResourceManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        resourceManager = ResourceManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
 
-        databricksManager = AzureDatabricksManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        databricksManager = AzureDatabricksManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
 
@@ -54,9 +54,7 @@ public class DatabricksTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups().define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -73,10 +71,13 @@ public class DatabricksTests extends TestProxyTestBase {
         Workspace workspace = null;
         try {
             String workspaceName = "workspace" + randomPadding();
-            String managedResourceGroupId = resourceManager.resourceGroups().getByName(resourceGroupName).id()
+            String managedResourceGroupId = resourceManager.resourceGroups()
+                .getByName(resourceGroupName)
+                .id()
                 .replace(resourceGroupName, "databricks-" + resourceGroupName);
             // @embedmeStart
-            workspace = databricksManager.workspaces().define(workspaceName)
+            workspace = databricksManager.workspaces()
+                .define(workspaceName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .withManagedResourceGroupId(managedResourceGroupId)
@@ -90,7 +91,8 @@ public class DatabricksTests extends TestProxyTestBase {
 
             Assertions.assertEquals(workspace.name(), databricksManager.workspaces().getById(workspace.id()).name());
 
-            Assertions.assertTrue(databricksManager.workspaces().listByResourceGroup(resourceGroupName).stream().count() > 0);
+            Assertions
+                .assertTrue(databricksManager.workspaces().listByResourceGroup(resourceGroupName).stream().count() > 0);
         } finally {
             if (workspace != null) {
                 databricksManager.workspaces().deleteById(workspace.id());

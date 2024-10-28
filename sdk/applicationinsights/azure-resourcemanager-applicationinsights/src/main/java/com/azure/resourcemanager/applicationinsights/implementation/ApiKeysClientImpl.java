@@ -59,64 +59,42 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationInsightsM")
     public interface ApiKeysService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/ApiKeys")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/ApiKeys")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInsightsComponentApiKeyListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<ApplicationInsightsComponentApiKeyListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/ApiKeys")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ApplicationInsightsComponentApiKeyInner>> create(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") ApiKeyRequest apiKeyProperties, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/ApiKeys")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/APIKeys/{keyId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInsightsComponentApiKeyInner>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
-            @BodyParam("application/json") ApiKeyRequest apiKeyProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApplicationInsightsComponentApiKeyInner>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceName") String resourceName,
+            @PathParam("keyId") String keyId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/APIKeys/{keyId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/APIKeys/{keyId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInsightsComponentApiKeyInner>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("keyId") String keyId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/APIKeys/{keyId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInsightsComponentApiKeyInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("keyId") String keyId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApplicationInsightsComponentApiKeyInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceName") String resourceName,
+            @PathParam("keyId") String keyId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -131,23 +109,19 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApplicationInsightsComponentApiKeyInner>> listSinglePageAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<PagedResponse<ApplicationInsightsComponentApiKeyInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -155,21 +129,10 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            accept,
-                            context))
-            .<PagedResponse<ApplicationInsightsComponentApiKeyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, accept, context))
+            .<PagedResponse<ApplicationInsightsComponentApiKeyInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -186,23 +149,19 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApplicationInsightsComponentApiKeyInner>> listSinglePageAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<PagedResponse<ApplicationInsightsComponentApiKeyInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -211,18 +170,10 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+                resourceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -236,8 +187,8 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      * @return a list of API keys of an Application Insights component as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ApplicationInsightsComponentApiKeyInner> listAsync(
-        String resourceGroupName, String resourceName) {
+    private PagedFlux<ApplicationInsightsComponentApiKeyInner> listAsync(String resourceGroupName,
+        String resourceName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName));
     }
 
@@ -253,8 +204,8 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      * @return a list of API keys of an Application Insights component as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ApplicationInsightsComponentApiKeyInner> listAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private PagedFlux<ApplicationInsightsComponentApiKeyInner> listAsync(String resourceGroupName, String resourceName,
+        Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, context));
     }
 
@@ -285,8 +236,8 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      * @return a list of API keys of an Application Insights component as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ApplicationInsightsComponentApiKeyInner> list(
-        String resourceGroupName, String resourceName, Context context) {
+    public PagedIterable<ApplicationInsightsComponentApiKeyInner> list(String resourceGroupName, String resourceName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, resourceName, context));
     }
 
@@ -304,23 +255,19 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentApiKeyInner>> createWithResponseAsync(
-        String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties) {
+    private Mono<Response<ApplicationInsightsComponentApiKeyInner>> createWithResponseAsync(String resourceGroupName,
+        String resourceName, ApiKeyRequest apiKeyProperties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -334,18 +281,8 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            apiKeyProperties,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, apiKeyProperties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -364,23 +301,19 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentApiKeyInner>> createWithResponseAsync(
-        String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties, Context context) {
+    private Mono<Response<ApplicationInsightsComponentApiKeyInner>> createWithResponseAsync(String resourceGroupName,
+        String resourceName, ApiKeyRequest apiKeyProperties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -394,16 +327,8 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                apiKeyProperties,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, apiKeyProperties, accept, context);
     }
 
     /**
@@ -420,8 +345,8 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInsightsComponentApiKeyInner> createAsync(
-        String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties) {
+    private Mono<ApplicationInsightsComponentApiKeyInner> createAsync(String resourceGroupName, String resourceName,
+        ApiKeyRequest apiKeyProperties) {
         return createWithResponseAsync(resourceGroupName, resourceName, apiKeyProperties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -440,8 +365,8 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      * @return properties that define an API key of an Application Insights Component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInsightsComponentApiKeyInner> createWithResponse(
-        String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties, Context context) {
+    public Response<ApplicationInsightsComponentApiKeyInner> createWithResponse(String resourceGroupName,
+        String resourceName, ApiKeyRequest apiKeyProperties, Context context) {
         return createWithResponseAsync(resourceGroupName, resourceName, apiKeyProperties, context).block();
     }
 
@@ -458,8 +383,8 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      * @return properties that define an API key of an Application Insights Component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInsightsComponentApiKeyInner create(
-        String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties) {
+    public ApplicationInsightsComponentApiKeyInner create(String resourceGroupName, String resourceName,
+        ApiKeyRequest apiKeyProperties) {
         return createWithResponse(resourceGroupName, resourceName, apiKeyProperties, Context.NONE).getValue();
     }
 
@@ -476,23 +401,19 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentApiKeyInner>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String keyId) {
+    private Mono<Response<ApplicationInsightsComponentApiKeyInner>> deleteWithResponseAsync(String resourceGroupName,
+        String resourceName, String keyId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -503,18 +424,8 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            keyId,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, keyId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -532,23 +443,19 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentApiKeyInner>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, String keyId, Context context) {
+    private Mono<Response<ApplicationInsightsComponentApiKeyInner>> deleteWithResponseAsync(String resourceGroupName,
+        String resourceName, String keyId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -559,16 +466,8 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                keyId,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, keyId, accept, context);
     }
 
     /**
@@ -584,8 +483,8 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInsightsComponentApiKeyInner> deleteAsync(
-        String resourceGroupName, String resourceName, String keyId) {
+    private Mono<ApplicationInsightsComponentApiKeyInner> deleteAsync(String resourceGroupName, String resourceName,
+        String keyId) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, keyId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -603,8 +502,8 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      * @return properties that define an API key of an Application Insights Component along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInsightsComponentApiKeyInner> deleteWithResponse(
-        String resourceGroupName, String resourceName, String keyId, Context context) {
+    public Response<ApplicationInsightsComponentApiKeyInner> deleteWithResponse(String resourceGroupName,
+        String resourceName, String keyId, Context context) {
         return deleteWithResponseAsync(resourceGroupName, resourceName, keyId, context).block();
     }
 
@@ -636,23 +535,19 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      * @return the API Key for this key id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentApiKeyInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String keyId) {
+    private Mono<Response<ApplicationInsightsComponentApiKeyInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName, String keyId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -663,18 +558,8 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            keyId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, keyId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -691,23 +576,19 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      * @return the API Key for this key id along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentApiKeyInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, String keyId, Context context) {
+    private Mono<Response<ApplicationInsightsComponentApiKeyInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName, String keyId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -718,16 +599,8 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                keyId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, keyId, accept, context);
     }
 
     /**
@@ -742,8 +615,8 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      * @return the API Key for this key id on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInsightsComponentApiKeyInner> getAsync(
-        String resourceGroupName, String resourceName, String keyId) {
+    private Mono<ApplicationInsightsComponentApiKeyInner> getAsync(String resourceGroupName, String resourceName,
+        String keyId) {
         return getWithResponseAsync(resourceGroupName, resourceName, keyId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -761,8 +634,8 @@ public final class ApiKeysClientImpl implements ApiKeysClient {
      * @return the API Key for this key id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInsightsComponentApiKeyInner> getWithResponse(
-        String resourceGroupName, String resourceName, String keyId, Context context) {
+    public Response<ApplicationInsightsComponentApiKeyInner> getWithResponse(String resourceGroupName,
+        String resourceName, String keyId, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, keyId, context).block();
     }
 

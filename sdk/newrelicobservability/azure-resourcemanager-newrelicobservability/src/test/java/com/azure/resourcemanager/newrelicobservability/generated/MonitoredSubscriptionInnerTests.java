@@ -45,7 +45,8 @@ public final class MonitoredSubscriptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MonitoredSubscriptionInner model = new MonitoredSubscriptionInner().withSubscriptionId("jawgqwg")
-            .withStatus(Status.IN_PROGRESS).withError("skxfbk")
+            .withStatus(Status.IN_PROGRESS)
+            .withError("skxfbk")
             .withTagRules(new MonitoringTagRulesPropertiesInner().withLogRules(new LogRules()
                 .withSendAadLogs(SendAadLogsStatus.ENABLED)
                 .withSendSubscriptionLogs(SendSubscriptionLogsStatus.DISABLED)
@@ -53,16 +54,19 @@ public final class MonitoredSubscriptionInnerTests {
                 .withFilteringTags(Arrays.asList(
                     new FilteringTag().withName("uwhvylwzbtdhxujz").withValue("mpowuwpr").withAction(TagAction.INCLUDE),
                     new FilteringTag().withName("eualupjmkhf").withValue("bbcswsrtjri").withAction(TagAction.EXCLUDE),
-                    new FilteringTag().withName("pbewtghfgblcgwx").withValue("lvqhjkbegibtnmx")
+                    new FilteringTag().withName("pbewtghfgblcgwx")
+                        .withValue("lvqhjkbegibtnmx")
                         .withAction(TagAction.INCLUDE),
                     new FilteringTag().withName("waloayqcgwr").withValue("j").withAction(TagAction.INCLUDE))))
                 .withMetricRules(new MetricRulesInner().withSendMetrics(SendMetricsStatus.ENABLED)
                     .withFilteringTags(Arrays.asList(
-                        new FilteringTag().withName("xongmtsavjcbpwxq").withValue("rknftguvriuhprwm")
+                        new FilteringTag().withName("xongmtsavjcbpwxq")
+                            .withValue("rknftguvriuhprwm")
                             .withAction(TagAction.EXCLUDE),
                         new FilteringTag().withName("qtayri").withValue("ro").withAction(TagAction.INCLUDE),
                         new FilteringTag().withName("xrmcqibycnojvk").withValue("e").withAction(TagAction.EXCLUDE),
-                        new FilteringTag().withName("zvahapjy").withValue("pvgqzcjrvxdjzlm")
+                        new FilteringTag().withName("zvahapjy")
+                            .withValue("pvgqzcjrvxdjzlm")
                             .withAction(TagAction.EXCLUDE)))
                     .withUserEmail("vu")));
         model = BinaryData.fromObject(model).toObject(MonitoredSubscriptionInner.class);

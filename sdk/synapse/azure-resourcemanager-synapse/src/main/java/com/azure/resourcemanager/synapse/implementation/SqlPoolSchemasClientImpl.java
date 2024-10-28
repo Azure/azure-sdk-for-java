@@ -44,8 +44,8 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolSchemasClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy.create(SqlPoolSchemasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SqlPoolSchemasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,49 +56,34 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolSchemasService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlPoolSchemaListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SqlPoolSchemaListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlPoolSchemaInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("sqlPoolName") String sqlPoolName,
-            @PathParam("schemaName") String schemaName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SqlPoolSchemaInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("sqlPoolName") String sqlPoolName, @PathParam("schemaName") String schemaName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlPoolSchemaListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SqlPoolSchemaListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -116,19 +101,15 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @return schemas of a given SQL pool along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlPoolSchemaInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter) {
+    private Mono<PagedResponse<SqlPoolSchemaInner>> listSinglePageAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -143,28 +124,10 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<SqlPoolSchemaInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, filter, accept, context))
+            .<PagedResponse<SqlPoolSchemaInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -184,19 +147,15 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @return schemas of a given SQL pool along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SqlPoolSchemaInner>> listSinglePageAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter, Context context) {
+    private Mono<PagedResponse<SqlPoolSchemaInner>> listSinglePageAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -212,25 +171,10 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+                workspaceName, sqlPoolName, filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -248,10 +192,9 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @return schemas of a given SQL pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SqlPoolSchemaInner> listAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, filter),
+    private PagedFlux<SqlPoolSchemaInner> listAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String filter) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -269,11 +212,10 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @return schemas of a given SQL pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SqlPoolSchemaInner> listAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName) {
+    private PagedFlux<SqlPoolSchemaInner> listAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, filter),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, filter),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -293,8 +235,8 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @return schemas of a given SQL pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SqlPoolSchemaInner> listAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter, Context context) {
+    private PagedFlux<SqlPoolSchemaInner> listAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String filter, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName, filter, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -335,8 +277,8 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @return schemas of a given SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SqlPoolSchemaInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter, Context context) {
+    public PagedIterable<SqlPoolSchemaInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String filter, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, workspaceName, sqlPoolName, filter, context));
     }
 
@@ -353,19 +295,15 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @return sql Pool schema along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlPoolSchemaInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName) {
+    private Mono<Response<SqlPoolSchemaInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -383,19 +321,8 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            schemaName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, schemaName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -413,19 +340,15 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @return sql Pool schema along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlPoolSchemaInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, Context context) {
+    private Mono<Response<SqlPoolSchemaInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -443,17 +366,8 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                schemaName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, schemaName, accept, context);
     }
 
     /**
@@ -469,8 +383,8 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @return sql Pool schema on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlPoolSchemaInner> getAsync(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName) {
+    private Mono<SqlPoolSchemaInner> getAsync(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -489,8 +403,8 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @return sql Pool schema along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlPoolSchemaInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, Context context) {
+    public Response<SqlPoolSchemaInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName, context).block();
     }
 
@@ -507,8 +421,8 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      * @return sql Pool schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlPoolSchemaInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName) {
+    public SqlPoolSchemaInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName) {
         return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, Context.NONE).getValue();
     }
 
@@ -528,23 +442,13 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SqlPoolSchemaInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SqlPoolSchemaInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -565,23 +469,13 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

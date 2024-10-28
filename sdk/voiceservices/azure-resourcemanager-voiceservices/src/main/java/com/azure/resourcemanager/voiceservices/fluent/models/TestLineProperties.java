@@ -91,14 +91,12 @@ public final class TestLineProperties {
      */
     public void validate() {
         if (phoneNumber() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property phoneNumber in model TestLineProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property phoneNumber in model TestLineProperties"));
         }
         if (purpose() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property purpose in model TestLineProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property purpose in model TestLineProperties"));
         }
     }
 

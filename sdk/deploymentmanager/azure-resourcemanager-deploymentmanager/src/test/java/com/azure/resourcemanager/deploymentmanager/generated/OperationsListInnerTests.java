@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationsListInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationsListInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":{\"name\":\"idyjrrfbyaosvexc\",\"display\":{\"provider\":\"pclhocohslk\",\"resource\":\"leggzfbu\",\"operation\":\"mvfaxkffeiith\",\"description\":\"m\"},\"origin\":\"yvshxmz\",\"properties\":\"databzoggigrx\"}}")
-                .toObject(OperationsListInner.class);
+        OperationsListInner model = BinaryData.fromString(
+            "{\"value\":{\"name\":\"idyjrrfbyaosvexc\",\"display\":{\"provider\":\"pclhocohslk\",\"resource\":\"leggzfbu\",\"operation\":\"mvfaxkffeiith\",\"description\":\"m\"},\"origin\":\"yvshxmz\",\"properties\":\"databzoggigrx\"}}")
+            .toObject(OperationsListInner.class);
         Assertions.assertEquals("idyjrrfbyaosvexc", model.value().name());
         Assertions.assertEquals("pclhocohslk", model.value().display().provider());
         Assertions.assertEquals("leggzfbu", model.value().display().resource());
@@ -28,19 +26,13 @@ public final class OperationsListInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationsListInner model =
-            new OperationsListInner()
-                .withValue(
-                    new Operation()
-                        .withName("idyjrrfbyaosvexc")
-                        .withDisplay(
-                            new OperationDetail()
-                                .withProvider("pclhocohslk")
-                                .withResource("leggzfbu")
-                                .withOperation("mvfaxkffeiith")
-                                .withDescription("m"))
-                        .withOrigin("yvshxmz")
-                        .withProperties("databzoggigrx"));
+        OperationsListInner model = new OperationsListInner().withValue(new Operation().withName("idyjrrfbyaosvexc")
+            .withDisplay(new OperationDetail().withProvider("pclhocohslk")
+                .withResource("leggzfbu")
+                .withOperation("mvfaxkffeiith")
+                .withDescription("m"))
+            .withOrigin("yvshxmz")
+            .withProperties("databzoggigrx"));
         model = BinaryData.fromObject(model).toObject(OperationsListInner.class);
         Assertions.assertEquals("idyjrrfbyaosvexc", model.value().name());
         Assertions.assertEquals("pclhocohslk", model.value().display().provider());

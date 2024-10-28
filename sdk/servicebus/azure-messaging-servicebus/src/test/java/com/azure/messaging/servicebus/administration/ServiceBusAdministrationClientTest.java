@@ -126,14 +126,13 @@ class ServiceBusAdministrationClientTest {
         final String updatedName = "some-new-name";
         final CreateQueueOptions description = new CreateQueueOptions();
         final QueueDescriptionImpl expectedDescription = EntityHelper.getQueueDescription(description);
-        final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(new TitleImpl().setContent(updatedName))
-            .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
+        final QueueDescriptionEntryImpl expected
+            = new QueueDescriptionEntryImpl().setTitle(new TitleImpl().setContent(updatedName))
+                .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         Response<Object> objectResponse = createObjectResponse(serializeResponse(expected));
-        when(entitys.putWithResponse(eq(queueName),
-            argThat(arg -> createBodyContentEquals(arg, description)), isNull(), any(Context.class)))
-            .thenReturn(objectResponse);
+        when(entitys.putWithResponse(eq(queueName), argThat(arg -> createBodyContentEquals(arg, description)), isNull(),
+            any(Context.class))).thenReturn(objectResponse);
 
         // Act & Assert
         assertEquals(updatedName, client.createQueue(queueName, description).getName());
@@ -145,14 +144,13 @@ class ServiceBusAdministrationClientTest {
         final String updatedName = "some-new-name";
         final CreateQueueOptions description = new CreateQueueOptions();
         final QueueDescriptionImpl expectedDescription = EntityHelper.getQueueDescription(description);
-        final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(new TitleImpl().setContent(updatedName))
-            .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
+        final QueueDescriptionEntryImpl expected
+            = new QueueDescriptionEntryImpl().setTitle(new TitleImpl().setContent(updatedName))
+                .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         Response<Object> objectResponse = createObjectResponse(serializeResponse(expected));
-        when(entitys.putWithResponse(eq(queueName), argThat(arg -> createBodyContentEquals(arg, description)),
-            isNull(), any(Context.class)))
-            .thenReturn(objectResponse);
+        when(entitys.putWithResponse(eq(queueName), argThat(arg -> createBodyContentEquals(arg, description)), isNull(),
+            any(Context.class))).thenReturn(objectResponse);
 
         // Act & Assert
         Response<QueueProperties> response = client.createQueueWithResponse(queueName, description, context);
@@ -168,18 +166,16 @@ class ServiceBusAdministrationClientTest {
         description.setForwardTo(forwardToEntity);
         description.setForwardDeadLetteredMessagesTo(forwardToEntity);
         final QueueDescriptionImpl expectedDescription = EntityHelper.getQueueDescription(description);
-        final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(new TitleImpl().setContent(updatedName))
-            .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
+        final QueueDescriptionEntryImpl expected
+            = new QueueDescriptionEntryImpl().setTitle(new TitleImpl().setContent(updatedName))
+                .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         Response<Object> objectResponse = createObjectResponse(serializeResponse(expected));
-        when(entitys.putWithResponse(eq(queueName),
-            argThat(arg -> createBodyContentEquals(arg, description)), isNull(),
-            argThat(ctx -> (verifyAdditionalAuthHeaderPresent(ctx,
-                SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, forwardToEntity)
-                && verifyAdditionalAuthHeaderPresent(ctx,
-                SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, forwardToEntity)))))
-            .thenReturn(objectResponse);
+        when(entitys.putWithResponse(eq(queueName), argThat(arg -> createBodyContentEquals(arg, description)), isNull(),
+            argThat(ctx -> (verifyAdditionalAuthHeaderPresent(ctx, SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity)
+                && verifyAdditionalAuthHeaderPresent(ctx, SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                    forwardToEntity))))).thenReturn(objectResponse);
 
         // Act & Assert
         Response<QueueProperties> response = client.createQueueWithResponse(queueName, description, context);
@@ -191,8 +187,7 @@ class ServiceBusAdministrationClientTest {
     void deleteQueue() {
         // Arrange
         Response<Object> objectResponse = createObjectResponse(null);
-        when(entitys.deleteWithResponse(eq(queueName), any(Context.class)))
-            .thenReturn(objectResponse);
+        when(entitys.deleteWithResponse(eq(queueName), any(Context.class))).thenReturn(objectResponse);
 
         // Act & Assert
         assertDoesNotThrow(() -> client.deleteQueue(queueName));
@@ -202,8 +197,7 @@ class ServiceBusAdministrationClientTest {
     void deleteQueueWithResponse() {
         // Arrange
         Response<Object> objectResponse = createObjectResponse(null);
-        when(entitys.deleteWithResponse(eq(queueName), any(Context.class)))
-            .thenReturn(objectResponse);
+        when(entitys.deleteWithResponse(eq(queueName), any(Context.class))).thenReturn(objectResponse);
 
         // Act & Assert
         assertResponse(objectResponse, client.deleteQueueWithResponse(queueName, context));
@@ -213,13 +207,12 @@ class ServiceBusAdministrationClientTest {
     void getQueue() {
         // Arrange
         final QueueDescriptionImpl expected = new QueueDescriptionImpl();
-        final QueueDescriptionEntryImpl entry = new QueueDescriptionEntryImpl()
-            .setTitle(new TitleImpl().setContent(queueName))
-            .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expected));
+        final QueueDescriptionEntryImpl entry
+            = new QueueDescriptionEntryImpl().setTitle(new TitleImpl().setContent(queueName))
+                .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expected));
 
         Response<Object> objectResponse = createObjectResponse(serializeResponse(entry));
-        when(entitys.getWithResponse(eq(queueName), eq(true), any(Context.class)))
-            .thenReturn(objectResponse);
+        when(entitys.getWithResponse(eq(queueName), eq(true), any(Context.class))).thenReturn(objectResponse);
 
         // Act & Assert
         assertEquals(queueName, client.getQueue(queueName).getName());
@@ -230,13 +223,12 @@ class ServiceBusAdministrationClientTest {
         // Arrange
         final String updatedName = "some-new-name";
         final QueueDescriptionImpl expectedDescription = new QueueDescriptionImpl();
-        final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(new TitleImpl().setContent(updatedName))
-            .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
+        final QueueDescriptionEntryImpl expected
+            = new QueueDescriptionEntryImpl().setTitle(new TitleImpl().setContent(updatedName))
+                .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         Response<Object> objectResponse = createObjectResponse(serializeResponse(expected));
-        when(entitys.getWithResponse(eq(queueName), eq(true), any(Context.class)))
-            .thenReturn(objectResponse);
+        when(entitys.getWithResponse(eq(queueName), eq(true), any(Context.class))).thenReturn(objectResponse);
 
         // Act & Assert
         Response<QueueProperties> response = client.getQueueWithResponse(queueName, context);
@@ -249,7 +241,8 @@ class ServiceBusAdministrationClientTest {
         // Arrange
         final String contents = getContents("QueueDescriptionEntry.xml");
         final ServiceBusManagementSerializer managementSerializer = new ServiceBusManagementSerializer();
-        final QueueDescriptionEntryImpl entry = managementSerializer.deserialize(contents, QueueDescriptionEntryImpl.class);
+        final QueueDescriptionEntryImpl entry
+            = managementSerializer.deserialize(contents, QueueDescriptionEntryImpl.class);
 
         final String name = "my-test-queue";
         final OffsetDateTime createdAt = OffsetDateTime.parse("2020-06-05T03:55:07.5Z");
@@ -257,16 +250,14 @@ class ServiceBusAdministrationClientTest {
         final OffsetDateTime accessedAt = OffsetDateTime.parse("0001-01-01T00:00:00Z");
         final long sizeInBytes = 2048;
         final long messageCount = 23;
-        final MessageCountDetailsImpl expectedCount = new MessageCountDetailsImpl()
-            .setActiveMessageCount(5)
+        final MessageCountDetailsImpl expectedCount = new MessageCountDetailsImpl().setActiveMessageCount(5)
             .setDeadLetterMessageCount(3)
             .setScheduledMessageCount(65)
             .setTransferMessageCount(10)
             .setTransferDeadLetterMessageCount(123);
 
         Response<Object> objectResponse = createObjectResponse(serializeResponse(entry));
-        when(entitys.getWithResponse(eq(queueName), eq(true), any(Context.class)))
-            .thenReturn(objectResponse);
+        when(entitys.getWithResponse(eq(queueName), eq(true), any(Context.class))).thenReturn(objectResponse);
 
         // Act & Assert
         QueueRuntimeProperties info = client.getQueueRuntimeProperties(queueName);
@@ -289,7 +280,8 @@ class ServiceBusAdministrationClientTest {
         // Arrange
         final String contents = getContents("QueueDescriptionEntry.xml");
         final ServiceBusManagementSerializer managementSerializer = new ServiceBusManagementSerializer();
-        final QueueDescriptionEntryImpl entry = managementSerializer.deserialize(contents, QueueDescriptionEntryImpl.class);
+        final QueueDescriptionEntryImpl entry
+            = managementSerializer.deserialize(contents, QueueDescriptionEntryImpl.class);
 
         final String name = "my-test-queue";
         final OffsetDateTime createdAt = OffsetDateTime.parse("2020-06-05T03:55:07.5Z");
@@ -297,16 +289,14 @@ class ServiceBusAdministrationClientTest {
         final OffsetDateTime accessedAt = OffsetDateTime.parse("0001-01-01T00:00:00Z");
         final long sizeInBytes = 2048;
         final long messageCount = 23;
-        final MessageCountDetailsImpl expectedCount = new MessageCountDetailsImpl()
-            .setActiveMessageCount(5)
+        final MessageCountDetailsImpl expectedCount = new MessageCountDetailsImpl().setActiveMessageCount(5)
             .setDeadLetterMessageCount(3)
             .setScheduledMessageCount(65)
             .setTransferMessageCount(10)
             .setTransferDeadLetterMessageCount(123);
 
         Response<Object> objectResponse = createObjectResponse(serializeResponse(entry));
-        when(entitys.getWithResponse(eq(queueName), eq(true), any(Context.class)))
-            .thenReturn(objectResponse);
+        when(entitys.getWithResponse(eq(queueName), eq(true), any(Context.class))).thenReturn(objectResponse);
 
         // Act & Assert
         Response<QueueRuntimeProperties> response = client.getQueueRuntimePropertiesWithResponse(queueName, context);
@@ -358,39 +348,28 @@ class ServiceBusAdministrationClientTest {
         final List<QueueDescriptionEntryImpl> firstEntries = IntStream.range(0, 4).mapToObj(number -> {
             final String name = String.valueOf(number);
             final QueueDescriptionImpl description = EntityHelper.getQueueDescription(new CreateQueueOptions());
-            final QueueDescriptionEntryContentImpl content = new QueueDescriptionEntryContentImpl()
-                .setQueueDescription(description);
-            return new QueueDescriptionEntryImpl()
-                .setContent(content)
-                .setTitle(new TitleImpl().setContent(name));
+            final QueueDescriptionEntryContentImpl content
+                = new QueueDescriptionEntryContentImpl().setQueueDescription(description);
+            return new QueueDescriptionEntryImpl().setContent(content).setTitle(new TitleImpl().setContent(name));
         }).collect(Collectors.toList());
-        final List<ResponseLinkImpl> links = Arrays.asList(
-            new ResponseLinkImpl().setRel("self").setHref("foo"),
-            new ResponseLinkImpl().setRel("bar").setHref("baz"),
-            new ResponseLinkImpl().setRel("next").setHref("https://foo.bar.net?api-version=2021-05&$skip=" + firstEntities)
-        );
-        final QueueDescriptionFeedImpl firstFeed = new QueueDescriptionFeedImpl()
-            .setLink(links)
-            .setEntry(firstEntries)
-            .setId("first-id");
+        final List<ResponseLinkImpl> links = Arrays.asList(new ResponseLinkImpl().setRel("self").setHref("foo"),
+            new ResponseLinkImpl().setRel("bar").setHref("baz"), new ResponseLinkImpl().setRel("next")
+                .setHref("https://foo.bar.net?api-version=2021-05&$skip=" + firstEntities));
+        final QueueDescriptionFeedImpl firstFeed
+            = new QueueDescriptionFeedImpl().setLink(links).setEntry(firstEntries).setId("first-id");
 
         final List<QueueDescriptionEntryImpl> secondEntries = IntStream.range(5, 7).mapToObj(number -> {
             final String name = String.valueOf(number);
             final QueueDescriptionImpl description = EntityHelper.getQueueDescription(new CreateQueueOptions());
-            final QueueDescriptionEntryContentImpl content = new QueueDescriptionEntryContentImpl()
-                .setQueueDescription(description);
+            final QueueDescriptionEntryContentImpl content
+                = new QueueDescriptionEntryContentImpl().setQueueDescription(description);
 
-            return new QueueDescriptionEntryImpl()
-                .setContent(content)
-                .setTitle(new TitleImpl().setContent(name));
+            return new QueueDescriptionEntryImpl().setContent(content).setTitle(new TitleImpl().setContent(name));
         }).collect(Collectors.toList());
-        final List<ResponseLinkImpl> secondLinks = Arrays.asList(
-            new ResponseLinkImpl().setRel("self").setHref("foo"),
+        final List<ResponseLinkImpl> secondLinks = Arrays.asList(new ResponseLinkImpl().setRel("self").setHref("foo"),
             new ResponseLinkImpl().setRel("bar").setHref("baz"));
-        final QueueDescriptionFeedImpl secondFeed = new QueueDescriptionFeedImpl()
-            .setEntry(secondEntries)
-            .setLink(secondLinks)
-            .setId("second-id");
+        final QueueDescriptionFeedImpl secondFeed
+            = new QueueDescriptionFeedImpl().setEntry(secondEntries).setLink(secondLinks).setId("second-id");
 
         Response<Object> objectResponse = createObjectResponse(serializeResponse(firstFeed));
         when(serviceClient.listEntitiesWithResponse(eq(entityType), eq(0), anyInt(), any(Context.class)))
@@ -411,39 +390,28 @@ class ServiceBusAdministrationClientTest {
         final List<QueueDescriptionEntryImpl> firstEntries = IntStream.range(0, 4).mapToObj(number -> {
             final String name = String.valueOf(number);
             final QueueDescriptionImpl description = EntityHelper.getQueueDescription(new CreateQueueOptions());
-            final QueueDescriptionEntryContentImpl content = new QueueDescriptionEntryContentImpl()
-                .setQueueDescription(description);
-            return new QueueDescriptionEntryImpl()
-                .setContent(content)
-                .setTitle(new TitleImpl().setContent(name));
+            final QueueDescriptionEntryContentImpl content
+                = new QueueDescriptionEntryContentImpl().setQueueDescription(description);
+            return new QueueDescriptionEntryImpl().setContent(content).setTitle(new TitleImpl().setContent(name));
         }).collect(Collectors.toList());
-        final List<ResponseLinkImpl> links = Arrays.asList(
-            new ResponseLinkImpl().setRel("self").setHref("foo"),
-            new ResponseLinkImpl().setRel("bar").setHref("baz"),
-            new ResponseLinkImpl().setRel("next").setHref("https://foo.bar.net?api-version=2021-05&$skip=" + firstEntities)
-        );
-        final QueueDescriptionFeedImpl firstFeed = new QueueDescriptionFeedImpl()
-            .setLink(links)
-            .setEntry(firstEntries)
-            .setId("first-id");
+        final List<ResponseLinkImpl> links = Arrays.asList(new ResponseLinkImpl().setRel("self").setHref("foo"),
+            new ResponseLinkImpl().setRel("bar").setHref("baz"), new ResponseLinkImpl().setRel("next")
+                .setHref("https://foo.bar.net?api-version=2021-05&$skip=" + firstEntities));
+        final QueueDescriptionFeedImpl firstFeed
+            = new QueueDescriptionFeedImpl().setLink(links).setEntry(firstEntries).setId("first-id");
 
         final List<QueueDescriptionEntryImpl> secondEntries = IntStream.range(5, 7).mapToObj(number -> {
             final String name = String.valueOf(number);
             final QueueDescriptionImpl description = EntityHelper.getQueueDescription(new CreateQueueOptions());
-            final QueueDescriptionEntryContentImpl content = new QueueDescriptionEntryContentImpl()
-                .setQueueDescription(description);
+            final QueueDescriptionEntryContentImpl content
+                = new QueueDescriptionEntryContentImpl().setQueueDescription(description);
 
-            return new QueueDescriptionEntryImpl()
-                .setContent(content)
-                .setTitle(new TitleImpl().setContent(name));
+            return new QueueDescriptionEntryImpl().setContent(content).setTitle(new TitleImpl().setContent(name));
         }).collect(Collectors.toList());
-        final List<ResponseLinkImpl> secondLinks = Arrays.asList(
-            new ResponseLinkImpl().setRel("self").setHref("foo"),
+        final List<ResponseLinkImpl> secondLinks = Arrays.asList(new ResponseLinkImpl().setRel("self").setHref("foo"),
             new ResponseLinkImpl().setRel("bar").setHref("baz"));
-        final QueueDescriptionFeedImpl secondFeed = new QueueDescriptionFeedImpl()
-            .setEntry(secondEntries)
-            .setLink(secondLinks)
-            .setId("second-id");
+        final QueueDescriptionFeedImpl secondFeed
+            = new QueueDescriptionFeedImpl().setEntry(secondEntries).setLink(secondLinks).setId("second-id");
 
         Response<Object> objectResponse = createObjectResponse(serializeResponse(firstFeed));
         when(serviceClient.listEntitiesWithResponse(eq(entityType), eq(0), anyInt(), any(Context.class)))
@@ -465,21 +433,19 @@ class ServiceBusAdministrationClientTest {
 
         final String updatedName = "some-new-name";
         final QueueDescriptionImpl expectedDescription = new QueueDescriptionImpl();
-        final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(new TitleImpl().setContent(updatedName))
-            .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
+        final QueueDescriptionEntryImpl expected
+            = new QueueDescriptionEntryImpl().setTitle(new TitleImpl().setContent(updatedName))
+                .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         Response<Object> objectResponse = createObjectResponse(serializeResponse(expected));
-        when(entitys.putWithResponse(eq(queueName),
-            argThat(arg -> {
-                if (!(arg instanceof CreateQueueBodyImpl)) {
-                    return false;
-                }
+        when(entitys.putWithResponse(eq(queueName), argThat(arg -> {
+            if (!(arg instanceof CreateQueueBodyImpl)) {
+                return false;
+            }
 
-                final CreateQueueBodyImpl argument = (CreateQueueBodyImpl) arg;
-                return argument.getContent() != null && argument.getContent().getQueueDescription() != null;
-            }), eq("*"), any(Context.class)))
-            .thenReturn(objectResponse);
+            final CreateQueueBodyImpl argument = (CreateQueueBodyImpl) arg;
+            return argument.getContent() != null && argument.getContent().getQueueDescription() != null;
+        }), eq("*"), any(Context.class))).thenReturn(objectResponse);
 
         // Act & Assert
         assertEquals(updatedName, client.updateQueue(properties).getName());
@@ -495,29 +461,25 @@ class ServiceBusAdministrationClientTest {
 
         final String updatedName = "some-new-name";
         final QueueDescriptionImpl expectedDescription = new QueueDescriptionImpl();
-        final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(new TitleImpl().setContent(updatedName))
-            .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
+        final QueueDescriptionEntryImpl expected
+            = new QueueDescriptionEntryImpl().setTitle(new TitleImpl().setContent(updatedName))
+                .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
 
         Response<Object> objectResponse = createObjectResponse(serializeResponse(expected));
-        when(entitys.putWithResponse(eq(queueName),
-            argThat(arg -> {
-                if (!(arg instanceof CreateQueueBodyImpl)) {
-                    return false;
-                }
+        when(entitys.putWithResponse(eq(queueName), argThat(arg -> {
+            if (!(arg instanceof CreateQueueBodyImpl)) {
+                return false;
+            }
 
-                final CreateQueueBodyImpl argument = (CreateQueueBodyImpl) arg;
-                if (argument.getContent() == null || argument.getContent().getQueueDescription() == null) {
-                    return false;
-                }
-                assertEquals(FORWARD_TO_ENTITY, argument.getContent().getQueueDescription().getForwardTo(),
-                    "Update queue does not set the forward-to-entity to an absolute URL");
-                return true;
-            }),
-            eq("*"),
-            argThat(ctx -> verifyAdditionalAuthHeaderPresent(ctx,
-                SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, forwardToEntity))))
-            .thenReturn(objectResponse);
+            final CreateQueueBodyImpl argument = (CreateQueueBodyImpl) arg;
+            if (argument.getContent() == null || argument.getContent().getQueueDescription() == null) {
+                return false;
+            }
+            assertEquals(FORWARD_TO_ENTITY, argument.getContent().getQueueDescription().getForwardTo(),
+                "Update queue does not set the forward-to-entity to an absolute URL");
+            return true;
+        }), eq("*"), argThat(ctx -> verifyAdditionalAuthHeaderPresent(ctx,
+            SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, forwardToEntity)))).thenReturn(objectResponse);
 
         // Act & Assert
         Response<QueueProperties> response = client.updateQueueWithResponse(properties, context);

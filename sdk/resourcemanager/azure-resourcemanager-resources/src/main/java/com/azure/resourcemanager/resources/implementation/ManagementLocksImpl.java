@@ -22,9 +22,8 @@ import java.util.Collection;
 /**
  *  Implementation for ManagementLocks.
  */
-public final class ManagementLocksImpl
-    extends CreatableResourcesImpl<ManagementLock, ManagementLockImpl, ManagementLockObjectInner>
-    implements ManagementLocks {
+public final class ManagementLocksImpl extends
+    CreatableResourcesImpl<ManagementLock, ManagementLockImpl, ManagementLockObjectInner> implements ManagementLocks {
 
     private final ResourceManager manager;
 
@@ -66,8 +65,8 @@ public final class ManagementLocksImpl
         }
 
         if (!parts[parts.length - 2].equalsIgnoreCase("locks")
-                || !parts[parts.length - 3].equalsIgnoreCase("Microsoft.Authorization")
-                || !parts[parts.length - 4].equalsIgnoreCase("providers")) {
+            || !parts[parts.length - 3].equalsIgnoreCase("Microsoft.Authorization")
+            || !parts[parts.length - 4].equalsIgnoreCase("providers")) {
             // Not a lock ID
             return new String[0];
         }
@@ -118,18 +117,18 @@ public final class ManagementLocksImpl
 
     @Override
     public PagedIterable<ManagementLock> listByResourceGroup(String resourceGroupName) {
-        return wrapList(this.manager().managementLockClient().getManagementLocks()
-            .listByResourceGroup(resourceGroupName));
+        return wrapList(
+            this.manager().managementLockClient().getManagementLocks().listByResourceGroup(resourceGroupName));
     }
 
     @Override
     public PagedFlux<ManagementLock> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
-        return wrapPageAsync(this.manager().managementLockClient().getManagementLocks()
-            .listByResourceGroupAsync(resourceGroupName));
+        return wrapPageAsync(
+            this.manager().managementLockClient().getManagementLocks().listByResourceGroupAsync(resourceGroupName));
     }
 
     @Override
@@ -140,14 +139,15 @@ public final class ManagementLocksImpl
     @Override
     public Mono<ManagementLock> getByResourceGroupAsync(String resourceGroupName, String name) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
         }
         if (CoreUtils.isNullOrEmpty(name)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
         }
-        return this.manager().managementLockClient().getManagementLocks()
+        return this.manager()
+            .managementLockClient()
+            .getManagementLocks()
             .getByResourceGroupAsync(resourceGroupName, name)
             .map(this::wrapModel);
     }
@@ -161,7 +161,10 @@ public final class ManagementLocksImpl
     public Mono<ManagementLock> getByIdAsync(String id) {
         String resourceId = resourceIdFromLockId(id);
         String lockName = ResourceUtils.nameFromResourceId(id);
-        return this.manager().managementLockClient().getManagementLocks().getByScopeAsync(resourceId, lockName)
+        return this.manager()
+            .managementLockClient()
+            .getManagementLocks()
+            .getByScopeAsync(resourceId, lockName)
             .map(this::wrapModel);
     }
 
@@ -173,15 +176,13 @@ public final class ManagementLocksImpl
     @Override
     public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String name) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
         }
         if (CoreUtils.isNullOrEmpty(name)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
         }
-        return this.manager().managementLockClient().getManagementLocks()
-            .deleteAsync(resourceGroupName, name);
+        return this.manager().managementLockClient().getManagementLocks().deleteAsync(resourceGroupName, name);
     }
 
     @Override
@@ -190,14 +191,15 @@ public final class ManagementLocksImpl
             return Flux.empty();
         }
 
-        return Flux.fromIterable(ids)
-            .flatMapDelayError(id -> {
-                String lockName = ResourceUtils.nameFromResourceId(id);
-                String scopeName = ManagementLocksImpl.resourceIdFromLockId(id);
-                return this.manager().managementLockClient().getManagementLocks()
-                    .deleteByScopeAsync(scopeName, lockName)
-                    .then(Mono.just(id));
-            }, 32, 32);
+        return Flux.fromIterable(ids).flatMapDelayError(id -> {
+            String lockName = ResourceUtils.nameFromResourceId(id);
+            String scopeName = ManagementLocksImpl.resourceIdFromLockId(id);
+            return this.manager()
+                .managementLockClient()
+                .getManagementLocks()
+                .deleteByScopeAsync(scopeName, lockName)
+                .then(Mono.just(id));
+        }, 32, 32);
     }
 
     @Override

@@ -106,15 +106,18 @@ public final class FirmwareImpl implements Firmware, Firmware.Definition, Firmwa
     }
 
     public Firmware create() {
-        this.innerObject = serviceManager.serviceClient().getFirmwares()
+        this.innerObject = serviceManager.serviceClient()
+            .getFirmwares()
             .createWithResponse(resourceGroupName, workspaceName, firmwareId, this.innerModel(), Context.NONE)
             .getValue();
         return this;
     }
 
     public Firmware create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFirmwares()
-            .createWithResponse(resourceGroupName, workspaceName, firmwareId, this.innerModel(), context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirmwares()
+            .createWithResponse(resourceGroupName, workspaceName, firmwareId, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -130,14 +133,18 @@ public final class FirmwareImpl implements Firmware, Firmware.Definition, Firmwa
     }
 
     public Firmware apply() {
-        this.innerObject = serviceManager.serviceClient().getFirmwares()
-            .updateWithResponse(resourceGroupName, workspaceName, firmwareId, updateFirmware, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirmwares()
+            .updateWithResponse(resourceGroupName, workspaceName, firmwareId, updateFirmware, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Firmware apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFirmwares()
-            .updateWithResponse(resourceGroupName, workspaceName, firmwareId, updateFirmware, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirmwares()
+            .updateWithResponse(resourceGroupName, workspaceName, firmwareId, updateFirmware, context)
+            .getValue();
         return this;
     }
 
@@ -151,20 +158,24 @@ public final class FirmwareImpl implements Firmware, Firmware.Definition, Firmwa
     }
 
     public Firmware refresh() {
-        this.innerObject = serviceManager.serviceClient().getFirmwares()
-            .getWithResponse(resourceGroupName, workspaceName, firmwareId, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirmwares()
+            .getWithResponse(resourceGroupName, workspaceName, firmwareId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Firmware refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getFirmwares()
-            .getWithResponse(resourceGroupName, workspaceName, firmwareId, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirmwares()
+            .getWithResponse(resourceGroupName, workspaceName, firmwareId, context)
+            .getValue();
         return this;
     }
 
     public Response<UrlToken> generateDownloadUrlWithResponse(Context context) {
-        return serviceManager.firmwares().generateDownloadUrlWithResponse(resourceGroupName, workspaceName, firmwareId,
-            context);
+        return serviceManager.firmwares()
+            .generateDownloadUrlWithResponse(resourceGroupName, workspaceName, firmwareId, context);
     }
 
     public UrlToken generateDownloadUrl() {
@@ -172,8 +183,8 @@ public final class FirmwareImpl implements Firmware, Firmware.Definition, Firmwa
     }
 
     public Response<UrlToken> generateFilesystemDownloadUrlWithResponse(Context context) {
-        return serviceManager.firmwares().generateFilesystemDownloadUrlWithResponse(resourceGroupName, workspaceName,
-            firmwareId, context);
+        return serviceManager.firmwares()
+            .generateFilesystemDownloadUrlWithResponse(resourceGroupName, workspaceName, firmwareId, context);
     }
 
     public UrlToken generateFilesystemDownloadUrl() {

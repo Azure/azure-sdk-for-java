@@ -36,49 +36,35 @@ public final class DigitalTwinsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"createdTime\":\"2021-11-19T04:43:06Z\",\"lastUpdatedTime\":\"2021-01-21T23:49:51Z\",\"provisioningState\":\"Succeeded\",\"hostName\":\"ow\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"ualupjmkh\",\"tenantId\":\"obbc\",\"userAssignedIdentities\":{}},\"location\":\"tjrip\",\"tags\":{\"vlvqhjkbegi\":\"pbewtghfgblcgwx\",\"mxiebw\":\"t\",\"gwyzm\":\"aloayqcgwrtzju\"},\"id\":\"txon\",\"name\":\"mtsavjcbpwxqp\",\"type\":\"rknftguvriuhprwm\"}";
+        String responseStr
+            = "{\"properties\":{\"createdTime\":\"2021-11-19T04:43:06Z\",\"lastUpdatedTime\":\"2021-01-21T23:49:51Z\",\"provisioningState\":\"Succeeded\",\"hostName\":\"ow\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"ualupjmkh\",\"tenantId\":\"obbc\",\"userAssignedIdentities\":{}},\"location\":\"tjrip\",\"tags\":{\"vlvqhjkbegi\":\"pbewtghfgblcgwx\",\"mxiebw\":\"t\",\"gwyzm\":\"aloayqcgwrtzju\"},\"id\":\"txon\",\"name\":\"mtsavjcbpwxqp\",\"type\":\"rknftguvriuhprwm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureDigitalTwinsManager manager =
-            AzureDigitalTwinsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureDigitalTwinsManager manager = AzureDigitalTwinsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DigitalTwinsDescription response =
-            manager
-                .digitalTwins()
-                .define("auhashsfwx")
-                .withRegion("jgjrwjueiotwm")
-                .withExistingResourceGroup("zbaliourqha")
-                .withTags(mapOf("it", "tdx", "hniskxfbkpyc", "nrjawgqwg"))
-                .withIdentity(
-                    new DigitalTwinsIdentity()
-                        .withType(DigitalTwinsIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf()))
-                .withPrivateEndpointConnections(Arrays.asList())
-                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                .create();
+        DigitalTwinsDescription response = manager.digitalTwins()
+            .define("auhashsfwx")
+            .withRegion("jgjrwjueiotwm")
+            .withExistingResourceGroup("zbaliourqha")
+            .withTags(mapOf("it", "tdx", "hniskxfbkpyc", "nrjawgqwg"))
+            .withIdentity(new DigitalTwinsIdentity().withType(DigitalTwinsIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf()))
+            .withPrivateEndpointConnections(Arrays.asList())
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+            .create();
 
         Assertions.assertEquals("tjrip", response.location());
         Assertions.assertEquals("pbewtghfgblcgwx", response.tags().get("vlvqhjkbegi"));

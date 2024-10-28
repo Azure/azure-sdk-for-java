@@ -359,10 +359,8 @@ public final class ResourcePoolInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ResourcePoolInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model ResourcePoolInner"));
         } else {
             innerProperties().validate();
         }

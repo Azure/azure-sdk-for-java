@@ -12,10 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class FilteringTagTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FilteringTag model =
-            BinaryData
-                .fromString("{\"name\":\"wxmnteiwao\",\"value\":\"km\",\"action\":\"Include\"}")
-                .toObject(FilteringTag.class);
+        FilteringTag model = BinaryData.fromString("{\"name\":\"wxmnteiwao\",\"value\":\"km\",\"action\":\"Include\"}")
+            .toObject(FilteringTag.class);
         Assertions.assertEquals("wxmnteiwao", model.name());
         Assertions.assertEquals("km", model.value());
         Assertions.assertEquals(TagAction.INCLUDE, model.action());

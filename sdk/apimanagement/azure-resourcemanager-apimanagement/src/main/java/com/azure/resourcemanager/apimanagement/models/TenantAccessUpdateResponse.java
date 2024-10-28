@@ -21,12 +21,8 @@ public final class TenantAccessUpdateResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public TenantAccessUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        AccessInformationContractInner value,
-        TenantAccessUpdateHeaders headers) {
+    public TenantAccessUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        AccessInformationContractInner value, TenantAccessUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

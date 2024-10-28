@@ -13,28 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class EventSourceUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventSourceUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"EventSourceUpdateParameters\",\"tags\":{\"eic\":\"vddntwn\",\"cyddglmjthjqk\":\"twnpzaoqvuhrhcf\",\"ciwqvhk\":\"pyeicxm\",\"ghmewuam\":\"ixuigdtopbobj\"}}")
-                .toObject(EventSourceUpdateParameters.class);
+        EventSourceUpdateParameters model = BinaryData.fromString(
+            "{\"kind\":\"EventSourceUpdateParameters\",\"tags\":{\"eic\":\"vddntwn\",\"cyddglmjthjqk\":\"twnpzaoqvuhrhcf\",\"ciwqvhk\":\"pyeicxm\",\"ghmewuam\":\"ixuigdtopbobj\"}}")
+            .toObject(EventSourceUpdateParameters.class);
         Assertions.assertEquals("vddntwn", model.tags().get("eic"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventSourceUpdateParameters model =
-            new EventSourceUpdateParameters()
-                .withTags(
-                    mapOf(
-                        "eic",
-                        "vddntwn",
-                        "cyddglmjthjqk",
-                        "twnpzaoqvuhrhcf",
-                        "ciwqvhk",
-                        "pyeicxm",
-                        "ghmewuam",
-                        "ixuigdtopbobj"));
+        EventSourceUpdateParameters model = new EventSourceUpdateParameters().withTags(mapOf("eic", "vddntwn",
+            "cyddglmjthjqk", "twnpzaoqvuhrhcf", "ciwqvhk", "pyeicxm", "ghmewuam", "ixuigdtopbobj"));
         model = BinaryData.fromObject(model).toObject(EventSourceUpdateParameters.class);
         Assertions.assertEquals("vddntwn", model.tags().get("eic"));
     }

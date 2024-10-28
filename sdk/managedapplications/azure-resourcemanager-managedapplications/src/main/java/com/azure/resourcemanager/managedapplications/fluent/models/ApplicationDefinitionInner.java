@@ -434,10 +434,8 @@ public final class ApplicationDefinitionInner extends GenericResource {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ApplicationDefinitionInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model ApplicationDefinitionInner"));
         } else {
             innerProperties().validate();
         }

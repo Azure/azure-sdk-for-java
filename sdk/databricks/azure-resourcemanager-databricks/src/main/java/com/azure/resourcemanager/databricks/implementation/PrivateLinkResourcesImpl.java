@@ -21,8 +21,7 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     private final com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager;
 
-    public PrivateLinkResourcesImpl(
-        PrivateLinkResourcesClient innerClient,
+    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
         com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -34,20 +33,17 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
     }
 
     public PagedIterable<GroupIdInformation> list(String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<GroupIdInformationInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, context);
+        PagedIterable<GroupIdInformationInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, context);
         return Utils.mapPage(inner, inner1 -> new GroupIdInformationImpl(inner1, this.manager()));
     }
 
-    public Response<GroupIdInformation> getWithResponse(
-        String resourceGroupName, String workspaceName, String groupId, Context context) {
-        Response<GroupIdInformationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, groupId, context);
+    public Response<GroupIdInformation> getWithResponse(String resourceGroupName, String workspaceName, String groupId,
+        Context context) {
+        Response<GroupIdInformationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, groupId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GroupIdInformationImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -54,8 +54,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @param client the instance of the service client containing this operation class.
      */
     AccessConnectorsClientImpl(AzureDatabricksManagementClientImpl client) {
-        this.service =
-            RestProxy.create(AccessConnectorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(AccessConnectorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,107 +66,75 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
     @Host("{$host}")
     @ServiceInterface(name = "AzureDatabricksManag")
     public interface AccessConnectorsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
-        Mono<Response<AccessConnectorInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("connectorName") String connectorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<AccessConnectorInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("connectorName") String connectorName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ErrorInfoException.class)
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("connectorName") String connectorName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ErrorInfoException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("connectorName") String connectorName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") AccessConnectorInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("connectorName") String connectorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("connectorName") String connectorName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") AccessConnectorUpdate parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("connectorName") String connectorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") AccessConnectorInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AccessConnectorListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorInfoException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("connectorName") String connectorName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") AccessConnectorUpdate parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorInfoException.class)
-        Mono<Response<AccessConnectorListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Databricks/accessConnectors")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
-        Mono<Response<AccessConnectorListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AccessConnectorListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
         Mono<Response<AccessConnectorListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
         Mono<Response<AccessConnectorListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -180,13 +148,11 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return an azure databricks accessConnector along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessConnectorInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String connectorName) {
+    private Mono<Response<AccessConnectorInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String connectorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -196,25 +162,14 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             return Mono.error(new IllegalArgumentException("Parameter connectorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            connectorName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                connectorName, apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -230,13 +185,11 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return an azure databricks accessConnector along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessConnectorInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String connectorName, Context context) {
+    private Mono<Response<AccessConnectorInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String connectorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -246,23 +199,14 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             return Mono.error(new IllegalArgumentException("Parameter connectorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                connectorName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, connectorName, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -293,8 +237,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return an azure databricks accessConnector along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessConnectorInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String connectorName, Context context) {
+    public Response<AccessConnectorInner> getByResourceGroupWithResponse(String resourceGroupName, String connectorName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, connectorName, context).block();
     }
 
@@ -326,10 +270,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String connectorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -339,25 +281,14 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             return Mono.error(new IllegalArgumentException("Parameter connectorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            connectorName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, connectorName,
+                apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -373,13 +304,11 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String connectorName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String connectorName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -389,23 +318,14 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             return Mono.error(new IllegalArgumentException("Parameter connectorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                connectorName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, connectorName, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -421,10 +341,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String connectorName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, connectorName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -439,13 +357,12 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String connectorName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String connectorName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, connectorName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -475,8 +392,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String connectorName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String connectorName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, connectorName, context).getSyncPoller();
     }
 
@@ -508,8 +425,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String connectorName, Context context) {
-        return beginDeleteAsync(resourceGroupName, connectorName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, connectorName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -555,13 +471,11 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String connectorName, AccessConnectorInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String connectorName, AccessConnectorInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -571,10 +485,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             return Mono.error(new IllegalArgumentException("Parameter connectorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -584,18 +496,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
         final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            connectorName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, connectorName,
+                apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -613,13 +515,11 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String connectorName, AccessConnectorInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String connectorName, AccessConnectorInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -629,10 +529,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             return Mono.error(new IllegalArgumentException("Parameter connectorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -642,16 +540,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
         final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                connectorName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, connectorName, apiVersion,
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -666,18 +556,12 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return the {@link PollerFlux} for polling of information about azure databricks accessConnector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AccessConnectorInner>, AccessConnectorInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String connectorName, AccessConnectorInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, connectorName, parameters);
-        return this
-            .client
-            .<AccessConnectorInner, AccessConnectorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AccessConnectorInner.class,
-                AccessConnectorInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<AccessConnectorInner>, AccessConnectorInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String connectorName, AccessConnectorInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, connectorName, parameters);
+        return this.client.<AccessConnectorInner, AccessConnectorInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AccessConnectorInner.class, AccessConnectorInner.class, this.client.getContext());
     }
 
     /**
@@ -696,12 +580,10 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
     private PollerFlux<PollResult<AccessConnectorInner>, AccessConnectorInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String connectorName, AccessConnectorInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, connectorName, parameters, context);
-        return this
-            .client
-            .<AccessConnectorInner, AccessConnectorInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AccessConnectorInner.class, AccessConnectorInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, connectorName, parameters, context);
+        return this.client.<AccessConnectorInner, AccessConnectorInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AccessConnectorInner.class, AccessConnectorInner.class, context);
     }
 
     /**
@@ -716,8 +598,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return the {@link SyncPoller} for polling of information about azure databricks accessConnector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner> beginCreateOrUpdate(
-        String resourceGroupName, String connectorName, AccessConnectorInner parameters) {
+    public SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner>
+        beginCreateOrUpdate(String resourceGroupName, String connectorName, AccessConnectorInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, connectorName, parameters).getSyncPoller();
     }
 
@@ -751,10 +633,9 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return information about azure databricks accessConnector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccessConnectorInner> createOrUpdateAsync(
-        String resourceGroupName, String connectorName, AccessConnectorInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, connectorName, parameters)
-            .last()
+    private Mono<AccessConnectorInner> createOrUpdateAsync(String resourceGroupName, String connectorName,
+        AccessConnectorInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, connectorName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -771,10 +652,9 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return information about azure databricks accessConnector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccessConnectorInner> createOrUpdateAsync(
-        String resourceGroupName, String connectorName, AccessConnectorInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, connectorName, parameters, context)
-            .last()
+    private Mono<AccessConnectorInner> createOrUpdateAsync(String resourceGroupName, String connectorName,
+        AccessConnectorInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, connectorName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -790,8 +670,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return information about azure databricks accessConnector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessConnectorInner createOrUpdate(
-        String resourceGroupName, String connectorName, AccessConnectorInner parameters) {
+    public AccessConnectorInner createOrUpdate(String resourceGroupName, String connectorName,
+        AccessConnectorInner parameters) {
         return createOrUpdateAsync(resourceGroupName, connectorName, parameters).block();
     }
 
@@ -808,8 +688,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return information about azure databricks accessConnector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessConnectorInner createOrUpdate(
-        String resourceGroupName, String connectorName, AccessConnectorInner parameters, Context context) {
+    public AccessConnectorInner createOrUpdate(String resourceGroupName, String connectorName,
+        AccessConnectorInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, connectorName, parameters, context).block();
     }
 
@@ -826,13 +706,11 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String connectorName, AccessConnectorUpdate parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String connectorName,
+        AccessConnectorUpdate parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -842,10 +720,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             return Mono.error(new IllegalArgumentException("Parameter connectorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -855,18 +731,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
         final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            connectorName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, connectorName,
+                apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -884,13 +750,11 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String connectorName, AccessConnectorUpdate parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String connectorName,
+        AccessConnectorUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -900,10 +764,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             return Mono.error(new IllegalArgumentException("Parameter connectorName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -913,16 +775,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
         final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                connectorName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, connectorName, apiVersion,
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -937,17 +791,11 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return the {@link PollerFlux} for polling of information about azure databricks accessConnector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AccessConnectorInner>, AccessConnectorInner> beginUpdateAsync(
-        String resourceGroupName, String connectorName, AccessConnectorUpdate parameters) {
+    private PollerFlux<PollResult<AccessConnectorInner>, AccessConnectorInner>
+        beginUpdateAsync(String resourceGroupName, String connectorName, AccessConnectorUpdate parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, connectorName, parameters);
-        return this
-            .client
-            .<AccessConnectorInner, AccessConnectorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AccessConnectorInner.class,
-                AccessConnectorInner.class,
-                this.client.getContext());
+        return this.client.<AccessConnectorInner, AccessConnectorInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AccessConnectorInner.class, AccessConnectorInner.class, this.client.getContext());
     }
 
     /**
@@ -966,12 +814,10 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
     private PollerFlux<PollResult<AccessConnectorInner>, AccessConnectorInner> beginUpdateAsync(
         String resourceGroupName, String connectorName, AccessConnectorUpdate parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, connectorName, parameters, context);
-        return this
-            .client
-            .<AccessConnectorInner, AccessConnectorInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AccessConnectorInner.class, AccessConnectorInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, connectorName, parameters, context);
+        return this.client.<AccessConnectorInner, AccessConnectorInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AccessConnectorInner.class, AccessConnectorInner.class, context);
     }
 
     /**
@@ -986,8 +832,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return the {@link SyncPoller} for polling of information about azure databricks accessConnector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner> beginUpdate(
-        String resourceGroupName, String connectorName, AccessConnectorUpdate parameters) {
+    public SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner> beginUpdate(String resourceGroupName,
+        String connectorName, AccessConnectorUpdate parameters) {
         return this.beginUpdateAsync(resourceGroupName, connectorName, parameters).getSyncPoller();
     }
 
@@ -1004,8 +850,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return the {@link SyncPoller} for polling of information about azure databricks accessConnector.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner> beginUpdate(
-        String resourceGroupName, String connectorName, AccessConnectorUpdate parameters, Context context) {
+    public SyncPoller<PollResult<AccessConnectorInner>, AccessConnectorInner> beginUpdate(String resourceGroupName,
+        String connectorName, AccessConnectorUpdate parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, connectorName, parameters, context).getSyncPoller();
     }
 
@@ -1021,10 +867,9 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return information about azure databricks accessConnector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccessConnectorInner> updateAsync(
-        String resourceGroupName, String connectorName, AccessConnectorUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, connectorName, parameters)
-            .last()
+    private Mono<AccessConnectorInner> updateAsync(String resourceGroupName, String connectorName,
+        AccessConnectorUpdate parameters) {
+        return beginUpdateAsync(resourceGroupName, connectorName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1041,10 +886,9 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return information about azure databricks accessConnector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccessConnectorInner> updateAsync(
-        String resourceGroupName, String connectorName, AccessConnectorUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, connectorName, parameters, context)
-            .last()
+    private Mono<AccessConnectorInner> updateAsync(String resourceGroupName, String connectorName,
+        AccessConnectorUpdate parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, connectorName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1060,8 +904,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return information about azure databricks accessConnector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessConnectorInner update(
-        String resourceGroupName, String connectorName, AccessConnectorUpdate parameters) {
+    public AccessConnectorInner update(String resourceGroupName, String connectorName,
+        AccessConnectorUpdate parameters) {
         return updateAsync(resourceGroupName, connectorName, parameters).block();
     }
 
@@ -1078,8 +922,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      * @return information about azure databricks accessConnector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessConnectorInner update(
-        String resourceGroupName, String connectorName, AccessConnectorUpdate parameters, Context context) {
+    public AccessConnectorInner update(String resourceGroupName, String connectorName, AccessConnectorUpdate parameters,
+        Context context) {
         return updateAsync(resourceGroupName, connectorName, parameters, context).block();
     }
 
@@ -1096,43 +940,24 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessConnectorInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<AccessConnectorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<AccessConnectorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1148,44 +973,28 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AccessConnectorInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<AccessConnectorInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1200,8 +1009,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessConnectorInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -1218,8 +1026,7 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessConnectorInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
@@ -1265,33 +1072,20 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessConnectorInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<AccessConnectorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                accept, context))
+            .<PagedResponse<AccessConnectorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1308,31 +1102,19 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessConnectorInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2023-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1345,8 +1127,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessConnectorInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -1361,8 +1143,8 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessConnectorInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -1410,24 +1192,15 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AccessConnectorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AccessConnectorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1444,30 +1217,20 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AccessConnectorInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AccessConnectorInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1487,24 +1250,15 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AccessConnectorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<AccessConnectorInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1521,29 +1275,19 @@ public final class AccessConnectorsClientImpl implements AccessConnectorsClient 
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AccessConnectorInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AccessConnectorInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -79,19 +79,15 @@ import java.util.Objects;
  * @see CommunicationIdentityAsyncClient
  * @see CommunicationIdentityClient
  */
-@ServiceClientBuilder(serviceClients = {CommunicationIdentityClient.class, CommunicationIdentityAsyncClient.class})
+@ServiceClientBuilder(serviceClients = { CommunicationIdentityClient.class, CommunicationIdentityAsyncClient.class })
 public final class CommunicationIdentityClientBuilder implements
-    AzureKeyCredentialTrait<CommunicationIdentityClientBuilder>,
-    ConfigurationTrait<CommunicationIdentityClientBuilder>,
-    ConnectionStringTrait<CommunicationIdentityClientBuilder>,
-    EndpointTrait<CommunicationIdentityClientBuilder>,
-    HttpTrait<CommunicationIdentityClientBuilder>,
-    TokenCredentialTrait<CommunicationIdentityClientBuilder> {
+    AzureKeyCredentialTrait<CommunicationIdentityClientBuilder>, ConfigurationTrait<CommunicationIdentityClientBuilder>,
+    ConnectionStringTrait<CommunicationIdentityClientBuilder>, EndpointTrait<CommunicationIdentityClientBuilder>,
+    HttpTrait<CommunicationIdentityClientBuilder>, TokenCredentialTrait<CommunicationIdentityClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    private static final String COMMUNICATION_IDENTITY_PROPERTIES =
-        "azure-communication-identity.properties";
+    private static final String COMMUNICATION_IDENTITY_PROPERTIES = "azure-communication-identity.properties";
 
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClientBuilder.class);
     private String endpoint;
@@ -165,7 +161,7 @@ public final class CommunicationIdentityClientBuilder implements
      * @throws NullPointerException If {@code keyCredential} is null.
      */
     @Override
-    public CommunicationIdentityClientBuilder credential(AzureKeyCredential keyCredential)  {
+    public CommunicationIdentityClientBuilder credential(AzureKeyCredential keyCredential) {
         this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
     }
@@ -182,9 +178,7 @@ public final class CommunicationIdentityClientBuilder implements
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
-        this
-            .endpoint(endpoint)
-            .credential(new AzureKeyCredential(accessKey));
+        this.endpoint(endpoint).credential(new AzureKeyCredential(accessKey));
         return this;
     }
 
@@ -369,12 +363,11 @@ public final class CommunicationIdentityClientBuilder implements
 
         HttpPipeline builderPipeline = this.pipeline;
         if (this.pipeline == null) {
-            builderPipeline = createHttpPipeline(httpClient,
-                createHttpPipelineAuthPolicy(),
-                customPolicies);
+            builderPipeline = createHttpPipeline(httpClient, createHttpPipelineAuthPolicy(), customPolicies);
         }
 
-        CommunicationIdentityServiceVersion apiVersion = serviceVersion != null ? serviceVersion : CommunicationIdentityServiceVersion.getLatest();
+        CommunicationIdentityServiceVersion apiVersion
+            = serviceVersion != null ? serviceVersion : CommunicationIdentityServiceVersion.getLatest();
 
         return new CommunicationIdentityClientImpl(builderPipeline, endpoint, apiVersion.getVersion());
     }
@@ -385,8 +378,8 @@ public final class CommunicationIdentityClientBuilder implements
                 new IllegalArgumentException("Both 'credential' and 'accessKey' are set. Just one may be used."));
         }
         if (this.tokenCredential != null) {
-            return new BearerTokenAuthenticationPolicy(
-                this.tokenCredential, "https://communication.azure.com//.default");
+            return new BearerTokenAuthenticationPolicy(this.tokenCredential,
+                "https://communication.azure.com//.default");
         } else if (this.azureKeyCredential != null) {
             return new HmacAuthenticationPolicy(this.azureKeyCredential);
         } else {
@@ -395,9 +388,8 @@ public final class CommunicationIdentityClientBuilder implements
         }
     }
 
-    private HttpPipeline createHttpPipeline(HttpClient httpClient,
-                                            HttpPipelinePolicy authorizationPolicy,
-                                            List<HttpPipelinePolicy> customPolicies) {
+    private HttpPipeline createHttpPipeline(HttpClient httpClient, HttpPipelinePolicy authorizationPolicy,
+        List<HttpPipelinePolicy> customPolicies) {
 
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
         applyRequiredPolicies(policies, authorizationPolicy);
@@ -406,8 +398,7 @@ public final class CommunicationIdentityClientBuilder implements
             policies.addAll(customPolicies);
         }
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(clientOptions)
             .build();

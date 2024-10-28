@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SparkConfigurationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SparkConfigurationInfo model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"enuygbq\",\"configs\":{\"guaucmfdjwnla\":\"qekewvnqvcd\",\"ikczvvitacgxmf\":\"punj\",\"sjgqrsxyp\":\"sserxhtvsoxhlwn\",\"yuel\":\"uuuybnchrsziz\"},\"annotations\":[\"ndnbfqy\"],\"notes\":\"agfl\",\"createdBy\":\"gm\",\"created\":\"2021-02-22T20:12:59Z\",\"configMergeRule\":{\"pigqfusuckzmkw\":\"zjmucftbyrplroh\",\"jnhgwydyyn\":\"lsnoxaxmqeqalh\",\"ta\":\"svkhgbv\"}}")
-                .toObject(SparkConfigurationInfo.class);
+        SparkConfigurationInfo model = BinaryData.fromString(
+            "{\"description\":\"enuygbq\",\"configs\":{\"guaucmfdjwnla\":\"qekewvnqvcd\",\"ikczvvitacgxmf\":\"punj\",\"sjgqrsxyp\":\"sserxhtvsoxhlwn\",\"yuel\":\"uuuybnchrsziz\"},\"annotations\":[\"ndnbfqy\"],\"notes\":\"agfl\",\"createdBy\":\"gm\",\"created\":\"2021-02-22T20:12:59Z\",\"configMergeRule\":{\"pigqfusuckzmkw\":\"zjmucftbyrplroh\",\"jnhgwydyyn\":\"lsnoxaxmqeqalh\",\"ta\":\"svkhgbv\"}}")
+            .toObject(SparkConfigurationInfo.class);
         Assertions.assertEquals("enuygbq", model.description());
         Assertions.assertEquals("qekewvnqvcd", model.configs().get("guaucmfdjwnla"));
         Assertions.assertEquals("ndnbfqy", model.annotations().get(0));
@@ -31,25 +29,15 @@ public final class SparkConfigurationInfoTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SparkConfigurationInfo model =
-            new SparkConfigurationInfo()
-                .withDescription("enuygbq")
-                .withConfigs(
-                    mapOf(
-                        "guaucmfdjwnla",
-                        "qekewvnqvcd",
-                        "ikczvvitacgxmf",
-                        "punj",
-                        "sjgqrsxyp",
-                        "sserxhtvsoxhlwn",
-                        "yuel",
-                        "uuuybnchrsziz"))
-                .withAnnotations(Arrays.asList("ndnbfqy"))
-                .withNotes("agfl")
-                .withCreatedBy("gm")
-                .withCreated(OffsetDateTime.parse("2021-02-22T20:12:59Z"))
-                .withConfigMergeRule(
-                    mapOf("pigqfusuckzmkw", "zjmucftbyrplroh", "jnhgwydyyn", "lsnoxaxmqeqalh", "ta", "svkhgbv"));
+        SparkConfigurationInfo model = new SparkConfigurationInfo().withDescription("enuygbq")
+            .withConfigs(mapOf("guaucmfdjwnla", "qekewvnqvcd", "ikczvvitacgxmf", "punj", "sjgqrsxyp", "sserxhtvsoxhlwn",
+                "yuel", "uuuybnchrsziz"))
+            .withAnnotations(Arrays.asList("ndnbfqy"))
+            .withNotes("agfl")
+            .withCreatedBy("gm")
+            .withCreated(OffsetDateTime.parse("2021-02-22T20:12:59Z"))
+            .withConfigMergeRule(
+                mapOf("pigqfusuckzmkw", "zjmucftbyrplroh", "jnhgwydyyn", "lsnoxaxmqeqalh", "ta", "svkhgbv"));
         model = BinaryData.fromObject(model).toObject(SparkConfigurationInfo.class);
         Assertions.assertEquals("enuygbq", model.description());
         Assertions.assertEquals("qekewvnqvcd", model.configs().get("guaucmfdjwnla"));

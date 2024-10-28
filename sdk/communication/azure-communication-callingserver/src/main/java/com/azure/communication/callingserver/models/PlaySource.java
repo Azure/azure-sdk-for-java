@@ -41,9 +41,7 @@ public abstract class PlaySource implements JsonSerializable<PlaySource> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeStringField("playSourceId", playSourceId)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeStringField("playSourceId", playSourceId).writeEndObject();
     }
 
     /**
@@ -74,7 +72,8 @@ public abstract class PlaySource implements JsonSerializable<PlaySource> {
                 }
             }
 
-            PlaySource playSource = uriFound ? new FileSource().setUri(uri) : new PlaySource() {};
+            PlaySource playSource = uriFound ? new FileSource().setUri(uri) : new PlaySource() {
+            };
             playSource.setPlaySourceId(playSourceId);
             return playSource;
         });

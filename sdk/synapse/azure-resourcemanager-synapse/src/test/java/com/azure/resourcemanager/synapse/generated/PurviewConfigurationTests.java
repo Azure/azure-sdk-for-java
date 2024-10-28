@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PurviewConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PurviewConfiguration model =
-            BinaryData.fromString("{\"purviewResourceId\":\"ezkgi\"}").toObject(PurviewConfiguration.class);
+        PurviewConfiguration model
+            = BinaryData.fromString("{\"purviewResourceId\":\"ezkgi\"}").toObject(PurviewConfiguration.class);
         Assertions.assertEquals("ezkgi", model.purviewResourceId());
     }
 

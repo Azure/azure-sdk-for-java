@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GenerateDetailedCostReportOperationStatusesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenerateDetailedCostReportOperationStatusesInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"ffhmouwqlgzr\",\"name\":\"eeyebi\",\"status\":{\"status\":\"ReadyToDownload\"},\"startTime\":\"uhqlbjbsybbqwrvt\",\"endTime\":\"gmfpgvmp\",\"type\":\"as\",\"properties\":{\"expiryTime\":\"2021-05-09T14:17:26Z\",\"validTill\":\"2021-11-08T17:52:45Z\",\"downloadUrl\":\"smwutwbdsrezpd\"}}")
-                .toObject(GenerateDetailedCostReportOperationStatusesInner.class);
+        GenerateDetailedCostReportOperationStatusesInner model = BinaryData.fromString(
+            "{\"id\":\"ffhmouwqlgzr\",\"name\":\"eeyebi\",\"status\":{\"status\":\"ReadyToDownload\"},\"startTime\":\"uhqlbjbsybbqwrvt\",\"endTime\":\"gmfpgvmp\",\"type\":\"as\",\"properties\":{\"expiryTime\":\"2021-05-09T14:17:26Z\",\"validTill\":\"2021-11-08T17:52:45Z\",\"downloadUrl\":\"smwutwbdsrezpd\"}}")
+            .toObject(GenerateDetailedCostReportOperationStatusesInner.class);
         Assertions.assertEquals("ffhmouwqlgzr", model.id());
         Assertions.assertEquals("eeyebi", model.name());
         Assertions.assertEquals(ReportOperationStatusType.READY_TO_DOWNLOAD, model.status().status());
@@ -31,9 +29,8 @@ public final class GenerateDetailedCostReportOperationStatusesInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenerateDetailedCostReportOperationStatusesInner model =
-            new GenerateDetailedCostReportOperationStatusesInner()
-                .withId("ffhmouwqlgzr")
+        GenerateDetailedCostReportOperationStatusesInner model
+            = new GenerateDetailedCostReportOperationStatusesInner().withId("ffhmouwqlgzr")
                 .withName("eeyebi")
                 .withStatus(new Status().withStatus(ReportOperationStatusType.READY_TO_DOWNLOAD))
                 .withStartTime("uhqlbjbsybbqwrvt")

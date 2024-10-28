@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CostDetailsTimePeriodTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CostDetailsTimePeriod model =
-            BinaryData.fromString("{\"start\":\"nswhcc\",\"end\":\"ph\"}").toObject(CostDetailsTimePeriod.class);
+        CostDetailsTimePeriod model
+            = BinaryData.fromString("{\"start\":\"nswhcc\",\"end\":\"ph\"}").toObject(CostDetailsTimePeriod.class);
         Assertions.assertEquals("nswhcc", model.start());
         Assertions.assertEquals("ph", model.end());
     }

@@ -30,8 +30,7 @@ public final class HardThresholdCondition {
      *     suppressing the reporting of individual anomalies helps to avoid noises, especially if the metrics
      *     have fine granularity.
      */
-    public HardThresholdCondition(AnomalyDetectorDirection detectorDirection,
-                                      SuppressCondition suppressCondition) {
+    public HardThresholdCondition(AnomalyDetectorDirection detectorDirection, SuppressCondition suppressCondition) {
         this.anomalyDetectorDirection = detectorDirection;
         this.suppressCondition = suppressCondition;
     }

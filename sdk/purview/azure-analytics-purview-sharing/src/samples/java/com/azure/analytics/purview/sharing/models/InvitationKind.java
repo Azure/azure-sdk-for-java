@@ -4,10 +4,9 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import java.util.Collection;
-
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
 
 /**
  * The types of invitations.
@@ -25,7 +24,7 @@ public final class InvitationKind extends ExpandableStringEnum<InvitationKind> {
 
     /**
      * Creates a new instance of InvitationKind value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +33,17 @@ public final class InvitationKind extends ExpandableStringEnum<InvitationKind> {
 
     /**
      * Creates or finds a InvitationKind from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding InvitationKind.
      */
-    @JsonCreator
     public static InvitationKind fromString(String name) {
         return fromString(name, InvitationKind.class);
     }
 
     /**
      * Gets known InvitationKind values.
-     * 
+     *
      * @return known InvitationKind values.
      */
     public static Collection<InvitationKind> values() {

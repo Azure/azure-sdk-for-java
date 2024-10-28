@@ -282,20 +282,16 @@ public final class WorkbookProperties {
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property displayName in model WorkbookProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property displayName in model WorkbookProperties"));
         }
         if (serializedData() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serializedData in model WorkbookProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property serializedData in model WorkbookProperties"));
         }
         if (category() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property category in model WorkbookProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property category in model WorkbookProperties"));
         }
     }
 

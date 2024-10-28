@@ -23,8 +23,8 @@ public final class Status extends ExpandableStringEnum<Status> {
     public static final Status INVALID_QUOTA_BELOW_CLUSTER_MINIMUM = fromString("InvalidQuotaBelowClusterMinimum");
 
     /** Static value InvalidQuotaExceedsSubscriptionLimit for Status. */
-    public static final Status INVALID_QUOTA_EXCEEDS_SUBSCRIPTION_LIMIT =
-        fromString("InvalidQuotaExceedsSubscriptionLimit");
+    public static final Status INVALID_QUOTA_EXCEEDS_SUBSCRIPTION_LIMIT
+        = fromString("InvalidQuotaExceedsSubscriptionLimit");
 
     /** Static value InvalidVMFamilyName for Status. */
     public static final Status INVALID_VMFAMILY_NAME = fromString("InvalidVMFamilyName");

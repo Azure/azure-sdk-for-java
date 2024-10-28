@@ -99,11 +99,8 @@ public interface AzureBareMetalStorageInstance {
     AzureBareMetalStorageInstanceInner innerModel();
 
     /** The entirety of the AzureBareMetalStorageInstance definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The AzureBareMetalStorageInstance definition stages. */
@@ -146,10 +143,8 @@ public interface AzureBareMetalStorageInstance {
          * The stage of the AzureBareMetalStorageInstance definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithAzureBareMetalStorageInstanceUniqueIdentifier,
-                DefinitionStages.WithStorageProperties {
+        interface WithCreate extends DefinitionStages.WithTags,
+            DefinitionStages.WithAzureBareMetalStorageInstanceUniqueIdentifier, DefinitionStages.WithStorageProperties {
             /**
              * Executes the create request.
              *
@@ -190,8 +185,8 @@ public interface AzureBareMetalStorageInstance {
              *     ID.
              * @return the next definition stage.
              */
-            WithCreate withAzureBareMetalStorageInstanceUniqueIdentifier(
-                String azureBareMetalStorageInstanceUniqueIdentifier);
+            WithCreate
+                withAzureBareMetalStorageInstanceUniqueIdentifier(String azureBareMetalStorageInstanceUniqueIdentifier);
         }
 
         /** The stage of the AzureBareMetalStorageInstance definition allowing to specify storageProperties. */

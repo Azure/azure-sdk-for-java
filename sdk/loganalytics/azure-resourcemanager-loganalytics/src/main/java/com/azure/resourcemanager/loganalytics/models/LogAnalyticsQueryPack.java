@@ -106,11 +106,8 @@ public interface LogAnalyticsQueryPack {
     LogAnalyticsQueryPackInner innerModel();
 
     /** The entirety of the LogAnalyticsQueryPack definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The LogAnalyticsQueryPack definition stages. */

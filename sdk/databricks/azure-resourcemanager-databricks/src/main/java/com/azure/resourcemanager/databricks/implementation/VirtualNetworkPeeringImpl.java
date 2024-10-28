@@ -96,20 +96,16 @@ public final class VirtualNetworkPeeringImpl
     }
 
     public VirtualNetworkPeering create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVNetPeerings()
-                .createOrUpdate(resourceGroupName, workspaceName, peeringName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVNetPeerings()
+            .createOrUpdate(resourceGroupName, workspaceName, peeringName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public VirtualNetworkPeering create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVNetPeerings()
-                .createOrUpdate(resourceGroupName, workspaceName, peeringName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVNetPeerings()
+            .createOrUpdate(resourceGroupName, workspaceName, peeringName, this.innerModel(), context);
         return this;
     }
 
@@ -124,25 +120,20 @@ public final class VirtualNetworkPeeringImpl
     }
 
     public VirtualNetworkPeering apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVNetPeerings()
-                .createOrUpdate(resourceGroupName, workspaceName, peeringName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVNetPeerings()
+            .createOrUpdate(resourceGroupName, workspaceName, peeringName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public VirtualNetworkPeering apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVNetPeerings()
-                .createOrUpdate(resourceGroupName, workspaceName, peeringName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVNetPeerings()
+            .createOrUpdate(resourceGroupName, workspaceName, peeringName, this.innerModel(), context);
         return this;
     }
 
-    VirtualNetworkPeeringImpl(
-        VirtualNetworkPeeringInner innerObject,
+    VirtualNetworkPeeringImpl(VirtualNetworkPeeringInner innerObject,
         com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -152,27 +143,23 @@ public final class VirtualNetworkPeeringImpl
     }
 
     public VirtualNetworkPeering refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVNetPeerings()
-                .getWithResponse(resourceGroupName, workspaceName, peeringName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVNetPeerings()
+            .getWithResponse(resourceGroupName, workspaceName, peeringName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VirtualNetworkPeering refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVNetPeerings()
-                .getWithResponse(resourceGroupName, workspaceName, peeringName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVNetPeerings()
+            .getWithResponse(resourceGroupName, workspaceName, peeringName, context)
+            .getValue();
         return this;
     }
 
-    public VirtualNetworkPeeringImpl withRemoteVirtualNetwork(
-        VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork remoteVirtualNetwork) {
+    public VirtualNetworkPeeringImpl
+        withRemoteVirtualNetwork(VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork remoteVirtualNetwork) {
         this.innerModel().withRemoteVirtualNetwork(remoteVirtualNetwork);
         return this;
     }

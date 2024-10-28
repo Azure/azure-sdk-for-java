@@ -19,8 +19,8 @@ public final class KustoOperationsImpl implements KustoOperations {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public KustoOperationsImpl(
-        KustoOperationsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public KustoOperationsImpl(KustoOperationsClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

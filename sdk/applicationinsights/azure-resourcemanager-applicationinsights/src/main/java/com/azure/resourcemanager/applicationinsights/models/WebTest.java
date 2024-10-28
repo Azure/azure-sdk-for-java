@@ -178,11 +178,8 @@ public interface WebTest {
     WebTestInner innerModel();
 
     /** The entirety of the WebTest definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The WebTest definition stages. */
@@ -225,21 +222,11 @@ public interface WebTest {
          * The stage of the WebTest definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithKind,
-                DefinitionStages.WithSyntheticMonitorId,
-                DefinitionStages.WithWebTestName,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithEnabled,
-                DefinitionStages.WithFrequency,
-                DefinitionStages.WithTimeout,
-                DefinitionStages.WithWebTestKind,
-                DefinitionStages.WithRetryEnabled,
-                DefinitionStages.WithLocations,
-                DefinitionStages.WithConfiguration,
-                DefinitionStages.WithRequest,
-                DefinitionStages.WithValidationRules {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithKind,
+            DefinitionStages.WithSyntheticMonitorId, DefinitionStages.WithWebTestName, DefinitionStages.WithDescription,
+            DefinitionStages.WithEnabled, DefinitionStages.WithFrequency, DefinitionStages.WithTimeout,
+            DefinitionStages.WithWebTestKind, DefinitionStages.WithRetryEnabled, DefinitionStages.WithLocations,
+            DefinitionStages.WithConfiguration, DefinitionStages.WithRequest, DefinitionStages.WithValidationRules {
             /**
              * Executes the create request.
              *

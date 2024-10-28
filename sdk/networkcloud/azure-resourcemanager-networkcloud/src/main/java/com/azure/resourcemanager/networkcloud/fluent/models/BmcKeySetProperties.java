@@ -214,26 +214,20 @@ public final class BmcKeySetProperties {
      */
     public void validate() {
         if (azureGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property azureGroupId in model BmcKeySetProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property azureGroupId in model BmcKeySetProperties"));
         }
         if (expiration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property expiration in model BmcKeySetProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property expiration in model BmcKeySetProperties"));
         }
         if (privilegeLevel() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property privilegeLevel in model BmcKeySetProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property privilegeLevel in model BmcKeySetProperties"));
         }
         if (userList() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property userList in model BmcKeySetProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property userList in model BmcKeySetProperties"));
         } else {
             userList().forEach(e -> e.validate());
         }

@@ -56,8 +56,8 @@ public interface LabelsClient {
      * @return label details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LabelResourceInner> getByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, String labelName, Context context);
+    Response<LabelResourceInner> getByWorkspaceWithResponse(String resourceGroupName, String workspaceName,
+        String labelName, Context context);
 
     /**
      * Returns a label in the given workspace.
@@ -85,8 +85,8 @@ public interface LabelsClient {
      * @return the {@link SyncPoller} for polling of label details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LabelResourceInner>, LabelResourceInner> beginCreateAndUpdate(
-        String resourceGroupName, String workspaceName, String labelName);
+    SyncPoller<PollResult<LabelResourceInner>, LabelResourceInner> beginCreateAndUpdate(String resourceGroupName,
+        String workspaceName, String labelName);
 
     /**
      * Create or update a Label.
@@ -102,12 +102,8 @@ public interface LabelsClient {
      * @return the {@link SyncPoller} for polling of label details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LabelResourceInner>, LabelResourceInner> beginCreateAndUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String labelName,
-        LabelResourceInner labelResource,
-        Context context);
+    SyncPoller<PollResult<LabelResourceInner>, LabelResourceInner> beginCreateAndUpdate(String resourceGroupName,
+        String workspaceName, String labelName, LabelResourceInner labelResource, Context context);
 
     /**
      * Create or update a Label.
@@ -137,12 +133,8 @@ public interface LabelsClient {
      * @return label details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LabelResourceInner createAndUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String labelName,
-        LabelResourceInner labelResource,
-        Context context);
+    LabelResourceInner createAndUpdate(String resourceGroupName, String workspaceName, String labelName,
+        LabelResourceInner labelResource, Context context);
 
     /**
      * Update a Label.
@@ -158,12 +150,8 @@ public interface LabelsClient {
      * @return label details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LabelResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String labelName,
-        LabelPatchResource labelPatchResource,
-        Context context);
+    Response<LabelResourceInner> updateWithResponse(String resourceGroupName, String workspaceName, String labelName,
+        LabelPatchResource labelPatchResource, Context context);
 
     /**
      * Update a Label.
@@ -206,8 +194,8 @@ public interface LabelsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String labelName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String labelName,
+        Context context);
 
     /**
      * Delete a Label.

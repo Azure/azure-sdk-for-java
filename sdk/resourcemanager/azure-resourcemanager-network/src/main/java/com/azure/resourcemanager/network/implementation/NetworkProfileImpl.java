@@ -16,8 +16,8 @@ import reactor.core.publisher.Mono;
 import java.util.Collections;
 import java.util.List;
 
-final class NetworkProfileImpl extends
-    GroupableParentResourceWithTagsImpl<NetworkProfile, NetworkProfileInner, NetworkProfileImpl, NetworkManager>
+final class NetworkProfileImpl
+    extends GroupableParentResourceWithTagsImpl<NetworkProfile, NetworkProfileInner, NetworkProfileImpl, NetworkManager>
     implements NetworkProfile, NetworkProfile.Definition, NetworkProfile.Update {
 
     NetworkProfileImpl(String name, NetworkProfileInner innerObject, NetworkManager manager) {
@@ -26,8 +26,8 @@ final class NetworkProfileImpl extends
 
     @Override
     public List<ContainerNetworkInterfaceConfiguration> containerNetworkInterfaceConfigurations() {
-        List<ContainerNetworkInterfaceConfiguration> inner =
-            this.innerModel().containerNetworkInterfaceConfigurations();
+        List<ContainerNetworkInterfaceConfiguration> inner
+            = this.innerModel().containerNetworkInterfaceConfigurations();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {
@@ -37,8 +37,7 @@ final class NetworkProfileImpl extends
 
     @Override
     protected Mono<NetworkProfileInner> applyTagsToInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getNetworkProfiles()
             .updateTagsAsync(resourceGroupName(), name(), new TagsObject().withTags(innerModel().tags()));
@@ -46,8 +45,7 @@ final class NetworkProfileImpl extends
 
     @Override
     protected Mono<NetworkProfileInner> createInner() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getNetworkProfiles()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel());
@@ -59,40 +57,33 @@ final class NetworkProfileImpl extends
 
     @Override
     protected Mono<NetworkProfileInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getNetworkProfiles()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
-
     @Override
-    public NetworkProfileImpl withContainerNetworkInterfaceConfiguration(
-        String name, String ipConfigName, String virtualNetworkId, String subnetName) {
+    public NetworkProfileImpl withContainerNetworkInterfaceConfiguration(String name, String ipConfigName,
+        String virtualNetworkId, String subnetName) {
         String subnetId = String.format("%s/subnets/%s", virtualNetworkId, subnetName);
         return withContainerNetworkInterfaceConfiguration(name, ipConfigName, subnetId);
     }
 
     @Override
-    public NetworkProfileImpl withContainerNetworkInterfaceConfiguration(
-        String name, String ipConfigName, Subnet subnet) {
+    public NetworkProfileImpl withContainerNetworkInterfaceConfiguration(String name, String ipConfigName,
+        Subnet subnet) {
         return withContainerNetworkInterfaceConfiguration(name, ipConfigName, subnet.id());
     }
 
-    private NetworkProfileImpl withContainerNetworkInterfaceConfiguration(
-        String name, String ipConfigName, String subnetId) {
-        this.innerModel().withContainerNetworkInterfaceConfigurations(
-            Collections
-                .singletonList(
-                    new ContainerNetworkInterfaceConfiguration()
-                        .withName(name)
-                        .withIpConfigurations(
-                            Collections
-                                .singletonList(
-                                    new IpConfigurationProfileInner()
-                                        .withName(ipConfigName)
-                                        .withSubnet(new SubnetInner().withId(subnetId))))));
+    private NetworkProfileImpl withContainerNetworkInterfaceConfiguration(String name, String ipConfigName,
+        String subnetId) {
+        this.innerModel()
+            .withContainerNetworkInterfaceConfigurations(
+                Collections.singletonList(new ContainerNetworkInterfaceConfiguration().withName(name)
+                    .withIpConfigurations(
+                        Collections.singletonList(new IpConfigurationProfileInner().withName(ipConfigName)
+                            .withSubnet(new SubnetInner().withId(subnetId))))));
         return this;
     }
 }

@@ -32,8 +32,8 @@ public interface SqlPoolsClient {
      * @return sQL pool properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlPoolInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    Response<SqlPoolInner> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Get SQL pool
@@ -66,8 +66,8 @@ public interface SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginUpdate(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo);
+    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginUpdate(String resourceGroupName, String workspaceName,
+        String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo);
 
     /**
      * Update SQL pool
@@ -85,12 +85,8 @@ public interface SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SqlPoolPatchInfo sqlPoolInfo,
-        Context context);
+    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginUpdate(String resourceGroupName, String workspaceName,
+        String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo, Context context);
 
     /**
      * Update SQL pool
@@ -107,8 +103,8 @@ public interface SqlPoolsClient {
      * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolInner update(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolPatchInfo sqlPoolInfo);
+    SqlPoolInner update(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SqlPoolPatchInfo sqlPoolInfo);
 
     /**
      * Update SQL pool
@@ -126,12 +122,8 @@ public interface SqlPoolsClient {
      * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SqlPoolPatchInfo sqlPoolInfo,
-        Context context);
+    SqlPoolInner update(String resourceGroupName, String workspaceName, String sqlPoolName,
+        SqlPoolPatchInfo sqlPoolInfo, Context context);
 
     /**
      * Create SQL pool
@@ -148,8 +140,8 @@ public interface SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo);
+    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(String resourceGroupName, String workspaceName,
+        String sqlPoolName, SqlPoolInner sqlPoolInfo);
 
     /**
      * Create SQL pool
@@ -167,8 +159,8 @@ public interface SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo, Context context);
+    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginCreate(String resourceGroupName, String workspaceName,
+        String sqlPoolName, SqlPoolInner sqlPoolInfo, Context context);
 
     /**
      * Create SQL pool
@@ -203,8 +195,8 @@ public interface SqlPoolsClient {
      * @return sQL pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolInner create(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo, Context context);
+    SqlPoolInner create(String resourceGroupName, String workspaceName, String sqlPoolName, SqlPoolInner sqlPoolInfo,
+        Context context);
 
     /**
      * Delete SQL pool
@@ -220,8 +212,8 @@ public interface SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginDelete(
-        String resourceGroupName, String workspaceName, String sqlPoolName);
+    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginDelete(String resourceGroupName, String workspaceName,
+        String sqlPoolName);
 
     /**
      * Delete SQL pool
@@ -238,8 +230,8 @@ public interface SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginDelete(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginDelete(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context);
 
     /**
      * Delete SQL pool
@@ -319,8 +311,8 @@ public interface SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginPause(
-        String resourceGroupName, String workspaceName, String sqlPoolName);
+    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginPause(String resourceGroupName, String workspaceName,
+        String sqlPoolName);
 
     /**
      * Pause SQL pool
@@ -337,8 +329,8 @@ public interface SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginPause(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginPause(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context);
 
     /**
      * Pause SQL pool
@@ -387,8 +379,8 @@ public interface SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginResume(
-        String resourceGroupName, String workspaceName, String sqlPoolName);
+    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginResume(String resourceGroupName, String workspaceName,
+        String sqlPoolName);
 
     /**
      * Resume SQL pool
@@ -405,8 +397,8 @@ public interface SqlPoolsClient {
      * @return the {@link SyncPoller} for polling of sQL pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginResume(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    SyncPoller<PollResult<SqlPoolInner>, SqlPoolInner> beginResume(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context);
 
     /**
      * Resume SQL pool
@@ -457,12 +449,8 @@ public interface SqlPoolsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> renameWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        ResourceMoveDefinition parameters,
-        Context context);
+    Response<Void> renameWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        ResourceMoveDefinition parameters, Context context);
 
     /**
      * Rename a SQL pool

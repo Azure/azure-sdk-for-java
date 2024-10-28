@@ -45,8 +45,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(AzureReservationApiImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,45 +57,31 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @Host("{$host}")
     @ServiceInterface(name = "AzureReservationApiR")
     public interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/catalogs")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CatalogsResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("reservedResourceType") String reservedResourceType,
-            @QueryParam("location") String location,
-            @QueryParam("publisherId") String publisherId,
-            @QueryParam("offerId") String offerId,
-            @QueryParam("planId") String planId,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$skip") Float skip,
-            @QueryParam("$take") Float take,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CatalogsResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("reservedResourceType") String reservedResourceType, @QueryParam("location") String location,
+            @QueryParam("publisherId") String publisherId, @QueryParam("offerId") String offerId,
+            @QueryParam("planId") String planId, @QueryParam("$filter") String filter, @QueryParam("$skip") Float skip,
+            @QueryParam("$take") Float take, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Capacity/appliedReservations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AppliedReservationsInner>> getAppliedReservationList(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AppliedReservationsInner>> getAppliedReservationList(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CatalogsResult>> getCatalogNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CatalogsResult>> getCatalogNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -118,21 +104,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CatalogInner>> listSinglePageAsync(
-        String subscriptionId,
-        String reservedResourceType,
-        String location,
-        String publisherId,
-        String offerId,
-        String planId,
-        String filter,
-        Float skip,
-        Float take) {
+    private Mono<PagedResponse<CatalogInner>> listSinglePageAsync(String subscriptionId, String reservedResourceType,
+        String location, String publisherId, String offerId, String planId, String filter, Float skip, Float take) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -140,32 +116,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            subscriptionId,
-                            reservedResourceType,
-                            location,
-                            publisherId,
-                            offerId,
-                            planId,
-                            filter,
-                            skip,
-                            take,
-                            accept,
-                            context))
-            .<PagedResponse<CatalogInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, subscriptionId,
+                reservedResourceType, location, publisherId, offerId, planId, filter, skip, take, accept, context))
+            .<PagedResponse<CatalogInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -190,22 +144,12 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CatalogInner>> listSinglePageAsync(
-        String subscriptionId,
-        String reservedResourceType,
-        String location,
-        String publisherId,
-        String offerId,
-        String planId,
-        String filter,
-        Float skip,
-        Float take,
+    private Mono<PagedResponse<CatalogInner>> listSinglePageAsync(String subscriptionId, String reservedResourceType,
+        String location, String publisherId, String offerId, String planId, String filter, Float skip, Float take,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -214,29 +158,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                apiVersion,
-                subscriptionId,
-                reservedResourceType,
-                location,
-                publisherId,
-                offerId,
-                planId,
-                filter,
-                skip,
-                take,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), apiVersion, subscriptionId, reservedResourceType, location, publisherId,
+                offerId, planId, filter, skip, take, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -259,21 +184,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CatalogInner> listAsync(
-        String subscriptionId,
-        String reservedResourceType,
-        String location,
-        String publisherId,
-        String offerId,
-        String planId,
-        String filter,
-        Float skip,
-        Float take) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    subscriptionId, reservedResourceType, location, publisherId, offerId, planId, filter, skip, take),
-            nextLink -> getCatalogNextSinglePageAsync(nextLink));
+    private PagedFlux<CatalogInner> listAsync(String subscriptionId, String reservedResourceType, String location,
+        String publisherId, String offerId, String planId, String filter, Float skip, Float take) {
+        return new PagedFlux<>(() -> listSinglePageAsync(subscriptionId, reservedResourceType, location, publisherId,
+            offerId, planId, filter, skip, take), nextLink -> getCatalogNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -296,11 +210,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String filter = null;
         final Float skip = null;
         final Float take = null;
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    subscriptionId, reservedResourceType, location, publisherId, offerId, planId, filter, skip, take),
-            nextLink -> getCatalogNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(subscriptionId, reservedResourceType, location, publisherId,
+            offerId, planId, filter, skip, take), nextLink -> getCatalogNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -324,30 +235,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CatalogInner> listAsync(
-        String subscriptionId,
-        String reservedResourceType,
-        String location,
-        String publisherId,
-        String offerId,
-        String planId,
-        String filter,
-        Float skip,
-        Float take,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    subscriptionId,
-                    reservedResourceType,
-                    location,
-                    publisherId,
-                    offerId,
-                    planId,
-                    filter,
-                    skip,
-                    take,
-                    context),
+    private PagedFlux<CatalogInner> listAsync(String subscriptionId, String reservedResourceType, String location,
+        String publisherId, String offerId, String planId, String filter, Float skip, Float take, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(subscriptionId, reservedResourceType, location, publisherId,
+            offerId, planId, filter, skip, take, context),
             nextLink -> getCatalogNextSinglePageAsync(nextLink, context));
     }
 
@@ -371,9 +262,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String filter = null;
         final Float skip = null;
         final Float take = null;
-        return new PagedIterable<>(
-            listAsync(
-                subscriptionId, reservedResourceType, location, publisherId, offerId, planId, filter, skip, take));
+        return new PagedIterable<>(listAsync(subscriptionId, reservedResourceType, location, publisherId, offerId,
+            planId, filter, skip, take));
     }
 
     /**
@@ -397,29 +287,10 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CatalogInner> list(
-        String subscriptionId,
-        String reservedResourceType,
-        String location,
-        String publisherId,
-        String offerId,
-        String planId,
-        String filter,
-        Float skip,
-        Float take,
-        Context context) {
-        return new PagedIterable<>(
-            listAsync(
-                subscriptionId,
-                reservedResourceType,
-                location,
-                publisherId,
-                offerId,
-                planId,
-                filter,
-                skip,
-                take,
-                context));
+    public PagedIterable<CatalogInner> list(String subscriptionId, String reservedResourceType, String location,
+        String publisherId, String offerId, String planId, String filter, Float skip, Float take, Context context) {
+        return new PagedIterable<>(listAsync(subscriptionId, reservedResourceType, location, publisherId, offerId,
+            planId, filter, skip, take, context));
     }
 
     /**
@@ -438,10 +309,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AppliedReservationsInner>> getAppliedReservationListWithResponseAsync(String subscriptionId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -449,11 +318,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getAppliedReservationList(
-                            this.client.getEndpoint(), apiVersion, subscriptionId, accept, context))
+            .withContext(context -> service.getAppliedReservationList(this.client.getEndpoint(), apiVersion,
+                subscriptionId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -472,13 +338,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AppliedReservationsInner>> getAppliedReservationListWithResponseAsync(
-        String subscriptionId, Context context) {
+    private Mono<Response<AppliedReservationsInner>> getAppliedReservationListWithResponseAsync(String subscriptionId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (subscriptionId == null) {
             return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
@@ -486,8 +350,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getAppliedReservationList(this.client.getEndpoint(), apiVersion, subscriptionId, accept, context);
+        return service.getAppliedReservationList(this.client.getEndpoint(), apiVersion, subscriptionId, accept,
+            context);
     }
 
     /**
@@ -524,8 +388,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      *     subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AppliedReservationsInner> getAppliedReservationListWithResponse(
-        String subscriptionId, Context context) {
+    public Response<AppliedReservationsInner> getAppliedReservationListWithResponse(String subscriptionId,
+        Context context) {
         return getAppliedReservationListWithResponseAsync(subscriptionId, context).block();
     }
 
@@ -564,23 +428,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getCatalogNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<CatalogInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<CatalogInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -602,23 +457,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getCatalogNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.getCatalogNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

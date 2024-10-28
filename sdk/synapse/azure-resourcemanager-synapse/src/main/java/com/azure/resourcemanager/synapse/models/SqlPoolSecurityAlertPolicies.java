@@ -39,8 +39,8 @@ public interface SqlPoolSecurityAlertPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Sql pool's security alert policies as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SqlPoolSecurityAlertPolicy> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<SqlPoolSecurityAlertPolicy> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Get a Sql pool's security alert policy
@@ -57,12 +57,8 @@ public interface SqlPoolSecurityAlertPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Sql pool's security alert policy along with {@link Response}.
      */
-    Response<SqlPoolSecurityAlertPolicy> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        Context context);
+    Response<SqlPoolSecurityAlertPolicy> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, SecurityAlertPolicyName securityAlertPolicyName, Context context);
 
     /**
      * Get a Sql pool's security alert policy
@@ -78,10 +74,7 @@ public interface SqlPoolSecurityAlertPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Sql pool's security alert policy.
      */
-    SqlPoolSecurityAlertPolicy get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    SqlPoolSecurityAlertPolicy get(String resourceGroupName, String workspaceName, String sqlPoolName,
         SecurityAlertPolicyName securityAlertPolicyName);
 
     /**

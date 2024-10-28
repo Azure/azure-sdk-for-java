@@ -108,12 +108,8 @@ public interface ScaleRule extends HasInnerModel<ScaleRuleInner>, HasParent<Auto
 
     /** The entirety of an autoscale profile scale rule definition. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithMetricName,
-            DefinitionStages.WithStatistic,
-            DefinitionStages.WithCondition,
-            DefinitionStages.WithScaleAction,
-            DefinitionStages.WithAttach {
+        extends DefinitionStages.Blank, DefinitionStages.WithMetricName, DefinitionStages.WithStatistic,
+        DefinitionStages.WithCondition, DefinitionStages.WithScaleAction, DefinitionStages.WithAttach {
     }
 
     /** Grouping of autoscale profile scale rule definition stages. */
@@ -204,8 +200,8 @@ public interface ScaleRule extends HasInnerModel<ScaleRuleInner>, HasParent<Auto
              * @param threshold the threshold of the metric that triggers the scale action.
              * @return the next stage of the definition.
              */
-            WithScaleAction withCondition(
-                TimeAggregationType timeAggregation, ComparisonOperationType condition, double threshold);
+            WithScaleAction withCondition(TimeAggregationType timeAggregation, ComparisonOperationType condition,
+                double threshold);
         }
 
         /** The stage of the definition which specifies action to take when the metric alert will be triggered. */
@@ -222,8 +218,8 @@ public interface ScaleRule extends HasInnerModel<ScaleRuleInner>, HasParent<Auto
              *     must be between 1 week and 1 minute in ISO 8601 format.
              * @return the next stage of the definition.
              */
-            WithAttach withScaleAction(
-                ScaleDirection direction, ScaleType type, int instanceCountChange, Duration cooldown);
+            WithAttach withScaleAction(ScaleDirection direction, ScaleType type, int instanceCountChange,
+                Duration cooldown);
         }
 
         /** The final stage of the definition which attaches defined scale rule to the current Autoscale profile. */
@@ -236,12 +232,9 @@ public interface ScaleRule extends HasInnerModel<ScaleRuleInner>, HasParent<Auto
      * Autoscale Settings update stage.
      */
     interface ParentUpdateDefinition
-        extends ParentUpdateDefinitionStages.Blank,
-            ParentUpdateDefinitionStages.WithMetricName,
-            ParentUpdateDefinitionStages.WithStatistic,
-            ParentUpdateDefinitionStages.WithCondition,
-            ParentUpdateDefinitionStages.WithScaleAction,
-            ParentUpdateDefinitionStages.WithAttach {
+        extends ParentUpdateDefinitionStages.Blank, ParentUpdateDefinitionStages.WithMetricName,
+        ParentUpdateDefinitionStages.WithStatistic, ParentUpdateDefinitionStages.WithCondition,
+        ParentUpdateDefinitionStages.WithScaleAction, ParentUpdateDefinitionStages.WithAttach {
     }
 
     /**
@@ -335,8 +328,8 @@ public interface ScaleRule extends HasInnerModel<ScaleRuleInner>, HasParent<Auto
              * @param threshold the threshold of the metric that triggers the scale action.
              * @return the next stage of the definition.
              */
-            WithScaleAction withCondition(
-                TimeAggregationType timeAggregation, ComparisonOperationType condition, double threshold);
+            WithScaleAction withCondition(TimeAggregationType timeAggregation, ComparisonOperationType condition,
+                double threshold);
         }
 
         /** The stage of the definition which specifies action to take when the metric alert will be triggered. */
@@ -353,8 +346,8 @@ public interface ScaleRule extends HasInnerModel<ScaleRuleInner>, HasParent<Auto
              *     must be between 1 week and 1 minute in ISO 8601 format.
              * @return the next stage of the definition.
              */
-            WithAttach withScaleAction(
-                ScaleDirection direction, ScaleType type, int instanceCountChange, Duration cooldown);
+            WithAttach withScaleAction(ScaleDirection direction, ScaleType type, int instanceCountChange,
+                Duration cooldown);
         }
 
         /** The final stage of the definition which attaches defined scale rule to the current Autoscale profile. */
@@ -372,13 +365,9 @@ public interface ScaleRule extends HasInnerModel<ScaleRuleInner>, HasParent<Auto
      * The entirety of an autoscale profile scale rule definition during parent Autoscale Profile update in Autoscale
      * Settings update stage.
      */
-    interface UpdateDefinition
-        extends UpdateDefinitionStages.Blank,
-            UpdateDefinitionStages.WithMetricName,
-            UpdateDefinitionStages.WithStatistic,
-            UpdateDefinitionStages.WithCondition,
-            UpdateDefinitionStages.WithScaleAction,
-            UpdateDefinitionStages.WithAttach {
+    interface UpdateDefinition extends UpdateDefinitionStages.Blank, UpdateDefinitionStages.WithMetricName,
+        UpdateDefinitionStages.WithStatistic, UpdateDefinitionStages.WithCondition,
+        UpdateDefinitionStages.WithScaleAction, UpdateDefinitionStages.WithAttach {
     }
 
     /**
@@ -472,9 +461,10 @@ public interface ScaleRule extends HasInnerModel<ScaleRuleInner>, HasParent<Auto
              * @param threshold the threshold of the metric that triggers the scale action.
              * @return the next stage of the definition.
              */
-            WithScaleAction withCondition(
-                TimeAggregationType timeAggregation, ComparisonOperationType condition, double threshold);
+            WithScaleAction withCondition(TimeAggregationType timeAggregation, ComparisonOperationType condition,
+                double threshold);
         }
+
         /** The stage of the definition which specifies action to take when the metric alert will be triggered. */
         interface WithScaleAction {
             /**
@@ -489,13 +479,12 @@ public interface ScaleRule extends HasInnerModel<ScaleRuleInner>, HasParent<Auto
              *     must be between 1 week and 1 minute in ISO 8601 format.
              * @return the next stage of the definition.
              */
-            WithAttach withScaleAction(
-                ScaleDirection direction, ScaleType type, int instanceCountChange, Duration cooldown);
+            WithAttach withScaleAction(ScaleDirection direction, ScaleType type, int instanceCountChange,
+                Duration cooldown);
         }
 
         /** The final stage of the definition which attaches defined scale rule to the current Autoscale profile. */
-        interface WithAttach
-            extends
+        interface WithAttach extends
             /**
              * Attaches sclae rule to the new autoscale profile in the autoscale update definition stage.
              *

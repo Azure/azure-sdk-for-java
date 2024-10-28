@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ForecastResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ForecastResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"nextLink\":\"awgqwgxhni\",\"columns\":[{\"name\":\"bkpyc\",\"type\":\"lwn\"}],\"rows\":[[\"datadauwhvylwzbtd\",\"dataxujznbmpowu\"],[\"datarzqlveu\",\"datalupj\"],[\"datahfxobbcswsrtj\",\"dataiplrbpbewtghfgb\",\"datac\",\"datawxzvlvqhjkb\"]]},\"sku\":\"ibtnmxiebwwaloay\",\"eTag\":\"gwrtzju\",\"location\":\"gwyzm\",\"tags\":{\"jcbpwxqpsrknft\":\"ongmtsa\",\"yvxqtayriwwroy\":\"uvriuhprwm\",\"bycnojvkn\":\"bexrmcq\",\"qsgzvahapj\":\"e\"},\"id\":\"zhpvgqzcjrvxd\",\"name\":\"zlmwlxkvugfhz\",\"type\":\"vawjvzunlu\"}")
-                .toObject(ForecastResultInner.class);
+        ForecastResultInner model = BinaryData.fromString(
+            "{\"properties\":{\"nextLink\":\"awgqwgxhni\",\"columns\":[{\"name\":\"bkpyc\",\"type\":\"lwn\"}],\"rows\":[[\"datadauwhvylwzbtd\",\"dataxujznbmpowu\"],[\"datarzqlveu\",\"datalupj\"],[\"datahfxobbcswsrtj\",\"dataiplrbpbewtghfgb\",\"datac\",\"datawxzvlvqhjkb\"]]},\"sku\":\"ibtnmxiebwwaloay\",\"eTag\":\"gwrtzju\",\"location\":\"gwyzm\",\"tags\":{\"jcbpwxqpsrknft\":\"ongmtsa\",\"yvxqtayriwwroy\":\"uvriuhprwm\",\"bycnojvkn\":\"bexrmcq\",\"qsgzvahapj\":\"e\"},\"id\":\"zhpvgqzcjrvxd\",\"name\":\"zlmwlxkvugfhz\",\"type\":\"vawjvzunlu\"}")
+            .toObject(ForecastResultInner.class);
         Assertions.assertEquals("gwyzm", model.location());
         Assertions.assertEquals("ongmtsa", model.tags().get("jcbpwxqpsrknft"));
         Assertions.assertEquals("awgqwgxhni", model.nextLink());
@@ -29,27 +27,14 @@ public final class ForecastResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForecastResultInner model =
-            new ForecastResultInner()
-                .withLocation("gwyzm")
-                .withTags(
-                    mapOf(
-                        "jcbpwxqpsrknft",
-                        "ongmtsa",
-                        "yvxqtayriwwroy",
-                        "uvriuhprwm",
-                        "bycnojvkn",
-                        "bexrmcq",
-                        "qsgzvahapj",
-                        "e"))
-                .withNextLink("awgqwgxhni")
-                .withColumns(Arrays.asList(new ForecastColumn().withName("bkpyc").withType("lwn")))
-                .withRows(
-                    Arrays
-                        .asList(
-                            Arrays.asList("datadauwhvylwzbtd", "dataxujznbmpowu"),
-                            Arrays.asList("datarzqlveu", "datalupj"),
-                            Arrays.asList("datahfxobbcswsrtj", "dataiplrbpbewtghfgb", "datac", "datawxzvlvqhjkb")));
+        ForecastResultInner model = new ForecastResultInner().withLocation("gwyzm")
+            .withTags(mapOf("jcbpwxqpsrknft", "ongmtsa", "yvxqtayriwwroy", "uvriuhprwm", "bycnojvkn", "bexrmcq",
+                "qsgzvahapj", "e"))
+            .withNextLink("awgqwgxhni")
+            .withColumns(Arrays.asList(new ForecastColumn().withName("bkpyc").withType("lwn")))
+            .withRows(Arrays.asList(Arrays.asList("datadauwhvylwzbtd", "dataxujznbmpowu"),
+                Arrays.asList("datarzqlveu", "datalupj"),
+                Arrays.asList("datahfxobbcswsrtj", "dataiplrbpbewtghfgb", "datac", "datawxzvlvqhjkb")));
         model = BinaryData.fromObject(model).toObject(ForecastResultInner.class);
         Assertions.assertEquals("gwyzm", model.location());
         Assertions.assertEquals("ongmtsa", model.tags().get("jcbpwxqpsrknft"));

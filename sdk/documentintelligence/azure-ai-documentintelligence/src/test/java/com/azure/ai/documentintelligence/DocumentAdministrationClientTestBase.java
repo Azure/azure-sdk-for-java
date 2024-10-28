@@ -39,19 +39,18 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
      */
     @Override
     protected void beforeTest() {
-        durationTestMode = interceptorManager.isPlaybackMode()
-            ? TestUtils.ONE_NANO_DURATION : TestUtils.DEFAULT_POLL_INTERVAL;
+        durationTestMode
+            = interceptorManager.isPlaybackMode() ? TestUtils.ONE_NANO_DURATION : TestUtils.DEFAULT_POLL_INTERVAL;
     }
 
     DocumentIntelligenceAdministrationClientBuilder getModelAdminClientBuilder(HttpClient httpClient,
-                                                                               DocumentIntelligenceServiceVersion serviceVersion) {
+        DocumentIntelligenceServiceVersion serviceVersion) {
         String endpoint = getEndpoint();
-        DocumentIntelligenceAdministrationClientBuilder builder = new DocumentIntelligenceAdministrationClientBuilder()
-            .endpoint(endpoint)
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion);
-
+        DocumentIntelligenceAdministrationClientBuilder builder
+            = new DocumentIntelligenceAdministrationClientBuilder().endpoint(endpoint)
+                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .serviceVersion(serviceVersion);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.credential(new MockTokenCredential());
@@ -70,6 +69,7 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
         }
         return builder;
     }
+
     private void setMatchers() {
         interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
     }

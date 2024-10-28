@@ -29,39 +29,27 @@ public final class SignalRsListSkusWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"resourceType\":\"fhxwrsne\",\"sku\":{\"name\":\"ozqvbubqmam\",\"tier\":\"Standard\",\"size\":\"xhxzgazttaboidvm\",\"family\":\"hppubowsepdfgkmt\",\"capacity\":2120323807},\"capacity\":{\"minimum\":343818307,\"maximum\":784188527,\"default\":151823445,\"allowedValues\":[812344780,1780706475,1263292916,155784561],\"scaleType\":\"None\"}},{\"resourceType\":\"kauxof\",\"sku\":{\"name\":\"fphwpnu\",\"tier\":\"Basic\",\"size\":\"wzejywhslw\",\"family\":\"jpllndnpdwrpq\",\"capacity\":822689438},\"capacity\":{\"minimum\":1169799061,\"maximum\":813335965,\"default\":1546371971,\"allowedValues\":[291808500,1701232505],\"scaleType\":\"Manual\"}},{\"resourceType\":\"pococtfjgt\",\"sku\":{\"name\":\"rjvzuyt\",\"tier\":\"Basic\",\"size\":\"muowolbauiro\",\"family\":\"ons\",\"capacity\":269423729},\"capacity\":{\"minimum\":1957887263,\"maximum\":2022776068,\"default\":1491253083,\"allowedValues\":[1937164138,1566256657,850455603,1627836178],\"scaleType\":\"Manual\"}}],\"nextLink\":\"mjfjmyccxlzhcox\"}";
+        String responseStr
+            = "{\"value\":[{\"resourceType\":\"fhxwrsne\",\"sku\":{\"name\":\"ozqvbubqmam\",\"tier\":\"Standard\",\"size\":\"xhxzgazttaboidvm\",\"family\":\"hppubowsepdfgkmt\",\"capacity\":2120323807},\"capacity\":{\"minimum\":343818307,\"maximum\":784188527,\"default\":151823445,\"allowedValues\":[812344780,1780706475,1263292916,155784561],\"scaleType\":\"None\"}},{\"resourceType\":\"kauxof\",\"sku\":{\"name\":\"fphwpnu\",\"tier\":\"Basic\",\"size\":\"wzejywhslw\",\"family\":\"jpllndnpdwrpq\",\"capacity\":822689438},\"capacity\":{\"minimum\":1169799061,\"maximum\":813335965,\"default\":1546371971,\"allowedValues\":[291808500,1701232505],\"scaleType\":\"Manual\"}},{\"resourceType\":\"pococtfjgt\",\"sku\":{\"name\":\"rjvzuyt\",\"tier\":\"Basic\",\"size\":\"muowolbauiro\",\"family\":\"ons\",\"capacity\":269423729},\"capacity\":{\"minimum\":1957887263,\"maximum\":2022776068,\"default\":1491253083,\"allowedValues\":[1937164138,1566256657,850455603,1627836178],\"scaleType\":\"Manual\"}}],\"nextLink\":\"mjfjmyccxlzhcox\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SignalRManager manager =
-            SignalRManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SignalRManager manager = SignalRManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SkuList response =
-            manager
-                .signalRs()
-                .listSkusWithResponse("hmnxhkxjqi", "wrweoo", com.azure.core.util.Context.NONE)
-                .getValue();
+        SkuList response = manager.signalRs()
+            .listSkusWithResponse("hmnxhkxjqi", "wrweoo", com.azure.core.util.Context.NONE)
+            .getValue();
     }
 }

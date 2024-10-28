@@ -41,9 +41,10 @@ public final class ClustersDeleteByResourceGroupWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ServiceFabricManager manager = ServiceFabricManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ServiceFabricManager manager = ServiceFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.clusters().deleteByResourceGroupWithResponse("opgxedkowepb", "pc", com.azure.core.util.Context.NONE);
 

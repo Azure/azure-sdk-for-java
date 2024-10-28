@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveTraceCategoryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveTraceCategory model =
-            BinaryData.fromString("{\"name\":\"ool\",\"enabled\":\"tpkiwkkbnujry\"}").toObject(LiveTraceCategory.class);
+        LiveTraceCategory model = BinaryData.fromString("{\"name\":\"ool\",\"enabled\":\"tpkiwkkbnujry\"}")
+            .toObject(LiveTraceCategory.class);
         Assertions.assertEquals("ool", model.name());
         Assertions.assertEquals("tpkiwkkbnujry", model.enabled());
     }

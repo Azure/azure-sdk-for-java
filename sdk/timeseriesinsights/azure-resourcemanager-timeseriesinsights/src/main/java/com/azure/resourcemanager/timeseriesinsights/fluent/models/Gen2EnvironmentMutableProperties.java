@@ -49,8 +49,8 @@ public final class Gen2EnvironmentMutableProperties {
      * @param storageConfiguration the storageConfiguration value to set.
      * @return the Gen2EnvironmentMutableProperties object itself.
      */
-    public Gen2EnvironmentMutableProperties withStorageConfiguration(
-        Gen2StorageConfigurationMutableProperties storageConfiguration) {
+    public Gen2EnvironmentMutableProperties
+        withStorageConfiguration(Gen2StorageConfigurationMutableProperties storageConfiguration) {
         this.storageConfiguration = storageConfiguration;
         return this;
     }
@@ -72,8 +72,8 @@ public final class Gen2EnvironmentMutableProperties {
      * @param warmStoreConfiguration the warmStoreConfiguration value to set.
      * @return the Gen2EnvironmentMutableProperties object itself.
      */
-    public Gen2EnvironmentMutableProperties withWarmStoreConfiguration(
-        WarmStoreConfigurationProperties warmStoreConfiguration) {
+    public Gen2EnvironmentMutableProperties
+        withWarmStoreConfiguration(WarmStoreConfigurationProperties warmStoreConfiguration) {
         this.warmStoreConfiguration = warmStoreConfiguration;
         return this;
     }

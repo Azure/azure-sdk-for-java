@@ -65,10 +65,8 @@ public final class TransportPreferences {
      */
     public void validate() {
         if (preferredShipmentType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property preferredShipmentType in model TransportPreferences"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property preferredShipmentType in model TransportPreferences"));
         }
     }
 

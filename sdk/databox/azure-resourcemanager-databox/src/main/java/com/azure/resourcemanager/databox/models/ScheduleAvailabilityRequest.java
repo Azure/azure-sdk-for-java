@@ -21,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DataBox", value = DataBoxScheduleAvailabilityRequest.class),
     @JsonSubTypes.Type(name = "DataBoxDisk", value = DiskScheduleAvailabilityRequest.class),
-    @JsonSubTypes.Type(name = "DataBoxHeavy", value = HeavyScheduleAvailabilityRequest.class)
-})
+    @JsonSubTypes.Type(name = "DataBoxHeavy", value = HeavyScheduleAvailabilityRequest.class) })
 @Fluent
 public class ScheduleAvailabilityRequest {
     /*
@@ -91,10 +90,8 @@ public class ScheduleAvailabilityRequest {
      */
     public void validate() {
         if (storageLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageLocation in model ScheduleAvailabilityRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageLocation in model ScheduleAvailabilityRequest"));
         }
     }
 

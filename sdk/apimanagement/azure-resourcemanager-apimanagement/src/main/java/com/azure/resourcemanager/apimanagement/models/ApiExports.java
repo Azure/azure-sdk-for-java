@@ -26,13 +26,8 @@ public interface ApiExports {
      * @return the details of the API specified by its identifier in the format specified to the Storage Blob with SAS
      *     Key valid for 5 minutes along with {@link Response}.
      */
-    Response<ApiExportResult> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        ExportFormat format,
-        ExportApi export,
-        Context context);
+    Response<ApiExportResult> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        ExportFormat format, ExportApi export, Context context);
 
     /**
      * Gets the details of the API specified by its identifier in the format specified to the Storage Blob with SAS Key
@@ -50,6 +45,6 @@ public interface ApiExports {
      * @return the details of the API specified by its identifier in the format specified to the Storage Blob with SAS
      *     Key valid for 5 minutes.
      */
-    ApiExportResult get(
-        String resourceGroupName, String serviceName, String apiId, ExportFormat format, ExportApi export);
+    ApiExportResult get(String resourceGroupName, String serviceName, String apiId, ExportFormat format,
+        ExportApi export);
 }

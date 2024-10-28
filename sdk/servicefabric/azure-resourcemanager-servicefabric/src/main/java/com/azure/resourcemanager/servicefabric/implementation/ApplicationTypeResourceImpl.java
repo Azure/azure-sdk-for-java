@@ -88,14 +88,17 @@ public final class ApplicationTypeResourceImpl
     }
 
     public ApplicationTypeResource create() {
-        this.innerObject
-            = serviceManager.serviceClient().getApplicationTypes().createOrUpdateWithResponse(resourceGroupName,
-                clusterName, applicationTypeName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypes()
+            .createOrUpdateWithResponse(resourceGroupName, clusterName, applicationTypeName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApplicationTypeResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApplicationTypes()
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypes()
             .createOrUpdateWithResponse(resourceGroupName, clusterName, applicationTypeName, this.innerModel(), context)
             .getValue();
         return this;
@@ -113,14 +116,17 @@ public final class ApplicationTypeResourceImpl
     }
 
     public ApplicationTypeResource apply() {
-        this.innerObject
-            = serviceManager.serviceClient().getApplicationTypes().createOrUpdateWithResponse(resourceGroupName,
-                clusterName, applicationTypeName, this.innerModel(), Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypes()
+            .createOrUpdateWithResponse(resourceGroupName, clusterName, applicationTypeName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApplicationTypeResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApplicationTypes()
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypes()
             .createOrUpdateWithResponse(resourceGroupName, clusterName, applicationTypeName, this.innerModel(), context)
             .getValue();
         return this;
@@ -136,14 +142,18 @@ public final class ApplicationTypeResourceImpl
     }
 
     public ApplicationTypeResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getApplicationTypes()
-            .getWithResponse(resourceGroupName, clusterName, applicationTypeName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypes()
+            .getWithResponse(resourceGroupName, clusterName, applicationTypeName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApplicationTypeResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApplicationTypes()
-            .getWithResponse(resourceGroupName, clusterName, applicationTypeName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplicationTypes()
+            .getWithResponse(resourceGroupName, clusterName, applicationTypeName, context)
+            .getValue();
         return this;
     }
 

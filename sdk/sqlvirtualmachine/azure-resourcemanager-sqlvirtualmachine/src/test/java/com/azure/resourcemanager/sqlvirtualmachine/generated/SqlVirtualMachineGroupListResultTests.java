@@ -10,11 +10,9 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineGroup
 public final class SqlVirtualMachineGroupListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlVirtualMachineGroupListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"yulpkudjkr\",\"sqlImageOffer\":\"hbzhfepg\",\"sqlImageSku\":\"Developer\",\"scaleType\":\"HA\",\"clusterManagerType\":\"WSFC\",\"clusterConfiguration\":\"Domainful\"},\"location\":\"c\",\"tags\":{\"jtjaodxobnbdxkq\":\"erhhbcsglumm\",\"ajionpimexgstxg\":\"xo\",\"gmaajrm\":\"po\",\"clwhijcoejctbz\":\"djwzrlov\"},\"id\":\"qsqsy\",\"name\":\"bkbfkgukdkex\",\"type\":\"ppofmxaxcfjpgdd\"},{\"properties\":{\"provisioningState\":\"jjxhvpmo\",\"sqlImageOffer\":\"xhdzxibqeojnx\",\"sqlImageSku\":\"Enterprise\",\"scaleType\":\"HA\",\"clusterManagerType\":\"WSFC\",\"clusterConfiguration\":\"Domainful\"},\"location\":\"eic\",\"tags\":{\"uhrhcffcyddgl\":\"npzaoq\"},\"id\":\"jthjqkwpyei\",\"name\":\"xmqci\",\"type\":\"q\"}],\"nextLink\":\"khixuigdtopbo\"}")
-                .toObject(SqlVirtualMachineGroupListResult.class);
+        SqlVirtualMachineGroupListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"yulpkudjkr\",\"sqlImageOffer\":\"hbzhfepg\",\"sqlImageSku\":\"Developer\",\"scaleType\":\"HA\",\"clusterManagerType\":\"WSFC\",\"clusterConfiguration\":\"Domainful\"},\"location\":\"c\",\"tags\":{\"jtjaodxobnbdxkq\":\"erhhbcsglumm\",\"ajionpimexgstxg\":\"xo\",\"gmaajrm\":\"po\",\"clwhijcoejctbz\":\"djwzrlov\"},\"id\":\"qsqsy\",\"name\":\"bkbfkgukdkex\",\"type\":\"ppofmxaxcfjpgdd\"},{\"properties\":{\"provisioningState\":\"jjxhvpmo\",\"sqlImageOffer\":\"xhdzxibqeojnx\",\"sqlImageSku\":\"Enterprise\",\"scaleType\":\"HA\",\"clusterManagerType\":\"WSFC\",\"clusterConfiguration\":\"Domainful\"},\"location\":\"eic\",\"tags\":{\"uhrhcffcyddgl\":\"npzaoq\"},\"id\":\"jthjqkwpyei\",\"name\":\"xmqci\",\"type\":\"q\"}],\"nextLink\":\"khixuigdtopbo\"}")
+            .toObject(SqlVirtualMachineGroupListResult.class);
     }
 
     @org.junit.jupiter.api.Test

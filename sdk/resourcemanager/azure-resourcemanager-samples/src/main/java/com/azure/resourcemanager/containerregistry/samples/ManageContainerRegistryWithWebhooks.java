@@ -49,7 +49,8 @@ public class ManageContainerRegistryWithWebhooks {
      * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException, InterruptedException {
+    public static boolean runSample(AzureResourceManager azureResourceManager)
+        throws IOException, InterruptedException {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgACR", 15);
         final String acrName = Utils.randomResourceName(azureResourceManager, "acrsample", 20);
         final Region region = Region.US_WEST3;
@@ -61,7 +62,6 @@ public class ManageContainerRegistryWithWebhooks {
         final String webhookServiceUri1 = "https://www.bing.com";
         final String webhookServiceUri2 = "https://www.bing.com";
 
-
         try {
             //=============================================================
             // Create an Azure Container Registry to store and manage private Docker container images
@@ -70,30 +70,31 @@ public class ManageContainerRegistryWithWebhooks {
 
             Date t1 = new Date();
 
-            Registry azureRegistry = azureResourceManager.containerRegistries().define(acrName)
+            Registry azureRegistry = azureResourceManager.containerRegistries()
+                .define(acrName)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withBasicSku()
                 .withRegistryNameAsAdminUser()
                 .defineWebhook(webhookName1)
-                    .withTriggerWhen(WebhookAction.PUSH, WebhookAction.DELETE)
-                    .withServiceUri(webhookServiceUri1)
-                    .withTag("tag", "value")
-                    .withCustomHeader("name", "value")
-                    .attach()
+                .withTriggerWhen(WebhookAction.PUSH, WebhookAction.DELETE)
+                .withServiceUri(webhookServiceUri1)
+                .withTag("tag", "value")
+                .withCustomHeader("name", "value")
+                .attach()
                 .defineWebhook(webhookName2)
-                    .withTriggerWhen(WebhookAction.PUSH)
-                    .withServiceUri(webhookServiceUri2)
-                    .enabled(false)
-                    .withRepositoriesScope("")
-                    .attach()
+                .withTriggerWhen(WebhookAction.PUSH)
+                .withServiceUri(webhookServiceUri2)
+                .enabled(false)
+                .withRepositoriesScope("")
+                .attach()
                 .withTag("tag1", "value1")
                 .create();
 
             Date t2 = new Date();
-            System.out.println("Created Azure Container Registry: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) " + azureRegistry.id());
+            System.out.println("Created Azure Container Registry: (took " + ((t2.getTime() - t1.getTime()) / 1000)
+                + " seconds) " + azureRegistry.id());
             Utils.print(azureRegistry);
-
 
             //=============================================================
             // Ping the container registry webhook to validate it works as expected
@@ -101,7 +102,8 @@ public class ManageContainerRegistryWithWebhooks {
             Webhook webhook = azureRegistry.webhooks().get(webhookName1);
             webhook.ping();
             List<WebhookEventInfo> webhookEvents = webhook.listEvents().stream().collect(Collectors.toList());
-            System.out.format("Found %d webhook events for: %s with container service: %s/n", webhookEvents.size(), webhook.name(), azureRegistry.name());
+            System.out.format("Found %d webhook events for: %s with container service: %s/n", webhookEvents.size(),
+                webhook.name(), azureRegistry.name());
             for (WebhookEventInfo webhookEventInfo : webhookEvents) {
                 System.out.print("\t" + webhookEventInfo.eventResponseMessage().content());
             }
@@ -110,8 +112,9 @@ public class ManageContainerRegistryWithWebhooks {
             // Create a Docker client that will be used to push/pull images to/from the Azure Container Registry
 
             RegistryCredentials acrCredentials = azureRegistry.getCredentials();
-            DockerClient dockerClient = DockerUtils.createDockerClient(azureResourceManager, rgName, region,
-                azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
+            DockerClient dockerClient
+                = DockerUtils.createDockerClient(azureResourceManager, rgName, region, azureRegistry.loginServerUrl(),
+                    acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
 
             //=============================================================
             // Pull a temp image from public Docker repo and create a temporary container from that image
@@ -128,14 +131,13 @@ public class ManageContainerRegistryWithWebhooks {
                 System.out.format("\tFound Docker image %s (%s)%n", image.getRepoTags()[0], image.getId());
             }
 
-            CreateContainerResponse dockerContainerInstance = dockerClient.createContainerCmd(dockerImageName + ":" + dockerImageTag)
-                .withName(dockerContainerName)
-                .withCmd("/hello")
-                .exec();
+            CreateContainerResponse dockerContainerInstance
+                = dockerClient.createContainerCmd(dockerImageName + ":" + dockerImageTag)
+                    .withName(dockerContainerName)
+                    .withCmd("/hello")
+                    .exec();
             System.out.println("List Docker containers:");
-            List<Container> dockerContainers = dockerClient.listContainersCmd()
-                .withShowAll(true)
-                .exec();
+            List<Container> dockerContainers = dockerClient.listContainersCmd().withShowAll(true).exec();
             for (Container container : dockerContainers) {
                 System.out.format("\tFound Docker container %s (%s)%n", container.getImage(), container.getId());
             }
@@ -146,19 +148,19 @@ public class ManageContainerRegistryWithWebhooks {
             String privateRepoUrl = azureRegistry.loginServerUrl() + "/samples/" + dockerContainerName;
             dockerClient.commitCmd(dockerContainerInstance.getId())
                 .withRepository(privateRepoUrl)
-                .withTag("latest").exec();
+                .withTag("latest")
+                .exec();
 
             // We can now remove the temporary container instance
-            dockerClient.removeContainerCmd(dockerContainerInstance.getId())
-                .withForce(true)
-                .exec();
+            dockerClient.removeContainerCmd(dockerContainerInstance.getId()).withForce(true).exec();
 
             //=============================================================
             // Push the new Docker image to the Azure Container Registry
 
             dockerClient.pushImageCmd(privateRepoUrl)
                 .withAuthConfig(dockerClient.authConfig())
-                .exec(new PushImageResultCallback()).awaitSuccess();
+                .exec(new PushImageResultCallback())
+                .awaitSuccess();
 
             // Remove the temp image from the local Docker host
             try {
@@ -172,7 +174,8 @@ public class ManageContainerRegistryWithWebhooks {
 
             webhook = azureRegistry.webhooks().get(webhookName1);
             webhookEvents = webhook.listEvents().stream().collect(Collectors.toList());
-            System.out.format("Found %d webhook events for: %s with container service: %s/n", webhookEvents.size(), webhook.name(), azureRegistry.name());
+            System.out.format("Found %d webhook events for: %s with container service: %s/n", webhookEvents.size(),
+                webhook.name(), azureRegistry.name());
             for (WebhookEventInfo webhookEventInfo : webhookEvents) {
                 System.out.print("\t" + webhookEventInfo.eventResponseMessage().content());
             }
@@ -206,8 +209,7 @@ public class ManageContainerRegistryWithWebhooks {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

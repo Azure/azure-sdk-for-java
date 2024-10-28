@@ -34,49 +34,33 @@ public final class SqlVirtualMachineTroubleshootsTroubleshootMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"startTimeUtc\":\"2021-04-06T16:15:02Z\",\"endTimeUtc\":\"2021-05-15T05:32:47Z\",\"troubleshootingScenario\":\"UnhealthyReplica\",\"properties\":{\"unhealthyReplicaInfo\":{\"availabilityGroupName\":\"mwlxk\"}},\"virtualMachineResourceId\":\"gfhzovawjvzunlut\"}";
+        String responseStr
+            = "{\"startTimeUtc\":\"2021-04-06T16:15:02Z\",\"endTimeUtc\":\"2021-05-15T05:32:47Z\",\"troubleshootingScenario\":\"UnhealthyReplica\",\"properties\":{\"unhealthyReplicaInfo\":{\"availabilityGroupName\":\"mwlxk\"}},\"virtualMachineResourceId\":\"gfhzovawjvzunlut\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SqlVirtualMachineManager manager =
-            SqlVirtualMachineManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SqlVirtualMachineManager manager = SqlVirtualMachineManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SqlVmTroubleshooting response =
-            manager
-                .sqlVirtualMachineTroubleshoots()
-                .troubleshoot(
-                    "iwwroyqbexrmc",
-                    "ibycno",
-                    new SqlVmTroubleshootingInner()
-                        .withStartTimeUtc(OffsetDateTime.parse("2021-01-15T20:00:37Z"))
-                        .withEndTimeUtc(OffsetDateTime.parse("2021-02-06T03:19:14Z"))
-                        .withTroubleshootingScenario(TroubleshootingScenario.UNHEALTHY_REPLICA)
-                        .withProperties(
-                            new TroubleshootingAdditionalProperties()
-                                .withUnhealthyReplicaInfo(new UnhealthyReplicaInfo().withAvailabilityGroupName("vah"))),
-                    com.azure.core.util.Context.NONE);
+        SqlVmTroubleshooting response = manager.sqlVirtualMachineTroubleshoots()
+            .troubleshoot("iwwroyqbexrmc", "ibycno",
+                new SqlVmTroubleshootingInner().withStartTimeUtc(OffsetDateTime.parse("2021-01-15T20:00:37Z"))
+                    .withEndTimeUtc(OffsetDateTime.parse("2021-02-06T03:19:14Z"))
+                    .withTroubleshootingScenario(TroubleshootingScenario.UNHEALTHY_REPLICA)
+                    .withProperties(new TroubleshootingAdditionalProperties()
+                        .withUnhealthyReplicaInfo(new UnhealthyReplicaInfo().withAvailabilityGroupName("vah"))),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-06T16:15:02Z"), response.startTimeUtc());
         Assertions.assertEquals(OffsetDateTime.parse("2021-05-15T05:32:47Z"), response.endTimeUtc());

@@ -18,11 +18,8 @@ import java.util.Set;
 /** Network security group. */
 @Fluent()
 public interface NetworkSecurityGroup
-    extends GroupableResource<NetworkManager, NetworkSecurityGroupInner>,
-        Refreshable<NetworkSecurityGroup>,
-        Updatable<NetworkSecurityGroup.Update>,
-        UpdatableWithTags<NetworkSecurityGroup>,
-        HasAssociatedSubnets {
+    extends GroupableResource<NetworkManager, NetworkSecurityGroupInner>, Refreshable<NetworkSecurityGroup>,
+    Updatable<NetworkSecurityGroup.Update>, UpdatableWithTags<NetworkSecurityGroup>, HasAssociatedSubnets {
 
     // Getters
 
@@ -71,10 +68,8 @@ public interface NetworkSecurityGroup
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<NetworkSecurityGroup>,
-                Resource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithRule {
+        interface WithCreate extends Creatable<NetworkSecurityGroup>, Resource.DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithRule {
         }
     }
 

@@ -21,11 +21,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ExportRunPropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExportRunPropertiesInner model =
-            BinaryData
-                .fromString(
-                    "{\"executionType\":\"OnDemand\",\"status\":\"NewDataNotAvailable\",\"submittedBy\":\"sttwvogvbbe\",\"submittedTime\":\"2021-05-05T04:41:35Z\",\"processingStartTime\":\"2021-04-17T09:39:31Z\",\"processingEndTime\":\"2021-08-13T08:26Z\",\"fileName\":\"oakufgm\",\"runSettings\":{\"format\":\"Csv\",\"deliveryInfo\":{},\"definition\":{\"type\":\"AmortizedCost\",\"timeframe\":\"BillingMonthToDate\"},\"runHistory\":{\"value\":[]},\"partitionData\":true,\"nextRunTimeEstimate\":\"2021-01-12T08:45:26Z\"}}")
-                .toObject(ExportRunPropertiesInner.class);
+        ExportRunPropertiesInner model = BinaryData.fromString(
+            "{\"executionType\":\"OnDemand\",\"status\":\"NewDataNotAvailable\",\"submittedBy\":\"sttwvogvbbe\",\"submittedTime\":\"2021-05-05T04:41:35Z\",\"processingStartTime\":\"2021-04-17T09:39:31Z\",\"processingEndTime\":\"2021-08-13T08:26Z\",\"fileName\":\"oakufgm\",\"runSettings\":{\"format\":\"Csv\",\"deliveryInfo\":{},\"definition\":{\"type\":\"AmortizedCost\",\"timeframe\":\"BillingMonthToDate\"},\"runHistory\":{\"value\":[]},\"partitionData\":true,\"nextRunTimeEstimate\":\"2021-01-12T08:45:26Z\"}}")
+            .toObject(ExportRunPropertiesInner.class);
         Assertions.assertEquals(ExecutionType.ON_DEMAND, model.executionType());
         Assertions.assertEquals(ExecutionStatus.NEW_DATA_NOT_AVAILABLE, model.status());
         Assertions.assertEquals("sttwvogvbbe", model.submittedBy());
@@ -41,25 +39,19 @@ public final class ExportRunPropertiesInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExportRunPropertiesInner model =
-            new ExportRunPropertiesInner()
-                .withExecutionType(ExecutionType.ON_DEMAND)
-                .withStatus(ExecutionStatus.NEW_DATA_NOT_AVAILABLE)
-                .withSubmittedBy("sttwvogvbbe")
-                .withSubmittedTime(OffsetDateTime.parse("2021-05-05T04:41:35Z"))
-                .withProcessingStartTime(OffsetDateTime.parse("2021-04-17T09:39:31Z"))
-                .withProcessingEndTime(OffsetDateTime.parse("2021-08-13T08:26Z"))
-                .withFileName("oakufgm")
-                .withRunSettings(
-                    new CommonExportPropertiesInner()
-                        .withFormat(FormatType.CSV)
-                        .withDeliveryInfo(new ExportDeliveryInfo())
-                        .withDefinition(
-                            new ExportDefinition()
-                                .withType(ExportType.AMORTIZED_COST)
-                                .withTimeframe(TimeframeType.BILLING_MONTH_TO_DATE))
-                        .withRunHistory(new ExportExecutionListResultInner())
-                        .withPartitionData(true));
+        ExportRunPropertiesInner model = new ExportRunPropertiesInner().withExecutionType(ExecutionType.ON_DEMAND)
+            .withStatus(ExecutionStatus.NEW_DATA_NOT_AVAILABLE)
+            .withSubmittedBy("sttwvogvbbe")
+            .withSubmittedTime(OffsetDateTime.parse("2021-05-05T04:41:35Z"))
+            .withProcessingStartTime(OffsetDateTime.parse("2021-04-17T09:39:31Z"))
+            .withProcessingEndTime(OffsetDateTime.parse("2021-08-13T08:26Z"))
+            .withFileName("oakufgm")
+            .withRunSettings(new CommonExportPropertiesInner().withFormat(FormatType.CSV)
+                .withDeliveryInfo(new ExportDeliveryInfo())
+                .withDefinition(new ExportDefinition().withType(ExportType.AMORTIZED_COST)
+                    .withTimeframe(TimeframeType.BILLING_MONTH_TO_DATE))
+                .withRunHistory(new ExportExecutionListResultInner())
+                .withPartitionData(true));
         model = BinaryData.fromObject(model).toObject(ExportRunPropertiesInner.class);
         Assertions.assertEquals(ExecutionType.ON_DEMAND, model.executionType());
         Assertions.assertEquals(ExecutionStatus.NEW_DATA_NOT_AVAILABLE, model.status());

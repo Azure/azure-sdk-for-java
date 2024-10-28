@@ -119,8 +119,8 @@ public class AuthorizationServerContractBaseProperties {
      * @param authorizationMethods the authorizationMethods value to set.
      * @return the AuthorizationServerContractBaseProperties object itself.
      */
-    public AuthorizationServerContractBaseProperties withAuthorizationMethods(
-        List<AuthorizationMethod> authorizationMethods) {
+    public AuthorizationServerContractBaseProperties
+        withAuthorizationMethods(List<AuthorizationMethod> authorizationMethods) {
         this.authorizationMethods = authorizationMethods;
         return this;
     }
@@ -144,8 +144,8 @@ public class AuthorizationServerContractBaseProperties {
      * @param clientAuthenticationMethod the clientAuthenticationMethod value to set.
      * @return the AuthorizationServerContractBaseProperties object itself.
      */
-    public AuthorizationServerContractBaseProperties withClientAuthenticationMethod(
-        List<ClientAuthenticationMethod> clientAuthenticationMethod) {
+    public AuthorizationServerContractBaseProperties
+        withClientAuthenticationMethod(List<ClientAuthenticationMethod> clientAuthenticationMethod) {
         this.clientAuthenticationMethod = clientAuthenticationMethod;
         return this;
     }
@@ -169,8 +169,8 @@ public class AuthorizationServerContractBaseProperties {
      * @param tokenBodyParameters the tokenBodyParameters value to set.
      * @return the AuthorizationServerContractBaseProperties object itself.
      */
-    public AuthorizationServerContractBaseProperties withTokenBodyParameters(
-        List<TokenBodyParameterContract> tokenBodyParameters) {
+    public AuthorizationServerContractBaseProperties
+        withTokenBodyParameters(List<TokenBodyParameterContract> tokenBodyParameters) {
         this.tokenBodyParameters = tokenBodyParameters;
         return this;
     }
@@ -254,8 +254,8 @@ public class AuthorizationServerContractBaseProperties {
      * @param bearerTokenSendingMethods the bearerTokenSendingMethods value to set.
      * @return the AuthorizationServerContractBaseProperties object itself.
      */
-    public AuthorizationServerContractBaseProperties withBearerTokenSendingMethods(
-        List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
+    public AuthorizationServerContractBaseProperties
+        withBearerTokenSendingMethods(List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
         this.bearerTokenSendingMethods = bearerTokenSendingMethods;
         return this;
     }

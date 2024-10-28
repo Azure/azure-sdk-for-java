@@ -23,8 +23,8 @@ public interface Rollouts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return detailed information of a rollout along with {@link Response}.
      */
-    Response<Rollout> getByResourceGroupWithResponse(
-        String resourceGroupName, String rolloutName, Integer retryAttempt, Context context);
+    Response<Rollout> getByResourceGroupWithResponse(String resourceGroupName, String rolloutName, Integer retryAttempt,
+        Context context);
 
     /**
      * Gets detailed information of a rollout.
@@ -111,8 +111,8 @@ public interface Rollouts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the rollout along with {@link Response}.
      */
-    Response<Rollout> restartWithResponse(
-        String resourceGroupName, String rolloutName, Boolean skipSucceeded, Context context);
+    Response<Rollout> restartWithResponse(String resourceGroupName, String rolloutName, Boolean skipSucceeded,
+        Context context);
 
     /**
      * Restarts a failed rollout and optionally skips all succeeded steps.

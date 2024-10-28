@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SapLandscapeMonitorSidMappingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapLandscapeMonitorSidMapping model =
-            BinaryData
-                .fromString("{\"name\":\"oz\",\"topSid\":[\"helxprglya\",\"dd\",\"kcbcue\",\"rjxgciqib\"]}")
+        SapLandscapeMonitorSidMapping model
+            = BinaryData.fromString("{\"name\":\"oz\",\"topSid\":[\"helxprglya\",\"dd\",\"kcbcue\",\"rjxgciqib\"]}")
                 .toObject(SapLandscapeMonitorSidMapping.class);
         Assertions.assertEquals("oz", model.name());
         Assertions.assertEquals("helxprglya", model.topSid().get(0));
@@ -22,10 +21,8 @@ public final class SapLandscapeMonitorSidMappingTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapLandscapeMonitorSidMapping model =
-            new SapLandscapeMonitorSidMapping()
-                .withName("oz")
-                .withTopSid(Arrays.asList("helxprglya", "dd", "kcbcue", "rjxgciqib"));
+        SapLandscapeMonitorSidMapping model = new SapLandscapeMonitorSidMapping().withName("oz")
+            .withTopSid(Arrays.asList("helxprglya", "dd", "kcbcue", "rjxgciqib"));
         model = BinaryData.fromObject(model).toObject(SapLandscapeMonitorSidMapping.class);
         Assertions.assertEquals("oz", model.name());
         Assertions.assertEquals("helxprglya", model.topSid().get(0));

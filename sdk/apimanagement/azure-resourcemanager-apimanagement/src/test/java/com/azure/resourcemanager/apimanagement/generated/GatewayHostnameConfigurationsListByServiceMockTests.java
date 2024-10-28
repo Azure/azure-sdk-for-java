@@ -31,46 +31,28 @@ public final class GatewayHostnameConfigurationsListByServiceMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"hostname\":\"fqeaxd\",\"certificateId\":\"luvmsaqhviawg\",\"negotiateClientCertificate\":false,\"tls10Enabled\":true,\"tls11Enabled\":true,\"http2Enabled\":false},\"id\":\"znfgpbcbkcpy\",\"name\":\"pdjieask\",\"type\":\"kqclnfusr\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"hostname\":\"fqeaxd\",\"certificateId\":\"luvmsaqhviawg\",\"negotiateClientCertificate\":false,\"tls10Enabled\":true,\"tls11Enabled\":true,\"http2Enabled\":false},\"id\":\"znfgpbcbkcpy\",\"name\":\"pdjieask\",\"type\":\"kqclnfusr\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<GatewayHostnameConfigurationContract> response =
-            manager
-                .gatewayHostnameConfigurations()
-                .listByService(
-                    "apg",
-                    "dhzbjecdsysxnk",
-                    "hvhnlsevzcrr",
-                    "nkkgdw",
-                    1559375332,
-                    695983885,
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<GatewayHostnameConfigurationContract> response = manager.gatewayHostnameConfigurations()
+            .listByService("apg", "dhzbjecdsysxnk", "hvhnlsevzcrr", "nkkgdw", 1559375332, 695983885,
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("fqeaxd", response.iterator().next().hostname());
         Assertions.assertEquals("luvmsaqhviawg", response.iterator().next().certificateId());

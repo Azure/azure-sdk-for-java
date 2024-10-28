@@ -82,25 +82,21 @@ public final class AzureDevOpsConnectorImpl
     }
 
     public AzureDevOpsConnector create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureDevOpsConnectors()
-                .createOrUpdate(resourceGroupName, azureDevOpsConnectorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsConnectors()
+            .createOrUpdate(resourceGroupName, azureDevOpsConnectorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AzureDevOpsConnector create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureDevOpsConnectors()
-                .createOrUpdate(resourceGroupName, azureDevOpsConnectorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsConnectors()
+            .createOrUpdate(resourceGroupName, azureDevOpsConnectorName, this.innerModel(), context);
         return this;
     }
 
-    AzureDevOpsConnectorImpl(
-        String name, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
+    AzureDevOpsConnectorImpl(String name,
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = new AzureDevOpsConnectorInner();
         this.serviceManager = serviceManager;
         this.azureDevOpsConnectorName = name;
@@ -111,25 +107,20 @@ public final class AzureDevOpsConnectorImpl
     }
 
     public AzureDevOpsConnector apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureDevOpsConnectors()
-                .update(resourceGroupName, azureDevOpsConnectorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsConnectors()
+            .update(resourceGroupName, azureDevOpsConnectorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AzureDevOpsConnector apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureDevOpsConnectors()
-                .update(resourceGroupName, azureDevOpsConnectorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsConnectors()
+            .update(resourceGroupName, azureDevOpsConnectorName, this.innerModel(), context);
         return this;
     }
 
-    AzureDevOpsConnectorImpl(
-        AzureDevOpsConnectorInner innerObject,
+    AzureDevOpsConnectorImpl(AzureDevOpsConnectorInner innerObject,
         com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -138,22 +129,18 @@ public final class AzureDevOpsConnectorImpl
     }
 
     public AzureDevOpsConnector refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureDevOpsConnectors()
-                .getByResourceGroupWithResponse(resourceGroupName, azureDevOpsConnectorName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsConnectors()
+            .getByResourceGroupWithResponse(resourceGroupName, azureDevOpsConnectorName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AzureDevOpsConnector refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAzureDevOpsConnectors()
-                .getByResourceGroupWithResponse(resourceGroupName, azureDevOpsConnectorName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAzureDevOpsConnectors()
+            .getByResourceGroupWithResponse(resourceGroupName, azureDevOpsConnectorName, context)
+            .getValue();
         return this;
     }
 

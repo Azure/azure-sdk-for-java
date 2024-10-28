@@ -46,8 +46,8 @@ public interface SqlPoolReplicationLinksClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReplicationLinkInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<ReplicationLinkInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Get SQL pool replication link by name
@@ -65,8 +65,8 @@ public interface SqlPoolReplicationLinksClient {
      * @return sQL pool replication link by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReplicationLinkInner> getByNameWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String linkId, Context context);
+    Response<ReplicationLinkInner> getByNameWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String linkId, Context context);
 
     /**
      * Get SQL pool replication link by name

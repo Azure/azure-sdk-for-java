@@ -99,8 +99,8 @@ public final class AvailabilityGroupListenerInner extends ProxyResource {
      * @param loadBalancerConfigurations the loadBalancerConfigurations value to set.
      * @return the AvailabilityGroupListenerInner object itself.
      */
-    public AvailabilityGroupListenerInner withLoadBalancerConfigurations(
-        List<LoadBalancerConfiguration> loadBalancerConfigurations) {
+    public AvailabilityGroupListenerInner
+        withLoadBalancerConfigurations(List<LoadBalancerConfiguration> loadBalancerConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AvailabilityGroupListenerProperties();
         }
@@ -123,8 +123,8 @@ public final class AvailabilityGroupListenerInner extends ProxyResource {
      * @param multiSubnetIpConfigurations the multiSubnetIpConfigurations value to set.
      * @return the AvailabilityGroupListenerInner object itself.
      */
-    public AvailabilityGroupListenerInner withMultiSubnetIpConfigurations(
-        List<MultiSubnetIpConfiguration> multiSubnetIpConfigurations) {
+    public AvailabilityGroupListenerInner
+        withMultiSubnetIpConfigurations(List<MultiSubnetIpConfiguration> multiSubnetIpConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AvailabilityGroupListenerProperties();
         }
@@ -151,8 +151,8 @@ public final class AvailabilityGroupListenerInner extends ProxyResource {
      * @param createDefaultAvailabilityGroupIfNotExist the createDefaultAvailabilityGroupIfNotExist value to set.
      * @return the AvailabilityGroupListenerInner object itself.
      */
-    public AvailabilityGroupListenerInner withCreateDefaultAvailabilityGroupIfNotExist(
-        Boolean createDefaultAvailabilityGroupIfNotExist) {
+    public AvailabilityGroupListenerInner
+        withCreateDefaultAvailabilityGroupIfNotExist(Boolean createDefaultAvailabilityGroupIfNotExist) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AvailabilityGroupListenerProperties();
         }
@@ -198,8 +198,8 @@ public final class AvailabilityGroupListenerInner extends ProxyResource {
      * @param availabilityGroupConfiguration the availabilityGroupConfiguration value to set.
      * @return the AvailabilityGroupListenerInner object itself.
      */
-    public AvailabilityGroupListenerInner withAvailabilityGroupConfiguration(
-        AgConfiguration availabilityGroupConfiguration) {
+    public AvailabilityGroupListenerInner
+        withAvailabilityGroupConfiguration(AgConfiguration availabilityGroupConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AvailabilityGroupListenerProperties();
         }

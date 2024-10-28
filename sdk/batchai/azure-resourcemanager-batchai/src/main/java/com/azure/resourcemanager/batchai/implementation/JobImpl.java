@@ -222,20 +222,16 @@ public final class JobImpl implements Job, Job.Definition {
     }
 
     public Job create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .create(resourceGroupName, workspaceName, experimentName, jobName, createParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .create(resourceGroupName, workspaceName, experimentName, jobName, createParameters, Context.NONE);
         return this;
     }
 
     public Job create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .create(resourceGroupName, workspaceName, experimentName, jobName, createParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .create(resourceGroupName, workspaceName, experimentName, jobName, createParameters, context);
         return this;
     }
 
@@ -247,34 +243,28 @@ public final class JobImpl implements Job, Job.Definition {
     }
 
     public Job refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .getWithResponse(resourceGroupName, workspaceName, experimentName, jobName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .getWithResponse(resourceGroupName, workspaceName, experimentName, jobName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Job refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .getWithResponse(resourceGroupName, workspaceName, experimentName, jobName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .getWithResponse(resourceGroupName, workspaceName, experimentName, jobName, context)
+            .getValue();
         return this;
     }
 
     public PagedIterable<RemoteLoginInformation> listRemoteLoginInformation() {
-        return serviceManager
-            .jobs()
+        return serviceManager.jobs()
             .listRemoteLoginInformation(resourceGroupName, workspaceName, experimentName, jobName);
     }
 
     public PagedIterable<RemoteLoginInformation> listRemoteLoginInformation(Context context) {
-        return serviceManager
-            .jobs()
+        return serviceManager.jobs()
             .listRemoteLoginInformation(resourceGroupName, workspaceName, experimentName, jobName, context);
     }
 

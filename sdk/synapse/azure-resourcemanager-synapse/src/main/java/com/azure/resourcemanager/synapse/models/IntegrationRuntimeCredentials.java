@@ -26,8 +26,8 @@ public interface IntegrationRuntimeCredentials {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> syncWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<Void> syncWithResponse(String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        Context context);
 
     /**
      * Sync integration runtime credentials

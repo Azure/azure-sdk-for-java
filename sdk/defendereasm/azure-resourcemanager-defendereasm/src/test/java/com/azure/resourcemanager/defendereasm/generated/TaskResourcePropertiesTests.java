@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TaskResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TaskResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"startedAt\":\"q\",\"completedAt\":\"ol\",\"lastPolledAt\":\"fpsalgbqu\",\"state\":\"gjyjgzjaoyfhrtxi\",\"phase\":\"erkujys\",\"reason\":\"eju\",\"metadata\":\"dataqawrlyxwj\",\"provisioningState\":\"Creating\"}")
-                .toObject(TaskResourceProperties.class);
+        TaskResourceProperties model = BinaryData.fromString(
+            "{\"startedAt\":\"q\",\"completedAt\":\"ol\",\"lastPolledAt\":\"fpsalgbqu\",\"state\":\"gjyjgzjaoyfhrtxi\",\"phase\":\"erkujys\",\"reason\":\"eju\",\"metadata\":\"dataqawrlyxwj\",\"provisioningState\":\"Creating\"}")
+            .toObject(TaskResourceProperties.class);
         Assertions.assertEquals("q", model.startedAt());
         Assertions.assertEquals("ol", model.completedAt());
         Assertions.assertEquals("fpsalgbqu", model.lastPolledAt());
@@ -26,15 +24,13 @@ public final class TaskResourcePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TaskResourceProperties model =
-            new TaskResourceProperties()
-                .withStartedAt("q")
-                .withCompletedAt("ol")
-                .withLastPolledAt("fpsalgbqu")
-                .withState("gjyjgzjaoyfhrtxi")
-                .withPhase("erkujys")
-                .withReason("eju")
-                .withMetadata("dataqawrlyxwj");
+        TaskResourceProperties model = new TaskResourceProperties().withStartedAt("q")
+            .withCompletedAt("ol")
+            .withLastPolledAt("fpsalgbqu")
+            .withState("gjyjgzjaoyfhrtxi")
+            .withPhase("erkujys")
+            .withReason("eju")
+            .withMetadata("dataqawrlyxwj");
         model = BinaryData.fromObject(model).toObject(TaskResourceProperties.class);
         Assertions.assertEquals("q", model.startedAt());
         Assertions.assertEquals("ol", model.completedAt());

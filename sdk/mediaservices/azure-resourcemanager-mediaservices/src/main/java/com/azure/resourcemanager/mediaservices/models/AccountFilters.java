@@ -53,8 +53,8 @@ public interface AccountFilters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an Account Filter in the Media Services account along with {@link Response}.
      */
-    Response<AccountFilter> getWithResponse(
-        String resourceGroupName, String accountName, String filterName, Context context);
+    Response<AccountFilter> getWithResponse(String resourceGroupName, String accountName, String filterName,
+        Context context);
 
     /**
      * Get an Account Filter.

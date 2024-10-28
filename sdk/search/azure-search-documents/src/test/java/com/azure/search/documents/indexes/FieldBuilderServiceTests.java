@@ -52,9 +52,9 @@ public class FieldBuilderServiceTests extends SearchTestBase {
         client.createSynonymMap(synonymMap);
 
         SearchIndex index = new SearchIndex(testResourceNamer.randomName("fieldbuilder", 32));
-        index.setFields(SearchIndexClient.buildSearchFields(Hotel.class, new FieldBuilderOptions()
-            .setJsonSerializer(new JacksonJsonSerializerBuilder().serializer(new ObjectMapper()
-                    .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY))
+        index.setFields(SearchIndexClient.buildSearchFields(Hotel.class,
+            new FieldBuilderOptions().setJsonSerializer(new JacksonJsonSerializerBuilder()
+                .serializer(new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY))
                 .build())));
 
         client.createIndex(index);
@@ -68,16 +68,15 @@ public class FieldBuilderServiceTests extends SearchTestBase {
         asyncClient.createSynonymMap(synonymMap).block();
 
         SearchIndex index = new SearchIndex(testResourceNamer.randomName("fieldbuilder", 32));
-        index.setFields(SearchIndexClient.buildSearchFields(Hotel.class, new FieldBuilderOptions()
-            .setJsonSerializer(new JacksonJsonSerializerBuilder().serializer(new ObjectMapper()
-                    .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY))
+        index.setFields(SearchIndexClient.buildSearchFields(Hotel.class,
+            new FieldBuilderOptions().setJsonSerializer(new JacksonJsonSerializerBuilder()
+                .serializer(new ObjectMapper().setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY))
                 .build())));
 
-        Mono<SearchIndex> createThenGetIndex = asyncClient.createIndex(index)
-            .flatMap(actual -> {
-                indexesToDelete.add(actual.getName());
-                return asyncClient.getIndex(actual.getName());
-            });
+        Mono<SearchIndex> createThenGetIndex = asyncClient.createIndex(index).flatMap(actual -> {
+            indexesToDelete.add(actual.getName());
+            return asyncClient.getIndex(actual.getName());
+        });
 
         StepVerifier.create(createThenGetIndex)
             .assertNext(actual -> assertObjectEquals(index, actual, true))

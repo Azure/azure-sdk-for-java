@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.resources.fluentcore.arm.models;
 
-
 import com.azure.core.annotation.Fluent;
 
 /**

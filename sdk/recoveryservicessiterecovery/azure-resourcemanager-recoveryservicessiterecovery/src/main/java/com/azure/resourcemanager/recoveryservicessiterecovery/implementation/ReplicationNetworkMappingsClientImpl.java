@@ -723,8 +723,10 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
     public SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginCreate(String resourceName,
         String resourceGroupName, String fabricName, String networkName, String networkMappingName,
         CreateNetworkMappingInput input, Context context) {
-        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName,
-            input, context).getSyncPoller();
+        return this
+            .beginCreateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -747,7 +749,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
     private Mono<NetworkMappingInner> createAsync(String resourceName, String resourceGroupName, String fabricName,
         String networkName, String networkMappingName, CreateNetworkMappingInput input) {
         return beginCreateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1057,7 +1060,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
     private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName, String networkName,
         String networkMappingName, Context context) {
         return beginDeleteAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1315,8 +1319,10 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
     public SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginUpdate(String resourceName,
         String resourceGroupName, String fabricName, String networkName, String networkMappingName,
         UpdateNetworkMappingInput input, Context context) {
-        return this.beginUpdateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName,
-            input, context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -1339,7 +1345,8 @@ public final class ReplicationNetworkMappingsClientImpl implements ReplicationNe
     private Mono<NetworkMappingInner> updateAsync(String resourceName, String resourceGroupName, String fabricName,
         String networkName, String networkMappingName, UpdateNetworkMappingInput input) {
         return beginUpdateAsync(resourceName, resourceGroupName, fabricName, networkName, networkMappingName, input)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

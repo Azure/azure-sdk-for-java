@@ -21,8 +21,8 @@ public interface NotificationRecipientUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the Notification Recipient User subscribed to the notification along with {@link Response}.
      */
-    Response<RecipientUserCollection> listByNotificationWithResponse(
-        String resourceGroupName, String serviceName, NotificationName notificationName, Context context);
+    Response<RecipientUserCollection> listByNotificationWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, Context context);
 
     /**
      * Gets the list of the Notification Recipient User subscribed to the notification.
@@ -35,8 +35,8 @@ public interface NotificationRecipientUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the Notification Recipient User subscribed to the notification.
      */
-    RecipientUserCollection listByNotification(
-        String resourceGroupName, String serviceName, NotificationName notificationName);
+    RecipientUserCollection listByNotification(String resourceGroupName, String serviceName,
+        NotificationName notificationName);
 
     /**
      * Determine if the Notification Recipient User is subscribed to the notification.
@@ -51,12 +51,8 @@ public interface NotificationRecipientUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists along with {@link Response}.
      */
-    Response<Boolean> checkEntityExistsWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        NotificationName notificationName,
-        String userId,
-        Context context);
+    Response<Boolean> checkEntityExistsWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String userId, Context context);
 
     /**
      * Determine if the Notification Recipient User is subscribed to the notification.
@@ -70,8 +66,8 @@ public interface NotificationRecipientUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
-    boolean checkEntityExists(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String userId);
+    boolean checkEntityExists(String resourceGroupName, String serviceName, NotificationName notificationName,
+        String userId);
 
     /**
      * Adds the API Management User to the list of Recipients for the Notification.
@@ -86,12 +82,8 @@ public interface NotificationRecipientUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recipient User details along with {@link Response}.
      */
-    Response<RecipientUserContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        NotificationName notificationName,
-        String userId,
-        Context context);
+    Response<RecipientUserContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String userId, Context context);
 
     /**
      * Adds the API Management User to the list of Recipients for the Notification.
@@ -105,8 +97,8 @@ public interface NotificationRecipientUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recipient User details.
      */
-    RecipientUserContract createOrUpdate(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String userId);
+    RecipientUserContract createOrUpdate(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String userId);
 
     /**
      * Removes the API Management user from the list of Notification.
@@ -121,12 +113,8 @@ public interface NotificationRecipientUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        NotificationName notificationName,
-        String userId,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, NotificationName notificationName,
+        String userId, Context context);
 
     /**
      * Removes the API Management user from the list of Notification.

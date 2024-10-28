@@ -31,44 +31,32 @@ public final class ServiceConfigurationsCreateOrupdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"jjxhvpmo\",\"port\":5563523584093599698,\"provisioningState\":\"Failed\"},\"id\":\"i\",\"name\":\"qeojnxqbzvddntw\",\"type\":\"deicbtwnpzao\"}";
+        String responseStr
+            = "{\"properties\":{\"serviceName\":\"WAC\",\"resourceId\":\"jjxhvpmo\",\"port\":5563523584093599698,\"provisioningState\":\"Failed\"},\"id\":\"i\",\"name\":\"qeojnxqbzvddntw\",\"type\":\"deicbtwnpzao\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        HybridConnectivityManager manager =
-            HybridConnectivityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridConnectivityManager manager = HybridConnectivityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ServiceConfigurationResource response =
-            manager
-                .serviceConfigurations()
-                .define("jctbza")
-                .withExistingEndpoint("mcl", "hijco")
-                .withServiceName(ServiceName.WAC)
-                .withResourceId("y")
-                .withPort(5593632114623401437L)
-                .create();
+        ServiceConfigurationResource response = manager.serviceConfigurations()
+            .define("jctbza")
+            .withExistingEndpoint("mcl", "hijco")
+            .withServiceName(ServiceName.WAC)
+            .withResourceId("y")
+            .withPort(5593632114623401437L)
+            .create();
 
         Assertions.assertEquals(ServiceName.WAC, response.serviceName());
         Assertions.assertEquals("jjxhvpmo", response.resourceId());

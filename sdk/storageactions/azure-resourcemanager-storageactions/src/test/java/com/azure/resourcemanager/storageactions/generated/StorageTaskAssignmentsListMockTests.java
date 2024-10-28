@@ -43,9 +43,10 @@ public final class StorageTaskAssignmentsListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        StorageActionsManager manager = StorageActionsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        StorageActionsManager manager = StorageActionsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<StorageTaskAssignment> response
             = manager.storageTaskAssignments().list("d", "lvwiwubmwmbesl", "nkww", com.azure.core.util.Context.NONE);

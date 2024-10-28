@@ -32,37 +32,27 @@ public final class DigitalTwinsDeleteMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"createdTime\":\"2021-02-25T04:11:47Z\",\"lastUpdatedTime\":\"2021-01-10T00:04:32Z\",\"provisioningState\":\"Succeeded\",\"hostName\":\"osvmk\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"plgmgsxnk\",\"tenantId\":\"kde\",\"userAssignedIdentities\":{}},\"location\":\"lopwiyig\",\"tags\":{\"upedeojnabckhs\":\"kdwzbaiuebbaumny\",\"ie\":\"txp\"},\"id\":\"tfhvpesapskrdqmh\",\"name\":\"jdhtldwkyzxu\",\"type\":\"tkncwsc\"}";
+        String responseStr
+            = "{\"properties\":{\"createdTime\":\"2021-02-25T04:11:47Z\",\"lastUpdatedTime\":\"2021-01-10T00:04:32Z\",\"provisioningState\":\"Succeeded\",\"hostName\":\"osvmk\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"plgmgsxnk\",\"tenantId\":\"kde\",\"userAssignedIdentities\":{}},\"location\":\"lopwiyig\",\"tags\":{\"upedeojnabckhs\":\"kdwzbaiuebbaumny\",\"ie\":\"txp\"},\"id\":\"tfhvpesapskrdqmh\",\"name\":\"jdhtldwkyzxu\",\"type\":\"tkncwsc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AzureDigitalTwinsManager manager =
-            AzureDigitalTwinsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureDigitalTwinsManager manager = AzureDigitalTwinsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DigitalTwinsDescription response =
-            manager.digitalTwins().delete("lcuhxwtctyqiklb", "ovplw", com.azure.core.util.Context.NONE);
+        DigitalTwinsDescription response
+            = manager.digitalTwins().delete("lcuhxwtctyqiklb", "ovplw", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("lopwiyig", response.location());
         Assertions.assertEquals("kdwzbaiuebbaumny", response.tags().get("upedeojnabckhs"));

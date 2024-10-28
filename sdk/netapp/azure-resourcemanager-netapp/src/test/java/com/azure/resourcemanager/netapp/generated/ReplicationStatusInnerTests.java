@@ -14,27 +14,27 @@ public final class ReplicationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationStatusInner model = BinaryData.fromString(
-            "{\"healthy\":true,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Uninitialized\",\"totalProgress\":\"y\",\"errorMessage\":\"bmrqyibahwfl\"}")
+            "{\"healthy\":true,\"relationshipStatus\":\"Failed\",\"mirrorState\":\"Mirrored\",\"totalProgress\":\"p\",\"errorMessage\":\"ulpiuj\"}")
             .toObject(ReplicationStatusInner.class);
         Assertions.assertEquals(true, model.healthy());
-        Assertions.assertEquals(RelationshipStatus.IDLE, model.relationshipStatus());
-        Assertions.assertEquals(MirrorState.UNINITIALIZED, model.mirrorState());
-        Assertions.assertEquals("y", model.totalProgress());
-        Assertions.assertEquals("bmrqyibahwfl", model.errorMessage());
+        Assertions.assertEquals(RelationshipStatus.FAILED, model.relationshipStatus());
+        Assertions.assertEquals(MirrorState.MIRRORED, model.mirrorState());
+        Assertions.assertEquals("p", model.totalProgress());
+        Assertions.assertEquals("ulpiuj", model.errorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicationStatusInner model = new ReplicationStatusInner().withHealthy(true)
-            .withRelationshipStatus(RelationshipStatus.IDLE)
-            .withMirrorState(MirrorState.UNINITIALIZED)
-            .withTotalProgress("y")
-            .withErrorMessage("bmrqyibahwfl");
+            .withRelationshipStatus(RelationshipStatus.FAILED)
+            .withMirrorState(MirrorState.MIRRORED)
+            .withTotalProgress("p")
+            .withErrorMessage("ulpiuj");
         model = BinaryData.fromObject(model).toObject(ReplicationStatusInner.class);
         Assertions.assertEquals(true, model.healthy());
-        Assertions.assertEquals(RelationshipStatus.IDLE, model.relationshipStatus());
-        Assertions.assertEquals(MirrorState.UNINITIALIZED, model.mirrorState());
-        Assertions.assertEquals("y", model.totalProgress());
-        Assertions.assertEquals("bmrqyibahwfl", model.errorMessage());
+        Assertions.assertEquals(RelationshipStatus.FAILED, model.relationshipStatus());
+        Assertions.assertEquals(MirrorState.MIRRORED, model.mirrorState());
+        Assertions.assertEquals("p", model.totalProgress());
+        Assertions.assertEquals("ulpiuj", model.errorMessage());
     }
 }

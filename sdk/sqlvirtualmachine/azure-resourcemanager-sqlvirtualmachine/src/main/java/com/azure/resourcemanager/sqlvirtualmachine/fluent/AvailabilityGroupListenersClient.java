@@ -30,12 +30,8 @@ public interface AvailabilityGroupListenersClient {
      * @return an availability group listener along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AvailabilityGroupListenerInner> getWithResponse(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        String expand,
-        Context context);
+    Response<AvailabilityGroupListenerInner> getWithResponse(String resourceGroupName,
+        String sqlVirtualMachineGroupName, String availabilityGroupListenerName, String expand, Context context);
 
     /**
      * Gets an availability group listener.
@@ -50,8 +46,8 @@ public interface AvailabilityGroupListenersClient {
      * @return an availability group listener.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailabilityGroupListenerInner get(
-        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName);
+    AvailabilityGroupListenerInner get(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName);
 
     /**
      * Creates or updates an availability group listener.
@@ -68,9 +64,7 @@ public interface AvailabilityGroupListenersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AvailabilityGroupListenerInner>, AvailabilityGroupListenerInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
+        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName,
         AvailabilityGroupListenerInner parameters);
 
     /**
@@ -89,11 +83,8 @@ public interface AvailabilityGroupListenersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AvailabilityGroupListenerInner>, AvailabilityGroupListenerInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        AvailabilityGroupListenerInner parameters,
-        Context context);
+        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName,
+        AvailabilityGroupListenerInner parameters, Context context);
 
     /**
      * Creates or updates an availability group listener.
@@ -109,11 +100,8 @@ public interface AvailabilityGroupListenersClient {
      * @return a SQL Server availability group listener.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailabilityGroupListenerInner createOrUpdate(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        AvailabilityGroupListenerInner parameters);
+    AvailabilityGroupListenerInner createOrUpdate(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName, AvailabilityGroupListenerInner parameters);
 
     /**
      * Creates or updates an availability group listener.
@@ -130,12 +118,8 @@ public interface AvailabilityGroupListenersClient {
      * @return a SQL Server availability group listener.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailabilityGroupListenerInner createOrUpdate(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        AvailabilityGroupListenerInner parameters,
-        Context context);
+    AvailabilityGroupListenerInner createOrUpdate(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName, AvailabilityGroupListenerInner parameters, Context context);
 
     /**
      * Deletes an availability group listener.
@@ -150,8 +134,8 @@ public interface AvailabilityGroupListenersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName);
 
     /**
      * Deletes an availability group listener.
@@ -167,11 +151,8 @@ public interface AvailabilityGroupListenersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String sqlVirtualMachineGroupName,
+        String availabilityGroupListenerName, Context context);
 
     /**
      * Deletes an availability group listener.
@@ -200,10 +181,7 @@ public interface AvailabilityGroupListenersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String sqlVirtualMachineGroupName,
-        String availabilityGroupListenerName,
+    void delete(String resourceGroupName, String sqlVirtualMachineGroupName, String availabilityGroupListenerName,
         Context context);
 
     /**
@@ -218,8 +196,8 @@ public interface AvailabilityGroupListenersClient {
      * @return a list of availability group listeners as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AvailabilityGroupListenerInner> listByGroup(
-        String resourceGroupName, String sqlVirtualMachineGroupName);
+    PagedIterable<AvailabilityGroupListenerInner> listByGroup(String resourceGroupName,
+        String sqlVirtualMachineGroupName);
 
     /**
      * Lists all availability group listeners in a SQL virtual machine group.
@@ -234,6 +212,6 @@ public interface AvailabilityGroupListenersClient {
      * @return a list of availability group listeners as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AvailabilityGroupListenerInner> listByGroup(
-        String resourceGroupName, String sqlVirtualMachineGroupName, Context context);
+    PagedIterable<AvailabilityGroupListenerInner> listByGroup(String resourceGroupName,
+        String sqlVirtualMachineGroupName, Context context);
 }

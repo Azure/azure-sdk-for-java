@@ -165,8 +165,8 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
                 reader.nextToken();
 
                 if ("data".equals(fieldName)) {
-                    encodedPolicy = reader.getNullable(nonNullReader ->
-                        BinaryData.fromString(nonNullReader.getString()));
+                    encodedPolicy
+                        = reader.getNullable(nonNullReader -> BinaryData.fromString(nonNullReader.getString()));
                 } else if ("contentType".equals(fieldName)) {
                     contentType = reader.getString();
                 } else if ("immutable".equals(fieldName)) {
@@ -176,9 +176,7 @@ public final class KeyReleasePolicy implements JsonSerializable<KeyReleasePolicy
                 }
             }
 
-            return new KeyReleasePolicy(encodedPolicy, false)
-                .setContentType(contentType)
-                .setImmutable(immutable);
+            return new KeyReleasePolicy(encodedPolicy, false).setContentType(contentType).setImmutable(immutable);
         });
     }
 }

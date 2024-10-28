@@ -96,14 +96,17 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResource create() {
-        this.innerObject = serviceManager.serviceClient().getServices().createOrUpdate(resourceGroupName, clusterName,
-            applicationName, serviceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .createOrUpdate(resourceGroupName, clusterName, applicationName, serviceName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public ServiceResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getServices().createOrUpdate(resourceGroupName, clusterName,
-            applicationName, serviceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .createOrUpdate(resourceGroupName, clusterName, applicationName, serviceName, this.innerModel(), context);
         return this;
     }
 
@@ -119,14 +122,16 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResource apply() {
-        this.innerObject = serviceManager.serviceClient().getServices().update(resourceGroupName, clusterName,
-            applicationName, serviceName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .update(resourceGroupName, clusterName, applicationName, serviceName, updateParameters, Context.NONE);
         return this;
     }
 
     public ServiceResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getServices().update(resourceGroupName, clusterName,
-            applicationName, serviceName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .update(resourceGroupName, clusterName, applicationName, serviceName, updateParameters, context);
         return this;
     }
 
@@ -141,14 +146,18 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getServices()
-            .getWithResponse(resourceGroupName, clusterName, applicationName, serviceName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .getWithResponse(resourceGroupName, clusterName, applicationName, serviceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getServices()
-            .getWithResponse(resourceGroupName, clusterName, applicationName, serviceName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .getWithResponse(resourceGroupName, clusterName, applicationName, serviceName, context)
+            .getValue();
         return this;
     }
 

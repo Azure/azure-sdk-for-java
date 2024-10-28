@@ -49,8 +49,8 @@ public interface SignalRPrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private endpoint connection along with {@link Response}.
      */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName, Context context);
+    Response<PrivateEndpointConnection> getWithResponse(String privateEndpointConnectionName, String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Get the specified private endpoint connection.
@@ -80,12 +80,8 @@ public interface SignalRPrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection to an azure resource along with {@link Response}.
      */
-    Response<PrivateEndpointConnection> updateWithResponse(
-        String privateEndpointConnectionName,
-        String resourceGroupName,
-        String resourceName,
-        PrivateEndpointConnectionInner parameters,
-        Context context);
+    Response<PrivateEndpointConnection> updateWithResponse(String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName, PrivateEndpointConnectionInner parameters, Context context);
 
     /**
      * Update the state of specified private endpoint connection.
@@ -100,11 +96,8 @@ public interface SignalRPrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection to an azure resource.
      */
-    PrivateEndpointConnection update(
-        String privateEndpointConnectionName,
-        String resourceGroupName,
-        String resourceName,
-        PrivateEndpointConnectionInner parameters);
+    PrivateEndpointConnection update(String privateEndpointConnectionName, String resourceGroupName,
+        String resourceName, PrivateEndpointConnectionInner parameters);
 
     /**
      * Delete the specified private endpoint connection.

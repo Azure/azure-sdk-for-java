@@ -99,15 +99,10 @@ public final class ConfidentialLedgerCertificateClientImpl {
      *     example https://identity.confidential-ledger.core.azure.com.
      * @param serviceVersion Service version.
      */
-    public ConfidentialLedgerCertificateClientImpl(
-            String certificateEndpoint, ConfidentialLedgerCertificateServiceVersion serviceVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                certificateEndpoint,
-                serviceVersion);
+    public ConfidentialLedgerCertificateClientImpl(String certificateEndpoint,
+        ConfidentialLedgerCertificateServiceVersion serviceVersion) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), certificateEndpoint, serviceVersion);
     }
 
     /**
@@ -118,10 +113,8 @@ public final class ConfidentialLedgerCertificateClientImpl {
      *     example https://identity.confidential-ledger.core.azure.com.
      * @param serviceVersion Service version.
      */
-    public ConfidentialLedgerCertificateClientImpl(
-            HttpPipeline httpPipeline,
-            String certificateEndpoint,
-            ConfidentialLedgerCertificateServiceVersion serviceVersion) {
+    public ConfidentialLedgerCertificateClientImpl(HttpPipeline httpPipeline, String certificateEndpoint,
+        ConfidentialLedgerCertificateServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), certificateEndpoint, serviceVersion);
     }
 
@@ -134,20 +127,14 @@ public final class ConfidentialLedgerCertificateClientImpl {
      *     example https://identity.confidential-ledger.core.azure.com.
      * @param serviceVersion Service version.
      */
-    public ConfidentialLedgerCertificateClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String certificateEndpoint,
-            ConfidentialLedgerCertificateServiceVersion serviceVersion) {
+    public ConfidentialLedgerCertificateClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        String certificateEndpoint, ConfidentialLedgerCertificateServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.certificateEndpoint = certificateEndpoint;
         this.serviceVersion = serviceVersion;
-        this.service =
-                RestProxy.create(
-                        ConfidentialLedgerCertificateClientService.class,
-                        this.httpPipeline,
-                        this.getSerializerAdapter());
+        this.service = RestProxy.create(ConfidentialLedgerCertificateClientService.class, this.httpPipeline,
+            this.getSerializerAdapter());
     }
 
     /**
@@ -158,24 +145,14 @@ public final class ConfidentialLedgerCertificateClientImpl {
     @ServiceInterface(name = "ConfidentialLedgerCe")
     private interface ConfidentialLedgerCertificateClientService {
         @Get("/ledgerIdentity/{ledgerId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getLedgerIdentity(
-                @HostParam("certificateEndpoint") String certificateEndpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("ledgerId") String ledgerId,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getLedgerIdentity(@HostParam("certificateEndpoint") String certificateEndpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("ledgerId") String ledgerId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -200,18 +177,11 @@ public final class ConfidentialLedgerCertificateClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getLedgerIdentityWithResponseAsync(
-            String ledgerId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getLedgerIdentityWithResponseAsync(String ledgerId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getLedgerIdentity(
-                                this.getCertificateEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                ledgerId,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getLedgerIdentity(this.getCertificateEndpoint(),
+            this.getServiceVersion().getVersion(), ledgerId, accept, requestOptions, context));
     }
 
     /**
@@ -237,16 +207,11 @@ public final class ConfidentialLedgerCertificateClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getLedgerIdentityWithResponseAsync(
-            String ledgerId, RequestOptions requestOptions, Context context) {
+    public Mono<Response<BinaryData>> getLedgerIdentityWithResponseAsync(String ledgerId, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json";
-        return service.getLedgerIdentity(
-                this.getCertificateEndpoint(),
-                this.getServiceVersion().getVersion(),
-                ledgerId,
-                accept,
-                requestOptions,
-                context);
+        return service.getLedgerIdentity(this.getCertificateEndpoint(), this.getServiceVersion().getVersion(), ledgerId,
+            accept, requestOptions, context);
     }
 
     /**

@@ -20,8 +20,7 @@ import java.util.List;
 @JsonTypeName("DatacenterAddressResponse")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DatacenterAddressInstruction", value = DatacenterAddressInstructionResponse.class),
-    @JsonSubTypes.Type(name = "DatacenterAddressLocation", value = DatacenterAddressLocationResponse.class)
-})
+    @JsonSubTypes.Type(name = "DatacenterAddressLocation", value = DatacenterAddressLocationResponse.class) })
 @Immutable
 public class DatacenterAddressResponse {
     /*

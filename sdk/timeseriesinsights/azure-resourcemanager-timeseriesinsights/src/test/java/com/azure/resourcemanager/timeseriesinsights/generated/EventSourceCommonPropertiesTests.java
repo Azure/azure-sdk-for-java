@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EventSourceCommonPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventSourceCommonProperties model =
-            BinaryData
-                .fromString(
-                    "{\"timestampPropertyName\":\"notyfjfcnjbkcn\",\"localTimestamp\":{\"format\":\"Embedded\",\"timeZoneOffset\":{\"propertyName\":\"kphywpnvjto\"}},\"ingressStartAt\":{\"type\":\"CustomEnqueuedTime\",\"time\":\"clfp\"},\"provisioningState\":\"Creating\",\"creationTime\":\"2021-02-27T06:24:12Z\"}")
-                .toObject(EventSourceCommonProperties.class);
+        EventSourceCommonProperties model = BinaryData.fromString(
+            "{\"timestampPropertyName\":\"notyfjfcnjbkcn\",\"localTimestamp\":{\"format\":\"Embedded\",\"timeZoneOffset\":{\"propertyName\":\"kphywpnvjto\"}},\"ingressStartAt\":{\"type\":\"CustomEnqueuedTime\",\"time\":\"clfp\"},\"provisioningState\":\"Creating\",\"creationTime\":\"2021-02-27T06:24:12Z\"}")
+            .toObject(EventSourceCommonProperties.class);
         Assertions.assertEquals("notyfjfcnjbkcn", model.timestampPropertyName());
         Assertions.assertEquals(LocalTimestampFormat.EMBEDDED, model.localTimestamp().format());
         Assertions.assertEquals("kphywpnvjto", model.localTimestamp().timeZoneOffset().propertyName());
@@ -29,13 +27,10 @@ public final class EventSourceCommonPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventSourceCommonProperties model =
-            new EventSourceCommonProperties()
-                .withTimestampPropertyName("notyfjfcnjbkcn")
-                .withLocalTimestamp(
-                    new LocalTimestamp()
-                        .withFormat(LocalTimestampFormat.EMBEDDED)
-                        .withTimeZoneOffset(new LocalTimestampTimeZoneOffset().withPropertyName("kphywpnvjto")))
+        EventSourceCommonProperties model
+            = new EventSourceCommonProperties().withTimestampPropertyName("notyfjfcnjbkcn")
+                .withLocalTimestamp(new LocalTimestamp().withFormat(LocalTimestampFormat.EMBEDDED)
+                    .withTimeZoneOffset(new LocalTimestampTimeZoneOffset().withPropertyName("kphywpnvjto")))
                 .withType(IngressStartAtType.CUSTOM_ENQUEUED_TIME)
                 .withTime("clfp");
         model = BinaryData.fromObject(model).toObject(EventSourceCommonProperties.class);

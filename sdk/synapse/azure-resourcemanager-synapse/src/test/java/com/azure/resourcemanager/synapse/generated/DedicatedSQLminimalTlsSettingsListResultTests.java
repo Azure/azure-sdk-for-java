@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.models.DedicatedSQLminimalTlsSettingsLi
 public final class DedicatedSQLminimalTlsSettingsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DedicatedSQLminimalTlsSettingsListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"location\":\"ykxhdjh\",\"properties\":{\"minimalTlsVersion\":\"mbcxfhbcp\"},\"id\":\"rxvxcjzh\",\"name\":\"izxfpxt\",\"type\":\"qscjavftjuh\"}],\"nextLink\":\"azkmtgguwp\"}")
-                .toObject(DedicatedSQLminimalTlsSettingsListResult.class);
+        DedicatedSQLminimalTlsSettingsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"location\":\"ykxhdjh\",\"properties\":{\"minimalTlsVersion\":\"mbcxfhbcp\"},\"id\":\"rxvxcjzh\",\"name\":\"izxfpxt\",\"type\":\"qscjavftjuh\"}],\"nextLink\":\"azkmtgguwp\"}")
+            .toObject(DedicatedSQLminimalTlsSettingsListResult.class);
     }
 
     @org.junit.jupiter.api.Test

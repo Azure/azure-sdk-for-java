@@ -15,7 +15,8 @@ import com.azure.resourcemanager.mysql.models.Operations;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 
@@ -38,10 +39,7 @@ public final class OperationsImpl implements Operations {
     public Response<OperationListResult> listWithResponse(Context context) {
         Response<OperationListResultInner> inner = this.serviceClient().listWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

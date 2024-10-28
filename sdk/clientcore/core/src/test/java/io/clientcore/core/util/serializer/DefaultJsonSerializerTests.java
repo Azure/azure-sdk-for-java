@@ -72,8 +72,7 @@ public class DefaultJsonSerializerTests {
 
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            return jsonWriter
-                .writeStartObject()
+            return jsonWriter.writeStartObject()
                 .writeMapField("map", this.map, JsonWriter::writeString)
                 .writeEndObject();
         }
@@ -101,23 +100,21 @@ public class DefaultJsonSerializerTests {
     @ParameterizedTest
     @MethodSource("deserializeJsonSupplier")
     public void deserializeJson(String json, DateTimeWrapper expected) throws IOException {
-        DateTimeWrapper actual = new DefaultJsonSerializer()
-            .deserializeFromBytes(json.getBytes(), DateTimeWrapper.class);
+        DateTimeWrapper actual
+            = new DefaultJsonSerializer().deserializeFromBytes(json.getBytes(), DateTimeWrapper.class);
 
         assertEquals(expected.getOffsetDateTime(), actual.getOffsetDateTime());
     }
 
     private static Stream<Arguments> deserializeJsonSupplier() {
         final String jsonFormatDate = "{\"OffsetDateTime\":\"%s\"}";
-        DateTimeWrapper minValue =
-            new DateTimeWrapper().setOffsetDateTime(OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC));
-        DateTimeWrapper unixEpoch =
-            new DateTimeWrapper().setOffsetDateTime(OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC));
+        DateTimeWrapper minValue
+            = new DateTimeWrapper().setOffsetDateTime(OffsetDateTime.of(1, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC));
+        DateTimeWrapper unixEpoch
+            = new DateTimeWrapper().setOffsetDateTime(OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC));
 
-        return Stream.of(
-            Arguments.of(String.format(jsonFormatDate, "0001-01-01T00:00:00Z"), minValue),
-            Arguments.of(String.format(jsonFormatDate, "1970-01-01T00:00:00Z"), unixEpoch)
-        );
+        return Stream.of(Arguments.of(String.format(jsonFormatDate, "0001-01-01T00:00:00Z"), minValue),
+            Arguments.of(String.format(jsonFormatDate, "1970-01-01T00:00:00Z"), unixEpoch));
     }
 
     public static class DateTimeWrapper implements JsonSerializable<DateTimeWrapper> {
@@ -132,7 +129,6 @@ public class DefaultJsonSerializerTests {
         public OffsetDateTime getOffsetDateTime() {
             return offsetDateTime;
         }
-
 
         @Override
         public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
@@ -199,18 +195,11 @@ public class DefaultJsonSerializerTests {
     private static Stream<Arguments> textSerializationSupplier() {
         Map<String, String> map = Collections.singletonMap("key", "value");
 
-        return Stream.of(
-            Arguments.of(1, "1"),
-            Arguments.of(1L, "1"),
-            Arguments.of(1.0F, "1.0"),
-            Arguments.of(1.0D, "1.0"),
-            Arguments.of("1", "\"1\""),
-            Arguments.of(HttpMethod.GET, "\"GET\""),
+        return Stream.of(Arguments.of(1, "1"), Arguments.of(1L, "1"), Arguments.of(1.0F, "1.0"),
+            Arguments.of(1.0D, "1.0"), Arguments.of("1", "\"1\""), Arguments.of(HttpMethod.GET, "\"GET\""),
             Arguments.of(HttpExceptionType.RESOURCE_MODIFIED, "\"RESOURCE_MODIFIED\""),
-            Arguments.of(HttpExceptionType.fromString(null), null),
-            Arguments.of(map, "{\"key\":\"value\"}"),
-            Arguments.of(null, null)
-        );
+            Arguments.of(HttpExceptionType.fromString(null), null), Arguments.of(map, "{\"key\":\"value\"}"),
+            Arguments.of(null, null));
     }
 
     @ParameterizedTest
@@ -241,8 +230,7 @@ public class DefaultJsonSerializerTests {
     @MethodSource("bytesDeserializationSupplier")
     public void inputStreamToTextDeserialization(byte[] inputStreamBytes, Class<?> type, Object expected)
         throws IOException {
-        Object actual =
-            SERIALIZER.deserializeFromStream(new ByteArrayInputStream(inputStreamBytes), type);
+        Object actual = SERIALIZER.deserializeFromStream(new ByteArrayInputStream(inputStreamBytes), type);
 
         if (type == byte[].class) {
             assertArraysEqual((byte[]) expected, (byte[]) actual);
@@ -252,19 +240,17 @@ public class DefaultJsonSerializerTests {
     }
 
     private static Stream<Arguments> bytesDeserializationSupplier() {
-        return Stream.of(
-            Arguments.of("\"hello\"".getBytes(StandardCharsets.UTF_8), String.class, "hello"),
+        return Stream.of(Arguments.of("\"hello\"".getBytes(StandardCharsets.UTF_8), String.class, "hello"),
             Arguments.of("1".getBytes(StandardCharsets.UTF_8), Integer.class, 1),
             Arguments.of("1000000000000".getBytes(StandardCharsets.UTF_8), Long.class, 1000000000000L),
             Arguments.of("1.0".getBytes(StandardCharsets.UTF_8), Double.class, 1.0D),
-            Arguments.of("true".getBytes(StandardCharsets.UTF_8), Boolean.class, true)
-        );
+            Arguments.of("true".getBytes(StandardCharsets.UTF_8), Boolean.class, true));
     }
 
     @ParameterizedTest
     @MethodSource("unsupportedDeserializationSupplier")
     public void unsupportedTextTypesDeserialization(Class<?> unsupportedType,
-                                                    Class<? extends Throwable> exceptionType) {
+        Class<? extends Throwable> exceptionType) {
         assertThrows(exceptionType, () -> {
             try {
                 SERIALIZER.deserializeFromBytes(":////".getBytes(), unsupportedType);
@@ -275,8 +261,7 @@ public class DefaultJsonSerializerTests {
     }
 
     private static Stream<Arguments> unsupportedDeserializationSupplier() {
-        return Stream.of(
-            Arguments.of(InputStream.class, IOException.class),
+        return Stream.of(Arguments.of(InputStream.class, IOException.class),
             // Thrown when the String cannot be parsed by core-json
             Arguments.of(SimpleClass.class, InvocationTargetException.class),
             // Thrown when the class doesn't have a fromJson method

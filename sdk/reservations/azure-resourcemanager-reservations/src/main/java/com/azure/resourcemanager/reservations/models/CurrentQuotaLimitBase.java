@@ -48,11 +48,13 @@ public interface CurrentQuotaLimitBase {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The CurrentQuotaLimitBase definition stages. */
     interface DefinitionStages {
         /** The first stage of the CurrentQuotaLimitBase definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the CurrentQuotaLimitBase definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -65,6 +67,7 @@ public interface CurrentQuotaLimitBase {
              */
             WithCreate withExistingLocation(String subscriptionId, String providerId, String location);
         }
+
         /**
          * The stage of the CurrentQuotaLimitBase definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -85,6 +88,7 @@ public interface CurrentQuotaLimitBase {
              */
             CurrentQuotaLimitBase create(Context context);
         }
+
         /** The stage of the CurrentQuotaLimitBase definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -96,6 +100,7 @@ public interface CurrentQuotaLimitBase {
             WithCreate withProperties(QuotaProperties properties);
         }
     }
+
     /**
      * Begins update for the CurrentQuotaLimitBase resource.
      *
@@ -120,6 +125,7 @@ public interface CurrentQuotaLimitBase {
          */
         CurrentQuotaLimitBase apply(Context context);
     }
+
     /** The CurrentQuotaLimitBase update stages. */
     interface UpdateStages {
         /** The stage of the CurrentQuotaLimitBase update allowing to specify properties. */
@@ -133,6 +139,7 @@ public interface CurrentQuotaLimitBase {
             Update withProperties(QuotaProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

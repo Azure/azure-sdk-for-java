@@ -47,8 +47,8 @@ public final class RegionConfigurationRequest {
      * @param scheduleAvailabilityRequest the scheduleAvailabilityRequest value to set.
      * @return the RegionConfigurationRequest object itself.
      */
-    public RegionConfigurationRequest withScheduleAvailabilityRequest(
-        ScheduleAvailabilityRequest scheduleAvailabilityRequest) {
+    public RegionConfigurationRequest
+        withScheduleAvailabilityRequest(ScheduleAvailabilityRequest scheduleAvailabilityRequest) {
         this.scheduleAvailabilityRequest = scheduleAvailabilityRequest;
         return this;
     }
@@ -68,8 +68,8 @@ public final class RegionConfigurationRequest {
      * @param transportAvailabilityRequest the transportAvailabilityRequest value to set.
      * @return the RegionConfigurationRequest object itself.
      */
-    public RegionConfigurationRequest withTransportAvailabilityRequest(
-        TransportAvailabilityRequest transportAvailabilityRequest) {
+    public RegionConfigurationRequest
+        withTransportAvailabilityRequest(TransportAvailabilityRequest transportAvailabilityRequest) {
         this.transportAvailabilityRequest = transportAvailabilityRequest;
         return this;
     }

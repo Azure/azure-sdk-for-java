@@ -15,7 +15,6 @@ public class DataConnectionsTest extends EasmClientTestBase {
     String clusterName = "sample-cluster";
     String databaseName = "sample-db";
 
-
     @Test
     public void testdataConnectionsListWithResponse() {
         PagedIterable<DataConnection> dataConnectionPageResult = easmClient.listDataConnection();
@@ -27,14 +26,14 @@ public class DataConnectionsTest extends EasmClientTestBase {
 
     @Test
     public void testdataConnectionsValidateWithResponse() {
-        AzureDataExplorerDataConnectionProperties properties = new AzureDataExplorerDataConnectionProperties()
-            .setClusterName(clusterName)
-            .setDatabaseName(databaseName)
-            .setRegion("eastus");
-        AzureDataExplorerDataConnectionData request = new AzureDataExplorerDataConnectionData(properties)
-            .setName(newDataConnectionName)
-            .setContent(DataConnectionContent.ASSETS)
-            .setFrequency(DataConnectionFrequency.DAILY);
+        AzureDataExplorerDataConnectionProperties properties
+            = new AzureDataExplorerDataConnectionProperties().setClusterName(clusterName)
+                .setDatabaseName(databaseName)
+                .setRegion("eastus");
+        AzureDataExplorerDataConnectionData request
+            = new AzureDataExplorerDataConnectionData(properties).setName(newDataConnectionName)
+                .setContent(DataConnectionContent.ASSETS)
+                .setFrequency(DataConnectionFrequency.DAILY);
         ValidateResult response = easmClient.validateDataConnection(request);
         assertNull(response.getError());
     }
@@ -48,15 +47,16 @@ public class DataConnectionsTest extends EasmClientTestBase {
 
     @Test
     public void testdataConnectionsPutWithResponse() {
-        AzureDataExplorerDataConnectionProperties properties = new AzureDataExplorerDataConnectionProperties()
-            .setClusterName(clusterName)
-            .setDatabaseName(databaseName)
-            .setRegion("eastus");
-        AzureDataExplorerDataConnectionData request = new AzureDataExplorerDataConnectionData(properties)
-            .setName(newDataConnectionName)
-            .setContent(DataConnectionContent.ASSETS)
-            .setFrequency(DataConnectionFrequency.DAILY);
-        DataConnection dataConnectionResponse = easmClient.createOrReplaceDataConnection(newDataConnectionName, request);
+        AzureDataExplorerDataConnectionProperties properties
+            = new AzureDataExplorerDataConnectionProperties().setClusterName(clusterName)
+                .setDatabaseName(databaseName)
+                .setRegion("eastus");
+        AzureDataExplorerDataConnectionData request
+            = new AzureDataExplorerDataConnectionData(properties).setName(newDataConnectionName)
+                .setContent(DataConnectionContent.ASSETS)
+                .setFrequency(DataConnectionFrequency.DAILY);
+        DataConnection dataConnectionResponse
+            = easmClient.createOrReplaceDataConnection(newDataConnectionName, request);
 
         assertEquals(newDataConnectionName, dataConnectionResponse.getName());
         assertEquals(newDataConnectionName, dataConnectionResponse.getDisplayName());

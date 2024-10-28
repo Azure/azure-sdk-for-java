@@ -74,16 +74,12 @@ public final class FilterFileDetails {
      */
     public void validate() {
         if (filterFileType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property filterFileType in model FilterFileDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property filterFileType in model FilterFileDetails"));
         }
         if (filterFilePath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property filterFilePath in model FilterFileDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property filterFilePath in model FilterFileDetails"));
         }
     }
 

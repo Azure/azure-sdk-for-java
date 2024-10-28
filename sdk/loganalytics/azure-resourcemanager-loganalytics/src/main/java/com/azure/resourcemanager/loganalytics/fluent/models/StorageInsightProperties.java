@@ -118,10 +118,8 @@ public final class StorageInsightProperties {
      */
     public void validate() {
         if (storageAccount() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccount in model StorageInsightProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageAccount in model StorageInsightProperties"));
         } else {
             storageAccount().validate();
         }

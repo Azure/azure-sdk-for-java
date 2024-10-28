@@ -101,9 +101,8 @@ public final class SkuLocationInfoItem {
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model SkuLocationInfoItem"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property location in model SkuLocationInfoItem"));
         }
         if (zoneDetails() != null) {
             zoneDetails().forEach(e -> e.validate());

@@ -45,12 +45,15 @@ public final class ApiVersionsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ApiVersion response = manager.apiVersions().getWithResponse("wygzlvdnkfxusem", "wzrmuh", "pfcqdp",
-            "qxqvpsvuoymgc", "elvezrypq", com.azure.core.util.Context.NONE).getValue();
+        ApiVersion response = manager.apiVersions()
+            .getWithResponse("wygzlvdnkfxusem", "wzrmuh", "pfcqdp", "qxqvpsvuoymgc", "elvezrypq",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("feo", response.properties().title());
         Assertions.assertEquals(LifecycleStage.DEVELOPMENT, response.properties().lifecycleStage());

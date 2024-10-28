@@ -16,7 +16,8 @@ import java.io.IOException;
 @Fluent
 public final class EntitiesTaskParameters extends PreBuiltTaskParameters {
     /*
-     * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to Unicode v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
+     * Specifies the method used to interpret string offsets. Defaults to Text Elements (Graphemes) according to Unicode
+     * v8.0.0. For additional information see https://aka.ms/text-analytics-offsets.
      */
     private StringIndexType stringIndexType;
 

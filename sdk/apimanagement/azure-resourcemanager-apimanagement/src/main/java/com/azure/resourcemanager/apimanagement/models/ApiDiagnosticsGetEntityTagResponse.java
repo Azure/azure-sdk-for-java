@@ -19,11 +19,7 @@ public final class ApiDiagnosticsGetEntityTagResponse extends ResponseBase<ApiDi
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ApiDiagnosticsGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
+    public ApiDiagnosticsGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
         ApiDiagnosticsGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

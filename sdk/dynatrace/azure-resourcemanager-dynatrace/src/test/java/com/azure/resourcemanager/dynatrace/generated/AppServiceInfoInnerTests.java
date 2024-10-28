@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AppServiceInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AppServiceInfoInner model =
-            BinaryData
-                .fromString(
-                    "{\"resourceId\":\"mpmngnzscxaqwoo\",\"version\":\"cbonqvpk\",\"monitoringType\":\"FULL_STACK\",\"autoUpdateSetting\":\"DISABLED\",\"updateStatus\":\"UPDATE_IN_PROGRESS\",\"availabilityState\":\"MONITORED\",\"logModule\":\"DISABLED\",\"hostGroup\":\"heoflokeyyienjbd\",\"hostName\":\"tgrhpdjpjumas\"}")
-                .toObject(AppServiceInfoInner.class);
+        AppServiceInfoInner model = BinaryData.fromString(
+            "{\"resourceId\":\"mpmngnzscxaqwoo\",\"version\":\"cbonqvpk\",\"monitoringType\":\"FULL_STACK\",\"autoUpdateSetting\":\"DISABLED\",\"updateStatus\":\"UPDATE_IN_PROGRESS\",\"availabilityState\":\"MONITORED\",\"logModule\":\"DISABLED\",\"hostGroup\":\"heoflokeyyienjbd\",\"hostName\":\"tgrhpdjpjumas\"}")
+            .toObject(AppServiceInfoInner.class);
         Assertions.assertEquals("mpmngnzscxaqwoo", model.resourceId());
         Assertions.assertEquals("cbonqvpk", model.version());
         Assertions.assertEquals(MonitoringType.FULL_STACK, model.monitoringType());
@@ -34,17 +32,15 @@ public final class AppServiceInfoInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppServiceInfoInner model =
-            new AppServiceInfoInner()
-                .withResourceId("mpmngnzscxaqwoo")
-                .withVersion("cbonqvpk")
-                .withMonitoringType(MonitoringType.FULL_STACK)
-                .withAutoUpdateSetting(AutoUpdateSetting.DISABLED)
-                .withUpdateStatus(UpdateStatus.UPDATE_IN_PROGRESS)
-                .withAvailabilityState(AvailabilityState.MONITORED)
-                .withLogModule(LogModule.DISABLED)
-                .withHostGroup("heoflokeyyienjbd")
-                .withHostname("tgrhpdjpjumas");
+        AppServiceInfoInner model = new AppServiceInfoInner().withResourceId("mpmngnzscxaqwoo")
+            .withVersion("cbonqvpk")
+            .withMonitoringType(MonitoringType.FULL_STACK)
+            .withAutoUpdateSetting(AutoUpdateSetting.DISABLED)
+            .withUpdateStatus(UpdateStatus.UPDATE_IN_PROGRESS)
+            .withAvailabilityState(AvailabilityState.MONITORED)
+            .withLogModule(LogModule.DISABLED)
+            .withHostGroup("heoflokeyyienjbd")
+            .withHostname("tgrhpdjpjumas");
         model = BinaryData.fromObject(model).toObject(AppServiceInfoInner.class);
         Assertions.assertEquals("mpmngnzscxaqwoo", model.resourceId());
         Assertions.assertEquals("cbonqvpk", model.version());

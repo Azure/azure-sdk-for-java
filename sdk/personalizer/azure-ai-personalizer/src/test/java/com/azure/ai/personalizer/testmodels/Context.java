@@ -25,9 +25,7 @@ public class Context implements JsonSerializable<Context> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeJsonField("currentFeatures", currentFeatures)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeJsonField("currentFeatures", currentFeatures).writeEndObject();
     }
 
     public static Context fromJson(JsonReader jsonReader) throws IOException {

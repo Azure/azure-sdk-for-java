@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TableLevelSharingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TableLevelSharingProperties model =
-            BinaryData
-                .fromString(
-                    "{\"tablesToInclude\":[\"zgwldoychillcec\",\"ehuwaoa\",\"uhicqllizstacsjv\"],\"tablesToExclude\":[\"eftkwqe\",\"pmvssehaep\"],\"externalTablesToInclude\":[\"cxtczhupeukn\",\"jduyyespydjfb\"],\"externalTablesToExclude\":[\"v\"],\"materializedViewsToInclude\":[\"lrtywikdmhlakuf\",\"gbhgau\",\"cdixmx\"],\"materializedViewsToExclude\":[\"sryjqgdkfno\"]}")
-                .toObject(TableLevelSharingProperties.class);
+        TableLevelSharingProperties model = BinaryData.fromString(
+            "{\"tablesToInclude\":[\"zgwldoychillcec\",\"ehuwaoa\",\"uhicqllizstacsjv\"],\"tablesToExclude\":[\"eftkwqe\",\"pmvssehaep\"],\"externalTablesToInclude\":[\"cxtczhupeukn\",\"jduyyespydjfb\"],\"externalTablesToExclude\":[\"v\"],\"materializedViewsToInclude\":[\"lrtywikdmhlakuf\",\"gbhgau\",\"cdixmx\"],\"materializedViewsToExclude\":[\"sryjqgdkfno\"]}")
+            .toObject(TableLevelSharingProperties.class);
         Assertions.assertEquals("zgwldoychillcec", model.tablesToInclude().get(0));
         Assertions.assertEquals("eftkwqe", model.tablesToExclude().get(0));
         Assertions.assertEquals("cxtczhupeukn", model.externalTablesToInclude().get(0));
@@ -27,14 +25,13 @@ public final class TableLevelSharingPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TableLevelSharingProperties model =
-            new TableLevelSharingProperties()
-                .withTablesToInclude(Arrays.asList("zgwldoychillcec", "ehuwaoa", "uhicqllizstacsjv"))
-                .withTablesToExclude(Arrays.asList("eftkwqe", "pmvssehaep"))
-                .withExternalTablesToInclude(Arrays.asList("cxtczhupeukn", "jduyyespydjfb"))
-                .withExternalTablesToExclude(Arrays.asList("v"))
-                .withMaterializedViewsToInclude(Arrays.asList("lrtywikdmhlakuf", "gbhgau", "cdixmx"))
-                .withMaterializedViewsToExclude(Arrays.asList("sryjqgdkfno"));
+        TableLevelSharingProperties model = new TableLevelSharingProperties()
+            .withTablesToInclude(Arrays.asList("zgwldoychillcec", "ehuwaoa", "uhicqllizstacsjv"))
+            .withTablesToExclude(Arrays.asList("eftkwqe", "pmvssehaep"))
+            .withExternalTablesToInclude(Arrays.asList("cxtczhupeukn", "jduyyespydjfb"))
+            .withExternalTablesToExclude(Arrays.asList("v"))
+            .withMaterializedViewsToInclude(Arrays.asList("lrtywikdmhlakuf", "gbhgau", "cdixmx"))
+            .withMaterializedViewsToExclude(Arrays.asList("sryjqgdkfno"));
         model = BinaryData.fromObject(model).toObject(TableLevelSharingProperties.class);
         Assertions.assertEquals("zgwldoychillcec", model.tablesToInclude().get(0));
         Assertions.assertEquals("eftkwqe", model.tablesToExclude().get(0));

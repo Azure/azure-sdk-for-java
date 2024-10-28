@@ -14,10 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 /** Entry point to galleries management API in Azure. */
 @Fluent
 public interface Galleries
-    extends SupportsCreating<Gallery.DefinitionStages.Blank>,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchDeletion,
-        SupportsGettingByResourceGroup<Gallery>,
-        SupportsListingByResourceGroup<Gallery>,
-        SupportsListing<Gallery> {
+    extends SupportsCreating<Gallery.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion,
+    SupportsGettingByResourceGroup<Gallery>, SupportsListingByResourceGroup<Gallery>, SupportsListing<Gallery> {
 }

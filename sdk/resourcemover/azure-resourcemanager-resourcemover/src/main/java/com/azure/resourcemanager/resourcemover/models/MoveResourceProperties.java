@@ -233,9 +233,8 @@ public final class MoveResourceProperties {
      */
     public void validate() {
         if (sourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sourceId in model MoveResourceProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sourceId in model MoveResourceProperties"));
         }
         if (resourceSettings() != null) {
             resourceSettings().validate();

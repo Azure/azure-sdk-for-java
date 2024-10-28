@@ -118,20 +118,16 @@ public final class RackImpl implements Rack, Rack.Definition, Rack.Update {
     }
 
     public Rack create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRacks()
-                .createOrUpdate(resourceGroupName, rackName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRacks()
+            .createOrUpdate(resourceGroupName, rackName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Rack create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRacks()
-                .createOrUpdate(resourceGroupName, rackName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRacks()
+            .createOrUpdate(resourceGroupName, rackName, this.innerModel(), context);
         return this;
     }
 
@@ -147,20 +143,16 @@ public final class RackImpl implements Rack, Rack.Definition, Rack.Update {
     }
 
     public Rack apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRacks()
-                .update(resourceGroupName, rackName, updateRackUpdateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getRacks()
+            .update(resourceGroupName, rackName, updateRackUpdateParameters, Context.NONE);
         return this;
     }
 
     public Rack apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRacks()
-                .update(resourceGroupName, rackName, updateRackUpdateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getRacks()
+            .update(resourceGroupName, rackName, updateRackUpdateParameters, context);
         return this;
     }
 
@@ -172,22 +164,18 @@ public final class RackImpl implements Rack, Rack.Definition, Rack.Update {
     }
 
     public Rack refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRacks()
-                .getByResourceGroupWithResponse(resourceGroupName, rackName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRacks()
+            .getByResourceGroupWithResponse(resourceGroupName, rackName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Rack refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRacks()
-                .getByResourceGroupWithResponse(resourceGroupName, rackName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRacks()
+            .getByResourceGroupWithResponse(resourceGroupName, rackName, context)
+            .getValue();
         return this;
     }
 

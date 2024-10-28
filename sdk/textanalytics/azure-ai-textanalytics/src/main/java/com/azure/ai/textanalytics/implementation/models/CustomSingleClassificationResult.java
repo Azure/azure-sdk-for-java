@@ -168,17 +168,18 @@ public final class CustomSingleClassificationResult implements JsonSerializable<
      */
     public static CustomSingleClassificationResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            CustomSingleClassificationResult deserializedCustomSingleClassificationResult = new CustomSingleClassificationResult();
+            CustomSingleClassificationResult deserializedCustomSingleClassificationResult
+                = new CustomSingleClassificationResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("documents".equals(fieldName)) {
                     deserializedCustomSingleClassificationResult.documents
-                            = reader.readArray(reader1 -> SingleClassificationDocument.fromJson(reader1));
+                        = reader.readArray(reader1 -> SingleClassificationDocument.fromJson(reader1));
                 } else if ("errors".equals(fieldName)) {
                     deserializedCustomSingleClassificationResult.errors
-                            = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
+                        = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
                 } else if ("statistics".equals(fieldName)) {
                     deserializedCustomSingleClassificationResult.statistics = RequestStatistics.fromJson(reader);
                 } else if ("projectName".equals(fieldName)) {

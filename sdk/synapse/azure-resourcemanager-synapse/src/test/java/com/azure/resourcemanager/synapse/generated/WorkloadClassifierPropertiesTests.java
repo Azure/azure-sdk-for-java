@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkloadClassifierPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadClassifierProperties model =
-            BinaryData
-                .fromString(
-                    "{\"memberName\":\"vudtjuewbcihx\",\"label\":\"whcjyxcc\",\"context\":\"vpayakkudzpx\",\"startTime\":\"jplmagstcy\",\"endTime\":\"pfkyrkdbdgiogsj\",\"importance\":\"nwqjnoba\"}")
-                .toObject(WorkloadClassifierProperties.class);
+        WorkloadClassifierProperties model = BinaryData.fromString(
+            "{\"memberName\":\"vudtjuewbcihx\",\"label\":\"whcjyxcc\",\"context\":\"vpayakkudzpx\",\"startTime\":\"jplmagstcy\",\"endTime\":\"pfkyrkdbdgiogsj\",\"importance\":\"nwqjnoba\"}")
+            .toObject(WorkloadClassifierProperties.class);
         Assertions.assertEquals("vudtjuewbcihx", model.memberName());
         Assertions.assertEquals("whcjyxcc", model.label());
         Assertions.assertEquals("vpayakkudzpx", model.context());
@@ -26,14 +24,12 @@ public final class WorkloadClassifierPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadClassifierProperties model =
-            new WorkloadClassifierProperties()
-                .withMemberName("vudtjuewbcihx")
-                .withLabel("whcjyxcc")
-                .withContext("vpayakkudzpx")
-                .withStartTime("jplmagstcy")
-                .withEndTime("pfkyrkdbdgiogsj")
-                .withImportance("nwqjnoba");
+        WorkloadClassifierProperties model = new WorkloadClassifierProperties().withMemberName("vudtjuewbcihx")
+            .withLabel("whcjyxcc")
+            .withContext("vpayakkudzpx")
+            .withStartTime("jplmagstcy")
+            .withEndTime("pfkyrkdbdgiogsj")
+            .withImportance("nwqjnoba");
         model = BinaryData.fromObject(model).toObject(WorkloadClassifierProperties.class);
         Assertions.assertEquals("vudtjuewbcihx", model.memberName());
         Assertions.assertEquals("whcjyxcc", model.label());

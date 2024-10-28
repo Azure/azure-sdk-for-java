@@ -33,47 +33,36 @@ public final class ContactProfilesListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"succeeded\",\"minimumViableContactDuration\":\"hfwdsjnkaljutiis\",\"minimumElevationDegrees\":63.025497,\"autoTrackingConfiguration\":\"disabled\",\"eventHubUri\":\"dkzzewkfvhqcrail\",\"networkConfiguration\":{\"subnetId\":\"pnppfuf\"},\"thirdPartyConfigurations\":[],\"links\":[]},\"location\":\"hdlxyjrxsagafcn\",\"tags\":{\"vq\":\"wqapnedgfbcvk\"},\"id\":\"pkeqdcvdrhvoo\",\"name\":\"sotbob\",\"type\":\"dopcjwvnh\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"succeeded\",\"minimumViableContactDuration\":\"hfwdsjnkaljutiis\",\"minimumElevationDegrees\":63.025497,\"autoTrackingConfiguration\":\"disabled\",\"eventHubUri\":\"dkzzewkfvhqcrail\",\"networkConfiguration\":{\"subnetId\":\"pnppfuf\"},\"thirdPartyConfigurations\":[],\"links\":[]},\"location\":\"hdlxyjrxsagafcn\",\"tags\":{\"vq\":\"wqapnedgfbcvk\"},\"id\":\"pkeqdcvdrhvoo\",\"name\":\"sotbob\",\"type\":\"dopcjwvnh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        OrbitalManager manager =
-            OrbitalManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        OrbitalManager manager = OrbitalManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ContactProfile> response =
-            manager.contactProfiles().listByResourceGroup("zx", "lvithhqzonosgg", com.azure.core.util.Context.NONE);
+        PagedIterable<ContactProfile> response
+            = manager.contactProfiles().listByResourceGroup("zx", "lvithhqzonosgg", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("hdlxyjrxsagafcn", response.iterator().next().location());
         Assertions.assertEquals("wqapnedgfbcvk", response.iterator().next().tags().get("vq"));
-        Assertions
-            .assertEquals(
-                ContactProfilesPropertiesProvisioningState.SUCCEEDED, response.iterator().next().provisioningState());
+        Assertions.assertEquals(ContactProfilesPropertiesProvisioningState.SUCCEEDED,
+            response.iterator().next().provisioningState());
         Assertions.assertEquals("hfwdsjnkaljutiis", response.iterator().next().minimumViableContactDuration());
         Assertions.assertEquals(63.025497F, response.iterator().next().minimumElevationDegrees());
-        Assertions
-            .assertEquals(AutoTrackingConfiguration.DISABLED, response.iterator().next().autoTrackingConfiguration());
+        Assertions.assertEquals(AutoTrackingConfiguration.DISABLED,
+            response.iterator().next().autoTrackingConfiguration());
         Assertions.assertEquals("dkzzewkfvhqcrail", response.iterator().next().eventHubUri());
         Assertions.assertEquals("pnppfuf", response.iterator().next().networkConfiguration().subnetId());
     }

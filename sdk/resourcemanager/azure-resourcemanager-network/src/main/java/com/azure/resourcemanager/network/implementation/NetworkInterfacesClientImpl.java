@@ -3050,7 +3050,7 @@ public final class NetworkInterfacesClientImpl implements InnerSupportsGet<Netwo
         final String expand = null;
         return getVirtualMachineScaleSetIpConfigurationWithResponseAsync(resourceGroupName, virtualMachineScaleSetName,
             virtualmachineIndex, networkInterfaceName, ipConfigurationName, expand)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

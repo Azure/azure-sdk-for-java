@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "connectionType",
     defaultImpl = TimeSeriesDatabaseConnectionProperties.class)
 @JsonTypeName("TimeSeriesDatabaseConnectionProperties")
-@JsonSubTypes({@JsonSubTypes.Type(name = "AzureDataExplorer", value = AzureDataExplorerConnectionProperties.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "AzureDataExplorer", value = AzureDataExplorerConnectionProperties.class) })
 @Fluent
 public class TimeSeriesDatabaseConnectionProperties {
     /*

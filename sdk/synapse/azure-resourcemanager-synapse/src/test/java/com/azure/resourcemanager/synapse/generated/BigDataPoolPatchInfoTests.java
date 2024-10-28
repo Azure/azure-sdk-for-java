@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class BigDataPoolPatchInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BigDataPoolPatchInfo model =
-            BinaryData.fromString("{\"tags\":{\"rsnm\":\"hppr\"}}").toObject(BigDataPoolPatchInfo.class);
+        BigDataPoolPatchInfo model
+            = BinaryData.fromString("{\"tags\":{\"rsnm\":\"hppr\"}}").toObject(BigDataPoolPatchInfo.class);
         Assertions.assertEquals("hppr", model.tags().get("rsnm"));
     }
 

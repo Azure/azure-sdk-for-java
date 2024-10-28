@@ -51,10 +51,7 @@ public class ApiCenterManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -81,7 +78,8 @@ public class ApiCenterManagerTests extends TestProxyTestBase {
             service.refresh();
             Assertions.assertEquals(serviceName, service.name());
             Assertions.assertEquals(serviceName, apiCenterManager.services().getById(service.id()).name());
-            Assertions.assertTrue(apiCenterManager.services().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertTrue(
+                apiCenterManager.services().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
         } finally {
             if (service != null) {
                 apiCenterManager.services().deleteById(service.id());

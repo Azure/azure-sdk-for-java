@@ -58,8 +58,9 @@ public final class ProxyArtifactsImpl implements ProxyArtifacts {
 
     public ProxyArtifactVersionsListOverview updateState(String resourceGroupName, String publisherName,
         String artifactStoreName, String artifactName, String artifactVersionName, ArtifactChangeState parameters) {
-        ProxyArtifactVersionsListOverviewInner inner = this.serviceClient().updateState(resourceGroupName,
-            publisherName, artifactStoreName, artifactName, artifactVersionName, parameters);
+        ProxyArtifactVersionsListOverviewInner inner = this.serviceClient()
+            .updateState(resourceGroupName, publisherName, artifactStoreName, artifactName, artifactVersionName,
+                parameters);
         if (inner != null) {
             return new ProxyArtifactVersionsListOverviewImpl(inner, this.manager());
         } else {
@@ -70,8 +71,9 @@ public final class ProxyArtifactsImpl implements ProxyArtifacts {
     public ProxyArtifactVersionsListOverview updateState(String resourceGroupName, String publisherName,
         String artifactStoreName, String artifactName, String artifactVersionName, ArtifactChangeState parameters,
         Context context) {
-        ProxyArtifactVersionsListOverviewInner inner = this.serviceClient().updateState(resourceGroupName,
-            publisherName, artifactStoreName, artifactName, artifactVersionName, parameters, context);
+        ProxyArtifactVersionsListOverviewInner inner = this.serviceClient()
+            .updateState(resourceGroupName, publisherName, artifactStoreName, artifactName, artifactVersionName,
+                parameters, context);
         if (inner != null) {
             return new ProxyArtifactVersionsListOverviewImpl(inner, this.manager());
         } else {

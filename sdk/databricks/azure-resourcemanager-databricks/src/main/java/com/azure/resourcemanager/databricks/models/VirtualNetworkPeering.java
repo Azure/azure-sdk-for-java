@@ -125,17 +125,16 @@ public interface VirtualNetworkPeering {
     VirtualNetworkPeeringInner innerModel();
 
     /** The entirety of the VirtualNetworkPeering definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithRemoteVirtualNetwork,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithRemoteVirtualNetwork, DefinitionStages.WithCreate {
     }
+
     /** The VirtualNetworkPeering definition stages. */
     interface DefinitionStages {
         /** The first stage of the VirtualNetworkPeering definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the VirtualNetworkPeering definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -147,6 +146,7 @@ public interface VirtualNetworkPeering {
              */
             WithRemoteVirtualNetwork withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
+
         /** The stage of the VirtualNetworkPeering definition allowing to specify remoteVirtualNetwork. */
         interface WithRemoteVirtualNetwork {
             /**
@@ -162,18 +162,15 @@ public interface VirtualNetworkPeering {
             WithCreate withRemoteVirtualNetwork(
                 VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork remoteVirtualNetwork);
         }
+
         /**
          * The stage of the VirtualNetworkPeering definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithAllowVirtualNetworkAccess,
-                DefinitionStages.WithAllowForwardedTraffic,
-                DefinitionStages.WithAllowGatewayTransit,
-                DefinitionStages.WithUseRemoteGateways,
-                DefinitionStages.WithDatabricksVirtualNetwork,
-                DefinitionStages.WithDatabricksAddressSpace,
-                DefinitionStages.WithRemoteAddressSpace {
+        interface WithCreate extends DefinitionStages.WithAllowVirtualNetworkAccess,
+            DefinitionStages.WithAllowForwardedTraffic, DefinitionStages.WithAllowGatewayTransit,
+            DefinitionStages.WithUseRemoteGateways, DefinitionStages.WithDatabricksVirtualNetwork,
+            DefinitionStages.WithDatabricksAddressSpace, DefinitionStages.WithRemoteAddressSpace {
             /**
              * Executes the create request.
              *
@@ -189,6 +186,7 @@ public interface VirtualNetworkPeering {
              */
             VirtualNetworkPeering create(Context context);
         }
+
         /** The stage of the VirtualNetworkPeering definition allowing to specify allowVirtualNetworkAccess. */
         interface WithAllowVirtualNetworkAccess {
             /**
@@ -201,6 +199,7 @@ public interface VirtualNetworkPeering {
              */
             WithCreate withAllowVirtualNetworkAccess(Boolean allowVirtualNetworkAccess);
         }
+
         /** The stage of the VirtualNetworkPeering definition allowing to specify allowForwardedTraffic. */
         interface WithAllowForwardedTraffic {
             /**
@@ -213,6 +212,7 @@ public interface VirtualNetworkPeering {
              */
             WithCreate withAllowForwardedTraffic(Boolean allowForwardedTraffic);
         }
+
         /** The stage of the VirtualNetworkPeering definition allowing to specify allowGatewayTransit. */
         interface WithAllowGatewayTransit {
             /**
@@ -225,6 +225,7 @@ public interface VirtualNetworkPeering {
              */
             WithCreate withAllowGatewayTransit(Boolean allowGatewayTransit);
         }
+
         /** The stage of the VirtualNetworkPeering definition allowing to specify useRemoteGateways. */
         interface WithUseRemoteGateways {
             /**
@@ -241,6 +242,7 @@ public interface VirtualNetworkPeering {
              */
             WithCreate withUseRemoteGateways(Boolean useRemoteGateways);
         }
+
         /** The stage of the VirtualNetworkPeering definition allowing to specify databricksVirtualNetwork. */
         interface WithDatabricksVirtualNetwork {
             /**
@@ -256,6 +258,7 @@ public interface VirtualNetworkPeering {
             WithCreate withDatabricksVirtualNetwork(
                 VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork databricksVirtualNetwork);
         }
+
         /** The stage of the VirtualNetworkPeering definition allowing to specify databricksAddressSpace. */
         interface WithDatabricksAddressSpace {
             /**
@@ -267,6 +270,7 @@ public interface VirtualNetworkPeering {
              */
             WithCreate withDatabricksAddressSpace(AddressSpace databricksAddressSpace);
         }
+
         /** The stage of the VirtualNetworkPeering definition allowing to specify remoteAddressSpace. */
         interface WithRemoteAddressSpace {
             /**
@@ -278,6 +282,7 @@ public interface VirtualNetworkPeering {
             WithCreate withRemoteAddressSpace(AddressSpace remoteAddressSpace);
         }
     }
+
     /**
      * Begins update for the VirtualNetworkPeering resource.
      *
@@ -286,15 +291,10 @@ public interface VirtualNetworkPeering {
     VirtualNetworkPeering.Update update();
 
     /** The template for VirtualNetworkPeering update. */
-    interface Update
-        extends UpdateStages.WithAllowVirtualNetworkAccess,
-            UpdateStages.WithAllowForwardedTraffic,
-            UpdateStages.WithAllowGatewayTransit,
-            UpdateStages.WithUseRemoteGateways,
-            UpdateStages.WithDatabricksVirtualNetwork,
-            UpdateStages.WithDatabricksAddressSpace,
-            UpdateStages.WithRemoteVirtualNetwork,
-            UpdateStages.WithRemoteAddressSpace {
+    interface Update extends UpdateStages.WithAllowVirtualNetworkAccess, UpdateStages.WithAllowForwardedTraffic,
+        UpdateStages.WithAllowGatewayTransit, UpdateStages.WithUseRemoteGateways,
+        UpdateStages.WithDatabricksVirtualNetwork, UpdateStages.WithDatabricksAddressSpace,
+        UpdateStages.WithRemoteVirtualNetwork, UpdateStages.WithRemoteAddressSpace {
         /**
          * Executes the update request.
          *
@@ -310,6 +310,7 @@ public interface VirtualNetworkPeering {
          */
         VirtualNetworkPeering apply(Context context);
     }
+
     /** The VirtualNetworkPeering update stages. */
     interface UpdateStages {
         /** The stage of the VirtualNetworkPeering update allowing to specify allowVirtualNetworkAccess. */
@@ -324,6 +325,7 @@ public interface VirtualNetworkPeering {
              */
             Update withAllowVirtualNetworkAccess(Boolean allowVirtualNetworkAccess);
         }
+
         /** The stage of the VirtualNetworkPeering update allowing to specify allowForwardedTraffic. */
         interface WithAllowForwardedTraffic {
             /**
@@ -336,6 +338,7 @@ public interface VirtualNetworkPeering {
              */
             Update withAllowForwardedTraffic(Boolean allowForwardedTraffic);
         }
+
         /** The stage of the VirtualNetworkPeering update allowing to specify allowGatewayTransit. */
         interface WithAllowGatewayTransit {
             /**
@@ -348,6 +351,7 @@ public interface VirtualNetworkPeering {
              */
             Update withAllowGatewayTransit(Boolean allowGatewayTransit);
         }
+
         /** The stage of the VirtualNetworkPeering update allowing to specify useRemoteGateways. */
         interface WithUseRemoteGateways {
             /**
@@ -364,6 +368,7 @@ public interface VirtualNetworkPeering {
              */
             Update withUseRemoteGateways(Boolean useRemoteGateways);
         }
+
         /** The stage of the VirtualNetworkPeering update allowing to specify databricksVirtualNetwork. */
         interface WithDatabricksVirtualNetwork {
             /**
@@ -379,6 +384,7 @@ public interface VirtualNetworkPeering {
             Update withDatabricksVirtualNetwork(
                 VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork databricksVirtualNetwork);
         }
+
         /** The stage of the VirtualNetworkPeering update allowing to specify databricksAddressSpace. */
         interface WithDatabricksAddressSpace {
             /**
@@ -390,6 +396,7 @@ public interface VirtualNetworkPeering {
              */
             Update withDatabricksAddressSpace(AddressSpace databricksAddressSpace);
         }
+
         /** The stage of the VirtualNetworkPeering update allowing to specify remoteVirtualNetwork. */
         interface WithRemoteVirtualNetwork {
             /**
@@ -405,6 +412,7 @@ public interface VirtualNetworkPeering {
             Update withRemoteVirtualNetwork(
                 VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork remoteVirtualNetwork);
         }
+
         /** The stage of the VirtualNetworkPeering update allowing to specify remoteAddressSpace. */
         interface WithRemoteAddressSpace {
             /**
@@ -416,6 +424,7 @@ public interface VirtualNetworkPeering {
             Update withRemoteAddressSpace(AddressSpace remoteAddressSpace);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

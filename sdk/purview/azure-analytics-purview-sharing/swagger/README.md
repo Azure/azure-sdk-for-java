@@ -5,6 +5,7 @@ input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/main/specification/purview/data-plane/Azure.Analytics.Purview.Share/preview/2023-05-30-preview/share.json
 output-folder: ../
 java: true
+use: '@autorest/java@4.1.39'
 regenerate-pom: false
 data-plane: true
 generate-tests: true

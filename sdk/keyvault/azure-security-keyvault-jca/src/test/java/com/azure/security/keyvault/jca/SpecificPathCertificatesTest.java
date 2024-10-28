@@ -39,7 +39,8 @@ public class SpecificPathCertificatesTest {
     }
 
     @Test
-    public void testGetSpecificPathCertificate() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
+    public void testGetSpecificPathCertificate()
+        throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException {
         System.setProperty("azure.cert-path.custom", getFilePath("custom"));
         KeyStore keyStore = PropertyConvertorUtils.getKeyVaultKeyStore();
         Assertions.assertNotNull(keyStore.getCertificate("sideload"));
@@ -72,7 +73,7 @@ public class SpecificPathCertificatesTest {
     private X509Certificate getCertificateByFile(File file) {
         X509Certificate certificate;
         try (InputStream inputStream = new FileInputStream(file);
-             BufferedInputStream bytes = new BufferedInputStream(inputStream)) {
+            BufferedInputStream bytes = new BufferedInputStream(inputStream)) {
             CertificateFactory cf = CertificateFactory.getInstance("X.509");
             certificate = (X509Certificate) cf.generateCertificate(bytes);
         } catch (Exception e) {

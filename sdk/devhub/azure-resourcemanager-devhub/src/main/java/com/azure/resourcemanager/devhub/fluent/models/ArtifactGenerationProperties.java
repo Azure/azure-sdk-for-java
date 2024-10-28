@@ -259,8 +259,8 @@ public final class ArtifactGenerationProperties {
      * @param dockerfileGenerationMode the dockerfileGenerationMode value to set.
      * @return the ArtifactGenerationProperties object itself.
      */
-    public ArtifactGenerationProperties withDockerfileGenerationMode(
-        DockerfileGenerationMode dockerfileGenerationMode) {
+    public ArtifactGenerationProperties
+        withDockerfileGenerationMode(DockerfileGenerationMode dockerfileGenerationMode) {
         this.dockerfileGenerationMode = dockerfileGenerationMode;
         return this;
     }

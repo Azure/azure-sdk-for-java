@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceCustomBooleanParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceCustomBooleanParameter model =
-            BinaryData
-                .fromString("{\"type\":\"Object\",\"value\":true}")
-                .toObject(WorkspaceCustomBooleanParameter.class);
+        WorkspaceCustomBooleanParameter model = BinaryData.fromString("{\"type\":\"Object\",\"value\":true}")
+            .toObject(WorkspaceCustomBooleanParameter.class);
         Assertions.assertEquals(true, model.value());
     }
 

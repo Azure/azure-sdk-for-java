@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Virtual Machine image for Windows AML Compute. */
 @Fluent
 public final class VirtualMachineImage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineImage.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineImage.class);
 
     /*
      * Virtual Machine image path
@@ -47,9 +48,8 @@ public final class VirtualMachineImage {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model VirtualMachineImage"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model VirtualMachineImage"));
         }
     }
 }

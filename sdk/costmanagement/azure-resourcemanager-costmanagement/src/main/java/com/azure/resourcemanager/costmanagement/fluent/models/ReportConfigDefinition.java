@@ -164,15 +164,12 @@ public final class ReportConfigDefinition {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ReportConfigDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model ReportConfigDefinition"));
         }
         if (timeframe() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property timeframe in model ReportConfigDefinition"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property timeframe in model ReportConfigDefinition"));
         }
         if (timePeriod() != null) {
             timePeriod().validate();

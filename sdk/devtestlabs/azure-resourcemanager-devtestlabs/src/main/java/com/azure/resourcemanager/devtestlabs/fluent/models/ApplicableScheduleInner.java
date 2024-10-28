@@ -101,10 +101,8 @@ public final class ApplicableScheduleInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ApplicableScheduleInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model ApplicableScheduleInner"));
         } else {
             innerProperties().validate();
         }

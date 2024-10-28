@@ -11,6 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 public interface CheckNameAvailabilityResult extends HasInnerModel<RegistryNameStatusInner> {
     /** @return true if the specified name is valid and available for use, otherwise false */
     boolean isAvailable();
+
     /** @return the reason why the user-provided name for the container registry could not be used */
     String unavailabilityReason();
 

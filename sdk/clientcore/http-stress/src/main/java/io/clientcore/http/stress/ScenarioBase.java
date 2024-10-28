@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 public abstract class ScenarioBase<TOptions extends StressOptions> extends PerfStressTest<TOptions> {
     private final TelemetryHelper telemetryHelper;
     private final long startTime = System.currentTimeMillis();
+
     /**
      * Creates a stress test.
      *

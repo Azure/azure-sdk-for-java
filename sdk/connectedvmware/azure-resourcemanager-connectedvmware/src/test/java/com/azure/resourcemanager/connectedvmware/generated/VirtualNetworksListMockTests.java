@@ -31,34 +31,24 @@ public final class VirtualNetworksListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"uuid\":\"ialwv\",\"vCenterId\":\"buhzacaq\",\"moRefId\":\"ltcoqc\",\"inventoryItemId\":\"pdsxzakuejkm\",\"moName\":\"iztjof\",\"customResourceName\":\"vovjufycsjmlbe\",\"statuses\":[{\"type\":\"iriuxegthortu\",\"status\":\"wlpjfelqerppt\",\"reason\":\"gqnzm\",\"message\":\"iilialwc\",\"severity\":\"ckbbcc\",\"lastUpdatedAt\":\"2020-12-30T16:06:38Z\"}],\"provisioningState\":\"Updating\"},\"extendedLocation\":{\"type\":\"xnyuffatsgftipwc\",\"name\":\"yubhiqdx\"},\"kind\":\"npnuhzafccnuhi\",\"location\":\"gbylbuig\",\"tags\":{\"vhcs\":\"atvcrkdlbnbq\",\"vurex\":\"hzlwxaea\"},\"id\":\"ndsbdw\",\"name\":\"aderzmw\",\"type\":\"t\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"uuid\":\"ialwv\",\"vCenterId\":\"buhzacaq\",\"moRefId\":\"ltcoqc\",\"inventoryItemId\":\"pdsxzakuejkm\",\"moName\":\"iztjof\",\"customResourceName\":\"vovjufycsjmlbe\",\"statuses\":[{\"type\":\"iriuxegthortu\",\"status\":\"wlpjfelqerppt\",\"reason\":\"gqnzm\",\"message\":\"iilialwc\",\"severity\":\"ckbbcc\",\"lastUpdatedAt\":\"2020-12-30T16:06:38Z\"}],\"provisioningState\":\"Updating\"},\"extendedLocation\":{\"type\":\"xnyuffatsgftipwc\",\"name\":\"yubhiqdx\"},\"kind\":\"npnuhzafccnuhi\",\"location\":\"gbylbuig\",\"tags\":{\"vhcs\":\"atvcrkdlbnbq\",\"vurex\":\"hzlwxaea\"},\"id\":\"ndsbdw\",\"name\":\"aderzmw\",\"type\":\"t\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ConnectedVMwareManager manager =
-            ConnectedVMwareManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ConnectedVMwareManager manager = ConnectedVMwareManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<VirtualNetwork> response = manager.virtualNetworks().list(com.azure.core.util.Context.NONE);
 

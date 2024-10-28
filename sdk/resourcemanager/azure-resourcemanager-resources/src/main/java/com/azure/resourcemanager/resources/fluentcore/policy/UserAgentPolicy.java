@@ -74,8 +74,9 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
             applicationId = httpLogOptions.getApplicationId();
         }
 
-        context.getHttpRequest().setHeader(USER_AGENT_KEY,
-            UserAgentUtil.toUserAgentString(applicationId, sdkName, sdkVersion, configuration));
+        context.getHttpRequest()
+            .setHeader(USER_AGENT_KEY,
+                UserAgentUtil.toUserAgentString(applicationId, sdkName, sdkVersion, configuration));
         return next.process();
     }
 }

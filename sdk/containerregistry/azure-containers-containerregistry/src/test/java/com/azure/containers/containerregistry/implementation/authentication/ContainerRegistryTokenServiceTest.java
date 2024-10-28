@@ -35,21 +35,18 @@ public class ContainerRegistryTokenServiceTest {
         AcrRefreshToken refreshToken = new AcrRefreshToken().setRefreshToken(mockBase64);
         AcrAccessToken accessToken = new AcrAccessToken().setAccessToken(mockBase64);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(request -> {
-                String path = request.getUrl().getPath();
-                if (request.getUrl().getPath().contains("/oauth2/token")) {
-                    return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(), accessToken));
-                } else if (path.contains("/oauth2/exchange")) {
-                    return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(), refreshToken));
-                } else {
-                    return null;
-                }
-            })
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            String path = request.getUrl().getPath();
+            if (request.getUrl().getPath().contains("/oauth2/token")) {
+                return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(), accessToken));
+            } else if (path.contains("/oauth2/exchange")) {
+                return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(), refreshToken));
+            } else {
+                return null;
+            }
+        }).build();
         AuthenticationsImpl authenticationsImpl = new AzureContainerRegistryImpl(pipeline, "https://mytest.azurecr.io",
-            ContainerRegistryServiceVersion.getLatest().toString())
-            .getAuthentications();
+            ContainerRegistryServiceVersion.getLatest().toString()).getAuthentications();
         AtomicInteger callCount = new AtomicInteger();
         TokenCredential refreshTokenCredential = tokenRequestContext -> {
             int count = callCount.getAndIncrement();
@@ -62,15 +59,13 @@ public class ContainerRegistryTokenServiceTest {
             }
         };
 
-        ContainerRegistryTokenService service = new ContainerRegistryTokenService(authenticationsImpl,
-            new AccessTokenCacheImpl(refreshTokenCredential));
+        ContainerRegistryTokenService service
+            = new ContainerRegistryTokenService(authenticationsImpl, new AccessTokenCacheImpl(refreshTokenCredential));
 
         int count = 10;
         StepVerifier.create(Flux.range(1, count)
             .flatMap(i -> service.getToken(new ContainerRegistryTokenRequestContext("serviceName", "scope")))
-            .subscribeOn(Schedulers.newParallel("pool", count)))
-            .expectNextCount(count)
-            .verifyComplete();
+            .subscribeOn(Schedulers.newParallel("pool", count))).expectNextCount(count).verifyComplete();
 
         // We call the refreshToken method only once.
         assertEquals(1, callCount.get());

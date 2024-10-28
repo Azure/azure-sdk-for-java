@@ -129,10 +129,8 @@ public final class CertificateConfiguration {
      */
     public void validate() {
         if (storeName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storeName in model CertificateConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property storeName in model CertificateConfiguration"));
         }
         if (certificate() != null) {
             certificate().validate();

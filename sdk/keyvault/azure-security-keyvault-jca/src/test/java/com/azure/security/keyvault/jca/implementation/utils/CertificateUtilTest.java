@@ -27,18 +27,23 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class CertificateUtilTest {
 
     @Test
-    public void loadCertificateChainFromSecretBundleValueTest()
-        throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
+    public void loadCertificateChainFromSecretBundleValueTest() throws CertificateException, IOException,
+        KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
         assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pem-exportable-key.pem", 1);
-        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pem-non-exportable-key.pem", 1);
-        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pkcs12-exportable-key.pfx", 1);
-        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pkcs12-non-exportable-key.pfx", 1);
-        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pem", 3);
-        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pfx", 3);
+        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pem-non-exportable-key.pem",
+            1);
+        assertCertNumberInCertChain("src/test/resources/certificate-util/SecretBundle.value/pkcs12-exportable-key.pfx",
+            1);
+        assertCertNumberInCertChain(
+            "src/test/resources/certificate-util/SecretBundle.value/pkcs12-non-exportable-key.pfx", 1);
+        assertCertNumberInCertChain(
+            "src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pem", 3);
+        assertCertNumberInCertChain(
+            "src/test/resources/certificate-util/SecretBundle.value/3-certificates-in-chain.pfx", 3);
     }
 
-    private void assertCertNumberInCertChain(String pemFile, int expectedNumber)
-        throws CertificateException, IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
+    private void assertCertNumberInCertChain(String pemFile, int expectedNumber) throws CertificateException,
+        IOException, KeyStoreException, NoSuchAlgorithmException, NoSuchProviderException, PKCSException {
         String pemString = new String(Files.readAllBytes(Paths.get(pemFile)), StandardCharsets.UTF_8);
         assertEquals(expectedNumber, CertificateUtil.loadCertificatesFromSecretBundleValue(pemString).length);
     }
@@ -52,7 +57,8 @@ public class CertificateUtilTest {
         // It's a new feature to support these files, not implement now.
         // Now just keep the test files and unit test codes, they may be used when implement the feature.
         // certificateCanBeLoadFromFile("src/test/resources/certificate-util/downloaded-from-portal/pem-exportable-key.pem");
-        certificateCanBeLoadFromFile("src/test/resources/certificate-util/downloaded-from-portal/pem-non-exportable-key.pem");
+        certificateCanBeLoadFromFile(
+            "src/test/resources/certificate-util/downloaded-from-portal/pem-non-exportable-key.pem");
         // certificateCanBeLoadFromFile("src/test/resources/certificate-util/downloaded-from-portal/pkcs12-exportable-key.pfx");
         // certificateCanBeLoadFromFile("src/test/resources/certificate-util/downloaded-from-portal/pkcs12-non-exportable-key.pfx");
         certificateCanBeLoadFromFile("src/test/resources/custom/sideload.x509");
@@ -75,7 +81,8 @@ public class CertificateUtilTest {
         assertCertificateNumberInInFile("src/test/resources/well-known/sideload.pem", 1);
     }
 
-    private void assertCertificateNumberInInFile(String file, int expectedCertificateNumber) throws IOException, CertificateException {
+    private void assertCertificateNumberInInFile(String file, int expectedCertificateNumber)
+        throws IOException, CertificateException {
         InputStream inputStream = new FileInputStream(file);
         Certificate[] certificates = loadX509CertificatesFromFile(inputStream);
         assertEquals(expectedCertificateNumber, certificates.length);
@@ -83,8 +90,11 @@ public class CertificateUtilTest {
 
     @Test
     public void getCertificateNameFromCertificateItemIdTest() {
-        assertEquals("mycert", getCertificateNameFromCertificateItemId("https://test.vault.azure.net/certificates/mycert"));
-        assertEquals("mycert", getCertificateNameFromCertificateItemId("https://test-certificates.vault.azure.net/certificates/mycert"));
-        assertEquals("mycert", getCertificateNameFromCertificateItemId("https://mycertificates.vault.azure.net/certificates/mycert"));
+        assertEquals("mycert",
+            getCertificateNameFromCertificateItemId("https://test.vault.azure.net/certificates/mycert"));
+        assertEquals("mycert",
+            getCertificateNameFromCertificateItemId("https://test-certificates.vault.azure.net/certificates/mycert"));
+        assertEquals("mycert",
+            getCertificateNameFromCertificateItemId("https://mycertificates.vault.azure.net/certificates/mycert"));
     }
 }

@@ -54,10 +54,8 @@ public final class LinkedIntegrationRuntimeKeyAuthorization extends LinkedIntegr
     public void validate() {
         super.validate();
         if (key() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property key in model LinkedIntegrationRuntimeKeyAuthorization"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property key in model LinkedIntegrationRuntimeKeyAuthorization"));
         } else {
             key().validate();
         }

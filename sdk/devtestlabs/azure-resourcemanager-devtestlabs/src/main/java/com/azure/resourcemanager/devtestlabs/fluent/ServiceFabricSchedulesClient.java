@@ -29,8 +29,8 @@ public interface ServiceFabricSchedulesClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ScheduleInner> list(
-        String resourceGroupName, String labName, String username, String serviceFabricName);
+    PagedIterable<ScheduleInner> list(String resourceGroupName, String labName, String username,
+        String serviceFabricName);
 
     /**
      * List schedules in a given service fabric.
@@ -50,16 +50,8 @@ public interface ServiceFabricSchedulesClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ScheduleInner> list(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<ScheduleInner> list(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String expand, String filter, Integer top, String orderby, Context context);
 
     /**
      * Get schedule.
@@ -77,14 +69,8 @@ public interface ServiceFabricSchedulesClient {
      * @return schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> getWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        String expand,
-        Context context);
+    Response<ScheduleInner> getWithResponse(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, String expand, Context context);
 
     /**
      * Get schedule.
@@ -118,14 +104,8 @@ public interface ServiceFabricSchedulesClient {
      * @return a schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleInner schedule,
-        Context context);
+    Response<ScheduleInner> createOrUpdateWithResponse(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, ScheduleInner schedule, Context context);
 
     /**
      * Create or replace an existing schedule.
@@ -142,13 +122,8 @@ public interface ServiceFabricSchedulesClient {
      * @return a schedule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScheduleInner createOrUpdate(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleInner schedule);
+    ScheduleInner createOrUpdate(String resourceGroupName, String labName, String username, String serviceFabricName,
+        String name, ScheduleInner schedule);
 
     /**
      * Delete schedule.
@@ -165,13 +140,8 @@ public interface ServiceFabricSchedulesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, Context context);
 
     /**
      * Delete schedule.
@@ -204,14 +174,8 @@ public interface ServiceFabricSchedulesClient {
      * @return a schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> updateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleFragment schedule,
-        Context context);
+    Response<ScheduleInner> updateWithResponse(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, ScheduleFragment schedule, Context context);
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
@@ -228,13 +192,8 @@ public interface ServiceFabricSchedulesClient {
      * @return a schedule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScheduleInner update(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleFragment schedule);
+    ScheduleInner update(String resourceGroupName, String labName, String username, String serviceFabricName,
+        String name, ScheduleFragment schedule);
 
     /**
      * Execute a schedule. This operation can take a while to complete.
@@ -250,8 +209,8 @@ public interface ServiceFabricSchedulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginExecute(
-        String resourceGroupName, String labName, String username, String serviceFabricName, String name);
+    SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name);
 
     /**
      * Execute a schedule. This operation can take a while to complete.
@@ -268,13 +227,8 @@ public interface ServiceFabricSchedulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginExecute(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, Context context);
 
     /**
      * Execute a schedule. This operation can take a while to complete.
@@ -305,11 +259,6 @@ public interface ServiceFabricSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void execute(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
+    void execute(String resourceGroupName, String labName, String username, String serviceFabricName, String name,
         Context context);
 }

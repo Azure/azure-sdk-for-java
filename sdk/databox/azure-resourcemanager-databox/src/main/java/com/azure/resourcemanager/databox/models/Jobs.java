@@ -44,8 +44,8 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> markDevicesShippedWithResponse(
-        String jobName, String resourceGroupName, MarkDevicesShippedRequest markDevicesShippedRequest, Context context);
+    Response<Void> markDevicesShippedWithResponse(String jobName, String resourceGroupName,
+        MarkDevicesShippedRequest markDevicesShippedRequest, Context context);
 
     /**
      * Request to mark devices for a given job as shipped.
@@ -58,8 +58,8 @@ public interface Jobs {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void markDevicesShipped(
-        String jobName, String resourceGroupName, MarkDevicesShippedRequest markDevicesShippedRequest);
+    void markDevicesShipped(String jobName, String resourceGroupName,
+        MarkDevicesShippedRequest markDevicesShippedRequest);
 
     /**
      * Lists all the jobs available under the given resource group.
@@ -98,8 +98,8 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified job along with {@link Response}.
      */
-    Response<JobResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String jobName, String expand, Context context);
+    Response<JobResource> getByResourceGroupWithResponse(String resourceGroupName, String jobName, String expand,
+        Context context);
 
     /**
      * Gets information about the specified job.
@@ -152,8 +152,8 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shipment pick up response along with {@link Response}.
      */
-    Response<ShipmentPickUpResponse> bookShipmentPickUpWithResponse(
-        String resourceGroupName, String jobName, ShipmentPickUpRequest shipmentPickUpRequest, Context context);
+    Response<ShipmentPickUpResponse> bookShipmentPickUpWithResponse(String resourceGroupName, String jobName,
+        ShipmentPickUpRequest shipmentPickUpRequest, Context context);
 
     /**
      * Book shipment pick up.
@@ -167,8 +167,8 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shipment pick up response.
      */
-    ShipmentPickUpResponse bookShipmentPickUp(
-        String resourceGroupName, String jobName, ShipmentPickUpRequest shipmentPickUpRequest);
+    ShipmentPickUpResponse bookShipmentPickUp(String resourceGroupName, String jobName,
+        ShipmentPickUpRequest shipmentPickUpRequest);
 
     /**
      * CancelJob.
@@ -183,8 +183,8 @@ public interface Jobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> cancelWithResponse(
-        String resourceGroupName, String jobName, CancellationReason cancellationReason, Context context);
+    Response<Void> cancelWithResponse(String resourceGroupName, String jobName, CancellationReason cancellationReason,
+        Context context);
 
     /**
      * CancelJob.

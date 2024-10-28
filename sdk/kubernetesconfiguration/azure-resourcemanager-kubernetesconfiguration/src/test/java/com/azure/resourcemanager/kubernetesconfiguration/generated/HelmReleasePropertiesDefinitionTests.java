@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HelmReleasePropertiesDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HelmReleasePropertiesDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"lastRevisionApplied\":247152507284848729,\"helmChartRef\":{\"name\":\"dystkiiuxhqyud\",\"namespace\":\"rrqnbpoczvyifqrv\"},\"failureCount\":4225896230813201107,\"installFailureCount\":3055369044346357730,\"upgradeFailureCount\":4089685326057058408}")
-                .toObject(HelmReleasePropertiesDefinition.class);
+        HelmReleasePropertiesDefinition model = BinaryData.fromString(
+            "{\"lastRevisionApplied\":247152507284848729,\"helmChartRef\":{\"name\":\"dystkiiuxhqyud\",\"namespace\":\"rrqnbpoczvyifqrv\"},\"failureCount\":4225896230813201107,\"installFailureCount\":3055369044346357730,\"upgradeFailureCount\":4089685326057058408}")
+            .toObject(HelmReleasePropertiesDefinition.class);
         Assertions.assertEquals(247152507284848729L, model.lastRevisionApplied());
         Assertions.assertEquals("dystkiiuxhqyud", model.helmChartRef().name());
         Assertions.assertEquals("rrqnbpoczvyifqrv", model.helmChartRef().namespace());
@@ -27,9 +25,8 @@ public final class HelmReleasePropertiesDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HelmReleasePropertiesDefinition model =
-            new HelmReleasePropertiesDefinition()
-                .withLastRevisionApplied(247152507284848729L)
+        HelmReleasePropertiesDefinition model
+            = new HelmReleasePropertiesDefinition().withLastRevisionApplied(247152507284848729L)
                 .withHelmChartRef(
                     new ObjectReferenceDefinition().withName("dystkiiuxhqyud").withNamespace("rrqnbpoczvyifqrv"))
                 .withFailureCount(4225896230813201107L)

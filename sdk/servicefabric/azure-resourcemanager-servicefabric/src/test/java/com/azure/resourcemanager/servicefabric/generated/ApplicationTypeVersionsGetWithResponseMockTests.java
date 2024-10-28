@@ -44,9 +44,10 @@ public final class ApplicationTypeVersionsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ServiceFabricManager manager = ServiceFabricManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ServiceFabricManager manager = ServiceFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ApplicationTypeVersionResource response = manager.applicationTypeVersions()
             .getWithResponse("dshf", "snrbgyefrymsgao", "fmwncotmrfh", "rctym", com.azure.core.util.Context.NONE)

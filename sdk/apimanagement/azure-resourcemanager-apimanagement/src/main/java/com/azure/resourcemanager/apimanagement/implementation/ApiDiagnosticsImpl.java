@@ -23,35 +23,28 @@ public final class ApiDiagnosticsImpl implements ApiDiagnostics {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public ApiDiagnosticsImpl(
-        ApiDiagnosticsClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public ApiDiagnosticsImpl(ApiDiagnosticsClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<DiagnosticContract> listByService(String resourceGroupName, String serviceName, String apiId) {
-        PagedIterable<DiagnosticContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, apiId);
+        PagedIterable<DiagnosticContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, apiId);
         return Utils.mapPage(inner, inner1 -> new DiagnosticContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DiagnosticContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
-        PagedIterable<DiagnosticContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, apiId, filter, top, skip, context);
+    public PagedIterable<DiagnosticContract> listByService(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context) {
+        PagedIterable<DiagnosticContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, apiId, filter, top, skip, context);
         return Utils.mapPage(inner, inner1 -> new DiagnosticContractImpl(inner1, this.manager()));
     }
 
-    public ApiDiagnosticsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String diagnosticId, Context context) {
-        return this
-            .serviceClient()
+    public ApiDiagnosticsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String diagnosticId, Context context) {
+        return this.serviceClient()
             .getEntityTagWithResponse(resourceGroupName, serviceName, apiId, diagnosticId, context);
     }
 
@@ -59,15 +52,12 @@ public final class ApiDiagnosticsImpl implements ApiDiagnostics {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, apiId, diagnosticId);
     }
 
-    public Response<DiagnosticContract> getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String diagnosticId, Context context) {
-        ApiDiagnosticsGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, diagnosticId, context);
+    public Response<DiagnosticContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String diagnosticId, Context context) {
+        ApiDiagnosticsGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiId, diagnosticId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DiagnosticContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -83,52 +73,37 @@ public final class ApiDiagnosticsImpl implements ApiDiagnostics {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String diagnosticId,
-        String ifMatch,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String diagnosticId, String ifMatch, Context context) {
+        return this.serviceClient()
             .deleteWithResponse(resourceGroupName, serviceName, apiId, diagnosticId, ifMatch, context);
     }
 
-    public void delete(
-        String resourceGroupName, String serviceName, String apiId, String diagnosticId, String ifMatch) {
+    public void delete(String resourceGroupName, String serviceName, String apiId, String diagnosticId,
+        String ifMatch) {
         this.serviceClient().delete(resourceGroupName, serviceName, apiId, diagnosticId, ifMatch);
     }
 
     public DiagnosticContract getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String apiId = Utils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
         String diagnosticId = Utils.getValueFromIdByName(id, "diagnostics");
         if (diagnosticId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'diagnostics'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'diagnostics'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, apiId, diagnosticId, Context.NONE).getValue();
     }
@@ -136,32 +111,23 @@ public final class ApiDiagnosticsImpl implements ApiDiagnostics {
     public Response<DiagnosticContract> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String apiId = Utils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
         String diagnosticId = Utils.getValueFromIdByName(id, "diagnostics");
         if (diagnosticId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'diagnostics'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'diagnostics'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, apiId, diagnosticId, context);
     }
@@ -169,32 +135,23 @@ public final class ApiDiagnosticsImpl implements ApiDiagnostics {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String apiId = Utils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
         String diagnosticId = Utils.getValueFromIdByName(id, "diagnostics");
         if (diagnosticId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'diagnostics'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'diagnostics'.", id)));
         }
         String localIfMatch = null;
         this.deleteWithResponse(resourceGroupName, serviceName, apiId, diagnosticId, localIfMatch, Context.NONE);
@@ -203,32 +160,23 @@ public final class ApiDiagnosticsImpl implements ApiDiagnostics {
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String apiId = Utils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
         String diagnosticId = Utils.getValueFromIdByName(id, "diagnostics");
         if (diagnosticId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'diagnostics'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'diagnostics'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, serviceName, apiId, diagnosticId, ifMatch, context);
     }

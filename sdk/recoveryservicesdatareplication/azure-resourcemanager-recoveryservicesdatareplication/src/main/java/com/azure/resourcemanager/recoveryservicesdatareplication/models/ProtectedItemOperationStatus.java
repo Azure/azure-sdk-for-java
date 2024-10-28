@@ -24,8 +24,8 @@ public interface ProtectedItemOperationStatus {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the operation status along with {@link Response}.
      */
-    Response<OperationStatus> getWithResponse(
-        String resourceGroupName, String vaultName, String protectedItemName, String operationId, Context context);
+    Response<OperationStatus> getWithResponse(String resourceGroupName, String vaultName, String protectedItemName,
+        String operationId, Context context);
 
     /**
      * Gets the protected item operation status.

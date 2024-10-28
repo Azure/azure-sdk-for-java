@@ -13,7 +13,8 @@ import java.util.List;
 /** Properties of a private link resource. */
 @Immutable
 public final class PrivateLinkResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PrivateLinkResourceProperties.class);
 
     /*
      * The private link resource group id.

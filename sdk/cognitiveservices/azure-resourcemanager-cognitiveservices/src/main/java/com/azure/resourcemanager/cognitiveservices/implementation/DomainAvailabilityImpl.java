@@ -12,8 +12,7 @@ public final class DomainAvailabilityImpl implements DomainAvailability {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    DomainAvailabilityImpl(
-        DomainAvailabilityInner innerObject,
+    DomainAvailabilityImpl(DomainAvailabilityInner innerObject,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LocalTimestampTimeZoneOffsetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LocalTimestampTimeZoneOffset model =
-            BinaryData.fromString("{\"propertyName\":\"gmaajrm\"}").toObject(LocalTimestampTimeZoneOffset.class);
+        LocalTimestampTimeZoneOffset model
+            = BinaryData.fromString("{\"propertyName\":\"gmaajrm\"}").toObject(LocalTimestampTimeZoneOffset.class);
         Assertions.assertEquals("gmaajrm", model.propertyName());
     }
 
