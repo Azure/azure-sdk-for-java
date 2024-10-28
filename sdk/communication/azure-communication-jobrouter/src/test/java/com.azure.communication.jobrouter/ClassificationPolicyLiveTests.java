@@ -53,8 +53,8 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
         String queueId = String.format("%s-%s-Queue", JAVA_LIVE_TESTS, testName);
         String fallbackQueueId = String.format("%s-%s-FallbackQueue", JAVA_LIVE_TESTS, testName);
         RouterQueue jobQueue = createQueue(routerAdminClient, queueId, distributionPolicy.getId());
-        RouterQueue fallbackQueue = routerAdminClient.createQueue(
-            new CreateQueueOptions(fallbackQueueId, distributionPolicyId));
+        RouterQueue fallbackQueue
+            = routerAdminClient.createQueue(new CreateQueueOptions(fallbackQueueId, distributionPolicyId));
 
         String classificationPolicyId = String.format("%s-ClassificationPolicy", JAVA_LIVE_TESTS);
         String classificationPolicyName = String.format("%s-Name", classificationPolicyId);
@@ -63,25 +63,25 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
             new RouterQueueSelector("Id", LabelOperator.EQUAL, new RouterValue(queueId)));
 
         List<QueueSelectorAttachment> queueSelectors = Arrays.asList(staticQueueSelector,
-            new ConditionalQueueSelectorAttachment(new StaticRouterRule().setValue(new RouterValue(false)),
-                Collections.singletonList(new RouterQueueSelector("Name", LabelOperator.NOT_EQUAL, new RouterValue(true)))));
+            new ConditionalQueueSelectorAttachment(new StaticRouterRule().setValue(new RouterValue(false)), Collections
+                .singletonList(new RouterQueueSelector("Name", LabelOperator.NOT_EQUAL, new RouterValue(true)))));
 
         StaticWorkerSelectorAttachment staticWorkerSelector = new StaticWorkerSelectorAttachment(
-            new RouterWorkerSelector("key", LabelOperator.EQUAL, new RouterValue("value"))
-                .setExpedite(true).setExpiresAfter(Duration.ofSeconds(10)));
+            new RouterWorkerSelector("key", LabelOperator.EQUAL, new RouterValue("value")).setExpedite(true)
+                .setExpiresAfter(Duration.ofSeconds(10)));
 
         List<WorkerSelectorAttachment> workerSelectors = Arrays.asList(staticWorkerSelector,
             new ConditionalWorkerSelectorAttachment(new StaticRouterRule().setValue(new RouterValue(true)),
-                Collections.singletonList(new RouterWorkerSelector("Name", LabelOperator.NOT_EQUAL, new RouterValue(true)))),
+                Collections
+                    .singletonList(new RouterWorkerSelector("Name", LabelOperator.NOT_EQUAL, new RouterValue(true)))),
             new PassThroughWorkerSelectorAttachment("Key", LabelOperator.NOT_EQUAL));
 
-        CreateClassificationPolicyOptions createClassificationPolicyOptions = new CreateClassificationPolicyOptions(
-            classificationPolicyId)
-            .setName(classificationPolicyName)
-            .setPrioritizationRule(new StaticRouterRule().setValue(new RouterValue(1)))
-            .setWorkerSelectors(workerSelectors)
-            .setQueueSelectors(queueSelectors)
-            .setFallbackQueueId(fallbackQueueId);
+        CreateClassificationPolicyOptions createClassificationPolicyOptions
+            = new CreateClassificationPolicyOptions(classificationPolicyId).setName(classificationPolicyName)
+                .setPrioritizationRule(new StaticRouterRule().setValue(new RouterValue(1)))
+                .setWorkerSelectors(workerSelectors)
+                .setQueueSelectors(queueSelectors)
+                .setFallbackQueueId(fallbackQueueId);
 
         String jobId = String.format("%s-%s-Job", JAVA_LIVE_TESTS, testName);
         String channelId = String.format("%s-%s-Channel", JAVA_LIVE_TESTS, testName);
@@ -100,7 +100,9 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
         assertNotNull(policy.getEtag());
         assertEquals(1, ((StaticRouterRule) policy.getPrioritizationRule()).getValue().getIntValue());
         assertEquals(3, policy.getWorkerSelectorAttachments().size());
-        assertEquals(Duration.ofSeconds(10), ((StaticWorkerSelectorAttachment) policy.getWorkerSelectorAttachments().get(0)).getWorkerSelector().getExpiresAfter());
+        assertEquals(Duration.ofSeconds(10),
+            ((StaticWorkerSelectorAttachment) policy.getWorkerSelectorAttachments().get(0)).getWorkerSelector()
+                .getExpiresAfter());
         assertEquals(2, policy.getQueueSelectorAttachments().size());
         assertEquals(fallbackQueueId, policy.getFallbackQueueId());
 
@@ -113,7 +115,9 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
         assertEquals(policy.getEtag(), deserialized.getEtag());
         assertEquals(1, ((StaticRouterRule) deserialized.getPrioritizationRule()).getValue().getIntValue());
         assertEquals(3, deserialized.getWorkerSelectorAttachments().size());
-        assertEquals(Duration.ofSeconds(10), ((StaticWorkerSelectorAttachment) deserialized.getWorkerSelectorAttachments().get(0)).getWorkerSelector().getExpiresAfter());
+        assertEquals(Duration.ofSeconds(10),
+            ((StaticWorkerSelectorAttachment) deserialized.getWorkerSelectorAttachments().get(0)).getWorkerSelector()
+                .getExpiresAfter());
         assertEquals(2, deserialized.getQueueSelectorAttachments().size());
         assertEquals(fallbackQueueId, deserialized.getFallbackQueueId());
 
@@ -128,8 +132,8 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
 
         deserialized.setPrioritizationRule(null);
         deserialized.setQueueSelectorAttachments(new ArrayList<>());
-        ClassificationPolicy updatedPolicy = routerAdminClient.updateClassificationPolicy(
-            deserialized.getId(), deserialized);
+        ClassificationPolicy updatedPolicy
+            = routerAdminClient.updateClassificationPolicy(deserialized.getId(), deserialized);
 
         assertEquals(classificationPolicyId, updatedPolicy.getId());
         assertEquals(classificationPolicyName, updatedPolicy.getName());
@@ -137,7 +141,9 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
         assertNotEquals(policy.getEtag(), updatedPolicy.getEtag());
         assertEquals(1, ((StaticRouterRule) updatedPolicy.getPrioritizationRule()).getValue().getIntValue());
         assertEquals(3, updatedPolicy.getWorkerSelectorAttachments().size());
-        assertEquals(Duration.ofSeconds(10), ((StaticWorkerSelectorAttachment) updatedPolicy.getWorkerSelectorAttachments().get(0)).getWorkerSelector().getExpiresAfter());
+        assertEquals(Duration.ofSeconds(10),
+            ((StaticWorkerSelectorAttachment) updatedPolicy.getWorkerSelectorAttachments().get(0)).getWorkerSelector()
+                .getExpiresAfter());
         assertEquals(0, updatedPolicy.getQueueSelectorAttachments().size());
         assertEquals(fallbackQueueId, updatedPolicy.getFallbackQueueId());
 

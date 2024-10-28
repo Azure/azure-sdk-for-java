@@ -137,18 +137,14 @@ public final class StorageApplianceConfigurationData {
      */
     public void validate() {
         if (adminCredentials() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property adminCredentials in model StorageApplianceConfigurationData"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property adminCredentials in model StorageApplianceConfigurationData"));
         } else {
             adminCredentials().validate();
         }
         if (serialNumber() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serialNumber in model StorageApplianceConfigurationData"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property serialNumber in model StorageApplianceConfigurationData"));
         }
     }
 

@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ExchangeRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExchangeRequestProperties model =
-            BinaryData.fromString("{\"sessionId\":\"wyhzdx\"}").toObject(ExchangeRequestProperties.class);
+        ExchangeRequestProperties model
+            = BinaryData.fromString("{\"sessionId\":\"wyhzdx\"}").toObject(ExchangeRequestProperties.class);
         Assertions.assertEquals("wyhzdx", model.sessionId());
     }
 

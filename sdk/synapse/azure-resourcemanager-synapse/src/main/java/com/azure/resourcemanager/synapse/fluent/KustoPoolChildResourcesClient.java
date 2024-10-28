@@ -27,12 +27,8 @@ public interface KustoPoolChildResourcesClient {
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String workspaceName,
-        String kustoPoolName,
-        String resourceGroupName,
-        DatabaseCheckNameRequest resourceName,
-        Context context);
+    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String workspaceName, String kustoPoolName,
+        String resourceGroupName, DatabaseCheckNameRequest resourceName, Context context);
 
     /**
      * Checks that the Kusto Pool child resource name is valid and is not already in use.
@@ -47,6 +43,6 @@ public interface KustoPoolChildResourcesClient {
      * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String workspaceName, String kustoPoolName, String resourceGroupName, DatabaseCheckNameRequest resourceName);
+    CheckNameResultInner checkNameAvailability(String workspaceName, String kustoPoolName, String resourceGroupName,
+        DatabaseCheckNameRequest resourceName);
 }

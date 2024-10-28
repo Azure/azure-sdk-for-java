@@ -26,12 +26,14 @@ public abstract class DataSourceCredentialEntity {
      * @return The credential id.
      */
     public abstract String getId();
+
     /**
      * Gets the credential name.
      *
      * @return The credential name.
      */
     public abstract String getName();
+
     /**
      * Gets the credential description.
      *

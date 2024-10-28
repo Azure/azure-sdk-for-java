@@ -38,6 +38,6 @@ public interface SqlPoolOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of operations performed on the SQL pool as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SqlPoolOperation> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<SqlPoolOperation> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 }

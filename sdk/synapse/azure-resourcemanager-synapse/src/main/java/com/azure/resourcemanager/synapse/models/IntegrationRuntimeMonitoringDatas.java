@@ -23,8 +23,8 @@ public interface IntegrationRuntimeMonitoringDatas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return monitoring data for an integration runtime along with {@link Response}.
      */
-    Response<IntegrationRuntimeMonitoringData> listWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeMonitoringData> listWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Get integration runtime monitoring data
@@ -39,6 +39,6 @@ public interface IntegrationRuntimeMonitoringDatas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return monitoring data for an integration runtime.
      */
-    IntegrationRuntimeMonitoringData list(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    IntegrationRuntimeMonitoringData list(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 }

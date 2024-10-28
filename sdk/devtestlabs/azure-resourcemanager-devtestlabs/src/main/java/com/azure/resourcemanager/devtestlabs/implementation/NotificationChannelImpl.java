@@ -120,22 +120,18 @@ public final class NotificationChannelImpl
     }
 
     public NotificationChannel create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationChannels()
-                .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationChannels()
+            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public NotificationChannel create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationChannels()
-                .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationChannels()
+            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -151,27 +147,23 @@ public final class NotificationChannelImpl
     }
 
     public NotificationChannel apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationChannels()
-                .updateWithResponse(resourceGroupName, labName, name, updateNotificationChannel, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationChannels()
+            .updateWithResponse(resourceGroupName, labName, name, updateNotificationChannel, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NotificationChannel apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationChannels()
-                .updateWithResponse(resourceGroupName, labName, name, updateNotificationChannel, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationChannels()
+            .updateWithResponse(resourceGroupName, labName, name, updateNotificationChannel, context)
+            .getValue();
         return this;
     }
 
-    NotificationChannelImpl(
-        NotificationChannelInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    NotificationChannelImpl(NotificationChannelInner innerObject,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -181,29 +173,24 @@ public final class NotificationChannelImpl
 
     public NotificationChannel refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationChannels()
-                .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationChannels()
+            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NotificationChannel refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationChannels()
-                .getWithResponse(resourceGroupName, labName, name, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationChannels()
+            .getWithResponse(resourceGroupName, labName, name, localExpand, context)
+            .getValue();
         return this;
     }
 
     public Response<Void> notifyWithResponse(NotifyParameters notifyParameters, Context context) {
-        return serviceManager
-            .notificationChannels()
+        return serviceManager.notificationChannels()
             .notifyWithResponse(resourceGroupName, labName, name, notifyParameters, context);
     }
 

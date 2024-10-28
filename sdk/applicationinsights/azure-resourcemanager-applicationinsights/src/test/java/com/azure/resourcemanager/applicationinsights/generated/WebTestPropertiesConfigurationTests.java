@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class WebTestPropertiesConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WebTestPropertiesConfiguration model =
-            BinaryData.fromString("{\"WebTest\":\"noae\"}").toObject(WebTestPropertiesConfiguration.class);
+        WebTestPropertiesConfiguration model
+            = BinaryData.fromString("{\"WebTest\":\"noae\"}").toObject(WebTestPropertiesConfiguration.class);
         Assertions.assertEquals("noae", model.webTest());
     }
 

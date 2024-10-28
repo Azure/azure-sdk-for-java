@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class FormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Format model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"Format\",\"filenamePattern\":\"cvlerchpqbmfpjba\"}")
-                .toObject(Format.class);
+        Format model = BinaryData.fromString("{\"@odata.type\":\"Format\",\"filenamePattern\":\"cvlerchpqbmfpjba\"}")
+            .toObject(Format.class);
         Assertions.assertEquals("cvlerchpqbmfpjba", model.filenamePattern());
     }
 

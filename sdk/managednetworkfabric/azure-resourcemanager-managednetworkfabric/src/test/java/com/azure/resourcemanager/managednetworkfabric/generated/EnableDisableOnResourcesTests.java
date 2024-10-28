@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class EnableDisableOnResourcesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnableDisableOnResources model =
-            BinaryData.fromString("{\"resourceIds\":[\"v\"]}").toObject(EnableDisableOnResources.class);
+        EnableDisableOnResources model
+            = BinaryData.fromString("{\"resourceIds\":[\"v\"]}").toObject(EnableDisableOnResources.class);
         Assertions.assertEquals("v", model.resourceIds().get(0));
     }
 

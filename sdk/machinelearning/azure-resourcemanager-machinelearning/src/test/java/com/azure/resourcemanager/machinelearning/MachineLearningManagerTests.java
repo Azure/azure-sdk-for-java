@@ -62,20 +62,17 @@ public class MachineLearningManagerTests extends TestProxyTestBase {
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
 
-        storageManager = StorageManager
-            .configure()
+        storageManager = StorageManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
 
-        keyVaultManager = KeyVaultManager
-            .configure()
+        keyVaultManager = KeyVaultManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
 
-        applicationInsightsManager = ApplicationInsightsManager
-            .configure()
+        applicationInsightsManager = ApplicationInsightsManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
@@ -86,10 +83,7 @@ public class MachineLearningManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -118,44 +112,43 @@ public class MachineLearningManagerTests extends TestProxyTestBase {
                 .withSku(new Sku().withName("Basic").withTier(SkuTier.BASIC))
                 .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
                 .withFriendlyName(workspaceName)
-                .withStorageAccount(
-                    storageManager.storageAccounts()
-                        .define(storageName)
-                        .withRegion(REGION)
-                        .withExistingResourceGroup(resourceGroupName)
-                        .withSku(StorageAccountSkuType.STANDARD_LRS)
-                        .withMinimumTlsVersion(MinimumTlsVersion.TLS1_0)
-                        .withHnsEnabled(false)
-                        .withAccessFromAzureServices()
-                        .withOnlyHttpsTraffic()
-                        .withBlobStorageAccountKind().withAccessTier(AccessTier.HOT)
-                        .create()
-                        .id())
-                .withKeyVault(
-                    keyVaultManager.vaults()
-                        .define(keyVaultName)
-                        .withRegion(REGION)
-                        .withExistingResourceGroup(resourceGroupName)
-                        .withEmptyAccessPolicy()
-                        .withSku(SkuName.STANDARD)
-                        .withDeploymentDisabled()
-                        .withAccessFromAllNetworks()
-                        .create()
-                        .id())
-                .withApplicationInsights(
-                    applicationInsightsManager.components()
-                        .define(insightName)
-                        .withRegion(REGION)
-                        .withExistingResourceGroup(resourceGroupName)
-                        .withKind("web")
-                        .withApplicationType(ApplicationType.WEB)
-                        .create()
-                        .id())
+                .withStorageAccount(storageManager.storageAccounts()
+                    .define(storageName)
+                    .withRegion(REGION)
+                    .withExistingResourceGroup(resourceGroupName)
+                    .withSku(StorageAccountSkuType.STANDARD_LRS)
+                    .withMinimumTlsVersion(MinimumTlsVersion.TLS1_0)
+                    .withHnsEnabled(false)
+                    .withAccessFromAzureServices()
+                    .withOnlyHttpsTraffic()
+                    .withBlobStorageAccountKind()
+                    .withAccessTier(AccessTier.HOT)
+                    .create()
+                    .id())
+                .withKeyVault(keyVaultManager.vaults()
+                    .define(keyVaultName)
+                    .withRegion(REGION)
+                    .withExistingResourceGroup(resourceGroupName)
+                    .withEmptyAccessPolicy()
+                    .withSku(SkuName.STANDARD)
+                    .withDeploymentDisabled()
+                    .withAccessFromAllNetworks()
+                    .create()
+                    .id())
+                .withApplicationInsights(applicationInsightsManager.components()
+                    .define(insightName)
+                    .withRegion(REGION)
+                    .withExistingResourceGroup(resourceGroupName)
+                    .withKind("web")
+                    .withApplicationType(ApplicationType.WEB)
+                    .create()
+                    .id())
                 .create();
             // @embedmeEnd
             workspace.refresh();
             Assertions.assertEquals(workspace.name(), workspaceName);
-            Assertions.assertEquals(workspace.name(), machineLearningManager.workspaces().getById(workspace.id()).name());
+            Assertions.assertEquals(workspace.name(),
+                machineLearningManager.workspaces().getById(workspace.id()).name());
             Assertions.assertTrue(machineLearningManager.workspaces().list().stream().count() > 0);
         } finally {
             if (workspace != null) {

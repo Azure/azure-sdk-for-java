@@ -14,16 +14,19 @@ import java.util.List;
 public final class CustomFormModelHelper {
     private static CustomFormModelAccessor accessor;
 
-    private CustomFormModelHelper() { }
+    private CustomFormModelHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link CustomFormModel} instance.
      */
     public interface CustomFormModelAccessor {
         void setTrainingDocuments(CustomFormModel formModel, List<TrainingDocumentInfo> trainingDocuments);
+
         void setModelName(CustomFormModel formModel, String modelName);
+
         void setCustomFormModelProperties(CustomFormModel formModel,
-                                          CustomFormModelProperties customFormModelProperties);
+            CustomFormModelProperties customFormModelProperties);
     }
 
     /**
@@ -44,7 +47,7 @@ public final class CustomFormModelHelper {
     }
 
     public static void setCustomFormModelProperties(CustomFormModel formModel,
-                                      CustomFormModelProperties customFormModelProperties) {
+        CustomFormModelProperties customFormModelProperties) {
         accessor.setCustomFormModelProperties(formModel, customFormModelProperties);
     }
 }

@@ -40,6 +40,8 @@
 
       --add-reads com.azure.security.confidentialledger=com.azure.http.netty
     </javaModulesSurefireArgLine>
+
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

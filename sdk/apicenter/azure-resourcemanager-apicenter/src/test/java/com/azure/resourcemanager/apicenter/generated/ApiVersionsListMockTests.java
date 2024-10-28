@@ -46,12 +46,13 @@ public final class ApiVersionsListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ApiVersion> response = manager.apiVersions().list("hwhbotzingamv", "phoszqz", "dphqamv", "kfwynw",
-            "vtbvkayh", com.azure.core.util.Context.NONE);
+        PagedIterable<ApiVersion> response = manager.apiVersions()
+            .list("hwhbotzingamv", "phoszqz", "dphqamv", "kfwynw", "vtbvkayh", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("nvyq", response.iterator().next().properties().title());
         Assertions.assertEquals(LifecycleStage.PREVIEW, response.iterator().next().properties().lifecycleStage());

@@ -162,11 +162,8 @@ public interface CustomImage {
     CustomImageInner innerModel();
 
     /** The entirety of the CustomImage definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /** The CustomImage definition stages. */
@@ -210,17 +207,10 @@ public interface CustomImage {
          * The stage of the CustomImage definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithVm,
-                DefinitionStages.WithVhd,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithAuthor,
-                DefinitionStages.WithManagedImageId,
-                DefinitionStages.WithManagedSnapshotId,
-                DefinitionStages.WithDataDiskStorageInfo,
-                DefinitionStages.WithCustomImagePlan,
-                DefinitionStages.WithIsPlanAuthorized {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithVm, DefinitionStages.WithVhd,
+            DefinitionStages.WithDescription, DefinitionStages.WithAuthor, DefinitionStages.WithManagedImageId,
+            DefinitionStages.WithManagedSnapshotId, DefinitionStages.WithDataDiskStorageInfo,
+            DefinitionStages.WithCustomImagePlan, DefinitionStages.WithIsPlanAuthorized {
             /**
              * Executes the create request.
              *

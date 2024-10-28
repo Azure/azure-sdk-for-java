@@ -54,12 +54,8 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @param client the instance of the service client containing this operation class.
      */
     SignalRPrivateEndpointConnectionsClientImpl(SignalRManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    SignalRPrivateEndpointConnectionsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(SignalRPrivateEndpointConnectionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -70,75 +66,53 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
     @Host("{$host}")
     @ServiceInterface(name = "SignalRManagementCli")
     public interface SignalRPrivateEndpointConnectionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateEndpointConnections")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateEndpointConnections")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PrivateEndpointConnectionList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PrivateEndpointConnectionInner>> get(@HostParam("$host") String endpoint,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PrivateEndpointConnectionInner>> update(@HostParam("$host") String endpoint,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @BodyParam("application/json") PrivateEndpointConnectionInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -153,19 +127,15 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -176,26 +146,10 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
-            .<PagedResponse<PrivateEndpointConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+            .<PagedResponse<PrivateEndpointConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -212,19 +166,15 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -236,23 +186,10 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -267,8 +204,8 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateEndpointConnectionInner> listAsync(String resourceGroupName, String resourceName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, resourceName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -283,10 +220,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @return a list of private endpoint connections as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateEndpointConnectionInner> listAsync(
-        String resourceGroupName, String resourceName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, resourceName, context),
+    private PagedFlux<PrivateEndpointConnectionInner> listAsync(String resourceGroupName, String resourceName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -317,8 +253,8 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @return a list of private endpoint connections as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateEndpointConnectionInner> list(
-        String resourceGroupName, String resourceName, Context context) {
+    public PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String resourceName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, resourceName, context));
     }
 
@@ -336,25 +272,19 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName) {
+    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -365,18 +295,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            privateEndpointConnectionName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), privateEndpointConnectionName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -395,25 +316,19 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -424,16 +339,8 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                privateEndpointConnectionName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), privateEndpointConnectionName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
     /**
@@ -449,8 +356,8 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @return the specified private endpoint connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionInner> getAsync(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName) {
+    private Mono<PrivateEndpointConnectionInner> getAsync(String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName) {
         return getWithResponseAsync(privateEndpointConnectionName, resourceGroupName, resourceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -469,8 +376,8 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @return the specified private endpoint connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateEndpointConnectionInner> getWithResponse(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName, Context context) {
+    public Response<PrivateEndpointConnectionInner> getWithResponse(String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName, Context context) {
         return getWithResponseAsync(privateEndpointConnectionName, resourceGroupName, resourceName, context).block();
     }
 
@@ -487,8 +394,8 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @return the specified private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner get(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName) {
+    public PrivateEndpointConnectionInner get(String privateEndpointConnectionName, String resourceGroupName,
+        String resourceName) {
         return getWithResponse(privateEndpointConnectionName, resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
@@ -507,28 +414,19 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(
-        String privateEndpointConnectionName,
-        String resourceGroupName,
-        String resourceName,
-        PrivateEndpointConnectionInner parameters) {
+    private Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName, PrivateEndpointConnectionInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -544,19 +442,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            privateEndpointConnectionName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), privateEndpointConnectionName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName,
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -576,29 +464,19 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(
-        String privateEndpointConnectionName,
-        String resourceGroupName,
-        String resourceName,
-        PrivateEndpointConnectionInner parameters,
-        Context context) {
+    private Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName, PrivateEndpointConnectionInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -614,17 +492,8 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                privateEndpointConnectionName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), privateEndpointConnectionName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, accept, context);
     }
 
     /**
@@ -641,11 +510,8 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @return a private endpoint connection to an azure resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionInner> updateAsync(
-        String privateEndpointConnectionName,
-        String resourceGroupName,
-        String resourceName,
-        PrivateEndpointConnectionInner parameters) {
+    private Mono<PrivateEndpointConnectionInner> updateAsync(String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName, PrivateEndpointConnectionInner parameters) {
         return updateWithResponseAsync(privateEndpointConnectionName, resourceGroupName, resourceName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -665,15 +531,10 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @return a private endpoint connection to an azure resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateEndpointConnectionInner> updateWithResponse(
-        String privateEndpointConnectionName,
-        String resourceGroupName,
-        String resourceName,
-        PrivateEndpointConnectionInner parameters,
-        Context context) {
-        return updateWithResponseAsync(
-                privateEndpointConnectionName, resourceGroupName, resourceName, parameters, context)
-            .block();
+    public Response<PrivateEndpointConnectionInner> updateWithResponse(String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName, PrivateEndpointConnectionInner parameters, Context context) {
+        return updateWithResponseAsync(privateEndpointConnectionName, resourceGroupName, resourceName, parameters,
+            context).block();
     }
 
     /**
@@ -690,14 +551,10 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @return a private endpoint connection to an azure resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner update(
-        String privateEndpointConnectionName,
-        String resourceGroupName,
-        String resourceName,
-        PrivateEndpointConnectionInner parameters) {
-        return updateWithResponse(
-                privateEndpointConnectionName, resourceGroupName, resourceName, parameters, Context.NONE)
-            .getValue();
+    public PrivateEndpointConnectionInner update(String privateEndpointConnectionName, String resourceGroupName,
+        String resourceName, PrivateEndpointConnectionInner parameters) {
+        return updateWithResponse(privateEndpointConnectionName, resourceGroupName, resourceName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
@@ -713,25 +570,19 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -742,18 +593,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            privateEndpointConnectionName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), privateEndpointConnectionName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, resourceName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -771,25 +613,19 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -800,16 +636,8 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                privateEndpointConnectionName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), privateEndpointConnectionName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
     }
 
     /**
@@ -825,14 +653,12 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(privateEndpointConnectionName, resourceGroupName, resourceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(privateEndpointConnectionName, resourceGroupName, resourceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -849,14 +675,13 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(privateEndpointConnectionName, resourceGroupName, resourceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(privateEndpointConnectionName, resourceGroupName, resourceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -872,8 +697,8 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName) {
         return this.beginDeleteAsync(privateEndpointConnectionName, resourceGroupName, resourceName).getSyncPoller();
     }
 
@@ -891,10 +716,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName, Context context) {
-        return this
-            .beginDeleteAsync(privateEndpointConnectionName, resourceGroupName, resourceName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName, Context context) {
+        return this.beginDeleteAsync(privateEndpointConnectionName, resourceGroupName, resourceName, context)
             .getSyncPoller();
     }
 
@@ -911,10 +735,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(privateEndpointConnectionName, resourceGroupName, resourceName)
-            .last()
+    private Mono<Void> deleteAsync(String privateEndpointConnectionName, String resourceGroupName,
+        String resourceName) {
+        return beginDeleteAsync(privateEndpointConnectionName, resourceGroupName, resourceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -932,10 +755,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(privateEndpointConnectionName, resourceGroupName, resourceName, context)
-            .last()
+    private Mono<Void> deleteAsync(String privateEndpointConnectionName, String resourceGroupName, String resourceName,
+        Context context) {
+        return beginDeleteAsync(privateEndpointConnectionName, resourceGroupName, resourceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -968,8 +790,8 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName, Context context) {
+    public void delete(String privateEndpointConnectionName, String resourceGroupName, String resourceName,
+        Context context) {
         deleteAsync(privateEndpointConnectionName, resourceGroupName, resourceName, context).block();
     }
 
@@ -990,23 +812,13 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PrivateEndpointConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PrivateEndpointConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1023,29 +835,19 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -29,12 +29,16 @@ public final class LiftrBaseDataPartnerOrganizationPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiftrBaseDataPartnerOrganizationProperties model = new LiftrBaseDataPartnerOrganizationProperties()
-            .withOrganizationId("fiyipjxsqwpgrj").withWorkspaceId("norcjxvsnbyxqab").withOrganizationName("mocpc")
-            .withWorkspaceName("hurzafblj").withSingleSignOnProperties(
-                new LiftrBaseSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.DISABLE)
-                    .withEnterpriseAppId("oq").withSingleSignOnUrl("mkljavb")
-                    .withAadDomains(Arrays.asList("tqajzyulpkudjkrl", "hbzhfepg", "gqexzlocxs", "paierh")));
+        LiftrBaseDataPartnerOrganizationProperties model
+            = new LiftrBaseDataPartnerOrganizationProperties().withOrganizationId("fiyipjxsqwpgrj")
+                .withWorkspaceId("norcjxvsnbyxqab")
+                .withOrganizationName("mocpc")
+                .withWorkspaceName("hurzafblj")
+                .withSingleSignOnProperties(
+                    new LiftrBaseSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.DISABLE)
+                        .withEnterpriseAppId("oq")
+                        .withSingleSignOnUrl("mkljavb")
+                        .withAadDomains(Arrays.asList("tqajzyulpkudjkrl", "hbzhfepg", "gqexzlocxs", "paierh")));
         model = BinaryData.fromObject(model).toObject(LiftrBaseDataPartnerOrganizationProperties.class);
         Assertions.assertEquals("fiyipjxsqwpgrj", model.organizationId());
         Assertions.assertEquals("norcjxvsnbyxqab", model.workspaceId());

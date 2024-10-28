@@ -39,7 +39,6 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
 public class BatchTests extends TestProxyTestBase {
 
     private static final Random RANDOM = new Random();
@@ -52,12 +51,12 @@ public class BatchTests extends TestProxyTestBase {
 
     @Override
     public void beforeTest() {
-        batchManager = BatchManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        batchManager = BatchManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
-        storageManager = StorageManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        storageManager = StorageManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -65,9 +64,7 @@ public class BatchTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroup = testResourceGroup;
         } else {
-            storageManager.resourceManager().resourceGroups().define(resourceGroup)
-                .withRegion(REGION)
-                .create();
+            storageManager.resourceManager().resourceGroups().define(resourceGroup).withRegion(REGION).create();
         }
     }
 
@@ -87,27 +84,25 @@ public class BatchTests extends TestProxyTestBase {
             // storage account
             final String storageAccountName = "sa" + randomPadding();
 
-            storageAccount = storageManager.storageAccounts().define(storageAccountName)
+            storageAccount = storageManager.storageAccounts()
+                .define(storageAccountName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
 
             // batch account
             final String batchAccountName = "ba" + randomPadding();
-            account = batchManager
-                .batchAccounts()
+            account = batchManager.batchAccounts()
                 .define(batchAccountName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
-                .withAutoStorage(
-                    new AutoStorageBaseProperties()
-                        .withStorageAccountId(storageAccount.id()))
+                .withAutoStorage(new AutoStorageBaseProperties().withStorageAccountId(storageAccount.id()))
                 .create();
-
 
             assertNotNull(account);
 
-            BatchAccount batchAccount = batchManager.batchAccounts().getByResourceGroup(resourceGroup, batchAccountName);
+            BatchAccount batchAccount
+                = batchManager.batchAccounts().getByResourceGroup(resourceGroup, batchAccountName);
             assertEquals(batchAccountName, batchAccount.name());
             assertEquals(REGION.toString(), batchAccount.location());
         } finally {
@@ -129,8 +124,7 @@ public class BatchTests extends TestProxyTestBase {
         try {
             // batch account
             batchAccountName = "sa" + randomPadding();
-            account = batchManager
-                .batchAccounts()
+            account = batchManager.batchAccounts()
                 .define(batchAccountName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
@@ -142,20 +136,19 @@ public class BatchTests extends TestProxyTestBase {
             Assertions.assertNotNull(keys.primary());
             Assertions.assertNotNull(keys.secondary());
 
-            BatchAccountKeys regeneratedKeys = account.regenerateKey(new BatchAccountRegenerateKeyParameters().withKeyName(AccountKeyType.PRIMARY));
+            BatchAccountKeys regeneratedKeys
+                = account.regenerateKey(new BatchAccountRegenerateKeyParameters().withKeyName(AccountKeyType.PRIMARY));
             Assertions.assertNotNull(regeneratedKeys.primary());
             Assertions.assertNotNull(regeneratedKeys.secondary());
 
             // storage account
             final String storageAccountName = "sa" + randomPadding();
-            storageAccount = storageManager
-                .storageAccounts()
+            storageAccount = storageManager.storageAccounts()
                 .define(storageAccountName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
-            account
-                .update()
+            account.update()
                 .withAutoStorage(new AutoStorageBaseProperties().withStorageAccountId(storageAccount.id()))
                 .apply();
             Assertions.assertNotNull(account.autoStorage().storageAccountId());
@@ -189,16 +182,14 @@ public class BatchTests extends TestProxyTestBase {
         try {
             // storage account
             final String storageAccountName = "sa" + randomPadding();
-            storageAccount = storageManager
-                .storageAccounts().
-                define(storageAccountName)
+            storageAccount = storageManager.storageAccounts()
+                .define(storageAccountName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
             // batch account
             batchAccountName = "sa" + randomPadding();
-            account = batchManager
-                .batchAccounts()
+            account = batchManager.batchAccounts()
                 .define(batchAccountName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
@@ -208,8 +199,7 @@ public class BatchTests extends TestProxyTestBase {
             // create application with batch account
             applicationName = "ba" + randomPadding();
             String displayName = "badn" + randomPadding();
-            application = batchManager
-                .applications()
+            application = batchManager.applications()
                 .define(applicationName)
                 .withExistingBatchAccount(resourceGroup, batchAccountName)
                 .withDisplayName(displayName)
@@ -221,15 +211,11 @@ public class BatchTests extends TestProxyTestBase {
 
             // update application
             String newDisplayName = "newbadn" + randomPadding();
-            application
-                .update()
-                .withDisplayName(newDisplayName)
-                .apply();
+            application.update().withDisplayName(newDisplayName).apply();
             Assertions.assertNotEquals(displayName, application.displayName());
 
             packageVersion = "version" + randomPadding();
-            applicationPackage = batchManager
-                .applicationPackages()
+            applicationPackage = batchManager.applicationPackages()
                 .define(packageVersion)
                 .withExistingApplication(resourceGroup, batchAccountName, applicationName)
                 .create();
@@ -263,8 +249,7 @@ public class BatchTests extends TestProxyTestBase {
             String poolDisplayName = "bpdn" + randomPadding();
             // @embedmeStart
             // batch account
-            account = batchManager
-                .batchAccounts()
+            account = batchManager.batchAccounts()
                 .define(batchAccountName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
@@ -275,28 +260,24 @@ public class BatchTests extends TestProxyTestBase {
                 .define(poolName)
                 .withExistingBatchAccount(resourceGroup, batchAccountName)
                 .withDisplayName(poolDisplayName)
-                .withDeploymentConfiguration(
-                    new DeploymentConfiguration()
-                        .withVirtualMachineConfiguration(
-                            new VirtualMachineConfiguration()
-                                .withImageReference(new ImageReference().withPublisher("Canonical")
-                                    .withOffer("UbuntuServer").withSku("18.04-LTS").withVersion("latest"))
-                                .withNodeAgentSkuId("batch.node.ubuntu 18.04")))
-                .withScaleSettings(
-                    new ScaleSettings()
-                        .withFixedScale(
-                            new FixedScaleSettings()
-                                .withResizeTimeout(Duration.parse("PT8M"))
-                                .withTargetDedicatedNodes(1)
-                                .withTargetLowPriorityNodes(1)
-                                .withNodeDeallocationOption(ComputeNodeDeallocationOption.TASK_COMPLETION)))
+                .withDeploymentConfiguration(new DeploymentConfiguration().withVirtualMachineConfiguration(
+                    new VirtualMachineConfiguration().withImageReference(new ImageReference().withPublisher("Canonical")
+                        .withOffer("UbuntuServer")
+                        .withSku("18.04-LTS")
+                        .withVersion("latest")).withNodeAgentSkuId("batch.node.ubuntu 18.04")))
+                .withScaleSettings(new ScaleSettings()
+                    .withFixedScale(new FixedScaleSettings().withResizeTimeout(Duration.parse("PT8M"))
+                        .withTargetDedicatedNodes(1)
+                        .withTargetLowPriorityNodes(1)
+                        .withNodeDeallocationOption(ComputeNodeDeallocationOption.TASK_COMPLETION)))
                 .withVmSize("Standard_D1")
                 .create();
             // @embedmeEnd
             Assertions.assertEquals(poolName, pool.name());
             Assertions.assertEquals(poolDisplayName, pool.displayName());
             Assertions.assertNull(pool.scaleSettings().autoScale());
-            Assertions.assertEquals(pool.scaleSettings().fixedScale().nodeDeallocationOption(), ComputeNodeDeallocationOption.TASK_COMPLETION);
+            Assertions.assertEquals(pool.scaleSettings().fixedScale().nodeDeallocationOption(),
+                ComputeNodeDeallocationOption.TASK_COMPLETION);
         } finally {
             if (pool != null) {
                 batchManager.pools().deleteById(pool.id());
@@ -310,6 +291,5 @@ public class BatchTests extends TestProxyTestBase {
     private static String randomPadding() {
         return String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
     }
-
 
 }

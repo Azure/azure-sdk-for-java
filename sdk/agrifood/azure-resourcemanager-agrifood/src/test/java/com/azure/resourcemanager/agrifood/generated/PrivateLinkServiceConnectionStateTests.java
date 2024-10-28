@@ -13,9 +13,8 @@ import org.junit.jupiter.api.Test;
 public final class PrivateLinkServiceConnectionStateTests {
     @Test
     public void testDeserialize() {
-        PrivateLinkServiceConnectionState model =
-            BinaryData
-                .fromString("{\"status\":\"Pending\",\"description\":\"vsnb\",\"actionsRequired\":\"qabnmoc\"}")
+        PrivateLinkServiceConnectionState model
+            = BinaryData.fromString("{\"status\":\"Pending\",\"description\":\"vsnb\",\"actionsRequired\":\"qabnmoc\"}")
                 .toObject(PrivateLinkServiceConnectionState.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, model.status());
         Assertions.assertEquals("vsnb", model.description());
@@ -24,9 +23,8 @@ public final class PrivateLinkServiceConnectionStateTests {
 
     @Test
     public void testSerialize() {
-        PrivateLinkServiceConnectionState model =
-            new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+        PrivateLinkServiceConnectionState model
+            = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
                 .withDescription("vsnb")
                 .withActionsRequired("qabnmoc");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);

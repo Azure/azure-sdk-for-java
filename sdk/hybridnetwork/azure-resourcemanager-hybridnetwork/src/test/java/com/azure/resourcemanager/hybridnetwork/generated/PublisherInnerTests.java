@@ -29,11 +29,11 @@ public final class PublisherInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PublisherInner model
-            = new PublisherInner().withLocation("riiiojnalghfkv").withTags(mapOf("owueluqh", "ex", "zkw", "ahhxvrh"))
-                .withProperties(new PublisherPropertiesFormat().withScope(PublisherScope.PRIVATE))
-                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf("ljagrqmqhl", new UserAssignedIdentity())));
+        PublisherInner model = new PublisherInner().withLocation("riiiojnalghfkv")
+            .withTags(mapOf("owueluqh", "ex", "zkw", "ahhxvrh"))
+            .withProperties(new PublisherPropertiesFormat().withScope(PublisherScope.PRIVATE))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("ljagrqmqhl", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(PublisherInner.class);
         Assertions.assertEquals("riiiojnalghfkv", model.location());
         Assertions.assertEquals("ex", model.tags().get("owueluqh"));

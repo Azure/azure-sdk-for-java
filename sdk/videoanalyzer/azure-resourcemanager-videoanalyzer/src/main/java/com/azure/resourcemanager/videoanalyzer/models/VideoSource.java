@@ -89,14 +89,12 @@ public final class VideoSource extends SourceNodeBase {
     public void validate() {
         super.validate();
         if (videoName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property videoName in model VideoSource"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property videoName in model VideoSource"));
         }
         if (timeSequences() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timeSequences in model VideoSource"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property timeSequences in model VideoSource"));
         } else {
             timeSequences().validate();
         }

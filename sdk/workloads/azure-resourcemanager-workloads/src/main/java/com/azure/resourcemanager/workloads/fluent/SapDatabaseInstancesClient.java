@@ -32,8 +32,8 @@ public interface SapDatabaseInstancesClient {
      * @return the SAP Database Instance resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SapDatabaseInstanceInner> getWithResponse(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, Context context);
+    Response<SapDatabaseInstanceInner> getWithResponse(String resourceGroupName, String sapVirtualInstanceName,
+        String databaseInstanceName, Context context);
 
     /**
      * Gets the SAP Database Instance resource.
@@ -64,8 +64,8 @@ public interface SapDatabaseInstancesClient {
      * @return the {@link SyncPoller} for polling of define the Database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SapDatabaseInstanceInner>, SapDatabaseInstanceInner> beginCreate(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
+    SyncPoller<PollResult<SapDatabaseInstanceInner>, SapDatabaseInstanceInner> beginCreate(String resourceGroupName,
+        String sapVirtualInstanceName, String databaseInstanceName);
 
     /**
      * Creates the Database resource corresponding to the Virtual Instance for SAP solutions resource.
@@ -83,12 +83,8 @@ public interface SapDatabaseInstancesClient {
      * @return the {@link SyncPoller} for polling of define the Database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SapDatabaseInstanceInner>, SapDatabaseInstanceInner> beginCreate(
-        String resourceGroupName,
-        String sapVirtualInstanceName,
-        String databaseInstanceName,
-        SapDatabaseInstanceInner body,
-        Context context);
+    SyncPoller<PollResult<SapDatabaseInstanceInner>, SapDatabaseInstanceInner> beginCreate(String resourceGroupName,
+        String sapVirtualInstanceName, String databaseInstanceName, SapDatabaseInstanceInner body, Context context);
 
     /**
      * Creates the Database resource corresponding to the Virtual Instance for SAP solutions resource.
@@ -104,8 +100,8 @@ public interface SapDatabaseInstancesClient {
      * @return define the Database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SapDatabaseInstanceInner create(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
+    SapDatabaseInstanceInner create(String resourceGroupName, String sapVirtualInstanceName,
+        String databaseInstanceName);
 
     /**
      * Creates the Database resource corresponding to the Virtual Instance for SAP solutions resource.
@@ -123,12 +119,8 @@ public interface SapDatabaseInstancesClient {
      * @return define the Database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SapDatabaseInstanceInner create(
-        String resourceGroupName,
-        String sapVirtualInstanceName,
-        String databaseInstanceName,
-        SapDatabaseInstanceInner body,
-        Context context);
+    SapDatabaseInstanceInner create(String resourceGroupName, String sapVirtualInstanceName,
+        String databaseInstanceName, SapDatabaseInstanceInner body, Context context);
 
     /**
      * Updates the Database resource.
@@ -143,8 +135,8 @@ public interface SapDatabaseInstancesClient {
      * @return the {@link SyncPoller} for polling of define the Database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SapDatabaseInstanceInner>, SapDatabaseInstanceInner> beginUpdate(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
+    SyncPoller<PollResult<SapDatabaseInstanceInner>, SapDatabaseInstanceInner> beginUpdate(String resourceGroupName,
+        String sapVirtualInstanceName, String databaseInstanceName);
 
     /**
      * Updates the Database resource.
@@ -161,11 +153,8 @@ public interface SapDatabaseInstancesClient {
      * @return the {@link SyncPoller} for polling of define the Database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SapDatabaseInstanceInner>, SapDatabaseInstanceInner> beginUpdate(
-        String resourceGroupName,
-        String sapVirtualInstanceName,
-        String databaseInstanceName,
-        UpdateSapDatabaseInstanceRequest body,
+    SyncPoller<PollResult<SapDatabaseInstanceInner>, SapDatabaseInstanceInner> beginUpdate(String resourceGroupName,
+        String sapVirtualInstanceName, String databaseInstanceName, UpdateSapDatabaseInstanceRequest body,
         Context context);
 
     /**
@@ -181,8 +170,8 @@ public interface SapDatabaseInstancesClient {
      * @return define the Database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SapDatabaseInstanceInner update(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
+    SapDatabaseInstanceInner update(String resourceGroupName, String sapVirtualInstanceName,
+        String databaseInstanceName);
 
     /**
      * Updates the Database resource.
@@ -199,12 +188,8 @@ public interface SapDatabaseInstancesClient {
      * @return define the Database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SapDatabaseInstanceInner update(
-        String resourceGroupName,
-        String sapVirtualInstanceName,
-        String databaseInstanceName,
-        UpdateSapDatabaseInstanceRequest body,
-        Context context);
+    SapDatabaseInstanceInner update(String resourceGroupName, String sapVirtualInstanceName,
+        String databaseInstanceName, UpdateSapDatabaseInstanceRequest body, Context context);
 
     /**
      * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource.
@@ -220,8 +205,8 @@ public interface SapDatabaseInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String sapVirtualInstanceName, String databaseInstanceName);
 
     /**
      * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource.
@@ -238,8 +223,8 @@ public interface SapDatabaseInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String sapVirtualInstanceName, String databaseInstanceName, Context context);
 
     /**
      * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource.
@@ -255,8 +240,8 @@ public interface SapDatabaseInstancesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner delete(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
+    OperationStatusResultInner delete(String resourceGroupName, String sapVirtualInstanceName,
+        String databaseInstanceName);
 
     /**
      * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource.
@@ -273,8 +258,8 @@ public interface SapDatabaseInstancesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner delete(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, Context context);
+    OperationStatusResultInner delete(String resourceGroupName, String sapVirtualInstanceName,
+        String databaseInstanceName, Context context);
 
     /**
      * Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
@@ -301,8 +286,8 @@ public interface SapDatabaseInstancesClient {
      * @return defines the collection of SAP Database Instances as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SapDatabaseInstanceInner> list(
-        String resourceGroupName, String sapVirtualInstanceName, Context context);
+    PagedIterable<SapDatabaseInstanceInner> list(String resourceGroupName, String sapVirtualInstanceName,
+        Context context);
 
     /**
      * Starts the database instance of the SAP system.
@@ -317,8 +302,8 @@ public interface SapDatabaseInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStartInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginStartInstance(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
 
     /**
      * Starts the database instance of the SAP system.
@@ -350,8 +335,8 @@ public interface SapDatabaseInstancesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner startInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
+    OperationStatusResultInner startInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String databaseInstanceName);
 
     /**
      * Starts the database instance of the SAP system.
@@ -367,8 +352,8 @@ public interface SapDatabaseInstancesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner startInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, Context context);
+    OperationStatusResultInner startInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String databaseInstanceName, Context context);
 
     /**
      * Stops the database instance of the SAP system.
@@ -383,8 +368,8 @@ public interface SapDatabaseInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStopInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
+        beginStopInstance(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
 
     /**
      * Stops the database instance of the SAP system.
@@ -402,10 +387,7 @@ public interface SapDatabaseInstancesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStopInstance(
-        String resourceGroupName,
-        String sapVirtualInstanceName,
-        String databaseInstanceName,
-        StopRequest body,
+        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, StopRequest body,
         Context context);
 
     /**
@@ -421,8 +403,8 @@ public interface SapDatabaseInstancesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner stopInstance(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName);
+    OperationStatusResultInner stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String databaseInstanceName);
 
     /**
      * Stops the database instance of the SAP system.
@@ -439,10 +421,6 @@ public interface SapDatabaseInstancesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner stopInstance(
-        String resourceGroupName,
-        String sapVirtualInstanceName,
-        String databaseInstanceName,
-        StopRequest body,
-        Context context);
+    OperationStatusResultInner stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+        String databaseInstanceName, StopRequest body, Context context);
 }

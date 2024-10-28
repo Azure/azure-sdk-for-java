@@ -26,8 +26,8 @@ public interface AzureDevOpsConnectorStatsOperationsClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureDevOpsConnectorStatsListResponseInner> getWithResponse(
-        String resourceGroupName, String azureDevOpsConnectorName, Context context);
+    Response<AzureDevOpsConnectorStatsListResponseInner> getWithResponse(String resourceGroupName,
+        String azureDevOpsConnectorName, Context context);
 
     /**
      * Returns the summary of the AzureDevOps Connector Stats.

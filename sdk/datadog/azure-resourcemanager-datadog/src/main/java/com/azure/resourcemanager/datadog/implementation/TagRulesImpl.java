@@ -21,8 +21,8 @@ public final class TagRulesImpl implements TagRules {
 
     private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    public TagRulesImpl(
-        TagRulesClient innerClient, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
+    public TagRulesImpl(TagRulesClient innerClient,
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -33,20 +33,17 @@ public final class TagRulesImpl implements TagRules {
     }
 
     public PagedIterable<MonitoringTagRules> list(String resourceGroupName, String monitorName, Context context) {
-        PagedIterable<MonitoringTagRulesInner> inner =
-            this.serviceClient().list(resourceGroupName, monitorName, context);
+        PagedIterable<MonitoringTagRulesInner> inner
+            = this.serviceClient().list(resourceGroupName, monitorName, context);
         return Utils.mapPage(inner, inner1 -> new MonitoringTagRulesImpl(inner1, this.manager()));
     }
 
-    public Response<MonitoringTagRules> getWithResponse(
-        String resourceGroupName, String monitorName, String ruleSetName, Context context) {
-        Response<MonitoringTagRulesInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, monitorName, ruleSetName, context);
+    public Response<MonitoringTagRules> getWithResponse(String resourceGroupName, String monitorName,
+        String ruleSetName, Context context) {
+        Response<MonitoringTagRulesInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, monitorName, ruleSetName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MonitoringTagRulesImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -65,25 +62,18 @@ public final class TagRulesImpl implements TagRules {
     public MonitoringTagRules getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         String ruleSetName = Utils.getValueFromIdByName(id, "tagRules");
         if (ruleSetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, monitorName, ruleSetName, Context.NONE).getValue();
     }
@@ -91,25 +81,18 @@ public final class TagRulesImpl implements TagRules {
     public Response<MonitoringTagRules> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         String ruleSetName = Utils.getValueFromIdByName(id, "tagRules");
         if (ruleSetName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'tagRules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, monitorName, ruleSetName, context);
     }

@@ -132,17 +132,12 @@ public final class SharedPrivateLinkResourceProperties {
      */
     public void validate() {
         if (groupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property groupId in model SharedPrivateLinkResourceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property groupId in model SharedPrivateLinkResourceProperties"));
         }
         if (privateLinkResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property privateLinkResourceId in model"
-                            + " SharedPrivateLinkResourceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property privateLinkResourceId in model" + " SharedPrivateLinkResourceProperties"));
         }
     }
 

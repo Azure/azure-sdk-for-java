@@ -48,8 +48,7 @@ public final class QuotaList implements JsonSerializable<QuotaList> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeEndObject();
     }
 
     /**

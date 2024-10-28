@@ -49,8 +49,8 @@ public interface Deployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified deployments associated with the Cognitive Services account along with {@link Response}.
      */
-    Response<Deployment> getWithResponse(
-        String resourceGroupName, String accountName, String deploymentName, Context context);
+    Response<Deployment> getWithResponse(String resourceGroupName, String accountName, String deploymentName,
+        Context context);
 
     /**
      * Gets the specified deployments associated with the Cognitive Services account.

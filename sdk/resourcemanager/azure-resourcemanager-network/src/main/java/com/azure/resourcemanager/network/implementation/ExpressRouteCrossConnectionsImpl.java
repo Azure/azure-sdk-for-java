@@ -14,9 +14,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import reactor.core.publisher.Mono;
 
-public class ExpressRouteCrossConnectionsImpl
-    extends ReadableWrappersImpl<
-        ExpressRouteCrossConnection, ExpressRouteCrossConnectionImpl, ExpressRouteCrossConnectionInner>
+public class ExpressRouteCrossConnectionsImpl extends
+    ReadableWrappersImpl<ExpressRouteCrossConnection, ExpressRouteCrossConnectionImpl, ExpressRouteCrossConnectionInner>
     implements ExpressRouteCrossConnections {
     private final NetworkManager manager;
 
@@ -51,12 +50,11 @@ public class ExpressRouteCrossConnectionsImpl
     @Override
     public Mono<ExpressRouteCrossConnection> getByResourceGroupAsync(String resourceGroupName, String name) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null."));
         }
         if (CoreUtils.isNullOrEmpty(name)) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException("Parameter 'name' is required and cannot be null."));
         }
         return this.inner().getByResourceGroupAsync(resourceGroupName, name).map(inner -> wrapModel(inner));
     }
@@ -69,8 +67,8 @@ public class ExpressRouteCrossConnectionsImpl
     @Override
     public PagedFlux<ExpressRouteCrossConnection> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
         return wrapPageAsync(this.inner().listByResourceGroupAsync(resourceGroupName));
     }

@@ -13,8 +13,7 @@ public final class SharedAccessSignatureAuthorizationRuleImpl implements SharedA
 
     private final com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager;
 
-    SharedAccessSignatureAuthorizationRuleImpl(
-        SharedAccessSignatureAuthorizationRuleInner innerObject,
+    SharedAccessSignatureAuthorizationRuleImpl(SharedAccessSignatureAuthorizationRuleInner innerObject,
         com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

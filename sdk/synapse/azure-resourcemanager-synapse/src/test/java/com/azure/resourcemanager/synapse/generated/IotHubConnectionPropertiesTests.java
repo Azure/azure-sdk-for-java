@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IotHubConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IotHubConnectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"iotHubResourceId\":\"to\",\"consumerGroup\":\"alswbnfd\",\"tableName\":\"pld\",\"mappingRuleName\":\"jnsfzygleexahvmy\",\"dataFormat\":\"PSV\",\"eventSystemProperties\":[\"carycsjjzyvoaqa\",\"uvehzptd\",\"krrbhmpful\"],\"sharedAccessPolicyName\":\"be\",\"provisioningState\":\"Moving\"}")
-                .toObject(IotHubConnectionProperties.class);
+        IotHubConnectionProperties model = BinaryData.fromString(
+            "{\"iotHubResourceId\":\"to\",\"consumerGroup\":\"alswbnfd\",\"tableName\":\"pld\",\"mappingRuleName\":\"jnsfzygleexahvmy\",\"dataFormat\":\"PSV\",\"eventSystemProperties\":[\"carycsjjzyvoaqa\",\"uvehzptd\",\"krrbhmpful\"],\"sharedAccessPolicyName\":\"be\",\"provisioningState\":\"Moving\"}")
+            .toObject(IotHubConnectionProperties.class);
         Assertions.assertEquals("to", model.iotHubResourceId());
         Assertions.assertEquals("alswbnfd", model.consumerGroup());
         Assertions.assertEquals("pld", model.tableName());
@@ -29,15 +27,13 @@ public final class IotHubConnectionPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IotHubConnectionProperties model =
-            new IotHubConnectionProperties()
-                .withIotHubResourceId("to")
-                .withConsumerGroup("alswbnfd")
-                .withTableName("pld")
-                .withMappingRuleName("jnsfzygleexahvmy")
-                .withDataFormat(IotHubDataFormat.PSV)
-                .withEventSystemProperties(Arrays.asList("carycsjjzyvoaqa", "uvehzptd", "krrbhmpful"))
-                .withSharedAccessPolicyName("be");
+        IotHubConnectionProperties model = new IotHubConnectionProperties().withIotHubResourceId("to")
+            .withConsumerGroup("alswbnfd")
+            .withTableName("pld")
+            .withMappingRuleName("jnsfzygleexahvmy")
+            .withDataFormat(IotHubDataFormat.PSV)
+            .withEventSystemProperties(Arrays.asList("carycsjjzyvoaqa", "uvehzptd", "krrbhmpful"))
+            .withSharedAccessPolicyName("be");
         model = BinaryData.fromObject(model).toObject(IotHubConnectionProperties.class);
         Assertions.assertEquals("to", model.iotHubResourceId());
         Assertions.assertEquals("alswbnfd", model.consumerGroup());

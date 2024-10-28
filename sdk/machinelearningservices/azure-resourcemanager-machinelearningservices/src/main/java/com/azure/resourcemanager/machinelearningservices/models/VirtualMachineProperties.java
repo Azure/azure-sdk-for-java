@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The VirtualMachineProperties model. */
 @Fluent
 public final class VirtualMachineProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineProperties.class);
 
     /*
      * Virtual Machine size

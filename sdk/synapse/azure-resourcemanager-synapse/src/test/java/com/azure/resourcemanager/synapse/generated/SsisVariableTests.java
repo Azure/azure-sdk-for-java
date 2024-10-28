@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SsisVariableTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SsisVariable model =
-            BinaryData
-                .fromString(
-                    "{\"id\":1698212736552270549,\"name\":\"jiqul\",\"description\":\"xbdmvrscmqernd\",\"dataType\":\"nyeofltfnnxrk\",\"sensitive\":true,\"value\":\"ynnfmuiii\",\"sensitiveValue\":\"pfoh\"}")
-                .toObject(SsisVariable.class);
+        SsisVariable model = BinaryData.fromString(
+            "{\"id\":1698212736552270549,\"name\":\"jiqul\",\"description\":\"xbdmvrscmqernd\",\"dataType\":\"nyeofltfnnxrk\",\"sensitive\":true,\"value\":\"ynnfmuiii\",\"sensitiveValue\":\"pfoh\"}")
+            .toObject(SsisVariable.class);
         Assertions.assertEquals(1698212736552270549L, model.id());
         Assertions.assertEquals("jiqul", model.name());
         Assertions.assertEquals("xbdmvrscmqernd", model.description());
@@ -27,15 +25,13 @@ public final class SsisVariableTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisVariable model =
-            new SsisVariable()
-                .withId(1698212736552270549L)
-                .withName("jiqul")
-                .withDescription("xbdmvrscmqernd")
-                .withDataType("nyeofltfnnxrk")
-                .withSensitive(true)
-                .withValue("ynnfmuiii")
-                .withSensitiveValue("pfoh");
+        SsisVariable model = new SsisVariable().withId(1698212736552270549L)
+            .withName("jiqul")
+            .withDescription("xbdmvrscmqernd")
+            .withDataType("nyeofltfnnxrk")
+            .withSensitive(true)
+            .withValue("ynnfmuiii")
+            .withSensitiveValue("pfoh");
         model = BinaryData.fromObject(model).toObject(SsisVariable.class);
         Assertions.assertEquals(1698212736552270549L, model.id());
         Assertions.assertEquals("jiqul", model.name());

@@ -133,14 +133,12 @@ public final class SignalRFeature {
      */
     public void validate() {
         if (flag() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property flag in model SignalRFeature"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property flag in model SignalRFeature"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model SignalRFeature"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model SignalRFeature"));
         }
     }
 

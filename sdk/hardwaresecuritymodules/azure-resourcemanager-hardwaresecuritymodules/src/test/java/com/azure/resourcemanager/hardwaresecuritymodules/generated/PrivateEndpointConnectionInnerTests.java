@@ -31,7 +31,8 @@ public final class PrivateEndpointConnectionInnerTests {
             = new PrivateEndpointConnectionInner()
                 .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                     .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.PENDING).withDescription("htqqrolfp")
+                        .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+                        .withDescription("htqqrolfp")
                         .withActionsRequired("s")))
                 .withEtag("jgzjaoyfhrtx");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionInner.class);

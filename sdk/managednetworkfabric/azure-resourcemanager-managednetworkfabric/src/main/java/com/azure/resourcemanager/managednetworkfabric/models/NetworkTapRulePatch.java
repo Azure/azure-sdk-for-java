@@ -123,8 +123,8 @@ public final class NetworkTapRulePatch extends TagsUpdate {
      * @param dynamicMatchConfigurations the dynamicMatchConfigurations value to set.
      * @return the NetworkTapRulePatch object itself.
      */
-    public NetworkTapRulePatch withDynamicMatchConfigurations(
-        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+    public NetworkTapRulePatch
+        withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new NetworkTapRulePatchProperties();
         }

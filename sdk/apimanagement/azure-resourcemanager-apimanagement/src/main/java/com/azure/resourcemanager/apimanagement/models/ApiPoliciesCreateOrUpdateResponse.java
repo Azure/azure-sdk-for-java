@@ -21,12 +21,8 @@ public final class ApiPoliciesCreateOrUpdateResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ApiPoliciesCreateOrUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        PolicyContractInner value,
-        ApiPoliciesCreateOrUpdateHeaders headers) {
+    public ApiPoliciesCreateOrUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        PolicyContractInner value, ApiPoliciesCreateOrUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

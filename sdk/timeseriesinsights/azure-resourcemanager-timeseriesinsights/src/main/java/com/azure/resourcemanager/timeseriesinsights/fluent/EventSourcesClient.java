@@ -30,12 +30,8 @@ public interface EventSourcesClient {
      * @return an environment receives data from one or more event sources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventSourceResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceCreateOrUpdateParameters parameters,
-        Context context);
+    Response<EventSourceResourceInner> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
+        String eventSourceName, EventSourceCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Create or update an event source under the specified environment.
@@ -51,10 +47,7 @@ public interface EventSourcesClient {
      * @return an environment receives data from one or more event sources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EventSourceResourceInner createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
+    EventSourceResourceInner createOrUpdate(String resourceGroupName, String environmentName, String eventSourceName,
         EventSourceCreateOrUpdateParameters parameters);
 
     /**
@@ -72,8 +65,8 @@ public interface EventSourcesClient {
      * @return the event source with the specified name in the specified environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventSourceResourceInner> getWithResponse(
-        String resourceGroupName, String environmentName, String eventSourceName, Context context);
+    Response<EventSourceResourceInner> getWithResponse(String resourceGroupName, String environmentName,
+        String eventSourceName, Context context);
 
     /**
      * Gets the event source with the specified name in the specified environment.
@@ -107,12 +100,8 @@ public interface EventSourcesClient {
      * @return an environment receives data from one or more event sources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventSourceResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceUpdateParameters eventSourceUpdateParameters,
-        Context context);
+    Response<EventSourceResourceInner> updateWithResponse(String resourceGroupName, String environmentName,
+        String eventSourceName, EventSourceUpdateParameters eventSourceUpdateParameters, Context context);
 
     /**
      * Updates the event source with the specified name in the specified subscription, resource group, and environment.
@@ -129,10 +118,7 @@ public interface EventSourcesClient {
      * @return an environment receives data from one or more event sources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EventSourceResourceInner update(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
+    EventSourceResourceInner update(String resourceGroupName, String environmentName, String eventSourceName,
         EventSourceUpdateParameters eventSourceUpdateParameters);
 
     /**
@@ -150,8 +136,8 @@ public interface EventSourcesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String eventSourceName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String eventSourceName,
+        Context context);
 
     /**
      * Deletes the event source with the specified name in the specified subscription, resource group, and environment.
@@ -182,8 +168,8 @@ public interface EventSourcesClient {
      * @return the response of the List EventSources operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EventSourceListResponseInner> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context);
+    Response<EventSourceListResponseInner> listByEnvironmentWithResponse(String resourceGroupName,
+        String environmentName, Context context);
 
     /**
      * Lists all the available event sources associated with the subscription and within the specified resource group

@@ -46,12 +46,14 @@ public final class StorageTasksGetByResourceGroupWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        StorageActionsManager manager = StorageActionsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        StorageActionsManager manager = StorageActionsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         StorageTask response = manager.storageTasks()
-            .getByResourceGroupWithResponse("rw", "ueiotwmcdyt", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("rw", "ueiotwmcdyt", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("bcswsrt", response.location());
         Assertions.assertEquals("plrbpbewtghf", response.tags().get("blcg"));

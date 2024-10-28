@@ -15,7 +15,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /** A builder for creating a new instance of the AppConfigurationManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {AppConfigurationManagementClientImpl.class})
+@ServiceClientBuilder(serviceClients = { AppConfigurationManagementClientImpl.class })
 public final class AppConfigurationManagementClientBuilder {
     /*
      * The Microsoft Azure subscription ID.
@@ -121,24 +121,16 @@ public final class AppConfigurationManagementClientBuilder {
     public AppConfigurationManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        AppConfigurationManagementClientImpl client =
-            new AppConfigurationManagementClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        AppConfigurationManagementClientImpl client = new AppConfigurationManagementClientImpl(localPipeline,
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, subscriptionId, localEndpoint);
         return client;
     }
 }

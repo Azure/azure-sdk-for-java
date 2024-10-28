@@ -30,8 +30,15 @@ public final class BinaryHardeningResultTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BinaryHardeningResult model = new BinaryHardeningResult().withBinaryHardeningId("wvukx")
-            .withArchitecture("yejhk").withFilePath("htnapczwlokjyem").withClassProperty("vnipjox")
-            .withRunpath("nchgej").withRpath("odmailzyd").withNx(false).withPie(false).withRelro(true).withCanary(false)
+            .withArchitecture("yejhk")
+            .withFilePath("htnapczwlokjyem")
+            .withClassProperty("vnipjox")
+            .withRunpath("nchgej")
+            .withRpath("odmailzyd")
+            .withNx(false)
+            .withPie(false)
+            .withRelro(true)
+            .withCanary(false)
             .withStripped(true);
         model = BinaryData.fromObject(model).toObject(BinaryHardeningResult.class);
         Assertions.assertEquals("wvukx", model.binaryHardeningId());

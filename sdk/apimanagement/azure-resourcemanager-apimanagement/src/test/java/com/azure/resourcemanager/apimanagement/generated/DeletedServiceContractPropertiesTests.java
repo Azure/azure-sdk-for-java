@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DeletedServiceContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeletedServiceContractProperties model =
-            BinaryData
-                .fromString(
-                    "{\"serviceId\":\"inwoqartwyxq\",\"scheduledPurgeDate\":\"2020-12-22T10:03:42Z\",\"deletionDate\":\"2021-07-31T07:54:52Z\"}")
-                .toObject(DeletedServiceContractProperties.class);
+        DeletedServiceContractProperties model = BinaryData.fromString(
+            "{\"serviceId\":\"inwoqartwyxq\",\"scheduledPurgeDate\":\"2020-12-22T10:03:42Z\",\"deletionDate\":\"2021-07-31T07:54:52Z\"}")
+            .toObject(DeletedServiceContractProperties.class);
         Assertions.assertEquals("inwoqartwyxq", model.serviceId());
         Assertions.assertEquals(OffsetDateTime.parse("2020-12-22T10:03:42Z"), model.scheduledPurgeDate());
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T07:54:52Z"), model.deletionDate());
@@ -24,11 +22,9 @@ public final class DeletedServiceContractPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeletedServiceContractProperties model =
-            new DeletedServiceContractProperties()
-                .withServiceId("inwoqartwyxq")
-                .withScheduledPurgeDate(OffsetDateTime.parse("2020-12-22T10:03:42Z"))
-                .withDeletionDate(OffsetDateTime.parse("2021-07-31T07:54:52Z"));
+        DeletedServiceContractProperties model = new DeletedServiceContractProperties().withServiceId("inwoqartwyxq")
+            .withScheduledPurgeDate(OffsetDateTime.parse("2020-12-22T10:03:42Z"))
+            .withDeletionDate(OffsetDateTime.parse("2021-07-31T07:54:52Z"));
         model = BinaryData.fromObject(model).toObject(DeletedServiceContractProperties.class);
         Assertions.assertEquals("inwoqartwyxq", model.serviceId());
         Assertions.assertEquals(OffsetDateTime.parse("2020-12-22T10:03:42Z"), model.scheduledPurgeDate());

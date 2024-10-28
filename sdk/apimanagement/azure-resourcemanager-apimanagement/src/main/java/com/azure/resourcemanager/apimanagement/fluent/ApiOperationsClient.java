@@ -57,15 +57,8 @@ public interface ApiOperationsClient {
      * @return paged Operation list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OperationContractInner> listByApi(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        String tags,
-        Context context);
+    PagedIterable<OperationContractInner> listByApi(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, String tags, Context context);
 
     /**
      * Gets the entity state (Etag) version of the API operation specified by its identifier.
@@ -83,8 +76,8 @@ public interface ApiOperationsClient {
      * @return the entity state (Etag) version of the API operation specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiOperationsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String operationId, Context context);
+    ApiOperationsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String operationId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the API operation specified by its identifier.
@@ -118,8 +111,8 @@ public interface ApiOperationsClient {
      * @return the details of the API Operation specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiOperationsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String operationId, Context context);
+    ApiOperationsGetResponse getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String operationId, Context context);
 
     /**
      * Gets the details of the API Operation specified by its identifier.
@@ -156,14 +149,8 @@ public interface ApiOperationsClient {
      * @return aPI Operation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiOperationsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        OperationContractInner parameters,
-        String ifMatch,
-        Context context);
+    ApiOperationsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String operationId, OperationContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates a new operation in the API or updates an existing one.
@@ -181,12 +168,8 @@ public interface ApiOperationsClient {
      * @return aPI Operation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        OperationContractInner parameters);
+    OperationContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId,
+        String operationId, OperationContractInner parameters);
 
     /**
      * Updates the details of the operation in the API specified by its identifier.
@@ -207,14 +190,8 @@ public interface ApiOperationsClient {
      * @return aPI Operation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiOperationsUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        String ifMatch,
-        OperationUpdateContract parameters,
-        Context context);
+    ApiOperationsUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String operationId, String ifMatch, OperationUpdateContract parameters, Context context);
 
     /**
      * Updates the details of the operation in the API specified by its identifier.
@@ -234,13 +211,8 @@ public interface ApiOperationsClient {
      * @return aPI Operation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        String ifMatch,
-        OperationUpdateContract parameters);
+    OperationContractInner update(String resourceGroupName, String serviceName, String apiId, String operationId,
+        String ifMatch, OperationUpdateContract parameters);
 
     /**
      * Deletes the specified operation in the API.
@@ -260,13 +232,8 @@ public interface ApiOperationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String operationId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified operation in the API.

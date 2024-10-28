@@ -113,8 +113,8 @@ public class SystemPropertiesTest {
     @Test
     public void cannotModifyProperties() {
         // Act
-        final SystemProperties properties = new SystemProperties(message, offset, enqueuedTime, sequenceNumber,
-            partitionKey);
+        final SystemProperties properties
+            = new SystemProperties(message, offset, enqueuedTime, sequenceNumber, partitionKey);
         final HashMap<String, Object> testMap = new HashMap<>();
         testMap.put("one", 1L);
         testMap.put("two", 2);
@@ -145,8 +145,7 @@ public class SystemPropertiesTest {
             () -> properties.computeIfPresent("baz", (key, existing) -> "new value2"));
 
         // Key exists but the new value is null.
-        assertThrows(UnsupportedOperationException.class,
-            () -> properties.compute("baz", (key, existing) -> existing));
+        assertThrows(UnsupportedOperationException.class, () -> properties.compute("baz", (key, existing) -> existing));
 
         // Key exists and the new value is something else.
         assertThrows(UnsupportedOperationException.class,
@@ -156,8 +155,8 @@ public class SystemPropertiesTest {
     @Test
     public void queryProperties() {
         // Act
-        final SystemProperties properties = new SystemProperties(message, offset, enqueuedTime, sequenceNumber,
-            partitionKey);
+        final SystemProperties properties
+            = new SystemProperties(message, offset, enqueuedTime, sequenceNumber, partitionKey);
 
         // Assert
         assertEquals(enqueuedTime, properties.getEnqueuedTime());

@@ -38,8 +38,8 @@ public interface Documentations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Documentation list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DocumentationContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<DocumentationContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Documentation by its identifier.
@@ -53,8 +53,8 @@ public interface Documentations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Documentation by its identifier.
      */
-    DocumentationsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String documentationId, Context context);
+    DocumentationsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String documentationId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Documentation by its identifier.
@@ -80,8 +80,8 @@ public interface Documentations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the Documentation specified by its identifier.
      */
-    Response<DocumentationContract> getWithResponse(
-        String resourceGroupName, String serviceName, String documentationId, Context context);
+    Response<DocumentationContract> getWithResponse(String resourceGroupName, String serviceName,
+        String documentationId, Context context);
 
     /**
      * Gets the details of the Documentation specified by its identifier.
@@ -110,8 +110,8 @@ public interface Documentations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String documentationId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String documentationId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified Documentation from an API.

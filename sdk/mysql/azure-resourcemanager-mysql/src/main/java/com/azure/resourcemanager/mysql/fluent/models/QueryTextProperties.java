@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The properties of a query text. */
 @Fluent
 public final class QueryTextProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryTextProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(QueryTextProperties.class);
 
     /*
      * Query identifier unique to the server.

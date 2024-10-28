@@ -35,8 +35,8 @@ public final class ConnectivityCheckRequestProtocolConfiguration {
      * @param httpConfiguration the httpConfiguration value to set.
      * @return the ConnectivityCheckRequestProtocolConfiguration object itself.
      */
-    public ConnectivityCheckRequestProtocolConfiguration withHttpConfiguration(
-        ConnectivityCheckRequestProtocolConfigurationHttpConfiguration httpConfiguration) {
+    public ConnectivityCheckRequestProtocolConfiguration
+        withHttpConfiguration(ConnectivityCheckRequestProtocolConfigurationHttpConfiguration httpConfiguration) {
         this.httpConfiguration = httpConfiguration;
         return this;
     }

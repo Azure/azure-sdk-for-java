@@ -28,8 +28,8 @@ public interface ProtectedItemOperationStatusClient {
      * @return defines the operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationStatusInner> getWithResponse(
-        String resourceGroupName, String vaultName, String protectedItemName, String operationId, Context context);
+    Response<OperationStatusInner> getWithResponse(String resourceGroupName, String vaultName, String protectedItemName,
+        String operationId, Context context);
 
     /**
      * Gets the protected item operation status.

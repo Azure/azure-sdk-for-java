@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** TensorFlow job settings. */
 @Fluent
 public final class TensorFlowSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TensorFlowSettings.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(TensorFlowSettings.class);
 
     /*
      * The python script to execute.
@@ -226,10 +227,8 @@ public final class TensorFlowSettings {
      */
     public void validate() {
         if (pythonScriptFilePath() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property pythonScriptFilePath in model TensorFlowSettings"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property pythonScriptFilePath in model TensorFlowSettings"));
         }
     }
 }

@@ -19,8 +19,7 @@ public final class EventsOperationsImpl implements EventsOperations {
 
     private final com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager;
 
-    public EventsOperationsImpl(
-        EventsOperationsClient innerClient,
+    public EventsOperationsImpl(EventsOperationsClient innerClient,
         com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

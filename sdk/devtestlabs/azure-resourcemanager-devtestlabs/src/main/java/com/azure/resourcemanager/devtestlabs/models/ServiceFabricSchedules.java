@@ -42,16 +42,8 @@ public interface ServiceFabricSchedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Schedule> list(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<Schedule> list(String resourceGroupName, String labName, String username, String serviceFabricName,
+        String expand, String filter, Integer top, String orderby, Context context);
 
     /**
      * Get schedule.
@@ -68,14 +60,8 @@ public interface ServiceFabricSchedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return schedule along with {@link Response}.
      */
-    Response<Schedule> getWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        String expand,
-        Context context);
+    Response<Schedule> getWithResponse(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, String expand, Context context);
 
     /**
      * Get schedule.
@@ -107,14 +93,8 @@ public interface ServiceFabricSchedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a schedule along with {@link Response}.
      */
-    Response<Schedule> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleInner schedule,
-        Context context);
+    Response<Schedule> createOrUpdateWithResponse(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, ScheduleInner schedule, Context context);
 
     /**
      * Create or replace an existing schedule.
@@ -130,13 +110,8 @@ public interface ServiceFabricSchedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a schedule.
      */
-    Schedule createOrUpdate(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleInner schedule);
+    Schedule createOrUpdate(String resourceGroupName, String labName, String username, String serviceFabricName,
+        String name, ScheduleInner schedule);
 
     /**
      * Delete schedule.
@@ -152,13 +127,8 @@ public interface ServiceFabricSchedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, Context context);
 
     /**
      * Delete schedule.
@@ -189,14 +159,8 @@ public interface ServiceFabricSchedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a schedule along with {@link Response}.
      */
-    Response<Schedule> updateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleFragment schedule,
-        Context context);
+    Response<Schedule> updateWithResponse(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, ScheduleFragment schedule, Context context);
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
@@ -212,12 +176,7 @@ public interface ServiceFabricSchedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a schedule.
      */
-    Schedule update(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
+    Schedule update(String resourceGroupName, String labName, String username, String serviceFabricName, String name,
         ScheduleFragment schedule);
 
     /**
@@ -247,11 +206,6 @@ public interface ServiceFabricSchedules {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void execute(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
+    void execute(String resourceGroupName, String labName, String username, String serviceFabricName, String name,
         Context context);
 }

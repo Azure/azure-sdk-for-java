@@ -100,16 +100,12 @@ public final class CheckDomainAvailabilityParameter {
      */
     public void validate() {
         if (subdomainName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subdomainName in model CheckDomainAvailabilityParameter"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property subdomainName in model CheckDomainAvailabilityParameter"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model CheckDomainAvailabilityParameter"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property type in model CheckDomainAvailabilityParameter"));
         }
     }
 

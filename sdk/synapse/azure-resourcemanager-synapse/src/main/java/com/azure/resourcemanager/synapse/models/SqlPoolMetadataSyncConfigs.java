@@ -24,8 +24,8 @@ public interface SqlPoolMetadataSyncConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the metadata sync configuration for a SQL pool along with {@link Response}.
      */
-    Response<MetadataSyncConfig> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    Response<MetadataSyncConfig> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Get SQL pool metadata sync config
@@ -57,12 +57,8 @@ public interface SqlPoolMetadataSyncConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return metadata sync configuration along with {@link Response}.
      */
-    Response<MetadataSyncConfig> createWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        MetadataSyncConfigInner metadataSyncConfiguration,
-        Context context);
+    Response<MetadataSyncConfig> createWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        MetadataSyncConfigInner metadataSyncConfiguration, Context context);
 
     /**
      * Set SQL pool metadata sync config
@@ -78,9 +74,6 @@ public interface SqlPoolMetadataSyncConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return metadata sync configuration.
      */
-    MetadataSyncConfig create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    MetadataSyncConfig create(String resourceGroupName, String workspaceName, String sqlPoolName,
         MetadataSyncConfigInner metadataSyncConfiguration);
 }

@@ -64,19 +64,19 @@ public final class NotificationHookTest extends NotificationHookTestBase {
         Assertions.assertNotNull(hookId[0]);
         Assertions.assertNotNull(hookId[1]);
 
-        List<NotificationHook> notificationHookList = client.listHooks(new ListHookOptions()
-            .setHookNameFilter("java_test"), Context.NONE)
-            .stream()
-            .collect(Collectors.toList());
+        List<NotificationHook> notificationHookList
+            = client.listHooks(new ListHookOptions().setHookNameFilter("java_test"), Context.NONE)
+                .stream()
+                .collect(Collectors.toList());
 
         assertListHookOutput(notificationHookList);
 
         List<PagedResponse<NotificationHook>> hookPageList
-            = client.listHooks(new ListHookOptions()
-            .setHookNameFilter("java_test")
-            .setMaxPageSize(ListHookInput.INSTANCE.pageSize), Context.NONE)
-            .streamByPage()
-            .collect(Collectors.toList());
+            = client
+                .listHooks(new ListHookOptions().setHookNameFilter("java_test")
+                    .setMaxPageSize(ListHookInput.INSTANCE.pageSize), Context.NONE)
+                .streamByPage()
+                .collect(Collectors.toList());
 
         assertPagedListHookOutput(hookPageList);
 

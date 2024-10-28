@@ -14,18 +14,16 @@ import java.util.List;
 public abstract class DetectAsyncFunction extends DetectSyncFunction {
 
     @Override
-    public final List<FaceDetectionResult> execute(
-        FaceDetectionModel detectionModel, FaceRecognitionModel recognitionModel, boolean returnFaceId,
-        List<FaceAttributeType> returnFaceAttributes, Boolean returnFaceLandmarks, Boolean returnRecognitionModel,
-        Integer faceIdTimeToLive) {
-        Mono<List<FaceDetectionResult>> mono = executeAsync(detectionModel, recognitionModel, returnFaceId, returnFaceAttributes,
-            returnFaceLandmarks, returnRecognitionModel, faceIdTimeToLive);
+    public final List<FaceDetectionResult> execute(FaceDetectionModel detectionModel,
+        FaceRecognitionModel recognitionModel, boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes,
+        Boolean returnFaceLandmarks, Boolean returnRecognitionModel, Integer faceIdTimeToLive) {
+        Mono<List<FaceDetectionResult>> mono = executeAsync(detectionModel, recognitionModel, returnFaceId,
+            returnFaceAttributes, returnFaceLandmarks, returnRecognitionModel, faceIdTimeToLive);
 
         return mono.block();
     }
 
-    public abstract Mono<List<FaceDetectionResult>> executeAsync(
-        FaceDetectionModel detectionModel, FaceRecognitionModel recognitionModel, boolean returnFaceId,
-        List<FaceAttributeType> returnFaceAttributes, Boolean returnFaceLandmarks, Boolean returnRecognitionModel,
-        Integer faceIdTimeToLive);
+    public abstract Mono<List<FaceDetectionResult>> executeAsync(FaceDetectionModel detectionModel,
+        FaceRecognitionModel recognitionModel, boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes,
+        Boolean returnFaceLandmarks, Boolean returnRecognitionModel, Integer faceIdTimeToLive);
 }

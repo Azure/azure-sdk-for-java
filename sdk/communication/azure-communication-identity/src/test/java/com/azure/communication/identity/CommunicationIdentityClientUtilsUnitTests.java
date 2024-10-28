@@ -28,7 +28,8 @@ public class CommunicationIdentityClientUtilsUnitTests {
         Duration tokenExpiresIn = Duration.ofMinutes(tokenExpirationInMinutes);
 
         // Action
-        CommunicationIdentityCreateRequest request = CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger);
+        CommunicationIdentityCreateRequest request
+            = CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger);
 
         // Assert
         assertNotNull(request.getExpiresInMinutes());
@@ -42,7 +43,8 @@ public class CommunicationIdentityClientUtilsUnitTests {
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action
-        CommunicationIdentityCreateRequest request = CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, null, logger);
+        CommunicationIdentityCreateRequest request
+            = CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, null, logger);
 
         // Assert
         assertNull(request.getExpiresInMinutes());
@@ -57,7 +59,8 @@ public class CommunicationIdentityClientUtilsUnitTests {
         Duration tokenExpiresIn = Duration.ofMinutes(tokenExpirationInMinutes);
 
         // Action
-        CommunicationIdentityAccessTokenRequest request = CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresIn, logger);
+        CommunicationIdentityAccessTokenRequest request = CommunicationIdentityClientUtils
+            .createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresIn, logger);
 
         // Assert
         assertNotNull(request.getExpiresInMinutes());
@@ -71,7 +74,8 @@ public class CommunicationIdentityClientUtilsUnitTests {
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
 
         // Action
-        CommunicationIdentityAccessTokenRequest request = CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, null, logger);
+        CommunicationIdentityAccessTokenRequest request
+            = CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, null, logger);
 
         // Assert
         assertNull(request.getExpiresInMinutes());
@@ -85,8 +89,9 @@ public class CommunicationIdentityClientUtilsUnitTests {
         Duration tokenExpiresIn = Duration.ofHours(Integer.MAX_VALUE);
 
         // Action
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-            CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger));
+        IllegalArgumentException exception
+            = assertThrows(IllegalArgumentException.class, () -> CommunicationIdentityClientUtils
+                .createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger));
 
         // Assert
         assertEquals(TOKEN_EXPIRATION_OVERFLOW_MESSAGE, exception.getMessage());

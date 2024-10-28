@@ -97,7 +97,7 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
     public void byPageSnippet() {
         PagedFluxBase<Integer, PagedResponse<Integer>> pagedFluxBase = createAnInstance();
 
-        // BEGIN: com.azure.core.http.rest.pagedfluxbase.bypage
+        // BEGIN: com.azure.core.http.rest.PagedFluxBase.byPage
         // Start processing the results from first page
         pagedFluxBase.byPage()
             .log()
@@ -107,9 +107,9 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
                 page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
                 error -> System.err.println("An error occurred: " + error),
                 () -> System.out.println("Processing complete."));
-        // END: com.azure.core.http.rest.pagedfluxbase.bypage
+        // END: com.azure.core.http.rest.PagedFluxBase.byPage
 
-        // BEGIN: com.azure.core.http.rest.pagedfluxbase.bypage#String
+        // BEGIN: com.azure.core.http.rest.PagedFluxBase.byPage#String
         // Start processing the results from a page associated with the continuation token
         String continuationToken = getContinuationToken();
         pagedFluxBase.byPage(continuationToken)
@@ -120,7 +120,7 @@ public final class PagedFluxBaseJavaDocCodeSnippets {
                 page.getElements().stream().map(String::valueOf).collect(Collectors.joining(", "))),
                 error -> System.err.println("An error occurred: " + error),
                 () -> System.out.println("Processing complete."));
-        // END: com.azure.core.http.rest.pagedfluxbase.bypage#String
+        // END: com.azure.core.http.rest.PagedFluxBase.byPage#String
     }
 
     /**

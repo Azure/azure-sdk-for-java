@@ -26,13 +26,8 @@ public interface SqlPoolWorkloadClassifiers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workload classifier of Sql pool's workload group along with {@link Response}.
      */
-    Response<WorkloadClassifier> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context);
+    Response<WorkloadClassifier> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName, Context context);
 
     /**
      * Get workload classifier
@@ -49,11 +44,7 @@ public interface SqlPoolWorkloadClassifiers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workload classifier of Sql pool's workload group.
      */
-    WorkloadClassifier get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
+    WorkloadClassifier get(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
         String workloadClassifierName);
 
     /**
@@ -70,11 +61,7 @@ public interface SqlPoolWorkloadClassifiers {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
+    void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
         String workloadClassifierName);
 
     /**
@@ -92,13 +79,8 @@ public interface SqlPoolWorkloadClassifiers {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context);
+    void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        String workloadClassifierName, Context context);
 
     /**
      * Sql pool's workload classifier
@@ -115,8 +97,8 @@ public interface SqlPoolWorkloadClassifiers {
      * @return list of Sql pool's workload classifier for workload groups as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<WorkloadClassifier> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName);
+    PagedIterable<WorkloadClassifier> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName);
 
     /**
      * Sql pool's workload classifier
@@ -134,8 +116,8 @@ public interface SqlPoolWorkloadClassifiers {
      * @return list of Sql pool's workload classifier for workload groups as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<WorkloadClassifier> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context);
+    PagedIterable<WorkloadClassifier> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, Context context);
 
     /**
      * Get workload classifier

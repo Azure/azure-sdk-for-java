@@ -70,14 +70,12 @@ public final class TokenClaim {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model TokenClaim"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model TokenClaim"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model TokenClaim"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model TokenClaim"));
         }
     }
 

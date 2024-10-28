@@ -51,15 +51,14 @@ public final class DtmfResult extends RecognizeResult {
             return "";
         }
 
-        return this.dtmfTones.stream()
-                    .map(x -> x.convertToString())
-                    .collect(Collectors.joining());
+        return this.dtmfTones.stream().map(x -> x.convertToString()).collect(Collectors.joining());
     }
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("tones", this.dtmfTones, (writer, element) -> writer.writeString(element.toString()));
+        jsonWriter.writeArrayField("tones", this.dtmfTones,
+            (writer, element) -> writer.writeString(element.toString()));
         return jsonWriter.writeEndObject();
     }
 

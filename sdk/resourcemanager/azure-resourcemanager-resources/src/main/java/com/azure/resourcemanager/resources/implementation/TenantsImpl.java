@@ -14,8 +14,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 /**
  * Implementation for {@link Tenants}.
  */
-public final class TenantsImpl
-        implements Tenants {
+public final class TenantsImpl implements Tenants {
     private final TenantsClient client;
 
     public TenantsImpl(final TenantsClient client) {

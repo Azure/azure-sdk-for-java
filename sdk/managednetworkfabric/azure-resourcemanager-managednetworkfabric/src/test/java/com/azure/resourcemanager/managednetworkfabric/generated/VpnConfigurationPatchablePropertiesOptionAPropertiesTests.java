@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VpnConfigurationPatchablePropertiesOptionAPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VpnConfigurationPatchablePropertiesOptionAProperties model =
-            BinaryData
-                .fromString(
-                    "{\"primaryIpv4Prefix\":\"sklkqnqvkixnm\",\"primaryIpv6Prefix\":\"mecuyrzwim\",\"secondaryIpv4Prefix\":\"ayspzvriet\",\"secondaryIpv6Prefix\":\"phmdzxplgtp\",\"mtu\":130554,\"vlanId\":1400650785,\"peerASN\":9083634510135709483,\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":1662288047,\"multiplier\":2022282106}}")
-                .toObject(VpnConfigurationPatchablePropertiesOptionAProperties.class);
+        VpnConfigurationPatchablePropertiesOptionAProperties model = BinaryData.fromString(
+            "{\"primaryIpv4Prefix\":\"sklkqnqvkixnm\",\"primaryIpv6Prefix\":\"mecuyrzwim\",\"secondaryIpv4Prefix\":\"ayspzvriet\",\"secondaryIpv6Prefix\":\"phmdzxplgtp\",\"mtu\":130554,\"vlanId\":1400650785,\"peerASN\":9083634510135709483,\"bfdConfiguration\":{\"administrativeState\":\"MAT\",\"intervalInMilliSeconds\":1662288047,\"multiplier\":2022282106}}")
+            .toObject(VpnConfigurationPatchablePropertiesOptionAProperties.class);
         Assertions.assertEquals(130554, model.mtu());
         Assertions.assertEquals(1400650785, model.vlanId());
         Assertions.assertEquals(9083634510135709483L, model.peerAsn());
@@ -30,9 +28,8 @@ public final class VpnConfigurationPatchablePropertiesOptionAPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VpnConfigurationPatchablePropertiesOptionAProperties model =
-            new VpnConfigurationPatchablePropertiesOptionAProperties()
-                .withMtu(130554)
+        VpnConfigurationPatchablePropertiesOptionAProperties model
+            = new VpnConfigurationPatchablePropertiesOptionAProperties().withMtu(130554)
                 .withVlanId(1400650785)
                 .withPeerAsn(9083634510135709483L)
                 .withBfdConfiguration(

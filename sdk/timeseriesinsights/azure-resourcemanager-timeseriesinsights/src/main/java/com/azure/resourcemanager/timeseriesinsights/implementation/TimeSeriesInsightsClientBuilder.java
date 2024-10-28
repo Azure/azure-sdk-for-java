@@ -15,7 +15,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /** A builder for creating a new instance of the TimeSeriesInsightsClientImpl type. */
-@ServiceClientBuilder(serviceClients = {TimeSeriesInsightsClientImpl.class})
+@ServiceClientBuilder(serviceClients = { TimeSeriesInsightsClientImpl.class })
 public final class TimeSeriesInsightsClientBuilder {
     /*
      * Azure Subscription ID.
@@ -121,24 +121,16 @@ public final class TimeSeriesInsightsClientBuilder {
     public TimeSeriesInsightsClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        TimeSeriesInsightsClientImpl client =
-            new TimeSeriesInsightsClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        TimeSeriesInsightsClientImpl client = new TimeSeriesInsightsClientImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, subscriptionId, localEndpoint);
         return client;
     }
 }

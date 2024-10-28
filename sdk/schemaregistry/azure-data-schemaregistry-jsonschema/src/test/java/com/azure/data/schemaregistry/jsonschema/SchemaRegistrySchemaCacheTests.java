@@ -60,8 +60,8 @@ public class SchemaRegistrySchemaCacheTests {
         // Arrange
         final boolean autoRegisterSchemas = false;
         final int capacity = 3;
-        final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP,
-            autoRegisterSchemas, capacity);
+        final SchemaRegistrySchemaCache cache
+            = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP, autoRegisterSchemas, capacity);
 
         when(client.getSchemaProperties(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
             .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON)));
@@ -81,8 +81,8 @@ public class SchemaRegistrySchemaCacheTests {
         // Arrange
         final boolean autoRegisterSchemas = false;
         final int capacity = 3;
-        final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP,
-            autoRegisterSchemas, capacity);
+        final SchemaRegistrySchemaCache cache
+            = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP, autoRegisterSchemas, capacity);
 
         when(client.getSchemaProperties(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
             .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON)));
@@ -120,8 +120,8 @@ public class SchemaRegistrySchemaCacheTests {
         // Arrange
         final boolean autoRegisterSchemas = false;
         final int capacity = 3;
-        final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, schemaRegistryClient, null,
-            autoRegisterSchemas, capacity);
+        final SchemaRegistrySchemaCache cache
+            = new SchemaRegistrySchemaCache(client, schemaRegistryClient, null, autoRegisterSchemas, capacity);
 
         when(client.getSchemaProperties(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
             .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON)));
@@ -140,8 +140,8 @@ public class SchemaRegistrySchemaCacheTests {
         // Arrange
         final boolean autoRegisterSchemas = true;
         final int capacity = 3;
-        final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP,
-            autoRegisterSchemas, capacity);
+        final SchemaRegistrySchemaCache cache
+            = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP, autoRegisterSchemas, capacity);
 
         when(client.registerSchema(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
             .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON)));
@@ -162,8 +162,8 @@ public class SchemaRegistrySchemaCacheTests {
         // Arrange
         final boolean autoRegisterSchemas = true;
         final int capacity = 3;
-        final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP,
-            autoRegisterSchemas, capacity);
+        final SchemaRegistrySchemaCache cache
+            = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP, autoRegisterSchemas, capacity);
 
         when(client.registerSchema(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
             .thenReturn(Mono.just(new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON)));
@@ -204,8 +204,8 @@ public class SchemaRegistrySchemaCacheTests {
         // Arrange
         final boolean autoRegisterSchemas = false;
         final int capacity = 3;
-        final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP,
-            autoRegisterSchemas, capacity);
+        final SchemaRegistrySchemaCache cache
+            = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP, autoRegisterSchemas, capacity);
         final SchemaProperties registryProperties = new SchemaProperties(SCHEMA_ID, SchemaFormat.JSON);
 
         when(client.getSchemaProperties(SCHEMA_GROUP, schemaName, schemaString, SchemaFormat.JSON))
@@ -237,8 +237,8 @@ public class SchemaRegistrySchemaCacheTests {
         // Arrange
         final boolean autoRegisterSchemas = false;
         final int capacity = 3;
-        final SchemaRegistrySchemaCache cache = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP,
-            autoRegisterSchemas, capacity);
+        final SchemaRegistrySchemaCache cache
+            = new SchemaRegistrySchemaCache(client, schemaRegistryClient, SCHEMA_GROUP, autoRegisterSchemas, capacity);
 
         final String schemaName1 = "name1";
         final String schemaName2 = "name2";
@@ -274,26 +274,22 @@ public class SchemaRegistrySchemaCacheTests {
                 } else if (schemaName4.equals(schemaName)) {
                     schemaIdToReturn = schemaId4;
                 } else {
-                    return Mono.error(new IllegalArgumentException("Did not match any known names. Name:" + schemaName));
+                    return Mono
+                        .error(new IllegalArgumentException("Did not match any known names. Name:" + schemaName));
                 }
 
                 if (emittedSchemas.contains(schemaIdToReturn)) {
-                    return Mono.error(new IllegalStateException("Should not have to fetch schema again. Id:" + schemaIdToReturn));
+                    return Mono.error(
+                        new IllegalStateException("Should not have to fetch schema again. Id:" + schemaIdToReturn));
                 }
 
                 emittedSchemas.add(schemaIdToReturn);
                 return Mono.just(new SchemaProperties(schemaIdToReturn, format));
             });
 
-        StepVerifier.create(cache.getSchemaIdAsync(schemaName1, schema1))
-            .expectNext(schemaId1)
-            .verifyComplete();
-        StepVerifier.create(cache.getSchemaIdAsync(schemaName2, schema2))
-            .expectNext(schemaId2)
-            .verifyComplete();
-        StepVerifier.create(cache.getSchemaIdAsync(schemaName3, schema3))
-            .expectNext(schemaId3)
-            .verifyComplete();
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName1, schema1)).expectNext(schemaId1).verifyComplete();
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName2, schema2)).expectNext(schemaId2).verifyComplete();
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName3, schema3)).expectNext(schemaId3).verifyComplete();
 
         // Should be at capacity now.
         assertEquals(capacity, cache.getSize());
@@ -302,14 +298,10 @@ public class SchemaRegistrySchemaCacheTests {
         assertEquals(expectedLength, cache.getTotalLength());
 
         // Get schema1 so it is no longer the eldest.
-        StepVerifier.create(cache.getSchemaIdAsync(schemaName1, schema1))
-            .expectNext(schemaId1)
-            .verifyComplete();
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName1, schema1)).expectNext(schemaId1).verifyComplete();
 
         // Schema2 should be removed after this because it is the oldest.
-        StepVerifier.create(cache.getSchemaIdAsync(schemaName4, schema4))
-            .expectNext(schemaId4)
-            .verifyComplete();
+        StepVerifier.create(cache.getSchemaIdAsync(schemaName4, schema4)).expectNext(schemaId4).verifyComplete();
 
         assertEquals(capacity, cache.getSize());
 

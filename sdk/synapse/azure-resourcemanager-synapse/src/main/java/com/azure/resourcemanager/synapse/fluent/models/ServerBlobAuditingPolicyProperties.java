@@ -534,10 +534,8 @@ public final class ServerBlobAuditingPolicyProperties {
      */
     public void validate() {
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model ServerBlobAuditingPolicyProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property state in model ServerBlobAuditingPolicyProperties"));
         }
     }
 

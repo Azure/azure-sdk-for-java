@@ -30,7 +30,8 @@ public final class NotificationTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Notification model
-            = new Notification().withIsEnabled(true).withNotificationCategory(NotificationCategory.WAVE_PROGRESS)
+            = new Notification().withIsEnabled(true)
+                .withNotificationCategory(NotificationCategory.WAVE_PROGRESS)
                 .withNotificationLevel(NotificationLevel.ALL)
                 .withNotificationTargets(Arrays
                     .asList(new NotificationTarget().withNotificationChannel(NotificationChannel.EMAIL_SUBSCRIPTION)

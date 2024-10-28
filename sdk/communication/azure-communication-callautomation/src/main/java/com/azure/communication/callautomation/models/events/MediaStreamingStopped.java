@@ -25,9 +25,9 @@ public final class MediaStreamingStopped extends CallAutomationEventBase {
      */
     private MediaStreamingUpdate mediaStreamingUpdateResult;
 
-     /**
-     * Creates an instance of MediaStreamingStopped class.
-     */
+    /**
+    * Creates an instance of MediaStreamingStopped class.
+    */
     public MediaStreamingStopped() {
         resultInformation = null;
         mediaStreamingUpdateResult = null;

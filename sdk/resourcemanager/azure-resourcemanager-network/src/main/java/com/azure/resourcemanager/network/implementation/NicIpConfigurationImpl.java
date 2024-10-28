@@ -34,10 +34,8 @@ import java.util.Objects;
 
 /** Implementation for NicIPConfiguration and its create and update interfaces. */
 class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterfaceImpl, NetworkInterface>
-    implements NicIpConfiguration,
-        NicIpConfiguration.Definition<NetworkInterface.DefinitionStages.WithCreate>,
-        NicIpConfiguration.UpdateDefinition<NetworkInterface.Update>,
-        NicIpConfiguration.Update {
+    implements NicIpConfiguration, NicIpConfiguration.Definition<NetworkInterface.DefinitionStages.WithCreate>,
+    NicIpConfiguration.UpdateDefinition<NetworkInterface.Update>, NicIpConfiguration.Update {
     /** the network client. */
     private final NetworkManager networkManager;
     /** flag indicating whether IP configuration is in create or update mode. */
@@ -57,18 +55,15 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    protected NicIpConfigurationImpl(
-        NetworkInterfaceIpConfigurationInner inner,
-        NetworkInterfaceImpl parent,
-        NetworkManager networkManager,
-        final boolean isInCreateModel) {
+    protected NicIpConfigurationImpl(NetworkInterfaceIpConfigurationInner inner, NetworkInterfaceImpl parent,
+        NetworkManager networkManager, final boolean isInCreateModel) {
         super(inner, parent, networkManager);
         this.isInCreateMode = isInCreateModel;
         this.networkManager = networkManager;
     }
 
-    protected static NicIpConfigurationImpl prepareNicIPConfiguration(
-        String name, NetworkInterfaceImpl parent, final NetworkManager networkManager) {
+    protected static NicIpConfigurationImpl prepareNicIPConfiguration(String name, NetworkInterfaceImpl parent,
+        final NetworkManager networkManager) {
         NetworkInterfaceIpConfigurationInner ipConfigurationInner = new NetworkInterfaceIpConfigurationInner();
         ipConfigurationInner.withName(name);
         return new NicIpConfigurationImpl(ipConfigurationInner, parent, networkManager, true);
@@ -107,8 +102,8 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
 
     @Override
     public NicIpConfigurationImpl withNewNetwork(String name, String addressSpaceCidr) {
-        Network.DefinitionStages.WithGroup definitionWithGroup =
-            this.networkManager.networks().define(name).withRegion(this.parent().regionName());
+        Network.DefinitionStages.WithGroup definitionWithGroup
+            = this.networkManager.networks().define(name).withRegion(this.parent().regionName());
 
         Network.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.parent().newGroup() != null) {
@@ -203,8 +198,8 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
     }
 
     @Override
-    public NicIpConfigurationImpl withExistingApplicationGatewayBackend(
-        ApplicationGateway appGateway, String backendName) {
+    public NicIpConfigurationImpl withExistingApplicationGatewayBackend(ApplicationGateway appGateway,
+        String backendName) {
         if (appGateway != null) {
             for (ApplicationGatewayBackendAddressPool pool : appGateway.innerModel().backendAddressPools()) {
                 if (pool.name().equalsIgnoreCase(backendName)) {
@@ -218,8 +213,8 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
     }
 
     @Override
-    public NicIpConfigurationImpl withExistingLoadBalancerInboundNatRule(
-        LoadBalancer loadBalancer, String inboundNatRuleName) {
+    public NicIpConfigurationImpl withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer,
+        String inboundNatRuleName) {
         if (loadBalancer != null) {
             for (InboundNatRuleInner rule : loadBalancer.innerModel().inboundNatRules()) {
                 if (rule.name().equalsIgnoreCase(inboundNatRuleName)) {
@@ -259,18 +254,21 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
         return natRefs;
     }
 
-    protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIPConfigurations, Map<String, DeleteOptions> specifiedIpConfigNames) {
+    protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIPConfigurations,
+        Map<String, DeleteOptions> specifiedIpConfigNames) {
         for (NicIpConfiguration nicIPConfiguration : nicIPConfigurations) {
             NicIpConfigurationImpl config = (NicIpConfigurationImpl) nicIPConfiguration;
             config.innerModel().withSubnet(config.subnetToAssociate());
-            config.innerModel().withPublicIpAddress(config.publicIPToAssociate(specifiedIpConfigNames.getOrDefault(config.name(), null)));
+            config.innerModel()
+                .withPublicIpAddress(
+                    config.publicIPToAssociate(specifiedIpConfigNames.getOrDefault(config.name(), null)));
         }
     }
 
     // Creates a creatable public IP address definition with the given name and DNS label.
     private Creatable<PublicIpAddress> prepareCreatablePublicIP(String name, String leafDnsLabel) {
-        PublicIpAddress.DefinitionStages.WithGroup definitionWithGroup =
-            this.networkManager.publicIpAddresses().define(name).withRegion(this.parent().regionName());
+        PublicIpAddress.DefinitionStages.WithGroup definitionWithGroup
+            = this.networkManager.publicIpAddresses().define(name).withRegion(this.parent().regionName());
 
         PublicIpAddress.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.parent().newGroup() != null) {
@@ -306,14 +304,8 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
                 }
             }
 
-            throw logger
-                .logExceptionAsError(
-                    new RuntimeException(
-                        "A subnet with name '"
-                            + subnetToAssociate
-                            + "' not found under the network '"
-                            + this.existingVirtualNetworkToAssociate.name()
-                            + "'"));
+            throw logger.logExceptionAsError(new RuntimeException("A subnet with name '" + subnetToAssociate
+                + "' not found under the network '" + this.existingVirtualNetworkToAssociate.name() + "'"));
 
         } else {
             if (subnetToAssociate != null) {
@@ -401,9 +393,7 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
     NicIpConfigurationImpl withoutApplicationSecurityGroup(String name) {
         if (this.innerModel().applicationSecurityGroups() != null) {
             this.innerModel().applicationSecurityGroups().removeIf(asg -> {
-                String asgName = asg.name() == null
-                    ? ResourceUtils.nameFromResourceId(asg.id())
-                    : asg.name();
+                String asgName = asg.name() == null ? ResourceUtils.nameFromResourceId(asg.id()) : asg.name();
                 return Objects.equals(name, asgName);
             });
         }

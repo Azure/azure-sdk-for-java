@@ -13,22 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class RestRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RestRequest model =
-            BinaryData
-                .fromString(
-                    "{\"method\":\"GET\",\"uri\":\"fbebrjcxer\",\"authentication\":{\"type\":\"RestRequestAuthentication\"}}")
-                .toObject(RestRequest.class);
+        RestRequest model = BinaryData.fromString(
+            "{\"method\":\"GET\",\"uri\":\"fbebrjcxer\",\"authentication\":{\"type\":\"RestRequestAuthentication\"}}")
+            .toObject(RestRequest.class);
         Assertions.assertEquals(RestRequestMethod.GET, model.method());
         Assertions.assertEquals("fbebrjcxer", model.uri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RestRequest model =
-            new RestRequest()
-                .withMethod(RestRequestMethod.GET)
-                .withUri("fbebrjcxer")
-                .withAuthentication(new RestRequestAuthentication());
+        RestRequest model = new RestRequest().withMethod(RestRequestMethod.GET)
+            .withUri("fbebrjcxer")
+            .withAuthentication(new RestRequestAuthentication());
         model = BinaryData.fromObject(model).toObject(RestRequest.class);
         Assertions.assertEquals(RestRequestMethod.GET, model.method());
         Assertions.assertEquals("fbebrjcxer", model.uri());

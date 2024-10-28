@@ -48,8 +48,8 @@ public interface MonitoredSubscriptions {
      * @return the request to update subscriptions needed to be monitored by the Datadog monitor resource along with
      *     {@link Response}.
      */
-    Response<MonitoredSubscriptionProperties> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context);
+    Response<MonitoredSubscriptionProperties> getWithResponse(String resourceGroupName, String monitorName,
+        String configurationName, Context context);
 
     /**
      * List the subscriptions currently being monitored by the Datadog monitor resource.

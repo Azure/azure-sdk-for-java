@@ -71,8 +71,8 @@ public final class DeploymentConfiguration extends SapConfiguration {
      * @param infrastructureConfiguration the infrastructureConfiguration value to set.
      * @return the DeploymentConfiguration object itself.
      */
-    public DeploymentConfiguration withInfrastructureConfiguration(
-        InfrastructureConfiguration infrastructureConfiguration) {
+    public DeploymentConfiguration
+        withInfrastructureConfiguration(InfrastructureConfiguration infrastructureConfiguration) {
         this.infrastructureConfiguration = infrastructureConfiguration;
         return this;
     }

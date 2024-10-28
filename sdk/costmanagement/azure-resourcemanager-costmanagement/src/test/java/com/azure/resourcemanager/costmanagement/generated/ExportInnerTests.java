@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ExportInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExportInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"schedule\":{\"status\":\"Inactive\",\"recurrence\":\"Annually\"},\"format\":\"Csv\",\"deliveryInfo\":{},\"definition\":{\"type\":\"AmortizedCost\",\"timeframe\":\"TheLastBillingMonth\"},\"runHistory\":{\"value\":[]},\"partitionData\":false,\"nextRunTimeEstimate\":\"2021-10-03T18:37:42Z\"},\"eTag\":\"brqubp\",\"id\":\"xhexiilivpdti\",\"name\":\"r\",\"type\":\"tdqoaxoruzfgsq\"}")
-                .toObject(ExportInner.class);
+        ExportInner model = BinaryData.fromString(
+            "{\"properties\":{\"schedule\":{\"status\":\"Inactive\",\"recurrence\":\"Annually\"},\"format\":\"Csv\",\"deliveryInfo\":{},\"definition\":{\"type\":\"AmortizedCost\",\"timeframe\":\"TheLastBillingMonth\"},\"runHistory\":{\"value\":[]},\"partitionData\":false,\"nextRunTimeEstimate\":\"2021-10-03T18:37:42Z\"},\"eTag\":\"brqubp\",\"id\":\"xhexiilivpdti\",\"name\":\"r\",\"type\":\"tdqoaxoruzfgsq\"}")
+            .toObject(ExportInner.class);
         Assertions.assertEquals("brqubp", model.etag());
         Assertions.assertEquals(StatusType.INACTIVE, model.schedule().status());
         Assertions.assertEquals(RecurrenceType.ANNUALLY, model.schedule().recurrence());
@@ -36,19 +34,14 @@ public final class ExportInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExportInner model =
-            new ExportInner()
-                .withEtag("brqubp")
-                .withSchedule(
-                    new ExportSchedule().withStatus(StatusType.INACTIVE).withRecurrence(RecurrenceType.ANNUALLY))
-                .withFormat(FormatType.CSV)
-                .withDeliveryInfo(new ExportDeliveryInfo())
-                .withDefinition(
-                    new ExportDefinition()
-                        .withType(ExportType.AMORTIZED_COST)
-                        .withTimeframe(TimeframeType.THE_LAST_BILLING_MONTH))
-                .withRunHistory(new ExportExecutionListResultInner())
-                .withPartitionData(false);
+        ExportInner model = new ExportInner().withEtag("brqubp")
+            .withSchedule(new ExportSchedule().withStatus(StatusType.INACTIVE).withRecurrence(RecurrenceType.ANNUALLY))
+            .withFormat(FormatType.CSV)
+            .withDeliveryInfo(new ExportDeliveryInfo())
+            .withDefinition(new ExportDefinition().withType(ExportType.AMORTIZED_COST)
+                .withTimeframe(TimeframeType.THE_LAST_BILLING_MONTH))
+            .withRunHistory(new ExportExecutionListResultInner())
+            .withPartitionData(false);
         model = BinaryData.fromObject(model).toObject(ExportInner.class);
         Assertions.assertEquals("brqubp", model.etag());
         Assertions.assertEquals(StatusType.INACTIVE, model.schedule().status());

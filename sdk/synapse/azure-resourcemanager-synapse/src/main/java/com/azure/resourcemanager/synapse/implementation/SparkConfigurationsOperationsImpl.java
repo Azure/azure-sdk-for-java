@@ -19,23 +19,22 @@ public final class SparkConfigurationsOperationsImpl implements SparkConfigurati
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public SparkConfigurationsOperationsImpl(
-        SparkConfigurationsOperationsClient innerClient,
+    public SparkConfigurationsOperationsImpl(SparkConfigurationsOperationsClient innerClient,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<SparkConfigurationResource> listByWorkspace(String resourceGroupName, String workspaceName) {
-        PagedIterable<SparkConfigurationResourceInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+        PagedIterable<SparkConfigurationResourceInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
         return Utils.mapPage(inner, inner1 -> new SparkConfigurationResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SparkConfigurationResource> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<SparkConfigurationResourceInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
+    public PagedIterable<SparkConfigurationResource> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context) {
+        PagedIterable<SparkConfigurationResourceInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
         return Utils.mapPage(inner, inner1 -> new SparkConfigurationResourceImpl(inner1, this.manager()));
     }
 

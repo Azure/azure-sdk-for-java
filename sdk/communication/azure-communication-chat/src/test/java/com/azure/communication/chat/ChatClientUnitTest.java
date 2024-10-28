@@ -68,8 +68,8 @@ public class ChatClientUnitTest {
 
         ChatThreadAsyncClient chatThreadAsyncClient = getChatThreadAsyncClient(mockHttpClient);
 
-        PagedFlux<ChatMessageReadReceipt> readReceipts = chatThreadAsyncClient.listReadReceipts(
-            new ListReadReceiptOptions().setMaxPageSize(1));
+        PagedFlux<ChatMessageReadReceipt> readReceipts
+            = chatThreadAsyncClient.listReadReceipts(new ListReadReceiptOptions().setMaxPageSize(1));
 
         // // process the iterableByPage
         List<ChatMessageReadReceipt> readReceiptList = new ArrayList<ChatMessageReadReceipt>();
@@ -86,30 +86,27 @@ public class ChatClientUnitTest {
 
         CreateChatThreadOptions threadRequest = new CreateChatThreadOptions("topic");
 
-        threadRequest.addParticipant(new ChatParticipant()
-            .setCommunicationIdentifier(new CommunicationUserIdentifier("valid"))
-        );
+        threadRequest
+            .addParticipant(new ChatParticipant().setCommunicationIdentifier(new CommunicationUserIdentifier("valid")));
 
         CommunicationUserIdentifier invalidUser = new CommunicationUserIdentifier("invalid");
-        threadRequest.addParticipant(new ChatParticipant()
-            .setCommunicationIdentifier(invalidUser));
+        threadRequest.addParticipant(new ChatParticipant().setCommunicationIdentifier(invalidUser));
 
         HttpClient mockHttpClient = new NoOpHttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
-                return Mono.just(ChatResponseMocker.createChatThreadInvalidParticipantResponse(request, threadRequest, invalidUser));
+                return Mono.just(
+                    ChatResponseMocker.createChatThreadInvalidParticipantResponse(request, threadRequest, invalidUser));
             }
         };
 
-        StepVerifier.create(getChatAsyncClient(mockHttpClient).createChatThread(threadRequest))
-            .assertNext(result -> {
-                assertNotNull(result);
-                assertNotNull(result.getChatThread());
-                assertNotNull(result.getChatThread().getId());
-                assertEquals(1, result.getInvalidParticipants().size());
-                assertEquals(invalidUser.getId(), result.getInvalidParticipants().stream().findFirst().get().getTarget());
-            })
-            .verifyComplete();
+        StepVerifier.create(getChatAsyncClient(mockHttpClient).createChatThread(threadRequest)).assertNext(result -> {
+            assertNotNull(result);
+            assertNotNull(result.getChatThread());
+            assertNotNull(result.getChatThread().getId());
+            assertEquals(1, result.getInvalidParticipants().size());
+            assertEquals(invalidUser.getId(), result.getInvalidParticipants().stream().findFirst().get().getTarget());
+        }).verifyComplete();
     }
 
     @SyncAsyncTest
@@ -123,10 +120,9 @@ public class ChatClientUnitTest {
         ChatThreadAsyncClient chatThreadAsyncClient = getChatThreadAsyncClient(mockHttpClient);
         ChatThreadClient chatThreadClient = getChatThreadClient(mockHttpClient);
 
-        assertThrows(HttpResponseException.class, () -> SyncAsyncExtension.execute(
-            () -> chatThreadClient.sendMessage(new SendChatMessageOptions()),
-            () -> chatThreadAsyncClient.sendMessage(new SendChatMessageOptions())
-        ));
+        assertThrows(HttpResponseException.class,
+            () -> SyncAsyncExtension.execute(() -> chatThreadClient.sendMessage(new SendChatMessageOptions()),
+                () -> chatThreadAsyncClient.sendMessage(new SendChatMessageOptions())));
     }
 
     @Test
@@ -163,7 +159,9 @@ public class ChatClientUnitTest {
             }
         };
         // Action & Assert
-        StepVerifier.create(getChatThreadAsyncClient(mockHttpClient).addParticipantWithResponse(new ChatParticipant().setCommunicationIdentifier(participant)))
+        StepVerifier
+            .create(getChatThreadAsyncClient(mockHttpClient)
+                .addParticipantWithResponse(new ChatParticipant().setCommunicationIdentifier(participant)))
             .expectErrorMatches(err -> err instanceof InvalidParticipantException);
     }
 
@@ -173,10 +171,10 @@ public class ChatClientUnitTest {
     }
 
     private static ChatAsyncClient getChatAsyncClient(HttpClient mockHttpClient) {
-        String mockToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMl9pbnQiLCJ0eXAiOiJKV1QifQ.eyJza3lwZWlkIjoic3Bvb2w6NTdiOWJhYzktZGY2Yy00ZDM5LWE3M2ItMjZlOTQ0YWRmNmVhXzNmMDExNi03YzAwOTQ5MGRjIiwic2NwIjoxNzkyLCJjc2kiOiIxNTk3ODcyMDgyIiwiaWF0IjoxNTk3ODcyMDgyLCJleHAiOjE1OTc5NTg0ODIsImFjc1Njb3BlIjoiY2hhdCIsInJlc291cmNlSWQiOiI1N2I5YmFjOS1kZjZjLTRkMzktYTczYi0yNmU5NDRhZGY2ZWEifQ.l2UXI0KH2LXZQoz7FPsfLZS0CX8cYsnW3CMECfqwuncV8WqrTD7RbqZDfAaYXn0t5sHrGM4CRbpx4LwIZhXOlmsmOdTdHSsPUCIqJscwNjQmltvOrIt11DOmObQ63w0kYq9QrlB-lyZNzTEAED2FhMwBAbhZOokRtFajYD7KvJb1w9oUXousQ_z6zZqjbt1Cy4Ll3zO1GR4G7yRV8vK3bLnN2IWPaEkoqx8PHeHLa9Cb4joowseRfQxFHv28xcCF3r9SBCauUeJcmbwBmnOAOLS-EAJTLiGhil7m3BNyLN5RnYbsK5ComtL2-02TbkPilpy21OhW0MJkicSFlCbYvg";
+        String mockToken
+            = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMl9pbnQiLCJ0eXAiOiJKV1QifQ.eyJza3lwZWlkIjoic3Bvb2w6NTdiOWJhYzktZGY2Yy00ZDM5LWE3M2ItMjZlOTQ0YWRmNmVhXzNmMDExNi03YzAwOTQ5MGRjIiwic2NwIjoxNzkyLCJjc2kiOiIxNTk3ODcyMDgyIiwiaWF0IjoxNTk3ODcyMDgyLCJleHAiOjE1OTc5NTg0ODIsImFjc1Njb3BlIjoiY2hhdCIsInJlc291cmNlSWQiOiI1N2I5YmFjOS1kZjZjLTRkMzktYTczYi0yNmU5NDRhZGY2ZWEifQ.l2UXI0KH2LXZQoz7FPsfLZS0CX8cYsnW3CMECfqwuncV8WqrTD7RbqZDfAaYXn0t5sHrGM4CRbpx4LwIZhXOlmsmOdTdHSsPUCIqJscwNjQmltvOrIt11DOmObQ63w0kYq9QrlB-lyZNzTEAED2FhMwBAbhZOokRtFajYD7KvJb1w9oUXousQ_z6zZqjbt1Cy4Ll3zO1GR4G7yRV8vK3bLnN2IWPaEkoqx8PHeHLa9Cb4joowseRfQxFHv28xcCF3r9SBCauUeJcmbwBmnOAOLS-EAJTLiGhil7m3BNyLN5RnYbsK5ComtL2-02TbkPilpy21OhW0MJkicSFlCbYvg";
 
-        return new ChatClientBuilder()
-            .endpoint(ENDPOINT)
+        return new ChatClientBuilder().endpoint(ENDPOINT)
             .httpClient(mockHttpClient)
             .credential(new CommunicationTokenCredential(mockToken))
             .buildAsyncClient();
@@ -188,10 +186,10 @@ public class ChatClientUnitTest {
     }
 
     private static ChatClient getChatClient(HttpClient mockHttpClient) {
-        String mockToken = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMl9pbnQiLCJ0eXAiOiJKV1QifQ.eyJza3lwZWlkIjoic3Bvb2w6NTdiOWJhYzktZGY2Yy00ZDM5LWE3M2ItMjZlOTQ0YWRmNmVhXzNmMDExNi03YzAwOTQ5MGRjIiwic2NwIjoxNzkyLCJjc2kiOiIxNTk3ODcyMDgyIiwiaWF0IjoxNTk3ODcyMDgyLCJleHAiOjE1OTc5NTg0ODIsImFjc1Njb3BlIjoiY2hhdCIsInJlc291cmNlSWQiOiI1N2I5YmFjOS1kZjZjLTRkMzktYTczYi0yNmU5NDRhZGY2ZWEifQ.l2UXI0KH2LXZQoz7FPsfLZS0CX8cYsnW3CMECfqwuncV8WqrTD7RbqZDfAaYXn0t5sHrGM4CRbpx4LwIZhXOlmsmOdTdHSsPUCIqJscwNjQmltvOrIt11DOmObQ63w0kYq9QrlB-lyZNzTEAED2FhMwBAbhZOokRtFajYD7KvJb1w9oUXousQ_z6zZqjbt1Cy4Ll3zO1GR4G7yRV8vK3bLnN2IWPaEkoqx8PHeHLa9Cb4joowseRfQxFHv28xcCF3r9SBCauUeJcmbwBmnOAOLS-EAJTLiGhil7m3BNyLN5RnYbsK5ComtL2-02TbkPilpy21OhW0MJkicSFlCbYvg";
+        String mockToken
+            = "eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMl9pbnQiLCJ0eXAiOiJKV1QifQ.eyJza3lwZWlkIjoic3Bvb2w6NTdiOWJhYzktZGY2Yy00ZDM5LWE3M2ItMjZlOTQ0YWRmNmVhXzNmMDExNi03YzAwOTQ5MGRjIiwic2NwIjoxNzkyLCJjc2kiOiIxNTk3ODcyMDgyIiwiaWF0IjoxNTk3ODcyMDgyLCJleHAiOjE1OTc5NTg0ODIsImFjc1Njb3BlIjoiY2hhdCIsInJlc291cmNlSWQiOiI1N2I5YmFjOS1kZjZjLTRkMzktYTczYi0yNmU5NDRhZGY2ZWEifQ.l2UXI0KH2LXZQoz7FPsfLZS0CX8cYsnW3CMECfqwuncV8WqrTD7RbqZDfAaYXn0t5sHrGM4CRbpx4LwIZhXOlmsmOdTdHSsPUCIqJscwNjQmltvOrIt11DOmObQ63w0kYq9QrlB-lyZNzTEAED2FhMwBAbhZOokRtFajYD7KvJb1w9oUXousQ_z6zZqjbt1Cy4Ll3zO1GR4G7yRV8vK3bLnN2IWPaEkoqx8PHeHLa9Cb4joowseRfQxFHv28xcCF3r9SBCauUeJcmbwBmnOAOLS-EAJTLiGhil7m3BNyLN5RnYbsK5ComtL2-02TbkPilpy21OhW0MJkicSFlCbYvg";
 
-        return new ChatClientBuilder()
-            .endpoint(ENDPOINT)
+        return new ChatClientBuilder().endpoint(ENDPOINT)
             .httpClient(mockHttpClient)
             .credential(new CommunicationTokenCredential(mockToken))
             .buildClient();

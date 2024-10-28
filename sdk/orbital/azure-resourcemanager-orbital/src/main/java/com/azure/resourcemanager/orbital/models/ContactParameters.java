@@ -127,28 +127,22 @@ public final class ContactParameters {
      */
     public void validate() {
         if (contactProfile() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property contactProfile in model ContactParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property contactProfile in model ContactParameters"));
         } else {
             contactProfile().validate();
         }
         if (groundStationName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property groundStationName in model ContactParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property groundStationName in model ContactParameters"));
         }
         if (startTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property startTime in model ContactParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property startTime in model ContactParameters"));
         }
         if (endTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endTime in model ContactParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property endTime in model ContactParameters"));
         }
     }
 

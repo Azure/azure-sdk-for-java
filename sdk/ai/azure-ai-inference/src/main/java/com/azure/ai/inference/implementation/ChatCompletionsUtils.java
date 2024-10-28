@@ -16,6 +16,7 @@ import java.util.List;
 public final class ChatCompletionsUtils {
 
     private static final ClientLogger LOGGER = new ClientLogger(ChatCompletionsUtils.class);
+
     private ChatCompletionsUtils() {
     }
 

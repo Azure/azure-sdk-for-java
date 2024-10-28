@@ -12,8 +12,8 @@ public final class SqlPoolConnectionPolicyImpl implements SqlPoolConnectionPolic
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    SqlPoolConnectionPolicyImpl(
-        SqlPoolConnectionPolicyInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    SqlPoolConnectionPolicyImpl(SqlPoolConnectionPolicyInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -23,8 +23,8 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
     private AzureBlobContentSource azureBlobSource;
 
     /*
-     * Azure Blob Storage file list specifying the training data for a classifier document type. Either
-     * azureBlobSource or azureBlobFileListSource must be specified.
+     * Azure Blob Storage file list specifying the training data for a classifier document type. Either azureBlobSource
+     * or azureBlobFileListSource must be specified.
      */
     private AzureBlobFileListContentSource azureBlobFileListSource;
 
@@ -79,6 +79,9 @@ public final class ClassifierDocumentTypeDetails implements JsonSerializable<Cla
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

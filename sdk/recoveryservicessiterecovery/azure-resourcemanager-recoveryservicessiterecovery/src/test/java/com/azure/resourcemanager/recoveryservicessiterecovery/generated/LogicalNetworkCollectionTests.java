@@ -28,11 +28,16 @@ public final class LogicalNetworkCollectionTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LogicalNetworkCollection model
-            = new LogicalNetworkCollection().withValue(Arrays.asList(new LogicalNetworkInner()
-                .withProperties(
-                    new LogicalNetworkProperties().withFriendlyName("j").withNetworkVirtualizationStatus("dxob")
-                        .withLogicalNetworkUsage("dxkqpx").withLogicalNetworkDefinitionsStatus("ajionpimexgstxg"))
-                .withLocation("odgmaajrmvdjwz"))).withNextLink("kexxppof");
+            = new LogicalNetworkCollection()
+                .withValue(
+                    Arrays
+                        .asList(new LogicalNetworkInner()
+                            .withProperties(new LogicalNetworkProperties().withFriendlyName("j")
+                                .withNetworkVirtualizationStatus("dxob")
+                                .withLogicalNetworkUsage("dxkqpx")
+                                .withLogicalNetworkDefinitionsStatus("ajionpimexgstxg"))
+                            .withLocation("odgmaajrmvdjwz")))
+                .withNextLink("kexxppof");
         model = BinaryData.fromObject(model).toObject(LogicalNetworkCollection.class);
         Assertions.assertEquals("j", model.value().get(0).properties().friendlyName());
         Assertions.assertEquals("dxob", model.value().get(0).properties().networkVirtualizationStatus());

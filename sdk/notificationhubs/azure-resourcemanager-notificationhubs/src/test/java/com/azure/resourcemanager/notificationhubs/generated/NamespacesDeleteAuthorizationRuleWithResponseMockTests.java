@@ -41,12 +41,13 @@ public final class NamespacesDeleteAuthorizationRuleWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NotificationHubsManager manager = NotificationHubsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        NotificationHubsManager manager = NotificationHubsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.namespaces().deleteAuthorizationRuleWithResponse("iolxor", "altol", "ncwsob",
-            com.azure.core.util.Context.NONE);
+        manager.namespaces()
+            .deleteAuthorizationRuleWithResponse("iolxor", "altol", "ncwsob", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -55,7 +55,8 @@ public final class IntegrationRuntimeComputeProperties {
     /*
      * The compute resource properties for managed integration runtime.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /** Creates an instance of IntegrationRuntimeComputeProperties class. */
     public IntegrationRuntimeComputeProperties() {
@@ -160,8 +161,8 @@ public final class IntegrationRuntimeComputeProperties {
      * @param dataFlowProperties the dataFlowProperties value to set.
      * @return the IntegrationRuntimeComputeProperties object itself.
      */
-    public IntegrationRuntimeComputeProperties withDataFlowProperties(
-        IntegrationRuntimeDataFlowProperties dataFlowProperties) {
+    public IntegrationRuntimeComputeProperties
+        withDataFlowProperties(IntegrationRuntimeDataFlowProperties dataFlowProperties) {
         this.dataFlowProperties = dataFlowProperties;
         return this;
     }

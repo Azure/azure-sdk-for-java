@@ -14,11 +14,7 @@ import com.azure.resourcemanager.resources.fluent.models.FeatureResultInner;
  * An immutable client-side representation of an Azure feature.
  */
 @Fluent
-public interface Feature extends
-        Indexable,
-        HasId,
-        HasInnerModel<FeatureResultInner>,
-        HasName {
+public interface Feature extends Indexable, HasId, HasInnerModel<FeatureResultInner>, HasName {
 
     /**
      * @return the type of the feature

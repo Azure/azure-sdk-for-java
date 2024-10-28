@@ -13,22 +13,16 @@ import java.util.Arrays;
 public final class PrivateEndpointConnectionsResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpointConnectionsResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Disconnected\",\"groupIds\":[]},\"id\":\"xdeoejzic\",\"name\":\"ifsjttgzfbishcb\",\"type\":\"hajdeyeamdpha\"}]}")
-                .toObject(PrivateEndpointConnectionsResponseInner.class);
+        PrivateEndpointConnectionsResponseInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Disconnected\",\"groupIds\":[]},\"id\":\"xdeoejzic\",\"name\":\"ifsjttgzfbishcb\",\"type\":\"hajdeyeamdpha\"}]}")
+            .toObject(PrivateEndpointConnectionsResponseInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointConnectionsResponseInner model =
-            new PrivateEndpointConnectionsResponseInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PrivateEndpointConnectionInner()
-                                .withProperties(new ConnectionProperties().withGroupIds(Arrays.asList()))));
+        PrivateEndpointConnectionsResponseInner model
+            = new PrivateEndpointConnectionsResponseInner().withValue(Arrays.asList(new PrivateEndpointConnectionInner()
+                .withProperties(new ConnectionProperties().withGroupIds(Arrays.asList()))));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionsResponseInner.class);
     }
 }

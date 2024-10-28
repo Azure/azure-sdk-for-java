@@ -22,12 +22,8 @@ public interface SqlPoolRecommendedSensitivityLabels {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        RecommendedSensitivityLabelUpdateList parameters,
-        Context context);
+    Response<Void> updateWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        RecommendedSensitivityLabelUpdateList parameters, Context context);
 
     /**
      * Update recommended sensitivity labels states of a given SQL Pool using an operations batch.
@@ -40,9 +36,6 @@ public interface SqlPoolRecommendedSensitivityLabels {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void update(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    void update(String resourceGroupName, String workspaceName, String sqlPoolName,
         RecommendedSensitivityLabelUpdateList parameters);
 }

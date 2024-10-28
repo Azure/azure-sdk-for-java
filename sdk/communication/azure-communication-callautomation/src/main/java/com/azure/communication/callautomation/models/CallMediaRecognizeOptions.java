@@ -199,8 +199,7 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
      * @param interruptPrompt the interruptPrompt value to set.
      * @return the RecognizeConfigurations object itself.
      */
-    public CallMediaRecognizeOptions setInterruptPrompt(
-        Boolean interruptPrompt) {
+    public CallMediaRecognizeOptions setInterruptPrompt(Boolean interruptPrompt) {
         this.interruptPrompt = interruptPrompt;
         return this;
     }
@@ -255,14 +254,15 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
         return this;
     }
 
-     /**
-     * Get the speech model endpoint id.
-     *
-     * @return the speech model endpoint id.
-     */
+    /**
+    * Get the speech model endpoint id.
+    *
+    * @return the speech model endpoint id.
+    */
     public String getSpeechModelEndpointId() {
         return speechModelEndpointId;
     }
+
     /**
      * Set the speechModelEndpointId property: Endpoint where the custom model was deployed.
      *

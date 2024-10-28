@@ -14,8 +14,7 @@ public final class EventSourceResourceImpl implements EventSourceResource {
 
     private final com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager;
 
-    EventSourceResourceImpl(
-        EventSourceResourceInner innerObject,
+    EventSourceResourceImpl(EventSourceResourceInner innerObject,
         com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

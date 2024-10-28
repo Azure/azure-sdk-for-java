@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CencDrmConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CencDrmConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"playReady\":{\"customLicenseAcquisitionUrlTemplate\":\"l\",\"playReadyCustomAttributes\":\"slqlfmmdn\"},\"widevine\":{\"customLicenseAcquisitionUrlTemplate\":\"lzpswiydm\"}}")
-                .toObject(CencDrmConfiguration.class);
+        CencDrmConfiguration model = BinaryData.fromString(
+            "{\"playReady\":{\"customLicenseAcquisitionUrlTemplate\":\"l\",\"playReadyCustomAttributes\":\"slqlfmmdn\"},\"widevine\":{\"customLicenseAcquisitionUrlTemplate\":\"lzpswiydm\"}}")
+            .toObject(CencDrmConfiguration.class);
         Assertions.assertEquals("l", model.playReady().customLicenseAcquisitionUrlTemplate());
         Assertions.assertEquals("slqlfmmdn", model.playReady().playReadyCustomAttributes());
         Assertions.assertEquals("lzpswiydm", model.widevine().customLicenseAcquisitionUrlTemplate());
@@ -25,14 +23,11 @@ public final class CencDrmConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CencDrmConfiguration model =
-            new CencDrmConfiguration()
-                .withPlayReady(
-                    new StreamingPolicyPlayReadyConfiguration()
-                        .withCustomLicenseAcquisitionUrlTemplate("l")
-                        .withPlayReadyCustomAttributes("slqlfmmdn"))
-                .withWidevine(
-                    new StreamingPolicyWidevineConfiguration().withCustomLicenseAcquisitionUrlTemplate("lzpswiydm"));
+        CencDrmConfiguration model = new CencDrmConfiguration()
+            .withPlayReady(new StreamingPolicyPlayReadyConfiguration().withCustomLicenseAcquisitionUrlTemplate("l")
+                .withPlayReadyCustomAttributes("slqlfmmdn"))
+            .withWidevine(
+                new StreamingPolicyWidevineConfiguration().withCustomLicenseAcquisitionUrlTemplate("lzpswiydm"));
         model = BinaryData.fromObject(model).toObject(CencDrmConfiguration.class);
         Assertions.assertEquals("l", model.playReady().customLicenseAcquisitionUrlTemplate());
         Assertions.assertEquals("slqlfmmdn", model.playReady().playReadyCustomAttributes());

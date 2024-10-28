@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MapsOperationsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MapsOperations model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"krwpdap\",\"isDataAction\":false,\"display\":{\"provider\":\"kvwrwjfeu\",\"resource\":\"hutje\",\"operation\":\"mrldhu\",\"description\":\"zzd\"},\"origin\":\"qxhocdgeablgphut\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{},{},{}]}}},{\"name\":\"aozwyiftyhxhu\",\"isDataAction\":false,\"display\":{\"provider\":\"yxolniwp\",\"resource\":\"ukjfkgiawxklr\",\"operation\":\"lwckbasyypnddhs\",\"description\":\"bacphejko\"},\"origin\":\"nqgoulzndli\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{}]}}},{\"name\":\"fgibmadgakeq\",\"isDataAction\":false,\"display\":{\"provider\":\"zqqedq\",\"resource\":\"bciqfouflm\",\"operation\":\"kzsmodm\",\"description\":\"ougpbkwt\"},\"origin\":\"tduqktapspwgcuer\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{},{},{}]}}},{\"name\":\"svqwhbmdgbbjfd\",\"isDataAction\":true,\"display\":{\"provider\":\"bexppb\",\"resource\":\"q\",\"operation\":\"ol\",\"description\":\"fpsalgbqu\"},\"origin\":\"gjyjgzjaoyfhrtxi\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{},{},{}]}}}],\"nextLink\":\"jysvl\"}")
-                .toObject(MapsOperations.class);
+        MapsOperations model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"krwpdap\",\"isDataAction\":false,\"display\":{\"provider\":\"kvwrwjfeu\",\"resource\":\"hutje\",\"operation\":\"mrldhu\",\"description\":\"zzd\"},\"origin\":\"qxhocdgeablgphut\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{},{},{}]}}},{\"name\":\"aozwyiftyhxhu\",\"isDataAction\":false,\"display\":{\"provider\":\"yxolniwp\",\"resource\":\"ukjfkgiawxklr\",\"operation\":\"lwckbasyypnddhs\",\"description\":\"bacphejko\"},\"origin\":\"nqgoulzndli\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{}]}}},{\"name\":\"fgibmadgakeq\",\"isDataAction\":false,\"display\":{\"provider\":\"zqqedq\",\"resource\":\"bciqfouflm\",\"operation\":\"kzsmodm\",\"description\":\"ougpbkwt\"},\"origin\":\"tduqktapspwgcuer\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{},{},{}]}}},{\"name\":\"svqwhbmdgbbjfd\",\"isDataAction\":true,\"display\":{\"provider\":\"bexppb\",\"resource\":\"q\",\"operation\":\"ol\",\"description\":\"fpsalgbqu\"},\"origin\":\"gjyjgzjaoyfhrtxi\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{},{},{},{}]}}}],\"nextLink\":\"jysvl\"}")
+            .toObject(MapsOperations.class);
         Assertions.assertEquals("jysvl", model.nextLink());
     }
 

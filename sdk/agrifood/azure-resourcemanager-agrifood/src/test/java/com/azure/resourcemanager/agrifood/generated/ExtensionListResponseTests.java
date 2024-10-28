@@ -13,17 +13,15 @@ import org.junit.jupiter.api.Test;
 public final class ExtensionListResponseTests {
     @Test
     public void testDeserialize() {
-        ExtensionListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"extensionId\":\"ifsqesaagdfmg\",\"extensionCategory\":\"lhjxr\",\"installedExtensionVersion\":\"kwm\",\"extensionAuthLink\":\"ktsizntocipaou\",\"extensionApiDocsLink\":\"psqucmpoyf\"},\"eTag\":\"fogknygjofjdde\",\"id\":\"s\",\"name\":\"deupewnwrei\",\"type\":\"jzyflu\"},{\"properties\":{\"extensionId\":\"hmofc\",\"extensionCategory\":\"smy\",\"installedExtensionVersion\":\"kdtmlxhekuk\",\"extensionAuthLink\":\"txukcdmp\",\"extensionApiDocsLink\":\"cryuan\"},\"eTag\":\"uxzdxtay\",\"id\":\"lhmwhfpmrqobm\",\"name\":\"u\",\"type\":\"knryrtihfxtij\"}],\"nextLink\":\"zvgnwzs\"}")
-                .toObject(ExtensionListResponse.class);
+        ExtensionListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"extensionId\":\"ifsqesaagdfmg\",\"extensionCategory\":\"lhjxr\",\"installedExtensionVersion\":\"kwm\",\"extensionAuthLink\":\"ktsizntocipaou\",\"extensionApiDocsLink\":\"psqucmpoyf\"},\"eTag\":\"fogknygjofjdde\",\"id\":\"s\",\"name\":\"deupewnwrei\",\"type\":\"jzyflu\"},{\"properties\":{\"extensionId\":\"hmofc\",\"extensionCategory\":\"smy\",\"installedExtensionVersion\":\"kdtmlxhekuk\",\"extensionAuthLink\":\"txukcdmp\",\"extensionApiDocsLink\":\"cryuan\"},\"eTag\":\"uxzdxtay\",\"id\":\"lhmwhfpmrqobm\",\"name\":\"u\",\"type\":\"knryrtihfxtij\"}],\"nextLink\":\"zvgnwzs\"}")
+            .toObject(ExtensionListResponse.class);
     }
 
     @Test
     public void testSerialize() {
-        ExtensionListResponse model =
-            new ExtensionListResponse().withValue(Arrays.asList(new ExtensionInner(), new ExtensionInner()));
+        ExtensionListResponse model
+            = new ExtensionListResponse().withValue(Arrays.asList(new ExtensionInner(), new ExtensionInner()));
         model = BinaryData.fromObject(model).toObject(ExtensionListResponse.class);
     }
 }

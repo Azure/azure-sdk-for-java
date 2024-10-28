@@ -31,44 +31,28 @@ public final class SapApplicationServerInstancesStopInstanceMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"embnkbw\",\"name\":\"vxkdivqihebwtswb\",\"status\":\"uwfmduragegizvc\",\"percentComplete\":48.271984,\"startTime\":\"2021-05-13T02:33:35Z\",\"endTime\":\"2021-06-18T15:42:06Z\",\"operations\":[{\"id\":\"ggbqi\",\"name\":\"xkbsazgakgac\",\"status\":\"rcmjdmspofapvuh\",\"percentComplete\":69.69709,\"startTime\":\"2021-10-23T00:02:47Z\",\"endTime\":\"2021-02-25T11:36:52Z\",\"operations\":[]},{\"id\":\"zjedmstkvnlv\",\"name\":\"c\",\"status\":\"iiznktwfan\",\"percentComplete\":4.799801,\"startTime\":\"2021-10-26T06:08:35Z\",\"endTime\":\"2021-05-05T18:43:08Z\",\"operations\":[]},{\"id\":\"stbz\",\"name\":\"iwbuqny\",\"status\":\"phzfylsgcrp\",\"percentComplete\":77.76872,\"startTime\":\"2021-03-23T07:29:02Z\",\"endTime\":\"2021-03-13T23:33:34Z\",\"operations\":[]}]}";
+        String responseStr
+            = "{\"id\":\"embnkbw\",\"name\":\"vxkdivqihebwtswb\",\"status\":\"uwfmduragegizvc\",\"percentComplete\":48.271984,\"startTime\":\"2021-05-13T02:33:35Z\",\"endTime\":\"2021-06-18T15:42:06Z\",\"operations\":[{\"id\":\"ggbqi\",\"name\":\"xkbsazgakgac\",\"status\":\"rcmjdmspofapvuh\",\"percentComplete\":69.69709,\"startTime\":\"2021-10-23T00:02:47Z\",\"endTime\":\"2021-02-25T11:36:52Z\",\"operations\":[]},{\"id\":\"zjedmstkvnlv\",\"name\":\"c\",\"status\":\"iiznktwfan\",\"percentComplete\":4.799801,\"startTime\":\"2021-10-26T06:08:35Z\",\"endTime\":\"2021-05-05T18:43:08Z\",\"operations\":[]},{\"id\":\"stbz\",\"name\":\"iwbuqny\",\"status\":\"phzfylsgcrp\",\"percentComplete\":77.76872,\"startTime\":\"2021-03-23T07:29:02Z\",\"endTime\":\"2021-03-13T23:33:34Z\",\"operations\":[]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        WorkloadsManager manager =
-            WorkloadsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        WorkloadsManager manager = WorkloadsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationStatusResult response =
-            manager
-                .sapApplicationServerInstances()
-                .stopInstance(
-                    "iiqbi",
-                    "htmwwinh",
-                    "hfqpofv",
-                    new StopRequest().withSoftStopTimeoutSeconds(3058208759647015148L),
-                    com.azure.core.util.Context.NONE);
+        OperationStatusResult response = manager.sapApplicationServerInstances()
+            .stopInstance("iiqbi", "htmwwinh", "hfqpofv",
+                new StopRequest().withSoftStopTimeoutSeconds(3058208759647015148L), com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("embnkbw", response.id());
         Assertions.assertEquals("vxkdivqihebwtswb", response.name());

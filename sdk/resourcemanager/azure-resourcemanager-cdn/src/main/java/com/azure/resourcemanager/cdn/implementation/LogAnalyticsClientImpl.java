@@ -354,7 +354,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         final List<String> countryOrRegions = null;
         return getLogAnalyticsMetricsWithResponseAsync(resourceGroupName, profileName, metrics, dateTimeBegin,
             dateTimeEnd, granularity, customDomains, protocols, groupBy, continents, countryOrRegions)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

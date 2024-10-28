@@ -19,8 +19,8 @@ public final class LoggersGetEntityTagResponse extends ResponseBase<LoggersGetEn
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public LoggersGetEntityTagResponse(
-        HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value, LoggersGetEntityTagHeaders headers) {
+    public LoggersGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
+        LoggersGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

@@ -21,8 +21,8 @@ public interface OperationStatuses {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection operation status.
      */
-    VideoAnalyzerPrivateEndpointConnectionOperationStatus get(
-        String resourceGroupName, String accountName, String name, String operationId);
+    VideoAnalyzerPrivateEndpointConnectionOperationStatus get(String resourceGroupName, String accountName, String name,
+        String operationId);
 
     /**
      * Get private endpoint connection operation status.
@@ -37,6 +37,6 @@ public interface OperationStatuses {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private endpoint connection operation status along with {@link Response}.
      */
-    Response<VideoAnalyzerPrivateEndpointConnectionOperationStatus> getWithResponse(
-        String resourceGroupName, String accountName, String name, String operationId, Context context);
+    Response<VideoAnalyzerPrivateEndpointConnectionOperationStatus> getWithResponse(String resourceGroupName,
+        String accountName, String name, String operationId, Context context);
 }

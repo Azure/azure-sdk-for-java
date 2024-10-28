@@ -70,6 +70,6 @@ public interface Events {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of events in the given vault as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<EventModel> list(
-        String resourceGroupName, String vaultName, String filter, String continuationToken, Context context);
+    PagedIterable<EventModel> list(String resourceGroupName, String vaultName, String filter, String continuationToken,
+        Context context);
 }

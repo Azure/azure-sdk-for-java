@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduleInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"fkts\",\"weeklyRecurrence\":{\"weekdays\":[\"cocmnyyaztt\"],\"time\":\"wwrq\"},\"dailyRecurrence\":{\"time\":\"dckzywbiexz\"},\"hourlyRecurrence\":{\"minute\":315634017},\"timeZoneId\":\"axibxujw\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":1182122396,\"webhookUrl\":\"uzyoxaep\",\"emailRecipient\":\"zjancuxr\",\"notificationLocale\":\"wbavxbniwdj\"},\"createdDate\":\"2021-04-13T19:54:16Z\",\"targetResourceId\":\"s\",\"provisioningState\":\"pgn\",\"uniqueIdentifier\":\"txhp\"},\"location\":\"xbzpfzab\",\"tags\":{\"lwzbhvgyugu\":\"uhxwtctyqiklbbov\"},\"id\":\"svmkfssxquk\",\"name\":\"fpl\",\"type\":\"mg\"}")
-                .toObject(ScheduleInner.class);
+        ScheduleInner model = BinaryData.fromString(
+            "{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"fkts\",\"weeklyRecurrence\":{\"weekdays\":[\"cocmnyyaztt\"],\"time\":\"wwrq\"},\"dailyRecurrence\":{\"time\":\"dckzywbiexz\"},\"hourlyRecurrence\":{\"minute\":315634017},\"timeZoneId\":\"axibxujw\",\"notificationSettings\":{\"status\":\"Enabled\",\"timeInMinutes\":1182122396,\"webhookUrl\":\"uzyoxaep\",\"emailRecipient\":\"zjancuxr\",\"notificationLocale\":\"wbavxbniwdj\"},\"createdDate\":\"2021-04-13T19:54:16Z\",\"targetResourceId\":\"s\",\"provisioningState\":\"pgn\",\"uniqueIdentifier\":\"txhp\"},\"location\":\"xbzpfzab\",\"tags\":{\"lwzbhvgyugu\":\"uhxwtctyqiklbbov\"},\"id\":\"svmkfssxquk\",\"name\":\"fpl\",\"type\":\"mg\"}")
+            .toObject(ScheduleInner.class);
         Assertions.assertEquals("xbzpfzab", model.location());
         Assertions.assertEquals("uhxwtctyqiklbbov", model.tags().get("lwzbhvgyugu"));
         Assertions.assertEquals(EnableStatus.DISABLED, model.status());
@@ -43,24 +41,20 @@ public final class ScheduleInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleInner model =
-            new ScheduleInner()
-                .withLocation("xbzpfzab")
-                .withTags(mapOf("lwzbhvgyugu", "uhxwtctyqiklbbov"))
-                .withStatus(EnableStatus.DISABLED)
-                .withTaskType("fkts")
-                .withWeeklyRecurrence(new WeekDetails().withWeekdays(Arrays.asList("cocmnyyaztt")).withTime("wwrq"))
-                .withDailyRecurrence(new DayDetails().withTime("dckzywbiexz"))
-                .withHourlyRecurrence(new HourDetails().withMinute(315634017))
-                .withTimeZoneId("axibxujw")
-                .withNotificationSettings(
-                    new NotificationSettings()
-                        .withStatus(EnableStatus.ENABLED)
-                        .withTimeInMinutes(1182122396)
-                        .withWebhookUrl("uzyoxaep")
-                        .withEmailRecipient("zjancuxr")
-                        .withNotificationLocale("wbavxbniwdj"))
-                .withTargetResourceId("s");
+        ScheduleInner model = new ScheduleInner().withLocation("xbzpfzab")
+            .withTags(mapOf("lwzbhvgyugu", "uhxwtctyqiklbbov"))
+            .withStatus(EnableStatus.DISABLED)
+            .withTaskType("fkts")
+            .withWeeklyRecurrence(new WeekDetails().withWeekdays(Arrays.asList("cocmnyyaztt")).withTime("wwrq"))
+            .withDailyRecurrence(new DayDetails().withTime("dckzywbiexz"))
+            .withHourlyRecurrence(new HourDetails().withMinute(315634017))
+            .withTimeZoneId("axibxujw")
+            .withNotificationSettings(new NotificationSettings().withStatus(EnableStatus.ENABLED)
+                .withTimeInMinutes(1182122396)
+                .withWebhookUrl("uzyoxaep")
+                .withEmailRecipient("zjancuxr")
+                .withNotificationLocale("wbavxbniwdj"))
+            .withTargetResourceId("s");
         model = BinaryData.fromObject(model).toObject(ScheduleInner.class);
         Assertions.assertEquals("xbzpfzab", model.location());
         Assertions.assertEquals("uhxwtctyqiklbbov", model.tags().get("lwzbhvgyugu"));

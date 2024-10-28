@@ -47,8 +47,8 @@ public interface LiveOutputsClient {
      * @return liveOutputListResult as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LiveOutputInner> list(
-        String resourceGroupName, String accountName, String liveEventName, Context context);
+    PagedIterable<LiveOutputInner> list(String resourceGroupName, String accountName, String liveEventName,
+        Context context);
 
     /**
      * Get Live Output
@@ -66,8 +66,8 @@ public interface LiveOutputsClient {
      * @return a live output along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LiveOutputInner> getWithResponse(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context);
+    Response<LiveOutputInner> getWithResponse(String resourceGroupName, String accountName, String liveEventName,
+        String liveOutputName, Context context);
 
     /**
      * Get Live Output
@@ -102,12 +102,8 @@ public interface LiveOutputsClient {
      * @return the {@link SyncPoller} for polling of the Live Output.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LiveOutputInner>, LiveOutputInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        String liveOutputName,
-        LiveOutputInner parameters);
+    SyncPoller<PollResult<LiveOutputInner>, LiveOutputInner> beginCreate(String resourceGroupName, String accountName,
+        String liveEventName, String liveOutputName, LiveOutputInner parameters);
 
     /**
      * Create Live Output
@@ -126,13 +122,8 @@ public interface LiveOutputsClient {
      * @return the {@link SyncPoller} for polling of the Live Output.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LiveOutputInner>, LiveOutputInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        String liveOutputName,
-        LiveOutputInner parameters,
-        Context context);
+    SyncPoller<PollResult<LiveOutputInner>, LiveOutputInner> beginCreate(String resourceGroupName, String accountName,
+        String liveEventName, String liveOutputName, LiveOutputInner parameters, Context context);
 
     /**
      * Create Live Output
@@ -150,11 +141,7 @@ public interface LiveOutputsClient {
      * @return the Live Output.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LiveOutputInner create(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        String liveOutputName,
+    LiveOutputInner create(String resourceGroupName, String accountName, String liveEventName, String liveOutputName,
         LiveOutputInner parameters);
 
     /**
@@ -174,13 +161,8 @@ public interface LiveOutputsClient {
      * @return the Live Output.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LiveOutputInner create(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        String liveOutputName,
-        LiveOutputInner parameters,
-        Context context);
+    LiveOutputInner create(String resourceGroupName, String accountName, String liveEventName, String liveOutputName,
+        LiveOutputInner parameters, Context context);
 
     /**
      * Delete Live Output
@@ -197,8 +179,8 @@ public interface LiveOutputsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String liveEventName,
+        String liveOutputName);
 
     /**
      * Delete Live Output
@@ -216,8 +198,8 @@ public interface LiveOutputsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String liveEventName,
+        String liveOutputName, Context context);
 
     /**
      * Delete Live Output
@@ -250,8 +232,8 @@ public interface LiveOutputsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context);
+    void delete(String resourceGroupName, String accountName, String liveEventName, String liveOutputName,
+        Context context);
 
     /**
      * Get operation status.
@@ -268,8 +250,8 @@ public interface LiveOutputsClient {
      * @return a Live Output operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AsyncOperationResultInner> asyncOperationWithResponse(
-        String resourceGroupName, String accountName, String operationId, Context context);
+    Response<AsyncOperationResultInner> asyncOperationWithResponse(String resourceGroupName, String accountName,
+        String operationId, Context context);
 
     /**
      * Get operation status.
@@ -304,13 +286,8 @@ public interface LiveOutputsClient {
      * @return a Live Output operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LiveOutputInner> operationLocationWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String liveEventName,
-        String liveOutputName,
-        String operationId,
-        Context context);
+    Response<LiveOutputInner> operationLocationWithResponse(String resourceGroupName, String accountName,
+        String liveEventName, String liveOutputName, String operationId, Context context);
 
     /**
      * Get operation status.
@@ -328,6 +305,6 @@ public interface LiveOutputsClient {
      * @return a Live Output operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LiveOutputInner operationLocation(
-        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, String operationId);
+    LiveOutputInner operationLocation(String resourceGroupName, String accountName, String liveEventName,
+        String liveOutputName, String operationId);
 }

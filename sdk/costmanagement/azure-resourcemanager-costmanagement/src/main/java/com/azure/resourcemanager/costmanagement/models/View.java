@@ -179,11 +179,13 @@ public interface View {
     /** The entirety of the View definition. */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScopeStage, DefinitionStages.WithCreate {
     }
+
     /** The View definition stages. */
     interface DefinitionStages {
         /** The first stage of the View definition. */
         interface Blank extends WithScopeStage {
         }
+
         /** The stage of the View definition allowing to specify parent resource. */
         interface WithScopeStage {
             /**
@@ -210,24 +212,16 @@ public interface View {
              */
             WithCreate withExistingScope(String scope);
         }
+
         /**
          * The stage of the View definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithEtag,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithScope,
-                DefinitionStages.WithChart,
-                DefinitionStages.WithAccumulated,
-                DefinitionStages.WithMetric,
-                DefinitionStages.WithKpis,
-                DefinitionStages.WithPivots,
-                DefinitionStages.WithTypePropertiesType,
-                DefinitionStages.WithTimeframe,
-                DefinitionStages.WithTimePeriod,
-                DefinitionStages.WithDataSet,
-                DefinitionStages.WithIncludeMonetaryCommitment {
+        interface WithCreate extends DefinitionStages.WithEtag, DefinitionStages.WithDisplayName,
+            DefinitionStages.WithScope, DefinitionStages.WithChart, DefinitionStages.WithAccumulated,
+            DefinitionStages.WithMetric, DefinitionStages.WithKpis, DefinitionStages.WithPivots,
+            DefinitionStages.WithTypePropertiesType, DefinitionStages.WithTimeframe, DefinitionStages.WithTimePeriod,
+            DefinitionStages.WithDataSet, DefinitionStages.WithIncludeMonetaryCommitment {
             /**
              * Executes the create request.
              *
@@ -243,6 +237,7 @@ public interface View {
              */
             View create(Context context);
         }
+
         /** The stage of the View definition allowing to specify etag. */
         interface WithEtag {
             /**
@@ -255,6 +250,7 @@ public interface View {
              */
             WithCreate withEtag(String etag);
         }
+
         /** The stage of the View definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -265,6 +261,7 @@ public interface View {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the View definition allowing to specify scope. */
         interface WithScope {
             /**
@@ -307,6 +304,7 @@ public interface View {
              */
             WithCreate withScope(String scope);
         }
+
         /** The stage of the View definition allowing to specify chart. */
         interface WithChart {
             /**
@@ -317,6 +315,7 @@ public interface View {
              */
             WithCreate withChart(ChartType chart);
         }
+
         /** The stage of the View definition allowing to specify accumulated. */
         interface WithAccumulated {
             /**
@@ -327,6 +326,7 @@ public interface View {
              */
             WithCreate withAccumulated(AccumulatedType accumulated);
         }
+
         /** The stage of the View definition allowing to specify metric. */
         interface WithMetric {
             /**
@@ -337,6 +337,7 @@ public interface View {
              */
             WithCreate withMetric(MetricType metric);
         }
+
         /** The stage of the View definition allowing to specify kpis. */
         interface WithKpis {
             /**
@@ -347,6 +348,7 @@ public interface View {
              */
             WithCreate withKpis(List<KpiProperties> kpis);
         }
+
         /** The stage of the View definition allowing to specify pivots. */
         interface WithPivots {
             /**
@@ -357,6 +359,7 @@ public interface View {
              */
             WithCreate withPivots(List<PivotProperties> pivots);
         }
+
         /** The stage of the View definition allowing to specify typePropertiesType. */
         interface WithTypePropertiesType {
             /**
@@ -371,6 +374,7 @@ public interface View {
              */
             WithCreate withTypePropertiesType(ReportType typePropertiesType);
         }
+
         /** The stage of the View definition allowing to specify timeframe. */
         interface WithTimeframe {
             /**
@@ -383,6 +387,7 @@ public interface View {
              */
             WithCreate withTimeframe(ReportTimeframeType timeframe);
         }
+
         /** The stage of the View definition allowing to specify timePeriod. */
         interface WithTimePeriod {
             /**
@@ -393,6 +398,7 @@ public interface View {
              */
             WithCreate withTimePeriod(ReportConfigTimePeriod timePeriod);
         }
+
         /** The stage of the View definition allowing to specify dataSet. */
         interface WithDataSet {
             /**
@@ -403,6 +409,7 @@ public interface View {
              */
             WithCreate withDataSet(ReportConfigDataset dataSet);
         }
+
         /** The stage of the View definition allowing to specify includeMonetaryCommitment. */
         interface WithIncludeMonetaryCommitment {
             /**
@@ -414,6 +421,7 @@ public interface View {
             WithCreate withIncludeMonetaryCommitment(Boolean includeMonetaryCommitment);
         }
     }
+
     /**
      * Begins update for the View resource.
      *
@@ -422,20 +430,10 @@ public interface View {
     View.Update update();
 
     /** The template for View update. */
-    interface Update
-        extends UpdateStages.WithEtag,
-            UpdateStages.WithDisplayName,
-            UpdateStages.WithScope,
-            UpdateStages.WithChart,
-            UpdateStages.WithAccumulated,
-            UpdateStages.WithMetric,
-            UpdateStages.WithKpis,
-            UpdateStages.WithPivots,
-            UpdateStages.WithTypePropertiesType,
-            UpdateStages.WithTimeframe,
-            UpdateStages.WithTimePeriod,
-            UpdateStages.WithDataSet,
-            UpdateStages.WithIncludeMonetaryCommitment {
+    interface Update extends UpdateStages.WithEtag, UpdateStages.WithDisplayName, UpdateStages.WithScope,
+        UpdateStages.WithChart, UpdateStages.WithAccumulated, UpdateStages.WithMetric, UpdateStages.WithKpis,
+        UpdateStages.WithPivots, UpdateStages.WithTypePropertiesType, UpdateStages.WithTimeframe,
+        UpdateStages.WithTimePeriod, UpdateStages.WithDataSet, UpdateStages.WithIncludeMonetaryCommitment {
         /**
          * Executes the update request.
          *
@@ -451,6 +449,7 @@ public interface View {
          */
         View apply(Context context);
     }
+
     /** The View update stages. */
     interface UpdateStages {
         /** The stage of the View update allowing to specify etag. */
@@ -465,6 +464,7 @@ public interface View {
              */
             Update withEtag(String etag);
         }
+
         /** The stage of the View update allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -475,6 +475,7 @@ public interface View {
              */
             Update withDisplayName(String displayName);
         }
+
         /** The stage of the View update allowing to specify scope. */
         interface WithScope {
             /**
@@ -517,6 +518,7 @@ public interface View {
              */
             Update withScope(String scope);
         }
+
         /** The stage of the View update allowing to specify chart. */
         interface WithChart {
             /**
@@ -527,6 +529,7 @@ public interface View {
              */
             Update withChart(ChartType chart);
         }
+
         /** The stage of the View update allowing to specify accumulated. */
         interface WithAccumulated {
             /**
@@ -537,6 +540,7 @@ public interface View {
              */
             Update withAccumulated(AccumulatedType accumulated);
         }
+
         /** The stage of the View update allowing to specify metric. */
         interface WithMetric {
             /**
@@ -547,6 +551,7 @@ public interface View {
              */
             Update withMetric(MetricType metric);
         }
+
         /** The stage of the View update allowing to specify kpis. */
         interface WithKpis {
             /**
@@ -557,6 +562,7 @@ public interface View {
              */
             Update withKpis(List<KpiProperties> kpis);
         }
+
         /** The stage of the View update allowing to specify pivots. */
         interface WithPivots {
             /**
@@ -567,6 +573,7 @@ public interface View {
              */
             Update withPivots(List<PivotProperties> pivots);
         }
+
         /** The stage of the View update allowing to specify typePropertiesType. */
         interface WithTypePropertiesType {
             /**
@@ -581,6 +588,7 @@ public interface View {
              */
             Update withTypePropertiesType(ReportType typePropertiesType);
         }
+
         /** The stage of the View update allowing to specify timeframe. */
         interface WithTimeframe {
             /**
@@ -593,6 +601,7 @@ public interface View {
              */
             Update withTimeframe(ReportTimeframeType timeframe);
         }
+
         /** The stage of the View update allowing to specify timePeriod. */
         interface WithTimePeriod {
             /**
@@ -603,6 +612,7 @@ public interface View {
              */
             Update withTimePeriod(ReportConfigTimePeriod timePeriod);
         }
+
         /** The stage of the View update allowing to specify dataSet. */
         interface WithDataSet {
             /**
@@ -613,6 +623,7 @@ public interface View {
              */
             Update withDataSet(ReportConfigDataset dataSet);
         }
+
         /** The stage of the View update allowing to specify includeMonetaryCommitment. */
         interface WithIncludeMonetaryCommitment {
             /**
@@ -624,6 +635,7 @@ public interface View {
             Update withIncludeMonetaryCommitment(Boolean includeMonetaryCommitment);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

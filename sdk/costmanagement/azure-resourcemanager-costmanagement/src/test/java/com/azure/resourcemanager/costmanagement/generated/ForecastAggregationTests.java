@@ -13,16 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ForecastAggregationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ForecastAggregation model =
-            BinaryData.fromString("{\"name\":\"PreTaxCost\",\"function\":\"Sum\"}").toObject(ForecastAggregation.class);
+        ForecastAggregation model = BinaryData.fromString("{\"name\":\"PreTaxCost\",\"function\":\"Sum\"}")
+            .toObject(ForecastAggregation.class);
         Assertions.assertEquals(FunctionName.PRE_TAX_COST, model.name());
         Assertions.assertEquals(FunctionType.SUM, model.function());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForecastAggregation model =
-            new ForecastAggregation().withName(FunctionName.PRE_TAX_COST).withFunction(FunctionType.SUM);
+        ForecastAggregation model
+            = new ForecastAggregation().withName(FunctionName.PRE_TAX_COST).withFunction(FunctionType.SUM);
         model = BinaryData.fromObject(model).toObject(ForecastAggregation.class);
         Assertions.assertEquals(FunctionName.PRE_TAX_COST, model.name());
         Assertions.assertEquals(FunctionType.SUM, model.function());

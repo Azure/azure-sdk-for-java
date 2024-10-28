@@ -130,9 +130,8 @@ public final class TagResourceContractInner {
      */
     public void validate() {
         if (tag() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tag in model TagResourceContractInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property tag in model TagResourceContractInner"));
         } else {
             tag().validate();
         }

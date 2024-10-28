@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureADOnlyAuthenticationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureADOnlyAuthenticationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"azureADOnlyAuthentication\":true,\"state\":\"InConsistent\",\"creationDate\":\"2021-08-10T00:52:22Z\"}")
-                .toObject(AzureADOnlyAuthenticationProperties.class);
+        AzureADOnlyAuthenticationProperties model = BinaryData.fromString(
+            "{\"azureADOnlyAuthentication\":true,\"state\":\"InConsistent\",\"creationDate\":\"2021-08-10T00:52:22Z\"}")
+            .toObject(AzureADOnlyAuthenticationProperties.class);
         Assertions.assertEquals(true, model.azureADOnlyAuthentication());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureADOnlyAuthenticationProperties model =
-            new AzureADOnlyAuthenticationProperties().withAzureADOnlyAuthentication(true);
+        AzureADOnlyAuthenticationProperties model
+            = new AzureADOnlyAuthenticationProperties().withAzureADOnlyAuthentication(true);
         model = BinaryData.fromObject(model).toObject(AzureADOnlyAuthenticationProperties.class);
         Assertions.assertEquals(true, model.azureADOnlyAuthentication());
     }

@@ -168,17 +168,18 @@ public final class CustomMultiClassificationResult implements JsonSerializable<C
      */
     public static CustomMultiClassificationResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            CustomMultiClassificationResult deserializedCustomMultiClassificationResult = new CustomMultiClassificationResult();
+            CustomMultiClassificationResult deserializedCustomMultiClassificationResult
+                = new CustomMultiClassificationResult();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("documents".equals(fieldName)) {
                     deserializedCustomMultiClassificationResult.documents
-                            = reader.readArray(reader1 -> MultiClassificationDocument.fromJson(reader1));
+                        = reader.readArray(reader1 -> MultiClassificationDocument.fromJson(reader1));
                 } else if ("errors".equals(fieldName)) {
                     deserializedCustomMultiClassificationResult.errors
-                            = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
+                        = reader.readArray(reader1 -> DocumentError.fromJson(reader1));
                 } else if ("statistics".equals(fieldName)) {
                     deserializedCustomMultiClassificationResult.statistics = RequestStatistics.fromJson(reader);
                 } else if ("projectName".equals(fieldName)) {

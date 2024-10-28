@@ -44,8 +44,8 @@ public interface TransformsClient {
      * @return a collection of Transform items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TransformInner> list(
-        String resourceGroupName, String accountName, String filter, String orderby, Context context);
+    PagedIterable<TransformInner> list(String resourceGroupName, String accountName, String filter, String orderby,
+        Context context);
 
     /**
      * Get Transform
@@ -62,8 +62,8 @@ public interface TransformsClient {
      * @return a Transform along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TransformInner> getWithResponse(
-        String resourceGroupName, String accountName, String transformName, Context context);
+    Response<TransformInner> getWithResponse(String resourceGroupName, String accountName, String transformName,
+        Context context);
 
     /**
      * Get Transform
@@ -98,8 +98,8 @@ public interface TransformsClient {
      *     as by transcoding or by extracting insights along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TransformInner> createOrUpdateWithResponse(
-        String resourceGroupName, String accountName, String transformName, TransformInner parameters, Context context);
+    Response<TransformInner> createOrUpdateWithResponse(String resourceGroupName, String accountName,
+        String transformName, TransformInner parameters, Context context);
 
     /**
      * Create or Update Transform
@@ -117,8 +117,8 @@ public interface TransformsClient {
      *     as by transcoding or by extracting insights.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TransformInner createOrUpdate(
-        String resourceGroupName, String accountName, String transformName, TransformInner parameters);
+    TransformInner createOrUpdate(String resourceGroupName, String accountName, String transformName,
+        TransformInner parameters);
 
     /**
      * Delete Transform
@@ -135,8 +135,8 @@ public interface TransformsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String transformName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String transformName,
+        Context context);
 
     /**
      * Delete Transform
@@ -170,8 +170,8 @@ public interface TransformsClient {
      *     as by transcoding or by extracting insights along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TransformInner> updateWithResponse(
-        String resourceGroupName, String accountName, String transformName, TransformInner parameters, Context context);
+    Response<TransformInner> updateWithResponse(String resourceGroupName, String accountName, String transformName,
+        TransformInner parameters, Context context);
 
     /**
      * Update Transform
@@ -189,6 +189,6 @@ public interface TransformsClient {
      *     as by transcoding or by extracting insights.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TransformInner update(
-        String resourceGroupName, String accountName, String transformName, TransformInner parameters);
+    TransformInner update(String resourceGroupName, String accountName, String transformName,
+        TransformInner parameters);
 }

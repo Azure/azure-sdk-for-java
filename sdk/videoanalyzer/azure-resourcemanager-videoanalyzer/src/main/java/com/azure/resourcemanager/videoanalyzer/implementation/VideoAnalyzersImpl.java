@@ -22,8 +22,8 @@ public final class VideoAnalyzersImpl implements VideoAnalyzers {
 
     private final com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager;
 
-    public VideoAnalyzersImpl(
-        VideoAnalyzersClient innerClient, com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
+    public VideoAnalyzersImpl(VideoAnalyzersClient innerClient,
+        com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -38,13 +38,10 @@ public final class VideoAnalyzersImpl implements VideoAnalyzers {
     }
 
     public Response<VideoAnalyzerCollection> listWithResponse(String resourceGroupName, Context context) {
-        Response<VideoAnalyzerCollectionInner> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, context);
+        Response<VideoAnalyzerCollectionInner> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VideoAnalyzerCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -60,15 +57,12 @@ public final class VideoAnalyzersImpl implements VideoAnalyzers {
         }
     }
 
-    public Response<VideoAnalyzer> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        Response<VideoAnalyzerInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
+    public Response<VideoAnalyzer> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context) {
+        Response<VideoAnalyzerInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VideoAnalyzerImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -95,10 +89,7 @@ public final class VideoAnalyzersImpl implements VideoAnalyzers {
     public Response<VideoAnalyzerCollection> listBySubscriptionWithResponse(Context context) {
         Response<VideoAnalyzerCollectionInner> inner = this.serviceClient().listBySubscriptionWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VideoAnalyzerCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -108,19 +99,13 @@ public final class VideoAnalyzersImpl implements VideoAnalyzers {
     public VideoAnalyzer getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
@@ -128,19 +113,13 @@ public final class VideoAnalyzersImpl implements VideoAnalyzers {
     public Response<VideoAnalyzer> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, accountName, context);
     }
@@ -148,19 +127,13 @@ public final class VideoAnalyzersImpl implements VideoAnalyzers {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, accountName, Context.NONE);
     }
@@ -168,19 +141,13 @@ public final class VideoAnalyzersImpl implements VideoAnalyzers {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, accountName, context);
     }

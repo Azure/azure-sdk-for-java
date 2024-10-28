@@ -13,12 +13,8 @@ import reactor.core.publisher.Mono;
 
 /** Entry point for Key Vault keys API. */
 @Fluent
-public interface Keys
-    extends SupportsCreating<Key.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsGettingById<Key>,
-        SupportsGettingByName<Key>,
-        SupportsListing<Key> {
+public interface Keys extends SupportsCreating<Key.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsGettingById<Key>, SupportsGettingByName<Key>, SupportsListing<Key> {
     /**
      * Gets a Key Vault key.
      *

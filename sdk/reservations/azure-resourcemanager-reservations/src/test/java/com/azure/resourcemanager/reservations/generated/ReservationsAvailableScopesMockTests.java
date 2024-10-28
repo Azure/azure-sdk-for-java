@@ -36,39 +36,24 @@ public final class ReservationsAvailableScopesMockTests {
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ReservationsManager manager =
-            ReservationsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ReservationsManager manager = ReservationsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AvailableScopeProperties response =
-            manager
-                .reservations()
-                .availableScopes(
-                    "t",
-                    "udutnco",
-                    new AvailableScopeRequest()
-                        .withProperties(
-                            new AvailableScopeRequestProperties().withScopes(Arrays.asList("xqtvcofu", "f", "vkg"))),
-                    com.azure.core.util.Context.NONE);
+        AvailableScopeProperties response = manager.reservations()
+            .availableScopes("t", "udutnco",
+                new AvailableScopeRequest().withProperties(
+                    new AvailableScopeRequestProperties().withScopes(Arrays.asList("xqtvcofu", "f", "vkg"))),
+                com.azure.core.util.Context.NONE);
     }
 }

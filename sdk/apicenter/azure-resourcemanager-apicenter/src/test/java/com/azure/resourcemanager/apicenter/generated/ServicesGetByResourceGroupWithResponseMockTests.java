@@ -45,12 +45,14 @@ public final class ServicesGetByResourceGroupWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Service response = manager.services()
-            .getByResourceGroupWithResponse("doy", "mifthnzdnd", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("doy", "mifthnzdnd", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("bgycduiertgccym", response.location());
         Assertions.assertEquals("l", response.tags().get("ssl"));

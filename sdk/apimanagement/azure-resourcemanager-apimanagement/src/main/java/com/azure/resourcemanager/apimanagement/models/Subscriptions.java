@@ -45,8 +45,8 @@ public interface Subscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Subscriptions list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<SubscriptionContract> list(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<SubscriptionContract> list(String resourceGroupName, String serviceName, String filter, Integer top,
+        Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the apimanagement subscription specified by its identifier.
@@ -61,8 +61,8 @@ public interface Subscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the apimanagement subscription specified by its identifier.
      */
-    SubscriptionsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String sid, Context context);
+    SubscriptionsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String sid,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the apimanagement subscription specified by its identifier.
@@ -90,8 +90,8 @@ public interface Subscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Subscription entity.
      */
-    Response<SubscriptionContract> getWithResponse(
-        String resourceGroupName, String serviceName, String sid, Context context);
+    Response<SubscriptionContract> getWithResponse(String resourceGroupName, String serviceName, String sid,
+        Context context);
 
     /**
      * Gets the specified Subscription entity.
@@ -126,15 +126,8 @@ public interface Subscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subscription details.
      */
-    Response<SubscriptionContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String sid,
-        SubscriptionCreateParameters parameters,
-        Boolean notify,
-        String ifMatch,
-        AppType appType,
-        Context context);
+    Response<SubscriptionContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName, String sid,
+        SubscriptionCreateParameters parameters, Boolean notify, String ifMatch, AppType appType, Context context);
 
     /**
      * Creates or updates the subscription of specified user to the specified product.
@@ -149,8 +142,8 @@ public interface Subscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subscription details.
      */
-    SubscriptionContract createOrUpdate(
-        String resourceGroupName, String serviceName, String sid, SubscriptionCreateParameters parameters);
+    SubscriptionContract createOrUpdate(String resourceGroupName, String serviceName, String sid,
+        SubscriptionCreateParameters parameters);
 
     /**
      * Updates the details of a subscription specified by its identifier.
@@ -172,15 +165,8 @@ public interface Subscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subscription details.
      */
-    Response<SubscriptionContract> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String sid,
-        String ifMatch,
-        SubscriptionUpdateParameters parameters,
-        Boolean notify,
-        AppType appType,
-        Context context);
+    Response<SubscriptionContract> updateWithResponse(String resourceGroupName, String serviceName, String sid,
+        String ifMatch, SubscriptionUpdateParameters parameters, Boolean notify, AppType appType, Context context);
 
     /**
      * Updates the details of a subscription specified by its identifier.
@@ -197,11 +183,7 @@ public interface Subscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subscription details.
      */
-    SubscriptionContract update(
-        String resourceGroupName,
-        String serviceName,
-        String sid,
-        String ifMatch,
+    SubscriptionContract update(String resourceGroupName, String serviceName, String sid, String ifMatch,
         SubscriptionUpdateParameters parameters);
 
     /**
@@ -219,8 +201,8 @@ public interface Subscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String sid, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String sid, String ifMatch,
+        Context context);
 
     /**
      * Deletes the specified subscription.
@@ -250,8 +232,8 @@ public interface Subscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> regeneratePrimaryKeyWithResponse(
-        String resourceGroupName, String serviceName, String sid, Context context);
+    Response<Void> regeneratePrimaryKeyWithResponse(String resourceGroupName, String serviceName, String sid,
+        Context context);
 
     /**
      * Regenerates primary key of existing subscription of the API Management service instance.
@@ -279,8 +261,8 @@ public interface Subscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> regenerateSecondaryKeyWithResponse(
-        String resourceGroupName, String serviceName, String sid, Context context);
+    Response<Void> regenerateSecondaryKeyWithResponse(String resourceGroupName, String serviceName, String sid,
+        Context context);
 
     /**
      * Regenerates secondary key of existing subscription of the API Management service instance.
@@ -308,8 +290,8 @@ public interface Subscriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Subscription keys.
      */
-    Response<SubscriptionKeysContract> listSecretsWithResponse(
-        String resourceGroupName, String serviceName, String sid, Context context);
+    Response<SubscriptionKeysContract> listSecretsWithResponse(String resourceGroupName, String serviceName, String sid,
+        Context context);
 
     /**
      * Gets the specified Subscription keys.

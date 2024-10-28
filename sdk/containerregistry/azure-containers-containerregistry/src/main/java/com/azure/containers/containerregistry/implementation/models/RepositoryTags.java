@@ -26,7 +26,8 @@ public final class RepositoryTags implements JsonSerializable<RepositoryTags> {
     private List<String> tags;
 
     /** Creates an instance of RepositoryTags class. */
-    public RepositoryTags() {}
+    public RepositoryTags() {
+    }
 
     /**
      * Get the name property: Name of the image.
@@ -85,24 +86,23 @@ public final class RepositoryTags implements JsonSerializable<RepositoryTags> {
      * @throws IOException If an error occurs while reading the RepositoryTags.
      */
     public static RepositoryTags fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    RepositoryTags deserializedRepositoryTags = new RepositoryTags();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            RepositoryTags deserializedRepositoryTags = new RepositoryTags();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("name".equals(fieldName)) {
-                            deserializedRepositoryTags.name = reader.getString();
-                        } else if ("tags".equals(fieldName)) {
-                            List<String> tags = reader.readArray(reader1 -> reader1.getString());
-                            deserializedRepositoryTags.tags = tags;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("name".equals(fieldName)) {
+                    deserializedRepositoryTags.name = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    List<String> tags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRepositoryTags.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedRepositoryTags;
-                });
+            return deserializedRepositoryTags;
+        });
     }
 }

@@ -12,7 +12,8 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection
 public final class AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper {
     private static AnalyzeHealthcareEntitiesResultCollectionAccessor accessor;
 
-    private AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper() { }
+    private AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an
@@ -21,6 +22,7 @@ public final class AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper {
     public interface AnalyzeHealthcareEntitiesResultCollectionAccessor {
         void setModelVersion(AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResultCollection,
             String modelVersion);
+
         void setStatistics(AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResultCollection,
             TextDocumentBatchStatistics statistics);
     }

@@ -34,8 +34,8 @@ public interface OutboundNetworkDependenciesEndpointsClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<OutboundEnvironmentEndpointInner>> listWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<List<OutboundEnvironmentEndpointInner>> listWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified Workspace.

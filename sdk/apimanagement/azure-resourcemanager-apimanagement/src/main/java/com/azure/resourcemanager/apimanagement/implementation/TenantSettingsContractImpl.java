@@ -14,8 +14,7 @@ public final class TenantSettingsContractImpl implements TenantSettingsContract 
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    TenantSettingsContractImpl(
-        TenantSettingsContractInner innerObject,
+    TenantSettingsContractImpl(TenantSettingsContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

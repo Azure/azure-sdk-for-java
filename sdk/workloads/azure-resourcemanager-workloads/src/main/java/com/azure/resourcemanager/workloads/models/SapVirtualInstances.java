@@ -21,8 +21,8 @@ public interface SapVirtualInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Virtual Instance for SAP solutions resource along with {@link Response}.
      */
-    Response<SapVirtualInstance> getByResourceGroupWithResponse(
-        String resourceGroupName, String sapVirtualInstanceName, Context context);
+    Response<SapVirtualInstance> getByResourceGroupWithResponse(String resourceGroupName, String sapVirtualInstanceName,
+        Context context);
 
     /**
      * Gets a Virtual Instance for SAP solutions resource.
@@ -159,8 +159,8 @@ public interface SapVirtualInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult stop(
-        String resourceGroupName, String sapVirtualInstanceName, StopRequest body, Context context);
+    OperationStatusResult stop(String resourceGroupName, String sapVirtualInstanceName, StopRequest body,
+        Context context);
 
     /**
      * Gets a Virtual Instance for SAP solutions resource.

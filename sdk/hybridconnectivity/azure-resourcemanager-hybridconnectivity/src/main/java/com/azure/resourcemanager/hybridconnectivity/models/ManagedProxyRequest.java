@@ -103,9 +103,8 @@ public final class ManagedProxyRequest {
      */
     public void validate() {
         if (service() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property service in model ManagedProxyRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property service in model ManagedProxyRequest"));
         }
     }
 

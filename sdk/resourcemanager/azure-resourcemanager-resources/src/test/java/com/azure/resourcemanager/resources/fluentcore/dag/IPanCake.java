@@ -11,6 +11,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
  */
 interface IPancake extends Indexable, Creatable<IPancake> {
     IPancake withInstantPancake(Creatable<IPancake> anotherPancake);
+
     IPancake withDelayedPancake(Creatable<IPancake> anotherPancake);
 }
-

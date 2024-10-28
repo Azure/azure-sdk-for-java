@@ -13,7 +13,8 @@ import java.util.List;
 /** Details of volumes to mount on the cluster. */
 @Fluent
 public final class MountVolumes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MountVolumes.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(MountVolumes.class);
 
     /*
      * A collection of Azure File Shares that are to be mounted to the cluster

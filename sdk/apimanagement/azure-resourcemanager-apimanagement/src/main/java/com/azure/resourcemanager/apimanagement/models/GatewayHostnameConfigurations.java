@@ -23,8 +23,8 @@ public interface GatewayHostnameConfigurations {
      * @return paged Gateway hostname configuration list representation as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<GatewayHostnameConfigurationContract> listByService(
-        String resourceGroupName, String serviceName, String gatewayId);
+    PagedIterable<GatewayHostnameConfigurationContract> listByService(String resourceGroupName, String serviceName,
+        String gatewayId);
 
     /**
      * Lists the collection of hostname configurations for the specified gateway.
@@ -46,14 +46,8 @@ public interface GatewayHostnameConfigurations {
      * @return paged Gateway hostname configuration list representation as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<GatewayHostnameConfigurationContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<GatewayHostnameConfigurationContract> listByService(String resourceGroupName, String serviceName,
+        String gatewayId, String filter, Integer top, Integer skip, Context context);
 
     /**
      * Checks that hostname configuration entity specified by identifier exists for specified Gateway entity.
@@ -69,8 +63,8 @@ public interface GatewayHostnameConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    GatewayHostnameConfigurationsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String hcId, Context context);
+    GatewayHostnameConfigurationsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName,
+        String serviceName, String gatewayId, String hcId, Context context);
 
     /**
      * Checks that hostname configuration entity specified by identifier exists for specified Gateway entity.
@@ -100,8 +94,8 @@ public interface GatewayHostnameConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of a hostname configuration.
      */
-    Response<GatewayHostnameConfigurationContract> getWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String hcId, Context context);
+    Response<GatewayHostnameConfigurationContract> getWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, String hcId, Context context);
 
     /**
      * Get details of a hostname configuration.
@@ -116,8 +110,8 @@ public interface GatewayHostnameConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of a hostname configuration.
      */
-    GatewayHostnameConfigurationContract get(
-        String resourceGroupName, String serviceName, String gatewayId, String hcId);
+    GatewayHostnameConfigurationContract get(String resourceGroupName, String serviceName, String gatewayId,
+        String hcId);
 
     /**
      * Deletes the specified hostname configuration from the specified Gateway.
@@ -135,8 +129,8 @@ public interface GatewayHostnameConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String hcId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String gatewayId, String hcId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified hostname configuration from the specified Gateway.

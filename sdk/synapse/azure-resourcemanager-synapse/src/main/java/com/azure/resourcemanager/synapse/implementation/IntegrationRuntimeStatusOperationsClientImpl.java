@@ -41,12 +41,8 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
      * @param client the instance of the service client containing this operation class.
      */
     IntegrationRuntimeStatusOperationsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    IntegrationRuntimeStatusOperationsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(IntegrationRuntimeStatusOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,20 +53,15 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface IntegrationRuntimeStatusOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/getStatus")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/getStatus")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IntegrationRuntimeStatusResponseInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("integrationRuntimeName") String integrationRuntimeName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<IntegrationRuntimeStatusResponseInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("integrationRuntimeName") String integrationRuntimeName, @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -88,19 +79,15 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
      * @return the integration runtime status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IntegrationRuntimeStatusResponseInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+    private Mono<Response<IntegrationRuntimeStatusResponseInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -110,25 +97,14 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            integrationRuntimeName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, integrationRuntimeName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -147,19 +123,15 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
      * @return the integration runtime status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IntegrationRuntimeStatusResponseInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
+    private Mono<Response<IntegrationRuntimeStatusResponseInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -169,23 +141,14 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (integrationRuntimeName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                integrationRuntimeName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, integrationRuntimeName, accept, context);
     }
 
     /**
@@ -202,8 +165,8 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
      * @return the integration runtime status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IntegrationRuntimeStatusResponseInner> getAsync(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+    private Mono<IntegrationRuntimeStatusResponseInner> getAsync(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -223,8 +186,8 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
      * @return the integration runtime status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IntegrationRuntimeStatusResponseInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
+    public Response<IntegrationRuntimeStatusResponseInner> getWithResponse(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName, context).block();
     }
 
@@ -242,8 +205,8 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
      * @return the integration runtime status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IntegrationRuntimeStatusResponseInner get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+    public IntegrationRuntimeStatusResponseInner get(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName) {
         return getWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, Context.NONE).getValue();
     }
 }

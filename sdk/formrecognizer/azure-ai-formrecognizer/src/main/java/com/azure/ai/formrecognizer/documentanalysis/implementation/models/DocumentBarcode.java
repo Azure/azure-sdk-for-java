@@ -115,6 +115,9 @@ public final class DocumentBarcode implements JsonSerializable<DocumentBarcode> 
         return this.confidence;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

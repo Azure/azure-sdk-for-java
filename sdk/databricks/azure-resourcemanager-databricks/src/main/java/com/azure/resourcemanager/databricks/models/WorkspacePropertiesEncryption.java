@@ -48,10 +48,8 @@ public final class WorkspacePropertiesEncryption {
      */
     public void validate() {
         if (entities() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property entities in model WorkspacePropertiesEncryption"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property entities in model WorkspacePropertiesEncryption"));
         } else {
             entities().validate();
         }

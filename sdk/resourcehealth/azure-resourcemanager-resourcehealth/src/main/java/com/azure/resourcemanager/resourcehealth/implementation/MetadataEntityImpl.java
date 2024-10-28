@@ -17,8 +17,7 @@ public final class MetadataEntityImpl implements MetadataEntity {
 
     private final com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager;
 
-    MetadataEntityImpl(
-        MetadataEntityInner innerObject,
+    MetadataEntityImpl(MetadataEntityInner innerObject,
         com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

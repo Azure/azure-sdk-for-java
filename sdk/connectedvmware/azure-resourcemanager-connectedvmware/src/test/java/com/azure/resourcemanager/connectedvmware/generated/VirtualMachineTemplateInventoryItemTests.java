@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualMachineTemplateInventoryItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachineTemplateInventoryItem model =
-            BinaryData
-                .fromString(
-                    "{\"inventoryType\":\"VirtualMachineTemplate\",\"memorySizeMB\":1666163860,\"numCPUs\":2108712904,\"numCoresPerSocket\":1047902295,\"osType\":\"Windows\",\"osName\":\"vyc\",\"toolsVersionStatus\":\"dclxgc\",\"toolsVersion\":\"nfnw\",\"folderPath\":\"tmvpdvjdhtt\",\"managedResourceId\":\"efedxihchrphkm\",\"moRefId\":\"jdqnsdfzpbgt\",\"moName\":\"ylkdghrje\",\"provisioningState\":\"Succeeded\"}")
-                .toObject(VirtualMachineTemplateInventoryItem.class);
+        VirtualMachineTemplateInventoryItem model = BinaryData.fromString(
+            "{\"inventoryType\":\"VirtualMachineTemplate\",\"memorySizeMB\":1666163860,\"numCPUs\":2108712904,\"numCoresPerSocket\":1047902295,\"osType\":\"Windows\",\"osName\":\"vyc\",\"toolsVersionStatus\":\"dclxgc\",\"toolsVersion\":\"nfnw\",\"folderPath\":\"tmvpdvjdhtt\",\"managedResourceId\":\"efedxihchrphkm\",\"moRefId\":\"jdqnsdfzpbgt\",\"moName\":\"ylkdghrje\",\"provisioningState\":\"Succeeded\"}")
+            .toObject(VirtualMachineTemplateInventoryItem.class);
         Assertions.assertEquals("efedxihchrphkm", model.managedResourceId());
         Assertions.assertEquals("jdqnsdfzpbgt", model.moRefId());
         Assertions.assertEquals("ylkdghrje", model.moName());
@@ -30,9 +28,8 @@ public final class VirtualMachineTemplateInventoryItemTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualMachineTemplateInventoryItem model =
-            new VirtualMachineTemplateInventoryItem()
-                .withManagedResourceId("efedxihchrphkm")
+        VirtualMachineTemplateInventoryItem model
+            = new VirtualMachineTemplateInventoryItem().withManagedResourceId("efedxihchrphkm")
                 .withMoRefId("jdqnsdfzpbgt")
                 .withMoName("ylkdghrje")
                 .withMemorySizeMB(1666163860)

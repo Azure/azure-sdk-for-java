@@ -40,8 +40,8 @@ public interface TenantSettingsClient {
      * @return paged AccessInformation list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TenantSettingsContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Context context);
+    PagedIterable<TenantSettingsContractInner> listByService(String resourceGroupName, String serviceName,
+        String filter, Context context);
 
     /**
      * Get tenant settings.
@@ -56,8 +56,8 @@ public interface TenantSettingsClient {
      * @return tenant settings.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TenantSettingsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, SettingsTypeName settingsType, Context context);
+    TenantSettingsGetResponse getWithResponse(String resourceGroupName, String serviceName,
+        SettingsTypeName settingsType, Context context);
 
     /**
      * Get tenant settings.

@@ -19,8 +19,7 @@ public final class WorkspaceManagedSqlServerUsagesImpl implements WorkspaceManag
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public WorkspaceManagedSqlServerUsagesImpl(
-        WorkspaceManagedSqlServerUsagesClient innerClient,
+    public WorkspaceManagedSqlServerUsagesImpl(WorkspaceManagedSqlServerUsagesClient innerClient,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;

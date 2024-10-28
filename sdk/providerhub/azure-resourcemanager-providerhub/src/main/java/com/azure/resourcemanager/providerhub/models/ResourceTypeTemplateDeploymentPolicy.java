@@ -22,8 +22,8 @@ public final class ResourceTypeTemplateDeploymentPolicy extends TemplateDeployme
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeTemplateDeploymentPolicy withPreflightOptions(
-        TemplateDeploymentPreflightOptions preflightOptions) {
+    public ResourceTypeTemplateDeploymentPolicy
+        withPreflightOptions(TemplateDeploymentPreflightOptions preflightOptions) {
         super.withPreflightOptions(preflightOptions);
         return this;
     }

@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.implementation;
 
-
 import com.azure.core.annotation.Immutable;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
@@ -48,8 +47,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 public class ServiceBusSharedKeyCredential implements TokenCredential {
     private static final String SHARED_ACCESS_SIGNATURE_FORMAT = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
     private static final String HASH_ALGORITHM = "HMACSHA256";
-    private static final String NO_HASH_ALGORITHM_ERROR_MESSAGE = "Unable to create hashing algorithm '" + HASH_ALGORITHM + "'";
-    private static final String INVALID_SHARED_ACCESS_KEY = "'sharedAccessKey' is an invalid value for the hashing algorithm.";
+    private static final String NO_HASH_ALGORITHM_ERROR_MESSAGE
+        = "Unable to create hashing algorithm '" + HASH_ALGORITHM + "'";
+    private static final String INVALID_SHARED_ACCESS_KEY
+        = "'sharedAccessKey' is an invalid value for the hashing algorithm.";
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSharedKeyCredential.class);
 
@@ -119,8 +120,8 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
      * @throws NullPointerException if {@code sharedAccessSignature} is null.
      */
     public ServiceBusSharedKeyCredential(String sharedAccessSignature) {
-        this.sharedAccessSignature = Objects.requireNonNull(sharedAccessSignature,
-            "'sharedAccessSignature' cannot be null");
+        this.sharedAccessSignature
+            = Objects.requireNonNull(sharedAccessSignature, "'sharedAccessSignature' cannot be null");
         this.policyName = null;
         this.secretKeySpec = null;
         this.tokenValidity = null;
@@ -173,10 +174,8 @@ public class ServiceBusSharedKeyCredential implements TokenCredential {
         final byte[] signatureBytes = hmac.doFinal(secretToSign.getBytes(utf8Encoding));
         final String signature = Base64.getEncoder().encodeToString(signatureBytes);
 
-        final String token = String.format(Locale.US, SHARED_ACCESS_SIGNATURE_FORMAT,
-            audienceUri,
-            URLEncoder.encode(signature, utf8Encoding),
-            URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
+        final String token = String.format(Locale.US, SHARED_ACCESS_SIGNATURE_FORMAT, audienceUri,
+            URLEncoder.encode(signature, utf8Encoding), URLEncoder.encode(expiresOnEpochSeconds, utf8Encoding),
             URLEncoder.encode(policyName, utf8Encoding));
 
         return new AccessToken(token, expiresOn);

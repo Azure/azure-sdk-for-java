@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IssueAttachmentCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IssueAttachmentCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"title\":\"jhqkbiwetpozy\",\"contentFormat\":\"yqiq\",\"content\":\"hgf\"},\"id\":\"etzlexbsfledynoj\",\"name\":\"ziu\",\"type\":\"fbzkk\"},{\"properties\":{\"title\":\"nhqs\",\"contentFormat\":\"cljse\",\"content\":\"pkpbafvafhlbylcc\"},\"id\":\"evxrhyz\",\"name\":\"fwrsofpltdbmair\",\"type\":\"hvhfnracw\"},{\"properties\":{\"title\":\"qigtuujwouhdaws\",\"contentFormat\":\"grbjbxsjybvitvqk\",\"content\":\"y\"},\"id\":\"znumtggmuwdchoz\",\"name\":\"nkf\",\"type\":\"xlvxnoakiz\"},{\"properties\":{\"title\":\"aikn\",\"contentFormat\":\"q\",\"content\":\"nuwiguyxlykwph\"},\"id\":\"xzcwxhmpejt\",\"name\":\"ke\",\"type\":\"aonwivkcqhrxh\"}],\"count\":6021388240167328083,\"nextLink\":\"crmmkyupijuby\"}")
-                .toObject(IssueAttachmentCollection.class);
+        IssueAttachmentCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"title\":\"jhqkbiwetpozy\",\"contentFormat\":\"yqiq\",\"content\":\"hgf\"},\"id\":\"etzlexbsfledynoj\",\"name\":\"ziu\",\"type\":\"fbzkk\"},{\"properties\":{\"title\":\"nhqs\",\"contentFormat\":\"cljse\",\"content\":\"pkpbafvafhlbylcc\"},\"id\":\"evxrhyz\",\"name\":\"fwrsofpltdbmair\",\"type\":\"hvhfnracw\"},{\"properties\":{\"title\":\"qigtuujwouhdaws\",\"contentFormat\":\"grbjbxsjybvitvqk\",\"content\":\"y\"},\"id\":\"znumtggmuwdchoz\",\"name\":\"nkf\",\"type\":\"xlvxnoakiz\"},{\"properties\":{\"title\":\"aikn\",\"contentFormat\":\"q\",\"content\":\"nuwiguyxlykwph\"},\"id\":\"xzcwxhmpejt\",\"name\":\"ke\",\"type\":\"aonwivkcqhrxh\"}],\"count\":6021388240167328083,\"nextLink\":\"crmmkyupijuby\"}")
+            .toObject(IssueAttachmentCollection.class);
         Assertions.assertEquals(6021388240167328083L, model.count());
     }
 

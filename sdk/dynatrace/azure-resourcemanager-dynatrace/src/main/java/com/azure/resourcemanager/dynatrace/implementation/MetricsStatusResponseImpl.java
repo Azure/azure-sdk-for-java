@@ -14,8 +14,8 @@ public final class MetricsStatusResponseImpl implements MetricsStatusResponse {
 
     private final com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager;
 
-    MetricsStatusResponseImpl(
-        MetricsStatusResponseInner innerObject, com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
+    MetricsStatusResponseImpl(MetricsStatusResponseInner innerObject,
+        com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

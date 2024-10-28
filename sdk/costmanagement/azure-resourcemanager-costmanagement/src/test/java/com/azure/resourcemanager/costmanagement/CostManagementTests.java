@@ -24,17 +24,16 @@ public class CostManagementTests extends TestProxyTestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testGenerateCostDetailsReports() {
-        CostManagementManager costManagementManager = CostManagementManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        CostManagementManager costManagementManager = CostManagementManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         final String subscriptionId = "subscriptions/xxx";
 
-        CostDetailsOperationResults result = costManagementManager.generateCostDetailsReports().createOperation(
-            subscriptionId,
-            new GenerateCostDetailsReportRequestDefinition()
-                .withMetric(CostDetailsMetricType.ACTUAL_COST)
-                .withTimePeriod(new CostDetailsTimePeriod().withStart("2023-01-01").withEnd("2023-01-31")));
+        CostDetailsOperationResults result = costManagementManager.generateCostDetailsReports()
+            .createOperation(subscriptionId,
+                new GenerateCostDetailsReportRequestDefinition().withMetric(CostDetailsMetricType.ACTUAL_COST)
+                    .withTimePeriod(new CostDetailsTimePeriod().withStart("2023-01-01").withEnd("2023-01-31")));
 
         Assertions.assertNotNull(result.name());
     }

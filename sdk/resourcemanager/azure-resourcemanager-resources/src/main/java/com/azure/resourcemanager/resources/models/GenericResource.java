@@ -18,10 +18,8 @@ import com.azure.resourcemanager.resources.fluent.models.GenericResourceInner;
  * An immutable client-side representation of an Azure generic resource.
  */
 @Fluent
-public interface GenericResource extends
-        GroupableResource<ResourceManager, GenericResourceInner>,
-        Refreshable<GenericResource>,
-        Updatable<GenericResource.Update> {
+public interface GenericResource extends GroupableResource<ResourceManager, GenericResourceInner>,
+    Refreshable<GenericResource>, Updatable<GenericResource.Update> {
     /**
      * @return the namespace of the resource provider
      */
@@ -75,15 +73,9 @@ public interface GenericResource extends
     /**
      * The entirety of the generic resource definition.
      */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithResourceType,
-            DefinitionStages.WithProviderNamespace,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithPlan,
-            DefinitionStages.WithApiVersion,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithResourceType,
+        DefinitionStages.WithProviderNamespace, DefinitionStages.WithParentResource, DefinitionStages.WithPlan,
+        DefinitionStages.WithApiVersion, DefinitionStages.WithCreate {
     }
 
     /**
@@ -198,11 +190,8 @@ public interface GenericResource extends
          * resource in the cloud, but exposing additional optional inputs to
          * specify.
          */
-        interface WithCreate extends
-                WithParentResource,
-                WithApiVersion,
-                Creatable<GenericResource>,
-                Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends WithParentResource, WithApiVersion, Creatable<GenericResource>,
+            Resource.DefinitionWithTags<WithCreate> {
             /**
              * Specifies other properties.
              *
@@ -376,15 +365,8 @@ public interface GenericResource extends
     /**
      * The template for a generic resource update operation, containing all the settings that can be modified.
      */
-    interface Update extends
-            Appliable<GenericResource>,
-            UpdateStages.WithApiVersion,
-            UpdateStages.WithPlan,
-            UpdateStages.WithParentResource,
-            UpdateStages.WithProperties,
-            UpdateStages.WithKind,
-            UpdateStages.WithSku,
-            UpdateStages.WithIdentity,
-            Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<GenericResource>, UpdateStages.WithApiVersion, UpdateStages.WithPlan,
+        UpdateStages.WithParentResource, UpdateStages.WithProperties, UpdateStages.WithKind, UpdateStages.WithSku,
+        UpdateStages.WithIdentity, Resource.UpdateWithTags<Update> {
     }
 }

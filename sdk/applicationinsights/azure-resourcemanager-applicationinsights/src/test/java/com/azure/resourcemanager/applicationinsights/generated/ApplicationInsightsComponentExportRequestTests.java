@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationInsightsComponentExportRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentExportRequest model =
-            BinaryData
-                .fromString(
-                    "{\"RecordTypes\":\"nmayhuybb\",\"DestinationType\":\"odepoogin\",\"DestinationAddress\":\"amiheognarxz\",\"IsEnabled\":\"heotusiv\",\"NotificationQueueEnabled\":\"v\",\"NotificationQueueUri\":\"iqihn\",\"DestinationStorageSubscriptionId\":\"ngbwjz\",\"DestinationStorageLocationId\":\"fygxgispemvtzfk\",\"DestinationAccountId\":\"ubljofxqe\"}")
-                .toObject(ApplicationInsightsComponentExportRequest.class);
+        ApplicationInsightsComponentExportRequest model = BinaryData.fromString(
+            "{\"RecordTypes\":\"nmayhuybb\",\"DestinationType\":\"odepoogin\",\"DestinationAddress\":\"amiheognarxz\",\"IsEnabled\":\"heotusiv\",\"NotificationQueueEnabled\":\"v\",\"NotificationQueueUri\":\"iqihn\",\"DestinationStorageSubscriptionId\":\"ngbwjz\",\"DestinationStorageLocationId\":\"fygxgispemvtzfk\",\"DestinationAccountId\":\"ubljofxqe\"}")
+            .toObject(ApplicationInsightsComponentExportRequest.class);
         Assertions.assertEquals("nmayhuybb", model.recordTypes());
         Assertions.assertEquals("odepoogin", model.destinationType());
         Assertions.assertEquals("amiheognarxz", model.destinationAddress());
@@ -29,9 +27,8 @@ public final class ApplicationInsightsComponentExportRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationInsightsComponentExportRequest model =
-            new ApplicationInsightsComponentExportRequest()
-                .withRecordTypes("nmayhuybb")
+        ApplicationInsightsComponentExportRequest model
+            = new ApplicationInsightsComponentExportRequest().withRecordTypes("nmayhuybb")
                 .withDestinationType("odepoogin")
                 .withDestinationAddress("amiheognarxz")
                 .withIsEnabled("heotusiv")

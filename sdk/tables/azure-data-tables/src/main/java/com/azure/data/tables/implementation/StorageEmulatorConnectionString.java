@@ -35,8 +35,8 @@ final class StorageEmulatorConnectionString {
 
             if (settings.hasSetting(StorageConstants.ConnectionStringConstants.EMULATOR_STORAGE_PROXY_URI_NAME)) {
                 try {
-                    URI devStoreProxyUri = new URI(settings.getSettingValue(
-                        StorageConstants.ConnectionStringConstants.EMULATOR_STORAGE_PROXY_URI_NAME));
+                    URI devStoreProxyUri = new URI(settings
+                        .getSettingValue(StorageConstants.ConnectionStringConstants.EMULATOR_STORAGE_PROXY_URI_NAME));
                     scheme = devStoreProxyUri.getScheme();
                     host = devStoreProxyUri.getHost();
                 } catch (URISyntaxException use) {
@@ -50,44 +50,29 @@ final class StorageEmulatorConnectionString {
             StorageConnectionString storageConnectionString;
 
             try {
-                URI blobPrimaryEndpoint =
-                    new URI(String.format(StorageConstants.ConnectionStringConstants.EMULATOR_PRIMARY_ENDPOINT_FORMAT,
-                        scheme,
-                        host,
-                        "10000"));
-                URI queuePrimaryEndpoint =
-                    new URI(String.format(StorageConstants.ConnectionStringConstants.EMULATOR_PRIMARY_ENDPOINT_FORMAT,
-                        scheme,
-                        host,
-                        "10001"));
-                URI tablePrimaryEndpoint =
-                    new URI(String.format(StorageConstants.ConnectionStringConstants.EMULATOR_PRIMARY_ENDPOINT_FORMAT,
-                        scheme,
-                        host,
-                        "10002"));
-                URI blobSecondaryEndpoint =
-                    new URI(String.format(StorageConstants.ConnectionStringConstants.EMULATOR_SECONDARY_ENDPOINT_FORMAT,
-                        scheme,
-                        host,
-                        "10000"));
-                URI queueSecondaryEndpoint =
-                    new URI(String.format(StorageConstants.ConnectionStringConstants.EMULATOR_SECONDARY_ENDPOINT_FORMAT,
-                        scheme,
-                        host,
-                        "10001"));
-                URI tableSecondaryEndpoint =
-                    new URI(String.format(StorageConstants.ConnectionStringConstants.EMULATOR_SECONDARY_ENDPOINT_FORMAT,
-                        scheme,
-                        host,
-                        "10002"));
+                URI blobPrimaryEndpoint
+                    = new URI(String.format(StorageConstants.ConnectionStringConstants.EMULATOR_PRIMARY_ENDPOINT_FORMAT,
+                        scheme, host, "10000"));
+                URI queuePrimaryEndpoint
+                    = new URI(String.format(StorageConstants.ConnectionStringConstants.EMULATOR_PRIMARY_ENDPOINT_FORMAT,
+                        scheme, host, "10001"));
+                URI tablePrimaryEndpoint
+                    = new URI(String.format(StorageConstants.ConnectionStringConstants.EMULATOR_PRIMARY_ENDPOINT_FORMAT,
+                        scheme, host, "10002"));
+                URI blobSecondaryEndpoint = new URI(
+                    String.format(StorageConstants.ConnectionStringConstants.EMULATOR_SECONDARY_ENDPOINT_FORMAT, scheme,
+                        host, "10000"));
+                URI queueSecondaryEndpoint = new URI(
+                    String.format(StorageConstants.ConnectionStringConstants.EMULATOR_SECONDARY_ENDPOINT_FORMAT, scheme,
+                        host, "10001"));
+                URI tableSecondaryEndpoint = new URI(
+                    String.format(StorageConstants.ConnectionStringConstants.EMULATOR_SECONDARY_ENDPOINT_FORMAT, scheme,
+                        host, "10002"));
 
-                storageConnectionString = new StorageConnectionString(
-                    StorageAuthenticationSettings.forEmulator(),
+                storageConnectionString = new StorageConnectionString(StorageAuthenticationSettings.forEmulator(),
                     new StorageEndpoint(blobPrimaryEndpoint, blobSecondaryEndpoint),
                     new StorageEndpoint(queuePrimaryEndpoint, queueSecondaryEndpoint),
-                    new StorageEndpoint(tablePrimaryEndpoint, tableSecondaryEndpoint),
-                    null,
-                    null);
+                    new StorageEndpoint(tablePrimaryEndpoint, tableSecondaryEndpoint), null, null);
             } catch (URISyntaxException use) {
                 throw logger.logExceptionAsError(new RuntimeException(use));
             }
@@ -99,17 +84,17 @@ final class StorageEmulatorConnectionString {
     }
 
     private static ConnectionSettingsFilter requireUseEmulatorFlag() {
-        return ConnectionSettingsFilter.allRequired(
-            StorageConstants.ConnectionStringConstants.USE_EMULATOR_STORAGE_NAME);
+        return ConnectionSettingsFilter
+            .allRequired(StorageConstants.ConnectionStringConstants.USE_EMULATOR_STORAGE_NAME);
     }
 
     private static ConnectionSettingsFilter optionalProxyUri() {
-        return ConnectionSettingsFilter.optional(
-            StorageConstants.ConnectionStringConstants.EMULATOR_STORAGE_PROXY_URI_NAME);
+        return ConnectionSettingsFilter
+            .optional(StorageConstants.ConnectionStringConstants.EMULATOR_STORAGE_PROXY_URI_NAME);
     }
 
     private static Boolean parseUseEmulatorFlag(final ConnectionSettings settings) {
-        return Boolean.parseBoolean(settings.getSettingValue(
-            StorageConstants.ConnectionStringConstants.USE_EMULATOR_STORAGE_NAME));
+        return Boolean.parseBoolean(
+            settings.getSettingValue(StorageConstants.ConnectionStringConstants.USE_EMULATOR_STORAGE_NAME));
     }
 }

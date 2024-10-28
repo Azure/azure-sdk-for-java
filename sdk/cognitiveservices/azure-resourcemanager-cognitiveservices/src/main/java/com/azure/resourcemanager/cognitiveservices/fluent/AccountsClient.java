@@ -34,8 +34,8 @@ public interface AccountsClient {
      *     provisioned account, it's type, location and SKU.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(
-        String resourceGroupName, String accountName, AccountInner account);
+    SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(String resourceGroupName, String accountName,
+        AccountInner account);
 
     /**
      * Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for
@@ -52,8 +52,8 @@ public interface AccountsClient {
      *     provisioned account, it's type, location and SKU.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(
-        String resourceGroupName, String accountName, AccountInner account, Context context);
+    SyncPoller<PollResult<AccountInner>, AccountInner> beginCreate(String resourceGroupName, String accountName,
+        AccountInner account, Context context);
 
     /**
      * Create Cognitive Services Account. Accounts is a resource group wide resource type. It holds the keys for
@@ -101,8 +101,8 @@ public interface AccountsClient {
      *     provisioned account, it's type, location and SKU.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
-        String resourceGroupName, String accountName, AccountInner account);
+    SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(String resourceGroupName, String accountName,
+        AccountInner account);
 
     /**
      * Updates a Cognitive Services account.
@@ -118,8 +118,8 @@ public interface AccountsClient {
      *     provisioned account, it's type, location and SKU.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(
-        String resourceGroupName, String accountName, AccountInner account, Context context);
+    SyncPoller<PollResult<AccountInner>, AccountInner> beginUpdate(String resourceGroupName, String accountName,
+        AccountInner account, Context context);
 
     /**
      * Updates a Cognitive Services account.
@@ -217,8 +217,8 @@ public interface AccountsClient {
      *     and SKU along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccountInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<AccountInner> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Returns a Cognitive Services account specified by the parameters.
@@ -325,8 +325,8 @@ public interface AccountsClient {
      * @return the access keys for the cognitive services account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApiKeysInner> regenerateKeyWithResponse(
-        String resourceGroupName, String accountName, RegenerateKeyParameters parameters, Context context);
+    Response<ApiKeysInner> regenerateKeyWithResponse(String resourceGroupName, String accountName,
+        RegenerateKeyParameters parameters, Context context);
 
     /**
      * Regenerates the specified account key for the specified Cognitive Services account.
@@ -354,8 +354,8 @@ public interface AccountsClient {
      * @return the list of cognitive services accounts operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccountSkuListResultInner> listSkusWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<AccountSkuListResultInner> listSkusWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * List available SKUs for the requested Cognitive Services account.
@@ -384,8 +384,8 @@ public interface AccountsClient {
      * @return usages for the requested Cognitive Services account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UsageListResultInner> listUsagesWithResponse(
-        String resourceGroupName, String accountName, String filter, Context context);
+    Response<UsageListResultInner> listUsagesWithResponse(String resourceGroupName, String accountName, String filter,
+        Context context);
 
     /**
      * Get usages for the requested Cognitive Services account.

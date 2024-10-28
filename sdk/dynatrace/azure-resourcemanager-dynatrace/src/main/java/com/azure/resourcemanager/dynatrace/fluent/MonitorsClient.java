@@ -54,8 +54,8 @@ public interface MonitorsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MonitoredResourceInner> listMonitoredResources(
-        String resourceGroupName, String monitorName, Context context);
+    PagedIterable<MonitoredResourceInner> listMonitoredResources(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Returns the payload that needs to be passed in the request body for installing Dynatrace agent on a VM.
@@ -69,8 +69,8 @@ public interface MonitorsClient {
      * @return response of payload to be passed while installing VM agent along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VMExtensionPayloadInner> getVMHostPayloadWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<VMExtensionPayloadInner> getVMHostPayloadWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Returns the payload that needs to be passed in the request body for installing Dynatrace agent on a VM.
@@ -97,8 +97,8 @@ public interface MonitorsClient {
      * @return a MonitorResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MonitorResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<MonitorResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Get a MonitorResource.
@@ -125,8 +125,8 @@ public interface MonitorsClient {
      * @return the {@link SyncPoller} for polling of dynatrace Monitor Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MonitorResourceInner>, MonitorResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String monitorName, MonitorResourceInner resource);
+    SyncPoller<PollResult<MonitorResourceInner>, MonitorResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String monitorName, MonitorResourceInner resource);
 
     /**
      * Create a MonitorResource.
@@ -141,8 +141,8 @@ public interface MonitorsClient {
      * @return the {@link SyncPoller} for polling of dynatrace Monitor Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MonitorResourceInner>, MonitorResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String monitorName, MonitorResourceInner resource, Context context);
+    SyncPoller<PollResult<MonitorResourceInner>, MonitorResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String monitorName, MonitorResourceInner resource, Context context);
 
     /**
      * Create a MonitorResource.
@@ -171,8 +171,8 @@ public interface MonitorsClient {
      * @return dynatrace Monitor Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MonitorResourceInner createOrUpdate(
-        String resourceGroupName, String monitorName, MonitorResourceInner resource, Context context);
+    MonitorResourceInner createOrUpdate(String resourceGroupName, String monitorName, MonitorResourceInner resource,
+        Context context);
 
     /**
      * Update a MonitorResource.
@@ -187,8 +187,8 @@ public interface MonitorsClient {
      * @return dynatrace Monitor Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MonitorResourceInner> updateWithResponse(
-        String resourceGroupName, String monitorName, MonitorResourceUpdate resource, Context context);
+    Response<MonitorResourceInner> updateWithResponse(String resourceGroupName, String monitorName,
+        MonitorResourceUpdate resource, Context context);
 
     /**
      * Update a MonitorResource.
@@ -316,8 +316,8 @@ public interface MonitorsClient {
      * @return marketplace SaaS resource details of a tenant under a specific subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MarketplaceSaaSResourceDetailsResponseInner> getMarketplaceSaaSResourceDetailsWithResponse(
-        MarketplaceSaaSResourceDetailsRequest request, Context context);
+    Response<MarketplaceSaaSResourceDetailsResponseInner>
+        getMarketplaceSaaSResourceDetailsWithResponse(MarketplaceSaaSResourceDetailsRequest request, Context context);
 
     /**
      * Get Marketplace SaaS resource details of a tenant under a specific subscription.
@@ -331,8 +331,8 @@ public interface MonitorsClient {
      * @return marketplace SaaS resource details of a tenant under a specific subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MarketplaceSaaSResourceDetailsResponseInner getMarketplaceSaaSResourceDetails(
-        MarketplaceSaaSResourceDetailsRequest request);
+    MarketplaceSaaSResourceDetailsResponseInner
+        getMarketplaceSaaSResourceDetails(MarketplaceSaaSResourceDetailsRequest request);
 
     /**
      * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
@@ -373,8 +373,8 @@ public interface MonitorsClient {
      * @return metric status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MetricsStatusResponseInner> getMetricStatusWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<MetricsStatusResponseInner> getMetricStatusWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Get metric status.
@@ -433,8 +433,8 @@ public interface MonitorsClient {
      * @return the SSO configuration details from the partner along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SsoDetailsResponseInner> getSsoDetailsWithResponse(
-        String resourceGroupName, String monitorName, SsoDetailsRequest request, Context context);
+    Response<SsoDetailsResponseInner> getSsoDetailsWithResponse(String resourceGroupName, String monitorName,
+        SsoDetailsRequest request, Context context);
 
     /**
      * Gets the SSO configuration details from the partner.
@@ -464,8 +464,8 @@ public interface MonitorsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LinkableEnvironmentResponseInner> listLinkableEnvironments(
-        String resourceGroupName, String monitorName, LinkableEnvironmentRequest request);
+    PagedIterable<LinkableEnvironmentResponseInner> listLinkableEnvironments(String resourceGroupName,
+        String monitorName, LinkableEnvironmentRequest request);
 
     /**
      * Gets all the Dynatrace environments that a user can link a azure resource to.
@@ -481,6 +481,6 @@ public interface MonitorsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LinkableEnvironmentResponseInner> listLinkableEnvironments(
-        String resourceGroupName, String monitorName, LinkableEnvironmentRequest request, Context context);
+    PagedIterable<LinkableEnvironmentResponseInner> listLinkableEnvironments(String resourceGroupName,
+        String monitorName, LinkableEnvironmentRequest request, Context context);
 }

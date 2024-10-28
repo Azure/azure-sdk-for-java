@@ -1235,8 +1235,10 @@ public final class ApiDefinitionsClientImpl implements ApiDefinitionsClient {
     public SyncPoller<PollResult<ApiSpecExportResultInner>, ApiSpecExportResultInner> beginExportSpecification(
         String resourceGroupName, String serviceName, String workspaceName, String apiName, String versionName,
         String definitionName) {
-        return this.beginExportSpecificationAsync(resourceGroupName, serviceName, workspaceName, apiName, versionName,
-            definitionName).getSyncPoller();
+        return this
+            .beginExportSpecificationAsync(resourceGroupName, serviceName, workspaceName, apiName, versionName,
+                definitionName)
+            .getSyncPoller();
     }
 
     /**
@@ -1258,8 +1260,10 @@ public final class ApiDefinitionsClientImpl implements ApiDefinitionsClient {
     public SyncPoller<PollResult<ApiSpecExportResultInner>, ApiSpecExportResultInner> beginExportSpecification(
         String resourceGroupName, String serviceName, String workspaceName, String apiName, String versionName,
         String definitionName, Context context) {
-        return this.beginExportSpecificationAsync(resourceGroupName, serviceName, workspaceName, apiName, versionName,
-            definitionName, context).getSyncPoller();
+        return this
+            .beginExportSpecificationAsync(resourceGroupName, serviceName, workspaceName, apiName, versionName,
+                definitionName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1536,8 +1540,10 @@ public final class ApiDefinitionsClientImpl implements ApiDefinitionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginImportSpecification(String resourceGroupName, String serviceName,
         String workspaceName, String apiName, String versionName, String definitionName, ApiSpecImportRequest body) {
-        return this.beginImportSpecificationAsync(resourceGroupName, serviceName, workspaceName, apiName, versionName,
-            definitionName, body).getSyncPoller();
+        return this
+            .beginImportSpecificationAsync(resourceGroupName, serviceName, workspaceName, apiName, versionName,
+                definitionName, body)
+            .getSyncPoller();
     }
 
     /**
@@ -1560,8 +1566,10 @@ public final class ApiDefinitionsClientImpl implements ApiDefinitionsClient {
     public SyncPoller<PollResult<Void>, Void> beginImportSpecification(String resourceGroupName, String serviceName,
         String workspaceName, String apiName, String versionName, String definitionName, ApiSpecImportRequest body,
         Context context) {
-        return this.beginImportSpecificationAsync(resourceGroupName, serviceName, workspaceName, apiName, versionName,
-            definitionName, body, context).getSyncPoller();
+        return this
+            .beginImportSpecificationAsync(resourceGroupName, serviceName, workspaceName, apiName, versionName,
+                definitionName, body, context)
+            .getSyncPoller();
     }
 
     /**

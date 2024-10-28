@@ -76,18 +76,14 @@ public final class MultiSubnetIpConfiguration {
      */
     public void validate() {
         if (privateIpAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property privateIpAddress in model MultiSubnetIpConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property privateIpAddress in model MultiSubnetIpConfiguration"));
         } else {
             privateIpAddress().validate();
         }
         if (sqlVirtualMachineInstance() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sqlVirtualMachineInstance in model MultiSubnetIpConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sqlVirtualMachineInstance in model MultiSubnetIpConfiguration"));
         }
     }
 

@@ -23,8 +23,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Database")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ReadWrite", value = ReadWriteDatabase.class),
-    @JsonSubTypes.Type(name = "ReadOnlyFollowing", value = ReadOnlyFollowingDatabase.class)
-})
+    @JsonSubTypes.Type(name = "ReadOnlyFollowing", value = ReadOnlyFollowingDatabase.class) })
 @Fluent
 public class DatabaseInner extends ProxyResource {
     /*

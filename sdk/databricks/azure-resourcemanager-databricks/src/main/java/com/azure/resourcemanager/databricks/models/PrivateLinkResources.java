@@ -56,8 +56,8 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private link resource for the given group id (sub-resource) along with {@link Response}.
      */
-    Response<GroupIdInformation> getWithResponse(
-        String resourceGroupName, String workspaceName, String groupId, Context context);
+    Response<GroupIdInformation> getWithResponse(String resourceGroupName, String workspaceName, String groupId,
+        Context context);
 
     /**
      * Get the specified private link resource

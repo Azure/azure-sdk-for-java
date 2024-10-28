@@ -22,16 +22,10 @@ import reactor.core.publisher.Mono;
 /** Entry point to the container instance management API. */
 @Fluent
 public interface ContainerGroups
-    extends SupportsCreating<ContainerGroup.DefinitionStages.Blank>,
-        HasManager<ContainerInstanceManager>,
-        SupportsBatchCreation<ContainerGroup>,
-        SupportsGettingByResourceGroup<ContainerGroup>,
-        SupportsGettingById<ContainerGroup>,
-        SupportsDeletingByResourceGroup,
-        SupportsDeletingById,
-        SupportsBatchDeletion,
-        SupportsListingByResourceGroup<ContainerGroup>,
-        SupportsListing<ContainerGroup> {
+    extends SupportsCreating<ContainerGroup.DefinitionStages.Blank>, HasManager<ContainerInstanceManager>,
+    SupportsBatchCreation<ContainerGroup>, SupportsGettingByResourceGroup<ContainerGroup>,
+    SupportsGettingById<ContainerGroup>, SupportsDeletingByResourceGroup, SupportsDeletingById, SupportsBatchDeletion,
+    SupportsListingByResourceGroup<ContainerGroup>, SupportsListing<ContainerGroup> {
 
     /**
      * Get the log content for the specified container instance within a container group.
@@ -77,8 +71,8 @@ public interface ContainerGroups
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the future computation of this call
      */
-    Mono<String> getLogContentAsync(
-        String resourceGroupName, String containerGroupName, String containerName, int tailLineCount);
+    Mono<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName,
+        int tailLineCount);
 
     /**
      * Lists all operations for Azure Container Instance service.
@@ -161,6 +155,6 @@ public interface ContainerGroups
      * @param containerName the name of the container instance
      * @return the information for the output stream
      */
-    Mono<ContainerAttachResult> attachOutputStreamAsync(
-        String resourceGroupName, String containerGroupName, String containerName);
+    Mono<ContainerAttachResult> attachOutputStreamAsync(String resourceGroupName, String containerGroupName,
+        String containerName);
 }

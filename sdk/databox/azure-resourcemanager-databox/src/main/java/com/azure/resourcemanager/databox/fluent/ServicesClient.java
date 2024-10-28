@@ -32,8 +32,8 @@ public interface ServicesClient {
      * @return the available skus operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SkuInformationInner> listAvailableSkusByResourceGroup(
-        String resourceGroupName, String location, AvailableSkuRequest availableSkuRequest);
+    PagedIterable<SkuInformationInner> listAvailableSkusByResourceGroup(String resourceGroupName, String location,
+        AvailableSkuRequest availableSkuRequest);
 
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
@@ -48,8 +48,8 @@ public interface ServicesClient {
      * @return the available skus operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SkuInformationInner> listAvailableSkusByResourceGroup(
-        String resourceGroupName, String location, AvailableSkuRequest availableSkuRequest, Context context);
+    PagedIterable<SkuInformationInner> listAvailableSkusByResourceGroup(String resourceGroupName, String location,
+        AvailableSkuRequest availableSkuRequest, Context context);
 
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
@@ -64,8 +64,8 @@ public interface ServicesClient {
      * @return output of the address validation api along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AddressValidationOutputInner> validateAddressWithResponse(
-        String location, ValidateAddress validateAddress, Context context);
+    Response<AddressValidationOutputInner> validateAddressWithResponse(String location, ValidateAddress validateAddress,
+        Context context);
 
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
@@ -94,8 +94,8 @@ public interface ServicesClient {
      * @return response of pre job creation validations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ValidationResponseInner> validateInputsByResourceGroupWithResponse(
-        String resourceGroupName, String location, ValidationRequest validationRequest, Context context);
+    Response<ValidationResponseInner> validateInputsByResourceGroupWithResponse(String resourceGroupName,
+        String location, ValidationRequest validationRequest, Context context);
 
     /**
      * This method does all necessary pre-job creation validation under resource group.
@@ -109,8 +109,8 @@ public interface ServicesClient {
      * @return response of pre job creation validations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidationResponseInner validateInputsByResourceGroup(
-        String resourceGroupName, String location, ValidationRequest validationRequest);
+    ValidationResponseInner validateInputsByResourceGroup(String resourceGroupName, String location,
+        ValidationRequest validationRequest);
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
@@ -124,8 +124,8 @@ public interface ServicesClient {
      * @return response of pre job creation validations along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ValidationResponseInner> validateInputsWithResponse(
-        String location, ValidationRequest validationRequest, Context context);
+    Response<ValidationResponseInner> validateInputsWithResponse(String location, ValidationRequest validationRequest,
+        Context context);
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
@@ -152,8 +152,8 @@ public interface ServicesClient {
      * @return configuration response specific to a region along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RegionConfigurationResponseInner> regionConfigurationWithResponse(
-        String location, RegionConfigurationRequest regionConfigurationRequest, Context context);
+    Response<RegionConfigurationResponseInner> regionConfigurationWithResponse(String location,
+        RegionConfigurationRequest regionConfigurationRequest, Context context);
 
     /**
      * This API provides configuration details specific to given region/location at Subscription level.
@@ -166,8 +166,8 @@ public interface ServicesClient {
      * @return configuration response specific to a region.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RegionConfigurationResponseInner regionConfiguration(
-        String location, RegionConfigurationRequest regionConfigurationRequest);
+    RegionConfigurationResponseInner regionConfiguration(String location,
+        RegionConfigurationRequest regionConfigurationRequest);
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
@@ -182,11 +182,8 @@ public interface ServicesClient {
      * @return configuration response specific to a region along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RegionConfigurationResponseInner> regionConfigurationByResourceGroupWithResponse(
-        String resourceGroupName,
-        String location,
-        RegionConfigurationRequest regionConfigurationRequest,
-        Context context);
+    Response<RegionConfigurationResponseInner> regionConfigurationByResourceGroupWithResponse(String resourceGroupName,
+        String location, RegionConfigurationRequest regionConfigurationRequest, Context context);
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
@@ -200,6 +197,6 @@ public interface ServicesClient {
      * @return configuration response specific to a region.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RegionConfigurationResponseInner regionConfigurationByResourceGroup(
-        String resourceGroupName, String location, RegionConfigurationRequest regionConfigurationRequest);
+    RegionConfigurationResponseInner regionConfigurationByResourceGroup(String resourceGroupName, String location,
+        RegionConfigurationRequest regionConfigurationRequest);
 }

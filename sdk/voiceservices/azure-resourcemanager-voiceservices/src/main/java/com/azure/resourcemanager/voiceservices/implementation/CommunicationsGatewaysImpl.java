@@ -21,8 +21,7 @@ public final class CommunicationsGatewaysImpl implements CommunicationsGateways 
 
     private final com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager;
 
-    public CommunicationsGatewaysImpl(
-        CommunicationsGatewaysClient innerClient,
+    public CommunicationsGatewaysImpl(CommunicationsGatewaysClient innerClient,
         com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -44,20 +43,17 @@ public final class CommunicationsGatewaysImpl implements CommunicationsGateways 
     }
 
     public PagedIterable<CommunicationsGateway> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<CommunicationsGatewayInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        PagedIterable<CommunicationsGatewayInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
         return Utils.mapPage(inner, inner1 -> new CommunicationsGatewayImpl(inner1, this.manager()));
     }
 
-    public Response<CommunicationsGateway> getByResourceGroupWithResponse(
-        String resourceGroupName, String communicationsGatewayName, Context context) {
-        Response<CommunicationsGatewayInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, communicationsGatewayName, context);
+    public Response<CommunicationsGateway> getByResourceGroupWithResponse(String resourceGroupName,
+        String communicationsGatewayName, Context context) {
+        Response<CommunicationsGatewayInner> inner = this.serviceClient()
+            .getByResourceGroupWithResponse(resourceGroupName, communicationsGatewayName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CommunicationsGatewayImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -65,8 +61,8 @@ public final class CommunicationsGatewaysImpl implements CommunicationsGateways 
     }
 
     public CommunicationsGateway getByResourceGroup(String resourceGroupName, String communicationsGatewayName) {
-        CommunicationsGatewayInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, communicationsGatewayName);
+        CommunicationsGatewayInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, communicationsGatewayName);
         if (inner != null) {
             return new CommunicationsGatewayImpl(inner, this.manager());
         } else {
@@ -85,45 +81,28 @@ public final class CommunicationsGatewaysImpl implements CommunicationsGateways 
     public CommunicationsGateway getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String communicationsGatewayName = Utils.getValueFromIdByName(id, "communicationsGateways");
         if (communicationsGatewayName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'communicationsGateways'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'communicationsGateways'.", id)));
         }
-        return this
-            .getByResourceGroupWithResponse(resourceGroupName, communicationsGatewayName, Context.NONE)
+        return this.getByResourceGroupWithResponse(resourceGroupName, communicationsGatewayName, Context.NONE)
             .getValue();
     }
 
     public Response<CommunicationsGateway> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String communicationsGatewayName = Utils.getValueFromIdByName(id, "communicationsGateways");
         if (communicationsGatewayName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'communicationsGateways'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'communicationsGateways'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, communicationsGatewayName, context);
     }
@@ -131,21 +110,13 @@ public final class CommunicationsGatewaysImpl implements CommunicationsGateways 
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String communicationsGatewayName = Utils.getValueFromIdByName(id, "communicationsGateways");
         if (communicationsGatewayName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'communicationsGateways'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'communicationsGateways'.", id)));
         }
         this.delete(resourceGroupName, communicationsGatewayName, Context.NONE);
     }
@@ -153,21 +124,13 @@ public final class CommunicationsGatewaysImpl implements CommunicationsGateways 
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String communicationsGatewayName = Utils.getValueFromIdByName(id, "communicationsGateways");
         if (communicationsGatewayName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'communicationsGateways'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'communicationsGateways'.", id)));
         }
         this.delete(resourceGroupName, communicationsGatewayName, context);
     }

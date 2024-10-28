@@ -217,16 +217,16 @@ public final class ApiCreateOrUpdateProperties extends ApiContractProperties {
 
     /** {@inheritDoc} */
     @Override
-    public ApiCreateOrUpdateProperties withAuthenticationSettings(
-        AuthenticationSettingsContract authenticationSettings) {
+    public ApiCreateOrUpdateProperties
+        withAuthenticationSettings(AuthenticationSettingsContract authenticationSettings) {
         super.withAuthenticationSettings(authenticationSettings);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ApiCreateOrUpdateProperties withSubscriptionKeyParameterNames(
-        SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
+    public ApiCreateOrUpdateProperties
+        withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
         super.withSubscriptionKeyParameterNames(subscriptionKeyParameterNames);
         return this;
     }

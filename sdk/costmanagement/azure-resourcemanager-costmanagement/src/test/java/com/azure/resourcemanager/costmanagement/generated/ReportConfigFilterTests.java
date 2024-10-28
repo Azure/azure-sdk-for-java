@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ReportConfigFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReportConfigFilter model =
-            BinaryData
-                .fromString(
-                    "{\"and\":[{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"krlkhbzhfepg\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"e\",\"operator\":\"In\",\"values\":[]}}],\"or\":[{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"aierhhb\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"l\",\"operator\":\"Contains\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"aodxo\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"dxkqpx\",\"operator\":\"Contains\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"pimexgstxgcpodg\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"jrmvdjwzrlo\",\"operator\":\"In\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"j\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"jctbza\",\"operator\":\"In\",\"values\":[]}}],\"dimensions\":{\"name\":\"sycbkbfk\",\"operator\":\"Contains\",\"values\":[\"dkexxppofm\",\"axcfjpgddtocjjx\"]},\"tags\":{\"name\":\"pmouexhdz\",\"operator\":\"In\",\"values\":[\"qeojnxqbzvddntw\"]}}")
-                .toObject(ReportConfigFilter.class);
+        ReportConfigFilter model = BinaryData.fromString(
+            "{\"and\":[{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"krlkhbzhfepg\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"e\",\"operator\":\"In\",\"values\":[]}}],\"or\":[{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"aierhhb\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"l\",\"operator\":\"Contains\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"aodxo\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"dxkqpx\",\"operator\":\"Contains\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"pimexgstxgcpodg\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"jrmvdjwzrlo\",\"operator\":\"In\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"j\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"jctbza\",\"operator\":\"In\",\"values\":[]}}],\"dimensions\":{\"name\":\"sycbkbfk\",\"operator\":\"Contains\",\"values\":[\"dkexxppofm\",\"axcfjpgddtocjjx\"]},\"tags\":{\"name\":\"pmouexhdz\",\"operator\":\"In\",\"values\":[\"qeojnxqbzvddntw\"]}}")
+            .toObject(ReportConfigFilter.class);
         Assertions.assertEquals("krlkhbzhfepg", model.and().get(0).dimensions().name());
         Assertions.assertEquals(OperatorType.CONTAINS, model.and().get(0).dimensions().operator());
         Assertions.assertEquals("e", model.and().get(0).tags().name());
@@ -37,89 +35,54 @@ public final class ReportConfigFilterTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReportConfigFilter model =
-            new ReportConfigFilter()
-                .withAnd(
-                    Arrays
-                        .asList(
-                            new ReportConfigFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new ReportConfigComparisonExpression()
-                                        .withName("krlkhbzhfepg")
-                                        .withOperator(OperatorType.CONTAINS)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new ReportConfigComparisonExpression()
-                                        .withName("e")
-                                        .withOperator(OperatorType.IN)
-                                        .withValues(Arrays.asList()))))
-                .withOr(
-                    Arrays
-                        .asList(
-                            new ReportConfigFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new ReportConfigComparisonExpression()
-                                        .withName("aierhhb")
-                                        .withOperator(OperatorType.IN)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new ReportConfigComparisonExpression()
-                                        .withName("l")
-                                        .withOperator(OperatorType.CONTAINS)
-                                        .withValues(Arrays.asList())),
-                            new ReportConfigFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new ReportConfigComparisonExpression()
-                                        .withName("aodxo")
-                                        .withOperator(OperatorType.IN)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new ReportConfigComparisonExpression()
-                                        .withName("dxkqpx")
-                                        .withOperator(OperatorType.CONTAINS)
-                                        .withValues(Arrays.asList())),
-                            new ReportConfigFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new ReportConfigComparisonExpression()
-                                        .withName("pimexgstxgcpodg")
-                                        .withOperator(OperatorType.IN)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new ReportConfigComparisonExpression()
-                                        .withName("jrmvdjwzrlo")
-                                        .withOperator(OperatorType.IN)
-                                        .withValues(Arrays.asList())),
-                            new ReportConfigFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new ReportConfigComparisonExpression()
-                                        .withName("j")
-                                        .withOperator(OperatorType.CONTAINS)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new ReportConfigComparisonExpression()
-                                        .withName("jctbza")
-                                        .withOperator(OperatorType.IN)
-                                        .withValues(Arrays.asList()))))
-                .withDimensions(
-                    new ReportConfigComparisonExpression()
-                        .withName("sycbkbfk")
-                        .withOperator(OperatorType.CONTAINS)
-                        .withValues(Arrays.asList("dkexxppofm", "axcfjpgddtocjjx")))
-                .withTags(
-                    new ReportConfigComparisonExpression()
-                        .withName("pmouexhdz")
+        ReportConfigFilter model = new ReportConfigFilter()
+            .withAnd(Arrays.asList(new ReportConfigFilter().withAnd(Arrays.asList())
+                .withOr(Arrays.asList())
+                .withDimensions(new ReportConfigComparisonExpression().withName("krlkhbzhfepg")
+                    .withOperator(OperatorType.CONTAINS)
+                    .withValues(Arrays.asList()))
+                .withTags(new ReportConfigComparisonExpression().withName("e")
+                    .withOperator(OperatorType.IN)
+                    .withValues(Arrays.asList()))))
+            .withOr(Arrays.asList(
+                new ReportConfigFilter().withAnd(Arrays.asList())
+                    .withOr(Arrays.asList())
+                    .withDimensions(new ReportConfigComparisonExpression().withName("aierhhb")
                         .withOperator(OperatorType.IN)
-                        .withValues(Arrays.asList("qeojnxqbzvddntw")));
+                        .withValues(Arrays.asList()))
+                    .withTags(new ReportConfigComparisonExpression().withName("l")
+                        .withOperator(OperatorType.CONTAINS)
+                        .withValues(Arrays.asList())),
+                new ReportConfigFilter().withAnd(Arrays.asList())
+                    .withOr(Arrays.asList())
+                    .withDimensions(new ReportConfigComparisonExpression().withName("aodxo")
+                        .withOperator(OperatorType.IN)
+                        .withValues(Arrays.asList()))
+                    .withTags(new ReportConfigComparisonExpression().withName("dxkqpx")
+                        .withOperator(OperatorType.CONTAINS)
+                        .withValues(Arrays.asList())),
+                new ReportConfigFilter().withAnd(Arrays.asList())
+                    .withOr(Arrays.asList())
+                    .withDimensions(new ReportConfigComparisonExpression().withName("pimexgstxgcpodg")
+                        .withOperator(OperatorType.IN)
+                        .withValues(Arrays.asList()))
+                    .withTags(new ReportConfigComparisonExpression().withName("jrmvdjwzrlo")
+                        .withOperator(OperatorType.IN)
+                        .withValues(Arrays.asList())),
+                new ReportConfigFilter().withAnd(Arrays.asList())
+                    .withOr(Arrays.asList())
+                    .withDimensions(new ReportConfigComparisonExpression().withName("j")
+                        .withOperator(OperatorType.CONTAINS)
+                        .withValues(Arrays.asList()))
+                    .withTags(new ReportConfigComparisonExpression().withName("jctbza")
+                        .withOperator(OperatorType.IN)
+                        .withValues(Arrays.asList()))))
+            .withDimensions(new ReportConfigComparisonExpression().withName("sycbkbfk")
+                .withOperator(OperatorType.CONTAINS)
+                .withValues(Arrays.asList("dkexxppofm", "axcfjpgddtocjjx")))
+            .withTags(new ReportConfigComparisonExpression().withName("pmouexhdz")
+                .withOperator(OperatorType.IN)
+                .withValues(Arrays.asList("qeojnxqbzvddntw")));
         model = BinaryData.fromObject(model).toObject(ReportConfigFilter.class);
         Assertions.assertEquals("krlkhbzhfepg", model.and().get(0).dimensions().name());
         Assertions.assertEquals(OperatorType.CONTAINS, model.and().get(0).dimensions().operator());

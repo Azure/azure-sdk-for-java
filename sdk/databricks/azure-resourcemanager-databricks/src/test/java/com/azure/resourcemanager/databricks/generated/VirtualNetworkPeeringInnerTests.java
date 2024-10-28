@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkPeeringInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkPeeringInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"allowVirtualNetworkAccess\":false,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":false,\"useRemoteGateways\":false,\"databricksVirtualNetwork\":{\"id\":\"uokktwhrdxwz\"},\"databricksAddressSpace\":{\"addressPrefixes\":[\"mbsureximo\"]},\"remoteVirtualNetwork\":{\"id\":\"ocfs\"},\"remoteAddressSpace\":{\"addressPrefixes\":[\"mddystkiiux\",\"qyud\"]},\"peeringState\":\"Disconnected\",\"provisioningState\":\"Succeeded\"},\"id\":\"nbpoczvyifqrvkdv\",\"name\":\"sllr\",\"type\":\"vvdfwatkpnpul\"}")
-                .toObject(VirtualNetworkPeeringInner.class);
+        VirtualNetworkPeeringInner model = BinaryData.fromString(
+            "{\"properties\":{\"allowVirtualNetworkAccess\":false,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":false,\"useRemoteGateways\":false,\"databricksVirtualNetwork\":{\"id\":\"uokktwhrdxwz\"},\"databricksAddressSpace\":{\"addressPrefixes\":[\"mbsureximo\"]},\"remoteVirtualNetwork\":{\"id\":\"ocfs\"},\"remoteAddressSpace\":{\"addressPrefixes\":[\"mddystkiiux\",\"qyud\"]},\"peeringState\":\"Disconnected\",\"provisioningState\":\"Succeeded\"},\"id\":\"nbpoczvyifqrvkdv\",\"name\":\"sllr\",\"type\":\"vvdfwatkpnpul\"}")
+            .toObject(VirtualNetworkPeeringInner.class);
         Assertions.assertEquals(false, model.allowVirtualNetworkAccess());
         Assertions.assertEquals(true, model.allowForwardedTraffic());
         Assertions.assertEquals(false, model.allowGatewayTransit());
@@ -32,18 +30,15 @@ public final class VirtualNetworkPeeringInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkPeeringInner model =
-            new VirtualNetworkPeeringInner()
-                .withAllowVirtualNetworkAccess(false)
-                .withAllowForwardedTraffic(true)
-                .withAllowGatewayTransit(false)
-                .withUseRemoteGateways(false)
-                .withDatabricksVirtualNetwork(
-                    new VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork().withId("uokktwhrdxwz"))
-                .withDatabricksAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("mbsureximo")))
-                .withRemoteVirtualNetwork(
-                    new VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork().withId("ocfs"))
-                .withRemoteAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("mddystkiiux", "qyud")));
+        VirtualNetworkPeeringInner model = new VirtualNetworkPeeringInner().withAllowVirtualNetworkAccess(false)
+            .withAllowForwardedTraffic(true)
+            .withAllowGatewayTransit(false)
+            .withUseRemoteGateways(false)
+            .withDatabricksVirtualNetwork(
+                new VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork().withId("uokktwhrdxwz"))
+            .withDatabricksAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("mbsureximo")))
+            .withRemoteVirtualNetwork(new VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork().withId("ocfs"))
+            .withRemoteAddressSpace(new AddressSpace().withAddressPrefixes(Arrays.asList("mddystkiiux", "qyud")));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkPeeringInner.class);
         Assertions.assertEquals(false, model.allowVirtualNetworkAccess());
         Assertions.assertEquals(true, model.allowForwardedTraffic());

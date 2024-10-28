@@ -104,8 +104,8 @@ public final class MonitorProperties {
      * @param marketplaceSubscriptionStatus the marketplaceSubscriptionStatus value to set.
      * @return the MonitorProperties object itself.
      */
-    public MonitorProperties withMarketplaceSubscriptionStatus(
-        MarketplaceSubscriptionStatus marketplaceSubscriptionStatus) {
+    public MonitorProperties
+        withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus marketplaceSubscriptionStatus) {
         this.marketplaceSubscriptionStatus = marketplaceSubscriptionStatus;
         return this;
     }
@@ -125,8 +125,8 @@ public final class MonitorProperties {
      * @param dynatraceEnvironmentProperties the dynatraceEnvironmentProperties value to set.
      * @return the MonitorProperties object itself.
      */
-    public MonitorProperties withDynatraceEnvironmentProperties(
-        DynatraceEnvironmentProperties dynatraceEnvironmentProperties) {
+    public MonitorProperties
+        withDynatraceEnvironmentProperties(DynatraceEnvironmentProperties dynatraceEnvironmentProperties) {
         this.dynatraceEnvironmentProperties = dynatraceEnvironmentProperties;
         return this;
     }

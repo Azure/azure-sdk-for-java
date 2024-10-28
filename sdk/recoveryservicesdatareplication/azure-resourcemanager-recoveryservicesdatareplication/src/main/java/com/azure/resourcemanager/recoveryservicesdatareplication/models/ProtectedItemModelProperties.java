@@ -492,16 +492,12 @@ public final class ProtectedItemModelProperties {
      */
     public void validate() {
         if (policyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property policyName in model ProtectedItemModelProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property policyName in model ProtectedItemModelProperties"));
         }
         if (replicationExtensionName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property replicationExtensionName in model ProtectedItemModelProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property replicationExtensionName in model ProtectedItemModelProperties"));
         }
         if (currentJob() != null) {
             currentJob().validate();
@@ -519,10 +515,8 @@ public final class ProtectedItemModelProperties {
             healthErrors().forEach(e -> e.validate());
         }
         if (customProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customProperties in model ProtectedItemModelProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property customProperties in model ProtectedItemModelProperties"));
         } else {
             customProperties().validate();
         }

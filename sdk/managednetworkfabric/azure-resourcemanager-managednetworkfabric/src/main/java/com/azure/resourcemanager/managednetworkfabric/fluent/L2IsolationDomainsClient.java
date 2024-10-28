@@ -35,8 +35,8 @@ public interface L2IsolationDomainsClient {
      * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreate(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body);
+    SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreate(String resourceGroupName,
+        String l2IsolationDomainName, L2IsolationDomainInner body);
 
     /**
      * Create L2 Isolation Domain.
@@ -54,8 +54,8 @@ public interface L2IsolationDomainsClient {
      * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreate(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body, Context context);
+    SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginCreate(String resourceGroupName,
+        String l2IsolationDomainName, L2IsolationDomainInner body, Context context);
 
     /**
      * Create L2 Isolation Domain.
@@ -90,8 +90,8 @@ public interface L2IsolationDomainsClient {
      * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    L2IsolationDomainInner create(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body, Context context);
+    L2IsolationDomainInner create(String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainInner body,
+        Context context);
 
     /**
      * Retrieves details of this L2 Isolation Domain.
@@ -107,8 +107,8 @@ public interface L2IsolationDomainsClient {
      * @return the L2 Isolation Domain resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<L2IsolationDomainInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String l2IsolationDomainName, Context context);
+    Response<L2IsolationDomainInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String l2IsolationDomainName, Context context);
 
     /**
      * Retrieves details of this L2 Isolation Domain.
@@ -139,8 +139,8 @@ public interface L2IsolationDomainsClient {
      * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdate(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body);
+    SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdate(String resourceGroupName,
+        String l2IsolationDomainName, L2IsolationDomainPatch body);
 
     /**
      * Updates the L2 Isolation Domain.
@@ -157,8 +157,8 @@ public interface L2IsolationDomainsClient {
      * @return the {@link SyncPoller} for polling of the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdate(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body, Context context);
+    SyncPoller<PollResult<L2IsolationDomainInner>, L2IsolationDomainInner> beginUpdate(String resourceGroupName,
+        String l2IsolationDomainName, L2IsolationDomainPatch body, Context context);
 
     /**
      * Updates the L2 Isolation Domain.
@@ -191,8 +191,8 @@ public interface L2IsolationDomainsClient {
      * @return the L2 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    L2IsolationDomainInner update(
-        String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body, Context context);
+    L2IsolationDomainInner update(String resourceGroupName, String l2IsolationDomainName, L2IsolationDomainPatch body,
+        Context context);
 
     /**
      * Deletes the L2 Isolation Domain.
@@ -223,8 +223,8 @@ public interface L2IsolationDomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String l2IsolationDomainName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l2IsolationDomainName,
+        Context context);
 
     /**
      * Deletes the L2 Isolation Domain.
@@ -270,8 +270,8 @@ public interface L2IsolationDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body);
+        beginUpdateAdministrativeState(String resourceGroupName, String l2IsolationDomainName,
+            UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -289,8 +289,8 @@ public interface L2IsolationDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context);
+        beginUpdateAdministrativeState(String resourceGroupName, String l2IsolationDomainName,
+            UpdateAdministrativeState body, Context context);
 
     /**
      * Implements the operation to the underlying resources.
@@ -306,8 +306,8 @@ public interface L2IsolationDomainsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body);
+    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(String resourceGroupName,
+        String l2IsolationDomainName, UpdateAdministrativeState body);
 
     /**
      * Implements the operation to the underlying resources.
@@ -324,8 +324,8 @@ public interface L2IsolationDomainsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
-        String resourceGroupName, String l2IsolationDomainName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(String resourceGroupName,
+        String l2IsolationDomainName, UpdateAdministrativeState body, Context context);
 
     /**
      * Validates the configuration of the resources.
@@ -381,8 +381,8 @@ public interface L2IsolationDomainsClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String l2IsolationDomainName, Context context);
+    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String l2IsolationDomainName,
+        Context context);
 
     /**
      * Execute the commit on the resources.
@@ -430,8 +430,8 @@ public interface L2IsolationDomainsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner commitConfiguration(
-        String resourceGroupName, String l2IsolationDomainName);
+    CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName,
+        String l2IsolationDomainName);
 
     /**
      * Execute the commit on the resources.
@@ -447,8 +447,8 @@ public interface L2IsolationDomainsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner commitConfiguration(
-        String resourceGroupName, String l2IsolationDomainName, Context context);
+    CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName,
+        String l2IsolationDomainName, Context context);
 
     /**
      * List L2IsolationDomains by resource group.

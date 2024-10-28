@@ -16,22 +16,33 @@ import java.time.OffsetDateTime;
 public final class IncidentHelper {
     private static IncidentAccessor accessor;
 
-    private IncidentHelper() { }
+    private IncidentHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link AnomalyIncident} instance.
      */
     public interface IncidentAccessor {
         void setId(AnomalyIncident incident, String id);
+
         void setDataFeedId(AnomalyIncident incident, String dataFeedId);
+
         void setMetricId(AnomalyIncident incident, String metricId);
+
         void setDetectionConfigurationId(AnomalyIncident incident, String detectionConfigurationId);
+
         void setRootDimensionKey(AnomalyIncident incident, DimensionKey rootDimensionKey);
+
         void setValue(AnomalyIncident incident, Double value);
+
         void setExpectedValue(AnomalyIncident incident, Double value);
+
         void setSeverity(AnomalyIncident incident, AnomalySeverity severity);
+
         void setStatus(AnomalyIncident incident, AnomalyIncidentStatus status);
+
         void setStartTime(AnomalyIncident incident, OffsetDateTime startTime);
+
         void setLastTime(AnomalyIncident incident, OffsetDateTime lastTime);
     }
 

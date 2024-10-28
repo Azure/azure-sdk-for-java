@@ -28,8 +28,8 @@ public interface SqlPoolTableColumnsClient {
      * @return columns in a given table in a SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlPoolColumnInner> listByTableName(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName);
+    PagedIterable<SqlPoolColumnInner> listByTableName(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName);
 
     /**
      * Gets columns in a given table in a SQL pool
@@ -49,12 +49,6 @@ public interface SqlPoolTableColumnsClient {
      * @return columns in a given table in a SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlPoolColumnInner> listByTableName(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String filter,
-        Context context);
+    PagedIterable<SqlPoolColumnInner> listByTableName(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String schemaName, String tableName, String filter, Context context);
 }

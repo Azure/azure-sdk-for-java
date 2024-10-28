@@ -22,8 +22,8 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return check name availability response along with {@link Response}.
      */
-    Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest request, Context context);
+    Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest request,
+        Context context);
 
     /**
      * Check name availability
@@ -76,8 +76,8 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of an operation along with {@link Response}.
      */
-    Response<Void> getLocationHeaderResultWithResponse(
-        String resourceGroupName, String workspaceName, String operationId, Context context);
+    Response<Void> getLocationHeaderResultWithResponse(String resourceGroupName, String workspaceName,
+        String operationId, Context context);
 
     /**
      * Get operation result
@@ -107,8 +107,8 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of an operation along with {@link Response}.
      */
-    Response<OperationResource> getAzureAsyncHeaderResultWithResponse(
-        String resourceGroupName, String workspaceName, String operationId, Context context);
+    Response<OperationResource> getAzureAsyncHeaderResultWithResponse(String resourceGroupName, String workspaceName,
+        String operationId, Context context);
 
     /**
      * Get operation status

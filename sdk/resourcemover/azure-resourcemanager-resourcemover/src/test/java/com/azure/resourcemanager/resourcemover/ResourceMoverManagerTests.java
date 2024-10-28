@@ -35,13 +35,11 @@ public class ResourceMoverManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        resourceMoverManager = ResourceMoverManager
-            .configure()
+        resourceMoverManager = ResourceMoverManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -52,10 +50,7 @@ public class ResourceMoverManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -77,14 +72,14 @@ public class ResourceMoverManagerTests extends TestProxyTestBase {
                 .define(collectionName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withProperties(new MoveCollectionProperties()
-                    .withSourceRegion(Region.US_WEST2.name())
+                .withProperties(new MoveCollectionProperties().withSourceRegion(Region.US_WEST2.name())
                     .withTargetRegion(Region.US_WEST.name()))
                 .create();
             // @embedmeEnd
             moveCollection.refresh();
             Assertions.assertEquals(moveCollection.name(), collectionName);
-            Assertions.assertEquals(moveCollection.name(), resourceMoverManager.moveCollections().getById(moveCollection.id()).name());
+            Assertions.assertEquals(moveCollection.name(),
+                resourceMoverManager.moveCollections().getById(moveCollection.id()).name());
             Assertions.assertTrue(resourceMoverManager.moveCollections().list().stream().count() > 0);
         } finally {
             if (moveCollection != null) {

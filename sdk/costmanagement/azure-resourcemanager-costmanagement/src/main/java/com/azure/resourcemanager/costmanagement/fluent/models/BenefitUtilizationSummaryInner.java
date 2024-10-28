@@ -21,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("BenefitUtilizationSummary")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "IncludedQuantity", value = IncludedQuantityUtilizationSummary.class),
-    @JsonSubTypes.Type(name = "SavingsPlan", value = SavingsPlanUtilizationSummary.class)
-})
+    @JsonSubTypes.Type(name = "SavingsPlan", value = SavingsPlanUtilizationSummary.class) })
 @Immutable
 public class BenefitUtilizationSummaryInner extends ProxyResource {
     /** Creates an instance of BenefitUtilizationSummaryInner class. */

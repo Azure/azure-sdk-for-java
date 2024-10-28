@@ -320,9 +320,8 @@ public final class ConfigurationStoreInner extends Resource {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model ConfigurationStoreInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sku in model ConfigurationStoreInner"));
         } else {
             sku().validate();
         }

@@ -10,8 +10,8 @@ import com.azure.resourcemanager.deploymentmanager.models.StepProperties;
 public final class StepPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StepProperties model =
-            BinaryData.fromString("{\"stepType\":\"StepProperties\"}").toObject(StepProperties.class);
+        StepProperties model
+            = BinaryData.fromString("{\"stepType\":\"StepProperties\"}").toObject(StepProperties.class);
     }
 
     @org.junit.jupiter.api.Test

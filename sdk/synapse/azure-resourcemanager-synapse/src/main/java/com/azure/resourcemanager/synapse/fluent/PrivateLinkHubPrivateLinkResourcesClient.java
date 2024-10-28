@@ -61,8 +61,8 @@ public interface PrivateLinkHubPrivateLinkResourcesClient {
      * @return private link resource in private link hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName, String privateLinkHubName, String privateLinkResourceName, Context context);
+    Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String privateLinkHubName,
+        String privateLinkResourceName, Context context);
 
     /**
      * Get Private Link Hub Private Link Resource

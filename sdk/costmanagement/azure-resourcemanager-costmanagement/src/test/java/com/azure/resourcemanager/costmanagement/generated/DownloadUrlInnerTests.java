@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DownloadUrlInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DownloadUrlInner model =
-            BinaryData
-                .fromString(
-                    "{\"expiryTime\":\"2021-04-26T11:14:10Z\",\"validTill\":\"2021-07-25T07:46:34Z\",\"downloadUrl\":\"kzhjj\"}")
-                .toObject(DownloadUrlInner.class);
+        DownloadUrlInner model = BinaryData.fromString(
+            "{\"expiryTime\":\"2021-04-26T11:14:10Z\",\"validTill\":\"2021-07-25T07:46:34Z\",\"downloadUrl\":\"kzhjj\"}")
+            .toObject(DownloadUrlInner.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T07:46:34Z"), model.validTill());
         Assertions.assertEquals("kzhjj", model.downloadUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DownloadUrlInner model =
-            new DownloadUrlInner().withValidTill(OffsetDateTime.parse("2021-07-25T07:46:34Z")).withDownloadUrl("kzhjj");
+        DownloadUrlInner model = new DownloadUrlInner().withValidTill(OffsetDateTime.parse("2021-07-25T07:46:34Z"))
+            .withDownloadUrl("kzhjj");
         model = BinaryData.fromObject(model).toObject(DownloadUrlInner.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-07-25T07:46:34Z"), model.validTill());
         Assertions.assertEquals("kzhjj", model.downloadUrl());

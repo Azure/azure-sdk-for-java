@@ -703,8 +703,10 @@ public final class ConfigurationGroupSchemasClientImpl implements ConfigurationG
     public SyncPoller<PollResult<ConfigurationGroupSchemaInner>, ConfigurationGroupSchemaInner> beginCreateOrUpdate(
         String resourceGroupName, String publisherName, String configurationGroupSchemaName,
         ConfigurationGroupSchemaInner parameters, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, publisherName, configurationGroupSchemaName, parameters,
-            context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, publisherName, configurationGroupSchemaName, parameters,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -723,7 +725,8 @@ public final class ConfigurationGroupSchemasClientImpl implements ConfigurationG
     private Mono<ConfigurationGroupSchemaInner> createOrUpdateAsync(String resourceGroupName, String publisherName,
         String configurationGroupSchemaName, ConfigurationGroupSchemaInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, publisherName, configurationGroupSchemaName, parameters)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

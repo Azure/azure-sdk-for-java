@@ -13,22 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class EntityHierarchyItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EntityHierarchyItem model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"displayName\":\"xwtctyqiklbbovpl\",\"permissions\":\"view\",\"children\":[{\"id\":\"yuguosvmkfssx\",\"name\":\"ukkfplgmgs\",\"type\":\"nkjzkdeslpvlop\"},{\"id\":\"yighxpk\",\"name\":\"wzbaiue\",\"type\":\"baumnyqupedeoj\"}]},\"id\":\"a\",\"name\":\"ckhsmtxpsieb\",\"type\":\"fhvpesaps\"}")
-                .toObject(EntityHierarchyItem.class);
+        EntityHierarchyItem model = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"xwtctyqiklbbovpl\",\"permissions\":\"view\",\"children\":[{\"id\":\"yuguosvmkfssx\",\"name\":\"ukkfplgmgs\",\"type\":\"nkjzkdeslpvlop\"},{\"id\":\"yighxpk\",\"name\":\"wzbaiue\",\"type\":\"baumnyqupedeoj\"}]},\"id\":\"a\",\"name\":\"ckhsmtxpsieb\",\"type\":\"fhvpesaps\"}")
+            .toObject(EntityHierarchyItem.class);
         Assertions.assertEquals("xwtctyqiklbbovpl", model.displayName());
         Assertions.assertEquals(Permissions.VIEW, model.permissions());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EntityHierarchyItem model =
-            new EntityHierarchyItem()
-                .withDisplayName("xwtctyqiklbbovpl")
-                .withPermissions(Permissions.VIEW)
-                .withChildren(Arrays.asList(new EntityHierarchyItem(), new EntityHierarchyItem()));
+        EntityHierarchyItem model = new EntityHierarchyItem().withDisplayName("xwtctyqiklbbovpl")
+            .withPermissions(Permissions.VIEW)
+            .withChildren(Arrays.asList(new EntityHierarchyItem(), new EntityHierarchyItem()));
         model = BinaryData.fromObject(model).toObject(EntityHierarchyItem.class);
         Assertions.assertEquals("xwtctyqiklbbovpl", model.displayName());
         Assertions.assertEquals(Permissions.VIEW, model.permissions());

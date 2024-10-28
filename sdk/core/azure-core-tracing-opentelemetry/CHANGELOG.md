@@ -257,7 +257,7 @@
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.30.0` to `1.31.0`.
-- Upgraded `opentelemtry-api` from `1.11.0` to `1.14.0`.
+- Upgraded `opentelemetry-api` from `1.11.0` to `1.14.0`.
 
 ## 1.0.0-beta.26 (2022-06-30)
 

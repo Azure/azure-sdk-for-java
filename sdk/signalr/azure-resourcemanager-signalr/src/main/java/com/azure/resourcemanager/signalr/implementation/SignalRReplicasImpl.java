@@ -21,8 +21,8 @@ public final class SignalRReplicasImpl implements SignalRReplicas {
 
     private final com.azure.resourcemanager.signalr.SignalRManager serviceManager;
 
-    public SignalRReplicasImpl(
-        SignalRReplicasClient innerClient, com.azure.resourcemanager.signalr.SignalRManager serviceManager) {
+    public SignalRReplicasImpl(SignalRReplicasClient innerClient,
+        com.azure.resourcemanager.signalr.SignalRManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -37,15 +37,12 @@ public final class SignalRReplicasImpl implements SignalRReplicas {
         return Utils.mapPage(inner, inner1 -> new ReplicaImpl(inner1, this.manager()));
     }
 
-    public Response<Replica> getWithResponse(
-        String resourceGroupName, String resourceName, String replicaName, Context context) {
-        Response<ReplicaInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, resourceName, replicaName, context);
+    public Response<Replica> getWithResponse(String resourceGroupName, String resourceName, String replicaName,
+        Context context) {
+        Response<ReplicaInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, replicaName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ReplicaImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -61,8 +58,8 @@ public final class SignalRReplicasImpl implements SignalRReplicas {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String replicaName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String replicaName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, replicaName, context);
     }
 
@@ -81,25 +78,18 @@ public final class SignalRReplicasImpl implements SignalRReplicas {
     public Replica getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
         }
         String replicaName = Utils.getValueFromIdByName(id, "replicas");
         if (replicaName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
         }
         return this.getWithResponse(resourceGroupName, resourceName, replicaName, Context.NONE).getValue();
     }
@@ -107,25 +97,18 @@ public final class SignalRReplicasImpl implements SignalRReplicas {
     public Response<Replica> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
         }
         String replicaName = Utils.getValueFromIdByName(id, "replicas");
         if (replicaName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
         }
         return this.getWithResponse(resourceGroupName, resourceName, replicaName, context);
     }
@@ -133,25 +116,18 @@ public final class SignalRReplicasImpl implements SignalRReplicas {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
         }
         String replicaName = Utils.getValueFromIdByName(id, "replicas");
         if (replicaName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, resourceName, replicaName, Context.NONE);
     }
@@ -159,25 +135,18 @@ public final class SignalRReplicasImpl implements SignalRReplicas {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceName = Utils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
         }
         String replicaName = Utils.getValueFromIdByName(id, "replicas");
         if (replicaName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, resourceName, replicaName, context);
     }

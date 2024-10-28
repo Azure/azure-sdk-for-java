@@ -19,7 +19,7 @@ public class HotelWithEmptyInSynonymMaps {
      *
      * @return The tags of hotel.
      */
-    @SearchableField(synonymMapNames = {"asynonymMaps", "", "  ", "maps"})
+    @SearchableField(synonymMapNames = { "asynonymMaps", "", "  ", "maps" })
     public List<String> getTags() {
         return (tags == null) ? null : new ArrayList<>(tags);
     }
