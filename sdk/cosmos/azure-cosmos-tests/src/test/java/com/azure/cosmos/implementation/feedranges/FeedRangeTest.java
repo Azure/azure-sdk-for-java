@@ -691,7 +691,24 @@ public class FeedRangeTest {
         FeedRangePartitionKeyImpl feedRangePartitionKey =
             new FeedRangePartitionKeyImpl(partitionKey);
         RxDocumentServiceRequest request = createMockRequest();
+        Range<String> range = new Range<>("AA", "BB", true, false);
+        String pkRangeId = UUID.randomUUID().toString();
+        PartitionKeyRange partitionKeyRange = new PartitionKeyRange()
+            .setId(pkRangeId)
+            .setMinInclusive(range.getMin())
+            .setMaxExclusive(range.getMax());
+        List<PartitionKeyRange> pkRanges = new ArrayList<>();
+        pkRanges.add(partitionKeyRange);
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
+        when(
+            routingMapProviderMock.tryGetOverlappingRangesAsync(
+                any(),
+                any(),
+                any(),
+                anyBoolean(),
+                any()))
+            .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
+
         DocumentCollection collection = new DocumentCollection();
         List<String> pkPaths = new ArrayList<>();
         pkPaths.add("/Test");
@@ -701,10 +718,14 @@ public class FeedRangeTest {
             request,
             Mono.just(new Utils.ValueHolder<>(collection))).block();
 
+        // pk header population calls epk header population, so just make sure we have
+        // the correct headers for the feed range
         assertThat(request.getPartitionKeyInternal()).isNotNull();
-        assertThat(request.getPartitionKeyInternal().toJson())
-            .isNotNull()
-            .isEqualTo(request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY));
+        assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.START_EPK))
+            .isNotNull();
+
+        assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.END_EPK))
+            .isNotNull();
     }
 
     @Test(groups = "unit")
