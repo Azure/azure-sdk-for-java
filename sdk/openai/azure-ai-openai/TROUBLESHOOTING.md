@@ -12,6 +12,7 @@ in [Best Practice Samples][best_practice_samples].
     * [Troubleshooting Exceptions](#troubleshooting-exceptions)
     * [Troubleshooting NoSuchMethodError or NoClassDefFoundError](#dependency-conflicts)
     * [Network Issues](#network-issues)
+    * [Configure RetryPolicy](#configure-retrypolicy)
 * [Get additional help](#get-additional-help)
 
 ## General Troubleshooting
@@ -122,6 +123,32 @@ for more information on why this happens and [ways to mitigate this issue][troub
 ### Network issues
 
 If you have network issues, please take a look at [troubleshooting network issues][troubleshooting_network_issues].
+
+### Configure RetryPolicy
+
+When receiving error code 423 `TooManyRequest`, the Azure OpenAI service will return a 24Hrs time window for the next request. 
+You can configure the `RetryPolicy` to handle this error. Here is an example of how to configure the `RetryPolicy`:
+
+```java 
+ExponentialBackoffOptions exponentialOptions = new ExponentialBackoffOptions()
+        .setMaxRetries(1) // The number of retries to attempt before giving up.
+        .setBaseDelay(Duration.ofSeconds(5)) // The base delay between retry attempts.
+        .setMaxDelay(Duration.ofSeconds(15)); // The maximum delay between retry attempts
+
+// Alternatively, FixedDelay retry strategy can be used to configure the RetryPolicy.
+// But here we are using ExponentialBackoff for demonstration.
+ExponentialBackoff backoffPolicy = new ExponentialBackoff(exponentialOptions);
+
+OpenAIClient client = new OpenAIClientBuilder()
+        .endpoint(endpoint)
+        .credential(new AzureKeyCredential(azureOpenaiKey))
+        .retryPolicy(new RetryPolicy(backoffPolicy, "{your-retry-header}", ChronoUnit.SECONDS))
+        .buildClient();
+```
+
+Make sure to replace the `{your-retry-header}` without leaving it as a null value. If it is not provided, the default value
+will favor the retry after header from the response. It will cause the client to hanging there for 24 hours before
+retrying in this case.
 
 ## Get additional help
 
