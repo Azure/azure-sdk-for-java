@@ -37,7 +37,8 @@ public class StorageMoverManagerTests extends TestProxyTestBase {
 
         resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile).withDefaultSubscription();
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
 
         storageMoverManager = StorageMoverManager.configure()
             .withPolicy(new ProviderRegistrationPolicy(resourceManager))
