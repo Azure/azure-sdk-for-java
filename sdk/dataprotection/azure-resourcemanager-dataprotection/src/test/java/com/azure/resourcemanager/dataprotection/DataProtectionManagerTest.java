@@ -61,7 +61,8 @@ public class DataProtectionManagerTest extends TestProxyTestBase {
 
         resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile).withDefaultSubscription();
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
 
         dataProtectionManager = DataProtectionManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
