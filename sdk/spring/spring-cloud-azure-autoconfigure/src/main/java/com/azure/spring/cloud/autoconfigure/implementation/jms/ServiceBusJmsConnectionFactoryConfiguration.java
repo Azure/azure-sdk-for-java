@@ -3,8 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
-import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
-import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
 import com.azure.spring.cloud.autoconfigure.jms.AzureServiceBusJmsConnectionFactoryCustomizer;
@@ -22,10 +20,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.jms.connection.CachingConnectionFactory;
 
-import java.util.Properties;
 import java.util.stream.Collectors;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPasswordlessPropertiesUtils.enhancePasswordlessProperties;
+import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPasswordlessPropertiesUtils.registerTokenCredentialBean;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingBean(ConnectionFactory.class)
@@ -37,12 +34,10 @@ public class ServiceBusJmsConnectionFactoryConfiguration  {
         this.applicationContext = applicationContext;
     }
 
-    private ServiceBusJmsConnectionFactory createJmsConnectionFactory(AzureServiceBusJmsProperties jmsProperties,
+    private ServiceBusJmsConnectionFactory createJmsConnectionFactory(AzureServiceBusJmsProperties serviceBusJmsProperties,
                                                                              ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
-        Properties properties = jmsProperties.toPasswordlessProperties();
-        enhancePasswordlessProperties(applicationContext, AzureServiceBusJmsProperties.PREFIX, jmsProperties, properties);
-        TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(properties));
-        return new ServiceBusJmsConnectionFactoryFactory(tokenCredentialProvider, jmsProperties,
+        registerTokenCredentialBean(applicationContext, AzureServiceBusJmsProperties.PREFIX, serviceBusJmsProperties);
+        return new ServiceBusJmsConnectionFactoryFactory(serviceBusJmsProperties,
             factoryCustomizers.orderedStream().collect(Collectors.toList()))
             .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
     }

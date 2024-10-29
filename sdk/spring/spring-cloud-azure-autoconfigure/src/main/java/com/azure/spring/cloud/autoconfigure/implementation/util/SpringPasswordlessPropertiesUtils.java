@@ -32,54 +32,61 @@ public final class SpringPasswordlessPropertiesUtils {
 
     /**
      * Enhance the {@link PasswordlessProperties} implementation into the {@link Properties}.
-     * @param applicationContext the application context.
      * @param passwordlessPropertiesPrefix the prefix for the {@link PasswordlessProperties}.
      * @param passwordlessProperties the {@link PasswordlessProperties} implementation.
      * @param properties the {@link Properties} {@link Properties}.
      */
-    public static void enhancePasswordlessProperties(GenericApplicationContext applicationContext,
-                                                     String passwordlessPropertiesPrefix,
+    public static void enhancePasswordlessProperties(String passwordlessPropertiesPrefix,
                                                      PasswordlessProperties passwordlessProperties,
                                                      Properties properties) {
         if (!passwordlessProperties.isPasswordlessEnabled()) {
-            if (!passwordlessProperties.isPasswordlessEnabled()) {
-                LOGGER.debug("Feature passwordless authentication is not enabled({}.passwordless-enabled=false), "
-                    + "skip enhancing properties.", passwordlessPropertiesPrefix);
-                return;
-            }
+            LOGGER.debug("Feature passwordless authentication is not enabled({}.passwordless-enabled=false), "
+                + "skip enhancing properties.", passwordlessPropertiesPrefix);
+            return;
         }
 
         String tokenCredentialBeanName = passwordlessProperties.getCredential().getTokenCredentialBeanName();
         if (StringUtils.hasText(tokenCredentialBeanName)) {
             AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(properties, tokenCredentialBeanName);
         } else {
-            TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(properties));
-            TokenCredential tokenCredential = tokenCredentialProvider.get();
-
-            tokenCredentialBeanName = PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME + "." + passwordlessPropertiesPrefix;
-            AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(properties, tokenCredentialBeanName);
-            applicationContext.registerBean(tokenCredentialBeanName, TokenCredential.class, () -> tokenCredential);
+            AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(properties,
+                PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME + "." + passwordlessPropertiesPrefix);
         }
 
         AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(properties, SpringTokenCredentialProvider.class.getName());
         AuthProperty.AUTHORITY_HOST.setProperty(properties, passwordlessProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-
     }
 
     /**
      * Enhance the {@link PasswordlessProperties} implementation into the Map.
-     * @param applicationContext the application context.
      * @param passwordlessPropertiesPrefix the prefix for the {@link PasswordlessProperties}.
      * @param passwordlessProperties the {@link PasswordlessProperties} implementation.
      * @param result the Map.
      */
-    public static void enhancePasswordlessProperties(GenericApplicationContext applicationContext,
-                                                     String passwordlessPropertiesPrefix,
+    public static void enhancePasswordlessProperties(String passwordlessPropertiesPrefix,
                                                      PasswordlessProperties passwordlessProperties,
                                                      Map<String, String> result) {
         Properties properties = new Properties();
         result.forEach(properties::setProperty);
-        enhancePasswordlessProperties(applicationContext, passwordlessPropertiesPrefix, passwordlessProperties, properties);
+        enhancePasswordlessProperties(passwordlessPropertiesPrefix, passwordlessProperties, properties);
         properties.forEach((key, value) -> result.put((String) key, (String) value));
+    }
+
+    /**
+     * Register a token credential bean for passwordless if the property token-credential-bean-name is not configured.
+     * @param applicationContext the application context.
+     * @param passwordlessPropertiesPrefix the prefix for the {@link PasswordlessProperties}.
+     * @param properties the {@link PasswordlessProperties} implementation.
+     */
+    public static void registerTokenCredentialBean(GenericApplicationContext applicationContext,
+                                                   String passwordlessPropertiesPrefix,
+                                                   PasswordlessProperties properties) {
+        if (properties.isPasswordlessEnabled() && !StringUtils.hasText(properties.getCredential().getTokenCredentialBeanName())) {
+            TokenCredentialProvider tokenCredentialProvider = TokenCredentialProvider.createDefault(
+                new TokenCredentialProviderOptions(properties.toPasswordlessProperties()));
+            TokenCredential tokenCredential = tokenCredentialProvider.get();
+            applicationContext.registerBean(PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME + "." + passwordlessPropertiesPrefix,
+                TokenCredential.class, () -> tokenCredential);
+        }
     }
 }

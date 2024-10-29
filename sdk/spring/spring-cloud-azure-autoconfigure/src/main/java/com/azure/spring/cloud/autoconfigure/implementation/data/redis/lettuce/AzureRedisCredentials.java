@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.implementation.data.redis.lettuce;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.core.properties.PasswordlessProperties;
 import com.nimbusds.jwt.JWT;
@@ -27,16 +26,17 @@ public class AzureRedisCredentials implements RedisCredentials {
      * Create instance of Azure Redis Credentials
      */
     public AzureRedisCredentials(String username, PasswordlessProperties passwordlessProperties) {
-        this(username, passwordlessProperties, (TokenCredentialProvider) null);
+        Objects.requireNonNull(passwordlessProperties, "PasswordlessProperties is required.");
+        azureAuthenticationTemplate = new AzureAuthenticationTemplate();
+        azureAuthenticationTemplate.init(passwordlessProperties.toPasswordlessProperties());
+        this.username = resolveUsername(azureAuthenticationTemplate, username);
     }
 
     public AzureRedisCredentials(String username,
-                                 PasswordlessProperties passwordlessProperties,
-                                 TokenCredentialProvider tokenCredentialProvider) {
-        Objects.requireNonNull(passwordlessProperties, "PasswordlessProperties is required");
-        azureAuthenticationTemplate = new AzureAuthenticationTemplate(tokenCredentialProvider, null);
-        Properties properties = passwordlessProperties.toPasswordlessProperties();
-        azureAuthenticationTemplate.init(properties);
+                                 Properties passwordlessProperties) {
+        Objects.requireNonNull(passwordlessProperties, "PasswordlessProperties is required.");
+        azureAuthenticationTemplate = new AzureAuthenticationTemplate();
+        azureAuthenticationTemplate.init(passwordlessProperties);
         this.username = resolveUsername(azureAuthenticationTemplate, username);
     }
 
