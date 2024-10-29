@@ -29,11 +29,13 @@ import com.azure.resourcemanager.mysql.models.StorageProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import io.netty.util.internal.StringUtil;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 import java.util.UUID;
 
+@Disabled("Azure Database for MySQL - Single Server retired on September 16, 2024.")
 public class MySqlManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.EUROPE_WEST;
