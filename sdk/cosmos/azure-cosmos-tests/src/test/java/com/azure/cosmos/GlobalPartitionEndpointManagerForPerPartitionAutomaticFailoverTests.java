@@ -290,6 +290,39 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
         };
     }
 
+    @DataProvider(name = "ppafTestConfigsWithReadOps")
+    public Object[][] ppafTestConfigsWithReadOps() {
+        return new Object[][]{
+            {
+                OperationType.Create,
+                OperationType.Read,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+                HttpConstants.StatusCodes.CREATED,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
+            },
+            {
+                OperationType.Create,
+                OperationType.Query,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+                HttpConstants.StatusCodes.CREATED,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
+            },
+            {
+                OperationType.Create,
+                OperationType.ReadFeed,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+                HttpConstants.StatusCodes.CREATED,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
+            }
+        };
+    }
+
     @Test(groups = {"multi-region"}, dataProvider = "ppafTestConfigsWithWriteOps")
     public void testPpafWithWriteFailoverWithEligibleErrorStatusCodes(
         OperationType operationType,
@@ -383,6 +416,111 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             validateRegionsContactedFromResponseWrapper.accept(responseBeforeFailover, 2);
 
             ResponseWrapper<?> responseAfterFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+            validateResponseHasSuccess.accept(responseAfterFailover);
+            validateRegionsContactedFromResponseWrapper.accept(responseAfterFailover, 1);
+        } catch (Exception e) {
+            Assertions.fail("The test ran into an exception {}", e);
+        } finally {
+            safeClose(cosmosAsyncClientValueHolder.v);
+        }
+    }
+
+    @Test(groups = {"multi-region"}, dataProvider = "ppafTestConfigsWithReadOps")
+    public void testPpafReadFailoverPostWriteWithEligibleErrorStatusCodes(
+        OperationType writeOperationType,
+        OperationType readOperationType,
+        int errorStatusCodeToMockFromPartitionInUnhealthyRegion,
+        int errorSubStatusCodeToMockFromPartitionInUnhealthyRegion,
+        int successStatusCode,
+        BiConsumer<ResponseWrapper<?>, Integer> validateRegionsContactedFromResponseWrapper,
+        Consumer<ResponseWrapper<?>> validateResponseHasSuccess) {
+
+        TransportClient transportClientMock = Mockito.mock(TransportClient.class);
+        List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
+        Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
+        Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
+
+        if (COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder()).getConnectionMode() == ConnectionMode.GATEWAY) {
+            throw new SkipException("testPpafWithServiceUnavailable does not run in the GATEWAY connectivity mode!");
+        }
+
+        try {
+
+            // warm up client
+            CosmosContainerProactiveInitConfig proactiveInitConfig = new CosmosContainerProactiveInitConfigBuilder(
+                Arrays.asList(new CosmosContainerIdentity(this.sharedDatabase.getId(), this.sharedSinglePartitionContainer.getId())))
+                .setProactiveConnectionRegionsCount(2)
+                .build();
+
+            CosmosClientBuilder cosmosClientBuilder = getClientBuilder()
+                .openConnectionsAndInitCaches(proactiveInitConfig)
+                .preferredRegions(preferredRegions);
+
+            COSMOS_CLIENT_BUILDER_ACCESSOR.setPerPartitionAutomaticFailoverEnabled(cosmosClientBuilder, true);
+
+            CosmosAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
+            cosmosAsyncClientValueHolder.v = asyncClient;
+
+            CosmosAsyncContainer asyncContainer = asyncClient
+                .getDatabase(this.sharedDatabase.getId())
+                .getContainer(this.sharedSinglePartitionContainer.getId());
+
+            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
+
+            StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
+            ReplicatedResourceClient replicatedResourceClient = ReflectionUtils.getReplicatedResourceClient(storeClient);
+            ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
+            StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+
+            ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+            Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangesForContainer
+                = getPartitionKeyRangesForContainer(asyncContainer, rxDocumentClient).block();
+
+            assertThat(partitionKeyRangesForContainer.v).isNotNull();
+            assertThat(partitionKeyRangesForContainer.v.size()).isGreaterThanOrEqualTo(1);
+
+            PartitionKeyRange partitionKeyRangeWithIssues = partitionKeyRangesForContainer.v.get(0);
+
+            assertThat(preferredRegions).isNotNull();
+            assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
+
+            String regionWithIssues = preferredRegions.get(0);
+            URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues));
+
+            ReflectionUtils.setTransportClient(storeReader, transportClientMock);
+            ReflectionUtils.setTransportClient(consistencyWriter, transportClientMock);
+
+            setupTransportClientToReturnSuccessResponse(transportClientMock, constructStoreResponse(successStatusCode));
+
+            CosmosException cosmosException = createCosmosException(
+                errorStatusCodeToMockFromPartitionInUnhealthyRegion,
+                errorSubStatusCodeToMockFromPartitionInUnhealthyRegion);
+
+            setupTransportClientToThrowCosmosException(
+                transportClientMock,
+                partitionKeyRangeWithIssues,
+                locationEndpointWithIssues,
+                cosmosException);
+
+            TestItem testItem = TestItem.createNewItem();
+
+            Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> writeDataPlaneOperationBeforeFailover = resolveDataPlaneOperation(writeOperationType);
+
+            OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+            operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+            operationInvocationParamsWrapper.createdTestItem = testItem;
+            operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions();
+            operationInvocationParamsWrapper.patchItemRequestOptions = new CosmosPatchItemRequestOptions();
+
+            ResponseWrapper<?> responseBeforeFailover = writeDataPlaneOperationBeforeFailover.apply(operationInvocationParamsWrapper);
+
+            assertThat(responseBeforeFailover).isNotNull();
+            validateResponseHasSuccess.accept(responseBeforeFailover);
+            validateRegionsContactedFromResponseWrapper.accept(responseBeforeFailover, 2);
+
+            Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> readDataPlaneOperationAfterFailover = resolveDataPlaneOperation(readOperationType);
+
+            ResponseWrapper<?> responseAfterFailover = readDataPlaneOperationAfterFailover.apply(operationInvocationParamsWrapper);
             validateResponseHasSuccess.accept(responseAfterFailover);
             validateRegionsContactedFromResponseWrapper.accept(responseAfterFailover, 1);
         } catch (Exception e) {
