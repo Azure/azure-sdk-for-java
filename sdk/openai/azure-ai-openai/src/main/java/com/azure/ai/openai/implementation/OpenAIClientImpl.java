@@ -52,12 +52,6 @@ public final class OpenAIClientImpl {
      */
     private final String endpoint;
 
-    private final RealtimesImpl realtime;
-
-    public RealtimesImpl getRealtime() {
-        return this.realtime;
-    }
-
     /**
      * Gets Supported Cognitive Services endpoints (protocol and hostname, for example:
      * https://westus.api.cognitive.microsoft.com).
@@ -150,7 +144,6 @@ public final class OpenAIClientImpl {
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.service = RestProxy.create(OpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter());
-        this.realtime = new RealtimesImpl(httpPipeline, serializerAdapter, endpoint);
     }
 
     /**
