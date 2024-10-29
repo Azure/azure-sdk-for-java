@@ -42,7 +42,8 @@ public class AvsManagerTests extends TestProxyTestBase {
 
         resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile).withDefaultSubscription();
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
 
         avsManager = AvsManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
