@@ -9,7 +9,6 @@ import com.azure.ai.translation.document.models.DocumentStatus;
 import com.azure.ai.translation.document.models.Glossary;
 import com.azure.ai.translation.document.models.SourceInput;
 import com.azure.ai.translation.document.models.TargetInput;
-import com.azure.ai.translation.document.models.TranslationStatus;
 import com.azure.ai.translation.document.models.TranslationStatusResult;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceNotFoundException;

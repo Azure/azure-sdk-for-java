@@ -6,7 +6,6 @@ package com.azure.ai.translation.document;
 import com.azure.ai.translation.document.models.DocumentTranslationInput;
 import com.azure.ai.translation.document.models.SourceInput;
 import com.azure.ai.translation.document.models.TargetInput;
-import com.azure.ai.translation.document.models.TranslationStatus;
 import com.azure.ai.translation.document.models.TranslationStatusResult;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.polling.SyncPoller;
