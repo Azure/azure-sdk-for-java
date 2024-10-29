@@ -5,9 +5,9 @@ package com.azure.ai.translation.document;
 
 import com.azure.ai.translation.document.implementation.DocumentTranslationClientImpl;
 import com.azure.ai.translation.document.implementation.models.SupportedFileFormats;
+import com.azure.ai.translation.document.models.DocumentStatus;
 import com.azure.ai.translation.document.models.FileFormat;
 import com.azure.ai.translation.document.models.FileFormatType;
-import com.azure.ai.translation.document.models.DocumentStatus;
 import com.azure.ai.translation.document.models.TranslationBatch;
 import com.azure.ai.translation.document.models.TranslationStatusResult;
 import com.azure.core.annotation.Generated;
@@ -1151,7 +1151,7 @@ public final class DocumentTranslationClient {
         return serviceClient.listDocumentStatuses(translationId, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentStatus.class));
     }
-    
+
     /**
      * Returns a list of supported document formats
      *
