@@ -27,8 +27,12 @@ public class AuthorizationChallengeParser {
      * @return True if the response is a CAE challenge, false otherwise.
      */
     public static boolean isCaeClaimsChallenge(HttpResponse response) {
-        String error = getChallengeParameterFromResponse(response, "Bearer", "error");
-        return "insufficient_claims".equals(error);
+        String challenge = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
+
+        String parameters = getChallengeParametersForScheme(challenge, "Bearer");
+        String error = getChallengeParameterValue(parameters, "error");
+        String claims = getChallengeParameterValue(parameters, "claims");
+        return !CoreUtils.isNullOrEmpty(claims) && "insufficient_claims".equals(error);
     }
 
     /**
@@ -43,32 +47,45 @@ public class AuthorizationChallengeParser {
     public static String getChallengeParameterFromResponse(HttpResponse response, String challengeScheme,
         String parameter) {
         String challenge = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-        return getChallengeParameter(challenge, challengeScheme, parameter);
+        String parameters = getChallengeParametersForScheme(challenge, challengeScheme);
+        return getChallengeParameterValue(parameters, parameter);
+    }
+
+    /**
+     * Gets the set of challenge parameters for the specified challenge scheme.
+     * @param challenge The challenge to parse.
+     * @param challengeScheme The challenge scheme to extract parameters for.
+     * @return The extracted challenge parameters for the specified challenge scheme.
+     */
+    private static String getChallengeParametersForScheme(String challenge, String challengeScheme) {
+        Matcher challengeMatch = CHALLENGE_PATTERN.matcher(challenge);
+        while (challengeMatch.find()) {
+            if (challengeMatch.group(1).equals(challengeScheme)) {
+                return challengeMatch.group(2);
+            }
+        }
+
+        return null;
     }
 
     /**
      * Gets the specified challenge parameter from the challenge.
-     * @param challenge The challenge string to parse.
-     * @param challengeScheme The requested scheme (e.g. "Bearer" or "PoP")
+     * @param parameters The challenge parameters to parse.
      * @param parameter The parameter to extract.
      * @return The extracted value of the challenge parameter.
      */
-    private static String getChallengeParameter(String challenge, String challengeScheme, String parameter) {
-        if (CoreUtils.isNullOrEmpty(challenge)) {
+    private static String getChallengeParameterValue(String parameters, String parameter) {
+        if (CoreUtils.isNullOrEmpty(parameters)) {
             return null;
         }
 
-        Matcher challengeMatch = CHALLENGE_PATTERN.matcher(challenge);
-        while (challengeMatch.find()) {
-            if (challengeMatch.group(1).equals(challengeScheme)) {
-                Matcher paramsMatch = CHALLENGE_PARAMS_PATTERN.matcher(challengeMatch.group(2));
-                while (paramsMatch.find()) {
-                    if (parameter.equals(paramsMatch.group(1))) {
-                        return paramsMatch.group(2);
-                    }
-                }
+        Matcher paramsMatch = CHALLENGE_PARAMS_PATTERN.matcher(parameters);
+        while (paramsMatch.find()) {
+            if (parameter.equals(paramsMatch.group(1))) {
+                return paramsMatch.group(2);
             }
         }
+
         return null;
     }
 }

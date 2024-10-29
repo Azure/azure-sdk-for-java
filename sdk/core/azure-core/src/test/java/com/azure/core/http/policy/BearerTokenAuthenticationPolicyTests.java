@@ -109,7 +109,9 @@ public class BearerTokenAuthenticationPolicyTests {
             Arguments.of(
                 "PoP realm=\"\", authorization_uri=\"https://login.microsoftonline.com/common/oauth2/authorize\", client_id=\"00000003-0000-0000-c000-000000000000\", nonce=\"ey==\", Bearer realm=\"\", authorization_uri=\"https://login.microsoftonline.com/common/oauth2/authorize\", client_id=\"00000003-0000-0000-c000-000000000000\", error_description=\"Continuous access evaluation resulted in challenge with result: InteractionRequired and code: TokenIssuedBeforeRevocationTimestamp\", error=\"insufficient_claims\", claims=\"eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwgInZhbHVlIjoiMTcyNjI1ODEyMiJ9fX0=\"",
                 200, "{\"access_token\":{\"nbf\":{\"essential\":true, \"value\":\"1726258122\"}}}",
-                "eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwgInZhbHVlIjoiMTcyNjI1ODEyMiJ9fX0=") // multiple challenges
+                "eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwgInZhbHVlIjoiMTcyNjI1ODEyMiJ9fX0="), // multiple challenges
+            Arguments.of("Bearer claims=\"\" error=\"insufficient_claims\"", 401, null, ""), // empty claims
+            Arguments.of("Bearer error=\"insufficient_claims\"", 401, null, "") // missing claims
         );
     }
 }
