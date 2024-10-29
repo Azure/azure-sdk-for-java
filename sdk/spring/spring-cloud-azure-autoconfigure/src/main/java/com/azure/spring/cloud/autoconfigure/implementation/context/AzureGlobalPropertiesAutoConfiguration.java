@@ -48,7 +48,7 @@ public class AzureGlobalPropertiesAutoConfiguration {
                     () -> Binder.get(this.environment)
                                 .bindOrCreate(AzureGlobalProperties.PREFIX,
                                     AzureGlobalProperties.class));
-                if (ClassUtils.isPresent(AZURE_AUTHENTICATION_TEMPLATE_CLASS_NAME, AzureGlobalPropertiesAutoConfiguration.class.getClassLoader())) {
+                if (ClassUtils.isPresent(AZURE_AUTHENTICATION_TEMPLATE_CLASS_NAME, null)) {
                     definitionBuilder.addDependsOn(SPRING_TOKEN_CREDENTIAL_PROVIDER_CONTEXT_BEAN_NAME);
                 }
                 registry.registerBeanDefinition(AZURE_GLOBAL_PROPERTY_BEAN_NAME, definitionBuilder.getBeanDefinition());
