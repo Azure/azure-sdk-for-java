@@ -17,9 +17,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
+import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.Network;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolElasticityProfile;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResource;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceProperties;
@@ -49,18 +53,32 @@ public class StandbyPoolTests extends TestProxyTestBase {
     private String resourceGroupName = "rg" + randomPadding();
     private StandbyPoolManager standbyPoolManager;
     private ComputeManager computeManager;
+    private NetworkManager networkManager;
+    private ResourceManager resourceManager;
 
     @Override
     public void beforeTest() {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
+        resourceManager = ResourceManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
+
         standbyPoolManager = StandbyPoolManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
 
         computeManager = ComputeManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .authenticate(credential, profile);
+
+        networkManager = NetworkManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
@@ -69,14 +87,14 @@ public class StandbyPoolTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            computeManager.resourceManager().resourceGroups().define(resourceGroupName).withRegion(REGION).create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
     @Override
     protected void afterTest() {
         if (!testEnv) {
-            computeManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroupName);
+            resourceManager.resourceGroups().beginDeleteByName(resourceGroupName);
         }
     }
 
@@ -92,8 +110,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
             // reference https://learn.microsoft.com/azure/virtual-machine-scale-sets/standby-pools-create
 
             // Create virtual network and virtual machine scale set
-            virtualNetwork = this.computeManager.networkManager()
-                .networks()
+            virtualNetwork = networkManager.networks()
                 .define("vmssvnet")
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
@@ -106,7 +123,8 @@ public class StandbyPoolTests extends TestProxyTestBase {
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .withFlexibleOrchestrationMode()
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withSku(VirtualMachineScaleSetSkuTypes
+                    .fromSku(new Sku().withName("Standard_B1s").withTier("Standard").withCapacity(2L)))
                 .withExistingPrimaryNetworkSubnet(virtualNetwork, "default")
                 .withoutPrimaryInternetFacingLoadBalancer()
                 .withoutPrimaryInternalLoadBalancer()
@@ -140,7 +158,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
 
                 computeManager.virtualMachineScaleSets().deleteById(virtualMachineScaleSet.id());
 
-                computeManager.networkManager().networks().deleteById(virtualNetwork.id());
+                networkManager.networks().deleteById(virtualNetwork.id());
             }
         }
     }
