@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration;
 
-import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.autoconfigure.implementation.aadb2c.AadB2cConstants;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadIssuerJwsKeySelector;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt.AadTrustedIssuerRepository;
@@ -44,9 +43,9 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
 
     private WebApplicationContextRunner getResourceServerContextRunner() {
         return new WebApplicationContextRunner()
-            .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class,
-                OAuth2LoginAuthenticationFilter.class))
+            .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
             .withConfiguration(AutoConfigurations.of(
+                TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
                 AzureGlobalPropertiesAutoConfiguration.class,
                 WebResourceServerTestApp.class,
                 AadB2cResourceServerAutoConfiguration.class,
