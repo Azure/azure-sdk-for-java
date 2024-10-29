@@ -34,4 +34,3 @@ public class TerminateBatchJobOptions extends BatchTerminateOptions {
         return this;
     }
 }
-
