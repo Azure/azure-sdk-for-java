@@ -4,7 +4,6 @@ package com.azure.spring.cloud.appconfiguration.config;
 
 import org.springframework.boot.BootstrapContext;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -50,7 +49,6 @@ public class AppConfigurationAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        @ConditionalOnBean(AppConfigurationReplicaClientFactory.class)
         AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties,
             AppConfigurationProviderProperties appProperties, BootstrapContext context) {
             AppConfigurationReplicaClientFactory clientFactory = context

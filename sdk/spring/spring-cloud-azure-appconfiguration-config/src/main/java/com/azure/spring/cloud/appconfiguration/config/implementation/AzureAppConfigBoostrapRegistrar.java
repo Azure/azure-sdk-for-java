@@ -10,6 +10,7 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
+import com.azure.spring.cloud.appconfiguration.config.ConfigurationClientCustomizer;
 import com.azure.spring.cloud.appconfiguration.config.KeyVaultSecretProvider;
 import com.azure.spring.cloud.appconfiguration.config.SecretClientCustomizer;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
@@ -56,7 +57,17 @@ class AzureAppConfigurationBootstrapRegistrar {
         SecretClientBuilderFactory secretClientFactory = context.getBootstrapContext()
             .getOrElse(SecretClientBuilderFactory.class, null);
 
-        boolean isCredentialConfigured = isCredentialConfigured(null);
+        AzureGlobalProperties globalProperties = binder
+            .bind(AzureGlobalProperties.PREFIX, Bindable.of(AzureGlobalProperties.class))
+            .orElseGet(AzureGlobalProperties::new);
+        AzureAppConfigurationProperties appConfigurationProperties = binder
+            .bind(AzureAppConfigurationProperties.PREFIX, Bindable.of(AzureAppConfigurationProperties.class))
+            .orElseGet(AzureAppConfigurationProperties::new);
+        // the properties are used to custom the ConfigurationClientBuilder
+        AzureAppConfigurationProperties properties = AzureGlobalPropertiesUtils.loadProperties(globalProperties,
+            appConfigurationProperties);
+
+        boolean isCredentialConfigured = isCredentialConfigured(properties);
 
         return new AppConfigurationKeyVaultClientFactory(customizer, secretProvider, secretClientFactory,
             isCredentialConfigured,
@@ -99,31 +110,26 @@ class AzureAppConfigurationBootstrapRegistrar {
         if (customizer != null) {
             clientFactory.addBuilderCustomizer(customizer.get(context.getBootstrapContext()));
         }
-        boolean isCredentialConfigured = isCredentialConfigured(null);
-        
-        InstanceSupplier<AzureServiceClientBuilderCustomizer<ConfigurationClientBuilder>> customizer = context
+
+        boolean isCredentialConfigured = isCredentialConfigured(properties);
+
+        InstanceSupplier<ConfigurationClientCustomizer> configurationClientCustomizer = context
             .getBootstrapContext()
             .getRegisteredInstanceSupplier(
-                (Class<AzureServiceClientBuilderCustomizer<ConfigurationClientBuilder>>) (Class<?>) AzureServiceClientBuilderCustomizer.class);
+                (Class<ConfigurationClientCustomizer>) (Class<?>) ConfigurationClientCustomizer.class);
 
-        AppConfigurationReplicaClientsBuilder clientBuilder = new AppConfigurationReplicaClientsBuilder(3,
-            clientFactory, isCredentialConfigured);
-
-        if (customizer != null) {
-            clientBuilder.setClientProvider(customizer.get(context.getBootstrapContext()));
+        // TODO (mametcal) need spring profiles
+        boolean isDev = false;
+        ConfigurationClientCustomizer clientCustomizer = null;
+        if (configurationClientCustomizer != null) {
+            clientCustomizer = configurationClientCustomizer.get(context.getBootstrapContext());
         }
 
-        clientBuilder.setIsKeyVaultConfigured(keyVaultClientFactory.isConfigured());
-
-        return clientBuilder;
+        return new AppConfigurationReplicaClientsBuilder(3, clientFactory, clientCustomizer, isCredentialConfigured,
+            keyVaultClientFactory.isConfigured(), isDev);
     }
 
     private static boolean isCredentialConfigured(AbstractAzureHttpConfigurationProperties properties) {
-        // TODO (mametcal) Temp till global properties is setup.
-        if (properties == null) {
-            return false;
-        }
-
         if (properties.getCredential() != null) {
             TokenCredentialConfigurationProperties tokenProps = properties.getCredential();
             if (StringUtils.hasText(tokenProps.getClientCertificatePassword())) {
