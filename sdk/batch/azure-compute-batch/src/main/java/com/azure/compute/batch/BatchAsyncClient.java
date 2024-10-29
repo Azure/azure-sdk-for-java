@@ -30071,7 +30071,7 @@ public final class BatchAsyncClient {
      *
      * <p>
      * <strong>Request Body Schema</strong>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -30171,7 +30171,7 @@ public final class BatchAsyncClient {
      *
      * <p>
      * <strong>Request Body Schema</strong>
-     * 
+     *
      * <pre>
      * {@code
      * {
