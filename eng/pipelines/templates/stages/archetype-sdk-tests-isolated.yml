@@ -115,6 +115,9 @@ parameters:
 - name: AdditionalSparseCheckoutPaths
   type: object
   default: []
+- name: PersistOidcToken
+  type: boolean
+  default: false
 
 stages:
 - ${{ each cloud in parameters.CloudConfig }}:
@@ -165,6 +168,7 @@ stages:
               TestOptions: ${{ parameters.TestOptions }}
               UseHttpFaultInjector: ${{ parameters.UseHttpFaultInjector }}
               UseFederatedAuth: ${{ parameters.UseFederatedAuth }}
+              PersistOidcToken: ${{ parameters.PersistOidcToken }}
 
             MatrixConfigs:
               # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).

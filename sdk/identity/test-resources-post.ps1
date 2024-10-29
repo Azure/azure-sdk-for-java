@@ -42,7 +42,7 @@ $azBuildToolsRootPom = "$PSScriptRoot/../../eng/code-quality-reports/pom.xml" | 
 $funcAppRoot = "$PSScriptRoot/live-test-apps/identity-test-function" | Resolve-Path
 $funcAppPom = "$funcAppRoot/pom.xml" | Resolve-Path
 
-az account set --subscription $(getVariable('IDENTITY_SUBSCRIPTION_ID'))
+# az account set --subscription $(getVariable('IDENTITY_SUBSCRIPTION_ID'))
 
 
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f $azBuildToolsRootPom | Write-Host
