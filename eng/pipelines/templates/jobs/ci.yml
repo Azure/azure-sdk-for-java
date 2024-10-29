@@ -58,6 +58,9 @@ parameters:
   - name: EnvVars
     type: object
     default: {}
+  - name: VersionOverride
+    type: string
+    default: $(VersionOverride)
 
 jobs:
   - job: 'Build'
@@ -414,3 +417,4 @@ jobs:
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
         TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
         EnvVars: ${{ parameters.EnvVars }}
+        VersionOverride: ${{ parameters.VersionOverride }}
