@@ -221,8 +221,8 @@ public class CallMediaUnitTests {
             );
         callMedia = callConnection.getCallMedia();
 
-        Response<Void> response = callMedia.unholdWithResponse(new CommunicationUserIdentifier("id"),
-            "operationalContext", Context.NONE);
+        Response<Void> response = callMedia.unholdWithResponse(new UnholdOptions(new CommunicationUserIdentifier("id"))
+                .setOperationContext("operationalContext"), Context.NONE);
         assertEquals(response.getStatusCode(), 200);
     }
 }

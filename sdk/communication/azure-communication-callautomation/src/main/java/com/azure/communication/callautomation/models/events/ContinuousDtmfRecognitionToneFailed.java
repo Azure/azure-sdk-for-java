@@ -17,7 +17,7 @@ public final class ContinuousDtmfRecognitionToneFailed extends CallAutomationEve
     /**
      * Constructor for ContinuousDtmfRecognitionToneReceived
      */
-    public ContinuousDtmfRecognitionToneFailed() {
+    private ContinuousDtmfRecognitionToneFailed() {
     }
 
     /**

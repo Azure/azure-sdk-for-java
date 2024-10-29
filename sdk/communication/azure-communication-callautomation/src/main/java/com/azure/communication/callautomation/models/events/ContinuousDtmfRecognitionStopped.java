@@ -17,7 +17,7 @@ public final class ContinuousDtmfRecognitionStopped extends CallAutomationEventB
     /**
      * Constructor for ContinuousDtmfRecognitionToneReceived
      */
-    public ContinuousDtmfRecognitionStopped() {
+    private ContinuousDtmfRecognitionStopped() {
     }
 
     /**

@@ -19,6 +19,7 @@ import com.azure.communication.callautomation.models.RecognizeInputType;
 import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.TextSource;
+import com.azure.communication.callautomation.models.UnholdOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.VoiceKind;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -529,8 +530,7 @@ public class CallMediaAsyncUnitTests {
         callMedia = getMockCallMedia(200);
         StepVerifier.create(
                 callMedia.unholdWithResponse(
-                    new CommunicationUserIdentifier("id"),
-                    "operationalContext"
+                    new UnholdOptions(new CommunicationUserIdentifier("id")).setOperationContext("operationalContext")
                 ))
             .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();

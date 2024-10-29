@@ -28,7 +28,7 @@ public final class ContinuousDtmfRecognitionToneReceived extends CallAutomationE
     /**
      * Constructor for ContinuousDtmfRecognitionToneReceived
      */
-    public ContinuousDtmfRecognitionToneReceived() {
+    private ContinuousDtmfRecognitionToneReceived() {
         sequenceId = 0;
         tone = null;
     }

@@ -42,6 +42,7 @@ import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesResult;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.TextSource;
+import com.azure.communication.callautomation.models.UnholdOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -763,29 +764,26 @@ public final class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> unhold(CommunicationIdentifier targetParticipant) {
-        return unholdWithResponse(targetParticipant, null).then();
+        return unholdWithResponse(new UnholdOptions(targetParticipant)).then();
     }
 
     /**
      * Holds participant in call.
-     * @param targetParticipant the target.
-     * @param operationContext Operational context.
+     * @param options Different options to pass to the request.
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> unholdWithResponse(CommunicationIdentifier targetParticipant,
-                                                               String operationContext) {
-        return withContext(context -> unholdWithResponseInternal(targetParticipant, operationContext, context));
+    public Mono<Response<Void>> unholdWithResponse(UnholdOptions options) {
+        return withContext(context -> unholdWithResponseInternal(options, context));
     }
 
-    Mono<Response<Void>> unholdWithResponseInternal(CommunicationIdentifier targetParticipant,
-                                                            String operationContext,
+    Mono<Response<Void>> unholdWithResponseInternal(UnholdOptions options,
                                                             Context context) {
         try {
             context = context == null ? Context.NONE : context;
             UnholdRequest request = new UnholdRequest()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
-                .setOperationContext(operationContext);
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(options.getTargetParticipant()))
+                .setOperationContext(options.getOperationContext());
 
             return contentsInternal
                 .unholdWithResponseAsync(callConnectionId, request, context);
