@@ -7,8 +7,6 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.CoreUtils;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +15,9 @@ import java.util.regex.Pattern;
  */
 public class AuthorizationChallengeParser {
 
+    // These patterns are use to parse a challenge string from the WWw-Authenticate header.
+    // A WWW-Authenticate may have more than one challenge, grouped by scheme. The first pattern groups schemes and their parameters.
+    // The second pattern parses the parameters out of a given challenge scheme.
     private static final Pattern CHALLENGE_PATTERN = Pattern.compile("(\\w+) ((?:\\w+=\"[^\"]*\",?\\s*)+)");
     private static final Pattern CHALLENGE_PARAMS_PATTERN = Pattern.compile("(\\w+)=\"([^\"]*)\"");
 
@@ -40,7 +41,7 @@ public class AuthorizationChallengeParser {
      * @return the extracted value of the challenge parameter
      */
     public static String getChallengeParameterFromResponse(HttpResponse response, String challengeScheme,
-                                                           String parameter) {
+        String parameter) {
         String challenge = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
         return getChallengeParameter(challenge, challengeScheme, parameter);
     }

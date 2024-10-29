@@ -18,6 +18,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -78,7 +79,8 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
         if (this.scopes == null) {
             return Mono.empty();
         }
-        return setAuthorizationHeaderHelper(context, new TokenRequestContext().addScopes(this.scopes).setCaeEnabled(true), false);
+        return setAuthorizationHeaderHelper(context,
+            new TokenRequestContext().addScopes(this.scopes).setCaeEnabled(true), false);
     }
 
     /**
@@ -87,7 +89,8 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * @param context The request context.
      */
     public void authorizeRequestSync(HttpPipelineCallContext context) {
-        setAuthorizationHeaderHelperSync(context, new TokenRequestContext().addScopes(scopes).setCaeEnabled(true), false);
+        setAuthorizationHeaderHelperSync(context, new TokenRequestContext().addScopes(scopes).setCaeEnabled(true),
+            false);
     }
 
     /**
@@ -224,15 +227,16 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
 
     private TokenRequestContext getTokenRequestContextForCaeChallenge(HttpResponse response) {
         String decodedClaims = null;
-        String encodedClaims = AuthorizationChallengeParser.getChallengeParameterFromResponse(response, "Bearer", "claims");
+        String encodedClaims
+            = AuthorizationChallengeParser.getChallengeParameterFromResponse(response, "Bearer", "claims");
 
-        try {
-            if (!CoreUtils.isNullOrEmpty(encodedClaims)) {
-                decodedClaims = new String(Base64.getDecoder().decode(encodedClaims));
+        if (!CoreUtils.isNullOrEmpty(encodedClaims)) {
+            try {
+                decodedClaims = new String(Base64.getDecoder().decode(encodedClaims), StandardCharsets.UTF_8);
+            } catch (IllegalArgumentException e) {
+                // We don't want to throw here, but we want to log this for future incident investigation.
+                LOGGER.warning("Failed to decode the claims from the CAE challenge. Encoded claims: " + encodedClaims);
             }
-        } catch (IllegalArgumentException e) {
-            // We don't want to throw here, but we want to log this for future incident investigation.
-            LOGGER.warning("Failed to decode the claims from the CAE challenge. Encoded claims" + encodedClaims);
         }
 
         if (decodedClaims == null) {

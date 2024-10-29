@@ -29,7 +29,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 public class BearerTokenAuthenticationPolicyTests {
 
     @ParameterizedTest
@@ -50,7 +49,8 @@ public class BearerTokenAuthenticationPolicyTests {
 
     @ParameterizedTest
     @MethodSource("caeTestArguments")
-    public void testDefaultCaeSync(String challenge, int expectedStatusCode, String expectedClaims, String encodedClaims) {
+    public void testDefaultCaeSync(String challenge, int expectedStatusCode, String expectedClaims,
+        String encodedClaims) {
         AtomicReference<String> claims = new AtomicReference<>();
         AtomicInteger callCount = new AtomicInteger();
 
@@ -59,7 +59,8 @@ public class BearerTokenAuthenticationPolicyTests {
         HttpClient client = getCaeHttpClient(challenge, callCount);
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(policy).httpClient(client).build();
 
-        try (HttpResponse response = pipeline.sendSync(new HttpRequest(HttpMethod.GET, "https://localhost"), Context.NONE)) {
+        try (HttpResponse response
+            = pipeline.sendSync(new HttpRequest(HttpMethod.GET, "https://localhost"), Context.NONE)) {
             assertEquals(expectedStatusCode, response.getStatusCode());
         }
         assertEquals(expectedClaims, claims.get());
@@ -84,7 +85,8 @@ public class BearerTokenAuthenticationPolicyTests {
                 if (challenge == null) {
                     return Mono.just(new MockHttpResponse(request, 200));
                 }
-                return Mono.just(new MockHttpResponse(request, 401, new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, challenge)));
+                return Mono.just(new MockHttpResponse(request, 401,
+                    new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, challenge)));
             }
             return Mono.just(new MockHttpResponse(request, 200));
         };
@@ -92,20 +94,22 @@ public class BearerTokenAuthenticationPolicyTests {
 
     private static Stream<Arguments> caeTestArguments() {
         return Stream.of(Arguments.of(null, 200, null, null), // no challenge
-            Arguments.of("Bearer authorization_uri=\"https://login.windows.net/\", error=\"invalid_token\", claims=\"ey==\"", 401, null, "ey=="), // unexpected error value
+            Arguments.of(
+                "Bearer authorization_uri=\"https://login.windows.net/\", error=\"invalid_token\", claims=\"ey==\"",
+                401, null, "ey=="), // unexpected error value
             Arguments.of("Bearer claims=\"not base64\", error=\"insufficient_claims\"", 401, null, "not base64"), // parsing error
-            Arguments.of("Bearer realm=\"\", authorization_uri=\"http://localhost\", client_id=\"00000003-0000-0000-c000-000000000000\", error=\"insufficient_claims\", claims=\"ey==\"",
-                    200,
-                    "{",
-                    "ey=="), // more parameters in a different order
-            Arguments.of("Bearer realm=\"\", authorization_uri=\"https://login.microsoftonline.com/common/oauth2/authorize\", error=\"insufficient_claims\", claims=\"eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwidmFsdWUiOiIxNzI2MDc3NTk1In0sInhtc19jYWVlcnJvciI6eyJ2YWx1ZSI6IjEwMDEyIn19fQ==\"",
-                    200,
-                    "{\"access_token\":{\"nbf\":{\"essential\":true,\"value\":\"1726077595\"},\"xms_caeerror\":{\"value\":\"10012\"}}}",
-                    "eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwidmFsdWUiOiIxNzI2MDc3NTk1In0sInhtc19jYWVlcnJvciI6eyJ2YWx1ZSI6IjEwMDEyIn19fQ=="), // standard request
-            Arguments.of("PoP realm=\"\", authorization_uri=\"https://login.microsoftonline.com/common/oauth2/authorize\", client_id=\"00000003-0000-0000-c000-000000000000\", nonce=\"ey==\", Bearer realm=\"\", authorization_uri=\"https://login.microsoftonline.com/common/oauth2/authorize\", client_id=\"00000003-0000-0000-c000-000000000000\", error_description=\"Continuous access evaluation resulted in challenge with result: InteractionRequired and code: TokenIssuedBeforeRevocationTimestamp\", error=\"insufficient_claims\", claims=\"eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwgInZhbHVlIjoiMTcyNjI1ODEyMiJ9fX0=\"",
-                    200,
-                    "{\"access_token\":{\"nbf\":{\"essential\":true, \"value\":\"1726258122\"}}}",
-                    "eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwgInZhbHVlIjoiMTcyNjI1ODEyMiJ9fX0=") // multiple challenges
+            Arguments.of(
+                "Bearer realm=\"\", authorization_uri=\"http://localhost\", client_id=\"00000003-0000-0000-c000-000000000000\", error=\"insufficient_claims\", claims=\"ey==\"",
+                200, "{", "ey=="), // more parameters in a different order
+            Arguments.of(
+                "Bearer realm=\"\", authorization_uri=\"https://login.microsoftonline.com/common/oauth2/authorize\", error=\"insufficient_claims\", claims=\"eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwidmFsdWUiOiIxNzI2MDc3NTk1In0sInhtc19jYWVlcnJvciI6eyJ2YWx1ZSI6IjEwMDEyIn19fQ==\"",
+                200,
+                "{\"access_token\":{\"nbf\":{\"essential\":true,\"value\":\"1726077595\"},\"xms_caeerror\":{\"value\":\"10012\"}}}",
+                "eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwidmFsdWUiOiIxNzI2MDc3NTk1In0sInhtc19jYWVlcnJvciI6eyJ2YWx1ZSI6IjEwMDEyIn19fQ=="), // standard request
+            Arguments.of(
+                "PoP realm=\"\", authorization_uri=\"https://login.microsoftonline.com/common/oauth2/authorize\", client_id=\"00000003-0000-0000-c000-000000000000\", nonce=\"ey==\", Bearer realm=\"\", authorization_uri=\"https://login.microsoftonline.com/common/oauth2/authorize\", client_id=\"00000003-0000-0000-c000-000000000000\", error_description=\"Continuous access evaluation resulted in challenge with result: InteractionRequired and code: TokenIssuedBeforeRevocationTimestamp\", error=\"insufficient_claims\", claims=\"eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwgInZhbHVlIjoiMTcyNjI1ODEyMiJ9fX0=\"",
+                200, "{\"access_token\":{\"nbf\":{\"essential\":true, \"value\":\"1726258122\"}}}",
+                "eyJhY2Nlc3NfdG9rZW4iOnsibmJmIjp7ImVzc2VudGlhbCI6dHJ1ZSwgInZhbHVlIjoiMTcyNjI1ODEyMiJ9fX0=") // multiple challenges
         );
     }
 }
