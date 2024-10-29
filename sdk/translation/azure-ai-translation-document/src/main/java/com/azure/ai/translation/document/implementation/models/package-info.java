@@ -8,4 +8,4 @@
  * Document translation service.
  * <!-- end generated doc -->
  */
-package com.azure.ai.translation.document.models;
+package com.azure.ai.translation.document.implementation.models;

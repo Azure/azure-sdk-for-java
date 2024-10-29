@@ -3,13 +3,14 @@
 
 package com.azure.ai.translation.document;
 
-import com.azure.ai.translation.document.models.BatchRequest;
+import com.azure.ai.translation.document.models.DocumentTranslationInput;
 import com.azure.ai.translation.document.models.DocumentFilter;
 import com.azure.ai.translation.document.models.DocumentStatus;
 import com.azure.ai.translation.document.models.Glossary;
 import com.azure.ai.translation.document.models.SourceInput;
 import com.azure.ai.translation.document.models.TargetInput;
 import com.azure.ai.translation.document.models.TranslationStatus;
+import com.azure.ai.translation.document.models.TranslationStatusResult;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
@@ -58,12 +59,12 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
         List<TargetInput> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
 
         // Validate the response
         validateTranslationStatus(translationStatus, 1);
@@ -91,13 +92,13 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         targetInputs.add(targetInput1);
         targetInputs.add(targetInput2);
         targetInputs.add(targetInput3);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
 
         // Validate the response
         validateTranslationStatus(translationStatus, 3);
@@ -119,20 +120,20 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         TargetInput targetInput1 = TestHelper.createTargetInput(targetUrl1, targetLanguageCode1, null, null, null);
         List<TargetInput> targetInputs1 = new ArrayList<>();
         targetInputs1.add(targetInput1);
-        BatchRequest batchRequest1 = new BatchRequest(sourceInput1, targetInputs1);
+        DocumentTranslationInput batchRequest1 = new DocumentTranslationInput(sourceInput1, targetInputs1);
 
         SourceInput sourceInput2 = TestHelper.createSourceInput(sourceUrl2, null, null, null);
         TargetInput targetInput2 = TestHelper.createTargetInput(targetUrl2, targetLanguageCode2, null, null, null);
         List<TargetInput> targetInputs2 = new ArrayList<>();
         targetInputs2.add(targetInput2);
-        BatchRequest batchRequest2 = new BatchRequest(sourceInput2, targetInputs2);
+        DocumentTranslationInput batchRequest2 = new DocumentTranslationInput(sourceInput2, targetInputs2);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller
             = setPlaybackSyncPollerPollInterval(documentTranslationClient
-                .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest1, batchRequest2)));
+                .beginTranslation(TestHelper.getStartTranslationDetails(batchRequest1, batchRequest2)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
 
         // Validate the response
         validateTranslationStatus(translationStatus, 2);
@@ -152,13 +153,13 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
         List<TargetInput> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
 
         // Validate the response
         validateTranslationStatus(translationStatus, 1);
@@ -178,13 +179,13 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
         List<TargetInput> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
 
         // Validate the response
         validateTranslationStatus(translationStatus, 1);
@@ -203,21 +204,22 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
         List<TargetInput> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
         String translationId = translationStatus.getId();
 
-        PagedIterable<DocumentStatus> documentsStatus = documentTranslationClient.getDocumentsStatus(translationId);
+        PagedIterable<DocumentStatus> documentsStatus = documentTranslationClient.listDocumentStatuses(translationId);
         assertNotNull(documentsStatus);
         DocumentStatus firstItem = documentsStatus.iterator().next();
 
         assertEquals(translationStatus.getStatus().toString(), firstItem.getStatus().toString());
-        assertEquals(translationStatus.getSummary().getTotalCharacterCharged(), (long) firstItem.getCharacterCharged());
+        assertEquals(translationStatus.getSummary().getTotalCharactersChargedCount(),
+            (long) firstItem.getCharacterCharged());
     }
 
     @RecordWithoutRequestBody
@@ -233,16 +235,16 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
         List<TargetInput> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
         String translationId = translationStatus.getId();
 
-        PagedIterable<DocumentStatus> response = documentTranslationClient.getDocumentsStatus(translationId);
+        PagedIterable<DocumentStatus> response = documentTranslationClient.listDocumentStatuses(translationId);
         assertNotNull(response);
 
         String documentId = response.iterator().next().getId();
@@ -262,10 +264,10 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
         List<TargetInput> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         while ((Objects.equals(poller.poll().getValue().getStatus().toString(), "NotStarted")) && (retryCount > 0)) {
             sleepIfRunningAgainstService(10000);
@@ -290,10 +292,10 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
         List<TargetInput> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         while ((Objects.equals(poller.poll().getValue().getStatus().toString(), "NotStarted")) && (retryCount > 0)) {
             sleepIfRunningAgainstService(10000);
@@ -322,13 +324,13 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
         List<TargetInput> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
 
         // Validate the response
         validateTranslationStatus(translationStatus, 1);
@@ -349,20 +351,20 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
         List<TargetInput> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
 
         // Validate the response
         assertNotNull(translationStatus.getId());
         assertEquals("Failed", translationStatus.getStatus().toString());
-        assertEquals(1, translationStatus.getSummary().getTotal());
-        assertEquals(0, translationStatus.getSummary().getSuccess());
-        assertEquals(1, translationStatus.getSummary().getFailed());
+        assertEquals(1, translationStatus.getSummary().getTotalCount());
+        assertEquals(0, translationStatus.getSummary().getSuccessCount());
+        assertEquals(1, translationStatus.getSummary().getFailedCount());
 
         String errorCode = translationStatus.getError().getCode().toString();
         assertEquals("InvalidRequest", errorCode);
@@ -383,10 +385,10 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
         List<TargetInput> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         while ((Objects.equals(poller.poll().getValue().getStatus().toString(), "NotStarted")) && (retryCount > 0)) {
             sleepIfRunningAgainstService(10000);
@@ -412,13 +414,13 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
         List<TargetInput> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
+        TranslationStatusResult translationStatus = poller.waitForCompletion().getValue();
         String translationId = translationStatus.getId();
 
         assertThrows(ResourceNotFoundException.class,
@@ -456,10 +458,10 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, glossaries, null);
         List<TargetInput> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
-        BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
+        DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 
-        SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(
+            documentTranslationClient.beginTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
         poller.waitForCompletion();
@@ -471,14 +473,14 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         Assertions.assertTrue(response.contains("glossaryTest"));
     }
 
-    public static void validateTranslationStatus(TranslationStatus translationStatus, int translationCount) {
+    public static void validateTranslationStatus(TranslationStatusResult translationStatus, int translationCount) {
         assertNotNull(translationStatus.getId());
         assertEquals("Succeeded", translationStatus.getStatus().toString());
-        assertEquals(translationCount, translationStatus.getSummary().getTotal());
-        assertEquals(translationCount, translationStatus.getSummary().getSuccess());
-        assertEquals(0, translationStatus.getSummary().getFailed());
-        assertEquals(0, translationStatus.getSummary().getCancelled());
-        assertEquals(0, translationStatus.getSummary().getInProgress());
+        assertEquals(translationCount, translationStatus.getSummary().getTotalCount());
+        assertEquals(translationCount, translationStatus.getSummary().getSuccessCount());
+        assertEquals(0, translationStatus.getSummary().getFailedCount());
+        assertEquals(0, translationStatus.getSummary().getCancelledCount());
+        assertEquals(0, translationStatus.getSummary().getInProgressCount());
     }
 
     private void validateDocumentStatus(DocumentStatus documentStatus, String targetLanguageCode) {

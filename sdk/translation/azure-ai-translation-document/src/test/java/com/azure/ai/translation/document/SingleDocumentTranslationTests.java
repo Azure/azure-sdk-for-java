@@ -37,8 +37,7 @@ public class SingleDocumentTranslationTests extends DocumentTranslationClientTes
         DocumentTranslateContent documentTranslateContent = new DocumentTranslateContent(document);
         String targetLanguage = "hi";
 
-        BinaryData response
-            = getSingleDocumentTranslationClient().documentTranslate(targetLanguage, documentTranslateContent);
+        BinaryData response = getSingleDocumentTranslationClient().translate(targetLanguage, documentTranslateContent);
         String translatedResponse = response.toString();
         Assertions.assertNotNull(translatedResponse);
     }
@@ -52,8 +51,7 @@ public class SingleDocumentTranslationTests extends DocumentTranslationClientTes
             = new DocumentTranslateContent(document).setGlossary(glossaryList);
         String targetLanguage = "hi";
 
-        BinaryData response
-            = getSingleDocumentTranslationClient().documentTranslate(targetLanguage, documentTranslateContent);
+        BinaryData response = getSingleDocumentTranslationClient().translate(targetLanguage, documentTranslateContent);
         String translatedResponse = response.toString();
 
         Assertions.assertTrue(translatedResponse.contains("test"), "Glossary 'test' not found in translated response");
@@ -69,7 +67,7 @@ public class SingleDocumentTranslationTests extends DocumentTranslationClientTes
         String targetLanguage = "hi";
 
         HttpResponseException e = assertThrows(HttpResponseException.class,
-            () -> getSingleDocumentTranslationClient().documentTranslate(targetLanguage, documentTranslateContent));
+            () -> getSingleDocumentTranslationClient().translate(targetLanguage, documentTranslateContent));
         Assertions.assertEquals(400, e.getResponse().getStatusCode());
     }
 

@@ -14,16 +14,16 @@ public final class ReadmeSamples {
         // BEGIN: createDocumentTranslationClient
         String endpoint = System.getenv("DOCUMENT_TRANSLATION_ENDPOINT");
         String apiKey = System.getenv("DOCUMENT_TRANSLATION_API_KEY");
-        
+
         AzureKeyCredential credential = new AzureKeyCredential(apiKey);
-        
+
         DocumentTranslationClient client = new DocumentTranslationClientBuilder()
-                            .endpoint(endpoint)
-                            .credential(credential)
-                            .buildClient();
+            .endpoint(endpoint)
+            .credential(credential)
+            .buildClient();
         // END: createDocumentTranslationClient
     }
-    
+
     /**
      * Sample for creating single document translation client using API Key and endpoint.
      */
@@ -31,14 +31,13 @@ public final class ReadmeSamples {
         // BEGIN: createSingleDocumentTranslationClient
         String endpoint = System.getenv("DOCUMENT_TRANSLATION_ENDPOINT");
         String apiKey = System.getenv("DOCUMENT_TRANSLATION_API_KEY");
-        
+
         AzureKeyCredential credential = new AzureKeyCredential(apiKey);
-        
+
         SingleDocumentTranslationClient client = new SingleDocumentTranslationClientBuilder()
-                            .endpoint(endpoint)
-                            .credential(credential)
-                            .buildClient();
+            .endpoint(endpoint)
+            .credential(credential)
+            .buildClient();
         // END: createSingleDocumentTranslationClient
     }
 }
-
