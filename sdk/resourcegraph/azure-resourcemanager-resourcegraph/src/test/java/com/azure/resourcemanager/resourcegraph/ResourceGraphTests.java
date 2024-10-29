@@ -3,16 +3,19 @@
 
 package com.azure.resourcemanager.resourcegraph;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.resourcegraph.models.QueryRequest;
 import com.azure.resourcemanager.resourcegraph.models.QueryRequestOptions;
 import com.azure.resourcemanager.resourcegraph.models.QueryResponse;
 import com.azure.resourcemanager.resourcegraph.models.ResultFormat;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -25,12 +28,17 @@ public class ResourceGraphTests extends TestProxyTestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void queryTest() {
+        TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
         // requires a Azure Subscription
         String subscriptionId
             = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
 
-        ResourceGraphManager manager = ResourceGraphManager.authenticate(new DefaultAzureCredentialBuilder().build(),
-            new AzureProfile(AzureEnvironment.AZURE));
+        ResourceManager resourceManager = ResourceManager.authenticate(credential, profile).withDefaultSubscription();
+
+        ResourceGraphManager manager = ResourceGraphManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .authenticate(credential, profile);
 
         // @embedmeStart
         QueryRequest queryRequest = new QueryRequest().withSubscriptions(Collections.singletonList(subscriptionId))
