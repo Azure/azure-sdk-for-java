@@ -61,9 +61,9 @@ String apiKey = System.getenv("DOCUMENT_TRANSLATION_API_KEY");
 AzureKeyCredential credential = new AzureKeyCredential(apiKey);
 
 DocumentTranslationClient client = new DocumentTranslationClientBuilder()
-                    .endpoint(endpoint)
-                    .credential(credential)
-                    .buildClient();
+    .endpoint(endpoint)
+    .credential(credential)
+    .buildClient();
 ```
 
 You can similarly create the [SingleDocumentTranslationClient][single_document_translator_client_class]:
@@ -74,9 +74,9 @@ String apiKey = System.getenv("DOCUMENT_TRANSLATION_API_KEY");
 AzureKeyCredential credential = new AzureKeyCredential(apiKey);
 
 SingleDocumentTranslationClient client = new SingleDocumentTranslationClientBuilder()
-                    .endpoint(endpoint)
-                    .credential(credential)
-                    .buildClient();
+    .endpoint(endpoint)
+    .credential(credential)
+    .buildClient();
 ```
 
 ## Key concepts
@@ -182,7 +182,7 @@ DocumentTranslationClient documentTranslationClient = new DocumentTranslationCli
     .endpoint("{endpoint}")
     .credential(new AzureKeyCredential("{key}"))
     .buildClient();
-       
+
 SyncPoller < TranslationStatusResult,
 TranslationStatusResult > response = documentTranslationClient
     .beginTranslation(
