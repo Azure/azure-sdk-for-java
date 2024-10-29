@@ -37,7 +37,8 @@ public class ApiCenterManagerTests extends TestProxyTestBase {
 
         resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile).withDefaultSubscription();
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
 
         apiCenterManager = ApiCenterManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
