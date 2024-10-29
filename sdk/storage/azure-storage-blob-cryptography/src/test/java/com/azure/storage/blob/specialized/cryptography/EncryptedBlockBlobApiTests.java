@@ -1872,6 +1872,21 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         );
     }
 
+    @Test
+    public void clientsUnsupported() {
+        assertThrows(UnsupportedOperationException.class, () -> bec.getAppendBlobClient());
+        assertThrows(UnsupportedOperationException.class, () -> bec.getBlockBlobClient());
+        assertThrows(UnsupportedOperationException.class, () -> bec.getPageBlobClient());
+    }
+
+    @Test
+    public void queryUnsupported() {
+        assertThrows(UnsupportedOperationException.class, () -> bec.query(null, null));
+        assertThrows(UnsupportedOperationException.class, () -> bec.queryWithResponse(null, null, null));
+        assertThrows(UnsupportedOperationException.class, () -> bec.openQueryInputStream(null));
+        assertThrows(UnsupportedOperationException.class, () -> bec.openQueryInputStreamWithResponse(null));
+    }
+
     static class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {
         private final String expectedRangeHeader;
 

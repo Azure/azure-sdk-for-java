@@ -153,8 +153,8 @@ public class EncryptedBlockBlobAsyncApiTests extends BlobCryptographyTestBase {
 
 
         StepVerifier.create(bec.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data.duplicate())))
-                .then(FluxUtil.collectBytesInByteBufferStream(bec.downloadStream())))
-            .assertNext(r -> assertArraysEqual(data.array(), r))
+                .then(bec.downloadContentWithResponse(null, null)))
+            .assertNext(r -> assertArraysEqual(data.array(), r.getValue().toBytes()))
             .verifyComplete();
     }
 
@@ -1756,8 +1756,8 @@ public class EncryptedBlockBlobAsyncApiTests extends BlobCryptographyTestBase {
             .buildEncryptedBlobAsyncClient());
 
         StepVerifier.create(bec.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())))
-                .then(FluxUtil.collectBytesInByteBufferStream(bec2.downloadStream())))
-            .assertNext(r -> assertArrayEquals(data.array(), r))
+                .then(bec2.downloadContent()))
+            .assertNext(r -> assertArrayEquals(data.array(), r.toBytes()))
             .verifyComplete();
     }
 
@@ -1854,6 +1854,12 @@ public class EncryptedBlockBlobAsyncApiTests extends BlobCryptographyTestBase {
                 assertEquals(expectedVersion, encryptionData.getEncryptionAgent().getProtocol());
             })
             .verifyComplete();
+    }
+
+    @Test
+    public void queryUnsupported() {
+        assertThrows(UnsupportedOperationException.class, () -> bec.query(null));
+        assertThrows(UnsupportedOperationException.class, () -> bec.queryWithResponse(null));
     }
 
 
