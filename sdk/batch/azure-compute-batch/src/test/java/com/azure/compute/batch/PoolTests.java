@@ -143,6 +143,7 @@ public class PoolTests extends BatchClientTestBase {
             NetworkConfiguration netConfig = createNetworkConfiguration();
             List<InboundNatPool> inbounds = new ArrayList<>();
             inbounds.add(new InboundNatPool("testinbound", InboundEndpointProtocol.TCP, 5000, 60000, 60040));
+            inbounds.add(new InboundNatPool("SSHRule", InboundEndpointProtocol.TCP, 22, 60100, 60140));
 
             BatchPoolEndpointConfiguration endpointConfig = new BatchPoolEndpointConfiguration(inbounds);
             netConfig.setEndpointConfiguration(endpointConfig);
