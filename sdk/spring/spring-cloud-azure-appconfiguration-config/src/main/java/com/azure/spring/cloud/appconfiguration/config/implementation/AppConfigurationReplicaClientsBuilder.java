@@ -11,11 +11,8 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.properties.bind.Bindable;
-import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.convert.DurationStyle;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
@@ -28,7 +25,6 @@ import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.appconfiguration.config.ConfigurationClientCustomizer;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
@@ -97,15 +93,6 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         this.properties = null;
     }
 
-    public AppConfigurationReplicaClientsBuilder(AzureAppConfigurationProperties properties,
-                                                 ConfigurationClientBuilderFactory clientFactory) {
-        this.properties = properties;
-        this.clientFactory = clientFactory;
-
-        this.credentialConfigured = true; // can use AzureAppConfigurationProperties instead
-        this.defaultMaxRetries = 3;// can use AzureAppConfigurationProperties instead
-    }
-
     /**
      * Given a connection string, returns the endpoint inside of it.
      * 
@@ -148,22 +135,22 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         List<AppConfigurationReplicaClient> clients = new ArrayList<>();
         // Single client or Multiple?
         // If single call buildClient
-//        int hasSingleConnectionString = StringUtils.hasText(configStore.getConnectionString()) ? 1 : 0;
-//        int hasMultiEndpoints = configStore.getEndpoints().size() > 0 ? 1 : 0;
-//        int hasMultiConnectionString = configStore.getConnectionStrings().size() > 0 ? 1 : 0;
+        int hasSingleConnectionString = StringUtils.hasText(configStore.getConnectionString()) ? 1 : 0;
+        int hasMultiEndpoints = configStore.getEndpoints().size() > 0 ? 1 : 0;
+        int hasMultiConnectionString = configStore.getConnectionStrings().size() > 0 ? 1 : 0;
 
-//        if (hasSingleConnectionString + hasMultiEndpoints + hasMultiConnectionString > 1) {
-//            throw new IllegalArgumentException(
-//                "More than 1 connection method was set for connecting to App Configuration.");
-//        }
+        if (hasSingleConnectionString + hasMultiEndpoints + hasMultiConnectionString > 1) {
+            throw new IllegalArgumentException(
+                "More than 1 connection method was set for connecting to App Configuration.");
+        }
 
-//        boolean connectionStringIsPresent = configStore.getConnectionString() != null
-//            || configStore.getConnectionStrings().size() > 0;
-//
-//        if (credentialConfigured && connectionStringIsPresent) {
-//            throw new IllegalArgumentException(
-//                "More than 1 connection method was set for connecting to App Configuration.");
-//        }
+        boolean connectionStringIsPresent = configStore.getConnectionString() != null
+            || configStore.getConnectionStrings().size() > 0;
+
+        if (credentialConfigured && connectionStringIsPresent) {
+            throw new IllegalArgumentException(
+                "More than 1 connection method was set for connecting to App Configuration.");
+        }
 
         List<String> connectionStrings = configStore.getConnectionStrings();
         List<String> endpoints = configStore.getEndpoints();
@@ -196,22 +183,19 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
     public AppConfigurationReplicaClient buildClient(String failoverEndpoint, ConfigStore configStore) {
         if (StringUtils.hasText(configStore.getConnectionString())) {
-//            ConnectionString connectionString = new ConnectionString(configStore.getConnectionString());
-//            connectionString.setUri(failoverEndpoint);
-            clientFactory.setConnectionStringProvider(new ConnectionStringConnector(configStore.getConnectionString()));
+            ConnectionString connectionString = new ConnectionString(configStore.getConnectionString());
+            connectionString.setUri(failoverEndpoint);
+            clientFactory.setConnectionStringProvider(new ConnectionStringConnector(connectionString.toString()));
             ConfigurationClientBuilder builder = clientFactory.build();
             return modifyAndBuildClient(builder, failoverEndpoint, 0);
         } else if (configStore.getConnectionStrings().size() > 0) {
-//            ConnectionString connectionString = new ConnectionString(configStore.getConnectionStrings().get(0));
-//            connectionString.setUri(failoverEndpoint);
-            clientFactory.setConnectionStringProvider(new ConnectionStringConnector(configStore.getConnectionStrings().get(0)));
+            ConnectionString connectionString = new ConnectionString(configStore.getConnectionStrings().get(0));
+            connectionString.setUri(failoverEndpoint);
+            clientFactory.setConnectionStringProvider(new ConnectionStringConnector(connectionString.toString().toString()));
             ConfigurationClientBuilder builder = clientFactory.build();
             return modifyAndBuildClient(builder, failoverEndpoint, 0);
         } else {
-            ConfigurationClientBuilder builder = clientFactory.build();
-//            builder.credential(new DefaultAzureCredentialBuilder().build());
-
-            builder.endpoint(failoverEndpoint);
+            ConfigurationClientBuilder builder = clientFactory.build().endpoint(failoverEndpoint);
             return modifyAndBuildClient(builder, failoverEndpoint, 0);
         }
     }
