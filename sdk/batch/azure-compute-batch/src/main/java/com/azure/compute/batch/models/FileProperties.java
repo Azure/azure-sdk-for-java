@@ -5,7 +5,6 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -34,9 +33,10 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
 
     /*
      * The length of the file.
+     * TODO: Temporary workaround to get contentLength to be a long instead of string. Re-add @Generated tag and
+     * regenerate once we have a more permanent solution from SDK team.
      */
-    @Generated
-    private final String contentLength;
+    private final long contentLength;
 
     /*
      * The content type of the file.
@@ -76,8 +76,9 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
      *
      * @return the contentLength value.
      */
-    @Generated
-    public String getContentLength() {
+    public long getContentLength() {
+        // TODO: Temporary workaround to get contentLength to be a long instead of string. Re-add @Generated tag and
+        // regenerate once we have a more permanent solution from SDK team.
         return this.contentLength;
     }
 
@@ -105,13 +106,14 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        // TODO: Temporary workaround to get contentLength to be a long instead of string. Re-add @Generated tag and
+        // regenerate once we have a more permanent solution from SDK team.
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("lastModified",
             this.lastModified == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModified));
-        jsonWriter.writeStringField("contentLength", this.contentLength);
+        jsonWriter.writeLongField("contentLength", this.contentLength);
         jsonWriter.writeStringField("creationTime",
             this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
         jsonWriter.writeStringField("contentType", this.contentType);
@@ -128,11 +130,12 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the FileProperties.
      */
-    @Generated
     public static FileProperties fromJson(JsonReader jsonReader) throws IOException {
+        // TODO: Temporary workaround to get contentLength to be a long instead of string. Re-add @Generated tag and
+        // regenerate once we have a more permanent solution from SDK team.
         return jsonReader.readObject(reader -> {
             OffsetDateTime lastModified = null;
-            String contentLength = null;
+            long contentLength = 0L;
             OffsetDateTime creationTime = null;
             String contentType = null;
             String fileMode = null;
@@ -140,13 +143,22 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("lastModified".equals(fieldName)) {
-                    lastModified = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    lastModified = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("contentLength".equals(fieldName)) {
-                    contentLength = reader.getString();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        String contentLengthStr = reader.getString();
+                        try {
+                            contentLength = Long.parseLong(contentLengthStr);
+                        } catch (NumberFormatException e) {
+                            throw new IOException("Expected numeric contentLength, but found: " + contentLengthStr, e);
+                        }
+                    } else if (reader.currentToken() == JsonToken.NUMBER) {
+                        contentLength = reader.getLong();
+                    } else {
+                        throw new IOException("Expected contentLength to be a number or string, but found other type");
+                    }
                 } else if ("creationTime".equals(fieldName)) {
-                    creationTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    creationTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("contentType".equals(fieldName)) {
                     contentType = reader.getString();
                 } else if ("fileMode".equals(fieldName)) {
@@ -169,8 +181,9 @@ public final class FileProperties implements JsonSerializable<FileProperties> {
      * @param lastModified the lastModified value to set.
      * @param contentLength the contentLength value to set.
      */
-    @Generated
-    private FileProperties(OffsetDateTime lastModified, String contentLength) {
+    private FileProperties(OffsetDateTime lastModified, long contentLength) {
+        // TODO: Temporary workaround to get contentLength to be a long instead of string. Re-add @Generated tag and
+        // regenerate once we have a more permanent solution from SDK team.
         this.lastModified = lastModified;
         this.contentLength = contentLength;
     }
