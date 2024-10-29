@@ -4,6 +4,9 @@
 package com.azure.ai.translation.document;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public final class ReadmeSamples {
 
@@ -39,5 +42,36 @@ public final class ReadmeSamples {
             .credential(credential)
             .buildClient();
         // END: createSingleDocumentTranslationClient
+    }
+
+    /**
+     * Sample for creating document translation client using AAD.
+     */
+    public void createDocumentTranslationClientWithAAD() {
+        // BEGIN: createDocumentTranslationClientWithAAD
+        String endpoint = System.getenv("DOCUMENT_TRANSLATION_ENDPOINT");
+
+        TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+        DocumentTranslationClient client = new DocumentTranslationClientBuilder()
+            .endpoint(endpoint)
+            .credential(defaultCredential)
+            .buildClient();
+        // END: createDocumentTranslationClientWithAAD
+    }
+
+    /**
+     * Sample for creating single document translation client using AAD.
+     */
+    public void createSingleDocumentTranslationClientWithAAD() {
+        // BEGIN: createSingleDocumentTranslationClientWithAAD
+        String endpoint = System.getenv("DOCUMENT_TRANSLATION_ENDPOINT");
+
+        TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+
+        SingleDocumentTranslationClient client = new SingleDocumentTranslationClientBuilder()
+            .endpoint(endpoint)
+            .credential(defaultCredential)
+            .buildClient();
+        // END: createSingleDocumentTranslationClientWithAAD
     }
 }

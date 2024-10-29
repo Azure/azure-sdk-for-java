@@ -37,6 +37,9 @@ Various documentation is available to help you get started
 
 Interaction with the service using the client library begins with creating an instance of the [DocumentTranslationClient][document_translator_client_class] class. You will need an **API key** or ``TokenCredential`` and **Endpoint** to instantiate a document translation client object. Similarly for [SingleDocumentTranslationclient][single_document_translator_client_class]
 
+Managed identities for Azure resources are service principals that create a Microsoft Entra identity and specific permissions for Azure managed resources. Managed identities are a safer way to grant access to storage data and replace the requirement for you to include shared access signature tokens (SAS) with your source and target URLs.
+Here is more information on [Managed identities for Document Translation] [managed_identities_for_document_translation].
+
 #### Get an API key
 
 You can get the `endpoint`, `API key` and `Region` from the Cognitive Services resource or Document Translator service resource information in the [Azure Portal][azure_portal].
@@ -65,6 +68,7 @@ DocumentTranslationClient client = new DocumentTranslationClientBuilder()
     .credential(credential)
     .buildClient();
 ```
+#### Create a `SingleDocumentTranslationClient` using endpoint and API key credential
 
 You can similarly create the [SingleDocumentTranslationClient][single_document_translator_client_class]:
 ```java createSingleDocumentTranslationClient
@@ -76,6 +80,53 @@ AzureKeyCredential credential = new AzureKeyCredential(apiKey);
 SingleDocumentTranslationClient client = new SingleDocumentTranslationClientBuilder()
     .endpoint(endpoint)
     .credential(credential)
+    .buildClient();
+```
+
+#### Create DocumentTranslationClient and SingleDocumentTranslationClient using Azure Active Directory credential
+Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
+platform.
+
+Authentication with AAD requires some initial setup:
+* Add the Azure Identity package
+
+[//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-identity</artifactId>
+    <version>1.13.3</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+
+After setup, you can choose which type of [credential][azure_identity_credential_type] from azure-identity to use.
+As an example, [DefaultAzureCredential][wiki_identity] can be used to authenticate the client:
+Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
+`AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_SECRET`.
+
+Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
+running environment. For more information about using Azure Active Directory authorization with DocumentTranslation service, please
+refer to [the associated documentation][aad_authorization].
+
+```java createDocumentTranslationClientWithAAD
+String endpoint = System.getenv("DOCUMENT_TRANSLATION_ENDPOINT");
+
+TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+DocumentTranslationClient client = new DocumentTranslationClientBuilder()
+    .endpoint(endpoint)
+    .credential(defaultCredential)
+    .buildClient();
+```
+
+```java createSingleDocumentTranslationClientWithAAD
+String endpoint = System.getenv("DOCUMENT_TRANSLATION_ENDPOINT");
+
+TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+
+SingleDocumentTranslationClient client = new SingleDocumentTranslationClientBuilder()
+    .endpoint(endpoint)
+    .credential(defaultCredential)
     .buildClient();
 ```
 
@@ -496,3 +547,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [sample_getDocumentsStatus]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/translation/azure-ai-translation-document/src/samples/java/com/azure/ai/translation/document/GetDocumentsStatus.java
 [sample_getDocumentStatus]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/translation/azure-ai-translation-document/src/samples/java/com/azure/ai/translation/document/GetDocumentStatus.java
 [sample_getSupportedFormats]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/translation/azure-ai-translation-document/src/samples/java/com/azure/ai/translation/document/GetSupportedFormats.java
+[azure_identity_credential_type]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
+[wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
+[aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
+[managed_identities_for_document_translation]: https://learn.microsoft.com/azure/ai-services/translator/document-translation/how-to-guides/create-use-managed-identities
