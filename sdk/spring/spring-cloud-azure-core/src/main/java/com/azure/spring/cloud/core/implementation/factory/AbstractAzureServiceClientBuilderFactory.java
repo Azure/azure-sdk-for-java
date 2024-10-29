@@ -199,7 +199,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
                 LOGGER.debug("Will configure the custom token credential bean ({}) for {}.",
                     tokenCredentialBeanName, builder.getClass().getSimpleName());
                 TokenCredential customTokenCredential = applicationContext.getBean(tokenCredentialBeanName, TokenCredential.class);
-                ((AuthenticationDescriptor<TokenCredential>)tokenCredentialDescriptor.get()).getConsumer().accept(customTokenCredential);
+                ((AuthenticationDescriptor<TokenCredential>) tokenCredentialDescriptor.get()).getConsumer().accept(customTokenCredential);
                 credentialConfigured = true;
                 return;
             }
