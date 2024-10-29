@@ -101,21 +101,17 @@ public interface AuthorizationContract {
              * @param authorizationProviderId Identifier of the authorization provider.
              * @return the next definition stage.
              */
-            WithCreate withExistingAuthorizationProvider(
-                String resourceGroupName, String serviceName, String authorizationProviderId);
+            WithCreate withExistingAuthorizationProvider(String resourceGroupName, String serviceName,
+                String authorizationProviderId);
         }
 
         /**
          * The stage of the AuthorizationContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithAuthorizationType,
-                DefinitionStages.WithOAuth2GrantType,
-                DefinitionStages.WithParameters,
-                DefinitionStages.WithError,
-                DefinitionStages.WithStatus,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithAuthorizationType, DefinitionStages.WithOAuth2GrantType,
+            DefinitionStages.WithParameters, DefinitionStages.WithError, DefinitionStages.WithStatus,
+            DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -209,13 +205,8 @@ public interface AuthorizationContract {
     AuthorizationContract.Update update();
 
     /** The template for AuthorizationContract update. */
-    interface Update
-        extends UpdateStages.WithAuthorizationType,
-            UpdateStages.WithOAuth2GrantType,
-            UpdateStages.WithParameters,
-            UpdateStages.WithError,
-            UpdateStages.WithStatus,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithAuthorizationType, UpdateStages.WithOAuth2GrantType,
+        UpdateStages.WithParameters, UpdateStages.WithError, UpdateStages.WithStatus, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -328,8 +319,8 @@ public interface AuthorizationContract {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    AuthorizationsConfirmConsentCodeResponse confirmConsentCodeWithResponse(
-        AuthorizationConfirmConsentCodeRequestContract parameters, Context context);
+    AuthorizationsConfirmConsentCodeResponse
+        confirmConsentCodeWithResponse(AuthorizationConfirmConsentCodeRequestContract parameters, Context context);
 
     /**
      * Confirm valid consent code to suppress Authorizations anti-phishing page.

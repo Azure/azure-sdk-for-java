@@ -15,28 +15,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SystemAssigned,"
-                        + " UserAssigned\",\"userAssignedIdentities\":{\"aeqjhqjbasvms\":{\"principalId\":\"tzfkufubl\",\"clientId\":\"fxqeof\"},\"douskcqvkocrcjdk\":{\"principalId\":\"qulngsntnbybkzgc\",\"clientId\":\"wclxxwrl\"},\"p\":{\"principalId\":\"nh\",\"clientId\":\"njbiksqrglssain\"}},\"principalId\":\"nzl\",\"tenantId\":\"fmppe\"}")
-                .toObject(ResourceIdentity.class);
+        ResourceIdentity model = BinaryData.fromString("{\"type\":\"SystemAssigned,"
+            + " UserAssigned\",\"userAssignedIdentities\":{\"aeqjhqjbasvms\":{\"principalId\":\"tzfkufubl\",\"clientId\":\"fxqeof\"},\"douskcqvkocrcjdk\":{\"principalId\":\"qulngsntnbybkzgc\",\"clientId\":\"wclxxwrl\"},\"p\":{\"principalId\":\"nh\",\"clientId\":\"njbiksqrglssain\"}},\"principalId\":\"nzl\",\"tenantId\":\"fmppe\"}")
+            .toObject(ResourceIdentity.class);
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceIdentity model =
-            new ResourceIdentity()
-                .withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "aeqjhqjbasvms",
-                        new UserIdentity(),
-                        "douskcqvkocrcjdk",
-                        new UserIdentity(),
-                        "p",
-                        new UserIdentity()));
+        ResourceIdentity model = new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("aeqjhqjbasvms", new UserIdentity(), "douskcqvkocrcjdk",
+                new UserIdentity(), "p", new UserIdentity()));
         model = BinaryData.fromObject(model).toObject(ResourceIdentity.class);
         Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }

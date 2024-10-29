@@ -11,11 +11,9 @@ import com.azure.resourcemanager.digitaltwins.models.OperationDisplay;
 public final class OperationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"attpngjcrcczsq\",\"display\":{\"provider\":\"vmdajvnysou\",\"resource\":\"e\",\"operation\":\"noae\",\"description\":\"fhyhltrpmopjmcma\"},\"origin\":\"okth\",\"isDataAction\":false,\"properties\":{\"zydagfuaxbezyiuo\":\"dataodsfcpkvxodpuozm\",\"dxwzywqsmbsurexi\":\"dataktwh\",\"yocf\":\"datao\"}}")
-                .toObject(OperationInner.class);
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"attpngjcrcczsq\",\"display\":{\"provider\":\"vmdajvnysou\",\"resource\":\"e\",\"operation\":\"noae\",\"description\":\"fhyhltrpmopjmcma\"},\"origin\":\"okth\",\"isDataAction\":false,\"properties\":{\"zydagfuaxbezyiuo\":\"dataodsfcpkvxodpuozm\",\"dxwzywqsmbsurexi\":\"dataktwh\",\"yocf\":\"datao\"}}")
+            .toObject(OperationInner.class);
     }
 
     @org.junit.jupiter.api.Test

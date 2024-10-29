@@ -109,8 +109,8 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
      * @param sendEmailsToSubscriptionOwners the sendEmailsToSubscriptionOwners value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationInner object itself.
      */
-    public ApplicationInsightsComponentProactiveDetectionConfigurationInner withSendEmailsToSubscriptionOwners(
-        Boolean sendEmailsToSubscriptionOwners) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationInner
+        withSendEmailsToSubscriptionOwners(Boolean sendEmailsToSubscriptionOwners) {
         this.sendEmailsToSubscriptionOwners = sendEmailsToSubscriptionOwners;
         return this;
     }
@@ -130,8 +130,8 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
      * @param customEmails the customEmails value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationInner object itself.
      */
-    public ApplicationInsightsComponentProactiveDetectionConfigurationInner withCustomEmails(
-        List<String> customEmails) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationInner
+        withCustomEmails(List<String> customEmails) {
         this.customEmails = customEmails;
         return this;
     }
@@ -151,8 +151,8 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
      * @param lastUpdatedTime the lastUpdatedTime value to set.
      * @return the ApplicationInsightsComponentProactiveDetectionConfigurationInner object itself.
      */
-    public ApplicationInsightsComponentProactiveDetectionConfigurationInner withLastUpdatedTime(
-        String lastUpdatedTime) {
+    public ApplicationInsightsComponentProactiveDetectionConfigurationInner
+        withLastUpdatedTime(String lastUpdatedTime) {
         this.lastUpdatedTime = lastUpdatedTime;
         return this;
     }

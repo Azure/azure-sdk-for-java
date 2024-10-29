@@ -44,12 +44,14 @@ public final class ProductsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        AzureSphereManager manager = AzureSphereManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        AzureSphereManager manager = AzureSphereManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Product response = manager.products()
-            .getWithResponse("kcnqxwbpo", "ulpiuj", "aasipqi", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("kcnqxwbpo", "ulpiuj", "aasipqi", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("yuq", response.properties().description());
     }

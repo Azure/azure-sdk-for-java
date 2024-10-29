@@ -32,13 +32,8 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @return a workload classifier of Sql pool's workload group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkloadClassifierInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context);
+    Response<WorkloadClassifierInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, String workloadGroupName, String workloadClassifierName, Context context);
 
     /**
      * Get workload classifier
@@ -56,12 +51,8 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @return a workload classifier of Sql pool's workload group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadClassifierInner get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName);
+    WorkloadClassifierInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName);
 
     /**
      * Create Or Update workload classifier
@@ -81,12 +72,8 @@ public interface SqlPoolWorkloadClassifiersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters);
+        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        String workloadClassifierName, WorkloadClassifierInner parameters);
 
     /**
      * Create Or Update workload classifier
@@ -107,13 +94,8 @@ public interface SqlPoolWorkloadClassifiersClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<WorkloadClassifierInner>, WorkloadClassifierInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
-        Context context);
+        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        String workloadClassifierName, WorkloadClassifierInner parameters, Context context);
 
     /**
      * Create Or Update workload classifier
@@ -132,13 +114,8 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @return workload classifier operations for a data warehouse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadClassifierInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters);
+    WorkloadClassifierInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName, WorkloadClassifierInner parameters);
 
     /**
      * Create Or Update workload classifier
@@ -158,14 +135,8 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @return workload classifier operations for a data warehouse.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadClassifierInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        WorkloadClassifierInner parameters,
-        Context context);
+    WorkloadClassifierInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName, WorkloadClassifierInner parameters, Context context);
 
     /**
      * Remove workload classifier
@@ -183,12 +154,8 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName);
 
     /**
      * Remove workload classifier
@@ -207,13 +174,8 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, String workloadClassifierName, Context context);
 
     /**
      * Remove workload classifier
@@ -230,11 +192,7 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
+    void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
         String workloadClassifierName);
 
     /**
@@ -253,13 +211,8 @@ public interface SqlPoolWorkloadClassifiersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName,
-        Context context);
+    void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        String workloadClassifierName, Context context);
 
     /**
      * Sql pool's workload classifier
@@ -277,8 +230,8 @@ public interface SqlPoolWorkloadClassifiersClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadClassifierInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName);
+    PagedIterable<WorkloadClassifierInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName);
 
     /**
      * Sql pool's workload classifier
@@ -297,6 +250,6 @@ public interface SqlPoolWorkloadClassifiersClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadClassifierInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context);
+    PagedIterable<WorkloadClassifierInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, Context context);
 }

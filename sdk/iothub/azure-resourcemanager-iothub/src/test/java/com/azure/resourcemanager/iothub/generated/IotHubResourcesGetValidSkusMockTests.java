@@ -32,37 +32,27 @@ public final class IotHubResourcesGetValidSkusMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"resourceType\":\"rjaltolmncw\",\"sku\":{\"name\":\"B3\",\"tier\":\"Free\",\"capacity\":4217034770382613848},\"capacity\":{\"minimum\":8022967239645365882,\"maximum\":1537965460429529227,\"default\":1827389196157237043,\"scaleType\":\"Manual\"}}]}";
+        String responseStr
+            = "{\"value\":[{\"resourceType\":\"rjaltolmncw\",\"sku\":{\"name\":\"B3\",\"tier\":\"Free\",\"capacity\":4217034770382613848},\"capacity\":{\"minimum\":8022967239645365882,\"maximum\":1537965460429529227,\"default\":1827389196157237043,\"scaleType\":\"Manual\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        IotHubManager manager =
-            IotHubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        IotHubManager manager = IotHubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<IotHubSkuDescription> response =
-            manager.iotHubResources().getValidSkus("qwhxxbuyqaxzfeqz", "ppriol", com.azure.core.util.Context.NONE);
+        PagedIterable<IotHubSkuDescription> response
+            = manager.iotHubResources().getValidSkus("qwhxxbuyqaxzfeqz", "ppriol", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(IotHubSku.B3, response.iterator().next().sku().name());
         Assertions.assertEquals(4217034770382613848L, response.iterator().next().sku().capacity());

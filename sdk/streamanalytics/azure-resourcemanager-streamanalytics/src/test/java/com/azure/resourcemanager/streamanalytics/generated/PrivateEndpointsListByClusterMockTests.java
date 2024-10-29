@@ -45,15 +45,21 @@ public final class PrivateEndpointsListByClusterMockTests {
             return Mono.just(httpResponse);
         }));
 
-        StreamAnalyticsManager manager = StreamAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        StreamAnalyticsManager manager = StreamAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateEndpoint> response
             = manager.privateEndpoints().listByCluster("svxeizzgwklnsr", "ffeycx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ekkkzd", response.iterator().next().properties().manualPrivateLinkServiceConnections()
-            .get(0).privateLinkServiceId());
+        Assertions.assertEquals("ekkkzd",
+            response.iterator()
+                .next()
+                .properties()
+                .manualPrivateLinkServiceConnections()
+                .get(0)
+                .privateLinkServiceId());
         Assertions.assertEquals("kgdoj",
             response.iterator().next().properties().manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
     }

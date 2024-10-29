@@ -12,20 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SelfHostedIntegrationRuntimeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SelfHostedIntegrationRuntime model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SelfHosted\",\"typeProperties\":{\"linkedInfo\":{\"authorizationType\":\"LinkedIntegrationRuntimeType\"}},\"description\":\"txeqi\",\"\":{\"sfayorpravkjoges\":\"datazdyi\",\"wynqxaekqsykvwj\":\"dataabnsmj\",\"spxklu\":\"dataqpkevmyltjc\",\"ytzpo\":\"datacclfgxannn\"}}")
-                .toObject(SelfHostedIntegrationRuntime.class);
+        SelfHostedIntegrationRuntime model = BinaryData.fromString(
+            "{\"type\":\"SelfHosted\",\"typeProperties\":{\"linkedInfo\":{\"authorizationType\":\"LinkedIntegrationRuntimeType\"}},\"description\":\"txeqi\",\"\":{\"sfayorpravkjoges\":\"datazdyi\",\"wynqxaekqsykvwj\":\"dataabnsmj\",\"spxklu\":\"dataqpkevmyltjc\",\"ytzpo\":\"datacclfgxannn\"}}")
+            .toObject(SelfHostedIntegrationRuntime.class);
         Assertions.assertEquals("txeqi", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SelfHostedIntegrationRuntime model =
-            new SelfHostedIntegrationRuntime()
-                .withDescription("txeqi")
-                .withLinkedInfo(new LinkedIntegrationRuntimeType());
+        SelfHostedIntegrationRuntime model = new SelfHostedIntegrationRuntime().withDescription("txeqi")
+            .withLinkedInfo(new LinkedIntegrationRuntimeType());
         model = BinaryData.fromObject(model).toObject(SelfHostedIntegrationRuntime.class);
         Assertions.assertEquals("txeqi", model.description());
     }

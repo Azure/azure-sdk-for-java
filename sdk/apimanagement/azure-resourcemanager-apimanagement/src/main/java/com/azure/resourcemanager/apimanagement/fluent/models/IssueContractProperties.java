@@ -126,20 +126,16 @@ public final class IssueContractProperties extends IssueContractBaseProperties {
     public void validate() {
         super.validate();
         if (title() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property title in model IssueContractProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property title in model IssueContractProperties"));
         }
         if (description() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property description in model IssueContractProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property description in model IssueContractProperties"));
         }
         if (userId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property userId in model IssueContractProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property userId in model IssueContractProperties"));
         }
     }
 

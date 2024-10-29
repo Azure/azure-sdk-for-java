@@ -49,23 +49,19 @@ public final class NotificationRegistrationImpl
     }
 
     public NotificationRegistration create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationRegistrations()
-                .createOrUpdateWithResponse(
-                    providerNamespace, notificationRegistrationName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationRegistrations()
+            .createOrUpdateWithResponse(providerNamespace, notificationRegistrationName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public NotificationRegistration create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationRegistrations()
-                .createOrUpdateWithResponse(providerNamespace, notificationRegistrationName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationRegistrations()
+            .createOrUpdateWithResponse(providerNamespace, notificationRegistrationName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -80,28 +76,23 @@ public final class NotificationRegistrationImpl
     }
 
     public NotificationRegistration apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationRegistrations()
-                .createOrUpdateWithResponse(
-                    providerNamespace, notificationRegistrationName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationRegistrations()
+            .createOrUpdateWithResponse(providerNamespace, notificationRegistrationName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public NotificationRegistration apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationRegistrations()
-                .createOrUpdateWithResponse(providerNamespace, notificationRegistrationName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationRegistrations()
+            .createOrUpdateWithResponse(providerNamespace, notificationRegistrationName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    NotificationRegistrationImpl(
-        NotificationRegistrationInner innerObject,
+    NotificationRegistrationImpl(NotificationRegistrationInner innerObject,
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -110,22 +101,18 @@ public final class NotificationRegistrationImpl
     }
 
     public NotificationRegistration refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationRegistrations()
-                .getWithResponse(providerNamespace, notificationRegistrationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationRegistrations()
+            .getWithResponse(providerNamespace, notificationRegistrationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NotificationRegistration refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationRegistrations()
-                .getWithResponse(providerNamespace, notificationRegistrationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNotificationRegistrations()
+            .getWithResponse(providerNamespace, notificationRegistrationName, context)
+            .getValue();
         return this;
     }
 

@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NeighborGroupsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NeighborGroupsListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"networkTapIds\":[\"oksz\",\"nm\",\"wgpterdiuw\",\"i\"],\"networkTapRuleIds\":[\"kwztsdetj\"],\"provisioningState\":\"Failed\",\"destination\":{\"ipv4Addresses\":[\"cq\",\"olzkgys\"],\"ipv6Addresses\":[\"yybzoxlvoc\",\"tvdxxhe\"]},\"annotation\":\"mlil\"},\"location\":\"ghjhjvmabzzbwa\",\"tags\":{\"apr\":\"mdafbgymqt\",\"neychbjizq\":\"ojxrjnbsconxavi\",\"rfbo\":\"sgnwdxzedpq\",\"mlnfyz\":\"xi\"},\"id\":\"vfrbypic\",\"name\":\"bkpdjtaqhsmq\",\"type\":\"zpdgonjhxshthmgp\"}],\"nextLink\":\"qulpt\"}")
-                .toObject(NeighborGroupsListResult.class);
+        NeighborGroupsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"networkTapIds\":[\"oksz\",\"nm\",\"wgpterdiuw\",\"i\"],\"networkTapRuleIds\":[\"kwztsdetj\"],\"provisioningState\":\"Failed\",\"destination\":{\"ipv4Addresses\":[\"cq\",\"olzkgys\"],\"ipv6Addresses\":[\"yybzoxlvoc\",\"tvdxxhe\"]},\"annotation\":\"mlil\"},\"location\":\"ghjhjvmabzzbwa\",\"tags\":{\"apr\":\"mdafbgymqt\",\"neychbjizq\":\"ojxrjnbsconxavi\",\"rfbo\":\"sgnwdxzedpq\",\"mlnfyz\":\"xi\"},\"id\":\"vfrbypic\",\"name\":\"bkpdjtaqhsmq\",\"type\":\"zpdgonjhxshthmgp\"}],\"nextLink\":\"qulpt\"}")
+            .toObject(NeighborGroupsListResult.class);
         Assertions.assertEquals("ghjhjvmabzzbwa", model.value().get(0).location());
         Assertions.assertEquals("mdafbgymqt", model.value().get(0).tags().get("apr"));
         Assertions.assertEquals("cq", model.value().get(0).destination().ipv4Addresses().get(0));
@@ -31,29 +29,14 @@ public final class NeighborGroupsListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NeighborGroupsListResult model =
-            new NeighborGroupsListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new NeighborGroupInner()
-                                .withLocation("ghjhjvmabzzbwa")
-                                .withTags(
-                                    mapOf(
-                                        "apr",
-                                        "mdafbgymqt",
-                                        "neychbjizq",
-                                        "ojxrjnbsconxavi",
-                                        "rfbo",
-                                        "sgnwdxzedpq",
-                                        "mlnfyz",
-                                        "xi"))
-                                .withDestination(
-                                    new NeighborGroupDestination()
-                                        .withIpv4Addresses(Arrays.asList("cq", "olzkgys"))
-                                        .withIpv6Addresses(Arrays.asList("yybzoxlvoc", "tvdxxhe")))
-                                .withAnnotation("mlil")))
-                .withNextLink("qulpt");
+        NeighborGroupsListResult model = new NeighborGroupsListResult()
+            .withValue(Arrays.asList(new NeighborGroupInner().withLocation("ghjhjvmabzzbwa")
+                .withTags(
+                    mapOf("apr", "mdafbgymqt", "neychbjizq", "ojxrjnbsconxavi", "rfbo", "sgnwdxzedpq", "mlnfyz", "xi"))
+                .withDestination(new NeighborGroupDestination().withIpv4Addresses(Arrays.asList("cq", "olzkgys"))
+                    .withIpv6Addresses(Arrays.asList("yybzoxlvoc", "tvdxxhe")))
+                .withAnnotation("mlil")))
+            .withNextLink("qulpt");
         model = BinaryData.fromObject(model).toObject(NeighborGroupsListResult.class);
         Assertions.assertEquals("ghjhjvmabzzbwa", model.value().get(0).location());
         Assertions.assertEquals("mdafbgymqt", model.value().get(0).tags().get("apr"));

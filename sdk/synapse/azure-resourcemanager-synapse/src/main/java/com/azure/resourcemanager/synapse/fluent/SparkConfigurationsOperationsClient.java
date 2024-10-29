@@ -41,6 +41,6 @@ public interface SparkConfigurationsOperationsClient {
      * @return a list of SparkConfiguration resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SparkConfigurationResourceInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<SparkConfigurationResourceInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 }

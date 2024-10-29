@@ -33,51 +33,39 @@ public final class TablesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"retentionInDays\":1435976070,\"totalRetentionInDays\":1686367778,\"archiveRetentionInDays\":1716765996,\"searchResults\":{\"query\":\"wynqxaekqsykvwj\",\"description\":\"pkevmylt\",\"limit\":2026701044,\"startSearchTime\":\"2021-10-29T22:46:22Z\",\"endSearchTime\":\"2021-04-08T09:27:59Z\",\"sourceTable\":\"urcclfgxannn\",\"azureAsyncOperationId\":\"t\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-03-29T11:03:44Z\",\"endRestoreTime\":\"2021-11-29T05:38:50Z\",\"sourceTable\":\"igpxvkq\",\"azureAsyncOperationId\":\"upxvpifd\"},\"resultStatistics\":{\"progress\":61.169006,\"ingestedRecords\":1330268860,\"scannedGb\":72.36485},\"plan\":\"Analytics\",\"lastPlanModifiedDate\":\"ubeids\",\"schema\":{\"name\":\"ytoithgygvfl\",\"displayName\":\"vdihoynkrx\",\"description\":\"twk\",\"columns\":[{\"name\":\"rucpcunnuz\",\"type\":\"dateTime\",\"dataTypeHint\":\"armPath\",\"displayName\":\"nod\",\"description\":\"ienhqhskndnelq\",\"isDefaultDisplay\":true,\"isHidden\":true}],\"standardColumns\":[{\"name\":\"foanniyopetx\",\"type\":\"long\",\"dataTypeHint\":\"uri\",\"displayName\":\"yxnu\",\"description\":\"ephblkwqpatvbqs\",\"isDefaultDisplay\":false,\"isHidden\":true}],\"categories\":[\"vivuzqymtuowo\",\"tgitsqhzvbrzc\",\"banf\"],\"labels\":[\"scxmxeat\"],\"source\":\"customer\",\"tableType\":\"SearchResults\",\"tableSubType\":\"Classic\",\"solutions\":[\"yibqbnao\",\"hjrmkuhmaxl\"]},\"provisioningState\":\"InProgress\",\"retentionInDaysAsDefault\":false,\"totalRetentionInDaysAsDefault\":true},\"systemData\":{\"createdBy\":\"obcancdexxqcw\",\"createdByType\":\"User\",\"createdAt\":\"2021-10-18T23:22:13Z\",\"lastModifiedBy\":\"aknokzwjjzrl\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-06-15T15:42:35Z\"},\"id\":\"zyyfy\",\"name\":\"pqsixymmp\",\"type\":\"jivyqlkjuv\"}";
+        String responseStr
+            = "{\"properties\":{\"retentionInDays\":1435976070,\"totalRetentionInDays\":1686367778,\"archiveRetentionInDays\":1716765996,\"searchResults\":{\"query\":\"wynqxaekqsykvwj\",\"description\":\"pkevmylt\",\"limit\":2026701044,\"startSearchTime\":\"2021-10-29T22:46:22Z\",\"endSearchTime\":\"2021-04-08T09:27:59Z\",\"sourceTable\":\"urcclfgxannn\",\"azureAsyncOperationId\":\"t\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-03-29T11:03:44Z\",\"endRestoreTime\":\"2021-11-29T05:38:50Z\",\"sourceTable\":\"igpxvkq\",\"azureAsyncOperationId\":\"upxvpifd\"},\"resultStatistics\":{\"progress\":61.169006,\"ingestedRecords\":1330268860,\"scannedGb\":72.36485},\"plan\":\"Analytics\",\"lastPlanModifiedDate\":\"ubeids\",\"schema\":{\"name\":\"ytoithgygvfl\",\"displayName\":\"vdihoynkrx\",\"description\":\"twk\",\"columns\":[{\"name\":\"rucpcunnuz\",\"type\":\"dateTime\",\"dataTypeHint\":\"armPath\",\"displayName\":\"nod\",\"description\":\"ienhqhskndnelq\",\"isDefaultDisplay\":true,\"isHidden\":true}],\"standardColumns\":[{\"name\":\"foanniyopetx\",\"type\":\"long\",\"dataTypeHint\":\"uri\",\"displayName\":\"yxnu\",\"description\":\"ephblkwqpatvbqs\",\"isDefaultDisplay\":false,\"isHidden\":true}],\"categories\":[\"vivuzqymtuowo\",\"tgitsqhzvbrzc\",\"banf\"],\"labels\":[\"scxmxeat\"],\"source\":\"customer\",\"tableType\":\"SearchResults\",\"tableSubType\":\"Classic\",\"solutions\":[\"yibqbnao\",\"hjrmkuhmaxl\"]},\"provisioningState\":\"InProgress\",\"retentionInDaysAsDefault\":false,\"totalRetentionInDaysAsDefault\":true},\"systemData\":{\"createdBy\":\"obcancdexxqcw\",\"createdByType\":\"User\",\"createdAt\":\"2021-10-18T23:22:13Z\",\"lastModifiedBy\":\"aknokzwjjzrl\",\"lastModifiedByType\":\"Key\",\"lastModifiedAt\":\"2021-06-15T15:42:35Z\"},\"id\":\"zyyfy\",\"name\":\"pqsixymmp\",\"type\":\"jivyqlkjuv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Table response =
-            manager
-                .tables()
-                .getWithResponse("rkgwltxeqip", "gzdyimsfayorp", "avkjog", com.azure.core.util.Context.NONE)
-                .getValue();
+        Table response = manager.tables()
+            .getWithResponse("rkgwltxeqip", "gzdyimsfayorp", "avkjog", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(1435976070, response.retentionInDays());
         Assertions.assertEquals(1686367778, response.totalRetentionInDays());
         Assertions.assertEquals("wynqxaekqsykvwj", response.searchResults().query());
         Assertions.assertEquals("pkevmylt", response.searchResults().description());
         Assertions.assertEquals(2026701044, response.searchResults().limit());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-10-29T22:46:22Z"), response.searchResults().startSearchTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-29T22:46:22Z"),
+            response.searchResults().startSearchTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-08T09:27:59Z"), response.searchResults().endSearchTime());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-03-29T11:03:44Z"), response.restoredLogs().startRestoreTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-29T11:03:44Z"),
+            response.restoredLogs().startRestoreTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-29T05:38:50Z"), response.restoredLogs().endRestoreTime());
         Assertions.assertEquals("igpxvkq", response.restoredLogs().sourceTable());
         Assertions.assertEquals(TablePlanEnum.ANALYTICS, response.plan());

@@ -33,46 +33,34 @@ public final class ArtifactSourcesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"sourceType\":\"swibyr\",\"artifactRoot\":\"l\",\"authentication\":{\"type\":\"Authentication\"}},\"location\":\"h\",\"tags\":{\"c\":\"wpracstwitykhev\",\"jc\":\"edcpnmdyodnwzxl\",\"vvwxqi\":\"nhltiugcxn\"},\"id\":\"y\",\"name\":\"unyowxwl\",\"type\":\"djrkvfgbvfvpd\"}";
+        String responseStr
+            = "{\"properties\":{\"sourceType\":\"swibyr\",\"artifactRoot\":\"l\",\"authentication\":{\"type\":\"Authentication\"}},\"location\":\"h\",\"tags\":{\"c\":\"wpracstwitykhev\",\"jc\":\"edcpnmdyodnwzxl\",\"vvwxqi\":\"nhltiugcxn\"},\"id\":\"y\",\"name\":\"unyowxwl\",\"type\":\"djrkvfgbvfvpd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(201);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DeploymentManager manager =
-            DeploymentManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DeploymentManager manager = DeploymentManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ArtifactSource response =
-            manager
-                .artifactSources()
-                .define("tlstvlzywem")
-                .withRegion("ygqukyhejh")
-                .withExistingResourceGroup("xggicccnxqhuexmk")
-                .withTags(mapOf("srp", "xgfpelolppv"))
-                .withSourceType("rncsdtclu")
-                .withArtifactRoot("ypbsfgytguslfead")
-                .withAuthentication(new Authentication())
-                .create();
+        ArtifactSource response = manager.artifactSources()
+            .define("tlstvlzywem")
+            .withRegion("ygqukyhejh")
+            .withExistingResourceGroup("xggicccnxqhuexmk")
+            .withTags(mapOf("srp", "xgfpelolppv"))
+            .withSourceType("rncsdtclu")
+            .withArtifactRoot("ypbsfgytguslfead")
+            .withAuthentication(new Authentication())
+            .create();
 
         Assertions.assertEquals("h", response.location());
         Assertions.assertEquals("wpracstwitykhev", response.tags().get("c"));

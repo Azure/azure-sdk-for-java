@@ -29,13 +29,8 @@ public interface OperationResultsClient {
      * @return asset track operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationResultsGetResponse getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        String operationId,
-        Context context);
+    OperationResultsGetResponse getWithResponse(String resourceGroupName, String accountName, String assetName,
+        String trackName, String operationId, Context context);
 
     /**
      * Get operation result.
@@ -53,6 +48,6 @@ public interface OperationResultsClient {
      * @return asset track operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetTrackInner get(
-        String resourceGroupName, String accountName, String assetName, String trackName, String operationId);
+    AssetTrackInner get(String resourceGroupName, String accountName, String assetName, String trackName,
+        String operationId);
 }

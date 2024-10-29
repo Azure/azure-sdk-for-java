@@ -38,31 +38,41 @@ public final class ProtectableItemCollectionTests {
                     Arrays
                         .asList(
                             new ProtectableItemInner().withProperties(new ProtectableItemProperties()
-                                .withFriendlyName("qcslyjpkiid").withProtectionStatus("exznelixhnr")
-                                .withReplicationProtectedItemId("folhbnxknal").withRecoveryServicesProviderId("lp")
+                                .withFriendlyName("qcslyjpkiid")
+                                .withProtectionStatus("exznelixhnr")
+                                .withReplicationProtectedItemId("folhbnxknal")
+                                .withRecoveryServicesProviderId("lp")
                                 .withProtectionReadinessErrors(
                                     Arrays.asList("dtpnapnyiropuhp", "gvpgy", "gqgitxmedjvcsl"))
                                 .withSupportedReplicationProviders(Arrays.asList("wwncwzzhxgk", "rmgucnap"))
                                 .withCustomDetails(new ConfigurationSettings())).withLocation("oellwp"),
                             new ProtectableItemInner().withProperties(new ProtectableItemProperties()
-                                .withFriendlyName("z").withProtectionStatus("hzxct")
-                                .withReplicationProtectedItemId("gbkdmoizpos").withRecoveryServicesProviderId("grcfb")
+                                .withFriendlyName("z")
+                                .withProtectionStatus("hzxct")
+                                .withReplicationProtectedItemId("gbkdmoizpos")
+                                .withRecoveryServicesProviderId("grcfb")
                                 .withProtectionReadinessErrors(Arrays.asList("mfqjhhkxbp", "jy", "jhxxjyn", "u"))
                                 .withSupportedReplicationProviders(Arrays.asList("krtswbxqz"))
                                 .withCustomDetails(new ConfigurationSettings())).withLocation("jfauvjfdxxi"),
-                            new ProtectableItemInner().withProperties(
-                                new ProtectableItemProperties().withFriendlyName("sfxobl").withProtectionStatus("k")
-                                    .withReplicationProtectedItemId("mpew").withRecoveryServicesProviderId("fbkrvrnsvs")
+                            new ProtectableItemInner()
+                                .withProperties(new ProtectableItemProperties().withFriendlyName("sfxobl")
+                                    .withProtectionStatus("k")
+                                    .withReplicationProtectedItemId("mpew")
+                                    .withRecoveryServicesProviderId("fbkrvrnsvs")
                                     .withProtectionReadinessErrors(Arrays.asList("ohxcrsbfova", "rruvwbhsq"))
                                     .withSupportedReplicationProviders(Arrays.asList("bcgjbirxbp", "bsrfbj", "dtws"))
                                     .withCustomDetails(new ConfigurationSettings()))
                                 .withLocation("ftpvjzbexil"),
-                            new ProtectableItemInner().withProperties(new ProtectableItemProperties()
-                                .withFriendlyName("wgdrjervnaenqp").withProtectionStatus("indoygmifthnzd")
-                                .withReplicationProtectedItemId("sl").withRecoveryServicesProviderId("ayqigynduhav")
-                                .withProtectionReadinessErrors(Arrays.asList("kthumaqolbgycdui", "r"))
-                                .withSupportedReplicationProviders(Arrays.asList("cym", "aolps", "lqlfm", "dnbbglzps"))
-                                .withCustomDetails(new ConfigurationSettings())).withLocation("d")))
+                            new ProtectableItemInner()
+                                .withProperties(new ProtectableItemProperties().withFriendlyName("wgdrjervnaenqp")
+                                    .withProtectionStatus("indoygmifthnzd")
+                                    .withReplicationProtectedItemId("sl")
+                                    .withRecoveryServicesProviderId("ayqigynduhav")
+                                    .withProtectionReadinessErrors(Arrays.asList("kthumaqolbgycdui", "r"))
+                                    .withSupportedReplicationProviders(
+                                        Arrays.asList("cym", "aolps", "lqlfm", "dnbbglzps"))
+                                    .withCustomDetails(new ConfigurationSettings()))
+                                .withLocation("d")))
                 .withNextLink("zbn");
         model = BinaryData.fromObject(model).toObject(ProtectableItemCollection.class);
         Assertions.assertEquals("qcslyjpkiid", model.value().get(0).properties().friendlyName());

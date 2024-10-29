@@ -53,8 +53,8 @@ public interface PrivateLinkHubsClient {
      * @return a privateLinkHub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkHubInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String privateLinkHubName, Context context);
+    Response<PrivateLinkHubInner> getByResourceGroupWithResponse(String resourceGroupName, String privateLinkHubName,
+        Context context);
 
     /**
      * Gets a privateLinkHub.
@@ -82,11 +82,8 @@ public interface PrivateLinkHubsClient {
      * @return a privateLinkHub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkHubInner> updateWithResponse(
-        String resourceGroupName,
-        String privateLinkHubName,
-        PrivateLinkHubPatchInfo privateLinkHubPatchInfo,
-        Context context);
+    Response<PrivateLinkHubInner> updateWithResponse(String resourceGroupName, String privateLinkHubName,
+        PrivateLinkHubPatchInfo privateLinkHubPatchInfo, Context context);
 
     /**
      * Updates a privateLinkHub.
@@ -100,8 +97,8 @@ public interface PrivateLinkHubsClient {
      * @return a privateLinkHub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkHubInner update(
-        String resourceGroupName, String privateLinkHubName, PrivateLinkHubPatchInfo privateLinkHubPatchInfo);
+    PrivateLinkHubInner update(String resourceGroupName, String privateLinkHubName,
+        PrivateLinkHubPatchInfo privateLinkHubPatchInfo);
 
     /**
      * Creates or updates a privateLinkHub.
@@ -116,8 +113,8 @@ public interface PrivateLinkHubsClient {
      * @return a privateLinkHub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkHubInner> createOrUpdateWithResponse(
-        String resourceGroupName, String privateLinkHubName, PrivateLinkHubInner privateLinkHubInfo, Context context);
+    Response<PrivateLinkHubInner> createOrUpdateWithResponse(String resourceGroupName, String privateLinkHubName,
+        PrivateLinkHubInner privateLinkHubInfo, Context context);
 
     /**
      * Creates or updates a privateLinkHub.
@@ -131,8 +128,8 @@ public interface PrivateLinkHubsClient {
      * @return a privateLinkHub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkHubInner createOrUpdate(
-        String resourceGroupName, String privateLinkHubName, PrivateLinkHubInner privateLinkHubInfo);
+    PrivateLinkHubInner createOrUpdate(String resourceGroupName, String privateLinkHubName,
+        PrivateLinkHubInner privateLinkHubInfo);
 
     /**
      * Deletes a privateLinkHub.
@@ -159,8 +156,8 @@ public interface PrivateLinkHubsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateLinkHubName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateLinkHubName,
+        Context context);
 
     /**
      * Deletes a privateLinkHub.

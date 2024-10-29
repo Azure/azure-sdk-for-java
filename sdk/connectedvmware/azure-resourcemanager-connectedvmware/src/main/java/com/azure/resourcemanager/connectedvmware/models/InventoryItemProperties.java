@@ -24,8 +24,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "VirtualNetwork", value = VirtualNetworkInventoryItem.class),
     @JsonSubTypes.Type(name = "Cluster", value = ClusterInventoryItem.class),
     @JsonSubTypes.Type(name = "Datastore", value = DatastoreInventoryItem.class),
-    @JsonSubTypes.Type(name = "Host", value = HostInventoryItem.class)
-})
+    @JsonSubTypes.Type(name = "Host", value = HostInventoryItem.class) })
 @Fluent
 public class InventoryItemProperties {
     /*

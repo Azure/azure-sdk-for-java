@@ -12,8 +12,7 @@ public final class GenerateUploadUriResponseImpl implements GenerateUploadUriRes
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    GenerateUploadUriResponseImpl(
-        GenerateUploadUriResponseInner innerObject,
+    GenerateUploadUriResponseImpl(GenerateUploadUriResponseInner innerObject,
         com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

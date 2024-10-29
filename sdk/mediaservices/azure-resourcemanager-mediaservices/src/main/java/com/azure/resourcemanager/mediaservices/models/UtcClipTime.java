@@ -58,9 +58,8 @@ public final class UtcClipTime extends ClipTime {
     public void validate() {
         super.validate();
         if (time() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property time in model UtcClipTime"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property time in model UtcClipTime"));
         }
     }
 

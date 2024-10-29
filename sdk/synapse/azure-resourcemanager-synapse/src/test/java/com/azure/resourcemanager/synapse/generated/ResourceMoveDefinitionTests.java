@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceMoveDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceMoveDefinition model =
-            BinaryData.fromString("{\"id\":\"qlveualupjmkh\"}").toObject(ResourceMoveDefinition.class);
+        ResourceMoveDefinition model
+            = BinaryData.fromString("{\"id\":\"qlveualupjmkh\"}").toObject(ResourceMoveDefinition.class);
         Assertions.assertEquals("qlveualupjmkh", model.id());
     }
 

@@ -31,8 +31,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         }
 
         // Setup the service client
-        TableServiceClientBuilder builder = new TableServiceClientBuilder()
-            .connectionString(connectionString);
+        TableServiceClientBuilder builder = new TableServiceClientBuilder().connectionString(connectionString);
 
         tableServiceClient = builder.buildClient();
         tableServiceAsyncClient = builder.buildAsyncClient();

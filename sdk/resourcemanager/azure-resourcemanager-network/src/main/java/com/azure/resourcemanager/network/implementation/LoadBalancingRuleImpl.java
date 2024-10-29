@@ -29,10 +29,8 @@ import java.util.List;
 
 /** Implementation for LoadBalancingRule. */
 class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, LoadBalancerImpl, LoadBalancer>
-    implements LoadBalancingRule,
-        LoadBalancingRule.Definition<LoadBalancer.DefinitionStages.WithLBRuleOrNatOrCreate>,
-        LoadBalancingRule.UpdateDefinition<LoadBalancer.Update>,
-        LoadBalancingRule.Update {
+    implements LoadBalancingRule, LoadBalancingRule.Definition<LoadBalancer.DefinitionStages.WithLBRuleOrNatOrCreate>,
+    LoadBalancingRule.UpdateDefinition<LoadBalancer.Update>, LoadBalancingRule.Update {
 
     LoadBalancingRuleImpl(LoadBalancingRuleInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
@@ -268,8 +266,8 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
         // Ensure existence of backend, creating one if needed
         this.parent().defineBackend(backendName).attach();
 
-        SubResource backendRef =
-            new SubResource().withId(this.parent().futureResourceId() + "/backendAddressPools/" + backendName);
+        SubResource backendRef
+            = new SubResource().withId(this.parent().futureResourceId() + "/backendAddressPools/" + backendName);
         this.innerModel().withBackendAddressPool(backendRef);
         return this;
     }

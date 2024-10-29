@@ -18,8 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("PlannedFailoverModelCustomProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "HyperVToAzStackHCI", value = HyperVToAzStackHciPlannedFailoverCustomProps.class),
-    @JsonSubTypes.Type(name = "VMwareToAzStackHCI", value = VMwareToAzStackHciPlannedFailoverCustomProps.class)
-})
+    @JsonSubTypes.Type(name = "VMwareToAzStackHCI", value = VMwareToAzStackHciPlannedFailoverCustomProps.class) })
 @Immutable
 public class PlannedFailoverModelCustomProperties {
     /** Creates an instance of PlannedFailoverModelCustomProperties class. */

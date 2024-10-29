@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EmailTemplateContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EmailTemplateContractProperties model =
-            BinaryData
-                .fromString(
-                    "{\"subject\":\"uw\",\"body\":\"jmwvvbtuqkxxi\",\"title\":\"gxql\",\"description\":\"k\",\"isDefault\":true,\"parameters\":[{\"name\":\"eqfky\",\"title\":\"iwvjaqupbyyn\",\"description\":\"kpajbmgeume\"},{\"name\":\"jbxcbccwkqmtxa\",\"title\":\"qis\",\"description\":\"p\"}]}")
-                .toObject(EmailTemplateContractProperties.class);
+        EmailTemplateContractProperties model = BinaryData.fromString(
+            "{\"subject\":\"uw\",\"body\":\"jmwvvbtuqkxxi\",\"title\":\"gxql\",\"description\":\"k\",\"isDefault\":true,\"parameters\":[{\"name\":\"eqfky\",\"title\":\"iwvjaqupbyyn\",\"description\":\"kpajbmgeume\"},{\"name\":\"jbxcbccwkqmtxa\",\"title\":\"qis\",\"description\":\"p\"}]}")
+            .toObject(EmailTemplateContractProperties.class);
         Assertions.assertEquals("uw", model.subject());
         Assertions.assertEquals("jmwvvbtuqkxxi", model.body());
         Assertions.assertEquals("gxql", model.title());
@@ -29,23 +27,17 @@ public final class EmailTemplateContractPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EmailTemplateContractProperties model =
-            new EmailTemplateContractProperties()
-                .withSubject("uw")
-                .withBody("jmwvvbtuqkxxi")
-                .withTitle("gxql")
-                .withDescription("k")
-                .withParameters(
-                    Arrays
-                        .asList(
-                            new EmailTemplateParametersContractProperties()
-                                .withName("eqfky")
-                                .withTitle("iwvjaqupbyyn")
-                                .withDescription("kpajbmgeume"),
-                            new EmailTemplateParametersContractProperties()
-                                .withName("jbxcbccwkqmtxa")
-                                .withTitle("qis")
-                                .withDescription("p")));
+        EmailTemplateContractProperties model = new EmailTemplateContractProperties().withSubject("uw")
+            .withBody("jmwvvbtuqkxxi")
+            .withTitle("gxql")
+            .withDescription("k")
+            .withParameters(Arrays.asList(
+                new EmailTemplateParametersContractProperties().withName("eqfky")
+                    .withTitle("iwvjaqupbyyn")
+                    .withDescription("kpajbmgeume"),
+                new EmailTemplateParametersContractProperties().withName("jbxcbccwkqmtxa")
+                    .withTitle("qis")
+                    .withDescription("p")));
         model = BinaryData.fromObject(model).toObject(EmailTemplateContractProperties.class);
         Assertions.assertEquals("uw", model.subject());
         Assertions.assertEquals("jmwvvbtuqkxxi", model.body());

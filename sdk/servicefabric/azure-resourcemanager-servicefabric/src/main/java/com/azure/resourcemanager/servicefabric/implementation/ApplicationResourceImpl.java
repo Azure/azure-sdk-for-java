@@ -151,14 +151,16 @@ public final class ApplicationResourceImpl
     }
 
     public ApplicationResource create() {
-        this.innerObject = serviceManager.serviceClient().getApplications().createOrUpdate(resourceGroupName,
-            clusterName, applicationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .createOrUpdate(resourceGroupName, clusterName, applicationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ApplicationResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApplications().createOrUpdate(resourceGroupName,
-            clusterName, applicationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .createOrUpdate(resourceGroupName, clusterName, applicationName, this.innerModel(), context);
         return this;
     }
 
@@ -174,14 +176,16 @@ public final class ApplicationResourceImpl
     }
 
     public ApplicationResource apply() {
-        this.innerObject = serviceManager.serviceClient().getApplications().update(resourceGroupName, clusterName,
-            applicationName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .update(resourceGroupName, clusterName, applicationName, updateParameters, Context.NONE);
         return this;
     }
 
     public ApplicationResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApplications().update(resourceGroupName, clusterName,
-            applicationName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .update(resourceGroupName, clusterName, applicationName, updateParameters, context);
         return this;
     }
 
@@ -189,20 +193,24 @@ public final class ApplicationResourceImpl
         com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.applicationName = Utils.getValueFromIdByName(innerObject.id(), "applications");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.applicationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applications");
     }
 
     public ApplicationResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getApplications()
-            .getWithResponse(resourceGroupName, clusterName, applicationName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .getWithResponse(resourceGroupName, clusterName, applicationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ApplicationResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getApplications()
-            .getWithResponse(resourceGroupName, clusterName, applicationName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .getWithResponse(resourceGroupName, clusterName, applicationName, context)
+            .getValue();
         return this;
     }
 

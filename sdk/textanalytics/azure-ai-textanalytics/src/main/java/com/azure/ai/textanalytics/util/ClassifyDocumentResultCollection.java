@@ -23,8 +23,7 @@ public final class ClassifyDocumentResultCollection extends IterableStream<Class
         ClassifyDocumentResultCollectionPropertiesHelper.setAccessor(
             new ClassifyDocumentResultCollectionPropertiesHelper.ClassifyDocumentResultCollectionAccessor() {
                 @Override
-                public void setProjectName(ClassifyDocumentResultCollection resultCollection,
-                    String projectName) {
+                public void setProjectName(ClassifyDocumentResultCollection resultCollection, String projectName) {
                     resultCollection.setProjectName(projectName);
                 }
 

@@ -15,28 +15,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ArmIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArmIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"glcuhxwtctyqi\",\"tenantId\":\"bbovplwzbhvgyugu\",\"type\":\"SystemAssigned,"
-                        + " UserAssigned\",\"userAssignedIdentities\":{\"nkjzkdeslpvlop\":{\"principalId\":\"ss\",\"clientId\":\"ukkfplgmgs\"},\"iuebbaumny\":{\"principalId\":\"yighxpk\",\"clientId\":\"zb\"},\"bckhsmtxpsi\":{\"principalId\":\"ped\",\"clientId\":\"jn\"}}}")
-                .toObject(ArmIdentity.class);
+        ArmIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"glcuhxwtctyqi\",\"tenantId\":\"bbovplwzbhvgyugu\",\"type\":\"SystemAssigned,"
+                + " UserAssigned\",\"userAssignedIdentities\":{\"nkjzkdeslpvlop\":{\"principalId\":\"ss\",\"clientId\":\"ukkfplgmgs\"},\"iuebbaumny\":{\"principalId\":\"yighxpk\",\"clientId\":\"zb\"},\"bckhsmtxpsi\":{\"principalId\":\"ped\",\"clientId\":\"jn\"}}}")
+            .toObject(ArmIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArmIdentity model =
-            new ArmIdentity()
-                .withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "nkjzkdeslpvlop",
-                        new ArmUserIdentity(),
-                        "iuebbaumny",
-                        new ArmUserIdentity(),
-                        "bckhsmtxpsi",
-                        new ArmUserIdentity()));
+        ArmIdentity model = new ArmIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("nkjzkdeslpvlop", new ArmUserIdentity(), "iuebbaumny",
+                new ArmUserIdentity(), "bckhsmtxpsi", new ArmUserIdentity()));
         model = BinaryData.fromObject(model).toObject(ArmIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }

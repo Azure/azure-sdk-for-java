@@ -27,8 +27,8 @@ public interface SparkConfigurationsClient {
      * @return sparkConfiguration by name in a workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SparkConfigurationResourceInner> getWithResponse(
-        String resourceGroupName, String sparkConfigurationName, String workspaceName, Context context);
+    Response<SparkConfigurationResourceInner> getWithResponse(String resourceGroupName, String sparkConfigurationName,
+        String workspaceName, Context context);
 
     /**
      * Get SparkConfiguration by name.

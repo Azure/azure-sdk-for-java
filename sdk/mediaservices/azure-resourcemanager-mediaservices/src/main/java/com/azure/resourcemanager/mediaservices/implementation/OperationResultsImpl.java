@@ -21,39 +21,28 @@ public final class OperationResultsImpl implements OperationResults {
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public OperationResultsImpl(
-        OperationResultsClient innerClient,
+    public OperationResultsImpl(OperationResultsClient innerClient,
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<AssetTrack> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        String operationId,
-        Context context) {
-        OperationResultsGetResponse inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, accountName, assetName, trackName, operationId, context);
+    public Response<AssetTrack> getWithResponse(String resourceGroupName, String accountName, String assetName,
+        String trackName, String operationId, Context context) {
+        OperationResultsGetResponse inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, accountName, assetName, trackName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AssetTrackImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AssetTrack get(
-        String resourceGroupName, String accountName, String assetName, String trackName, String operationId) {
-        AssetTrackInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, assetName, trackName, operationId);
+    public AssetTrack get(String resourceGroupName, String accountName, String assetName, String trackName,
+        String operationId) {
+        AssetTrackInner inner
+            = this.serviceClient().get(resourceGroupName, accountName, assetName, trackName, operationId);
         if (inner != null) {
             return new AssetTrackImpl(inner, this.manager());
         } else {

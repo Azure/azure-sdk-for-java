@@ -44,14 +44,18 @@ public final class ApiDefinitionsImportSpecificationMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.apiDefinitions().importSpecification("qyzhf", "wesgogczh", "nnxk", "lgnyhmo", "sxkkg", "h",
-            new ApiSpecImportRequest().withValue("gh").withFormat(ApiSpecImportSourceFormat.LINK).withSpecification(
-                new ApiSpecImportRequestSpecification().withName("qxvcxgfrpdsofb").withVersion("rnsvbuswd")),
-            com.azure.core.util.Context.NONE);
+        manager.apiDefinitions()
+            .importSpecification("qyzhf", "wesgogczh", "nnxk", "lgnyhmo", "sxkkg", "h",
+                new ApiSpecImportRequest().withValue("gh")
+                    .withFormat(ApiSpecImportSourceFormat.LINK)
+                    .withSpecification(
+                        new ApiSpecImportRequestSpecification().withName("qxvcxgfrpdsofb").withVersion("rnsvbuswd")),
+                com.azure.core.util.Context.NONE);
 
     }
 }

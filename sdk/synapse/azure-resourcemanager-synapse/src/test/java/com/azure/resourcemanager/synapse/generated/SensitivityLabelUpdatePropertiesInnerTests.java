@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SensitivityLabelUpdatePropertiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SensitivityLabelUpdatePropertiesInner model =
-            BinaryData
-                .fromString(
-                    "{\"op\":\"set\",\"schema\":\"ldsyuuximerqfob\",\"table\":\"yznkby\",\"column\":\"utwpfhp\",\"sensitivityLabel\":{\"properties\":{\"schemaName\":\"r\",\"tableName\":\"dsnfdsdoakgtdl\",\"columnName\":\"kzevdlhewpusds\",\"labelName\":\"wvogvbbejdc\",\"labelId\":\"qqmoaku\",\"informationType\":\"m\",\"informationTypeId\":\"rwr\",\"isDisabled\":true,\"rank\":\"Critical\"},\"managedBy\":\"enuuzkopbm\",\"id\":\"nrfdw\",\"name\":\"yuhhziu\",\"type\":\"efozbhdms\"}}")
-                .toObject(SensitivityLabelUpdatePropertiesInner.class);
+        SensitivityLabelUpdatePropertiesInner model = BinaryData.fromString(
+            "{\"op\":\"set\",\"schema\":\"ldsyuuximerqfob\",\"table\":\"yznkby\",\"column\":\"utwpfhp\",\"sensitivityLabel\":{\"properties\":{\"schemaName\":\"r\",\"tableName\":\"dsnfdsdoakgtdl\",\"columnName\":\"kzevdlhewpusds\",\"labelName\":\"wvogvbbejdc\",\"labelId\":\"qqmoaku\",\"informationType\":\"m\",\"informationTypeId\":\"rwr\",\"isDisabled\":true,\"rank\":\"Critical\"},\"managedBy\":\"enuuzkopbm\",\"id\":\"nrfdw\",\"name\":\"yuhhziu\",\"type\":\"efozbhdms\"}}")
+            .toObject(SensitivityLabelUpdatePropertiesInner.class);
         Assertions.assertEquals(SensitivityLabelUpdateKind.SET, model.op());
         Assertions.assertEquals("ldsyuuximerqfob", model.schema());
         Assertions.assertEquals("yznkby", model.table());
@@ -32,19 +30,16 @@ public final class SensitivityLabelUpdatePropertiesInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SensitivityLabelUpdatePropertiesInner model =
-            new SensitivityLabelUpdatePropertiesInner()
-                .withOp(SensitivityLabelUpdateKind.SET)
+        SensitivityLabelUpdatePropertiesInner model
+            = new SensitivityLabelUpdatePropertiesInner().withOp(SensitivityLabelUpdateKind.SET)
                 .withSchema("ldsyuuximerqfob")
                 .withTable("yznkby")
                 .withColumn("utwpfhp")
-                .withSensitivityLabel(
-                    new SensitivityLabelInner()
-                        .withLabelName("wvogvbbejdc")
-                        .withLabelId("qqmoaku")
-                        .withInformationType("m")
-                        .withInformationTypeId("rwr")
-                        .withRank(SensitivityLabelRank.CRITICAL));
+                .withSensitivityLabel(new SensitivityLabelInner().withLabelName("wvogvbbejdc")
+                    .withLabelId("qqmoaku")
+                    .withInformationType("m")
+                    .withInformationTypeId("rwr")
+                    .withRank(SensitivityLabelRank.CRITICAL));
         model = BinaryData.fromObject(model).toObject(SensitivityLabelUpdatePropertiesInner.class);
         Assertions.assertEquals(SensitivityLabelUpdateKind.SET, model.op());
         Assertions.assertEquals("ldsyuuximerqfob", model.schema());

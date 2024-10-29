@@ -47,8 +47,8 @@ public interface BareMetalMachineKeySetsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BareMetalMachineKeySetInner> listByCluster(
-        String resourceGroupName, String clusterName, Context context);
+    PagedIterable<BareMetalMachineKeySetInner> listByCluster(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Retrieve the bare metal machine key set of the cluster.
@@ -65,8 +65,8 @@ public interface BareMetalMachineKeySetsClient {
      * @return bare metal machine key set of the provided cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BareMetalMachineKeySetInner> getWithResponse(
-        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName, Context context);
+    Response<BareMetalMachineKeySetInner> getWithResponse(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName, Context context);
 
     /**
      * Retrieve the bare metal machine key set of the cluster.
@@ -100,9 +100,7 @@ public interface BareMetalMachineKeySetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String bareMetalMachineKeySetName,
+        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
         BareMetalMachineKeySetInner bareMetalMachineKeySetParameters);
 
     /**
@@ -122,11 +120,8 @@ public interface BareMetalMachineKeySetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String bareMetalMachineKeySetName,
-        BareMetalMachineKeySetInner bareMetalMachineKeySetParameters,
-        Context context);
+        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
+        BareMetalMachineKeySetInner bareMetalMachineKeySetParameters, Context context);
 
     /**
      * Create or update the bare metal machine key set of the cluster.
@@ -143,11 +138,8 @@ public interface BareMetalMachineKeySetsClient {
      * @return bareMetalMachineKeySet represents the bare metal machine key set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BareMetalMachineKeySetInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String bareMetalMachineKeySetName,
-        BareMetalMachineKeySetInner bareMetalMachineKeySetParameters);
+    BareMetalMachineKeySetInner createOrUpdate(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName, BareMetalMachineKeySetInner bareMetalMachineKeySetParameters);
 
     /**
      * Create or update the bare metal machine key set of the cluster.
@@ -165,11 +157,8 @@ public interface BareMetalMachineKeySetsClient {
      * @return bareMetalMachineKeySet represents the bare metal machine key set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BareMetalMachineKeySetInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String bareMetalMachineKeySetName,
-        BareMetalMachineKeySetInner bareMetalMachineKeySetParameters,
+    BareMetalMachineKeySetInner createOrUpdate(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName, BareMetalMachineKeySetInner bareMetalMachineKeySetParameters,
         Context context);
 
     /**
@@ -186,8 +175,8 @@ public interface BareMetalMachineKeySetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName);
 
     /**
      * Delete the bare metal machine key set of the cluster.
@@ -204,8 +193,8 @@ public interface BareMetalMachineKeySetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String bareMetalMachineKeySetName, Context context);
 
     /**
      * Delete the bare metal machine key set of the cluster.
@@ -253,8 +242,8 @@ public interface BareMetalMachineKeySetsClient {
      * @return the {@link SyncPoller} for polling of bareMetalMachineKeySet represents the bare metal machine key set.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginUpdate(
-        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName);
+    SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner>
+        beginUpdate(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName);
 
     /**
      * Patch bare metal machine key set of the cluster.
@@ -274,11 +263,8 @@ public interface BareMetalMachineKeySetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BareMetalMachineKeySetInner>, BareMetalMachineKeySetInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String bareMetalMachineKeySetName,
-        BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters,
-        Context context);
+        String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
+        BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters, Context context);
 
     /**
      * Patch bare metal machine key set of the cluster.
@@ -314,10 +300,6 @@ public interface BareMetalMachineKeySetsClient {
      * @return bareMetalMachineKeySet represents the bare metal machine key set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BareMetalMachineKeySetInner update(
-        String resourceGroupName,
-        String clusterName,
-        String bareMetalMachineKeySetName,
-        BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters,
-        Context context);
+    BareMetalMachineKeySetInner update(String resourceGroupName, String clusterName, String bareMetalMachineKeySetName,
+        BareMetalMachineKeySetPatchParameters bareMetalMachineKeySetUpdateParameters, Context context);
 }

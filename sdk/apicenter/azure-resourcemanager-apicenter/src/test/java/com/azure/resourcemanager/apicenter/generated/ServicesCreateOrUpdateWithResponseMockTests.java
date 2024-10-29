@@ -50,12 +50,16 @@ public final class ServicesCreateOrUpdateWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Service response = manager.services().define("vwiwubmwmbesld").withRegion("ikvmkqzeqqk")
-            .withExistingResourceGroup("tshhszhedp").withTags(mapOf("bdagxt", "fzxmhhvhgureodkw"))
+        Service response = manager.services()
+            .define("vwiwubmwmbesld")
+            .withRegion("ikvmkqzeqqk")
+            .withExistingResourceGroup("tshhszhedp")
+            .withTags(mapOf("bdagxt", "fzxmhhvhgureodkw"))
             .withProperties(new ServiceProperties())
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
                 .withUserAssignedIdentities(

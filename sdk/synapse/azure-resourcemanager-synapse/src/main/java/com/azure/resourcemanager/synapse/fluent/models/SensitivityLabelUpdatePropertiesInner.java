@@ -153,28 +153,20 @@ public final class SensitivityLabelUpdatePropertiesInner {
      */
     public void validate() {
         if (op() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property op in model SensitivityLabelUpdatePropertiesInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property op in model SensitivityLabelUpdatePropertiesInner"));
         }
         if (schema() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schema in model SensitivityLabelUpdatePropertiesInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property schema in model SensitivityLabelUpdatePropertiesInner"));
         }
         if (table() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property table in model SensitivityLabelUpdatePropertiesInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property table in model SensitivityLabelUpdatePropertiesInner"));
         }
         if (column() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property column in model SensitivityLabelUpdatePropertiesInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property column in model SensitivityLabelUpdatePropertiesInner"));
         }
         if (sensitivityLabel() != null) {
             sensitivityLabel().validate();

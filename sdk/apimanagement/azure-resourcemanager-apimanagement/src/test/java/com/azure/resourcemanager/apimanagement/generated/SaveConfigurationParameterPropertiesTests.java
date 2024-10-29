@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class SaveConfigurationParameterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SaveConfigurationParameterProperties model =
-            BinaryData
-                .fromString("{\"branch\":\"duiolh\",\"force\":true}")
-                .toObject(SaveConfigurationParameterProperties.class);
+        SaveConfigurationParameterProperties model = BinaryData.fromString("{\"branch\":\"duiolh\",\"force\":true}")
+            .toObject(SaveConfigurationParameterProperties.class);
         Assertions.assertEquals("duiolh", model.branch());
         Assertions.assertEquals(true, model.force());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SaveConfigurationParameterProperties model =
-            new SaveConfigurationParameterProperties().withBranch("duiolh").withForce(true);
+        SaveConfigurationParameterProperties model
+            = new SaveConfigurationParameterProperties().withBranch("duiolh").withForce(true);
         model = BinaryData.fromObject(model).toObject(SaveConfigurationParameterProperties.class);
         Assertions.assertEquals("duiolh", model.branch());
         Assertions.assertEquals(true, model.force());

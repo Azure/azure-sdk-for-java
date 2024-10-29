@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EventHubDataConnectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventHubDataConnection model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"EventHub\",\"properties\":{\"eventHubResourceId\":\"lhdjzqd\",\"consumerGroup\":\"a\",\"tableName\":\"vpsozjiihjri\",\"mappingRuleName\":\"mrzoep\",\"dataFormat\":\"PARQUET\",\"eventSystemProperties\":[\"wnjkgvfn\"],\"compression\":\"GZip\",\"provisioningState\":\"Moving\",\"managedIdentityResourceId\":\"q\"},\"location\":\"ibtyibuyvpirfqjp\",\"id\":\"noow\",\"name\":\"bedenrexkx\",\"type\":\"hxvucnu\"}")
-                .toObject(EventHubDataConnection.class);
+        EventHubDataConnection model = BinaryData.fromString(
+            "{\"kind\":\"EventHub\",\"properties\":{\"eventHubResourceId\":\"lhdjzqd\",\"consumerGroup\":\"a\",\"tableName\":\"vpsozjiihjri\",\"mappingRuleName\":\"mrzoep\",\"dataFormat\":\"PARQUET\",\"eventSystemProperties\":[\"wnjkgvfn\"],\"compression\":\"GZip\",\"provisioningState\":\"Moving\",\"managedIdentityResourceId\":\"q\"},\"location\":\"ibtyibuyvpirfqjp\",\"id\":\"noow\",\"name\":\"bedenrexkx\",\"type\":\"hxvucnu\"}")
+            .toObject(EventHubDataConnection.class);
         Assertions.assertEquals("ibtyibuyvpirfqjp", model.location());
         Assertions.assertEquals("lhdjzqd", model.eventHubResourceId());
         Assertions.assertEquals("a", model.consumerGroup());
@@ -32,17 +30,15 @@ public final class EventHubDataConnectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventHubDataConnection model =
-            new EventHubDataConnection()
-                .withLocation("ibtyibuyvpirfqjp")
-                .withEventHubResourceId("lhdjzqd")
-                .withConsumerGroup("a")
-                .withTableName("vpsozjiihjri")
-                .withMappingRuleName("mrzoep")
-                .withDataFormat(EventHubDataFormat.PARQUET)
-                .withEventSystemProperties(Arrays.asList("wnjkgvfn"))
-                .withCompression(Compression.GZIP)
-                .withManagedIdentityResourceId("q");
+        EventHubDataConnection model = new EventHubDataConnection().withLocation("ibtyibuyvpirfqjp")
+            .withEventHubResourceId("lhdjzqd")
+            .withConsumerGroup("a")
+            .withTableName("vpsozjiihjri")
+            .withMappingRuleName("mrzoep")
+            .withDataFormat(EventHubDataFormat.PARQUET)
+            .withEventSystemProperties(Arrays.asList("wnjkgvfn"))
+            .withCompression(Compression.GZIP)
+            .withManagedIdentityResourceId("q");
         model = BinaryData.fromObject(model).toObject(EventHubDataConnection.class);
         Assertions.assertEquals("ibtyibuyvpirfqjp", model.location());
         Assertions.assertEquals("lhdjzqd", model.eventHubResourceId());

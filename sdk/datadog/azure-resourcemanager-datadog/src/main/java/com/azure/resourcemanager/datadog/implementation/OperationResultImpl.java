@@ -13,8 +13,8 @@ public final class OperationResultImpl implements OperationResult {
 
     private final com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager;
 
-    OperationResultImpl(
-        OperationResultInner innerObject, com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
+    OperationResultImpl(OperationResultInner innerObject,
+        com.azure.resourcemanager.datadog.MicrosoftDatadogManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

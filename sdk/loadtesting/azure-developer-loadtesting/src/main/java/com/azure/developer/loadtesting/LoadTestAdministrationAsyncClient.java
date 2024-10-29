@@ -130,18 +130,16 @@ public final class LoadTestAdministrationAsyncClient {
             defaultRequestOptions.setContext(fileUploadRequestOptions.getContext());
         }
         return new PollerFlux<>(Duration.ofSeconds(2),
-            (context) ->
-                uploadTestFileWithResponse(testId, fileName, body, fileUploadRequestOptions)
-                    .flatMap(FluxUtil::toMono)
-                    .flatMap(fileBinaryData ->
-                        PollingUtils.getPollResponseMono(() -> PollingUtils.getValidationStatus(fileBinaryData)))
-                    .flatMap(fileValidationPollResp -> Mono.just(fileValidationPollResp.getValue())),
-            (context) ->
-                getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono)
-                    .flatMap(fileBinaryData ->
-                        PollingUtils.getPollResponseMono(() -> PollingUtils.getValidationStatus(fileBinaryData))),
-            (activationResponse, context) ->
-                Mono.error(LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
+            (context) -> uploadTestFileWithResponse(testId, fileName, body, fileUploadRequestOptions)
+                .flatMap(FluxUtil::toMono)
+                .flatMap(fileBinaryData -> PollingUtils
+                    .getPollResponseMono(() -> PollingUtils.getValidationStatus(fileBinaryData)))
+                .flatMap(fileValidationPollResp -> Mono.just(fileValidationPollResp.getValue())),
+            (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono)
+                .flatMap(fileBinaryData -> PollingUtils
+                    .getPollResponseMono(() -> PollingUtils.getValidationStatus(fileBinaryData))),
+            (activationResponse, context) -> Mono
+                .error(LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
             (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono));
     }
 

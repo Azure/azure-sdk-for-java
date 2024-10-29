@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServiceImpactingEventTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServiceImpactingEvent model =
-            BinaryData
-                .fromString(
-                    "{\"eventStartTime\":\"2021-06-17T08:19:14Z\",\"eventStatusLastModifiedTime\":\"2021-03-26T22:43:42Z\",\"correlationId\":\"c\",\"status\":{\"value\":\"ivkwlzuvccfwnfnb\"},\"incidentProperties\":{\"title\":\"ionle\",\"service\":\"etqgtzxdpnq\",\"region\":\"qwxrjfeallnw\",\"incidentType\":\"bisnja\"}}")
-                .toObject(ServiceImpactingEvent.class);
+        ServiceImpactingEvent model = BinaryData.fromString(
+            "{\"eventStartTime\":\"2021-06-17T08:19:14Z\",\"eventStatusLastModifiedTime\":\"2021-03-26T22:43:42Z\",\"correlationId\":\"c\",\"status\":{\"value\":\"ivkwlzuvccfwnfnb\"},\"incidentProperties\":{\"title\":\"ionle\",\"service\":\"etqgtzxdpnq\",\"region\":\"qwxrjfeallnw\",\"incidentType\":\"bisnja\"}}")
+            .toObject(ServiceImpactingEvent.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T08:19:14Z"), model.eventStartTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-03-26T22:43:42Z"), model.eventStatusLastModifiedTime());
         Assertions.assertEquals("c", model.correlationId());
@@ -31,18 +29,15 @@ public final class ServiceImpactingEventTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceImpactingEvent model =
-            new ServiceImpactingEvent()
-                .withEventStartTime(OffsetDateTime.parse("2021-06-17T08:19:14Z"))
+        ServiceImpactingEvent model
+            = new ServiceImpactingEvent().withEventStartTime(OffsetDateTime.parse("2021-06-17T08:19:14Z"))
                 .withEventStatusLastModifiedTime(OffsetDateTime.parse("2021-03-26T22:43:42Z"))
                 .withCorrelationId("c")
                 .withStatus(new ServiceImpactingEventStatus().withValue("ivkwlzuvccfwnfnb"))
-                .withIncidentProperties(
-                    new ServiceImpactingEventIncidentProperties()
-                        .withTitle("ionle")
-                        .withService("etqgtzxdpnq")
-                        .withRegion("qwxrjfeallnw")
-                        .withIncidentType("bisnja"));
+                .withIncidentProperties(new ServiceImpactingEventIncidentProperties().withTitle("ionle")
+                    .withService("etqgtzxdpnq")
+                    .withRegion("qwxrjfeallnw")
+                    .withIncidentType("bisnja"));
         model = BinaryData.fromObject(model).toObject(ServiceImpactingEvent.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-17T08:19:14Z"), model.eventStartTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-03-26T22:43:42Z"), model.eventStatusLastModifiedTime());

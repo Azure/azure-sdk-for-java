@@ -88,7 +88,6 @@
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
 
-    <spotless.skip>false</spotless.skip>
     <animal.sniffer.skip>false</animal.sniffer.skip>
     <animal.sniffer.ignores>javax.xml.stream.XMLStreamException,java.lang.invoke.MethodHandle,java.lang.invoke.MethodHandles</animal.sniffer.ignores>
   </properties>

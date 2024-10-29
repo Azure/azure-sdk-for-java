@@ -48,9 +48,8 @@ public final class SsoDetailsRequest {
      */
     public void validate() {
         if (userPrincipal() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property userPrincipal in model SsoDetailsRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property userPrincipal in model SsoDetailsRequest"));
         }
     }
 

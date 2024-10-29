@@ -32,9 +32,8 @@ public abstract class CertificatesTest<TOptions extends PerfStressOptions> exten
         }
 
         // Setup the service client
-        CertificateClientBuilder builder = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
-            .credential(new DefaultAzureCredentialBuilder().build());
+        CertificateClientBuilder builder
+            = new CertificateClientBuilder().vaultUrl(vaultUrl).credential(new DefaultAzureCredentialBuilder().build());
 
         configureClientBuilder(builder);
 

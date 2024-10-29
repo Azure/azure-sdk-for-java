@@ -134,12 +134,12 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         if (stringContent != null) {
             jsonWriter.writeStringField("content", stringContent);
         } else if (chatMessageContentItems != null) {
             jsonWriter.writeArrayField("content", chatMessageContentItems, JsonWriter::writeJson);
         }
-        jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
@@ -167,8 +167,6 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
                     } else if (reader.currentToken() == JsonToken.START_ARRAY) {
                         content = BinaryData.fromObject(
                             reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson)));
-                    } else if (reader.currentToken() == JsonToken.NULL) {
-                        content = null;
                     } else {
                         throw new IllegalStateException("Unexpected 'content' type found when deserializing"
                             + " ChatRequestUserMessage JSON object: " + reader.currentToken());

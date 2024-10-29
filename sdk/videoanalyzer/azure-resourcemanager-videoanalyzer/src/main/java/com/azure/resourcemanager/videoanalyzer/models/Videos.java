@@ -62,8 +62,8 @@ public interface Videos {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a video resource within Azure Video Analyzer along with {@link Response}.
      */
-    Response<VideoEntity> getWithResponse(
-        String resourceGroupName, String accountName, String videoName, Context context);
+    Response<VideoEntity> getWithResponse(String resourceGroupName, String accountName, String videoName,
+        Context context);
 
     /**
      * Deletes an existing video resource and its underlying data. This operation is irreversible.
@@ -118,8 +118,8 @@ public interface Videos {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return "Video content token grants access to the video content URLs." along with {@link Response}.
      */
-    Response<VideoContentToken> listContentTokenWithResponse(
-        String resourceGroupName, String accountName, String videoName, Context context);
+    Response<VideoContentToken> listContentTokenWithResponse(String resourceGroupName, String accountName,
+        String videoName, Context context);
 
     /**
      * Retrieves an existing video resource with the given name.

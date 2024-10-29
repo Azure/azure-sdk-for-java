@@ -8,8 +8,7 @@ import com.azure.resourcemanager.privatedns.models.CnameRecordSets;
 import com.azure.resourcemanager.privatedns.models.RecordType;
 
 /** Implementation of {@link CnameRecordSets}. */
-class CnameRecordSetsImpl
-    extends PrivateDnsRecordSetsBaseImpl<CnameRecordSet, CnameRecordSetImpl>
+class CnameRecordSetsImpl extends PrivateDnsRecordSetsBaseImpl<CnameRecordSet, CnameRecordSetImpl>
     implements CnameRecordSets {
 
     CnameRecordSetsImpl(PrivateDnsZoneImpl privateDnsZone) {

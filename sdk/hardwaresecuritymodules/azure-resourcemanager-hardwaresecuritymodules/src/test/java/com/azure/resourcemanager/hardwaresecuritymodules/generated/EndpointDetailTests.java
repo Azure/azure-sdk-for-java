@@ -22,7 +22,9 @@ public final class EndpointDetailTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointDetail model = new EndpointDetail().withIpAddress("youlp").withPort(106141655).withProtocol("ag")
+        EndpointDetail model = new EndpointDetail().withIpAddress("youlp")
+            .withPort(106141655)
+            .withProtocol("ag")
             .withDescription("vimjwos");
         model = BinaryData.fromObject(model).toObject(EndpointDetail.class);
         Assertions.assertEquals("youlp", model.ipAddress());

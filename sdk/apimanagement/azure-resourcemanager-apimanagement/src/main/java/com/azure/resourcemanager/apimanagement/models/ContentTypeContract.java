@@ -106,13 +106,9 @@ public interface ContentTypeContract {
          * The stage of the ContentTypeContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithIdPropertiesId,
-                DefinitionStages.WithNamePropertiesName,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithSchema,
-                DefinitionStages.WithVersion,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithIdPropertiesId, DefinitionStages.WithNamePropertiesName,
+            DefinitionStages.WithDescription, DefinitionStages.WithSchema, DefinitionStages.WithVersion,
+            DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -206,13 +202,8 @@ public interface ContentTypeContract {
     ContentTypeContract.Update update();
 
     /** The template for ContentTypeContract update. */
-    interface Update
-        extends UpdateStages.WithIdPropertiesId,
-            UpdateStages.WithNamePropertiesName,
-            UpdateStages.WithDescription,
-            UpdateStages.WithSchema,
-            UpdateStages.WithVersion,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithIdPropertiesId, UpdateStages.WithNamePropertiesName,
+        UpdateStages.WithDescription, UpdateStages.WithSchema, UpdateStages.WithVersion, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

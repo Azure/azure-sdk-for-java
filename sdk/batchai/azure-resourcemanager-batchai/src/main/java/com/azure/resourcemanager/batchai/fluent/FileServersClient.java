@@ -32,8 +32,8 @@ public interface FileServersClient {
      * @return file Server information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<FileServerInner>, FileServerInner> beginCreate(
-        String resourceGroupName, String workspaceName, String fileServerName, FileServerCreateParameters parameters);
+    SyncPoller<PollResult<FileServerInner>, FileServerInner> beginCreate(String resourceGroupName, String workspaceName,
+        String fileServerName, FileServerCreateParameters parameters);
 
     /**
      * Creates a File Server in the given workspace.
@@ -52,12 +52,8 @@ public interface FileServersClient {
      * @return file Server information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<FileServerInner>, FileServerInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String fileServerName,
-        FileServerCreateParameters parameters,
-        Context context);
+    SyncPoller<PollResult<FileServerInner>, FileServerInner> beginCreate(String resourceGroupName, String workspaceName,
+        String fileServerName, FileServerCreateParameters parameters, Context context);
 
     /**
      * Creates a File Server in the given workspace.
@@ -75,8 +71,8 @@ public interface FileServersClient {
      * @return file Server information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FileServerInner create(
-        String resourceGroupName, String workspaceName, String fileServerName, FileServerCreateParameters parameters);
+    FileServerInner create(String resourceGroupName, String workspaceName, String fileServerName,
+        FileServerCreateParameters parameters);
 
     /**
      * Creates a File Server in the given workspace.
@@ -95,12 +91,8 @@ public interface FileServersClient {
      * @return file Server information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FileServerInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String fileServerName,
-        FileServerCreateParameters parameters,
-        Context context);
+    FileServerInner create(String resourceGroupName, String workspaceName, String fileServerName,
+        FileServerCreateParameters parameters, Context context);
 
     /**
      * Deletes a File Server.
@@ -117,8 +109,8 @@ public interface FileServersClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String fileServerName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String fileServerName);
 
     /**
      * Deletes a File Server.
@@ -136,8 +128,8 @@ public interface FileServersClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String fileServerName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String fileServerName, Context context);
 
     /**
      * Deletes a File Server.
@@ -205,8 +197,8 @@ public interface FileServersClient {
      * @return information about a File Server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FileServerInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String fileServerName, Context context);
+    Response<FileServerInner> getWithResponse(String resourceGroupName, String workspaceName, String fileServerName,
+        Context context);
 
     /**
      * Gets a list of File Servers associated with the specified workspace.
@@ -236,6 +228,6 @@ public interface FileServersClient {
      * @return a list of File Servers associated with the specified workspace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FileServerInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Integer maxResults, Context context);
+    PagedIterable<FileServerInner> listByWorkspace(String resourceGroupName, String workspaceName, Integer maxResults,
+        Context context);
 }

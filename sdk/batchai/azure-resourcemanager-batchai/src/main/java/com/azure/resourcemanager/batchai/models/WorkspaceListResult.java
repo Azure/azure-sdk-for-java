@@ -14,7 +14,8 @@ import java.util.List;
 /** Values returned by the List operation. */
 @Immutable
 public final class WorkspaceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WorkspaceListResult.class);
 
     /*
      * The collection of workspaces.

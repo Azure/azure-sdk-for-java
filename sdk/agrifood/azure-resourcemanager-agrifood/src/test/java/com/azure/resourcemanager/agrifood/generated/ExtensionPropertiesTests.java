@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Test;
 public final class ExtensionPropertiesTests {
     @Test
     public void testDeserialize() {
-        ExtensionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"extensionId\":\"qsoqijgkd\",\"extensionCategory\":\"pazlobcufpdz\",\"installedExtensionVersion\":\"btcqq\",\"extensionAuthLink\":\"qglhq\",\"extensionApiDocsLink\":\"ufo\"}")
-                .toObject(ExtensionProperties.class);
+        ExtensionProperties model = BinaryData.fromString(
+            "{\"extensionId\":\"qsoqijgkd\",\"extensionCategory\":\"pazlobcufpdz\",\"installedExtensionVersion\":\"btcqq\",\"extensionAuthLink\":\"qglhq\",\"extensionApiDocsLink\":\"ufo\"}")
+            .toObject(ExtensionProperties.class);
     }
 
     @Test

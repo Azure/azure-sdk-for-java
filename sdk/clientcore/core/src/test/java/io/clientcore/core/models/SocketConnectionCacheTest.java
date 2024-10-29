@@ -190,8 +190,8 @@ public class SocketConnectionCacheTest {
             // Access the connection pool size
             Field connectionPoolField = SocketConnectionCache.class.getDeclaredField("CONNECTION_POOL");
             connectionPoolField.setAccessible(true);
-            Map<SocketConnectionProperties, List<SocketConnection>> connectionPool =
-                (Map<SocketConnectionProperties, List<SocketConnection>>) connectionPoolField.get(instance);
+            Map<SocketConnectionProperties, List<SocketConnection>> connectionPool
+                = (Map<SocketConnectionProperties, List<SocketConnection>>) connectionPoolField.get(instance);
             int poolSize = connectionPool.get(socketConnectionProperties).size();
             // connection pool size is 1 because of single threaded request
             assertEquals(1, poolSize, "Connection pool size is not as expected");
@@ -231,8 +231,8 @@ public class SocketConnectionCacheTest {
         try {
             Field connectionPoolField = SocketConnectionCache.class.getDeclaredField("CONNECTION_POOL");
             connectionPoolField.setAccessible(true);
-            Map<SocketConnectionProperties, List<SocketConnection>> connectionPool =
-                (Map<SocketConnectionProperties, List<SocketConnection>>) connectionPoolField.get(instance);
+            Map<SocketConnectionProperties, List<SocketConnection>> connectionPool
+                = (Map<SocketConnectionProperties, List<SocketConnection>>) connectionPoolField.get(instance);
             int poolSize = connectionPool.get(socketConnectionProperties).size();
             assertTrue(poolSize >= 1 && poolSize <= 5, "Connection pool size is not within the expected range (1-5)");
         } catch (NoSuchFieldException | IllegalAccessException e) {
@@ -278,8 +278,8 @@ public class SocketConnectionCacheTest {
             try {
                 Field connectionPoolField = SocketConnectionCache.class.getDeclaredField("CONNECTION_POOL");
                 connectionPoolField.setAccessible(true);
-                Map<SocketConnectionProperties, List<SocketConnection>> connectionPool =
-                    (Map<SocketConnectionProperties, List<SocketConnection>>) connectionPoolField.get(instance);
+                Map<SocketConnectionProperties, List<SocketConnection>> connectionPool
+                    = (Map<SocketConnectionProperties, List<SocketConnection>>) connectionPoolField.get(instance);
                 int poolSize = connectionPool.get(socketConnectionProperties).size();
                 assertEquals(0, poolSize, "Connection pool size should be 0 as connection is closed");
             } catch (NoSuchFieldException | IllegalAccessException e) {

@@ -24,8 +24,8 @@ public final class EdgeModulesImpl implements EdgeModules {
 
     private final com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager;
 
-    public EdgeModulesImpl(
-        EdgeModulesClient innerClient, com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
+    public EdgeModulesImpl(EdgeModulesClient innerClient,
+        com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -35,10 +35,10 @@ public final class EdgeModulesImpl implements EdgeModules {
         return Utils.mapPage(inner, inner1 -> new EdgeModuleEntityImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<EdgeModuleEntity> list(
-        String resourceGroupName, String accountName, Integer top, Context context) {
-        PagedIterable<EdgeModuleEntityInner> inner =
-            this.serviceClient().list(resourceGroupName, accountName, top, context);
+    public PagedIterable<EdgeModuleEntity> list(String resourceGroupName, String accountName, Integer top,
+        Context context) {
+        PagedIterable<EdgeModuleEntityInner> inner
+            = this.serviceClient().list(resourceGroupName, accountName, top, context);
         return Utils.mapPage(inner, inner1 -> new EdgeModuleEntityImpl(inner1, this.manager()));
     }
 
@@ -51,15 +51,12 @@ public final class EdgeModulesImpl implements EdgeModules {
         }
     }
 
-    public Response<EdgeModuleEntity> getWithResponse(
-        String resourceGroupName, String accountName, String edgeModuleName, Context context) {
-        Response<EdgeModuleEntityInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, accountName, edgeModuleName, context);
+    public Response<EdgeModuleEntity> getWithResponse(String resourceGroupName, String accountName,
+        String edgeModuleName, Context context) {
+        Response<EdgeModuleEntityInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, accountName, edgeModuleName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EdgeModuleEntityImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -70,15 +67,15 @@ public final class EdgeModulesImpl implements EdgeModules {
         this.serviceClient().delete(resourceGroupName, accountName, edgeModuleName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String edgeModuleName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String edgeModuleName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, edgeModuleName, context);
     }
 
-    public EdgeModuleProvisioningToken listProvisioningToken(
-        String resourceGroupName, String accountName, String edgeModuleName, ListProvisioningTokenInput parameters) {
-        EdgeModuleProvisioningTokenInner inner =
-            this.serviceClient().listProvisioningToken(resourceGroupName, accountName, edgeModuleName, parameters);
+    public EdgeModuleProvisioningToken listProvisioningToken(String resourceGroupName, String accountName,
+        String edgeModuleName, ListProvisioningTokenInput parameters) {
+        EdgeModuleProvisioningTokenInner inner
+            = this.serviceClient().listProvisioningToken(resourceGroupName, accountName, edgeModuleName, parameters);
         if (inner != null) {
             return new EdgeModuleProvisioningTokenImpl(inner, this.manager());
         } else {
@@ -86,21 +83,12 @@ public final class EdgeModulesImpl implements EdgeModules {
         }
     }
 
-    public Response<EdgeModuleProvisioningToken> listProvisioningTokenWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String edgeModuleName,
-        ListProvisioningTokenInput parameters,
-        Context context) {
-        Response<EdgeModuleProvisioningTokenInner> inner =
-            this
-                .serviceClient()
-                .listProvisioningTokenWithResponse(resourceGroupName, accountName, edgeModuleName, parameters, context);
+    public Response<EdgeModuleProvisioningToken> listProvisioningTokenWithResponse(String resourceGroupName,
+        String accountName, String edgeModuleName, ListProvisioningTokenInput parameters, Context context) {
+        Response<EdgeModuleProvisioningTokenInner> inner = this.serviceClient()
+            .listProvisioningTokenWithResponse(resourceGroupName, accountName, edgeModuleName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EdgeModuleProvisioningTokenImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -110,26 +98,18 @@ public final class EdgeModulesImpl implements EdgeModules {
     public EdgeModuleEntity getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
         }
         String edgeModuleName = Utils.getValueFromIdByName(id, "edgeModules");
         if (edgeModuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'edgeModules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeModules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, edgeModuleName, Context.NONE).getValue();
     }
@@ -137,26 +117,18 @@ public final class EdgeModulesImpl implements EdgeModules {
     public Response<EdgeModuleEntity> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
         }
         String edgeModuleName = Utils.getValueFromIdByName(id, "edgeModules");
         if (edgeModuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'edgeModules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeModules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, edgeModuleName, context);
     }
@@ -164,26 +136,18 @@ public final class EdgeModulesImpl implements EdgeModules {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
         }
         String edgeModuleName = Utils.getValueFromIdByName(id, "edgeModules");
         if (edgeModuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'edgeModules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeModules'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, accountName, edgeModuleName, Context.NONE);
     }
@@ -191,26 +155,18 @@ public final class EdgeModulesImpl implements EdgeModules {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'videoAnalyzers'.", id)));
         }
         String edgeModuleName = Utils.getValueFromIdByName(id, "edgeModules");
         if (edgeModuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'edgeModules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'edgeModules'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, accountName, edgeModuleName, context);
     }

@@ -46,8 +46,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @param client the instance of the service client containing this operation class.
      */
     ReferenceDataSetsClientImpl(TimeSeriesInsightsClientImpl client) {
-        this.service =
-            RestProxy.create(ReferenceDataSetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ReferenceDataSetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,86 +58,68 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
     @Host("{$host}")
     @ServiceInterface(name = "TimeSeriesInsightsCl")
     public interface ReferenceDataSetsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/referenceDataSets/{referenceDataSetName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}/referenceDataSets/{referenceDataSetName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReferenceDataSetResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReferenceDataSetResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName,
             @PathParam("referenceDataSetName") String referenceDataSetName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ReferenceDataSetCreateOrUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/referenceDataSets/{referenceDataSetName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}/referenceDataSets/{referenceDataSetName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReferenceDataSetResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReferenceDataSetResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName,
             @PathParam("referenceDataSetName") String referenceDataSetName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/referenceDataSets/{referenceDataSetName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}/referenceDataSets/{referenceDataSetName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReferenceDataSetResourceInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReferenceDataSetResourceInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName,
             @PathParam("referenceDataSetName") String referenceDataSetName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/referenceDataSets/{referenceDataSetName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}/referenceDataSets/{referenceDataSetName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName,
             @PathParam("referenceDataSetName") String referenceDataSetName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/referenceDataSets")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
+            + "/environments/{environmentName}/referenceDataSets")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReferenceDataSetListResponseInner>> listByEnvironment(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReferenceDataSetListResponseInner>> listByEnvironment(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("environmentName") String environmentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -155,22 +137,15 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReferenceDataSetResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetCreateOrUpdateParameters parameters) {
+    private Mono<Response<ReferenceDataSetResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String environmentName, String referenceDataSetName, ReferenceDataSetCreateOrUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -191,19 +166,9 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            referenceDataSetName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, referenceDataSetName, this.client.getApiVersion(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -223,23 +188,16 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReferenceDataSetResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetCreateOrUpdateParameters parameters,
+    private Mono<Response<ReferenceDataSetResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String environmentName, String referenceDataSetName, ReferenceDataSetCreateOrUpdateParameters parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -260,17 +218,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                referenceDataSetName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, referenceDataSetName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -288,11 +237,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReferenceDataSetResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetCreateOrUpdateParameters parameters) {
+    private Mono<ReferenceDataSetResourceInner> createOrUpdateAsync(String resourceGroupName, String environmentName,
+        String referenceDataSetName, ReferenceDataSetCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -312,15 +258,11 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @return a reference data set provides metadata about the events in an environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReferenceDataSetResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetCreateOrUpdateParameters parameters,
+    public Response<ReferenceDataSetResourceInner> createOrUpdateWithResponse(String resourceGroupName,
+        String environmentName, String referenceDataSetName, ReferenceDataSetCreateOrUpdateParameters parameters,
         Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, environmentName, referenceDataSetName, parameters, context)
-            .block();
+        return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName, parameters,
+            context).block();
     }
 
     /**
@@ -337,14 +279,10 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @return a reference data set provides metadata about the events in an environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReferenceDataSetResourceInner createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetCreateOrUpdateParameters parameters) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, environmentName, referenceDataSetName, parameters, Context.NONE)
-            .getValue();
+    public ReferenceDataSetResourceInner createOrUpdate(String resourceGroupName, String environmentName,
+        String referenceDataSetName, ReferenceDataSetCreateOrUpdateParameters parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, environmentName, referenceDataSetName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
@@ -362,19 +300,15 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReferenceDataSetResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String environmentName, String referenceDataSetName) {
+    private Mono<Response<ReferenceDataSetResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String environmentName, String referenceDataSetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -390,18 +324,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            referenceDataSetName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, referenceDataSetName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -421,19 +345,15 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReferenceDataSetResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context) {
+    private Mono<Response<ReferenceDataSetResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String environmentName, String referenceDataSetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -449,16 +369,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                referenceDataSetName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, referenceDataSetName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -476,8 +388,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReferenceDataSetResourceInner> getAsync(
-        String resourceGroupName, String environmentName, String referenceDataSetName) {
+    private Mono<ReferenceDataSetResourceInner> getAsync(String resourceGroupName, String environmentName,
+        String referenceDataSetName) {
         return getWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -497,8 +409,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @return the reference data set with the specified name in the specified environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReferenceDataSetResourceInner> getWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context) {
+    public Response<ReferenceDataSetResourceInner> getWithResponse(String resourceGroupName, String environmentName,
+        String referenceDataSetName, Context context) {
         return getWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName, context).block();
     }
 
@@ -516,8 +428,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @return the reference data set with the specified name in the specified environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReferenceDataSetResourceInner get(
-        String resourceGroupName, String environmentName, String referenceDataSetName) {
+    public ReferenceDataSetResourceInner get(String resourceGroupName, String environmentName,
+        String referenceDataSetName) {
         return getWithResponse(resourceGroupName, environmentName, referenceDataSetName, Context.NONE).getValue();
     }
 
@@ -539,22 +451,16 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReferenceDataSetResourceInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
+    private Mono<Response<ReferenceDataSetResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String environmentName, String referenceDataSetName,
         ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -569,28 +475,16 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
                 .error(new IllegalArgumentException("Parameter referenceDataSetName is required and cannot be null."));
         }
         if (referenceDataSetUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter referenceDataSetUpdateParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter referenceDataSetUpdateParameters is required and cannot be null."));
         } else {
             referenceDataSetUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            referenceDataSetName,
-                            this.client.getApiVersion(),
-                            referenceDataSetUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, referenceDataSetName, this.client.getApiVersion(),
+                referenceDataSetUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -613,23 +507,16 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReferenceDataSetResourceInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters,
-        Context context) {
+    private Mono<Response<ReferenceDataSetResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String environmentName, String referenceDataSetName,
+        ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -644,26 +531,16 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
                 .error(new IllegalArgumentException("Parameter referenceDataSetName is required and cannot be null."));
         }
         if (referenceDataSetUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter referenceDataSetUpdateParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter referenceDataSetUpdateParameters is required and cannot be null."));
         } else {
             referenceDataSetUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                referenceDataSetName,
-                this.client.getApiVersion(),
-                referenceDataSetUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, referenceDataSetName, this.client.getApiVersion(), referenceDataSetUpdateParameters,
+            accept, context);
     }
 
     /**
@@ -684,14 +561,10 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReferenceDataSetResourceInner> updateAsync(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters) {
-        return updateWithResponseAsync(
-                resourceGroupName, environmentName, referenceDataSetName, referenceDataSetUpdateParameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<ReferenceDataSetResourceInner> updateAsync(String resourceGroupName, String environmentName,
+        String referenceDataSetName, ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters) {
+        return updateWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName,
+            referenceDataSetUpdateParameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -712,15 +585,11 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @return a reference data set provides metadata about the events in an environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReferenceDataSetResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters,
+    public Response<ReferenceDataSetResourceInner> updateWithResponse(String resourceGroupName, String environmentName,
+        String referenceDataSetName, ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters,
         Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, environmentName, referenceDataSetName, referenceDataSetUpdateParameters, context)
-            .block();
+        return updateWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName,
+            referenceDataSetUpdateParameters, context).block();
     }
 
     /**
@@ -740,18 +609,10 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @return a reference data set provides metadata about the events in an environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReferenceDataSetResourceInner update(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters) {
-        return updateWithResponse(
-                resourceGroupName,
-                environmentName,
-                referenceDataSetName,
-                referenceDataSetUpdateParameters,
-                Context.NONE)
-            .getValue();
+    public ReferenceDataSetResourceInner update(String resourceGroupName, String environmentName,
+        String referenceDataSetName, ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters) {
+        return updateWithResponse(resourceGroupName, environmentName, referenceDataSetName,
+            referenceDataSetUpdateParameters, Context.NONE).getValue();
     }
 
     /**
@@ -769,19 +630,15 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String environmentName, String referenceDataSetName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String environmentName,
+        String referenceDataSetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -797,18 +654,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            referenceDataSetName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, referenceDataSetName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -828,19 +675,15 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String environmentName,
+        String referenceDataSetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -856,16 +699,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                referenceDataSetName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, referenceDataSetName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -904,8 +739,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName,
+        String referenceDataSetName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName, context).block();
     }
 
@@ -941,19 +776,15 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReferenceDataSetListResponseInner>> listByEnvironmentWithResponseAsync(
-        String resourceGroupName, String environmentName) {
+    private Mono<Response<ReferenceDataSetListResponseInner>>
+        listByEnvironmentWithResponseAsync(String resourceGroupName, String environmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -966,16 +797,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByEnvironment(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.listByEnvironment(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, environmentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -994,19 +817,15 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReferenceDataSetListResponseInner>> listByEnvironmentWithResponseAsync(
-        String resourceGroupName, String environmentName, Context context) {
+    private Mono<Response<ReferenceDataSetListResponseInner>>
+        listByEnvironmentWithResponseAsync(String resourceGroupName, String environmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1018,15 +837,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByEnvironment(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listByEnvironment(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1042,8 +854,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @return the response of the List Reference Data Sets operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReferenceDataSetListResponseInner> listByEnvironmentAsync(
-        String resourceGroupName, String environmentName) {
+    private Mono<ReferenceDataSetListResponseInner> listByEnvironmentAsync(String resourceGroupName,
+        String environmentName) {
         return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1062,8 +874,8 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      * @return the response of the List Reference Data Sets operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReferenceDataSetListResponseInner> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context) {
+    public Response<ReferenceDataSetListResponseInner> listByEnvironmentWithResponse(String resourceGroupName,
+        String environmentName, Context context) {
         return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName, context).block();
     }
 

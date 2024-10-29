@@ -19,7 +19,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous ConfidentialLedgerCertificateClient type. */
 @ServiceClient(builder = ConfidentialLedgerCertificateClientBuilder.class)
 public final class ConfidentialLedgerCertificateClient {
-    @Generated private final ConfidentialLedgerCertificateAsyncClient client;
+    @Generated
+    private final ConfidentialLedgerCertificateAsyncClient client;
 
     /**
      * Initializes an instance of ConfidentialLedgerCertificateClient class.

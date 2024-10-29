@@ -55,7 +55,8 @@ public final class IntegrationRuntimeSsisProperties {
     /*
      * SSIS properties for managed integration runtime.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /** Creates an instance of IntegrationRuntimeSsisProperties class. */
     public IntegrationRuntimeSsisProperties() {
@@ -118,8 +119,8 @@ public final class IntegrationRuntimeSsisProperties {
      * @param customSetupScriptProperties the customSetupScriptProperties value to set.
      * @return the IntegrationRuntimeSsisProperties object itself.
      */
-    public IntegrationRuntimeSsisProperties withCustomSetupScriptProperties(
-        IntegrationRuntimeCustomSetupScriptProperties customSetupScriptProperties) {
+    public IntegrationRuntimeSsisProperties
+        withCustomSetupScriptProperties(IntegrationRuntimeCustomSetupScriptProperties customSetupScriptProperties) {
         this.customSetupScriptProperties = customSetupScriptProperties;
         return this;
     }
@@ -139,8 +140,8 @@ public final class IntegrationRuntimeSsisProperties {
      * @param dataProxyProperties the dataProxyProperties value to set.
      * @return the IntegrationRuntimeSsisProperties object itself.
      */
-    public IntegrationRuntimeSsisProperties withDataProxyProperties(
-        IntegrationRuntimeDataProxyProperties dataProxyProperties) {
+    public IntegrationRuntimeSsisProperties
+        withDataProxyProperties(IntegrationRuntimeDataProxyProperties dataProxyProperties) {
         this.dataProxyProperties = dataProxyProperties;
         return this;
     }
@@ -182,8 +183,8 @@ public final class IntegrationRuntimeSsisProperties {
      * @param expressCustomSetupProperties the expressCustomSetupProperties value to set.
      * @return the IntegrationRuntimeSsisProperties object itself.
      */
-    public IntegrationRuntimeSsisProperties withExpressCustomSetupProperties(
-        List<CustomSetupBase> expressCustomSetupProperties) {
+    public IntegrationRuntimeSsisProperties
+        withExpressCustomSetupProperties(List<CustomSetupBase> expressCustomSetupProperties) {
         this.expressCustomSetupProperties = expressCustomSetupProperties;
         return this;
     }

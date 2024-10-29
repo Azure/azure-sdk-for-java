@@ -179,14 +179,9 @@ public interface TrunkedNetwork {
     TrunkedNetworkInner innerModel();
 
     /** The entirety of the TrunkedNetwork definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithIsolationDomainIds,
-            DefinitionStages.WithVlans,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithExtendedLocation,
+        DefinitionStages.WithIsolationDomainIds, DefinitionStages.WithVlans, DefinitionStages.WithCreate {
     }
 
     /** The TrunkedNetwork definition stages. */
@@ -270,10 +265,8 @@ public interface TrunkedNetwork {
          * The stage of the TrunkedNetwork definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithHybridAksPluginType,
-                DefinitionStages.WithInterfaceName {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithHybridAksPluginType,
+            DefinitionStages.WithInterfaceName {
             /**
              * Executes the create request.
              *

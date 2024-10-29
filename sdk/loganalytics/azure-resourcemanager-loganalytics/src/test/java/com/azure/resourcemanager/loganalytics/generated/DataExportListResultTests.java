@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DataExportListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataExportListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"dataExportId\":\"exfwhy\",\"tableNames\":[\"i\",\"vyvdcs\",\"tynnaamdectehfi\",\"scjeypv\"],\"destination\":{\"resourceId\":\"zrkgqhcjrefovg\",\"type\":\"StorageAccount\",\"metaData\":{\"eventHubName\":\"eyyvxyqjpkcat\"}},\"enable\":false,\"createdDate\":\"jcrcczsqpjhvmda\",\"lastModifiedDate\":\"nysounqe\"},\"id\":\"a\",\"name\":\"oaeupfhyhltrpmo\",\"type\":\"jmcmatuokthfu\"},{\"properties\":{\"dataExportId\":\"odsfcpkvxodpuozm\",\"tableNames\":[\"ydagfuaxbe\",\"yiuokktwh\",\"dxwzywqsmbsurexi\",\"o\"],\"destination\":{\"resourceId\":\"ocfs\",\"type\":\"StorageAccount\",\"metaData\":{\"eventHubName\":\"ddystkiiuxhqy\"}},\"enable\":false,\"createdDate\":\"rrqnbpoczvyifqrv\",\"lastModifiedDate\":\"vjsllrmvvdfw\"},\"id\":\"t\",\"name\":\"pnpulexxbczwtru\",\"type\":\"iqzbq\"}]}")
-                .toObject(DataExportListResult.class);
+        DataExportListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"dataExportId\":\"exfwhy\",\"tableNames\":[\"i\",\"vyvdcs\",\"tynnaamdectehfi\",\"scjeypv\"],\"destination\":{\"resourceId\":\"zrkgqhcjrefovg\",\"type\":\"StorageAccount\",\"metaData\":{\"eventHubName\":\"eyyvxyqjpkcat\"}},\"enable\":false,\"createdDate\":\"jcrcczsqpjhvmda\",\"lastModifiedDate\":\"nysounqe\"},\"id\":\"a\",\"name\":\"oaeupfhyhltrpmo\",\"type\":\"jmcmatuokthfu\"},{\"properties\":{\"dataExportId\":\"odsfcpkvxodpuozm\",\"tableNames\":[\"ydagfuaxbe\",\"yiuokktwh\",\"dxwzywqsmbsurexi\",\"o\"],\"destination\":{\"resourceId\":\"ocfs\",\"type\":\"StorageAccount\",\"metaData\":{\"eventHubName\":\"ddystkiiuxhqy\"}},\"enable\":false,\"createdDate\":\"rrqnbpoczvyifqrv\",\"lastModifiedDate\":\"vjsllrmvvdfw\"},\"id\":\"t\",\"name\":\"pnpulexxbczwtru\",\"type\":\"iqzbq\"}]}")
+            .toObject(DataExportListResult.class);
         Assertions.assertEquals("exfwhy", model.value().get(0).dataExportId());
         Assertions.assertEquals("i", model.value().get(0).tableNames().get(0));
         Assertions.assertEquals(false, model.value().get(0).enable());
@@ -29,27 +27,21 @@ public final class DataExportListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataExportListResult model =
-            new DataExportListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DataExportInner()
-                                .withDataExportId("exfwhy")
-                                .withTableNames(Arrays.asList("i", "vyvdcs", "tynnaamdectehfi", "scjeypv"))
-                                .withEnable(false)
-                                .withCreatedDate("jcrcczsqpjhvmda")
-                                .withLastModifiedDate("nysounqe")
-                                .withResourceId("zrkgqhcjrefovg")
-                                .withEventHubName("eyyvxyqjpkcat"),
-                            new DataExportInner()
-                                .withDataExportId("odsfcpkvxodpuozm")
-                                .withTableNames(Arrays.asList("ydagfuaxbe", "yiuokktwh", "dxwzywqsmbsurexi", "o"))
-                                .withEnable(false)
-                                .withCreatedDate("rrqnbpoczvyifqrv")
-                                .withLastModifiedDate("vjsllrmvvdfw")
-                                .withResourceId("ocfs")
-                                .withEventHubName("ddystkiiuxhqy")));
+        DataExportListResult model = new DataExportListResult().withValue(Arrays.asList(
+            new DataExportInner().withDataExportId("exfwhy")
+                .withTableNames(Arrays.asList("i", "vyvdcs", "tynnaamdectehfi", "scjeypv"))
+                .withEnable(false)
+                .withCreatedDate("jcrcczsqpjhvmda")
+                .withLastModifiedDate("nysounqe")
+                .withResourceId("zrkgqhcjrefovg")
+                .withEventHubName("eyyvxyqjpkcat"),
+            new DataExportInner().withDataExportId("odsfcpkvxodpuozm")
+                .withTableNames(Arrays.asList("ydagfuaxbe", "yiuokktwh", "dxwzywqsmbsurexi", "o"))
+                .withEnable(false)
+                .withCreatedDate("rrqnbpoczvyifqrv")
+                .withLastModifiedDate("vjsllrmvvdfw")
+                .withResourceId("ocfs")
+                .withEventHubName("ddystkiiuxhqy")));
         model = BinaryData.fromObject(model).toObject(DataExportListResult.class);
         Assertions.assertEquals("exfwhy", model.value().get(0).dataExportId());
         Assertions.assertEquals("i", model.value().get(0).tableNames().get(0));

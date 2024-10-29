@@ -54,7 +54,7 @@ class AnalyzeSentimentUtilClient {
     }
 
     AnalyzeSentimentUtilClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
-                                TextAnalyticsServiceVersion serviceVersion) {
+        TextAnalyticsServiceVersion serviceVersion) {
         this.legacyService = null;
         this.service = service;
         this.serviceVersion = serviceVersion;
@@ -73,8 +73,8 @@ class AnalyzeSentimentUtilClient {
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
-    public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatch(
-        Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options) {
+    public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatch(Iterable<TextDocumentInput> documents,
+        AnalyzeSentimentOptions options) {
         try {
             return withContext(context -> getAnalyzedSentimentResponse(documents, options, context));
         } catch (RuntimeException ex) {
@@ -100,37 +100,31 @@ class AnalyzeSentimentUtilClient {
         options = options == null ? new AnalyzeSentimentOptions() : options;
 
         if (service != null) {
-            return service.analyzeTextWithResponseAsync(
-                new AnalyzeTextSentimentAnalysisInput()
-                    .setParameters(
-                        new SentimentAnalysisTaskParameters()
-                            .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-                            .setOpinionMining(options.isIncludeOpinionMining())
-                            .setModelVersion(options.getModelVersion())
-                            .setLoggingOptOut(options.isServiceLogsDisabled()))
-                    .setAnalysisInput(
-                        new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
-                options.isIncludeStatistics(),
-                getNotNullContext(context))
-                .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
-                    getDocumentCount(documents)))
-                .doOnSuccess(response -> LOGGER.info("Analyzed sentiment for a batch of documents - {}",
-                    response))
+            return service
+                .analyzeTextWithResponseAsync(
+                    new AnalyzeTextSentimentAnalysisInput()
+                        .setParameters(
+                            new SentimentAnalysisTaskParameters().setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                                .setOpinionMining(options.isIncludeOpinionMining())
+                                .setModelVersion(options.getModelVersion())
+                                .setLoggingOptOut(options.isServiceLogsDisabled()))
+                        .setAnalysisInput(
+                            new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
+                    options.isIncludeStatistics(), getNotNullContext(context))
+                .doOnSubscribe(
+                    ignoredValue -> LOGGER.info("A batch of documents with count - {}", getDocumentCount(documents)))
+                .doOnSuccess(response -> LOGGER.info("Analyzed sentiment for a batch of documents - {}", response))
                 .doOnError(error -> LOGGER.warning("Failed to analyze sentiment - {}", error))
                 .map(Utility::toAnalyzeSentimentResultCollectionResponseLanguageApi)
                 .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
         }
 
-        return legacyService.sentimentWithResponseAsync(
-            new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options.getModelVersion(),
-            options.isIncludeStatistics(),
-            options.isServiceLogsDisabled(),
-            options.isIncludeOpinionMining(),
-            StringIndexType.UTF16CODE_UNIT,
-            getNotNullContext(context))
-            .doOnSubscribe(ignoredValue -> LOGGER.info("A batch of documents with count - {}",
-                getDocumentCount(documents)))
+        return legacyService
+            .sentimentWithResponseAsync(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
+                options.getModelVersion(), options.isIncludeStatistics(), options.isServiceLogsDisabled(),
+                options.isIncludeOpinionMining(), StringIndexType.UTF16CODE_UNIT, getNotNullContext(context))
+            .doOnSubscribe(
+                ignoredValue -> LOGGER.info("A batch of documents with count - {}", getDocumentCount(documents)))
             .doOnSuccess(response -> LOGGER.info("Analyzed sentiment for a batch of documents - {}", response))
             .doOnError(error -> LOGGER.warning("Failed to analyze sentiment - {}", error))
             .map(Utility::toAnalyzeSentimentResultCollectionResponseLegacyApi)
@@ -148,8 +142,8 @@ class AnalyzeSentimentUtilClient {
      *
      * @return A {@link Response} contains {@link AnalyzeSentimentResultCollection}.
      */
-    Response<AnalyzeSentimentResultCollection> getAnalyzedSentimentResponseSync(
-        Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
+    Response<AnalyzeSentimentResultCollection> getAnalyzedSentimentResponseSync(Iterable<TextDocumentInput> documents,
+        AnalyzeSentimentOptions options, Context context) {
         throwIfCallingNotAvailableFeatureInOptions(options);
         inputDocumentsValidation(documents);
         options = options == null ? new AnalyzeSentimentOptions() : options;
@@ -160,23 +154,17 @@ class AnalyzeSentimentUtilClient {
                 ? toAnalyzeSentimentResultCollectionResponseLanguageApi(service.analyzeTextWithResponse(
                     new AnalyzeTextSentimentAnalysisInput()
                         .setParameters(
-                            new SentimentAnalysisTaskParameters()
-                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                            new SentimentAnalysisTaskParameters().setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                                 .setOpinionMining(options.isIncludeOpinionMining())
                                 .setModelVersion(options.getModelVersion())
                                 .setLoggingOptOut(options.isServiceLogsDisabled()))
                         .setAnalysisInput(
                             new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
-                    options.isIncludeStatistics(),
-                    context))
+                    options.isIncludeStatistics(), context))
                 : toAnalyzeSentimentResultCollectionResponseLegacyApi(legacyService.sentimentWithResponseSync(
                     new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-                    options.getModelVersion(),
-                    options.isIncludeStatistics(),
-                    options.isServiceLogsDisabled(),
-                    options.isIncludeOpinionMining(),
-                    StringIndexType.UTF16CODE_UNIT,
-                    context));
+                    options.getModelVersion(), options.isIncludeStatistics(), options.isServiceLogsDisabled(),
+                    options.isIncludeOpinionMining(), StringIndexType.UTF16CODE_UNIT, context));
         } catch (ErrorResponseException ex) {
             throw LOGGER.logExceptionAsError(getHttpResponseException(ex));
         }
@@ -188,13 +176,13 @@ class AnalyzeSentimentUtilClient {
         }
         if (options.isIncludeOpinionMining()) {
             throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                getUnsupportedServiceApiVersionMessage("AnalyzeSentimentOptions.includeOpinionMining",
-                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
+                getUnsupportedServiceApiVersionMessage("AnalyzeSentimentOptions.includeOpinionMining", serviceVersion,
+                    TextAnalyticsServiceVersion.V3_1));
         }
         if (options.isServiceLogsDisabled()) {
             throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
-                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
+                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs", serviceVersion,
+                    TextAnalyticsServiceVersion.V3_1));
         }
     }
 }

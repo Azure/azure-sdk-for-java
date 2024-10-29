@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class StreamingPolicyWidevineConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StreamingPolicyWidevineConfiguration model =
-            BinaryData
-                .fromString("{\"customLicenseAcquisitionUrlTemplate\":\"bzmnvdfznud\"}")
+        StreamingPolicyWidevineConfiguration model
+            = BinaryData.fromString("{\"customLicenseAcquisitionUrlTemplate\":\"bzmnvdfznud\"}")
                 .toObject(StreamingPolicyWidevineConfiguration.class);
         Assertions.assertEquals("bzmnvdfznud", model.customLicenseAcquisitionUrlTemplate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StreamingPolicyWidevineConfiguration model =
-            new StreamingPolicyWidevineConfiguration().withCustomLicenseAcquisitionUrlTemplate("bzmnvdfznud");
+        StreamingPolicyWidevineConfiguration model
+            = new StreamingPolicyWidevineConfiguration().withCustomLicenseAcquisitionUrlTemplate("bzmnvdfznud");
         model = BinaryData.fromObject(model).toObject(StreamingPolicyWidevineConfiguration.class);
         Assertions.assertEquals("bzmnvdfznud", model.customLicenseAcquisitionUrlTemplate());
     }

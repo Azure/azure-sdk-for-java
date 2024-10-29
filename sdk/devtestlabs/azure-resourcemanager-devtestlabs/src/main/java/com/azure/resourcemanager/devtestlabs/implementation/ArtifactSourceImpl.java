@@ -124,22 +124,18 @@ public final class ArtifactSourceImpl implements ArtifactSource, ArtifactSource.
     }
 
     public ArtifactSource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArtifactSources()
-                .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactSources()
+            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ArtifactSource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArtifactSources()
-                .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactSources()
+            .createOrUpdateWithResponse(resourceGroupName, labName, name, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -155,27 +151,23 @@ public final class ArtifactSourceImpl implements ArtifactSource, ArtifactSource.
     }
 
     public ArtifactSource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArtifactSources()
-                .updateWithResponse(resourceGroupName, labName, name, updateArtifactSource, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactSources()
+            .updateWithResponse(resourceGroupName, labName, name, updateArtifactSource, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ArtifactSource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArtifactSources()
-                .updateWithResponse(resourceGroupName, labName, name, updateArtifactSource, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactSources()
+            .updateWithResponse(resourceGroupName, labName, name, updateArtifactSource, context)
+            .getValue();
         return this;
     }
 
-    ArtifactSourceImpl(
-        ArtifactSourceInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    ArtifactSourceImpl(ArtifactSourceInner innerObject,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -185,23 +177,19 @@ public final class ArtifactSourceImpl implements ArtifactSource, ArtifactSource.
 
     public ArtifactSource refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArtifactSources()
-                .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactSources()
+            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ArtifactSource refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getArtifactSources()
-                .getWithResponse(resourceGroupName, labName, name, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getArtifactSources()
+            .getWithResponse(resourceGroupName, labName, name, localExpand, context)
+            .getValue();
         return this;
     }
 

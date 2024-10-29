@@ -33,17 +33,23 @@ import com.azure.resourcemanager.managementgroups.models.EntitySearchType;
 import com.azure.resourcemanager.managementgroups.models.EntityViewParameterType;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EntitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EntitiesClient.
+ */
 public final class EntitiesClientImpl implements EntitiesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EntitiesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ManagementGroupsApiImpl client;
 
     /**
      * Initializes an instance of EntitiesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EntitiesClientImpl(ManagementGroupsApiImpl client) {
@@ -58,259 +64,186 @@ public final class EntitiesClientImpl implements EntitiesClient {
     @Host("{$host}")
     @ServiceInterface(name = "ManagementGroupsApiE")
     public interface EntitiesService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Management/getEntities")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EntityListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skiptoken") String skiptoken,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$select") String select,
-            @QueryParam("$search") EntitySearchType search,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$view") EntityViewParameterType view,
-            @QueryParam("groupName") String groupName,
-            @HeaderParam("Cache-Control") String cacheControl,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EntityListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$skiptoken") String skiptoken,
+            @QueryParam("$skip") Integer skip, @QueryParam("$top") Integer top, @QueryParam("$select") String select,
+            @QueryParam("$search") EntitySearchType search, @QueryParam("$filter") String filter,
+            @QueryParam("$view") EntityViewParameterType view, @QueryParam("groupName") String groupName,
+            @HeaderParam("Cache-Control") String cacheControl, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EntityListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Cache-Control") String cacheControl,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EntityListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Cache-Control") String cacheControl,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
-     *
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * 
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param skip Number of entities to skip over when retrieving results. Passing this in will override $skipToken.
      * @param top Number of elements to return when retrieving results. Passing this in will override $skipToken.
      * @param select This parameter specifies the fields to include in the response. Can include any combination of
-     *     Name,DisplayName,Type,ParentDisplayNameChain,ParentChain, e.g.
-     *     '$select=Name,DisplayName,Type,ParentDisplayNameChain,ParentNameChain'. When specified the $select parameter
-     *     can override select in $skipToken.
+     * Name,DisplayName,Type,ParentDisplayNameChain,ParentChain, e.g.
+     * '$select=Name,DisplayName,Type,ParentDisplayNameChain,ParentNameChain'. When specified the $select parameter can
+     * override select in $skipToken.
      * @param search The $search parameter is used in conjunction with the $filter parameter to return three different
-     *     outputs depending on the parameter passed in. With $search=AllowedParents the API will return the entity info
-     *     of all groups that the requested entity will be able to reparent to as determined by the user's permissions.
-     *     With $search=AllowedChildren the API will return the entity info of all entities that can be added as
-     *     children of the requested entity. With $search=ParentAndFirstLevelChildren the API will return the parent and
-     *     first level of children that the user has either direct access to or indirect access via one of their
-     *     descendants. With $search=ParentOnly the API will return only the group if the user has access to at least
-     *     one of the descendants of the group. With $search=ChildrenOnly the API will return only the first level of
-     *     children of the group entity info specified in $filter. The user must have direct access to the children
-     *     entities or one of it's descendants for it to show up in the results.
+     * outputs depending on the parameter passed in.
+     * With $search=AllowedParents the API will return the entity info of all groups that the requested entity will be
+     * able to reparent to as determined by the user's permissions.
+     * With $search=AllowedChildren the API will return the entity info of all entities that can be added as children of
+     * the requested entity.
+     * With $search=ParentAndFirstLevelChildren the API will return the parent and first level of children that the user
+     * has either direct access to or indirect access via one of their descendants.
+     * With $search=ParentOnly the API will return only the group if the user has access to at least one of the
+     * descendants of the group.
+     * With $search=ChildrenOnly the API will return only the first level of children of the group entity info specified
+     * in $filter. The user must have direct access to the children entities or one of it's descendants for it to show
+     * up in the results.
      * @param filter The filter parameter allows you to filter on the the name or display name fields. You can check for
-     *     equality on the name field (e.g. name eq '{entityName}') and you can check for substrings on either the name
-     *     or display name fields(e.g. contains(name, '{substringToSearch}'), contains(displayName,
-     *     '{substringToSearch')). Note that the '{entityName}' and '{substringToSearch}' fields are checked case
-     *     insensitively.
+     * equality on the name field (e.g. name eq '{entityName}') and you can check for substrings on either the name or
+     * display name fields(e.g. contains(name, '{substringToSearch}'), contains(displayName, '{substringToSearch')).
+     * Note that the '{entityName}' and '{substringToSearch}' fields are checked case insensitively.
      * @param view The view parameter allows clients to filter the type of data that is returned by the getEntities
-     *     call.
+     * call.
      * @param groupName A filter which allows the get entities call to focus on a particular group (i.e. "$filter=name
-     *     eq 'groupName'").
+     * eq 'groupName'").
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to view entities along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EntityInfoInner>> listSinglePageAsync(
-        String skiptoken,
-        Integer skip,
-        Integer top,
-        String select,
-        EntitySearchType search,
-        String filter,
-        EntityViewParameterType view,
-        String groupName,
+    private Mono<PagedResponse<EntityInfoInner>> listSinglePageAsync(String skiptoken, Integer skip, Integer top,
+        String select, EntitySearchType search, String filter, EntityViewParameterType view, String groupName,
         String cacheControl) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            skiptoken,
-                            skip,
-                            top,
-                            select,
-                            search,
-                            filter,
-                            view,
-                            groupName,
-                            cacheControl,
-                            accept,
-                            context))
-            .<PagedResponse<EntityInfoInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), skiptoken,
+                skip, top, select, search, filter, view, groupName, cacheControl, accept, context))
+            .<PagedResponse<EntityInfoInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
-     *
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * 
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param skip Number of entities to skip over when retrieving results. Passing this in will override $skipToken.
      * @param top Number of elements to return when retrieving results. Passing this in will override $skipToken.
      * @param select This parameter specifies the fields to include in the response. Can include any combination of
-     *     Name,DisplayName,Type,ParentDisplayNameChain,ParentChain, e.g.
-     *     '$select=Name,DisplayName,Type,ParentDisplayNameChain,ParentNameChain'. When specified the $select parameter
-     *     can override select in $skipToken.
+     * Name,DisplayName,Type,ParentDisplayNameChain,ParentChain, e.g.
+     * '$select=Name,DisplayName,Type,ParentDisplayNameChain,ParentNameChain'. When specified the $select parameter can
+     * override select in $skipToken.
      * @param search The $search parameter is used in conjunction with the $filter parameter to return three different
-     *     outputs depending on the parameter passed in. With $search=AllowedParents the API will return the entity info
-     *     of all groups that the requested entity will be able to reparent to as determined by the user's permissions.
-     *     With $search=AllowedChildren the API will return the entity info of all entities that can be added as
-     *     children of the requested entity. With $search=ParentAndFirstLevelChildren the API will return the parent and
-     *     first level of children that the user has either direct access to or indirect access via one of their
-     *     descendants. With $search=ParentOnly the API will return only the group if the user has access to at least
-     *     one of the descendants of the group. With $search=ChildrenOnly the API will return only the first level of
-     *     children of the group entity info specified in $filter. The user must have direct access to the children
-     *     entities or one of it's descendants for it to show up in the results.
+     * outputs depending on the parameter passed in.
+     * With $search=AllowedParents the API will return the entity info of all groups that the requested entity will be
+     * able to reparent to as determined by the user's permissions.
+     * With $search=AllowedChildren the API will return the entity info of all entities that can be added as children of
+     * the requested entity.
+     * With $search=ParentAndFirstLevelChildren the API will return the parent and first level of children that the user
+     * has either direct access to or indirect access via one of their descendants.
+     * With $search=ParentOnly the API will return only the group if the user has access to at least one of the
+     * descendants of the group.
+     * With $search=ChildrenOnly the API will return only the first level of children of the group entity info specified
+     * in $filter. The user must have direct access to the children entities or one of it's descendants for it to show
+     * up in the results.
      * @param filter The filter parameter allows you to filter on the the name or display name fields. You can check for
-     *     equality on the name field (e.g. name eq '{entityName}') and you can check for substrings on either the name
-     *     or display name fields(e.g. contains(name, '{substringToSearch}'), contains(displayName,
-     *     '{substringToSearch')). Note that the '{entityName}' and '{substringToSearch}' fields are checked case
-     *     insensitively.
+     * equality on the name field (e.g. name eq '{entityName}') and you can check for substrings on either the name or
+     * display name fields(e.g. contains(name, '{substringToSearch}'), contains(displayName, '{substringToSearch')).
+     * Note that the '{entityName}' and '{substringToSearch}' fields are checked case insensitively.
      * @param view The view parameter allows clients to filter the type of data that is returned by the getEntities
-     *     call.
+     * call.
      * @param groupName A filter which allows the get entities call to focus on a particular group (i.e. "$filter=name
-     *     eq 'groupName'").
+     * eq 'groupName'").
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to view entities along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EntityInfoInner>> listSinglePageAsync(
-        String skiptoken,
-        Integer skip,
-        Integer top,
-        String select,
-        EntitySearchType search,
-        String filter,
-        EntityViewParameterType view,
-        String groupName,
-        String cacheControl,
-        Context context) {
+    private Mono<PagedResponse<EntityInfoInner>> listSinglePageAsync(String skiptoken, Integer skip, Integer top,
+        String select, EntitySearchType search, String filter, EntityViewParameterType view, String groupName,
+        String cacheControl, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                skiptoken,
-                skip,
-                top,
-                select,
-                search,
-                filter,
-                view,
-                groupName,
-                cacheControl,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), skiptoken, skip, top, select, search, filter,
+                view, groupName, cacheControl, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
-     *
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * 
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param skip Number of entities to skip over when retrieving results. Passing this in will override $skipToken.
      * @param top Number of elements to return when retrieving results. Passing this in will override $skipToken.
      * @param select This parameter specifies the fields to include in the response. Can include any combination of
-     *     Name,DisplayName,Type,ParentDisplayNameChain,ParentChain, e.g.
-     *     '$select=Name,DisplayName,Type,ParentDisplayNameChain,ParentNameChain'. When specified the $select parameter
-     *     can override select in $skipToken.
+     * Name,DisplayName,Type,ParentDisplayNameChain,ParentChain, e.g.
+     * '$select=Name,DisplayName,Type,ParentDisplayNameChain,ParentNameChain'. When specified the $select parameter can
+     * override select in $skipToken.
      * @param search The $search parameter is used in conjunction with the $filter parameter to return three different
-     *     outputs depending on the parameter passed in. With $search=AllowedParents the API will return the entity info
-     *     of all groups that the requested entity will be able to reparent to as determined by the user's permissions.
-     *     With $search=AllowedChildren the API will return the entity info of all entities that can be added as
-     *     children of the requested entity. With $search=ParentAndFirstLevelChildren the API will return the parent and
-     *     first level of children that the user has either direct access to or indirect access via one of their
-     *     descendants. With $search=ParentOnly the API will return only the group if the user has access to at least
-     *     one of the descendants of the group. With $search=ChildrenOnly the API will return only the first level of
-     *     children of the group entity info specified in $filter. The user must have direct access to the children
-     *     entities or one of it's descendants for it to show up in the results.
+     * outputs depending on the parameter passed in.
+     * With $search=AllowedParents the API will return the entity info of all groups that the requested entity will be
+     * able to reparent to as determined by the user's permissions.
+     * With $search=AllowedChildren the API will return the entity info of all entities that can be added as children of
+     * the requested entity.
+     * With $search=ParentAndFirstLevelChildren the API will return the parent and first level of children that the user
+     * has either direct access to or indirect access via one of their descendants.
+     * With $search=ParentOnly the API will return only the group if the user has access to at least one of the
+     * descendants of the group.
+     * With $search=ChildrenOnly the API will return only the first level of children of the group entity info specified
+     * in $filter. The user must have direct access to the children entities or one of it's descendants for it to show
+     * up in the results.
      * @param filter The filter parameter allows you to filter on the the name or display name fields. You can check for
-     *     equality on the name field (e.g. name eq '{entityName}') and you can check for substrings on either the name
-     *     or display name fields(e.g. contains(name, '{substringToSearch}'), contains(displayName,
-     *     '{substringToSearch')). Note that the '{entityName}' and '{substringToSearch}' fields are checked case
-     *     insensitively.
+     * equality on the name field (e.g. name eq '{entityName}') and you can check for substrings on either the name or
+     * display name fields(e.g. contains(name, '{substringToSearch}'), contains(displayName, '{substringToSearch')).
+     * Note that the '{entityName}' and '{substringToSearch}' fields are checked case insensitively.
      * @param view The view parameter allows clients to filter the type of data that is returned by the getEntities
-     *     call.
+     * call.
      * @param groupName A filter which allows the get entities call to focus on a particular group (i.e. "$filter=name
-     *     eq 'groupName'").
+     * eq 'groupName'").
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to view entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EntityInfoInner> listAsync(
-        String skiptoken,
-        Integer skip,
-        Integer top,
-        String select,
-        EntitySearchType search,
-        String filter,
-        EntityViewParameterType view,
-        String groupName,
-        String cacheControl) {
+    private PagedFlux<EntityInfoInner> listAsync(String skiptoken, Integer skip, Integer top, String select,
+        EntitySearchType search, String filter, EntityViewParameterType view, String groupName, String cacheControl) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(skiptoken, skip, top, select, search, filter, view, groupName, cacheControl),
             nextLink -> listNextSinglePageAsync(nextLink, cacheControl));
@@ -318,7 +251,7 @@ public final class EntitiesClientImpl implements EntitiesClient {
 
     /**
      * List all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to view entities as paginated response with {@link PagedFlux}.
@@ -341,37 +274,39 @@ public final class EntitiesClientImpl implements EntitiesClient {
 
     /**
      * List all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
-     *
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * 
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param skip Number of entities to skip over when retrieving results. Passing this in will override $skipToken.
      * @param top Number of elements to return when retrieving results. Passing this in will override $skipToken.
      * @param select This parameter specifies the fields to include in the response. Can include any combination of
-     *     Name,DisplayName,Type,ParentDisplayNameChain,ParentChain, e.g.
-     *     '$select=Name,DisplayName,Type,ParentDisplayNameChain,ParentNameChain'. When specified the $select parameter
-     *     can override select in $skipToken.
+     * Name,DisplayName,Type,ParentDisplayNameChain,ParentChain, e.g.
+     * '$select=Name,DisplayName,Type,ParentDisplayNameChain,ParentNameChain'. When specified the $select parameter can
+     * override select in $skipToken.
      * @param search The $search parameter is used in conjunction with the $filter parameter to return three different
-     *     outputs depending on the parameter passed in. With $search=AllowedParents the API will return the entity info
-     *     of all groups that the requested entity will be able to reparent to as determined by the user's permissions.
-     *     With $search=AllowedChildren the API will return the entity info of all entities that can be added as
-     *     children of the requested entity. With $search=ParentAndFirstLevelChildren the API will return the parent and
-     *     first level of children that the user has either direct access to or indirect access via one of their
-     *     descendants. With $search=ParentOnly the API will return only the group if the user has access to at least
-     *     one of the descendants of the group. With $search=ChildrenOnly the API will return only the first level of
-     *     children of the group entity info specified in $filter. The user must have direct access to the children
-     *     entities or one of it's descendants for it to show up in the results.
+     * outputs depending on the parameter passed in.
+     * With $search=AllowedParents the API will return the entity info of all groups that the requested entity will be
+     * able to reparent to as determined by the user's permissions.
+     * With $search=AllowedChildren the API will return the entity info of all entities that can be added as children of
+     * the requested entity.
+     * With $search=ParentAndFirstLevelChildren the API will return the parent and first level of children that the user
+     * has either direct access to or indirect access via one of their descendants.
+     * With $search=ParentOnly the API will return only the group if the user has access to at least one of the
+     * descendants of the group.
+     * With $search=ChildrenOnly the API will return only the first level of children of the group entity info specified
+     * in $filter. The user must have direct access to the children entities or one of it's descendants for it to show
+     * up in the results.
      * @param filter The filter parameter allows you to filter on the the name or display name fields. You can check for
-     *     equality on the name field (e.g. name eq '{entityName}') and you can check for substrings on either the name
-     *     or display name fields(e.g. contains(name, '{substringToSearch}'), contains(displayName,
-     *     '{substringToSearch')). Note that the '{entityName}' and '{substringToSearch}' fields are checked case
-     *     insensitively.
+     * equality on the name field (e.g. name eq '{entityName}') and you can check for substrings on either the name or
+     * display name fields(e.g. contains(name, '{substringToSearch}'), contains(displayName, '{substringToSearch')).
+     * Note that the '{entityName}' and '{substringToSearch}' fields are checked case insensitively.
      * @param view The view parameter allows clients to filter the type of data that is returned by the getEntities
-     *     call.
+     * call.
      * @param groupName A filter which allows the get entities call to focus on a particular group (i.e. "$filter=name
-     *     eq 'groupName'").
+     * eq 'groupName'").
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -379,27 +314,16 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * @return describes the result of the request to view entities as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EntityInfoInner> listAsync(
-        String skiptoken,
-        Integer skip,
-        Integer top,
-        String select,
-        EntitySearchType search,
-        String filter,
-        EntityViewParameterType view,
-        String groupName,
-        String cacheControl,
+    private PagedFlux<EntityInfoInner> listAsync(String skiptoken, Integer skip, Integer top, String select,
+        EntitySearchType search, String filter, EntityViewParameterType view, String groupName, String cacheControl,
         Context context) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    skiptoken, skip, top, select, search, filter, view, groupName, cacheControl, context),
-            nextLink -> listNextSinglePageAsync(nextLink, cacheControl, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(skiptoken, skip, top, select, search, filter, view, groupName,
+            cacheControl, context), nextLink -> listNextSinglePageAsync(nextLink, cacheControl, context));
     }
 
     /**
      * List all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to view entities as paginated response with {@link PagedIterable}.
@@ -421,37 +345,39 @@ public final class EntitiesClientImpl implements EntitiesClient {
 
     /**
      * List all entities (Management Groups, Subscriptions, etc.) for the authenticated user.
-     *
-     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result. If a
-     *     previous response contains a nextLink element, the value of the nextLink element will include a token
-     *     parameter that specifies a starting point to use for subsequent calls.
+     * 
+     * @param skiptoken Page continuation token is only used if a previous operation returned a partial result.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a token
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param skip Number of entities to skip over when retrieving results. Passing this in will override $skipToken.
      * @param top Number of elements to return when retrieving results. Passing this in will override $skipToken.
      * @param select This parameter specifies the fields to include in the response. Can include any combination of
-     *     Name,DisplayName,Type,ParentDisplayNameChain,ParentChain, e.g.
-     *     '$select=Name,DisplayName,Type,ParentDisplayNameChain,ParentNameChain'. When specified the $select parameter
-     *     can override select in $skipToken.
+     * Name,DisplayName,Type,ParentDisplayNameChain,ParentChain, e.g.
+     * '$select=Name,DisplayName,Type,ParentDisplayNameChain,ParentNameChain'. When specified the $select parameter can
+     * override select in $skipToken.
      * @param search The $search parameter is used in conjunction with the $filter parameter to return three different
-     *     outputs depending on the parameter passed in. With $search=AllowedParents the API will return the entity info
-     *     of all groups that the requested entity will be able to reparent to as determined by the user's permissions.
-     *     With $search=AllowedChildren the API will return the entity info of all entities that can be added as
-     *     children of the requested entity. With $search=ParentAndFirstLevelChildren the API will return the parent and
-     *     first level of children that the user has either direct access to or indirect access via one of their
-     *     descendants. With $search=ParentOnly the API will return only the group if the user has access to at least
-     *     one of the descendants of the group. With $search=ChildrenOnly the API will return only the first level of
-     *     children of the group entity info specified in $filter. The user must have direct access to the children
-     *     entities or one of it's descendants for it to show up in the results.
+     * outputs depending on the parameter passed in.
+     * With $search=AllowedParents the API will return the entity info of all groups that the requested entity will be
+     * able to reparent to as determined by the user's permissions.
+     * With $search=AllowedChildren the API will return the entity info of all entities that can be added as children of
+     * the requested entity.
+     * With $search=ParentAndFirstLevelChildren the API will return the parent and first level of children that the user
+     * has either direct access to or indirect access via one of their descendants.
+     * With $search=ParentOnly the API will return only the group if the user has access to at least one of the
+     * descendants of the group.
+     * With $search=ChildrenOnly the API will return only the first level of children of the group entity info specified
+     * in $filter. The user must have direct access to the children entities or one of it's descendants for it to show
+     * up in the results.
      * @param filter The filter parameter allows you to filter on the the name or display name fields. You can check for
-     *     equality on the name field (e.g. name eq '{entityName}') and you can check for substrings on either the name
-     *     or display name fields(e.g. contains(name, '{substringToSearch}'), contains(displayName,
-     *     '{substringToSearch')). Note that the '{entityName}' and '{substringToSearch}' fields are checked case
-     *     insensitively.
+     * equality on the name field (e.g. name eq '{entityName}') and you can check for substrings on either the name or
+     * display name fields(e.g. contains(name, '{substringToSearch}'), contains(displayName, '{substringToSearch')).
+     * Note that the '{entityName}' and '{substringToSearch}' fields are checked case insensitively.
      * @param view The view parameter allows clients to filter the type of data that is returned by the getEntities
-     *     call.
+     * call.
      * @param groupName A filter which allows the get entities call to focus on a particular group (i.e. "$filter=name
-     *     eq 'groupName'").
+     * eq 'groupName'").
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -459,16 +385,8 @@ public final class EntitiesClientImpl implements EntitiesClient {
      * @return describes the result of the request to view entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EntityInfoInner> list(
-        String skiptoken,
-        Integer skip,
-        Integer top,
-        String select,
-        EntitySearchType search,
-        String filter,
-        EntityViewParameterType view,
-        String groupName,
-        String cacheControl,
+    public PagedIterable<EntityInfoInner> list(String skiptoken, Integer skip, Integer top, String select,
+        EntitySearchType search, String filter, EntityViewParameterType view, String groupName, String cacheControl,
         Context context) {
         return new PagedIterable<>(
             listAsync(skiptoken, skip, top, select, search, filter, view, groupName, cacheControl, context));
@@ -476,16 +394,15 @@ public final class EntitiesClientImpl implements EntitiesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to view entities along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EntityInfoInner>> listNextSinglePageAsync(String nextLink, String cacheControl) {
@@ -493,65 +410,45 @@ public final class EntitiesClientImpl implements EntitiesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listNext(nextLink, this.client.getEndpoint(), cacheControl, accept, context))
-            .<PagedResponse<EntityInfoInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EntityInfoInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param cacheControl Indicates whether the request should utilize any caches. Populate the header with 'no-cache'
-     *     value to bypass existing caches.
+     * value to bypass existing caches.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the result of the request to view entities along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EntityInfoInner>> listNextSinglePageAsync(
-        String nextLink, String cacheControl, Context context) {
+    private Mono<PagedResponse<EntityInfoInner>> listNextSinglePageAsync(String nextLink, String cacheControl,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), cacheControl, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), cacheControl, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

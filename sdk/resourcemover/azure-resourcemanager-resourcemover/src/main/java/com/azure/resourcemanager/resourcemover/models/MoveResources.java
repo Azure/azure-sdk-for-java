@@ -35,8 +35,8 @@ public interface MoveResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the collection of move resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<MoveResource> list(
-        String resourceGroupName, String moveCollectionName, String filter, Context context);
+    PagedIterable<MoveResource> list(String resourceGroupName, String moveCollectionName, String filter,
+        Context context);
 
     /**
      * Deletes a Move Resource from the move collection.
@@ -63,8 +63,8 @@ public interface MoveResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    OperationStatus delete(
-        String resourceGroupName, String moveCollectionName, String moveResourceName, Context context);
+    OperationStatus delete(String resourceGroupName, String moveCollectionName, String moveResourceName,
+        Context context);
 
     /**
      * Gets the Move Resource.
@@ -78,8 +78,8 @@ public interface MoveResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Move Resource along with {@link Response}.
      */
-    Response<MoveResource> getWithResponse(
-        String resourceGroupName, String moveCollectionName, String moveResourceName, Context context);
+    Response<MoveResource> getWithResponse(String resourceGroupName, String moveCollectionName, String moveResourceName,
+        Context context);
 
     /**
      * Gets the Move Resource.

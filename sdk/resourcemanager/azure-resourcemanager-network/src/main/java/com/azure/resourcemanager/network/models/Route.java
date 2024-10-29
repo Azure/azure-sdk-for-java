@@ -92,11 +92,8 @@ public interface Route extends HasInnerModel<RouteInner>, ChildResource<RouteTab
      *
      * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithNextHopType<ParentT>,
-            DefinitionStages.WithDestinationAddressPrefix<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithNextHopType<ParentT>, DefinitionStages.WithDestinationAddressPrefix<ParentT> {
     }
 
     /** Grouping of route update stages. */
@@ -209,9 +206,7 @@ public interface Route extends HasInnerModel<RouteInner>, ChildResource<RouteTab
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT>,
-            UpdateDefinitionStages.WithNextHopType<ParentT>,
-            UpdateDefinitionStages.WithDestinationAddressPrefix<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithAttach<ParentT>,
+        UpdateDefinitionStages.WithNextHopType<ParentT>, UpdateDefinitionStages.WithDestinationAddressPrefix<ParentT> {
     }
 }

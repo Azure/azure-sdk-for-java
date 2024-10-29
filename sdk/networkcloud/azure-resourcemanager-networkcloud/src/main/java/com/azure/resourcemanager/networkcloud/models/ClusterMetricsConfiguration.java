@@ -139,12 +139,8 @@ public interface ClusterMetricsConfiguration {
 
     /** The entirety of the ClusterMetricsConfiguration definition. */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithCollectionInterval,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithParentResource,
+        DefinitionStages.WithExtendedLocation, DefinitionStages.WithCollectionInterval, DefinitionStages.WithCreate {
     }
 
     /** The ClusterMetricsConfiguration definition stages. */

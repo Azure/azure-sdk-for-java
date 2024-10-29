@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.managementgroups.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managementgroups.models.HierarchySettingsInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Lists all hierarchy settings. */
+/**
+ * Lists all hierarchy settings.
+ */
 @Fluent
-public final class HierarchySettingsListInner {
+public final class HierarchySettingsListInner implements JsonSerializable<HierarchySettingsListInner> {
     /*
      * The list of hierarchy settings.
      */
-    @JsonProperty(value = "value")
     private List<HierarchySettingsInfo> value;
 
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "@nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of HierarchySettingsListInner class. */
+    /**
+     * Creates an instance of HierarchySettingsListInner class.
+     */
     public HierarchySettingsListInner() {
     }
 
     /**
      * Get the value property: The list of hierarchy settings.
-     *
+     * 
      * @return the value value.
      */
     public List<HierarchySettingsInfo> value() {
@@ -39,7 +45,7 @@ public final class HierarchySettingsListInner {
 
     /**
      * Set the value property: The list of hierarchy settings.
-     *
+     * 
      * @param value the value value to set.
      * @return the HierarchySettingsListInner object itself.
      */
@@ -50,7 +56,7 @@ public final class HierarchySettingsListInner {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +65,52 @@ public final class HierarchySettingsListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HierarchySettingsListInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HierarchySettingsListInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HierarchySettingsListInner.
+     */
+    public static HierarchySettingsListInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HierarchySettingsListInner deserializedHierarchySettingsListInner = new HierarchySettingsListInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<HierarchySettingsInfo> value
+                        = reader.readArray(reader1 -> HierarchySettingsInfo.fromJson(reader1));
+                    deserializedHierarchySettingsListInner.value = value;
+                } else if ("@nextLink".equals(fieldName)) {
+                    deserializedHierarchySettingsListInner.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHierarchySettingsListInner;
+        });
     }
 }

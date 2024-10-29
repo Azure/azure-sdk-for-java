@@ -17,8 +17,7 @@ public final class EventSourceListResponseImpl implements EventSourceListRespons
 
     private final com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager;
 
-    EventSourceListResponseImpl(
-        EventSourceListResponseInner innerObject,
+    EventSourceListResponseImpl(EventSourceListResponseInner innerObject,
         com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,9 @@ public final class EventSourceListResponseImpl implements EventSourceListRespons
     public List<EventSourceResource> value() {
         List<EventSourceResourceInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new EventSourceResourceImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new EventSourceResourceImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

@@ -17,14 +17,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point to availability set management API. */
 @Fluent
-public interface AvailabilitySets
-    extends SupportsListingByResourceGroup<AvailabilitySet>,
-        SupportsGettingByResourceGroup<AvailabilitySet>,
-        SupportsGettingById<AvailabilitySet>,
-        SupportsListing<AvailabilitySet>,
-        SupportsCreating<AvailabilitySet.DefinitionStages.Blank>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<AvailabilitySet>,
-        HasManager<ComputeManager> {
+public interface AvailabilitySets extends SupportsListingByResourceGroup<AvailabilitySet>,
+    SupportsGettingByResourceGroup<AvailabilitySet>, SupportsGettingById<AvailabilitySet>,
+    SupportsListing<AvailabilitySet>, SupportsCreating<AvailabilitySet.DefinitionStages.Blank>, SupportsDeletingById,
+    SupportsDeletingByResourceGroup, SupportsBatchCreation<AvailabilitySet>, HasManager<ComputeManager> {
 }

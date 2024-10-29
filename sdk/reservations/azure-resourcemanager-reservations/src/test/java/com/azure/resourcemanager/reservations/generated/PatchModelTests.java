@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PatchModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PatchModel model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"appliedScopeType\":\"ManagementGroup\",\"appliedScopes\":[\"bxzpuzycisp\",\"qzahmgkbrp\",\"y\"],\"appliedScopeProperties\":{\"tenantId\":\"bnuqqkpik\",\"managementGroupId\":\"rgvtqag\",\"subscriptionId\":\"uynhijg\",\"resourceGroupId\":\"ebf\",\"displayName\":\"arbu\"},\"instanceFlexibility\":\"Off\",\"name\":\"pnazzm\",\"renew\":false,\"renewProperties\":{},\"reviewDateTime\":\"2021-05-19T03:18:32Z\"}}")
-                .toObject(PatchModel.class);
+        PatchModel model = BinaryData.fromString(
+            "{\"properties\":{\"appliedScopeType\":\"ManagementGroup\",\"appliedScopes\":[\"bxzpuzycisp\",\"qzahmgkbrp\",\"y\"],\"appliedScopeProperties\":{\"tenantId\":\"bnuqqkpik\",\"managementGroupId\":\"rgvtqag\",\"subscriptionId\":\"uynhijg\",\"resourceGroupId\":\"ebf\",\"displayName\":\"arbu\"},\"instanceFlexibility\":\"Off\",\"name\":\"pnazzm\",\"renew\":false,\"renewProperties\":{},\"reviewDateTime\":\"2021-05-19T03:18:32Z\"}}")
+            .toObject(PatchModel.class);
         Assertions.assertEquals(AppliedScopeType.MANAGEMENT_GROUP, model.appliedScopeType());
         Assertions.assertEquals("bxzpuzycisp", model.appliedScopes().get(0));
         Assertions.assertEquals("bnuqqkpik", model.appliedScopeProperties().tenantId());
@@ -37,22 +35,18 @@ public final class PatchModelTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PatchModel model =
-            new PatchModel()
-                .withAppliedScopeType(AppliedScopeType.MANAGEMENT_GROUP)
-                .withAppliedScopes(Arrays.asList("bxzpuzycisp", "qzahmgkbrp", "y"))
-                .withAppliedScopeProperties(
-                    new AppliedScopeProperties()
-                        .withTenantId("bnuqqkpik")
-                        .withManagementGroupId("rgvtqag")
-                        .withSubscriptionId("uynhijg")
-                        .withResourceGroupId("ebf")
-                        .withDisplayName("arbu"))
-                .withInstanceFlexibility(InstanceFlexibility.OFF)
-                .withName("pnazzm")
-                .withRenew(false)
-                .withRenewProperties(new PatchPropertiesRenewProperties())
-                .withReviewDateTime(OffsetDateTime.parse("2021-05-19T03:18:32Z"));
+        PatchModel model = new PatchModel().withAppliedScopeType(AppliedScopeType.MANAGEMENT_GROUP)
+            .withAppliedScopes(Arrays.asList("bxzpuzycisp", "qzahmgkbrp", "y"))
+            .withAppliedScopeProperties(new AppliedScopeProperties().withTenantId("bnuqqkpik")
+                .withManagementGroupId("rgvtqag")
+                .withSubscriptionId("uynhijg")
+                .withResourceGroupId("ebf")
+                .withDisplayName("arbu"))
+            .withInstanceFlexibility(InstanceFlexibility.OFF)
+            .withName("pnazzm")
+            .withRenew(false)
+            .withRenewProperties(new PatchPropertiesRenewProperties())
+            .withReviewDateTime(OffsetDateTime.parse("2021-05-19T03:18:32Z"));
         model = BinaryData.fromObject(model).toObject(PatchModel.class);
         Assertions.assertEquals(AppliedScopeType.MANAGEMENT_GROUP, model.appliedScopeType());
         Assertions.assertEquals("bxzpuzycisp", model.appliedScopes().get(0));

@@ -35,12 +35,14 @@ public final class ClusterConfigurationListResultTests {
                                 new ServerRoleGroupConfiguration().withRole(ServerRole.COORDINATOR)
                                     .withValue("cbkbfkg"),
                                 new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("jpgd"))),
-                        new ConfigurationInner().withRequiresRestart(false)
+                        new ConfigurationInner()
+                            .withRequiresRestart(false)
                             .withServerRoleGroupConfigurations(Arrays.asList(
                                 new ServerRoleGroupConfiguration().withRole(ServerRole.COORDINATOR).withValue("e"))),
                         new ConfigurationInner().withRequiresRestart(false)
-                            .withServerRoleGroupConfigurations(Arrays.asList(new ServerRoleGroupConfiguration()
-                                .withRole(ServerRole.COORDINATOR).withValue("igeho"))),
+                            .withServerRoleGroupConfigurations(
+                                Arrays.asList(new ServerRoleGroupConfiguration().withRole(ServerRole.COORDINATOR)
+                                    .withValue("igeho"))),
                         new ConfigurationInner().withRequiresRestart(false)
                             .withServerRoleGroupConfigurations(Arrays.asList(
                                 new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("qabcypm"),

@@ -47,15 +47,8 @@ public interface EnvironmentsClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DtlEnvironmentInner> list(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<DtlEnvironmentInner> list(String resourceGroupName, String labName, String username, String expand,
+        String filter, Integer top, String orderby, Context context);
 
     /**
      * Get environment.
@@ -72,8 +65,8 @@ public interface EnvironmentsClient {
      * @return environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DtlEnvironmentInner> getWithResponse(
-        String resourceGroupName, String labName, String username, String name, String expand, Context context);
+    Response<DtlEnvironmentInner> getWithResponse(String resourceGroupName, String labName, String username,
+        String name, String expand, Context context);
 
     /**
      * Get environment.
@@ -104,8 +97,8 @@ public interface EnvironmentsClient {
      * @return the {@link SyncPoller} for polling of an environment, which is essentially an ARM template deployment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String username, String name, DtlEnvironmentInner dtlEnvironment);
+    SyncPoller<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdate(String resourceGroupName,
+        String labName, String username, String name, DtlEnvironmentInner dtlEnvironment);
 
     /**
      * Create or replace an existing environment. This operation can take a while to complete.
@@ -122,13 +115,8 @@ public interface EnvironmentsClient {
      * @return the {@link SyncPoller} for polling of an environment, which is essentially an ARM template deployment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DtlEnvironmentInner dtlEnvironment,
-        Context context);
+    SyncPoller<PollResult<DtlEnvironmentInner>, DtlEnvironmentInner> beginCreateOrUpdate(String resourceGroupName,
+        String labName, String username, String name, DtlEnvironmentInner dtlEnvironment, Context context);
 
     /**
      * Create or replace an existing environment. This operation can take a while to complete.
@@ -144,8 +132,8 @@ public interface EnvironmentsClient {
      * @return an environment, which is essentially an ARM template deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DtlEnvironmentInner createOrUpdate(
-        String resourceGroupName, String labName, String username, String name, DtlEnvironmentInner dtlEnvironment);
+    DtlEnvironmentInner createOrUpdate(String resourceGroupName, String labName, String username, String name,
+        DtlEnvironmentInner dtlEnvironment);
 
     /**
      * Create or replace an existing environment. This operation can take a while to complete.
@@ -162,13 +150,8 @@ public interface EnvironmentsClient {
      * @return an environment, which is essentially an ARM template deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DtlEnvironmentInner createOrUpdate(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DtlEnvironmentInner dtlEnvironment,
-        Context context);
+    DtlEnvironmentInner createOrUpdate(String resourceGroupName, String labName, String username, String name,
+        DtlEnvironmentInner dtlEnvironment, Context context);
 
     /**
      * Delete environment. This operation can take a while to complete.
@@ -183,8 +166,8 @@ public interface EnvironmentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String labName, String username, String name);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String username,
+        String name);
 
     /**
      * Delete environment. This operation can take a while to complete.
@@ -200,8 +183,8 @@ public interface EnvironmentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String labName, String username, String name, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String username,
+        String name, Context context);
 
     /**
      * Delete environment. This operation can take a while to complete.
@@ -247,13 +230,8 @@ public interface EnvironmentsClient {
      * @return an environment, which is essentially an ARM template deployment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DtlEnvironmentInner> updateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String name,
-        DtlEnvironmentFragment dtlEnvironment,
-        Context context);
+    Response<DtlEnvironmentInner> updateWithResponse(String resourceGroupName, String labName, String username,
+        String name, DtlEnvironmentFragment dtlEnvironment, Context context);
 
     /**
      * Allows modifying tags of environments. All other properties will be ignored.
@@ -269,6 +247,6 @@ public interface EnvironmentsClient {
      * @return an environment, which is essentially an ARM template deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DtlEnvironmentInner update(
-        String resourceGroupName, String labName, String username, String name, DtlEnvironmentFragment dtlEnvironment);
+    DtlEnvironmentInner update(String resourceGroupName, String labName, String username, String name,
+        DtlEnvironmentFragment dtlEnvironment);
 }

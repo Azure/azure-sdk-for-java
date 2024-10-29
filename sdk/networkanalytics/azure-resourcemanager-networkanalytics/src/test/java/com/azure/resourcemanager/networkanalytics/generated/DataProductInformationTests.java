@@ -23,11 +23,11 @@ public final class DataProductInformationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataProductInformation model
-            = new DataProductInformation().withDataProductName("xibqeojnx").withDescription("bzv")
-                .withDataProductVersions(Arrays.asList(new DataProductVersion().withVersion("ntwndeicbtwnpzao"),
-                    new DataProductVersion().withVersion("vuhrhcffcyddgl"),
-                    new DataProductVersion().withVersion("jthjqkwpyei")));
+        DataProductInformation model = new DataProductInformation().withDataProductName("xibqeojnx")
+            .withDescription("bzv")
+            .withDataProductVersions(Arrays.asList(new DataProductVersion().withVersion("ntwndeicbtwnpzao"),
+                new DataProductVersion().withVersion("vuhrhcffcyddgl"),
+                new DataProductVersion().withVersion("jthjqkwpyei")));
         model = BinaryData.fromObject(model).toObject(DataProductInformation.class);
         Assertions.assertEquals("xibqeojnx", model.dataProductName());
         Assertions.assertEquals("bzv", model.description());

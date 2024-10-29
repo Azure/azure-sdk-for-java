@@ -53,8 +53,8 @@ public interface ProviderRegistrationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner> beginCreateOrUpdate(
-        String providerNamespace, ProviderRegistrationInner properties);
+    SyncPoller<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner>
+        beginCreateOrUpdate(String providerNamespace, ProviderRegistrationInner properties);
 
     /**
      * Creates or updates the provider registration.
@@ -68,8 +68,8 @@ public interface ProviderRegistrationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner> beginCreateOrUpdate(
-        String providerNamespace, ProviderRegistrationInner properties, Context context);
+    SyncPoller<PollResult<ProviderRegistrationInner>, ProviderRegistrationInner>
+        beginCreateOrUpdate(String providerNamespace, ProviderRegistrationInner properties, Context context);
 
     /**
      * Creates or updates the provider registration.
@@ -96,8 +96,8 @@ public interface ProviderRegistrationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProviderRegistrationInner createOrUpdate(
-        String providerNamespace, ProviderRegistrationInner properties, Context context);
+    ProviderRegistrationInner createOrUpdate(String providerNamespace, ProviderRegistrationInner properties,
+        Context context);
 
     /**
      * Deletes a provider registration.

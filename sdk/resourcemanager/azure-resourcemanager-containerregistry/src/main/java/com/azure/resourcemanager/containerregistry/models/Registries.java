@@ -21,16 +21,10 @@ import java.util.Collection;
 
 /** Entry point to the registry management API. */
 @Fluent()
-public interface Registries
-    extends SupportsCreating<Registry.DefinitionStages.Blank>,
-        HasManager<ContainerRegistryManager>,
-        SupportsBatchCreation<Registry>,
-        SupportsGettingById<Registry>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsListingByResourceGroup<Registry>,
-        SupportsGettingByResourceGroup<Registry>,
-        SupportsListing<Registry> {
+public interface Registries extends SupportsCreating<Registry.DefinitionStages.Blank>,
+    HasManager<ContainerRegistryManager>, SupportsBatchCreation<Registry>, SupportsGettingById<Registry>,
+    SupportsDeletingById, SupportsDeletingByResourceGroup, SupportsListingByResourceGroup<Registry>,
+    SupportsGettingByResourceGroup<Registry>, SupportsListing<Registry> {
 
     /**
      * Gets the login credentials for the specified container registry.
@@ -59,8 +53,8 @@ public interface Registries
      * @param accessKeyType the admin user access key name to regenerate the value for
      * @return the container registry's login credentials
      */
-    RegistryCredentials regenerateCredential(
-        String resourceGroupName, String registryName, AccessKeyType accessKeyType);
+    RegistryCredentials regenerateCredential(String resourceGroupName, String registryName,
+        AccessKeyType accessKeyType);
 
     /**
      * Regenerates the value for one of the admin user access key for the specified container registry.
@@ -71,8 +65,8 @@ public interface Registries
      * @return a representation of the future computation of this call, returning the container registry's login
      *     credentials
      */
-    Mono<RegistryCredentials> regenerateCredentialAsync(
-        String resourceGroupName, String registryName, AccessKeyType accessKeyType);
+    Mono<RegistryCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName,
+        AccessKeyType accessKeyType);
 
     /**
      * Lists the quota usages for the specified container registry.

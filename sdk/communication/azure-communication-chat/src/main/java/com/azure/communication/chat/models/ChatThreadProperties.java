@@ -154,7 +154,8 @@ public final class ChatThreadProperties implements JsonSerializable<ChatThreadPr
                         properties.setCreatedOn(OffsetDateTime.parse(value));
                     }
                 } else if ("createdBy".equals(fieldName)) {
-                    final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
+                    final CommunicationIdentifierModel identifier
+                        = reader.readObject(CommunicationIdentifierModel::fromJson);
                     properties.setCreatedBy(CommunicationIdentifierConverter.convert(identifier));
                 } else {
                     reader.skipChildren();

@@ -41,14 +41,8 @@ public interface ProductGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Group list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<GroupContract> listByProduct(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<GroupContract> listByProduct(String resourceGroupName, String serviceName, String productId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
@@ -63,8 +57,8 @@ public interface ProductGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> checkEntityExistsWithResponse(
-        String resourceGroupName, String serviceName, String productId, String groupId, Context context);
+    Response<Void> checkEntityExistsWithResponse(String resourceGroupName, String serviceName, String productId,
+        String groupId, Context context);
 
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
@@ -92,8 +86,8 @@ public interface ProductGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return contract details along with {@link Response}.
      */
-    Response<GroupContract> createOrUpdateWithResponse(
-        String resourceGroupName, String serviceName, String productId, String groupId, Context context);
+    Response<GroupContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName, String productId,
+        String groupId, Context context);
 
     /**
      * Adds the association between the specified developer group with the specified product.
@@ -122,8 +116,8 @@ public interface ProductGroups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String productId, String groupId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String productId, String groupId,
+        Context context);
 
     /**
      * Deletes the association between the specified group and product.

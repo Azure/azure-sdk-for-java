@@ -18,12 +18,7 @@ import reactor.core.publisher.Mono;
  * @param <FluentModelImplT> the implementation type of the fluent model type
  * @param <ManagerT> the service manager type
  */
-public abstract class GroupableParentResourceWithTagsImpl<
-        FluentModelT extends Resource,
-        InnerModelT extends com.azure.core.management.Resource,
-        FluentModelImplT extends
-            GroupableParentResourceWithTagsImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>,
-        ManagerT extends Manager<?>>
+public abstract class GroupableParentResourceWithTagsImpl<FluentModelT extends Resource, InnerModelT extends com.azure.core.management.Resource, FluentModelImplT extends GroupableParentResourceWithTagsImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>, ManagerT extends Manager<?>>
     extends GroupableParentResourceImpl<FluentModelT, InnerModelT, FluentModelImplT, ManagerT>
     implements UpdatableWithTags<FluentModelT>, AppliableWithTags<FluentModelT> {
     protected GroupableParentResourceWithTagsImpl(String name, InnerModelT innerObject, ManagerT manager) {
@@ -47,11 +42,9 @@ public abstract class GroupableParentResourceWithTagsImpl<
     public Mono<FluentModelT> applyTagsAsync() {
         @SuppressWarnings("unchecked")
         final FluentModelT self = (FluentModelT) this;
-        return applyTagsToInnerAsync()
-            .flatMap(
-                inner -> {
-                    setInner(inner);
-                    return Mono.just(self);
-                });
+        return applyTagsToInnerAsync().flatMap(inner -> {
+            setInner(inner);
+            return Mono.just(self);
+        });
     }
 }

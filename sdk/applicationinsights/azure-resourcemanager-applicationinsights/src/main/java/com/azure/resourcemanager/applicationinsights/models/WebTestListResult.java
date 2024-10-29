@@ -79,9 +79,8 @@ public final class WebTestListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model WebTestListResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model WebTestListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

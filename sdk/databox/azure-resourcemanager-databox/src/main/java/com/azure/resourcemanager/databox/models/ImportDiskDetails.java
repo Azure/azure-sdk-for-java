@@ -116,19 +116,16 @@ public final class ImportDiskDetails {
      */
     public void validate() {
         if (manifestFile() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property manifestFile in model ImportDiskDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property manifestFile in model ImportDiskDetails"));
         }
         if (manifestHash() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property manifestHash in model ImportDiskDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property manifestHash in model ImportDiskDetails"));
         }
         if (bitLockerKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property bitLockerKey in model ImportDiskDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property bitLockerKey in model ImportDiskDetails"));
         }
     }
 

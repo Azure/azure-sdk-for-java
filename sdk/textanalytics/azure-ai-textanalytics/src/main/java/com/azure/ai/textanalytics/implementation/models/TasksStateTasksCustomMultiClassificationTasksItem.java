@@ -59,14 +59,15 @@ public final class TasksStateTasksCustomMultiClassificationTasksItem extends Tas
      */
     public static TasksStateTasksCustomMultiClassificationTasksItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            TasksStateTasksCustomMultiClassificationTasksItem deserializedTasksStateTasksCustomMultiClassificationTasksItem =
-                    new TasksStateTasksCustomMultiClassificationTasksItem();
+            TasksStateTasksCustomMultiClassificationTasksItem deserializedTasksStateTasksCustomMultiClassificationTasksItem
+                = new TasksStateTasksCustomMultiClassificationTasksItem();
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("results".equals(fieldName)) {
-                    deserializedTasksStateTasksCustomMultiClassificationTasksItem.results = CustomMultiClassificationResult.fromJson(reader);
+                    deserializedTasksStateTasksCustomMultiClassificationTasksItem.results
+                        = CustomMultiClassificationResult.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

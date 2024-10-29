@@ -13,8 +13,7 @@ import io.clientcore.core.json.implementation.jackson.core.util.JacksonFeature;
  *
  * @since 2.10
  */
-public enum StreamWriteFeature
-    implements JacksonFeature // since 2.12
+public enum StreamWriteFeature implements JacksonFeature // since 2.12
 {
     // // Low-level I/O / content features
 
@@ -110,8 +109,7 @@ public enum StreamWriteFeature
      * requires knowledge of all properties to output, attempts to write an unknown
      * property will result in a {@link JsonProcessingException}
      */
-    IGNORE_UNKNOWN(JsonGenerator.Feature.IGNORE_UNKNOWN),
-    ;
+    IGNORE_UNKNOWN(JsonGenerator.Feature.IGNORE_UNKNOWN),;
 
     /**
      * Whether feature is enabled or disabled by default.
@@ -139,8 +137,7 @@ public enum StreamWriteFeature
      *
      * @return Bit mask of all features that are enabled by default
      */
-    public static int collectDefaults()
-    {
+    public static int collectDefaults() {
         int flags = 0;
         for (StreamWriteFeature f : values()) {
             if (f.enabledByDefault()) {
@@ -151,11 +148,21 @@ public enum StreamWriteFeature
     }
 
     @Override
-    public boolean enabledByDefault() { return _defaultState; }
-    @Override
-    public boolean enabledIn(int flags) { return (flags & _mask) != 0; }
-    @Override
-    public int getMask() { return _mask; }
+    public boolean enabledByDefault() {
+        return _defaultState;
+    }
 
-    public JsonGenerator.Feature mappedFeature() { return _mappedFeature; }
+    @Override
+    public boolean enabledIn(int flags) {
+        return (flags & _mask) != 0;
+    }
+
+    @Override
+    public int getMask() {
+        return _mask;
+    }
+
+    public JsonGenerator.Feature mappedFeature() {
+        return _mappedFeature;
+    }
 }

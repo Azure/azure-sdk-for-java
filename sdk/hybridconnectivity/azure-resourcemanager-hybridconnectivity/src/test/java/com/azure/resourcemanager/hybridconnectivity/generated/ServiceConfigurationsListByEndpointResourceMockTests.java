@@ -32,37 +32,27 @@ public final class ServiceConfigurationsListByEndpointResourceMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"bnmo\",\"port\":7164396751895305600,\"provisioningState\":\"Updating\"},\"id\":\"rzafbljjgpbtoqcj\",\"name\":\"klj\",\"type\":\"vbqid\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"serviceName\":\"SSH\",\"resourceId\":\"bnmo\",\"port\":7164396751895305600,\"provisioningState\":\"Updating\"},\"id\":\"rzafbljjgpbtoqcj\",\"name\":\"klj\",\"type\":\"vbqid\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        HybridConnectivityManager manager =
-            HybridConnectivityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridConnectivityManager manager = HybridConnectivityManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ServiceConfigurationResource> response =
-            manager.serviceConfigurations().listByEndpointResource("znorcj", "vsnb", com.azure.core.util.Context.NONE);
+        PagedIterable<ServiceConfigurationResource> response = manager.serviceConfigurations()
+            .listByEndpointResource("znorcj", "vsnb", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(ServiceName.SSH, response.iterator().next().serviceName());
         Assertions.assertEquals("bnmo", response.iterator().next().resourceId());

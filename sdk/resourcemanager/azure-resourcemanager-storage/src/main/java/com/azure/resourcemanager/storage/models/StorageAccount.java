@@ -25,13 +25,9 @@ import java.util.Set;
 
 /** An immutable client-side representation of an Azure storage account. */
 @Fluent
-public interface StorageAccount
-    extends GroupableResource<StorageManager, StorageAccountInner>,
-    Refreshable<StorageAccount>,
-    Updatable<StorageAccount.Update>,
-    SupportsListingPrivateLinkResource,
-    SupportsListingPrivateEndpointConnection,
-    SupportsUpdatingPrivateEndpointConnection {
+public interface StorageAccount extends GroupableResource<StorageManager, StorageAccountInner>,
+    Refreshable<StorageAccount>, Updatable<StorageAccount.Update>, SupportsListingPrivateLinkResource,
+    SupportsListingPrivateEndpointConnection, SupportsUpdatingPrivateEndpointConnection {
 
     /**
      * @return the status indicating whether the primary and secondary location of the storage account is available or
@@ -252,6 +248,7 @@ public interface StorageAccount
      *         {@link StorageAccount#identityTypeForCustomerEncryptionKey()} is not {@link IdentityType#USER_ASSIGNED}
      */
     String userAssignedIdentityIdForCustomerEncryptionKey();
+
     /**
      * Whether the storage account can be accessed from public network.
      *
@@ -260,11 +257,8 @@ public interface StorageAccount
     PublicNetworkAccess publicNetworkAccess();
 
     /** Container interface for all the definitions that need to be implemented. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithCreate,
-            DefinitionStages.WithCreateAndAccessTier {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate,
+        DefinitionStages.WithCreateAndAccessTier {
     }
 
     /** Grouping of all the storage account definition stages. */
@@ -430,7 +424,8 @@ public interface StorageAccount
              * @param userAssignedIdentity user-assigned identity to access the KeyVault
              * @return the next stage of storage account update
              */
-            WithCreate withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, Identity userAssignedIdentity);
+            WithCreate withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion,
+                Identity userAssignedIdentity);
 
             /**
              * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault,
@@ -447,7 +442,8 @@ public interface StorageAccount
              * @param userAssignedIdentityId ID of the user-assigned identity to access the KeyVault
              * @return the next stage of storage account update
              */
-            WithCreate withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, String userAssignedIdentityId);
+            WithCreate withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion,
+                String userAssignedIdentityId);
         }
 
         /** The stage of a storage account definition allowing to associate custom domain with the account. */
@@ -571,6 +567,7 @@ public interface StorageAccount
              * @return the next stage of the definition
              */
             WithCreate disablePublicNetworkAccess();
+
             /**
              * Specifies that by default access to storage account should be allowed from all networks.
              *
@@ -694,7 +691,7 @@ public interface StorageAccount
         }
 
         /** The stage of storage account definition allowing to configure default to oauth authentication. */
-        interface  WithDefaultToOAuthAuthentication {
+        interface WithDefaultToOAuthAuthentication {
             /**
              * Allows default to oauth authentication, configured by individual containers.
              *
@@ -707,26 +704,15 @@ public interface StorageAccount
          * A storage account definition with sufficient inputs to create a new storage account in the cloud, but
          * exposing additional optional inputs to specify.
          */
-        interface WithCreate
-            extends Creatable<StorageAccount>,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithBlobStorageAccountKind,
-                DefinitionStages.WithGeneralPurposeAccountKind,
-                DefinitionStages.WithBlockBlobStorageAccountKind,
-                DefinitionStages.WithFileStorageAccountKind,
-                DefinitionStages.WithEncryption,
-                DefinitionStages.WithCustomDomain,
-                DefinitionStages.WithManagedServiceIdentity,
-                DefinitionStages.WithUserAssignedManagedServiceIdentity,
-                DefinitionStages.WithAccessTraffic,
-                DefinitionStages.WithNetworkAccess,
-                DefinitionStages.WithAzureFilesAadIntegration,
-                DefinitionStages.WithLargeFileShares,
-                DefinitionStages.WithHns,
-                DefinitionStages.WithBlobAccess,
-                DefinitionStages.WithAllowCrossTenantReplication,
-                DefinitionStages.WithDefaultToOAuthAuthentication,
-                Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<StorageAccount>, DefinitionStages.WithSku,
+            DefinitionStages.WithBlobStorageAccountKind, DefinitionStages.WithGeneralPurposeAccountKind,
+            DefinitionStages.WithBlockBlobStorageAccountKind, DefinitionStages.WithFileStorageAccountKind,
+            DefinitionStages.WithEncryption, DefinitionStages.WithCustomDomain,
+            DefinitionStages.WithManagedServiceIdentity, DefinitionStages.WithUserAssignedManagedServiceIdentity,
+            DefinitionStages.WithAccessTraffic, DefinitionStages.WithNetworkAccess,
+            DefinitionStages.WithAzureFilesAadIntegration, DefinitionStages.WithLargeFileShares,
+            DefinitionStages.WithHns, DefinitionStages.WithBlobAccess, DefinitionStages.WithAllowCrossTenantReplication,
+            DefinitionStages.WithDefaultToOAuthAuthentication, Resource.DefinitionWithTags<WithCreate> {
         }
 
         /** The stage of storage account definition allowing to set access tier. */
@@ -853,7 +839,8 @@ public interface StorageAccount
              * @param userAssignedIdentity user-assigned identity to access the KeyVault
              * @return the next stage of storage account update
              */
-            Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, Identity userAssignedIdentity);
+            Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion,
+                Identity userAssignedIdentity);
 
             /**
              * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault,
@@ -870,7 +857,8 @@ public interface StorageAccount
              * @param userAssignedIdentityId ID of the user-assigned identity to access the KeyVault
              * @return the next stage of storage account update
              */
-            Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, String userAssignedIdentityId);
+            Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion,
+                String userAssignedIdentityId);
 
             /**
              * Specifies the Microsoft-managed key to be used as key for encryption. This is the default encryption type.
@@ -1174,7 +1162,7 @@ public interface StorageAccount
         }
 
         /** The stage of storage account update allowing to configure default to oauth authentication. */
-        interface  WithDefaultToOAuthAuthentication {
+        interface WithDefaultToOAuthAuthentication {
             /**
              * Allows default to oauth authentication, configured by individual containers.
              *
@@ -1195,20 +1183,11 @@ public interface StorageAccount
     }
 
     /** The template for a storage account update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<StorageAccount>,
-            UpdateStages.WithSku,
-            UpdateStages.WithCustomDomain,
-            UpdateStages.WithEncryption,
-            UpdateStages.WithAccessTier,
-            UpdateStages.WithManagedServiceIdentity,
-            UpdateStages.WithUserAssignedManagedServiceIdentity,
-            UpdateStages.WithAccessTraffic,
-            UpdateStages.WithNetworkAccess,
-            UpdateStages.WithUpgrade,
-            UpdateStages.WithBlobAccess,
-            UpdateStages.WithAllowCrossTenantReplication,
-            UpdateStages.WithDefaultToOAuthAuthentication,
-            Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<StorageAccount>, UpdateStages.WithSku, UpdateStages.WithCustomDomain,
+        UpdateStages.WithEncryption, UpdateStages.WithAccessTier, UpdateStages.WithManagedServiceIdentity,
+        UpdateStages.WithUserAssignedManagedServiceIdentity, UpdateStages.WithAccessTraffic,
+        UpdateStages.WithNetworkAccess, UpdateStages.WithUpgrade, UpdateStages.WithBlobAccess,
+        UpdateStages.WithAllowCrossTenantReplication, UpdateStages.WithDefaultToOAuthAuthentication,
+        Resource.UpdateWithTags<Update> {
     }
 }

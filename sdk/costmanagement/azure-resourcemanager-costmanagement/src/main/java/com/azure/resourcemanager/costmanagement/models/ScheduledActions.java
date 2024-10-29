@@ -99,8 +99,8 @@ public interface ScheduledActions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return scheduled action definition along with {@link Response}.
      */
-    Response<ScheduledAction> createOrUpdateWithResponse(
-        String name, ScheduledActionInner scheduledAction, String ifMatch, Context context);
+    Response<ScheduledAction> createOrUpdateWithResponse(String name, ScheduledActionInner scheduledAction,
+        String ifMatch, Context context);
 
     /**
      * Create or update a private scheduled action.
@@ -354,8 +354,8 @@ public interface ScheduledActions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the check availability result along with {@link Response}.
      */
-    Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
+    Response<CheckNameAvailabilityResponse>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
 
     /**
      * Checks availability and correctness of the name for a scheduled action.
@@ -394,8 +394,8 @@ public interface ScheduledActions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the check availability result along with {@link Response}.
      */
-    Response<CheckNameAvailabilityResponse> checkNameAvailabilityByScopeWithResponse(
-        String scope, CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
+    Response<CheckNameAvailabilityResponse> checkNameAvailabilityByScopeWithResponse(String scope,
+        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
 
     /**
      * Checks availability and correctness of the name for a scheduled action within the given scope.
@@ -422,8 +422,8 @@ public interface ScheduledActions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the check availability result.
      */
-    CheckNameAvailabilityResponse checkNameAvailabilityByScope(
-        String scope, CheckNameAvailabilityRequest checkNameAvailabilityRequest);
+    CheckNameAvailabilityResponse checkNameAvailabilityByScope(String scope,
+        CheckNameAvailabilityRequest checkNameAvailabilityRequest);
 
     /**
      * Get the shared scheduled action from the given scope by name.

@@ -101,7 +101,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
      * {@code retryAfterHeader} is not null.
      */
     HttpRetryPolicy(Duration baseDelay, Duration maxDelay, Duration fixedDelay, int maxRetries,
-                    Function<HttpHeaders, Duration> delayFromHeaders, Predicate<HttpRequestRetryCondition> shouldRetryCondition) {
+        Function<HttpHeaders, Duration> delayFromHeaders, Predicate<HttpRequestRetryCondition> shouldRetryCondition) {
         if (fixedDelay == null && baseDelay == null) {
             this.baseDelay = DEFAULT_BASE_DELAY;
             this.maxDelay = DEFAULT_MAX_DELAY;
@@ -123,7 +123,8 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
     /*
      * Determines the delay duration that should be waited before retrying using the well-known retry headers.
      */
-    private Duration getWellKnownRetryDelay(HttpHeaders responseHeaders, int tryCount, Supplier<OffsetDateTime> nowSupplier) {
+    private Duration getWellKnownRetryDelay(HttpHeaders responseHeaders, int tryCount,
+        Supplier<OffsetDateTime> nowSupplier) {
         Duration retryDelay = ImplUtils.getRetryAfterFromHeaders(responseHeaders, nowSupplier);
         if (retryDelay != null) {
             return retryDelay;
@@ -134,7 +135,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
     }
 
     private Response<?> attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next, final int tryCount,
-                                final List<Exception> suppressed) {
+        final List<Exception> suppressed) {
         HttpRequestAccessHelper.setRetryCount(httpRequest, tryCount + 1);
 
         Response<?> response;
@@ -174,8 +175,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
         }
 
         if (shouldRetryResponse(response, tryCount, suppressed)) {
-            final Duration delayDuration = determineDelayDuration(response, tryCount,
-                delayFromHeaders);
+            final Duration delayDuration = determineDelayDuration(response, tryCount, delayFromHeaders);
 
             logRetry(tryCount, delayDuration);
 
@@ -205,7 +205,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
      * Determines the delay duration that should be waited before retrying.
      */
     private Duration determineDelayDuration(Response<?> response, int tryCount,
-                                            Function<HttpHeaders, Duration> delayFromHeaders) {
+        Function<HttpHeaders, Duration> delayFromHeaders) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
         if (delayFromHeaders == null) {
             return getWellKnownRetryDelay(response.getHeaders(), tryCount, OffsetDateTime::now);
@@ -220,19 +220,19 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
         return calculateRetryDelay(tryCount);
     }
 
-    private boolean shouldRetryResponse(Response<?> response, int tryCount,
-                                        List<Exception> retriedExceptions) {
+    private boolean shouldRetryResponse(Response<?> response, int tryCount, List<Exception> retriedExceptions) {
         if (shouldRetryCondition != null) {
-            return tryCount < maxRetries && shouldRetryCondition.test(new HttpRequestRetryCondition(response, null, tryCount,
-                retriedExceptions));
+            return tryCount < maxRetries
+                && shouldRetryCondition
+                    .test(new HttpRequestRetryCondition(response, null, tryCount, retriedExceptions));
         } else {
-            return tryCount < maxRetries && defaultShouldRetryCondition(new HttpRequestRetryCondition(response, null, tryCount,
-                retriedExceptions));
+            return tryCount < maxRetries
+                && defaultShouldRetryCondition(
+                    new HttpRequestRetryCondition(response, null, tryCount, retriedExceptions));
         }
     }
 
-    private boolean shouldRetryException(Exception exception, int tryCount,
-                                         List<Exception> retriedExceptions) {
+    private boolean shouldRetryException(Exception exception, int tryCount, List<Exception> retriedExceptions) {
         // Check if there are any retry attempts still available.
         if (tryCount >= maxRetries) {
             return false;
@@ -240,8 +240,8 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
 
         // Unwrap the throwable.
         Throwable causalThrowable = exception.getCause();
-        HttpRequestRetryCondition requestRetryCondition = new HttpRequestRetryCondition(null, exception, tryCount,
-            retriedExceptions);
+        HttpRequestRetryCondition requestRetryCondition
+            = new HttpRequestRetryCondition(null, exception, tryCount, retriedExceptions);
 
         // Check all causal exceptions in the exception chain.
         while (causalThrowable instanceof IOException || causalThrowable instanceof TimeoutException) {
@@ -272,7 +272,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
     }
 
     private static void logRetryWithError(ClientLogger.LoggingEventBuilder loggingEventBuilder, int tryCount,
-                                          String message, Throwable throwable) {
+        String message, Throwable throwable) {
         loggingEventBuilder.addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log(message, throwable);
     }
 
@@ -294,8 +294,10 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
     private boolean defaultShouldRetryCondition(HttpRequestRetryCondition requestRetryCondition) {
         if (requestRetryCondition.getResponse() != null) {
             int code = requestRetryCondition.getResponse().getStatusCode();
-            return (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
-                && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED && code != HttpURLConnection.HTTP_VERSION));
+            return (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
+                || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
+                    && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
+                    && code != HttpURLConnection.HTTP_VERSION));
         } else {
             return requestRetryCondition.getException() instanceof Exception;
         }

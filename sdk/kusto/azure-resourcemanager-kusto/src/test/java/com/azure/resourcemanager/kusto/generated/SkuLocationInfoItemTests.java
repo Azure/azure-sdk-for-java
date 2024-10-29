@@ -13,28 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SkuLocationInfoItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SkuLocationInfoItem model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"iwwroyqbexrmc\",\"zones\":[\"ycnojvknmefqsg\",\"vah\",\"pjyzhpv\"],\"zoneDetails\":[{\"name\":[\"rvxdjzlmw\"],\"capabilities\":[{\"name\":\"ug\",\"value\":\"zovawjvz\"},{\"name\":\"luthn\",\"value\":\"rnxipei\"},{\"name\":\"jzuaejxdultskzbb\",\"value\":\"zumveekgpwo\"},{\"name\":\"hkfpbs\",\"value\":\"ofd\"}]},{\"name\":[\"us\",\"ttouwaboekqvkel\",\"smv\"],\"capabilities\":[{\"name\":\"jsflhhcaalnjix\",\"value\":\"xyawj\"},{\"name\":\"aq\",\"value\":\"lyjpk\"},{\"name\":\"dzyexznelixh\",\"value\":\"ztfolhbnxk\"},{\"name\":\"laulppg\",\"value\":\"tpnapnyiropuhpig\"}]},{\"name\":[\"ylgqgitxmedjvcsl\",\"n\",\"wwncwzzhxgk\",\"rmgucnap\"],\"capabilities\":[{\"name\":\"ellwptfdy\",\"value\":\"fqbuaceopzf\"},{\"name\":\"hhuao\",\"value\":\"pcqeqx\"},{\"name\":\"z\",\"value\":\"hzxct\"},{\"name\":\"gbkdmoizpos\",\"value\":\"grcfb\"}]},{\"name\":[\"mfqjhhkxbp\",\"jy\",\"jhxxjyn\",\"u\"],\"capabilities\":[{\"name\":\"r\",\"value\":\"wbxqzvszjfau\"}]}]}")
-                .toObject(SkuLocationInfoItem.class);
+        SkuLocationInfoItem model = BinaryData.fromString(
+            "{\"location\":\"iwwroyqbexrmc\",\"zones\":[\"ycnojvknmefqsg\",\"vah\",\"pjyzhpv\"],\"zoneDetails\":[{\"name\":[\"rvxdjzlmw\"],\"capabilities\":[{\"name\":\"ug\",\"value\":\"zovawjvz\"},{\"name\":\"luthn\",\"value\":\"rnxipei\"},{\"name\":\"jzuaejxdultskzbb\",\"value\":\"zumveekgpwo\"},{\"name\":\"hkfpbs\",\"value\":\"ofd\"}]},{\"name\":[\"us\",\"ttouwaboekqvkel\",\"smv\"],\"capabilities\":[{\"name\":\"jsflhhcaalnjix\",\"value\":\"xyawj\"},{\"name\":\"aq\",\"value\":\"lyjpk\"},{\"name\":\"dzyexznelixh\",\"value\":\"ztfolhbnxk\"},{\"name\":\"laulppg\",\"value\":\"tpnapnyiropuhpig\"}]},{\"name\":[\"ylgqgitxmedjvcsl\",\"n\",\"wwncwzzhxgk\",\"rmgucnap\"],\"capabilities\":[{\"name\":\"ellwptfdy\",\"value\":\"fqbuaceopzf\"},{\"name\":\"hhuao\",\"value\":\"pcqeqx\"},{\"name\":\"z\",\"value\":\"hzxct\"},{\"name\":\"gbkdmoizpos\",\"value\":\"grcfb\"}]},{\"name\":[\"mfqjhhkxbp\",\"jy\",\"jhxxjyn\",\"u\"],\"capabilities\":[{\"name\":\"r\",\"value\":\"wbxqzvszjfau\"}]}]}")
+            .toObject(SkuLocationInfoItem.class);
         Assertions.assertEquals("iwwroyqbexrmc", model.location());
         Assertions.assertEquals("ycnojvknmefqsg", model.zones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuLocationInfoItem model =
-            new SkuLocationInfoItem()
-                .withLocation("iwwroyqbexrmc")
-                .withZones(Arrays.asList("ycnojvknmefqsg", "vah", "pjyzhpv"))
-                .withZoneDetails(
-                    Arrays
-                        .asList(
-                            new ResourceSkuZoneDetails(),
-                            new ResourceSkuZoneDetails(),
-                            new ResourceSkuZoneDetails(),
-                            new ResourceSkuZoneDetails()));
+        SkuLocationInfoItem model = new SkuLocationInfoItem().withLocation("iwwroyqbexrmc")
+            .withZones(Arrays.asList("ycnojvknmefqsg", "vah", "pjyzhpv"))
+            .withZoneDetails(Arrays.asList(new ResourceSkuZoneDetails(), new ResourceSkuZoneDetails(),
+                new ResourceSkuZoneDetails(), new ResourceSkuZoneDetails()));
         model = BinaryData.fromObject(model).toObject(SkuLocationInfoItem.class);
         Assertions.assertEquals("iwwroyqbexrmc", model.location());
         Assertions.assertEquals("ycnojvknmefqsg", model.zones().get(0));

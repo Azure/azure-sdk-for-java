@@ -75,12 +75,8 @@ public interface DataSource {
     DataSourceInner innerModel();
 
     /** The entirety of the DataSource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithKind,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithKind, DefinitionStages.WithCreate {
     }
 
     /** The DataSource definition stages. */

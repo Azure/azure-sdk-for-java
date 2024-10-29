@@ -75,14 +75,12 @@ public final class WorkspacePurgeBody {
      */
     public void validate() {
         if (table() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property table in model WorkspacePurgeBody"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property table in model WorkspacePurgeBody"));
         }
         if (filters() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property filters in model WorkspacePurgeBody"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property filters in model WorkspacePurgeBody"));
         } else {
             filters().forEach(e -> e.validate());
         }

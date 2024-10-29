@@ -45,12 +45,15 @@ public final class FunctionsRetrieveDefaultDefinitionWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        StreamAnalyticsManager manager = StreamAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        StreamAnalyticsManager manager = StreamAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Function response = manager.functions().retrieveDefaultDefinitionWithResponse("uzhlhkjoqrv", "qaatjinrv",
-            "oupmfii", new FunctionRetrieveDefaultDefinitionParameters(), com.azure.core.util.Context.NONE).getValue();
+        Function response = manager.functions()
+            .retrieveDefaultDefinitionWithResponse("uzhlhkjoqrv", "qaatjinrv", "oupmfii",
+                new FunctionRetrieveDefaultDefinitionParameters(), com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("nhlmctlpdng", response.id());
         Assertions.assertEquals("x", response.properties().inputs().get(0).dataType());

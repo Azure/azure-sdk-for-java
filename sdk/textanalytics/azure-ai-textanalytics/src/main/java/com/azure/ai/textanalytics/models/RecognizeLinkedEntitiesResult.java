@@ -22,7 +22,7 @@ public final class RecognizeLinkedEntitiesResult extends TextAnalyticsResult {
      * @param entities A {@link LinkedEntityCollection} contains entities and warnings.
      */
     public RecognizeLinkedEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
-                                         TextAnalyticsError error, LinkedEntityCollection entities) {
+        TextAnalyticsError error, LinkedEntityCollection entities) {
         super(id, textDocumentStatistics, error);
         this.entities = entities;
     }

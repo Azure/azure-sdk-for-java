@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DeployerVmPackagesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeployerVmPackages model =
-            BinaryData
-                .fromString("{\"url\":\"yujviylwdshfssn\",\"storageAccountId\":\"gy\"}")
-                .toObject(DeployerVmPackages.class);
+        DeployerVmPackages model = BinaryData.fromString("{\"url\":\"yujviylwdshfssn\",\"storageAccountId\":\"gy\"}")
+            .toObject(DeployerVmPackages.class);
         Assertions.assertEquals("yujviylwdshfssn", model.url());
         Assertions.assertEquals("gy", model.storageAccountId());
     }

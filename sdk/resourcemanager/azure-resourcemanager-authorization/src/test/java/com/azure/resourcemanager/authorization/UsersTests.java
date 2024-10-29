@@ -34,14 +34,12 @@ public class UsersTests extends GraphRbacManagementTest {
     @Test
     public void canCreateUser() throws Exception {
         String name = generateRandomResourceName("user", 16);
-        ActiveDirectoryUser user =
-            authorizationManager
-                .users()
-                .define("Automatic " + name)
-                .withEmailAlias(name)
-                .withPassword(password())
-                .withPromptToChangePasswordOnLogin(true)
-                .create();
+        ActiveDirectoryUser user = authorizationManager.users()
+            .define("Automatic " + name)
+            .withEmailAlias(name)
+            .withPassword(password())
+            .withPromptToChangePasswordOnLogin(true)
+            .create();
 
         try {
             Assertions.assertNotNull(user);
@@ -55,13 +53,11 @@ public class UsersTests extends GraphRbacManagementTest {
     @Test
     public void canUpdateUser() throws Exception {
         String name = generateRandomResourceName("user", 16);
-        ActiveDirectoryUser user =
-            authorizationManager
-                .users()
-                .define("Test " + name)
-                .withEmailAlias(name)
-                .withPassword(password())
-                .create();
+        ActiveDirectoryUser user = authorizationManager.users()
+            .define("Test " + name)
+            .withEmailAlias(name)
+            .withPassword(password())
+            .create();
 
         try {
             user = user.update().withUsageLocation(CountryIsoCode.AUSTRALIA).apply();
@@ -69,7 +65,8 @@ public class UsersTests extends GraphRbacManagementTest {
             Assertions.assertEquals(CountryIsoCode.AUSTRALIA, user.usageLocation());
 
             ActiveDirectoryUser finalUser = user;
-            Assertions.assertTrue(authorizationManager.users().list().stream().anyMatch(x -> x.id().equals(finalUser.id())));
+            Assertions
+                .assertTrue(authorizationManager.users().list().stream().anyMatch(x -> x.id().equals(finalUser.id())));
         } finally {
             authorizationManager.users().deleteById(user.id());
         }

@@ -25,14 +25,22 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dnsresolver.fluent.DnsResolverManagementClient;
 import com.azure.resourcemanager.dnsresolver.implementation.DnsForwardingRulesetsImpl;
+import com.azure.resourcemanager.dnsresolver.implementation.DnsResolverDomainListsImpl;
 import com.azure.resourcemanager.dnsresolver.implementation.DnsResolverManagementClientBuilder;
+import com.azure.resourcemanager.dnsresolver.implementation.DnsResolverPoliciesImpl;
+import com.azure.resourcemanager.dnsresolver.implementation.DnsResolverPolicyVirtualNetworkLinksImpl;
 import com.azure.resourcemanager.dnsresolver.implementation.DnsResolversImpl;
+import com.azure.resourcemanager.dnsresolver.implementation.DnsSecurityRulesImpl;
 import com.azure.resourcemanager.dnsresolver.implementation.ForwardingRulesImpl;
 import com.azure.resourcemanager.dnsresolver.implementation.InboundEndpointsImpl;
 import com.azure.resourcemanager.dnsresolver.implementation.OutboundEndpointsImpl;
 import com.azure.resourcemanager.dnsresolver.implementation.VirtualNetworkLinksImpl;
 import com.azure.resourcemanager.dnsresolver.models.DnsForwardingRulesets;
+import com.azure.resourcemanager.dnsresolver.models.DnsResolverDomainLists;
+import com.azure.resourcemanager.dnsresolver.models.DnsResolverPolicies;
+import com.azure.resourcemanager.dnsresolver.models.DnsResolverPolicyVirtualNetworkLinks;
 import com.azure.resourcemanager.dnsresolver.models.DnsResolvers;
+import com.azure.resourcemanager.dnsresolver.models.DnsSecurityRules;
 import com.azure.resourcemanager.dnsresolver.models.ForwardingRules;
 import com.azure.resourcemanager.dnsresolver.models.InboundEndpoints;
 import com.azure.resourcemanager.dnsresolver.models.OutboundEndpoints;
@@ -60,6 +68,14 @@ public final class DnsResolverManager {
     private ForwardingRules forwardingRules;
 
     private VirtualNetworkLinks virtualNetworkLinks;
+
+    private DnsResolverPolicies dnsResolverPolicies;
+
+    private DnsSecurityRules dnsSecurityRules;
+
+    private DnsResolverPolicyVirtualNetworkLinks dnsResolverPolicyVirtualNetworkLinks;
+
+    private DnsResolverDomainLists dnsResolverDomainLists;
 
     private final DnsResolverManagementClient clientObject;
 
@@ -225,7 +241,7 @@ public final class DnsResolverManager {
                 .append("-")
                 .append("com.azure.resourcemanager.dnsresolver")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -341,6 +357,57 @@ public final class DnsResolverManager {
             this.virtualNetworkLinks = new VirtualNetworkLinksImpl(clientObject.getVirtualNetworkLinks(), this);
         }
         return virtualNetworkLinks;
+    }
+
+    /**
+     * Gets the resource collection API of DnsResolverPolicies. It manages DnsResolverPolicy.
+     * 
+     * @return Resource collection API of DnsResolverPolicies.
+     */
+    public DnsResolverPolicies dnsResolverPolicies() {
+        if (this.dnsResolverPolicies == null) {
+            this.dnsResolverPolicies = new DnsResolverPoliciesImpl(clientObject.getDnsResolverPolicies(), this);
+        }
+        return dnsResolverPolicies;
+    }
+
+    /**
+     * Gets the resource collection API of DnsSecurityRules. It manages DnsSecurityRule.
+     * 
+     * @return Resource collection API of DnsSecurityRules.
+     */
+    public DnsSecurityRules dnsSecurityRules() {
+        if (this.dnsSecurityRules == null) {
+            this.dnsSecurityRules = new DnsSecurityRulesImpl(clientObject.getDnsSecurityRules(), this);
+        }
+        return dnsSecurityRules;
+    }
+
+    /**
+     * Gets the resource collection API of DnsResolverPolicyVirtualNetworkLinks. It manages
+     * DnsResolverPolicyVirtualNetworkLink.
+     * 
+     * @return Resource collection API of DnsResolverPolicyVirtualNetworkLinks.
+     */
+    public DnsResolverPolicyVirtualNetworkLinks dnsResolverPolicyVirtualNetworkLinks() {
+        if (this.dnsResolverPolicyVirtualNetworkLinks == null) {
+            this.dnsResolverPolicyVirtualNetworkLinks = new DnsResolverPolicyVirtualNetworkLinksImpl(
+                clientObject.getDnsResolverPolicyVirtualNetworkLinks(), this);
+        }
+        return dnsResolverPolicyVirtualNetworkLinks;
+    }
+
+    /**
+     * Gets the resource collection API of DnsResolverDomainLists. It manages DnsResolverDomainList.
+     * 
+     * @return Resource collection API of DnsResolverDomainLists.
+     */
+    public DnsResolverDomainLists dnsResolverDomainLists() {
+        if (this.dnsResolverDomainLists == null) {
+            this.dnsResolverDomainLists
+                = new DnsResolverDomainListsImpl(clientObject.getDnsResolverDomainLists(), this);
+        }
+        return dnsResolverDomainLists;
     }
 
     /**

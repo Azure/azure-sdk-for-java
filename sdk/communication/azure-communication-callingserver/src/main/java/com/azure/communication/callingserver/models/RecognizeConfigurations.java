@@ -149,11 +149,11 @@ public final class RecognizeConfigurations implements JsonSerializable<Recognize
                 if ("interruptPromptAndStartRecognition".equals(fieldName)) {
                     configurations.interruptPromptAndStartRecognition = reader.getNullable(JsonReader::getBoolean);
                 } else if ("initialSilenceTimeoutInSeconds".equals(fieldName)) {
-                    configurations.initialSilenceTimeoutInSeconds = reader.getNullable(
-                        nonNull -> Duration.parse(nonNull.getString()));
+                    configurations.initialSilenceTimeoutInSeconds
+                        = reader.getNullable(nonNull -> Duration.parse(nonNull.getString()));
                 } else if ("targetParticipant".equals(fieldName)) {
-                    configurations.targetParticipant = CommunicationIdentifierConverter.convert(
-                        CommunicationIdentifierModel.fromJson(reader));
+                    configurations.targetParticipant
+                        = CommunicationIdentifierConverter.convert(CommunicationIdentifierModel.fromJson(reader));
                 } else if ("dtmfConfigurations".equals(fieldName)) {
                     configurations.dtmfConfigurations = DtmfConfigurations.fromJson(reader);
                 } else {

@@ -13,8 +13,8 @@ import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
 import com.azure.search.documents.models.SemanticErrorMode;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Parameter group.

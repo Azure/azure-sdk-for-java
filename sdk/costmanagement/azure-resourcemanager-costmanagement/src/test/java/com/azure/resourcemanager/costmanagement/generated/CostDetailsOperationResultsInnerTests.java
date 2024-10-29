@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CostDetailsOperationResultsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CostDetailsOperationResultsInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"ivwitqscywugg\",\"name\":\"luhczbw\",\"type\":\"hairsbrgzdwms\",\"status\":\"NoDataFound\",\"manifest\":{\"manifestVersion\":\"w\",\"dataFormat\":\"Csv\",\"byteCount\":5618518973032079681,\"blobCount\":1774302328,\"compressData\":false,\"requestContext\":{\"requestScope\":\"uexmkttlst\"},\"blobs\":[{\"blobLink\":\"emhzrncsdtc\",\"byteCount\":5872118391950358581},{\"blobLink\":\"pbsfgytgu\",\"byteCount\":9132015277397116650}]},\"validTill\":\"2021-10-02T12:36:06Z\"}")
-                .toObject(CostDetailsOperationResultsInner.class);
+        CostDetailsOperationResultsInner model = BinaryData.fromString(
+            "{\"id\":\"ivwitqscywugg\",\"name\":\"luhczbw\",\"type\":\"hairsbrgzdwms\",\"status\":\"NoDataFound\",\"manifest\":{\"manifestVersion\":\"w\",\"dataFormat\":\"Csv\",\"byteCount\":5618518973032079681,\"blobCount\":1774302328,\"compressData\":false,\"requestContext\":{\"requestScope\":\"uexmkttlst\"},\"blobs\":[{\"blobLink\":\"emhzrncsdtc\",\"byteCount\":5872118391950358581},{\"blobLink\":\"pbsfgytgu\",\"byteCount\":9132015277397116650}]},\"validTill\":\"2021-10-02T12:36:06Z\"}")
+            .toObject(CostDetailsOperationResultsInner.class);
         Assertions.assertEquals("ivwitqscywugg", model.id());
         Assertions.assertEquals("luhczbw", model.name());
         Assertions.assertEquals("hairsbrgzdwms", model.type());
@@ -38,24 +36,19 @@ public final class CostDetailsOperationResultsInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CostDetailsOperationResultsInner model =
-            new CostDetailsOperationResultsInner()
-                .withId("ivwitqscywugg")
-                .withName("luhczbw")
-                .withType("hairsbrgzdwms")
-                .withStatus(CostDetailsStatusType.NO_DATA_FOUND)
-                .withValidTill(OffsetDateTime.parse("2021-10-02T12:36:06Z"))
-                .withManifestVersion("w")
-                .withDataFormat(CostDetailsDataFormat.CSV)
-                .withByteCount(5618518973032079681L)
-                .withBlobCount(1774302328)
-                .withCompressData(false)
-                .withBlobs(
-                    Arrays
-                        .asList(
-                            new BlobInfo().withBlobLink("emhzrncsdtc").withByteCount(5872118391950358581L),
-                            new BlobInfo().withBlobLink("pbsfgytgu").withByteCount(9132015277397116650L)))
-                .withRequestScope("uexmkttlst");
+        CostDetailsOperationResultsInner model = new CostDetailsOperationResultsInner().withId("ivwitqscywugg")
+            .withName("luhczbw")
+            .withType("hairsbrgzdwms")
+            .withStatus(CostDetailsStatusType.NO_DATA_FOUND)
+            .withValidTill(OffsetDateTime.parse("2021-10-02T12:36:06Z"))
+            .withManifestVersion("w")
+            .withDataFormat(CostDetailsDataFormat.CSV)
+            .withByteCount(5618518973032079681L)
+            .withBlobCount(1774302328)
+            .withCompressData(false)
+            .withBlobs(Arrays.asList(new BlobInfo().withBlobLink("emhzrncsdtc").withByteCount(5872118391950358581L),
+                new BlobInfo().withBlobLink("pbsfgytgu").withByteCount(9132015277397116650L)))
+            .withRequestScope("uexmkttlst");
         model = BinaryData.fromObject(model).toObject(CostDetailsOperationResultsInner.class);
         Assertions.assertEquals("ivwitqscywugg", model.id());
         Assertions.assertEquals("luhczbw", model.name());

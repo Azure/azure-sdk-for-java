@@ -119,7 +119,6 @@
             <bannedDependencies>
               <includes>
                 <include>redis.clients:jedis:[5.2.0]</include> <!-- {x-include-update;redis.clients:jedis;external_dependency} -->
-                <include>org.mockito:mockito-inline:[4.11.0]</include> <!-- {x-include-update;org.mockito:mockito-inline;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

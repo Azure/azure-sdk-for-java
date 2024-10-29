@@ -20,12 +20,8 @@ public final class B2CTenantsCreateResponse extends ResponseBase<B2CTenantsCreat
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public B2CTenantsCreateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        B2CTenantResourceInner value,
-        B2CTenantsCreateHeaders headers) {
+    public B2CTenantsCreateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        B2CTenantResourceInner value, B2CTenantsCreateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

@@ -42,9 +42,7 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeBooleanField("loop", loop)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeBooleanField("loop", loop).writeEndObject();
     }
 
     /**

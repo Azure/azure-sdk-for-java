@@ -10,11 +10,9 @@ import com.azure.resourcemanager.networkcloud.models.StorageApplianceSkuSlot;
 public final class StorageApplianceSkuSlotTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageApplianceSkuSlot model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"capacityGB\":2711375117878963664,\"model\":\"djvlpj\"},\"rackSlot\":4808904277032773928}")
-                .toObject(StorageApplianceSkuSlot.class);
+        StorageApplianceSkuSlot model = BinaryData.fromString(
+            "{\"properties\":{\"capacityGB\":2711375117878963664,\"model\":\"djvlpj\"},\"rackSlot\":4808904277032773928}")
+            .toObject(StorageApplianceSkuSlot.class);
     }
 
     @org.junit.jupiter.api.Test

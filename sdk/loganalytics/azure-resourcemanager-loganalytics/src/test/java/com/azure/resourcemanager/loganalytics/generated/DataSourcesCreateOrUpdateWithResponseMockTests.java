@@ -33,45 +33,33 @@ public final class DataSourcesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":\"datartixokff\",\"etag\":\"inljqepqwhixmo\",\"kind\":\"ChangeTrackingContentLocation\",\"tags\":{\"birdsvuwcobiegs\":\"hiyxgvelfclduc\"},\"id\":\"mninwjizcilng\",\"name\":\"gshejjtbxqmulux\",\"type\":\"xqzv\"}";
+        String responseStr
+            = "{\"properties\":\"datartixokff\",\"etag\":\"inljqepqwhixmo\",\"kind\":\"ChangeTrackingContentLocation\",\"tags\":{\"birdsvuwcobiegs\":\"hiyxgvelfclduc\"},\"id\":\"mninwjizcilng\",\"name\":\"gshejjtbxqmulux\",\"type\":\"xqzv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataSource response =
-            manager
-                .dataSources()
-                .define("rsqqwztcm")
-                .withExistingWorkspace("lfwyfwlwxjwetn", "sihclafzvaylp")
-                .withProperties("dataqkc")
-                .withKind(DataSourceKind.WINDOWS_EVENT)
-                .withTags(mapOf("hkbffmbm", "eqvhpsylkk", "gjxsnptfu", "zjrgyww"))
-                .withEtag("xwaxfewzjkj")
-                .create();
+        DataSource response = manager.dataSources()
+            .define("rsqqwztcm")
+            .withExistingWorkspace("lfwyfwlwxjwetn", "sihclafzvaylp")
+            .withProperties("dataqkc")
+            .withKind(DataSourceKind.WINDOWS_EVENT)
+            .withTags(mapOf("hkbffmbm", "eqvhpsylkk", "gjxsnptfu", "zjrgyww"))
+            .withEtag("xwaxfewzjkj")
+            .create();
 
         Assertions.assertEquals("inljqepqwhixmo", response.etag());
         Assertions.assertEquals(DataSourceKind.CHANGE_TRACKING_CONTENT_LOCATION, response.kind());

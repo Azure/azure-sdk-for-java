@@ -51,10 +51,8 @@ public final class Gen2StorageConfigurationOutput {
      */
     public void validate() {
         if (accountName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property accountName in model Gen2StorageConfigurationOutput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property accountName in model Gen2StorageConfigurationOutput"));
         }
     }
 

@@ -88,8 +88,8 @@ public final class MsiManager extends Manager<ManagedServiceIdentityClient> {
     }
 
     private MsiManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        super(httpPipeline, profile, new ManagedServiceIdentityClientBuilder()
-                .pipeline(httpPipeline)
+        super(httpPipeline, profile,
+            new ManagedServiceIdentityClientBuilder().pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());

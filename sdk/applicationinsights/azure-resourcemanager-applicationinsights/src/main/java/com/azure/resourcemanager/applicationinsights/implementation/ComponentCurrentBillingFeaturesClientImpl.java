@@ -41,12 +41,8 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
      * @param client the instance of the service client containing this operation class.
      */
     ComponentCurrentBillingFeaturesClientImpl(ApplicationInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ComponentCurrentBillingFeaturesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ComponentCurrentBillingFeaturesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,34 +53,24 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationInsightsM")
     public interface ComponentCurrentBillingFeaturesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/currentbillingfeatures")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/currentbillingfeatures")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInsightsComponentBillingFeaturesInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApplicationInsightsComponentBillingFeaturesInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/currentbillingfeatures")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/currentbillingfeatures")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInsightsComponentBillingFeaturesInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<ApplicationInsightsComponentBillingFeaturesInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceName") String resourceName,
             @BodyParam("application/json") ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -99,23 +85,19 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentBillingFeaturesInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<Response<ApplicationInsightsComponentBillingFeaturesInner>>
+        getWithResponseAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -123,17 +105,8 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -150,23 +123,19 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInsightsComponentBillingFeaturesInner>> getWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<ApplicationInsightsComponentBillingFeaturesInner>>
+        getWithResponseAsync(String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -174,15 +143,8 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, accept, context);
     }
 
     /**
@@ -196,8 +158,8 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
      * @return an Application Insights component billing features on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInsightsComponentBillingFeaturesInner> getAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<ApplicationInsightsComponentBillingFeaturesInner> getAsync(String resourceGroupName,
+        String resourceName) {
         return getWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -213,8 +175,8 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
      * @return an Application Insights component billing features along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInsightsComponentBillingFeaturesInner> getWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
+    public Response<ApplicationInsightsComponentBillingFeaturesInner> getWithResponse(String resourceGroupName,
+        String resourceName, Context context) {
         return getWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
@@ -248,51 +210,34 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentBillingFeaturesInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
+        String resourceGroupName, String resourceName,
         ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (billingFeaturesProperties == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter billingFeaturesProperties is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter billingFeaturesProperties is required and cannot be null."));
         } else {
             billingFeaturesProperties.validate();
         }
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceName,
-                            billingFeaturesProperties,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, apiVersion,
+                this.client.getSubscriptionId(), resourceName, billingFeaturesProperties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -312,50 +257,34 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationInsightsComponentBillingFeaturesInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties,
-        Context context) {
+        String resourceGroupName, String resourceName,
+        ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (billingFeaturesProperties == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter billingFeaturesProperties is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter billingFeaturesProperties is required and cannot be null."));
         } else {
             billingFeaturesProperties.validate();
         }
         final String apiVersion = "2015-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceName,
-                billingFeaturesProperties,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(),
+            resourceName, billingFeaturesProperties, accept, context);
     }
 
     /**
@@ -371,10 +300,8 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
      * @return an Application Insights component billing features on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInsightsComponentBillingFeaturesInner> updateAsync(
-        String resourceGroupName,
-        String resourceName,
-        ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties) {
+    private Mono<ApplicationInsightsComponentBillingFeaturesInner> updateAsync(String resourceGroupName,
+        String resourceName, ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties) {
         return updateWithResponseAsync(resourceGroupName, resourceName, billingFeaturesProperties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -393,10 +320,8 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
      * @return an Application Insights component billing features along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInsightsComponentBillingFeaturesInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties,
+    public Response<ApplicationInsightsComponentBillingFeaturesInner> updateWithResponse(String resourceGroupName,
+        String resourceName, ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, resourceName, billingFeaturesProperties, context).block();
     }
@@ -414,9 +339,7 @@ public final class ComponentCurrentBillingFeaturesClientImpl implements Componen
      * @return an Application Insights component billing features.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInsightsComponentBillingFeaturesInner update(
-        String resourceGroupName,
-        String resourceName,
+    public ApplicationInsightsComponentBillingFeaturesInner update(String resourceGroupName, String resourceName,
         ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties) {
         return updateWithResponse(resourceGroupName, resourceName, billingFeaturesProperties, Context.NONE).getValue();
     }

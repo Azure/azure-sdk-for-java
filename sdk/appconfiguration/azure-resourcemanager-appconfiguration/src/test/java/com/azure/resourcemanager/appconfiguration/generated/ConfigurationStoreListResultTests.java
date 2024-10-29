@@ -20,12 +20,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationStoreListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationStoreListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{},\"principalId\":\"jxpybczmeh\",\"tenantId\":\"zopbsphrupidgs\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"creationDate\":\"2021-10-09T17:42:33Z\",\"endpoint\":\"hoycm\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"disableLocalAuth\":true,\"softDeleteRetentionInDays\":1615603178,\"enablePurgeProtection\":false,\"createMode\":\"Recover\"},\"sku\":{\"name\":\"oqjzehtbmufpowno\"},\"location\":\"hwlrx\",\"tags\":{\"dmbpazlobcufpdz\":\"soqijg\",\"qqjnqgl\":\"rbt\",\"foooj\":\"qgn\"},\"id\":\"wifsq\",\"name\":\"saagdf\",\"type\":\"glzlhjxrifkwmrv\"},{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{},\"principalId\":\"to\",\"tenantId\":\"pa\"},\"properties\":{\"provisioningState\":\"Failed\",\"creationDate\":\"2021-05-16T08:34:45Z\",\"endpoint\":\"ucmpoyfd\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\",\"disableLocalAuth\":false,\"softDeleteRetentionInDays\":1139572680,\"enablePurgeProtection\":false,\"createMode\":\"Default\"},\"sku\":{\"name\":\"deqsrdeupewn\"},\"location\":\"eitjz\",\"tags\":{\"hs\":\"usarhmofc\",\"xukcdmpar\":\"yurkdtmlxhekuksj\"},\"id\":\"ryuanzwuxzdxtay\",\"name\":\"lhmwhfpmrqobm\",\"type\":\"u\"},{\"identity\":{\"type\":\"SystemAssigned,"
-                        + " UserAssigned\",\"userAssignedIdentities\":{},\"principalId\":\"tihfx\",\"tenantId\":\"jbpzvgnwzsymg\"},\"properties\":{\"provisioningState\":\"Deleting\",\"creationDate\":\"2021-01-28T09:29:32Z\",\"endpoint\":\"kohdbiha\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\",\"disableLocalAuth\":false,\"softDeleteRetentionInDays\":43632750,\"enablePurgeProtection\":false,\"createMode\":\"Default\"},\"sku\":{\"name\":\"th\"},\"location\":\"hab\",\"tags\":{\"byscnp\":\"ikxwc\",\"hiv\":\"x\",\"rtfw\":\"qniwbybrkxvdumj\",\"cs\":\"ukxgaud\"},\"id\":\"h\",\"name\":\"jcny\",\"type\":\"j\"}],\"nextLink\":\"ryhtnapczwlokjy\"}")
-                .toObject(ConfigurationStoreListResult.class);
+        ConfigurationStoreListResult model = BinaryData.fromString(
+            "{\"value\":[{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{},\"principalId\":\"jxpybczmeh\",\"tenantId\":\"zopbsphrupidgs\"},\"properties\":{\"provisioningState\":\"Succeeded\",\"creationDate\":\"2021-10-09T17:42:33Z\",\"endpoint\":\"hoycm\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"disableLocalAuth\":true,\"softDeleteRetentionInDays\":1615603178,\"enablePurgeProtection\":false,\"createMode\":\"Recover\"},\"sku\":{\"name\":\"oqjzehtbmufpowno\"},\"location\":\"hwlrx\",\"tags\":{\"dmbpazlobcufpdz\":\"soqijg\",\"qqjnqgl\":\"rbt\",\"foooj\":\"qgn\"},\"id\":\"wifsq\",\"name\":\"saagdf\",\"type\":\"glzlhjxrifkwmrv\"},{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{},\"principalId\":\"to\",\"tenantId\":\"pa\"},\"properties\":{\"provisioningState\":\"Failed\",\"creationDate\":\"2021-05-16T08:34:45Z\",\"endpoint\":\"ucmpoyfd\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\",\"disableLocalAuth\":false,\"softDeleteRetentionInDays\":1139572680,\"enablePurgeProtection\":false,\"createMode\":\"Default\"},\"sku\":{\"name\":\"deqsrdeupewn\"},\"location\":\"eitjz\",\"tags\":{\"hs\":\"usarhmofc\",\"xukcdmpar\":\"yurkdtmlxhekuksj\"},\"id\":\"ryuanzwuxzdxtay\",\"name\":\"lhmwhfpmrqobm\",\"type\":\"u\"},{\"identity\":{\"type\":\"SystemAssigned,"
+                + " UserAssigned\",\"userAssignedIdentities\":{},\"principalId\":\"tihfx\",\"tenantId\":\"jbpzvgnwzsymg\"},\"properties\":{\"provisioningState\":\"Deleting\",\"creationDate\":\"2021-01-28T09:29:32Z\",\"endpoint\":\"kohdbiha\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\",\"disableLocalAuth\":false,\"softDeleteRetentionInDays\":43632750,\"enablePurgeProtection\":false,\"createMode\":\"Default\"},\"sku\":{\"name\":\"th\"},\"location\":\"hab\",\"tags\":{\"byscnp\":\"ikxwc\",\"hiv\":\"x\",\"rtfw\":\"qniwbybrkxvdumj\",\"cs\":\"ukxgaud\"},\"id\":\"h\",\"name\":\"jcny\",\"type\":\"j\"}],\"nextLink\":\"ryhtnapczwlokjy\"}")
+            .toObject(ConfigurationStoreListResult.class);
         Assertions.assertEquals("hwlrx", model.value().get(0).location());
         Assertions.assertEquals("soqijg", model.value().get(0).tags().get("dmbpazlobcufpdz"));
         Assertions.assertEquals(IdentityType.NONE, model.value().get(0).identity().type());
@@ -40,51 +38,38 @@ public final class ConfigurationStoreListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationStoreListResult model =
-            new ConfigurationStoreListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ConfigurationStoreInner()
-                                .withLocation("hwlrx")
-                                .withTags(mapOf("dmbpazlobcufpdz", "soqijg", "qqjnqgl", "rbt", "foooj", "qgn"))
-                                .withIdentity(
-                                    new ResourceIdentity()
-                                        .withType(IdentityType.NONE)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withSku(new Sku().withName("oqjzehtbmufpowno"))
-                                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                                .withDisableLocalAuth(true)
-                                .withSoftDeleteRetentionInDays(1615603178)
-                                .withEnablePurgeProtection(false)
-                                .withCreateMode(CreateMode.RECOVER),
-                            new ConfigurationStoreInner()
-                                .withLocation("eitjz")
-                                .withTags(mapOf("hs", "usarhmofc", "xukcdmpar", "yurkdtmlxhekuksj"))
-                                .withIdentity(
-                                    new ResourceIdentity()
-                                        .withType(IdentityType.USER_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withSku(new Sku().withName("deqsrdeupewn"))
-                                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
-                                .withDisableLocalAuth(false)
-                                .withSoftDeleteRetentionInDays(1139572680)
-                                .withEnablePurgeProtection(false)
-                                .withCreateMode(CreateMode.DEFAULT),
-                            new ConfigurationStoreInner()
-                                .withLocation("hab")
-                                .withTags(
-                                    mapOf("byscnp", "ikxwc", "hiv", "x", "rtfw", "qniwbybrkxvdumj", "cs", "ukxgaud"))
-                                .withIdentity(
-                                    new ResourceIdentity()
-                                        .withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withSku(new Sku().withName("th"))
-                                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
-                                .withDisableLocalAuth(false)
-                                .withSoftDeleteRetentionInDays(43632750)
-                                .withEnablePurgeProtection(false)
-                                .withCreateMode(CreateMode.DEFAULT)))
+        ConfigurationStoreListResult model
+            = new ConfigurationStoreListResult().withValue(Arrays.asList(
+                new ConfigurationStoreInner().withLocation("hwlrx")
+                    .withTags(mapOf("dmbpazlobcufpdz", "soqijg", "qqjnqgl", "rbt", "foooj", "qgn"))
+                    .withIdentity(
+                        new ResourceIdentity().withType(IdentityType.NONE).withUserAssignedIdentities(mapOf()))
+                    .withSku(new Sku().withName("oqjzehtbmufpowno"))
+                    .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                    .withDisableLocalAuth(true)
+                    .withSoftDeleteRetentionInDays(1615603178)
+                    .withEnablePurgeProtection(false)
+                    .withCreateMode(CreateMode.RECOVER),
+                new ConfigurationStoreInner().withLocation("eitjz")
+                    .withTags(mapOf("hs", "usarhmofc", "xukcdmpar", "yurkdtmlxhekuksj"))
+                    .withIdentity(
+                        new ResourceIdentity().withType(IdentityType.USER_ASSIGNED).withUserAssignedIdentities(mapOf()))
+                    .withSku(new Sku().withName("deqsrdeupewn"))
+                    .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+                    .withDisableLocalAuth(false)
+                    .withSoftDeleteRetentionInDays(1139572680)
+                    .withEnablePurgeProtection(false)
+                    .withCreateMode(CreateMode.DEFAULT),
+                new ConfigurationStoreInner().withLocation("hab")
+                    .withTags(mapOf("byscnp", "ikxwc", "hiv", "x", "rtfw", "qniwbybrkxvdumj", "cs", "ukxgaud"))
+                    .withIdentity(new ResourceIdentity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf()))
+                    .withSku(new Sku().withName("th"))
+                    .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+                    .withDisableLocalAuth(false)
+                    .withSoftDeleteRetentionInDays(43632750)
+                    .withEnablePurgeProtection(false)
+                    .withCreateMode(CreateMode.DEFAULT)))
                 .withNextLink("ryhtnapczwlokjy");
         model = BinaryData.fromObject(model).toObject(ConfigurationStoreListResult.class);
         Assertions.assertEquals("hwlrx", model.value().get(0).location());

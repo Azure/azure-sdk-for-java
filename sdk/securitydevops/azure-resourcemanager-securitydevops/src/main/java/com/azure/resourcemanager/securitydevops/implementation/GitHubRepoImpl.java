@@ -55,8 +55,8 @@ public final class GitHubRepoImpl implements GitHubRepo, GitHubRepo.Definition, 
 
     private String gitHubRepoName;
 
-    public GitHubRepoImpl withExistingOwner(
-        String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName) {
+    public GitHubRepoImpl withExistingOwner(String resourceGroupName, String gitHubConnectorName,
+        String gitHubOwnerName) {
         this.resourceGroupName = resourceGroupName;
         this.gitHubConnectorName = gitHubConnectorName;
         this.gitHubOwnerName = gitHubOwnerName;
@@ -64,32 +64,18 @@ public final class GitHubRepoImpl implements GitHubRepo, GitHubRepo.Definition, 
     }
 
     public GitHubRepo create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubRepoes()
-                .createOrUpdate(
-                    resourceGroupName,
-                    gitHubConnectorName,
-                    gitHubOwnerName,
-                    gitHubRepoName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubRepoes()
+            .createOrUpdate(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubRepoName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public GitHubRepo create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubRepoes()
-                .createOrUpdate(
-                    resourceGroupName,
-                    gitHubConnectorName,
-                    gitHubOwnerName,
-                    gitHubRepoName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubRepoes()
+            .createOrUpdate(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubRepoName, this.innerModel(),
+                context);
         return this;
     }
 
@@ -104,37 +90,23 @@ public final class GitHubRepoImpl implements GitHubRepo, GitHubRepo.Definition, 
     }
 
     public GitHubRepo apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubRepoes()
-                .update(
-                    resourceGroupName,
-                    gitHubConnectorName,
-                    gitHubOwnerName,
-                    gitHubRepoName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubRepoes()
+            .update(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubRepoName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public GitHubRepo apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubRepoes()
-                .update(
-                    resourceGroupName,
-                    gitHubConnectorName,
-                    gitHubOwnerName,
-                    gitHubRepoName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubRepoes()
+            .update(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubRepoName, this.innerModel(),
+                context);
         return this;
     }
 
-    GitHubRepoImpl(
-        GitHubRepoInner innerObject, com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
+    GitHubRepoImpl(GitHubRepoInner innerObject,
+        com.azure.resourcemanager.securitydevops.SecurityDevOpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -144,22 +116,18 @@ public final class GitHubRepoImpl implements GitHubRepo, GitHubRepo.Definition, 
     }
 
     public GitHubRepo refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubRepoes()
-                .getWithResponse(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubRepoName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubRepoes()
+            .getWithResponse(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubRepoName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GitHubRepo refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGitHubRepoes()
-                .getWithResponse(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubRepoName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGitHubRepoes()
+            .getWithResponse(resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubRepoName, context)
+            .getValue();
         return this;
     }
 

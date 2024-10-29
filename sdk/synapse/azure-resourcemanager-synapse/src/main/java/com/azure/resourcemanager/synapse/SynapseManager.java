@@ -274,8 +274,7 @@ public final class SynapseManager {
 
     private WorkspaceManagedSqlServerRecoverableSqlPools workspaceManagedSqlServerRecoverableSqlPools;
 
-    private WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings
-        workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
+    private WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
 
     private Workspaces workspaces;
 
@@ -340,13 +339,11 @@ public final class SynapseManager {
     private SynapseManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new SynapseManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new SynapseManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -474,8 +471,8 @@ public final class SynapseManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -495,15 +492,13 @@ public final class SynapseManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.synapse")
                 .append("/")
                 .append("1.0.0-beta.7");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -528,31 +523,21 @@ public final class SynapseManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new SynapseManager(httpPipeline, profile, defaultPollInterval);
         }
     }
@@ -564,8 +549,8 @@ public final class SynapseManager {
      */
     public AzureADOnlyAuthentications azureADOnlyAuthentications() {
         if (this.azureADOnlyAuthentications == null) {
-            this.azureADOnlyAuthentications =
-                new AzureADOnlyAuthenticationsImpl(clientObject.getAzureADOnlyAuthentications(), this);
+            this.azureADOnlyAuthentications
+                = new AzureADOnlyAuthenticationsImpl(clientObject.getAzureADOnlyAuthentications(), this);
         }
         return azureADOnlyAuthentications;
     }
@@ -613,8 +598,8 @@ public final class SynapseManager {
      */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
-            this.privateEndpointConnections =
-                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+            this.privateEndpointConnections
+                = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
         }
         return privateEndpointConnections;
     }
@@ -626,8 +611,8 @@ public final class SynapseManager {
      */
     public PrivateLinkResourcesOperations privateLinkResourcesOperations() {
         if (this.privateLinkResourcesOperations == null) {
-            this.privateLinkResourcesOperations =
-                new PrivateLinkResourcesOperationsImpl(clientObject.getPrivateLinkResourcesOperations(), this);
+            this.privateLinkResourcesOperations
+                = new PrivateLinkResourcesOperationsImpl(clientObject.getPrivateLinkResourcesOperations(), this);
         }
         return privateLinkResourcesOperations;
     }
@@ -639,8 +624,8 @@ public final class SynapseManager {
      */
     public PrivateLinkHubPrivateLinkResources privateLinkHubPrivateLinkResources() {
         if (this.privateLinkHubPrivateLinkResources == null) {
-            this.privateLinkHubPrivateLinkResources =
-                new PrivateLinkHubPrivateLinkResourcesImpl(clientObject.getPrivateLinkHubPrivateLinkResources(), this);
+            this.privateLinkHubPrivateLinkResources = new PrivateLinkHubPrivateLinkResourcesImpl(
+                clientObject.getPrivateLinkHubPrivateLinkResources(), this);
         }
         return privateLinkHubPrivateLinkResources;
     }
@@ -664,9 +649,8 @@ public final class SynapseManager {
      */
     public PrivateEndpointConnectionsPrivateLinkHubs privateEndpointConnectionsPrivateLinkHubs() {
         if (this.privateEndpointConnectionsPrivateLinkHubs == null) {
-            this.privateEndpointConnectionsPrivateLinkHubs =
-                new PrivateEndpointConnectionsPrivateLinkHubsImpl(
-                    clientObject.getPrivateEndpointConnectionsPrivateLinkHubs(), this);
+            this.privateEndpointConnectionsPrivateLinkHubs = new PrivateEndpointConnectionsPrivateLinkHubsImpl(
+                clientObject.getPrivateEndpointConnectionsPrivateLinkHubs(), this);
         }
         return privateEndpointConnectionsPrivateLinkHubs;
     }
@@ -690,8 +674,8 @@ public final class SynapseManager {
      */
     public SqlPoolMetadataSyncConfigs sqlPoolMetadataSyncConfigs() {
         if (this.sqlPoolMetadataSyncConfigs == null) {
-            this.sqlPoolMetadataSyncConfigs =
-                new SqlPoolMetadataSyncConfigsImpl(clientObject.getSqlPoolMetadataSyncConfigs(), this);
+            this.sqlPoolMetadataSyncConfigs
+                = new SqlPoolMetadataSyncConfigsImpl(clientObject.getSqlPoolMetadataSyncConfigs(), this);
         }
         return sqlPoolMetadataSyncConfigs;
     }
@@ -703,8 +687,8 @@ public final class SynapseManager {
      */
     public SqlPoolOperationResults sqlPoolOperationResults() {
         if (this.sqlPoolOperationResults == null) {
-            this.sqlPoolOperationResults =
-                new SqlPoolOperationResultsImpl(clientObject.getSqlPoolOperationResults(), this);
+            this.sqlPoolOperationResults
+                = new SqlPoolOperationResultsImpl(clientObject.getSqlPoolOperationResults(), this);
         }
         return sqlPoolOperationResults;
     }
@@ -716,8 +700,8 @@ public final class SynapseManager {
      */
     public SqlPoolGeoBackupPolicies sqlPoolGeoBackupPolicies() {
         if (this.sqlPoolGeoBackupPolicies == null) {
-            this.sqlPoolGeoBackupPolicies =
-                new SqlPoolGeoBackupPoliciesImpl(clientObject.getSqlPoolGeoBackupPolicies(), this);
+            this.sqlPoolGeoBackupPolicies
+                = new SqlPoolGeoBackupPoliciesImpl(clientObject.getSqlPoolGeoBackupPolicies(), this);
         }
         return sqlPoolGeoBackupPolicies;
     }
@@ -729,8 +713,8 @@ public final class SynapseManager {
      */
     public SqlPoolDataWarehouseUserActivities sqlPoolDataWarehouseUserActivities() {
         if (this.sqlPoolDataWarehouseUserActivities == null) {
-            this.sqlPoolDataWarehouseUserActivities =
-                new SqlPoolDataWarehouseUserActivitiesImpl(clientObject.getSqlPoolDataWarehouseUserActivities(), this);
+            this.sqlPoolDataWarehouseUserActivities = new SqlPoolDataWarehouseUserActivitiesImpl(
+                clientObject.getSqlPoolDataWarehouseUserActivities(), this);
         }
         return sqlPoolDataWarehouseUserActivities;
     }
@@ -754,8 +738,8 @@ public final class SynapseManager {
      */
     public SqlPoolReplicationLinks sqlPoolReplicationLinks() {
         if (this.sqlPoolReplicationLinks == null) {
-            this.sqlPoolReplicationLinks =
-                new SqlPoolReplicationLinksImpl(clientObject.getSqlPoolReplicationLinks(), this);
+            this.sqlPoolReplicationLinks
+                = new SqlPoolReplicationLinksImpl(clientObject.getSqlPoolReplicationLinks(), this);
         }
         return sqlPoolReplicationLinks;
     }
@@ -767,8 +751,8 @@ public final class SynapseManager {
      */
     public SqlPoolMaintenanceWindows sqlPoolMaintenanceWindows() {
         if (this.sqlPoolMaintenanceWindows == null) {
-            this.sqlPoolMaintenanceWindows =
-                new SqlPoolMaintenanceWindowsImpl(clientObject.getSqlPoolMaintenanceWindows(), this);
+            this.sqlPoolMaintenanceWindows
+                = new SqlPoolMaintenanceWindowsImpl(clientObject.getSqlPoolMaintenanceWindows(), this);
         }
         return sqlPoolMaintenanceWindows;
     }
@@ -780,8 +764,8 @@ public final class SynapseManager {
      */
     public SqlPoolMaintenanceWindowOptions sqlPoolMaintenanceWindowOptions() {
         if (this.sqlPoolMaintenanceWindowOptions == null) {
-            this.sqlPoolMaintenanceWindowOptions =
-                new SqlPoolMaintenanceWindowOptionsImpl(clientObject.getSqlPoolMaintenanceWindowOptions(), this);
+            this.sqlPoolMaintenanceWindowOptions
+                = new SqlPoolMaintenanceWindowOptionsImpl(clientObject.getSqlPoolMaintenanceWindowOptions(), this);
         }
         return sqlPoolMaintenanceWindowOptions;
     }
@@ -793,8 +777,8 @@ public final class SynapseManager {
      */
     public SqlPoolTransparentDataEncryptions sqlPoolTransparentDataEncryptions() {
         if (this.sqlPoolTransparentDataEncryptions == null) {
-            this.sqlPoolTransparentDataEncryptions =
-                new SqlPoolTransparentDataEncryptionsImpl(clientObject.getSqlPoolTransparentDataEncryptions(), this);
+            this.sqlPoolTransparentDataEncryptions
+                = new SqlPoolTransparentDataEncryptionsImpl(clientObject.getSqlPoolTransparentDataEncryptions(), this);
         }
         return sqlPoolTransparentDataEncryptions;
     }
@@ -806,8 +790,8 @@ public final class SynapseManager {
      */
     public SqlPoolBlobAuditingPolicies sqlPoolBlobAuditingPolicies() {
         if (this.sqlPoolBlobAuditingPolicies == null) {
-            this.sqlPoolBlobAuditingPolicies =
-                new SqlPoolBlobAuditingPoliciesImpl(clientObject.getSqlPoolBlobAuditingPolicies(), this);
+            this.sqlPoolBlobAuditingPolicies
+                = new SqlPoolBlobAuditingPoliciesImpl(clientObject.getSqlPoolBlobAuditingPolicies(), this);
         }
         return sqlPoolBlobAuditingPolicies;
     }
@@ -843,8 +827,8 @@ public final class SynapseManager {
      */
     public SqlPoolSensitivityLabels sqlPoolSensitivityLabels() {
         if (this.sqlPoolSensitivityLabels == null) {
-            this.sqlPoolSensitivityLabels =
-                new SqlPoolSensitivityLabelsImpl(clientObject.getSqlPoolSensitivityLabels(), this);
+            this.sqlPoolSensitivityLabels
+                = new SqlPoolSensitivityLabelsImpl(clientObject.getSqlPoolSensitivityLabels(), this);
         }
         return sqlPoolSensitivityLabels;
     }
@@ -856,9 +840,8 @@ public final class SynapseManager {
      */
     public SqlPoolRecommendedSensitivityLabels sqlPoolRecommendedSensitivityLabels() {
         if (this.sqlPoolRecommendedSensitivityLabels == null) {
-            this.sqlPoolRecommendedSensitivityLabels =
-                new SqlPoolRecommendedSensitivityLabelsImpl(
-                    clientObject.getSqlPoolRecommendedSensitivityLabels(), this);
+            this.sqlPoolRecommendedSensitivityLabels = new SqlPoolRecommendedSensitivityLabelsImpl(
+                clientObject.getSqlPoolRecommendedSensitivityLabels(), this);
         }
         return sqlPoolRecommendedSensitivityLabels;
     }
@@ -906,8 +889,8 @@ public final class SynapseManager {
      */
     public SqlPoolConnectionPolicies sqlPoolConnectionPolicies() {
         if (this.sqlPoolConnectionPolicies == null) {
-            this.sqlPoolConnectionPolicies =
-                new SqlPoolConnectionPoliciesImpl(clientObject.getSqlPoolConnectionPolicies(), this);
+            this.sqlPoolConnectionPolicies
+                = new SqlPoolConnectionPoliciesImpl(clientObject.getSqlPoolConnectionPolicies(), this);
         }
         return sqlPoolConnectionPolicies;
     }
@@ -919,8 +902,8 @@ public final class SynapseManager {
      */
     public SqlPoolVulnerabilityAssessments sqlPoolVulnerabilityAssessments() {
         if (this.sqlPoolVulnerabilityAssessments == null) {
-            this.sqlPoolVulnerabilityAssessments =
-                new SqlPoolVulnerabilityAssessmentsImpl(clientObject.getSqlPoolVulnerabilityAssessments(), this);
+            this.sqlPoolVulnerabilityAssessments
+                = new SqlPoolVulnerabilityAssessmentsImpl(clientObject.getSqlPoolVulnerabilityAssessments(), this);
         }
         return sqlPoolVulnerabilityAssessments;
     }
@@ -932,9 +915,8 @@ public final class SynapseManager {
      */
     public SqlPoolVulnerabilityAssessmentScans sqlPoolVulnerabilityAssessmentScans() {
         if (this.sqlPoolVulnerabilityAssessmentScans == null) {
-            this.sqlPoolVulnerabilityAssessmentScans =
-                new SqlPoolVulnerabilityAssessmentScansImpl(
-                    clientObject.getSqlPoolVulnerabilityAssessmentScans(), this);
+            this.sqlPoolVulnerabilityAssessmentScans = new SqlPoolVulnerabilityAssessmentScansImpl(
+                clientObject.getSqlPoolVulnerabilityAssessmentScans(), this);
         }
         return sqlPoolVulnerabilityAssessmentScans;
     }
@@ -946,8 +928,8 @@ public final class SynapseManager {
      */
     public SqlPoolSecurityAlertPolicies sqlPoolSecurityAlertPolicies() {
         if (this.sqlPoolSecurityAlertPolicies == null) {
-            this.sqlPoolSecurityAlertPolicies =
-                new SqlPoolSecurityAlertPoliciesImpl(clientObject.getSqlPoolSecurityAlertPolicies(), this);
+            this.sqlPoolSecurityAlertPolicies
+                = new SqlPoolSecurityAlertPoliciesImpl(clientObject.getSqlPoolSecurityAlertPolicies(), this);
         }
         return sqlPoolSecurityAlertPolicies;
     }
@@ -960,9 +942,8 @@ public final class SynapseManager {
      */
     public SqlPoolVulnerabilityAssessmentRuleBaselines sqlPoolVulnerabilityAssessmentRuleBaselines() {
         if (this.sqlPoolVulnerabilityAssessmentRuleBaselines == null) {
-            this.sqlPoolVulnerabilityAssessmentRuleBaselines =
-                new SqlPoolVulnerabilityAssessmentRuleBaselinesImpl(
-                    clientObject.getSqlPoolVulnerabilityAssessmentRuleBaselines(), this);
+            this.sqlPoolVulnerabilityAssessmentRuleBaselines = new SqlPoolVulnerabilityAssessmentRuleBaselinesImpl(
+                clientObject.getSqlPoolVulnerabilityAssessmentRuleBaselines(), this);
         }
         return sqlPoolVulnerabilityAssessmentRuleBaselines;
     }
@@ -975,9 +956,8 @@ public final class SynapseManager {
      */
     public ExtendedSqlPoolBlobAuditingPolicies extendedSqlPoolBlobAuditingPolicies() {
         if (this.extendedSqlPoolBlobAuditingPolicies == null) {
-            this.extendedSqlPoolBlobAuditingPolicies =
-                new ExtendedSqlPoolBlobAuditingPoliciesImpl(
-                    clientObject.getExtendedSqlPoolBlobAuditingPolicies(), this);
+            this.extendedSqlPoolBlobAuditingPolicies = new ExtendedSqlPoolBlobAuditingPoliciesImpl(
+                clientObject.getExtendedSqlPoolBlobAuditingPolicies(), this);
         }
         return extendedSqlPoolBlobAuditingPolicies;
     }
@@ -1037,8 +1017,8 @@ public final class SynapseManager {
      */
     public SqlPoolWorkloadClassifiers sqlPoolWorkloadClassifiers() {
         if (this.sqlPoolWorkloadClassifiers == null) {
-            this.sqlPoolWorkloadClassifiers =
-                new SqlPoolWorkloadClassifiersImpl(clientObject.getSqlPoolWorkloadClassifiers(), this);
+            this.sqlPoolWorkloadClassifiers
+                = new SqlPoolWorkloadClassifiersImpl(clientObject.getSqlPoolWorkloadClassifiers(), this);
         }
         return sqlPoolWorkloadClassifiers;
     }
@@ -1051,9 +1031,8 @@ public final class SynapseManager {
      */
     public WorkspaceManagedSqlServerBlobAuditingPolicies workspaceManagedSqlServerBlobAuditingPolicies() {
         if (this.workspaceManagedSqlServerBlobAuditingPolicies == null) {
-            this.workspaceManagedSqlServerBlobAuditingPolicies =
-                new WorkspaceManagedSqlServerBlobAuditingPoliciesImpl(
-                    clientObject.getWorkspaceManagedSqlServerBlobAuditingPolicies(), this);
+            this.workspaceManagedSqlServerBlobAuditingPolicies = new WorkspaceManagedSqlServerBlobAuditingPoliciesImpl(
+                clientObject.getWorkspaceManagedSqlServerBlobAuditingPolicies(), this);
         }
         return workspaceManagedSqlServerBlobAuditingPolicies;
     }
@@ -1067,8 +1046,8 @@ public final class SynapseManager {
     public WorkspaceManagedSqlServerExtendedBlobAuditingPolicies
         workspaceManagedSqlServerExtendedBlobAuditingPolicies() {
         if (this.workspaceManagedSqlServerExtendedBlobAuditingPolicies == null) {
-            this.workspaceManagedSqlServerExtendedBlobAuditingPolicies =
-                new WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl(
+            this.workspaceManagedSqlServerExtendedBlobAuditingPolicies
+                = new WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl(
                     clientObject.getWorkspaceManagedSqlServerExtendedBlobAuditingPolicies(), this);
         }
         return workspaceManagedSqlServerExtendedBlobAuditingPolicies;
@@ -1082,8 +1061,8 @@ public final class SynapseManager {
      */
     public WorkspaceManagedSqlServerSecurityAlertPolicies workspaceManagedSqlServerSecurityAlertPolicies() {
         if (this.workspaceManagedSqlServerSecurityAlertPolicies == null) {
-            this.workspaceManagedSqlServerSecurityAlertPolicies =
-                new WorkspaceManagedSqlServerSecurityAlertPoliciesImpl(
+            this.workspaceManagedSqlServerSecurityAlertPolicies
+                = new WorkspaceManagedSqlServerSecurityAlertPoliciesImpl(
                     clientObject.getWorkspaceManagedSqlServerSecurityAlertPolicies(), this);
         }
         return workspaceManagedSqlServerSecurityAlertPolicies;
@@ -1097,8 +1076,8 @@ public final class SynapseManager {
      */
     public WorkspaceManagedSqlServerVulnerabilityAssessments workspaceManagedSqlServerVulnerabilityAssessments() {
         if (this.workspaceManagedSqlServerVulnerabilityAssessments == null) {
-            this.workspaceManagedSqlServerVulnerabilityAssessments =
-                new WorkspaceManagedSqlServerVulnerabilityAssessmentsImpl(
+            this.workspaceManagedSqlServerVulnerabilityAssessments
+                = new WorkspaceManagedSqlServerVulnerabilityAssessmentsImpl(
                     clientObject.getWorkspaceManagedSqlServerVulnerabilityAssessments(), this);
         }
         return workspaceManagedSqlServerVulnerabilityAssessments;
@@ -1112,9 +1091,8 @@ public final class SynapseManager {
      */
     public WorkspaceManagedSqlServerEncryptionProtectors workspaceManagedSqlServerEncryptionProtectors() {
         if (this.workspaceManagedSqlServerEncryptionProtectors == null) {
-            this.workspaceManagedSqlServerEncryptionProtectors =
-                new WorkspaceManagedSqlServerEncryptionProtectorsImpl(
-                    clientObject.getWorkspaceManagedSqlServerEncryptionProtectors(), this);
+            this.workspaceManagedSqlServerEncryptionProtectors = new WorkspaceManagedSqlServerEncryptionProtectorsImpl(
+                clientObject.getWorkspaceManagedSqlServerEncryptionProtectors(), this);
         }
         return workspaceManagedSqlServerEncryptionProtectors;
     }
@@ -1126,8 +1104,8 @@ public final class SynapseManager {
      */
     public WorkspaceManagedSqlServerUsages workspaceManagedSqlServerUsages() {
         if (this.workspaceManagedSqlServerUsages == null) {
-            this.workspaceManagedSqlServerUsages =
-                new WorkspaceManagedSqlServerUsagesImpl(clientObject.getWorkspaceManagedSqlServerUsages(), this);
+            this.workspaceManagedSqlServerUsages
+                = new WorkspaceManagedSqlServerUsagesImpl(clientObject.getWorkspaceManagedSqlServerUsages(), this);
         }
         return workspaceManagedSqlServerUsages;
     }
@@ -1139,9 +1117,8 @@ public final class SynapseManager {
      */
     public WorkspaceManagedSqlServerRecoverableSqlPools workspaceManagedSqlServerRecoverableSqlPools() {
         if (this.workspaceManagedSqlServerRecoverableSqlPools == null) {
-            this.workspaceManagedSqlServerRecoverableSqlPools =
-                new WorkspaceManagedSqlServerRecoverableSqlPoolsImpl(
-                    clientObject.getWorkspaceManagedSqlServerRecoverableSqlPools(), this);
+            this.workspaceManagedSqlServerRecoverableSqlPools = new WorkspaceManagedSqlServerRecoverableSqlPoolsImpl(
+                clientObject.getWorkspaceManagedSqlServerRecoverableSqlPools(), this);
         }
         return workspaceManagedSqlServerRecoverableSqlPools;
     }
@@ -1154,8 +1131,8 @@ public final class SynapseManager {
     public WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings
         workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings() {
         if (this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings == null) {
-            this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings =
-                new WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsImpl(
+            this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings
+                = new WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsImpl(
                     clientObject.getWorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings(), this);
         }
         return workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
@@ -1204,9 +1181,8 @@ public final class SynapseManager {
      */
     public WorkspaceManagedIdentitySqlControlSettings workspaceManagedIdentitySqlControlSettings() {
         if (this.workspaceManagedIdentitySqlControlSettings == null) {
-            this.workspaceManagedIdentitySqlControlSettings =
-                new WorkspaceManagedIdentitySqlControlSettingsImpl(
-                    clientObject.getWorkspaceManagedIdentitySqlControlSettings(), this);
+            this.workspaceManagedIdentitySqlControlSettings = new WorkspaceManagedIdentitySqlControlSettingsImpl(
+                clientObject.getWorkspaceManagedIdentitySqlControlSettings(), this);
         }
         return workspaceManagedIdentitySqlControlSettings;
     }
@@ -1218,8 +1194,8 @@ public final class SynapseManager {
      */
     public RestorableDroppedSqlPools restorableDroppedSqlPools() {
         if (this.restorableDroppedSqlPools == null) {
-            this.restorableDroppedSqlPools =
-                new RestorableDroppedSqlPoolsImpl(clientObject.getRestorableDroppedSqlPools(), this);
+            this.restorableDroppedSqlPools
+                = new RestorableDroppedSqlPoolsImpl(clientObject.getRestorableDroppedSqlPools(), this);
         }
         return restorableDroppedSqlPools;
     }
@@ -1279,9 +1255,8 @@ public final class SynapseManager {
      */
     public IntegrationRuntimeNodeIpAddressOperations integrationRuntimeNodeIpAddressOperations() {
         if (this.integrationRuntimeNodeIpAddressOperations == null) {
-            this.integrationRuntimeNodeIpAddressOperations =
-                new IntegrationRuntimeNodeIpAddressOperationsImpl(
-                    clientObject.getIntegrationRuntimeNodeIpAddressOperations(), this);
+            this.integrationRuntimeNodeIpAddressOperations = new IntegrationRuntimeNodeIpAddressOperationsImpl(
+                clientObject.getIntegrationRuntimeNodeIpAddressOperations(), this);
         }
         return integrationRuntimeNodeIpAddressOperations;
     }
@@ -1293,8 +1268,8 @@ public final class SynapseManager {
      */
     public IntegrationRuntimeObjectMetadatas integrationRuntimeObjectMetadatas() {
         if (this.integrationRuntimeObjectMetadatas == null) {
-            this.integrationRuntimeObjectMetadatas =
-                new IntegrationRuntimeObjectMetadatasImpl(clientObject.getIntegrationRuntimeObjectMetadatas(), this);
+            this.integrationRuntimeObjectMetadatas
+                = new IntegrationRuntimeObjectMetadatasImpl(clientObject.getIntegrationRuntimeObjectMetadatas(), this);
         }
         return integrationRuntimeObjectMetadatas;
     }
@@ -1306,8 +1281,8 @@ public final class SynapseManager {
      */
     public IntegrationRuntimeNodes integrationRuntimeNodes() {
         if (this.integrationRuntimeNodes == null) {
-            this.integrationRuntimeNodes =
-                new IntegrationRuntimeNodesImpl(clientObject.getIntegrationRuntimeNodes(), this);
+            this.integrationRuntimeNodes
+                = new IntegrationRuntimeNodesImpl(clientObject.getIntegrationRuntimeNodes(), this);
         }
         return integrationRuntimeNodes;
     }
@@ -1319,8 +1294,8 @@ public final class SynapseManager {
      */
     public IntegrationRuntimeCredentials integrationRuntimeCredentials() {
         if (this.integrationRuntimeCredentials == null) {
-            this.integrationRuntimeCredentials =
-                new IntegrationRuntimeCredentialsImpl(clientObject.getIntegrationRuntimeCredentials(), this);
+            this.integrationRuntimeCredentials
+                = new IntegrationRuntimeCredentialsImpl(clientObject.getIntegrationRuntimeCredentials(), this);
         }
         return integrationRuntimeCredentials;
     }
@@ -1332,8 +1307,8 @@ public final class SynapseManager {
      */
     public IntegrationRuntimeConnectionInfos integrationRuntimeConnectionInfos() {
         if (this.integrationRuntimeConnectionInfos == null) {
-            this.integrationRuntimeConnectionInfos =
-                new IntegrationRuntimeConnectionInfosImpl(clientObject.getIntegrationRuntimeConnectionInfos(), this);
+            this.integrationRuntimeConnectionInfos
+                = new IntegrationRuntimeConnectionInfosImpl(clientObject.getIntegrationRuntimeConnectionInfos(), this);
         }
         return integrationRuntimeConnectionInfos;
     }
@@ -1345,9 +1320,8 @@ public final class SynapseManager {
      */
     public IntegrationRuntimeAuthKeysOperations integrationRuntimeAuthKeysOperations() {
         if (this.integrationRuntimeAuthKeysOperations == null) {
-            this.integrationRuntimeAuthKeysOperations =
-                new IntegrationRuntimeAuthKeysOperationsImpl(
-                    clientObject.getIntegrationRuntimeAuthKeysOperations(), this);
+            this.integrationRuntimeAuthKeysOperations = new IntegrationRuntimeAuthKeysOperationsImpl(
+                clientObject.getIntegrationRuntimeAuthKeysOperations(), this);
         }
         return integrationRuntimeAuthKeysOperations;
     }
@@ -1359,8 +1333,8 @@ public final class SynapseManager {
      */
     public IntegrationRuntimeMonitoringDatas integrationRuntimeMonitoringDatas() {
         if (this.integrationRuntimeMonitoringDatas == null) {
-            this.integrationRuntimeMonitoringDatas =
-                new IntegrationRuntimeMonitoringDatasImpl(clientObject.getIntegrationRuntimeMonitoringDatas(), this);
+            this.integrationRuntimeMonitoringDatas
+                = new IntegrationRuntimeMonitoringDatasImpl(clientObject.getIntegrationRuntimeMonitoringDatas(), this);
         }
         return integrationRuntimeMonitoringDatas;
     }
@@ -1372,8 +1346,8 @@ public final class SynapseManager {
      */
     public IntegrationRuntimeStatusOperations integrationRuntimeStatusOperations() {
         if (this.integrationRuntimeStatusOperations == null) {
-            this.integrationRuntimeStatusOperations =
-                new IntegrationRuntimeStatusOperationsImpl(clientObject.getIntegrationRuntimeStatusOperations(), this);
+            this.integrationRuntimeStatusOperations = new IntegrationRuntimeStatusOperationsImpl(
+                clientObject.getIntegrationRuntimeStatusOperations(), this);
         }
         return integrationRuntimeStatusOperations;
     }
@@ -1409,8 +1383,8 @@ public final class SynapseManager {
      */
     public SparkConfigurationsOperations sparkConfigurationsOperations() {
         if (this.sparkConfigurationsOperations == null) {
-            this.sparkConfigurationsOperations =
-                new SparkConfigurationsOperationsImpl(clientObject.getSparkConfigurationsOperations(), this);
+            this.sparkConfigurationsOperations
+                = new SparkConfigurationsOperationsImpl(clientObject.getSparkConfigurationsOperations(), this);
         }
         return sparkConfigurationsOperations;
     }
@@ -1446,8 +1420,8 @@ public final class SynapseManager {
      */
     public KustoPoolChildResources kustoPoolChildResources() {
         if (this.kustoPoolChildResources == null) {
-            this.kustoPoolChildResources =
-                new KustoPoolChildResourcesImpl(clientObject.getKustoPoolChildResources(), this);
+            this.kustoPoolChildResources
+                = new KustoPoolChildResourcesImpl(clientObject.getKustoPoolChildResources(), this);
         }
         return kustoPoolChildResources;
     }
@@ -1460,9 +1434,8 @@ public final class SynapseManager {
      */
     public KustoPoolAttachedDatabaseConfigurations kustoPoolAttachedDatabaseConfigurations() {
         if (this.kustoPoolAttachedDatabaseConfigurations == null) {
-            this.kustoPoolAttachedDatabaseConfigurations =
-                new KustoPoolAttachedDatabaseConfigurationsImpl(
-                    clientObject.getKustoPoolAttachedDatabaseConfigurations(), this);
+            this.kustoPoolAttachedDatabaseConfigurations = new KustoPoolAttachedDatabaseConfigurationsImpl(
+                clientObject.getKustoPoolAttachedDatabaseConfigurations(), this);
         }
         return kustoPoolAttachedDatabaseConfigurations;
     }
@@ -1486,8 +1459,8 @@ public final class SynapseManager {
      */
     public KustoPoolDataConnections kustoPoolDataConnections() {
         if (this.kustoPoolDataConnections == null) {
-            this.kustoPoolDataConnections =
-                new KustoPoolDataConnectionsImpl(clientObject.getKustoPoolDataConnections(), this);
+            this.kustoPoolDataConnections
+                = new KustoPoolDataConnectionsImpl(clientObject.getKustoPoolDataConnections(), this);
         }
         return kustoPoolDataConnections;
     }
@@ -1499,8 +1472,8 @@ public final class SynapseManager {
      */
     public KustoPoolPrincipalAssignments kustoPoolPrincipalAssignments() {
         if (this.kustoPoolPrincipalAssignments == null) {
-            this.kustoPoolPrincipalAssignments =
-                new KustoPoolPrincipalAssignmentsImpl(clientObject.getKustoPoolPrincipalAssignments(), this);
+            this.kustoPoolPrincipalAssignments
+                = new KustoPoolPrincipalAssignmentsImpl(clientObject.getKustoPoolPrincipalAssignments(), this);
         }
         return kustoPoolPrincipalAssignments;
     }
@@ -1513,9 +1486,8 @@ public final class SynapseManager {
      */
     public KustoPoolDatabasePrincipalAssignments kustoPoolDatabasePrincipalAssignments() {
         if (this.kustoPoolDatabasePrincipalAssignments == null) {
-            this.kustoPoolDatabasePrincipalAssignments =
-                new KustoPoolDatabasePrincipalAssignmentsImpl(
-                    clientObject.getKustoPoolDatabasePrincipalAssignments(), this);
+            this.kustoPoolDatabasePrincipalAssignments = new KustoPoolDatabasePrincipalAssignmentsImpl(
+                clientObject.getKustoPoolDatabasePrincipalAssignments(), this);
         }
         return kustoPoolDatabasePrincipalAssignments;
     }
@@ -1527,9 +1499,8 @@ public final class SynapseManager {
      */
     public KustoPoolPrivateLinkResourcesOperations kustoPoolPrivateLinkResourcesOperations() {
         if (this.kustoPoolPrivateLinkResourcesOperations == null) {
-            this.kustoPoolPrivateLinkResourcesOperations =
-                new KustoPoolPrivateLinkResourcesOperationsImpl(
-                    clientObject.getKustoPoolPrivateLinkResourcesOperations(), this);
+            this.kustoPoolPrivateLinkResourcesOperations = new KustoPoolPrivateLinkResourcesOperationsImpl(
+                clientObject.getKustoPoolPrivateLinkResourcesOperations(), this);
         }
         return kustoPoolPrivateLinkResourcesOperations;
     }

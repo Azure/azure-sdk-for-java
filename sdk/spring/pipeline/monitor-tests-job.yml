@@ -5,7 +5,7 @@ parameters:
   BuildParallelization: '2C'
 
 jobs:
-  - job: 'monitor_test'
+  - job: 'monitor_test_${{ parameters.OSName }}'
     dependsOn: ${{ parameters.DependsOn }}
     condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
     strategy:

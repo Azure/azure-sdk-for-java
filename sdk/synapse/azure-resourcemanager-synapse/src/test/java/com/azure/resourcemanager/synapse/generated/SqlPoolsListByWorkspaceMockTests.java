@@ -33,37 +33,27 @@ public final class SqlPoolsListByWorkspaceMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"sku\":{\"tier\":\"pvozglqjbknlzc\",\"name\":\"tzeyowmndcovd\",\"capacity\":1784939466},\"properties\":{\"maxSizeBytes\":7398433099501562238,\"collation\":\"nhmkvfruwku\",\"sourceDatabaseId\":\"bcpftxudqyemebun\",\"recoverableDatabaseId\":\"cmcir\",\"provisioningState\":\"eemmjauwcgx\",\"status\":\"noh\",\"restorePointInTime\":\"2021-06-10T07:29:48Z\",\"createMode\":\"Restore\",\"creationDate\":\"2021-08-02T08:56:51Z\",\"storageAccountType\":\"GRS\",\"sourceDatabaseDeletionDate\":\"2021-03-02T16:05:57Z\"},\"location\":\"gudasmxubvfb\",\"tags\":{\"hpriylfm\":\"coce\",\"vhl\":\"ztraud\",\"tmojhvrztnvgyshq\":\"dculregp\"},\"id\":\"dgrtwmew\",\"name\":\"zlpykcfazzwjcay\",\"type\":\"rzrr\"}]}";
+        String responseStr
+            = "{\"value\":[{\"sku\":{\"tier\":\"pvozglqjbknlzc\",\"name\":\"tzeyowmndcovd\",\"capacity\":1784939466},\"properties\":{\"maxSizeBytes\":7398433099501562238,\"collation\":\"nhmkvfruwku\",\"sourceDatabaseId\":\"bcpftxudqyemebun\",\"recoverableDatabaseId\":\"cmcir\",\"provisioningState\":\"eemmjauwcgx\",\"status\":\"noh\",\"restorePointInTime\":\"2021-06-10T07:29:48Z\",\"createMode\":\"Restore\",\"creationDate\":\"2021-08-02T08:56:51Z\",\"storageAccountType\":\"GRS\",\"sourceDatabaseDeletionDate\":\"2021-03-02T16:05:57Z\"},\"location\":\"gudasmxubvfb\",\"tags\":{\"hpriylfm\":\"coce\",\"vhl\":\"ztraud\",\"tmojhvrztnvgyshq\":\"dculregp\"},\"id\":\"dgrtwmew\",\"name\":\"zlpykcfazzwjcay\",\"type\":\"rzrr\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SqlPool> response =
-            manager.sqlPools().listByWorkspace("ewfopazdazg", "sqgpewqcfu", com.azure.core.util.Context.NONE);
+        PagedIterable<SqlPool> response
+            = manager.sqlPools().listByWorkspace("ewfopazdazg", "sqgpewqcfu", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("gudasmxubvfb", response.iterator().next().location());
         Assertions.assertEquals("coce", response.iterator().next().tags().get("hpriylfm"));
@@ -75,13 +65,11 @@ public final class SqlPoolsListByWorkspaceMockTests {
         Assertions.assertEquals("bcpftxudqyemebun", response.iterator().next().sourceDatabaseId());
         Assertions.assertEquals("cmcir", response.iterator().next().recoverableDatabaseId());
         Assertions.assertEquals("eemmjauwcgx", response.iterator().next().provisioningState());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-06-10T07:29:48Z"), response.iterator().next().restorePointInTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T07:29:48Z"),
+            response.iterator().next().restorePointInTime());
         Assertions.assertEquals(CreateMode.RESTORE, response.iterator().next().createMode());
         Assertions.assertEquals(StorageAccountType.GRS, response.iterator().next().storageAccountType());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-03-02T16:05:57Z"), response.iterator().next().sourceDatabaseDeletionDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-02T16:05:57Z"),
+            response.iterator().next().sourceDatabaseDeletionDate());
     }
 }

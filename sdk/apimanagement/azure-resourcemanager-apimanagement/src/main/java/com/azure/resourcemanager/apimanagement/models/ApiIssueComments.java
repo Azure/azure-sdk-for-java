@@ -22,8 +22,8 @@ public interface ApiIssueComments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Issue Comment list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IssueCommentContract> listByService(
-        String resourceGroupName, String serviceName, String apiId, String issueId);
+    PagedIterable<IssueCommentContract> listByService(String resourceGroupName, String serviceName, String apiId,
+        String issueId);
 
     /**
      * Lists all comments for the Issue associated with the specified API.
@@ -44,15 +44,8 @@ public interface ApiIssueComments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Issue Comment list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IssueCommentContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<IssueCommentContract> listByService(String resourceGroupName, String serviceName, String apiId,
+        String issueId, String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the issue Comment for an API specified by its identifier.
@@ -68,8 +61,8 @@ public interface ApiIssueComments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the issue Comment for an API specified by its identifier.
      */
-    ApiIssueCommentsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, Context context);
+    ApiIssueCommentsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String issueId, String commentId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the issue Comment for an API specified by its identifier.
@@ -99,8 +92,8 @@ public interface ApiIssueComments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the issue Comment for an API specified by its identifier.
      */
-    Response<IssueCommentContract> getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, Context context);
+    Response<IssueCommentContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String issueId, String commentId, Context context);
 
     /**
      * Gets the details of the issue Comment for an API specified by its identifier.
@@ -115,8 +108,8 @@ public interface ApiIssueComments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the issue Comment for an API specified by its identifier.
      */
-    IssueCommentContract get(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String commentId);
+    IssueCommentContract get(String resourceGroupName, String serviceName, String apiId, String issueId,
+        String commentId);
 
     /**
      * Deletes the specified comment from an Issue.
@@ -134,14 +127,8 @@ public interface ApiIssueComments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String issueId,
-        String commentId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String issueId,
+        String commentId, String ifMatch, Context context);
 
     /**
      * Deletes the specified comment from an Issue.
@@ -157,8 +144,8 @@ public interface ApiIssueComments {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String serviceName, String apiId, String issueId, String commentId, String ifMatch);
+    void delete(String resourceGroupName, String serviceName, String apiId, String issueId, String commentId,
+        String ifMatch);
 
     /**
      * Gets the details of the issue Comment for an API specified by its identifier.

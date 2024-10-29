@@ -45,14 +45,8 @@ public interface UsersClient {
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UserInner> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<UserInner> list(String resourceGroupName, String labName, String expand, String filter, Integer top,
+        String orderby, Context context);
 
     /**
      * Get user profile.
@@ -68,8 +62,8 @@ public interface UsersClient {
      * @return user profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UserInner> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<UserInner> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context);
 
     /**
      * Get user profile.
@@ -98,8 +92,8 @@ public interface UsersClient {
      * @return the {@link SyncPoller} for polling of profile of a lab user.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String name, UserInner user);
+    SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(String resourceGroupName, String labName,
+        String name, UserInner user);
 
     /**
      * Create or replace an existing user profile. This operation can take a while to complete.
@@ -115,8 +109,8 @@ public interface UsersClient {
      * @return the {@link SyncPoller} for polling of profile of a lab user.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String name, UserInner user, Context context);
+    SyncPoller<PollResult<UserInner>, UserInner> beginCreateOrUpdate(String resourceGroupName, String labName,
+        String name, UserInner user, Context context);
 
     /**
      * Create or replace an existing user profile. This operation can take a while to complete.
@@ -176,8 +170,8 @@ public interface UsersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String labName, String name, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String name,
+        Context context);
 
     /**
      * Delete user profile. This operation can take a while to complete.
@@ -220,8 +214,8 @@ public interface UsersClient {
      * @return profile of a lab user along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<UserInner> updateWithResponse(
-        String resourceGroupName, String labName, String name, UserFragment user, Context context);
+    Response<UserInner> updateWithResponse(String resourceGroupName, String labName, String name, UserFragment user,
+        Context context);
 
     /**
      * Allows modifying tags of user profiles. All other properties will be ignored.

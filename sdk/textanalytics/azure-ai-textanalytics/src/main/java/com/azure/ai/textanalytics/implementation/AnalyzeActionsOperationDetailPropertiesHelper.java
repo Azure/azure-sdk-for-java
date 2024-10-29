@@ -13,7 +13,8 @@ import java.time.OffsetDateTime;
 public final class AnalyzeActionsOperationDetailPropertiesHelper {
     private static AnalyzeActionsOperationDetailAccessor accessor;
 
-    private AnalyzeActionsOperationDetailPropertiesHelper() { }
+    private AnalyzeActionsOperationDetailPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link AnalyzeActionsOperationDetail}
@@ -21,13 +22,21 @@ public final class AnalyzeActionsOperationDetailPropertiesHelper {
      */
     public interface AnalyzeActionsOperationDetailAccessor {
         void setOperationId(AnalyzeActionsOperationDetail operationDetail, String operationId);
+
         void setDisplayName(AnalyzeActionsOperationDetail operationDetail, String name);
+
         void setFailedCount(AnalyzeActionsOperationDetail operationDetail, int failedCount);
+
         void setInProgressCount(AnalyzeActionsOperationDetail operationDetail, int inProgressCount);
+
         void setSucceededCount(AnalyzeActionsOperationDetail operationDetail, int succeededCount);
+
         void setTotalCount(AnalyzeActionsOperationDetail operationDetail, int totalCount);
+
         void setExpiresAt(AnalyzeActionsOperationDetail operationDetail, OffsetDateTime expiresAt);
+
         void setCreatedAt(AnalyzeActionsOperationDetail operationDetail, OffsetDateTime createdAt);
+
         void setLastModifiedAt(AnalyzeActionsOperationDetail operationDetail, OffsetDateTime lastModifiedAt);
     }
 
@@ -36,8 +45,7 @@ public final class AnalyzeActionsOperationDetailPropertiesHelper {
      *
      * @param analyzeActionsOperationDetailAccessor The accessor.
      */
-    public static void setAccessor(
-        final AnalyzeActionsOperationDetailAccessor analyzeActionsOperationDetailAccessor) {
+    public static void setAccessor(final AnalyzeActionsOperationDetailAccessor analyzeActionsOperationDetailAccessor) {
         accessor = analyzeActionsOperationDetailAccessor;
     }
 

@@ -23,8 +23,8 @@ public final class MonitorsImpl implements Monitors {
 
     private final com.azure.resourcemanager.workloads.WorkloadsManager serviceManager;
 
-    public MonitorsImpl(
-        MonitorsClient innerClient, com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
+    public MonitorsImpl(MonitorsClient innerClient,
+        com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -49,15 +49,12 @@ public final class MonitorsImpl implements Monitors {
         return Utils.mapPage(inner, inner1 -> new MonitorImpl(inner1, this.manager()));
     }
 
-    public Response<Monitor> getByResourceGroupWithResponse(
-        String resourceGroupName, String monitorName, Context context) {
-        Response<MonitorInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, monitorName, context);
+    public Response<Monitor> getByResourceGroupWithResponse(String resourceGroupName, String monitorName,
+        Context context) {
+        Response<MonitorInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, monitorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MonitorImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -94,18 +91,13 @@ public final class MonitorsImpl implements Monitors {
     public Monitor getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, monitorName, Context.NONE).getValue();
     }
@@ -113,18 +105,13 @@ public final class MonitorsImpl implements Monitors {
     public Response<Monitor> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, monitorName, context);
     }
@@ -132,18 +119,13 @@ public final class MonitorsImpl implements Monitors {
     public OperationStatusResult deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         return this.delete(resourceGroupName, monitorName, Context.NONE);
     }
@@ -151,18 +133,13 @@ public final class MonitorsImpl implements Monitors {
     public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String monitorName = Utils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
         return this.delete(resourceGroupName, monitorName, context);
     }

@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation.models;
 
-
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
@@ -51,7 +50,7 @@ public final class RemoveParticipantOptions {
      *
      * @return the operationContext
      */
-    public String  getOperationContext() {
+    public String getOperationContext() {
         return operationContext;
     }
 

@@ -51,6 +51,7 @@
     <module>sdk/confluent</module>
     <module>sdk/connectedvmware</module>
     <module>sdk/consumption</module>
+    <module>sdk/containerorchestratorruntime</module>
     <module>sdk/containerregistry</module>
     <module>sdk/containerservicefleet</module>
     <module>sdk/contentsafety</module>

@@ -24,12 +24,8 @@ public interface IntegrationRuntimeNodeIpAddressOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP address of an integration runtime node along with {@link Response}.
      */
-    Response<IntegrationRuntimeNodeIpAddress> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String nodeName,
-        Context context);
+    Response<IntegrationRuntimeNodeIpAddress> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String nodeName, Context context);
 
     /**
      * Get integration runtime node IP address
@@ -45,6 +41,6 @@ public interface IntegrationRuntimeNodeIpAddressOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IP address of an integration runtime node.
      */
-    IntegrationRuntimeNodeIpAddress get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, String nodeName);
+    IntegrationRuntimeNodeIpAddress get(String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        String nodeName);
 }

@@ -26,13 +26,9 @@ public interface HostnameSslBinding extends HasInnerModel<HostnameSslState>, Chi
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithHostname<ParentT>,
-            DefinitionStages.WithCertificate<ParentT>,
-            DefinitionStages.WithKeyVault<ParentT>,
-            DefinitionStages.WithSslType<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithHostname<ParentT>,
+        DefinitionStages.WithCertificate<ParentT>, DefinitionStages.WithKeyVault<ParentT>,
+        DefinitionStages.WithSslType<ParentT>, DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of hostname SSL binding definition stages applicable as part of a web app creation. */
@@ -164,12 +160,9 @@ public interface HostnameSslBinding extends HasInnerModel<HostnameSslState>, Chi
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithHostname<ParentT>,
-            UpdateDefinitionStages.WithCertificate<ParentT>,
-            UpdateDefinitionStages.WithKeyVault<ParentT>,
-            UpdateDefinitionStages.WithSslType<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithHostname<ParentT>,
+        UpdateDefinitionStages.WithCertificate<ParentT>, UpdateDefinitionStages.WithKeyVault<ParentT>,
+        UpdateDefinitionStages.WithSslType<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of hostname SSL binding definition stages applicable as part of a web app update. */

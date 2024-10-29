@@ -82,11 +82,8 @@ public interface ServiceRunner {
     ServiceRunnerInner innerModel();
 
     /** The entirety of the ServiceRunner definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /** The ServiceRunner definition stages. */

@@ -41,8 +41,8 @@ public interface ExtensionsClient {
      * @return extension resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExtensionInner> createWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId, Context context);
+    Response<ExtensionInner> createWithResponse(String resourceGroupName, String farmBeatsResourceName,
+        String extensionId, Context context);
 
     /**
      * Get installed extension details by extension id.
@@ -71,8 +71,8 @@ public interface ExtensionsClient {
      * @return installed extension details by extension id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExtensionInner> getWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId, Context context);
+    Response<ExtensionInner> getWithResponse(String resourceGroupName, String farmBeatsResourceName, String extensionId,
+        Context context);
 
     /**
      * Upgrade to latest extension.
@@ -101,8 +101,8 @@ public interface ExtensionsClient {
      * @return extension resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExtensionInner> updateWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId, Context context);
+    Response<ExtensionInner> updateWithResponse(String resourceGroupName, String farmBeatsResourceName,
+        String extensionId, Context context);
 
     /**
      * Uninstall extension.
@@ -130,8 +130,8 @@ public interface ExtensionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String farmBeatsResourceName, String extensionId,
+        Context context);
 
     /**
      * Get installed extensions details.
@@ -162,12 +162,7 @@ public interface ExtensionsClient {
      * @return installed extensions details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExtensionInner> listByFarmBeats(
-        String resourceGroupName,
-        String farmBeatsResourceName,
-        List<String> extensionIds,
-        List<String> extensionCategories,
-        Integer maxPageSize,
-        String skipToken,
+    PagedIterable<ExtensionInner> listByFarmBeats(String resourceGroupName, String farmBeatsResourceName,
+        List<String> extensionIds, List<String> extensionCategories, Integer maxPageSize, String skipToken,
         Context context);
 }

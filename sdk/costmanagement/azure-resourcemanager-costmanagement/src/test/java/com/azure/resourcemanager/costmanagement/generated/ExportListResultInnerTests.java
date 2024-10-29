@@ -10,11 +10,9 @@ import com.azure.resourcemanager.costmanagement.fluent.models.ExportListResultIn
 public final class ExportListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExportListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"format\":\"Csv\",\"partitionData\":false,\"nextRunTimeEstimate\":\"2021-07-02T15:25:21Z\"},\"eTag\":\"fatpxllrxcyjmoa\",\"id\":\"su\",\"name\":\"arm\",\"type\":\"wdmjsjqbjhhyx\"},{\"properties\":{\"format\":\"Csv\",\"partitionData\":false,\"nextRunTimeEstimate\":\"2021-02-27T00:57:42Z\"},\"eTag\":\"kxkgymareqna\",\"id\":\"xqugjhkycubedd\",\"name\":\"ssofwqmzqa\",\"type\":\"krmnjijpxacqqud\"},{\"properties\":{\"format\":\"Csv\",\"partitionData\":true,\"nextRunTimeEstimate\":\"2021-12-06T14:29:26Z\"},\"eTag\":\"yvayffimrzr\",\"id\":\"uzqogsexnevf\",\"name\":\"nwnwme\",\"type\":\"zsyyceuzso\"}]}")
-                .toObject(ExportListResultInner.class);
+        ExportListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"format\":\"Csv\",\"partitionData\":false,\"nextRunTimeEstimate\":\"2021-07-02T15:25:21Z\"},\"eTag\":\"fatpxllrxcyjmoa\",\"id\":\"su\",\"name\":\"arm\",\"type\":\"wdmjsjqbjhhyx\"},{\"properties\":{\"format\":\"Csv\",\"partitionData\":false,\"nextRunTimeEstimate\":\"2021-02-27T00:57:42Z\"},\"eTag\":\"kxkgymareqna\",\"id\":\"xqugjhkycubedd\",\"name\":\"ssofwqmzqa\",\"type\":\"krmnjijpxacqqud\"},{\"properties\":{\"format\":\"Csv\",\"partitionData\":true,\"nextRunTimeEstimate\":\"2021-12-06T14:29:26Z\"},\"eTag\":\"yvayffimrzr\",\"id\":\"uzqogsexnevf\",\"name\":\"nwnwme\",\"type\":\"zsyyceuzso\"}]}")
+            .toObject(ExportListResultInner.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -40,8 +40,8 @@ public interface Groups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Group list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<GroupContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<GroupContract> listByService(String resourceGroupName, String serviceName, String filter, Integer top,
+        Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the group specified by its identifier.
@@ -55,8 +55,8 @@ public interface Groups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the group specified by its identifier.
      */
-    GroupsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String groupId, Context context);
+    GroupsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String groupId,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the group specified by its identifier.
@@ -82,8 +82,8 @@ public interface Groups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the group specified by its identifier.
      */
-    Response<GroupContract> getWithResponse(
-        String resourceGroupName, String serviceName, String groupId, Context context);
+    Response<GroupContract> getWithResponse(String resourceGroupName, String serviceName, String groupId,
+        Context context);
 
     /**
      * Gets the details of the group specified by its identifier.
@@ -112,8 +112,8 @@ public interface Groups {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String groupId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String groupId, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific group of the API Management service instance.

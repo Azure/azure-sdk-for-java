@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class ScanResultAsyncClient {
-    @Generated private final ScanResultsImpl serviceClient;
+    @Generated
+    private final ScanResultsImpl serviceClient;
 
     /**
      * Initializes an instance of ScanResultAsyncClient class.
@@ -85,8 +86,8 @@ public final class ScanResultAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> runScanWithResponse(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> runScanWithResponse(String dataSourceName, String scanName, String runId,
+        RequestOptions requestOptions) {
         return this.serviceClient.runScanWithResponseAsync(dataSourceName, scanName, runId, requestOptions);
     }
 
@@ -131,8 +132,8 @@ public final class ScanResultAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelScanWithResponse(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> cancelScanWithResponse(String dataSourceName, String scanName, String runId,
+        RequestOptions requestOptions) {
         return this.serviceClient.cancelScanWithResponseAsync(dataSourceName, scanName, runId, requestOptions);
     }
 
@@ -199,8 +200,8 @@ public final class ScanResultAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listScanHistory(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listScanHistory(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
         return this.serviceClient.listScanHistoryAsync(dataSourceName, scanName, requestOptions);
     }
 }

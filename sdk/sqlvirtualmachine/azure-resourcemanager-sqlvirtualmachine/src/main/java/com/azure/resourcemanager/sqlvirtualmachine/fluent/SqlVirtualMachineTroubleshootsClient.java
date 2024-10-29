@@ -26,8 +26,8 @@ public interface SqlVirtualMachineTroubleshootsClient {
      * @return the {@link SyncPoller} for polling of details required for SQL VM troubleshooting.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SqlVmTroubleshootingInner>, SqlVmTroubleshootingInner> beginTroubleshoot(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters);
+    SyncPoller<PollResult<SqlVmTroubleshootingInner>, SqlVmTroubleshootingInner>
+        beginTroubleshoot(String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters);
 
     /**
      * Starts SQL virtual machine troubleshooting.
@@ -59,8 +59,8 @@ public interface SqlVirtualMachineTroubleshootsClient {
      * @return details required for SQL VM troubleshooting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlVmTroubleshootingInner troubleshoot(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters);
+    SqlVmTroubleshootingInner troubleshoot(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVmTroubleshootingInner parameters);
 
     /**
      * Starts SQL virtual machine troubleshooting.
@@ -76,6 +76,6 @@ public interface SqlVirtualMachineTroubleshootsClient {
      * @return details required for SQL VM troubleshooting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlVmTroubleshootingInner troubleshoot(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters, Context context);
+    SqlVmTroubleshootingInner troubleshoot(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVmTroubleshootingInner parameters, Context context);
 }

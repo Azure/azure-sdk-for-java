@@ -29,7 +29,7 @@ public class HttpResponse<T> implements Response<T> {
 
             @Override
             public HttpResponse<?> setBodyDeserializer(HttpResponse<?> httpResponse,
-                                                       Function<BinaryData, Object> bodyDeserializer) {
+                Function<BinaryData, Object> bodyDeserializer) {
                 return httpResponse.setBodyDeserializer(bodyDeserializer);
             }
         });

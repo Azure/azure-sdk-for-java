@@ -28,8 +28,8 @@ public interface NetworkStatusClient {
      *     the Cloud Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<NetworkStatusContractByLocationInner>> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<List<NetworkStatusContractByLocationInner>> listByServiceWithResponse(String resourceGroupName,
+        String serviceName, Context context);
 
     /**
      * Gets the Connectivity Status to the external resources on which the Api Management service depends from inside
@@ -62,8 +62,8 @@ public interface NetworkStatusClient {
      *     the Cloud Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkStatusContractInner> listByLocationWithResponse(
-        String resourceGroupName, String serviceName, String locationName, Context context);
+    Response<NetworkStatusContractInner> listByLocationWithResponse(String resourceGroupName, String serviceName,
+        String locationName, Context context);
 
     /**
      * Gets the Connectivity Status to the external resources on which the Api Management service depends from inside

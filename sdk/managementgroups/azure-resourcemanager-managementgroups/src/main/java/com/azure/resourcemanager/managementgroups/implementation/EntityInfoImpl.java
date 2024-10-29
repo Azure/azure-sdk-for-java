@@ -16,8 +16,7 @@ public final class EntityInfoImpl implements EntityInfo {
 
     private final com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager;
 
-    EntityInfoImpl(
-        EntityInfoInner innerObject,
+    EntityInfoImpl(EntityInfoInner innerObject,
         com.azure.resourcemanager.managementgroups.ManagementGroupsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

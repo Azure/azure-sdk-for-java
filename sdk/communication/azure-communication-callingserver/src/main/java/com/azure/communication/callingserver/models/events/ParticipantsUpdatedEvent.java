@@ -60,8 +60,8 @@ public final class ParticipantsUpdatedEvent extends CallAutomationEventBase {
                 }
 
                 if ("participants".equals(fieldName)) {
-                    event.participants = reader.readArray(r ->
-                        CommunicationIdentifierConverter.convert(CommunicationIdentifierModel.fromJson(r)));
+                    event.participants = reader.readArray(
+                        r -> CommunicationIdentifierConverter.convert(CommunicationIdentifierModel.fromJson(r)));
                 } else {
                     reader.skipChildren();
                 }

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SensitivityLabelUpdateInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SensitivityLabelUpdateInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"op\":\"remove\",\"schema\":\"qouicybxarzgsz\",\"table\":\"foxciq\",\"column\":\"p\",\"sensitivityLabel\":{\"managedBy\":\"mciodhkhazxkhn\",\"id\":\"bon\",\"name\":\"wntoegokdwbwh\",\"type\":\"szzcmrvexztv\"}},\"id\":\"t\",\"name\":\"gsfraoyzkoow\",\"type\":\"lmnguxaw\"}")
-                .toObject(SensitivityLabelUpdateInner.class);
+        SensitivityLabelUpdateInner model = BinaryData.fromString(
+            "{\"properties\":{\"op\":\"remove\",\"schema\":\"qouicybxarzgsz\",\"table\":\"foxciq\",\"column\":\"p\",\"sensitivityLabel\":{\"managedBy\":\"mciodhkhazxkhn\",\"id\":\"bon\",\"name\":\"wntoegokdwbwh\",\"type\":\"szzcmrvexztv\"}},\"id\":\"t\",\"name\":\"gsfraoyzkoow\",\"type\":\"lmnguxaw\"}")
+            .toObject(SensitivityLabelUpdateInner.class);
         Assertions.assertEquals(SensitivityLabelUpdateKind.REMOVE, model.op());
         Assertions.assertEquals("qouicybxarzgsz", model.schema());
         Assertions.assertEquals("foxciq", model.table());
@@ -26,13 +24,11 @@ public final class SensitivityLabelUpdateInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SensitivityLabelUpdateInner model =
-            new SensitivityLabelUpdateInner()
-                .withOp(SensitivityLabelUpdateKind.REMOVE)
-                .withSchema("qouicybxarzgsz")
-                .withTable("foxciq")
-                .withColumn("p")
-                .withSensitivityLabel(new SensitivityLabelInner());
+        SensitivityLabelUpdateInner model = new SensitivityLabelUpdateInner().withOp(SensitivityLabelUpdateKind.REMOVE)
+            .withSchema("qouicybxarzgsz")
+            .withTable("foxciq")
+            .withColumn("p")
+            .withSensitivityLabel(new SensitivityLabelInner());
         model = BinaryData.fromObject(model).toObject(SensitivityLabelUpdateInner.class);
         Assertions.assertEquals(SensitivityLabelUpdateKind.REMOVE, model.op());
         Assertions.assertEquals("qouicybxarzgsz", model.schema());

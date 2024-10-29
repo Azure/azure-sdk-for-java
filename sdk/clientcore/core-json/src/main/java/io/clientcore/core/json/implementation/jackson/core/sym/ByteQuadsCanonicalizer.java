@@ -28,8 +28,7 @@ import io.clientcore.core.json.implementation.jackson.core.util.InternCache;
  * @since 2.6
  */
 @SuppressWarnings("fallthrough")
-public final class ByteQuadsCanonicalizer
-{
+public final class ByteQuadsCanonicalizer {
     /**
      * Initial size of the primary hash area. Each entry consumes 4 ints (16 bytes),
      * and secondary area is same as primary; so default size will use 2kB of memory
@@ -37,7 +36,7 @@ public final class ByteQuadsCanonicalizer
      * themselves).
      */
     private static final int DEFAULT_T_SIZE = 64;
-//    private static final int DEFAULT_T_SIZE = 256;
+    //    private static final int DEFAULT_T_SIZE = 256;
 
     /**
      * Let's not expand symbol tables past some maximum size;
@@ -225,8 +224,7 @@ public final class ByteQuadsCanonicalizer
      * @param seed Random seed valued used to make it more difficult to cause
      *   collisions (used for collision-based DoS attacks).
      */
-    private ByteQuadsCanonicalizer(int sz, int seed)
-    {
+    private ByteQuadsCanonicalizer(int sz, int seed) {
         // Settings to distinguish parent table: no parent
         _parent = null;
         _count = 0;
@@ -256,10 +254,8 @@ public final class ByteQuadsCanonicalizer
     /**
      * Constructor used when creating a child instance
      */
-    private ByteQuadsCanonicalizer(ByteQuadsCanonicalizer parent, int seed,
-            TableInfo state,
-            boolean intern, boolean failOnDoS)
-    {
+    private ByteQuadsCanonicalizer(ByteQuadsCanonicalizer parent, int seed, TableInfo state, boolean intern,
+        boolean failOnDoS) {
         _parent = parent;
         _seed = seed;
         _intern = intern;
@@ -292,8 +288,7 @@ public final class ByteQuadsCanonicalizer
      *
      * @since 2.13
      */
-    private ByteQuadsCanonicalizer(TableInfo state)
-    {
+    private ByteQuadsCanonicalizer(TableInfo state) {
         _parent = null;
         _seed = 0;
         _intern = false;
@@ -361,10 +356,9 @@ public final class ByteQuadsCanonicalizer
      * @return Actual canonicalizer instance that can be used by a parser
      */
     public ByteQuadsCanonicalizer makeChild(int flags) {
-        return new ByteQuadsCanonicalizer(this, _seed,
-                _tableInfo.get(),
-                JsonFactory.Feature.INTERN_FIELD_NAMES.enabledIn(flags),
-                JsonFactory.Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW.enabledIn(flags));
+        return new ByteQuadsCanonicalizer(this, _seed, _tableInfo.get(),
+            JsonFactory.Feature.INTERN_FIELD_NAMES.enabledIn(flags),
+            JsonFactory.Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW.enabledIn(flags));
     }
 
     /**
@@ -382,10 +376,9 @@ public final class ByteQuadsCanonicalizer
     public ByteQuadsCanonicalizer makeChildOrPlaceholder(int flags) {
         if (JsonFactory.Feature.CANONICALIZE_FIELD_NAMES.enabledIn(flags)) {
             // inlined "makeChild()"
-            return new ByteQuadsCanonicalizer(this, _seed,
-                    _tableInfo.get(),
-                    JsonFactory.Feature.INTERN_FIELD_NAMES.enabledIn(flags),
-                    JsonFactory.Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW.enabledIn(flags));
+            return new ByteQuadsCanonicalizer(this, _seed, _tableInfo.get(),
+                JsonFactory.Feature.INTERN_FIELD_NAMES.enabledIn(flags),
+                JsonFactory.Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW.enabledIn(flags));
         }
         return new ByteQuadsCanonicalizer(_tableInfo.get());
     }
@@ -396,8 +389,7 @@ public final class ByteQuadsCanonicalizer
      * safely and efficiently, and without calling code having to know about parent
      * information.
      */
-    public void release()
-    {
+    public void release() {
         // we will try to merge if child table has new entries
         // 28-Jul-2019, tatu: From [core#548]: do not share if immediate rehash needed
         if ((_parent != null) && maybeDirty()) {
@@ -408,8 +400,7 @@ public final class ByteQuadsCanonicalizer
         }
     }
 
-    private void mergeChild(TableInfo childState)
-    {
+    private void mergeChild(TableInfo childState) {
         final int childCount = childState.count;
         TableInfo currState = _tableInfo.get();
 
@@ -439,8 +430,7 @@ public final class ByteQuadsCanonicalizer
     /**
      * @return Number of symbol entries contained by this canonicalizer instance
      */
-    public int size()
-    {
+    public int size() {
         if (_tableInfo != null) { // root table
             return _tableInfo.get().count;
         }
@@ -451,7 +441,9 @@ public final class ByteQuadsCanonicalizer
     /**
      * @return number of primary slots table has currently
      */
-    public int bucketCount() { return _hashSize; }
+    public int bucketCount() {
+        return _hashSize;
+    }
 
     /**
      * Method called to check to quickly see if a child symbol table
@@ -460,9 +452,13 @@ public final class ByteQuadsCanonicalizer
      *
      * @return Whether main hash area has been modified
      */
-    public boolean maybeDirty() { return !_hashShared; }
+    public boolean maybeDirty() {
+        return !_hashShared;
+    }
 
-    public int hashSeed() { return _seed; }
+    public int hashSeed() {
+        return _seed;
+    }
 
     /**
      * @return True for "real", canonicalizing child tables; false for
@@ -482,8 +478,7 @@ public final class ByteQuadsCanonicalizer
      *
      * @return Number of entries in the primary hash area
      */
-    public int primaryCount()
-    {
+    public int primaryCount() {
         int count = 0;
         for (int offset = 3, end = _secondaryStart; offset < end; offset += 4) {
             if (_hashArea[offset] != 0) {
@@ -538,8 +533,7 @@ public final class ByteQuadsCanonicalizer
         return (_spilloverEnd - _spilloverStart()) >> 2;
     }
 
-    public int totalCount()
-    {
+    public int totalCount() {
         int count = 0;
         for (int offset = 3, end = (_hashSize << 3); offset < end; offset += 4) {
             if (_hashArea[offset] != 0) {
@@ -557,8 +551,7 @@ public final class ByteQuadsCanonicalizer
         int spill = spilloverCount();
         int total = totalCount();
         return String.format("[%s: size=%d, hashSize=%d, %d/%d/%d/%d pri/sec/ter/spill (=%s), total:%d]",
-                getClass().getName(), _count, _hashSize,
-                pri, sec, tert, spill, (pri+sec+tert+spill), total);
+            getClass().getName(), _count, _hashSize, pri, sec, tert, spill, (pri + sec + tert + spill), total);
     }
 
     /*
@@ -567,13 +560,12 @@ public final class ByteQuadsCanonicalizer
     /**********************************************************
      */
 
-    public String findName(int q1)
-    {
+    public String findName(int q1) {
         int offset = _calcOffset(calcHash(q1));
         // first: primary match?
         final int[] hashArea = _hashArea;
 
-        int len = hashArea[offset+3];
+        int len = hashArea[offset + 3];
 
         if (len == 1) {
             if (hashArea[offset] == q1) {
@@ -585,7 +577,7 @@ public final class ByteQuadsCanonicalizer
         // secondary? single slot shared by N/2 primaries
         int offset2 = _secondaryStart + ((offset >> 3) << 2);
 
-        len = hashArea[offset2+3];
+        len = hashArea[offset2 + 3];
 
         if (len == 1) {
             if (hashArea[offset2] == q1) {
@@ -599,16 +591,15 @@ public final class ByteQuadsCanonicalizer
         return _findSecondary(offset, q1);
     }
 
-    public String findName(int q1, int q2)
-    {
+    public String findName(int q1, int q2) {
         int offset = _calcOffset(calcHash(q1, q2));
 
         final int[] hashArea = _hashArea;
 
-        int len = hashArea[offset+3];
+        int len = hashArea[offset + 3];
 
         if (len == 2) {
-            if ((q1 == hashArea[offset]) && (q2 == hashArea[offset+1])) {
+            if ((q1 == hashArea[offset]) && (q2 == hashArea[offset + 1])) {
                 return _names[offset >> 2];
             }
         } else if (len == 0) { // empty slot; unlikely but avoid further lookups if so
@@ -617,10 +608,10 @@ public final class ByteQuadsCanonicalizer
         // secondary?
         int offset2 = _secondaryStart + ((offset >> 3) << 2);
 
-        len = hashArea[offset2+3];
+        len = hashArea[offset2 + 3];
 
         if (len == 2) {
-            if ((q1 == hashArea[offset2]) && (q2 == hashArea[offset2+1])) {
+            if ((q1 == hashArea[offset2]) && (q2 == hashArea[offset2 + 1])) {
                 return _names[offset2 >> 2];
             }
         } else if (len == 0) { // empty slot? Short-circuit if no more spillovers
@@ -629,14 +620,13 @@ public final class ByteQuadsCanonicalizer
         return _findSecondary(offset, q1, q2);
     }
 
-    public String findName(int q1, int q2, int q3)
-    {
+    public String findName(int q1, int q2, int q3) {
         int offset = _calcOffset(calcHash(q1, q2, q3));
         final int[] hashArea = _hashArea;
-        int len = hashArea[offset+3];
+        int len = hashArea[offset + 3];
 
         if (len == 3) {
-            if ((q1 == hashArea[offset]) && (hashArea[offset+1] == q2) && (hashArea[offset+2] == q3)) {
+            if ((q1 == hashArea[offset]) && (hashArea[offset + 1] == q2) && (hashArea[offset + 2] == q3)) {
                 return _names[offset >> 2];
             }
         } else if (len == 0) { // empty slot; unlikely but avoid further lookups if so
@@ -645,10 +635,10 @@ public final class ByteQuadsCanonicalizer
         // secondary?
         int offset2 = _secondaryStart + ((offset >> 3) << 2);
 
-        len = hashArea[offset2+3];
+        len = hashArea[offset2 + 3];
 
         if (len == 3) {
-            if ((q1 == hashArea[offset2]) && (hashArea[offset2+1] == q2) && (hashArea[offset2+2] == q3)) {
+            if ((q1 == hashArea[offset2]) && (hashArea[offset2 + 1] == q2) && (hashArea[offset2 + 2] == q3)) {
                 return _names[offset2 >> 2];
             }
         } else if (len == 0) { // empty slot? Short-circuit if no more spillovers
@@ -657,22 +647,24 @@ public final class ByteQuadsCanonicalizer
         return _findSecondary(offset, q1, q2, q3);
     }
 
-    public String findName(int[] q, int qlen)
-    {
+    public String findName(int[] q, int qlen) {
         /* This version differs significantly, because longer names do not fit within cell.
          * Rather, they contain hash in main slot, and offset+length to extension area
          * that contains actual quads.
          */
         if (qlen < 4) { // another sanity check
             switch (qlen) {
-            case 3:
-                return findName(q[0], q[1], q[2]);
-            case 2:
-                return findName(q[0], q[1]);
-            case 1:
-                return findName(q[0]);
-            default: // if 0 ever passed
-                return "";
+                case 3:
+                    return findName(q[0], q[1], q[2]);
+
+                case 2:
+                    return findName(q[0], q[1]);
+
+                case 1:
+                    return findName(q[0]);
+
+                default: // if 0 ever passed
+                    return "";
             }
         }
         final int hash = calcHash(q, qlen);
@@ -680,11 +672,11 @@ public final class ByteQuadsCanonicalizer
 
         final int[] hashArea = _hashArea;
 
-        final int len = hashArea[offset+3];
+        final int len = hashArea[offset + 3];
 
         if ((hash == hashArea[offset]) && (len == qlen)) {
             // probable but not guaranteed: verify
-            if (_verifyLongName(q, qlen, hashArea[offset+1])) {
+            if (_verifyLongName(q, qlen, hashArea[offset + 1])) {
                 return _names[offset >> 2];
             }
         }
@@ -694,21 +686,20 @@ public final class ByteQuadsCanonicalizer
         // secondary?
         int offset2 = _secondaryStart + ((offset >> 3) << 2);
 
-        final int len2 = hashArea[offset2+3];
+        final int len2 = hashArea[offset2 + 3];
         if ((hash == hashArea[offset2]) && (len2 == qlen)) {
-            if (_verifyLongName(q, qlen, hashArea[offset2+1])) {
+            if (_verifyLongName(q, qlen, hashArea[offset2 + 1])) {
                 return _names[offset2 >> 2];
             }
         }
         return _findSecondary(offset, hash, q, qlen);
     }
 
-    private final int _calcOffset(int hash)
-    {
+    private final int _calcOffset(int hash) {
         // NOTE: simple for initial impl, but we may want to interleave it a bit
         // in near future
         // So: first, hash into primary hash index
-        int ix = hash & (_hashSize-1);
+        int ix = hash & (_hashSize - 1);
         // keeping in mind we have 4 ints per entry
         return (ix << 2);
     }
@@ -719,8 +710,7 @@ public final class ByteQuadsCanonicalizer
     /**********************************************************
      */
 
-    private String _findSecondary(int origOffset, int q1)
-    {
+    private String _findSecondary(int origOffset, int q1) {
         // tertiary area division is dynamic. First; its size is N/4 compared to
         // primary hash size; and offsets are for 4 int slots. So to get to logical
         // index would shift by 4. But! Tertiary area is further split into buckets,
@@ -729,7 +719,7 @@ public final class ByteQuadsCanonicalizer
         final int[] hashArea = _hashArea;
         final int bucketSize = (1 << _tertiaryShift);
         for (int end = offset + bucketSize; offset < end; offset += 4) {
-            int len = hashArea[offset+3];
+            int len = hashArea[offset + 3];
             if ((q1 == hashArea[offset]) && (1 == len)) {
                 return _names[offset >> 2];
             }
@@ -741,22 +731,21 @@ public final class ByteQuadsCanonicalizer
         // shared spillover starts at 7/8 of the main hash area
         // (which is sized at 2 * _hashSize), so:
         for (offset = _spilloverStart(); offset < _spilloverEnd; offset += 4) {
-            if ((q1 == hashArea[offset]) && (1 == hashArea[offset+3])) {
+            if ((q1 == hashArea[offset]) && (1 == hashArea[offset + 3])) {
                 return _names[offset >> 2];
             }
         }
         return null;
     }
 
-    private String _findSecondary(int origOffset, int q1, int q2)
-    {
+    private String _findSecondary(int origOffset, int q1, int q2) {
         int offset = _tertiaryStart + ((origOffset >> (_tertiaryShift + 2)) << _tertiaryShift);
         final int[] hashArea = _hashArea;
 
         final int bucketSize = (1 << _tertiaryShift);
         for (int end = offset + bucketSize; offset < end; offset += 4) {
-            int len = hashArea[offset+3];
-            if ((q1 == hashArea[offset]) && (q2 == hashArea[offset+1]) && (2 == len)) {
+            int len = hashArea[offset + 3];
+            if ((q1 == hashArea[offset]) && (q2 == hashArea[offset + 1]) && (2 == len)) {
                 return _names[offset >> 2];
             }
             if (len == 0) {
@@ -764,22 +753,24 @@ public final class ByteQuadsCanonicalizer
             }
         }
         for (offset = _spilloverStart(); offset < _spilloverEnd; offset += 4) {
-            if ((q1 == hashArea[offset]) && (q2 == hashArea[offset+1]) && (2 == hashArea[offset+3])) {
+            if ((q1 == hashArea[offset]) && (q2 == hashArea[offset + 1]) && (2 == hashArea[offset + 3])) {
                 return _names[offset >> 2];
             }
         }
         return null;
     }
 
-    private String _findSecondary(int origOffset, int q1, int q2, int q3)
-    {
+    private String _findSecondary(int origOffset, int q1, int q2, int q3) {
         int offset = _tertiaryStart + ((origOffset >> (_tertiaryShift + 2)) << _tertiaryShift);
         final int[] hashArea = _hashArea;
 
         final int bucketSize = (1 << _tertiaryShift);
         for (int end = offset + bucketSize; offset < end; offset += 4) {
-            int len = hashArea[offset+3];
-            if ((q1 == hashArea[offset]) && (q2 == hashArea[offset+1]) && (q3 == hashArea[offset+2]) && (3 == len)) {
+            int len = hashArea[offset + 3];
+            if ((q1 == hashArea[offset])
+                && (q2 == hashArea[offset + 1])
+                && (q3 == hashArea[offset + 2])
+                && (3 == len)) {
                 return _names[offset >> 2];
             }
             if (len == 0) {
@@ -787,24 +778,25 @@ public final class ByteQuadsCanonicalizer
             }
         }
         for (offset = _spilloverStart(); offset < _spilloverEnd; offset += 4) {
-            if ((q1 == hashArea[offset]) && (q2 == hashArea[offset+1]) && (q3 == hashArea[offset+2])
-                    && (3 == hashArea[offset+3])) {
+            if ((q1 == hashArea[offset])
+                && (q2 == hashArea[offset + 1])
+                && (q3 == hashArea[offset + 2])
+                && (3 == hashArea[offset + 3])) {
                 return _names[offset >> 2];
             }
         }
         return null;
     }
 
-    private String _findSecondary(int origOffset, int hash, int[] q, int qlen)
-    {
+    private String _findSecondary(int origOffset, int hash, int[] q, int qlen) {
         int offset = _tertiaryStart + ((origOffset >> (_tertiaryShift + 2)) << _tertiaryShift);
         final int[] hashArea = _hashArea;
 
         final int bucketSize = (1 << _tertiaryShift);
         for (int end = offset + bucketSize; offset < end; offset += 4) {
-            int len = hashArea[offset+3];
+            int len = hashArea[offset + 3];
             if ((hash == hashArea[offset]) && (qlen == len)) {
-                if (_verifyLongName(q, qlen, hashArea[offset+1])) {
+                if (_verifyLongName(q, qlen, hashArea[offset + 1])) {
                     return _names[offset >> 2];
                 }
             }
@@ -813,8 +805,8 @@ public final class ByteQuadsCanonicalizer
             }
         }
         for (offset = _spilloverStart(); offset < _spilloverEnd; offset += 4) {
-            if ((hash == hashArea[offset]) && (qlen == hashArea[offset+3])) {
-                if (_verifyLongName(q, qlen, hashArea[offset+1])) {
+            if ((hash == hashArea[offset]) && (qlen == hashArea[offset + 3])) {
+                if (_verifyLongName(q, qlen, hashArea[offset + 1])) {
                     return _names[offset >> 2];
                 }
             }
@@ -822,34 +814,41 @@ public final class ByteQuadsCanonicalizer
         return null;
     }
 
-    private boolean _verifyLongName(int[] q, int qlen, int spillOffset)
-    {
+    private boolean _verifyLongName(int[] q, int qlen, int spillOffset) {
         final int[] hashArea = _hashArea;
         // spillOffset assumed to be physical index right into quad string
         int ix = 0;
 
         switch (qlen) {
-        default:
-            return _verifyLongName2(q, qlen, spillOffset);
-        case 8:
-            if (q[ix++] != hashArea[spillOffset++]) return false;
-        case 7:
-            if (q[ix++] != hashArea[spillOffset++]) return false;
-        case 6:
-            if (q[ix++] != hashArea[spillOffset++]) return false;
-        case 5:
-            if (q[ix++] != hashArea[spillOffset++]) return false;
-        case 4: // always at least 4
-            if (q[ix++] != hashArea[spillOffset++]) return false;
-            if (q[ix++] != hashArea[spillOffset++]) return false;
-            if (q[ix++] != hashArea[spillOffset++]) return false;
-            if (q[ix++] != hashArea[spillOffset++]) return false;
+            default:
+                return _verifyLongName2(q, qlen, spillOffset);
+
+            case 8:
+                if (q[ix++] != hashArea[spillOffset++])
+                    return false;
+            case 7:
+                if (q[ix++] != hashArea[spillOffset++])
+                    return false;
+            case 6:
+                if (q[ix++] != hashArea[spillOffset++])
+                    return false;
+            case 5:
+                if (q[ix++] != hashArea[spillOffset++])
+                    return false;
+            case 4: // always at least 4
+                if (q[ix++] != hashArea[spillOffset++])
+                    return false;
+                if (q[ix++] != hashArea[spillOffset++])
+                    return false;
+                if (q[ix++] != hashArea[spillOffset++])
+                    return false;
+                if (q[ix++] != hashArea[spillOffset++])
+                    return false;
         }
         return true;
     }
 
-    private boolean _verifyLongName2(int[] q, int qlen, int spillOffset)
-    {
+    private boolean _verifyLongName2(int[] q, int qlen, int spillOffset) {
         int ix = 0;
         do {
             if (q[ix++] != _hashArea[spillOffset++]) {
@@ -872,7 +871,7 @@ public final class ByteQuadsCanonicalizer
         }
         int offset = _findOffsetForAdd(calcHash(q1));
         _hashArea[offset] = q1;
-        _hashArea[offset+3] = 1;
+        _hashArea[offset + 3] = 1;
         _names[offset >> 2] = name;
         ++_count;
         return name;
@@ -887,12 +886,12 @@ public final class ByteQuadsCanonicalizer
         // 20-Mar-2021, tatu: For some reason, pre-2.13 there was logic
         //    to support "only one quad" case. Not sure why, does not make sense;
         //    removed from 2.13.0.
-//        int hash = (q2 == 0) ? calcHash(q1) : calcHash(q1, q2);
+        //        int hash = (q2 == 0) ? calcHash(q1) : calcHash(q1, q2);
         final int hash = calcHash(q1, q2);
         final int offset = _findOffsetForAdd(hash);
         _hashArea[offset] = q1;
-        _hashArea[offset+1] = q2;
-        _hashArea[offset+3] = 2;
+        _hashArea[offset + 1] = q2;
+        _hashArea[offset + 3] = 2;
         _names[offset >> 2] = name;
         ++_count;
         return name;
@@ -905,16 +904,15 @@ public final class ByteQuadsCanonicalizer
         }
         int offset = _findOffsetForAdd(calcHash(q1, q2, q3));
         _hashArea[offset] = q1;
-        _hashArea[offset+1] = q2;
-        _hashArea[offset+2] = q3;
-        _hashArea[offset+3] = 3;
+        _hashArea[offset + 1] = q2;
+        _hashArea[offset + 2] = q3;
+        _hashArea[offset + 3] = 3;
         _names[offset >> 2] = name;
         ++_count;
         return name;
     }
 
-    public String addName(String name, int[] q, int qlen)
-    {
+    public String addName(String name, int[] q, int qlen) {
         _verifySharing();
         if (_intern) {
             name = InternCache.instance.intern(name);
@@ -922,38 +920,38 @@ public final class ByteQuadsCanonicalizer
         int offset;
 
         switch (qlen) {
-        case 1:
-        {
+            case 1: {
                 offset = _findOffsetForAdd(calcHash(q[0]));
                 _hashArea[offset] = q[0];
-                _hashArea[offset+3] = 1;
+                _hashArea[offset + 3] = 1;
             }
-            break;
-        case 2:
-            {
+                break;
+
+            case 2: {
                 offset = _findOffsetForAdd(calcHash(q[0], q[1]));
                 _hashArea[offset] = q[0];
-                _hashArea[offset+1] = q[1];
-                _hashArea[offset+3] = 2;
+                _hashArea[offset + 1] = q[1];
+                _hashArea[offset + 3] = 2;
             }
-            break;
-        case 3:
-            {
+                break;
+
+            case 3: {
                 offset = _findOffsetForAdd(calcHash(q[0], q[1], q[2]));
                 _hashArea[offset] = q[0];
-                _hashArea[offset+1] = q[1];
-                _hashArea[offset+2] = q[2];
-                _hashArea[offset+3] = 3;
+                _hashArea[offset + 1] = q[1];
+                _hashArea[offset + 2] = q[2];
+                _hashArea[offset + 3] = 3;
             }
-            break;
-        default:
-            final int hash = calcHash(q, qlen);
-            offset = _findOffsetForAdd(hash);
+                break;
 
-            _hashArea[offset] = hash;
-            int longStart = _appendLongName(q, qlen);
-            _hashArea[offset+1] = longStart;
-            _hashArea[offset+3] = qlen;
+            default:
+                final int hash = calcHash(q, qlen);
+                offset = _findOffsetForAdd(hash);
+
+                _hashArea[offset] = hash;
+                int longStart = _appendLongName(q, qlen);
+                _hashArea[offset + 1] = longStart;
+                _hashArea[offset + 3] = qlen;
         }
         // plus add the actual String
         _names[offset >> 2] = name;
@@ -963,8 +961,7 @@ public final class ByteQuadsCanonicalizer
         return name;
     }
 
-    private void _verifySharing()
-    {
+    private void _verifySharing() {
         if (_hashShared) {
             // 12-Mar-2021, tatu: prevent modifying of "placeholder" and
             //   parent tables
@@ -984,13 +981,12 @@ public final class ByteQuadsCanonicalizer
     /**
      * Method called to find the location within hash table to add a new symbol in.
      */
-    private int _findOffsetForAdd(int hash)
-    {
+    private int _findOffsetForAdd(int hash) {
         // first, check the primary: if slot found, no need for resize
         int offset = _calcOffset(hash);
         final int[] hashArea = _hashArea;
-        if (hashArea[offset+3] == 0) {
-//System.err.printf(" PRImary slot #%d, hash %X\n", (offset>>2), hash & 0x7F);
+        if (hashArea[offset + 3] == 0) {
+            //System.err.printf(" PRImary slot #%d, hash %X\n", (offset>>2), hash & 0x7F);
             return offset;
         }
 
@@ -1001,8 +997,8 @@ public final class ByteQuadsCanonicalizer
 
         // If not, proceed with secondary slot
         int offset2 = _secondaryStart + ((offset >> 3) << 2);
-        if (hashArea[offset2+3] == 0) {
-//System.err.printf(" SECondary slot #%d (start x%X), hash %X\n",(offset >> 3), _secondaryStart, (hash & 0x7F));
+        if (hashArea[offset2 + 3] == 0) {
+            //System.err.printf(" SECondary slot #%d (start x%X), hash %X\n",(offset >> 3), _secondaryStart, (hash & 0x7F));
             return offset2;
         }
         // if not, tertiary?
@@ -1010,8 +1006,8 @@ public final class ByteQuadsCanonicalizer
         offset2 = _tertiaryStart + ((offset >> (_tertiaryShift + 2)) << _tertiaryShift);
         final int bucketSize = (1 << _tertiaryShift);
         for (int end = offset2 + bucketSize; offset2 < end; offset2 += 4) {
-            if (hashArea[offset2+3] == 0) {
-//System.err.printf(" TERtiary slot x%X (from x%X, start x%X), hash %X.\n", offset2, ((offset >> (_tertiaryShift + 2)) << _tertiaryShift), _tertiaryStart, (hash & 0x7F));
+            if (hashArea[offset2 + 3] == 0) {
+                //System.err.printf(" TERtiary slot x%X (from x%X, start x%X), hash %X.\n", offset2, ((offset >> (_tertiaryShift + 2)) << _tertiaryShift), _tertiaryStart, (hash & 0x7F));
                 return offset2;
             }
         }
@@ -1020,7 +1016,7 @@ public final class ByteQuadsCanonicalizer
         offset = _spilloverEnd;
         _spilloverEnd += 4;
 
-//System.err.printf(" SPIll-over at x%X; start x%X; end x%X, hash %X\n", offset, _spilloverStart(), _hashArea.length, (hash & 0x7F));
+        //System.err.printf(" SPIll-over at x%X; start x%X; end x%X, hash %X\n", offset, _spilloverStart(), _hashArea.length, (hash & 0x7F));
 
         // one caveat: in the unlikely event if spill-over filling up,
         // check if that could be considered a DoS attack; handle appropriately
@@ -1039,25 +1035,24 @@ public final class ByteQuadsCanonicalizer
     }
 
     // @since 2.10
-    private int _resizeAndFindOffsetForAdd(int hash)
-    {
+    private int _resizeAndFindOffsetForAdd(int hash) {
         // First things first: we need to resize+rehash (or, if too big, nuke contents)
         rehash();
 
         // Copy of main _findOffsetForAdd except for checks to resize: can not be needed
         int offset = _calcOffset(hash);
         final int[] hashArea = _hashArea;
-        if (hashArea[offset+3] == 0) {
+        if (hashArea[offset + 3] == 0) {
             return offset;
         }
         int offset2 = _secondaryStart + ((offset >> 3) << 2);
-        if (hashArea[offset2+3] == 0) {
+        if (hashArea[offset2 + 3] == 0) {
             return offset2;
         }
         offset2 = _tertiaryStart + ((offset >> (_tertiaryShift + 2)) << _tertiaryShift);
         final int bucketSize = (1 << _tertiaryShift);
         for (int end = offset2 + bucketSize; offset2 < end; offset2 += 4) {
-            if (hashArea[offset2+3] == 0) {
+            if (hashArea[offset2 + 3] == 0) {
                 return offset2;
             }
         }
@@ -1071,16 +1066,14 @@ public final class ByteQuadsCanonicalizer
         // Yes if above 80%, or above 50% AND have ~1% spill-overs
         if (_count > (_hashSize >> 1)) { // over 50%
             int spillCount = (_spilloverEnd - _spilloverStart()) >> 2;
-            if ((spillCount > (1 + _count >> 7))
-                    || (_count > (_hashSize * 0.80))) {
+            if ((spillCount > (1 + _count >> 7)) || (_count > (_hashSize * 0.80))) {
                 return true;
             }
         }
         return false;
     }
 
-    private int _appendLongName(int[] quads, int qlen)
-    {
+    private int _appendLongName(int[] quads, int qlen) {
         int start = _longNameOffset;
 
         // note: at this point we must already be shared. But may not have enough space
@@ -1118,8 +1111,7 @@ public final class ByteQuadsCanonicalizer
     private final static int MULT2 = 65599;
     private final static int MULT3 = 31;
 
-    public int calcHash(int q1)
-    {
+    public int calcHash(int q1) {
         int hash = q1 ^ _seed;
         /* 29-Mar-2015, tatu: Earlier used 15 + 9 right shifts, which worked ok
          *    except for one specific problem case: numbers. So needed to make sure
@@ -1132,8 +1124,7 @@ public final class ByteQuadsCanonicalizer
         return hash;
     }
 
-    public int calcHash(int q1, int q2)
-    {
+    public int calcHash(int q1, int q2) {
         // For two quads, let's change algorithm a bit, to spice
         // things up (can do bit more processing anyway)
         int hash = q1;
@@ -1149,8 +1140,7 @@ public final class ByteQuadsCanonicalizer
         return hash;
     }
 
-    public int calcHash(int q1, int q2, int q3)
-    { // use same algorithm as multi-byte, tested to work well
+    public int calcHash(int q1, int q2, int q3) { // use same algorithm as multi-byte, tested to work well
         int hash = q1 ^ _seed;
         hash += (hash >>> 9);
         hash *= MULT3;
@@ -1167,8 +1157,7 @@ public final class ByteQuadsCanonicalizer
         return hash;
     }
 
-    public int calcHash(int[] q, int qlen)
-    {
+    public int calcHash(int[] q, int qlen) {
         if (qlen < 4) {
             throw new IllegalArgumentException();
         }
@@ -1204,8 +1193,7 @@ public final class ByteQuadsCanonicalizer
     /**********************************************************
      */
 
-    private void rehash()
-    {
+    private void rehash() {
         // Note: since we'll make copies, no need to unshare, can just mark as such:
         _hashShared = false;
 
@@ -1226,7 +1214,7 @@ public final class ByteQuadsCanonicalizer
             return;
         }
         // double up main hash area, but do not expand long-name area:
-        _hashArea = new int[oldHashArea.length + (oldSize<<3)];
+        _hashArea = new int[oldHashArea.length + (oldSize << 3)];
         _hashSize = newSize;
         _secondaryStart = (newSize << 2); // 4 ints per entry
         _tertiaryStart = _secondaryStart + (_secondaryStart >> 1); // right after secondary
@@ -1244,44 +1232,47 @@ public final class ByteQuadsCanonicalizer
         int copyCount = 0;
         int[] q = new int[16];
         for (int offset = 0, end = oldEnd; offset < end; offset += 4) {
-            int len = oldHashArea[offset+3];
+            int len = oldHashArea[offset + 3];
             if (len == 0) { // empty slot, skip
                 continue;
             }
             ++copyCount;
-            String name = oldNames[offset>>2];
+            String name = oldNames[offset >> 2];
             switch (len) {
-            case 1:
-                q[0] = oldHashArea[offset];
-                addName(name, q, 1);
-                break;
-            case 2:
-                q[0] = oldHashArea[offset];
-                q[1] = oldHashArea[offset+1];
-                addName(name, q, 2);
-                break;
-            case 3:
-                q[0] = oldHashArea[offset];
-                q[1] = oldHashArea[offset+1];
-                q[2] = oldHashArea[offset+2];
-                addName(name, q, 3);
-                break;
-            default:
-                if (len > q.length) {
-                    q = new int[len];
-                }
-                // #0 is hash, #1 offset
-                int qoff = oldHashArea[offset+1];
-                System.arraycopy(oldHashArea, qoff, q, 0, len);
-                addName(name, q, len);
-                break;
+                case 1:
+                    q[0] = oldHashArea[offset];
+                    addName(name, q, 1);
+                    break;
+
+                case 2:
+                    q[0] = oldHashArea[offset];
+                    q[1] = oldHashArea[offset + 1];
+                    addName(name, q, 2);
+                    break;
+
+                case 3:
+                    q[0] = oldHashArea[offset];
+                    q[1] = oldHashArea[offset + 1];
+                    q[2] = oldHashArea[offset + 2];
+                    addName(name, q, 3);
+                    break;
+
+                default:
+                    if (len > q.length) {
+                        q = new int[len];
+                    }
+                    // #0 is hash, #1 offset
+                    int qoff = oldHashArea[offset + 1];
+                    System.arraycopy(oldHashArea, qoff, q, 0, len);
+                    addName(name, q, len);
+                    break;
             }
         }
 
         // Sanity checks: since corruption difficult to detect, assert explicitly
         // with production code
         if (copyCount != oldCount) {
-            throw new IllegalStateException("Failed rehash(): old count="+oldCount+", copyCount="+copyCount);
+            throw new IllegalStateException("Failed rehash(): old count=" + oldCount + ", copyCount=" + copyCount);
         }
     }
 
@@ -1317,20 +1308,18 @@ public final class ByteQuadsCanonicalizer
         return (offset << 3) - offset;
     }
 
-    protected void _reportTooManyCollisions()
-    {
+    protected void _reportTooManyCollisions() {
         // First: do not fuzz about small symbol tables; may get balanced by doubling up
         if (_hashSize <= 1024) { // would have spill-over area of 128 entries
             return;
         }
-        throw new IllegalStateException("Spill-over slots in symbol table with "+_count
-                +" entries, hash area of "+_hashSize+" slots is now full (all "
-                +(_hashSize >> 3)+" slots -- suspect a DoS attack based on hash collisions."
-                +" You can disable the check via `JsonFactory.Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW`");
+        throw new IllegalStateException("Spill-over slots in symbol table with " + _count + " entries, hash area of "
+            + _hashSize + " slots is now full (all " + (_hashSize >> 3)
+            + " slots -- suspect a DoS attack based on hash collisions."
+            + " You can disable the check via `JsonFactory.Feature.FAIL_ON_SYMBOL_HASH_OVERFLOW`");
     }
 
-    static int _calcTertiaryShift(int primarySlots)
-    {
+    static int _calcTertiaryShift(int primarySlots) {
         // first: we only get 1/4 of slots of primary, to divide
         int tertSlots = (primarySlots) >> 2;
 
@@ -1361,8 +1350,7 @@ public final class ByteQuadsCanonicalizer
      *
      * @since 2.1
      */
-    private final static class TableInfo
-    {
+    private final static class TableInfo {
         public final int size;
         public final int count;
         public final int tertiaryShift;
@@ -1371,9 +1359,8 @@ public final class ByteQuadsCanonicalizer
         public final int spilloverEnd;
         public final int longNameOffset;
 
-        public TableInfo(int size, int count, int tertiaryShift,
-                int[] mainHash, String[] names, int spilloverEnd, int longNameOffset)
-        {
+        public TableInfo(int size, int count, int tertiaryShift, int[] mainHash, String[] names, int spilloverEnd,
+            int longNameOffset) {
             this.size = size;
             this.count = count;
             this.tertiaryShift = tertiaryShift;
@@ -1383,8 +1370,7 @@ public final class ByteQuadsCanonicalizer
             this.longNameOffset = longNameOffset;
         }
 
-        public TableInfo(ByteQuadsCanonicalizer src)
-        {
+        public TableInfo(ByteQuadsCanonicalizer src) {
             size = src._hashSize;
             count = src._count;
             tertiaryShift = src._tertiaryShift;
@@ -1399,12 +1385,11 @@ public final class ByteQuadsCanonicalizer
             int tertShift = _calcTertiaryShift(sz);
 
             return new TableInfo(sz, // hashSize
-                    0, // count
-                    tertShift,
-                    new int[hashAreaSize], // mainHash, 2x slots, 4 ints per slot
-                    new String[sz << 1], // names == 2x slots
-                    hashAreaSize - sz, // at 7/8 of the total area
-                    hashAreaSize // longNameOffset, immediately after main hashes
+                0, // count
+                tertShift, new int[hashAreaSize], // mainHash, 2x slots, 4 ints per slot
+                new String[sz << 1], // names == 2x slots
+                hashAreaSize - sz, // at 7/8 of the total area
+                hashAreaSize // longNameOffset, immediately after main hashes
             );
         }
     }

@@ -81,12 +81,8 @@ public interface CustomCertificate {
     CustomCertificateInner innerModel();
 
     /** The entirety of the CustomCertificate definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithKeyVaultBaseUri,
-            DefinitionStages.WithKeyVaultSecretName,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithKeyVaultBaseUri, DefinitionStages.WithKeyVaultSecretName, DefinitionStages.WithCreate {
     }
 
     /** The CustomCertificate definition stages. */

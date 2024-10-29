@@ -44,13 +44,11 @@ public class RecoveryServicesManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        recoveryServicesManager = RecoveryServicesManager
-            .configure()
+        recoveryServicesManager = RecoveryServicesManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -61,10 +59,7 @@ public class RecoveryServicesManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -89,15 +84,11 @@ public class RecoveryServicesManagerTests extends TestProxyTestBase {
                 .withSku(new Sku().withName(SkuName.RS0).withTier("Standard"))
                 .withProperties(new VaultProperties()
                     .withSecuritySettings(new SecuritySettings()
-                        .withImmutabilitySettings(
-                            new ImmutabilitySettings()
-                                .withState(ImmutabilityState.UNLOCKED)))
+                        .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)))
                     .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
                     .withRestoreSettings(new RestoreSettings()
-                        .withCrossSubscriptionRestoreSettings(
-                            new CrossSubscriptionRestoreSettings()
-                                .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.ENABLED)))
-                )
+                        .withCrossSubscriptionRestoreSettings(new CrossSubscriptionRestoreSettings()
+                            .withCrossSubscriptionRestoreState(CrossSubscriptionRestoreState.ENABLED))))
                 .create();
             // @embedmeEnd
             vault.refresh();

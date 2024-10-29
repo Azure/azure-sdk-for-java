@@ -22,10 +22,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public final class SapApplicationServerInstanceImpl
-    implements SapApplicationServerInstance,
-        SapApplicationServerInstance.Definition,
-        SapApplicationServerInstance.Update {
+public final class SapApplicationServerInstanceImpl implements SapApplicationServerInstance,
+    SapApplicationServerInstance.Definition, SapApplicationServerInstance.Update {
     private SapApplicationServerInstanceInner innerObject;
 
     private final com.azure.resourcemanager.workloads.WorkloadsManager serviceManager;
@@ -152,33 +150,25 @@ public final class SapApplicationServerInstanceImpl
 
     private UpdateSapApplicationInstanceRequest updateBody;
 
-    public SapApplicationServerInstanceImpl withExistingSapVirtualInstance(
-        String resourceGroupName, String sapVirtualInstanceName) {
+    public SapApplicationServerInstanceImpl withExistingSapVirtualInstance(String resourceGroupName,
+        String sapVirtualInstanceName) {
         this.resourceGroupName = resourceGroupName;
         this.sapVirtualInstanceName = sapVirtualInstanceName;
         return this;
     }
 
     public SapApplicationServerInstance create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapApplicationServerInstances()
-                .create(
-                    resourceGroupName,
-                    sapVirtualInstanceName,
-                    applicationInstanceName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapApplicationServerInstances()
+            .create(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public SapApplicationServerInstance create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapApplicationServerInstances()
-                .create(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapApplicationServerInstances()
+            .create(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, this.innerModel(), context);
         return this;
     }
 
@@ -194,25 +184,20 @@ public final class SapApplicationServerInstanceImpl
     }
 
     public SapApplicationServerInstance apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapApplicationServerInstances()
-                .update(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapApplicationServerInstances()
+            .update(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, updateBody, Context.NONE);
         return this;
     }
 
     public SapApplicationServerInstance apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapApplicationServerInstances()
-                .update(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSapApplicationServerInstances()
+            .update(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, updateBody, context);
         return this;
     }
 
-    SapApplicationServerInstanceImpl(
-        SapApplicationServerInstanceInner innerObject,
+    SapApplicationServerInstanceImpl(SapApplicationServerInstanceInner innerObject,
         com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -222,46 +207,38 @@ public final class SapApplicationServerInstanceImpl
     }
 
     public SapApplicationServerInstance refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapApplicationServerInstances()
-                .getWithResponse(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapApplicationServerInstances()
+            .getWithResponse(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SapApplicationServerInstance refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSapApplicationServerInstances()
-                .getWithResponse(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSapApplicationServerInstances()
+            .getWithResponse(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, context)
+            .getValue();
         return this;
     }
 
     public OperationStatusResult startInstance() {
-        return serviceManager
-            .sapApplicationServerInstances()
+        return serviceManager.sapApplicationServerInstances()
             .startInstance(resourceGroupName, sapVirtualInstanceName, applicationInstanceName);
     }
 
     public OperationStatusResult startInstance(Context context) {
-        return serviceManager
-            .sapApplicationServerInstances()
+        return serviceManager.sapApplicationServerInstances()
             .startInstance(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, context);
     }
 
     public OperationStatusResult stopInstance() {
-        return serviceManager
-            .sapApplicationServerInstances()
+        return serviceManager.sapApplicationServerInstances()
             .stopInstance(resourceGroupName, sapVirtualInstanceName, applicationInstanceName);
     }
 
     public OperationStatusResult stopInstance(StopRequest body, Context context) {
-        return serviceManager
-            .sapApplicationServerInstances()
+        return serviceManager.sapApplicationServerInstances()
             .stopInstance(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, body, context);
     }
 

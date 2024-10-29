@@ -124,7 +124,8 @@ public final class DocumentAnalysisAsyncClient {
      * @param formRecognizerClientImpl The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Form Recognizer service supported by this client library.
      */
-    DocumentAnalysisAsyncClient(FormRecognizerClientImpl formRecognizerClientImpl, DocumentAnalysisServiceVersion serviceVersion) {
+    DocumentAnalysisAsyncClient(FormRecognizerClientImpl formRecognizerClientImpl,
+        DocumentAnalysisServiceVersion serviceVersion) {
         this.documentModelsImpl = formRecognizerClientImpl.getDocumentModels();
         this.documentClassifiersImpl = formRecognizerClientImpl.getDocumentClassifiers();
         this.serviceVersion = serviceVersion;
@@ -168,8 +169,7 @@ public final class DocumentAnalysisAsyncClient {
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationResult, AnalyzeResult>
-        beginAnalyzeDocumentFromUrl(String modelId, String documentUrl) {
+    public PollerFlux<OperationResult, AnalyzeResult> beginAnalyzeDocumentFromUrl(String modelId, String documentUrl) {
         return beginAnalyzeDocumentFromUrl(modelId, documentUrl, null);
     }
 
@@ -227,34 +227,37 @@ public final class DocumentAnalysisAsyncClient {
         AnalyzeDocumentOptions analyzeDocumentOptions, Context context) {
         try {
             if (CoreUtils.isNullOrEmpty(documentUrl)) {
-                return PollerFlux.error(logger.logExceptionAsError(new IllegalArgumentException(
-                    "'documentUrl' is required and cannot be null or empty")));
+                return PollerFlux.error(logger.logExceptionAsError(
+                    new IllegalArgumentException("'documentUrl' is required and cannot be null or empty")));
             }
             if (CoreUtils.isNullOrEmpty(modelId)) {
-                return PollerFlux.error(logger.logExceptionAsError(new IllegalArgumentException(
-                    "'modelId' is required and cannot be null or empty")));
+                return PollerFlux.error(logger.logExceptionAsError(
+                    new IllegalArgumentException("'modelId' is required and cannot be null or empty")));
             }
             final AnalyzeDocumentOptions finalAnalyzeDocumentOptions
                 = getAnalyzeDocumentOptions(analyzeDocumentOptions);
             String pages = CoreUtils.isNullOrEmpty(finalAnalyzeDocumentOptions.getPages())
-                ? null : CoreUtils.stringJoin(",", finalAnalyzeDocumentOptions.getPages());
+                ? null
+                : CoreUtils.stringJoin(",", finalAnalyzeDocumentOptions.getPages());
 
-            return new PollerFlux<>(DEFAULT_POLL_INTERVAL, activationOperation(() ->
-                    documentModelsImpl.analyzeDocumentWithResponseAsync(modelId, pages,
-                            finalAnalyzeDocumentOptions.getLocale(), StringIndexType.UTF16CODE_UNIT,
-                            finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
-                            new AnalyzeDocumentRequest().setUrlSource(documentUrl), context)
-                        .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
-                            analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())), logger),
-                pollingOperation(resultId ->
-                    documentModelsImpl.getAnalyzeResultWithResponseAsync(modelId, resultId, context)),
-                (activationResponse, pollingContext) ->
-                    Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchingOperation(resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(modelId, resultId,
-                    context))
-                    .andThen(after -> after.map(modelSimpleResponse ->
-                            Transforms.toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))
-                        .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)));
+            return new PollerFlux<>(DEFAULT_POLL_INTERVAL,
+                activationOperation(() -> documentModelsImpl
+                    .analyzeDocumentWithResponseAsync(modelId, pages, finalAnalyzeDocumentOptions.getLocale(),
+                        StringIndexType.UTF16CODE_UNIT, finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
+                        new AnalyzeDocumentRequest().setUrlSource(documentUrl), context)
+                    .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
+                        analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
+                    logger),
+                pollingOperation(
+                    resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(modelId, resultId, context)),
+                (activationResponse, pollingContext) -> Mono
+                    .error(new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(
+                    resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(modelId, resultId, context))
+                        .andThen(after -> after
+                            .map(modelSimpleResponse -> Transforms
+                                .toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))
+                            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -373,36 +376,39 @@ public final class DocumentAnalysisAsyncClient {
             }
 
             if (CoreUtils.isNullOrEmpty(modelId)) {
-                return PollerFlux.error(logger.logExceptionAsError(new IllegalArgumentException(
-                    "'modelId' is required and cannot be null or empty")));
+                return PollerFlux.error(logger.logExceptionAsError(
+                    new IllegalArgumentException("'modelId' is required and cannot be null or empty")));
             }
 
             if (document.getLength() == null) {
-                return PollerFlux.error(logger.logExceptionAsError(new IllegalArgumentException(
-                    "'document length' is required and cannot be null")));
+                return PollerFlux.error(logger.logExceptionAsError(
+                    new IllegalArgumentException("'document length' is required and cannot be null")));
             }
 
             final AnalyzeDocumentOptions finalAnalyzeDocumentOptions
                 = getAnalyzeDocumentOptions(analyzeDocumentOptions);
 
             String pages = CoreUtils.isNullOrEmpty(finalAnalyzeDocumentOptions.getPages())
-                ? null : CoreUtils.stringJoin(",", finalAnalyzeDocumentOptions.getPages());
-            return new PollerFlux<>(DEFAULT_POLL_INTERVAL, activationOperation(() ->
-                    documentModelsImpl.analyzeDocumentWithResponseAsync(modelId, null, pages,
-                            finalAnalyzeDocumentOptions.getLocale(), StringIndexType.UTF16CODE_UNIT,
-                            finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(), document, document.getLength(),
-                            context)
-                        .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
-                            analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())), logger),
-                pollingOperation(resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(modelId, resultId,
-                    context)),
-                (activationResponse, pollingContext) ->
-                    Mono.error(new RuntimeException("Cancellation is not supported")),
-                fetchingOperation(resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(modelId, resultId,
-                    context))
-                    .andThen(after -> after.map(modelSimpleResponse ->
-                            Transforms.toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))
-                        .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)));
+                ? null
+                : CoreUtils.stringJoin(",", finalAnalyzeDocumentOptions.getPages());
+            return new PollerFlux<>(DEFAULT_POLL_INTERVAL,
+                activationOperation(() -> documentModelsImpl
+                    .analyzeDocumentWithResponseAsync(modelId, null, pages, finalAnalyzeDocumentOptions.getLocale(),
+                        StringIndexType.UTF16CODE_UNIT, finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(),
+                        document, document.getLength(), context)
+                    .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
+                        analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
+                    logger),
+                pollingOperation(
+                    resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(modelId, resultId, context)),
+                (activationResponse, pollingContext) -> Mono
+                    .error(new RuntimeException("Cancellation is not supported")),
+                fetchingOperation(
+                    resultId -> documentModelsImpl.getAnalyzeResultWithResponseAsync(modelId, resultId, context))
+                        .andThen(after -> after
+                            .map(modelSimpleResponse -> Transforms
+                                .toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))
+                            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -453,29 +459,31 @@ public final class DocumentAnalysisAsyncClient {
         String classifierId, Context context) {
         try {
             if (CoreUtils.isNullOrEmpty(documentUrl)) {
-                return PollerFlux.error(logger.logExceptionAsError(new IllegalArgumentException(
-                    "'documentUrl' is required and cannot be null or empty")));
+                return PollerFlux.error(logger.logExceptionAsError(
+                    new IllegalArgumentException("'documentUrl' is required and cannot be null or empty")));
             }
             if (CoreUtils.isNullOrEmpty(classifierId)) {
-                return PollerFlux.error(logger.logExceptionAsError(new IllegalArgumentException(
-                    "'classifierId' is required and cannot be null or empty")));
+                return PollerFlux.error(logger.logExceptionAsError(
+                    new IllegalArgumentException("'classifierId' is required and cannot be null or empty")));
             }
 
-            return new PollerFlux<>(DEFAULT_POLL_INTERVAL, activationOperation(() ->
-                    documentClassifiersImpl.classifyDocumentWithResponseAsync(classifierId,
-                            StringIndexType.UTF16CODE_UNIT, new ClassifyDocumentRequest().setUrlSource(documentUrl),
-                            context)
-                            .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
-                                analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())), logger),
-                pollingOperation(resultId ->
-                    documentClassifiersImpl.getClassifyResultWithResponseAsync(classifierId, resultId, context)),
-                (activationResponse, pollingContext) ->
-                    Mono.error(new RuntimeException("Cancellation is not supported")),
+            return new PollerFlux<>(DEFAULT_POLL_INTERVAL,
+                activationOperation(() -> documentClassifiersImpl
+                    .classifyDocumentWithResponseAsync(classifierId, StringIndexType.UTF16CODE_UNIT,
+                        new ClassifyDocumentRequest().setUrlSource(documentUrl), context)
+                    .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
+                        analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
+                    logger),
+                pollingOperation(resultId -> documentClassifiersImpl.getClassifyResultWithResponseAsync(classifierId,
+                    resultId, context)),
+                (activationResponse, pollingContext) -> Mono
+                    .error(new RuntimeException("Cancellation is not supported")),
                 fetchingOperation(resultId -> documentClassifiersImpl.getClassifyResultWithResponseAsync(classifierId,
                     resultId, context))
-                    .andThen(after -> after.map(modelSimpleResponse ->
-                            Transforms.toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))
-                        .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)));
+                        .andThen(after -> after
+                            .map(modelSimpleResponse -> Transforms
+                                .toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))
+                            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -536,29 +544,32 @@ public final class DocumentAnalysisAsyncClient {
             }
 
             if (CoreUtils.isNullOrEmpty(classifierId)) {
-                return PollerFlux.error(logger.logExceptionAsError(new IllegalArgumentException(
-                    "'classifierId' is required and cannot be null or empty")));
+                return PollerFlux.error(logger.logExceptionAsError(
+                    new IllegalArgumentException("'classifierId' is required and cannot be null or empty")));
             }
 
             if (document.getLength() == null) {
-                return PollerFlux.error(logger.logExceptionAsError(new IllegalArgumentException(
-                    "'document length' is required and cannot be null")));
+                return PollerFlux.error(logger.logExceptionAsError(
+                    new IllegalArgumentException("'document length' is required and cannot be null")));
             }
 
-            return new PollerFlux<>(DEFAULT_POLL_INTERVAL, activationOperation(() ->
-                    documentClassifiersImpl.classifyDocumentWithResponseAsync(classifierId, null,
-                            StringIndexType.UTF16CODE_UNIT, document, document.getLength(), context)
-                        .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
-                            analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())), logger),
+            return new PollerFlux<>(DEFAULT_POLL_INTERVAL,
+                activationOperation(() -> documentClassifiersImpl
+                    .classifyDocumentWithResponseAsync(classifierId, null, StringIndexType.UTF16CODE_UNIT, document,
+                        document.getLength(), context)
+                    .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
+                        analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
+                    logger),
                 pollingOperation(resultId -> documentClassifiersImpl.getClassifyResultWithResponseAsync(classifierId,
                     resultId, context)),
-                (activationResponse, pollingContext) ->
-                    Mono.error(new RuntimeException("Cancellation is not supported")),
+                (activationResponse, pollingContext) -> Mono
+                    .error(new RuntimeException("Cancellation is not supported")),
                 fetchingOperation(resultId -> documentClassifiersImpl.getClassifyResultWithResponseAsync(classifierId,
                     resultId, context))
-                    .andThen(after -> after.map(modelSimpleResponse ->
-                            Transforms.toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))
-                        .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)));
+                        .andThen(after -> after
+                            .map(modelSimpleResponse -> Transforms
+                                .toAnalyzeResultOperation(modelSimpleResponse.getValue().getAnalyzeResult()))
+                            .onErrorMap(Transforms::mapToHttpResponseExceptionIfExists)));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
@@ -567,8 +578,8 @@ public final class DocumentAnalysisAsyncClient {
     /*
      * Poller's POLLING operation.
      */
-    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>> pollingOperation(
-        Function<String, Mono<Response<AnalyzeResultOperation>>> pollingFunction) {
+    private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
+        pollingOperation(Function<String, Mono<Response<AnalyzeResultOperation>>> pollingFunction) {
         return pollingContext -> {
             try {
                 final PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
@@ -585,8 +596,8 @@ public final class DocumentAnalysisAsyncClient {
     /*
      * Poller's FETCHING operation.
      */
-    private Function<PollingContext<OperationResult>, Mono<Response<AnalyzeResultOperation>>> fetchingOperation(
-        Function<String, Mono<Response<AnalyzeResultOperation>>> fetchingFunction) {
+    private Function<PollingContext<OperationResult>, Mono<Response<AnalyzeResultOperation>>>
+        fetchingOperation(Function<String, Mono<Response<AnalyzeResultOperation>>> fetchingFunction) {
         return pollingContext -> {
             try {
                 final String resultId = pollingContext.getLatestResponse().getValue().getOperationId();
@@ -606,15 +617,18 @@ public final class DocumentAnalysisAsyncClient {
             case RUNNING:
                 status = LongRunningOperationStatus.IN_PROGRESS;
                 break;
+
             case SUCCEEDED:
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
+
             case FAILED:
-                return monoError(logger, Transforms.mapResponseErrorToHttpResponseException(
-                    analyzeResultOperationResponse.getValue().getError()));
+                return monoError(logger, Transforms
+                    .mapResponseErrorToHttpResponseException(analyzeResultOperationResponse.getValue().getError()));
+
             default:
-                status = LongRunningOperationStatus.fromString(
-                    analyzeResultOperationResponse.getValue().getStatus().toString(), true);
+                status = LongRunningOperationStatus
+                    .fromString(analyzeResultOperationResponse.getValue().getStatus().toString(), true);
                 break;
         }
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));

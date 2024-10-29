@@ -24,12 +24,8 @@ public interface SqlPoolConnectionPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Sql pool's connection policy, which is used with table auditing along with {@link Response}.
      */
-    Response<SqlPoolConnectionPolicy> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        ConnectionPolicyName connectionPolicyName,
-        Context context);
+    Response<SqlPoolConnectionPolicy> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, ConnectionPolicyName connectionPolicyName, Context context);
 
     /**
      * Get a Sql pool's connection policy, which is used with table auditing
@@ -45,6 +41,6 @@ public interface SqlPoolConnectionPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Sql pool's connection policy, which is used with table auditing.
      */
-    SqlPoolConnectionPolicy get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, ConnectionPolicyName connectionPolicyName);
+    SqlPoolConnectionPolicy get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        ConnectionPolicyName connectionPolicyName);
 }

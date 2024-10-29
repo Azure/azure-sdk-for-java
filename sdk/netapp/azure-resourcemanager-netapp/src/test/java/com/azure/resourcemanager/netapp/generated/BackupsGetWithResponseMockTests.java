@@ -21,7 +21,7 @@ public final class BackupsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"backupId\":\"lhguyn\",\"creationDate\":\"2021-02-02T08:20:38Z\",\"provisioningState\":\"gmltxdw\",\"size\":5922473071373796216,\"label\":\"sgzv\",\"backupType\":\"Scheduled\",\"failureReason\":\"nj\",\"volumeResourceId\":\"fpafolpymwamxq\",\"useExistingSnapshot\":false,\"snapshotName\":\"p\",\"backupPolicyResourceId\":\"phtvdu\"},\"id\":\"jvlej\",\"name\":\"hcsrlzknmzl\",\"type\":\"nrupdwvnphcnzqtp\"}";
+            = "{\"properties\":{\"backupId\":\"totiowlxteqdptjg\",\"creationDate\":\"2020-12-31T23:47:03Z\",\"provisioningState\":\"ukranblw\",\"size\":7361331029395556069,\"label\":\"ccuzgygq\",\"backupType\":\"Manual\",\"failureReason\":\"iul\",\"volumeResourceId\":\"gniiprglvaw\",\"useExistingSnapshot\":false,\"snapshotName\":\"ufypiv\",\"backupPolicyResourceId\":\"bbjpmcubkmif\"},\"id\":\"xkubvphavpmhbrbq\",\"name\":\"vgovpbbttefjokn\",\"type\":\"sqyzqedikdfr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class BackupsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Backup response = manager.backups()
-            .getWithResponse("vhqjwtrhtgvg", "pcrrk", "lawjmjsmwrok", "dxfzzzwyjaf", com.azure.core.util.Context.NONE)
+            .getWithResponse("kkflrmymyincqlhr", "s", "sl", "iiiovgqcgxuugq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("sgzv", response.label());
-        Assertions.assertEquals("fpafolpymwamxq", response.volumeResourceId());
+        Assertions.assertEquals("ccuzgygq", response.label());
+        Assertions.assertEquals("gniiprglvaw", response.volumeResourceId());
         Assertions.assertEquals(false, response.useExistingSnapshot());
-        Assertions.assertEquals("p", response.snapshotName());
+        Assertions.assertEquals("ufypiv", response.snapshotName());
     }
 }

@@ -10,10 +10,6 @@ module com.azure.resourcemanager.videoanalyzer {
     exports com.azure.resourcemanager.videoanalyzer.fluent.models;
     exports com.azure.resourcemanager.videoanalyzer.models;
 
-    opens com.azure.resourcemanager.videoanalyzer.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.videoanalyzer.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.videoanalyzer.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.videoanalyzer.models to com.azure.core, com.fasterxml.jackson.databind;
 }

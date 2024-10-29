@@ -6,77 +6,57 @@ package com.azure.resourcemanager.managementgroups.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managementgroups.ManagementGroupsManager;
 import com.azure.resourcemanager.managementgroups.models.CreateManagementGroupDetails;
 import com.azure.resourcemanager.managementgroups.models.CreateManagementGroupRequest;
+import com.azure.resourcemanager.managementgroups.models.CreateParentGroupInfo;
 import com.azure.resourcemanager.managementgroups.models.ManagementGroup;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.managementgroups.models.ManagementGroupChildType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ManagementGroupsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"tenantId\":\"axoruzfgsquy\",\"displayName\":\"rxxle\",\"details\":{\"version\":137172163,\"updatedTime\":\"2021-04-30T17:23:06Z\",\"updatedBy\":\"ezw\",\"parent\":{\"id\":\"wxuqlcvydypatdoo\",\"name\":\"jkniodko\",\"displayName\":\"bw\"},\"path\":[{\"name\":\"emmsbvdkc\",\"displayName\":\"dtjinfw\"},{\"name\":\"fltkacjv\",\"displayName\":\"kdlfoa\"}],\"managementGroupAncestors\":[\"kfpagao\",\"pulpqblylsyxk\"],\"managementGroupAncestorsChain\":[{\"name\":\"jervtia\",\"displayName\":\"sdszue\"}]},\"children\":[{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"f\",\"name\":\"eyvpnqicvinvkj\",\"displayName\":\"dxrbuukzcle\",\"children\":[{},{},{}]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"paztzpofncck\",\"name\":\"fz\",\"displayName\":\"hxx\",\"children\":[{}]}]},\"id\":\"qa\",\"name\":\"zfeqztppri\",\"type\":\"lxorjaltolmncws\"}";
 
-        String responseStr =
-            "{\"properties\":{\"tenantId\":\"wwfvov\",\"displayName\":\"meue\",\"details\":{\"version\":783632971,\"updatedTime\":\"2021-09-10T06:10:55Z\",\"updatedBy\":\"euojgjrwju\",\"path\":[],\"managementGroupAncestors\":[],\"managementGroupAncestorsChain\":[]},\"children\":[]},\"id\":\"dytdxwitx\",\"name\":\"rjaw\",\"type\":\"qwgxhniskx\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ManagementGroupsManager manager = ManagementGroupsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ManagementGroup response = manager.managementGroups()
+            .createOrUpdate("arm", new CreateManagementGroupRequest().withName("rthzvaytdwkqbrqu")
+                .withDisplayName("xkgymareqnajxqu")
+                .withDetails(new CreateManagementGroupDetails().withParent(new CreateParentGroupInfo().withId("qal"))),
+                "xiilivpdtiirqt", com.azure.core.util.Context.NONE);
 
-        ManagementGroupsManager manager =
-            ManagementGroupsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ManagementGroup response =
-            manager
-                .managementGroups()
-                .createOrUpdate(
-                    "hcdhmdual",
-                    new CreateManagementGroupRequest()
-                        .withName("auhashsfwx")
-                        .withDisplayName("xpvgo")
-                        .withDetails(new CreateManagementGroupDetails()),
-                    "jooxdjebw",
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("wwfvov", response.tenantId());
-        Assertions.assertEquals("meue", response.displayName());
-        Assertions.assertEquals(783632971, response.details().version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-10T06:10:55Z"), response.details().updatedTime());
-        Assertions.assertEquals("euojgjrwju", response.details().updatedBy());
+        Assertions.assertEquals("axoruzfgsquy", response.tenantId());
+        Assertions.assertEquals("rxxle", response.displayName());
+        Assertions.assertEquals(137172163, response.details().version());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-30T17:23:06Z"), response.details().updatedTime());
+        Assertions.assertEquals("ezw", response.details().updatedBy());
+        Assertions.assertEquals("wxuqlcvydypatdoo", response.details().parent().id());
+        Assertions.assertEquals("jkniodko", response.details().parent().name());
+        Assertions.assertEquals("bw", response.details().parent().displayName());
+        Assertions.assertEquals("emmsbvdkc", response.details().path().get(0).name());
+        Assertions.assertEquals("dtjinfw", response.details().path().get(0).displayName());
+        Assertions.assertEquals("kfpagao", response.details().managementGroupAncestors().get(0));
+        Assertions.assertEquals("jervtia", response.details().managementGroupAncestorsChain().get(0).name());
+        Assertions.assertEquals("sdszue", response.details().managementGroupAncestorsChain().get(0).displayName());
+        Assertions.assertEquals(ManagementGroupChildType.MICROSOFT_MANAGEMENT_MANAGEMENT_GROUPS,
+            response.children().get(0).type());
+        Assertions.assertEquals("f", response.children().get(0).id());
+        Assertions.assertEquals("eyvpnqicvinvkj", response.children().get(0).name());
+        Assertions.assertEquals("dxrbuukzcle", response.children().get(0).displayName());
     }
 }

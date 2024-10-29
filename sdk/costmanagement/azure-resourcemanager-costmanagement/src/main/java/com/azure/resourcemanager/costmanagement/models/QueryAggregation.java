@@ -74,14 +74,12 @@ public final class QueryAggregation {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model QueryAggregation"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model QueryAggregation"));
         }
         if (function() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property function in model QueryAggregation"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property function in model QueryAggregation"));
         }
     }
 

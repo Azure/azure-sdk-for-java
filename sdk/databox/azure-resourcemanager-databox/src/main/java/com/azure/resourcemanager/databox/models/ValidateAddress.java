@@ -106,16 +106,14 @@ public final class ValidateAddress extends ValidationInputRequest {
     public void validate() {
         super.validate();
         if (shippingAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property shippingAddress in model ValidateAddress"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property shippingAddress in model ValidateAddress"));
         } else {
             shippingAddress().validate();
         }
         if (deviceType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property deviceType in model ValidateAddress"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property deviceType in model ValidateAddress"));
         }
         if (transportPreferences() != null) {
             transportPreferences().validate();

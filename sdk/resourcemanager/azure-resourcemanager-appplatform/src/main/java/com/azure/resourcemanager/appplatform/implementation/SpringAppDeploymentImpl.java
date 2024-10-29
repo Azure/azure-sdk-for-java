@@ -59,9 +59,8 @@ import java.util.function.Function;
 
 public class SpringAppDeploymentImpl
     extends ExternalChildResourceImpl<SpringAppDeployment, DeploymentResourceInner, SpringAppImpl, SpringApp>
-    implements SpringAppDeployment,
-        SpringAppDeployment.Definition<SpringAppImpl, SpringAppDeploymentImpl>,
-        SpringAppDeployment.Update {
+    implements SpringAppDeployment, SpringAppDeployment.Definition<SpringAppImpl, SpringAppDeploymentImpl>,
+    SpringAppDeployment.Update {
     private static final Duration MAX_BUILD_TIMEOUT = Duration.ofHours(1);
     private BuildServiceTask buildServiceTask;
     private FunctionalTaskItem setActiveTask = null;
@@ -117,9 +116,9 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<Void> startAsync() {
-        return manager().serviceClient().getDeployments().startAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
-        );
+        return manager().serviceClient()
+            .getDeployments()
+            .startAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name());
     }
 
     @Override
@@ -129,9 +128,9 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<Void> stopAsync() {
-        return manager().serviceClient().getDeployments().stopAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
-        );
+        return manager().serviceClient()
+            .getDeployments()
+            .stopAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name());
     }
 
     @Override
@@ -141,9 +140,9 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<Void> restartAsync() {
-        return manager().serviceClient().getDeployments().restartAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
-        );
+        return manager().serviceClient()
+            .getDeployments()
+            .restartAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name());
     }
 
     @Override
@@ -153,15 +152,17 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<String> getLogFileUrlAsync() {
-        return manager().serviceClient().getDeployments().getLogFileUrlAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
-        )
+        return manager().serviceClient()
+            .getDeployments()
+            .getLogFileUrlAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(),
+                name())
             .map(LogFileUrlResponseInner::url);
     }
 
     @Override
     public List<String> configFilePatterns() {
-        Map<String, Map<String, Object>> addonConfigs = this.innerModel().properties().deploymentSettings().addonConfigs();
+        Map<String, Map<String, Object>> addonConfigs
+            = this.innerModel().properties().deploymentSettings().addonConfigs();
         if (addonConfigs == null) {
             return Collections.emptyList();
         }
@@ -293,22 +294,18 @@ public class SpringAppDeploymentImpl
             return withJarFile(jar, null);
         } else {
             ensureSource(UserSourceType.JAR);
-            this.addDependency(
-                context -> parent().getResourceUploadUrlAsync()
-                    .flatMap(option -> {
-                        UploadedUserSourceInfo uploadedUserSourceInfo = (UploadedUserSourceInfo) innerModel().properties().source();
-                        uploadedUserSourceInfo.withRelativePath(option.relativePath());
-                        return uploadToStorageAsync(jar, option)
-                            .then(context.voidMono());
-                    })
-            );
+            this.addDependency(context -> parent().getResourceUploadUrlAsync().flatMap(option -> {
+                UploadedUserSourceInfo uploadedUserSourceInfo
+                    = (UploadedUserSourceInfo) innerModel().properties().source();
+                uploadedUserSourceInfo.withRelativePath(option.relativePath());
+                return uploadToStorageAsync(jar, option).then(context.voidMono());
+            }));
             return this;
         }
     }
 
     private ShareFileAsyncClient createShareFileAsyncClient(ResourceUploadDefinition option) {
-        return new ShareFileClientBuilder()
-            .endpoint(option.uploadUrl())
+        return new ShareFileClientBuilder().endpoint(option.uploadUrl())
             .httpClient(manager().httpPipeline().getHttpClient())
             .buildFileAsyncClient();
     }
@@ -385,15 +382,12 @@ public class SpringAppDeploymentImpl
             this.buildServiceTask = new BuildServiceTask(sourceCodeTarGz, configFilePatterns, true);
         } else {
             ensureSource(UserSourceType.SOURCE);
-            this.addDependency(
-                context -> parent().getResourceUploadUrlAsync()
-                    .flatMap(option -> {
-                        UploadedUserSourceInfo uploadedUserSourceInfo = (UploadedUserSourceInfo) innerModel().properties().source();
-                        uploadedUserSourceInfo.withRelativePath(option.relativePath());
-                        return uploadToStorageAsync(sourceCodeTarGz, option)
-                            .then(context.voidMono());
-                    })
-            );
+            this.addDependency(context -> parent().getResourceUploadUrlAsync().flatMap(option -> {
+                UploadedUserSourceInfo uploadedUserSourceInfo
+                    = (UploadedUserSourceInfo) innerModel().properties().source();
+                uploadedUserSourceInfo.withRelativePath(option.relativePath());
+                return uploadToStorageAsync(sourceCodeTarGz, option).then(context.voidMono());
+            }));
         }
         return this;
     }
@@ -407,7 +401,8 @@ public class SpringAppDeploymentImpl
             ensureSource(UserSourceType.SOURCE);
             UserSourceInfo userSourceInfo = innerModel().properties().source();
             if (userSourceInfo instanceof SourceUploadedUserSourceInfo) {
-                SourceUploadedUserSourceInfo sourceUploadedUserSourceInfo = (SourceUploadedUserSourceInfo) userSourceInfo;
+                SourceUploadedUserSourceInfo sourceUploadedUserSourceInfo
+                    = (SourceUploadedUserSourceInfo) userSourceInfo;
                 sourceUploadedUserSourceInfo.withArtifactSelector(moduleName);
             }
         }
@@ -523,14 +518,12 @@ public class SpringAppDeploymentImpl
 
     @Override
     public SpringAppDeploymentImpl withActivation() {
-        this.setActiveTask = context ->
-            manager().serviceClient().getApps()
-                .setActiveDeploymentsAsync(
-                    parent().parent().resourceGroupName(),
-                    parent().parent().name(), // service name
-                    parent().name(),          // app name
-                    new ActiveDeploymentCollection().withActiveDeploymentNames(Collections.singletonList(name())))
-                .then(context.voidMono());
+        this.setActiveTask = context -> manager().serviceClient()
+            .getApps()
+            .setActiveDeploymentsAsync(parent().parent().resourceGroupName(), parent().parent().name(), // service name
+                parent().name(),          // app name
+                new ActiveDeploymentCollection().withActiveDeploymentNames(Collections.singletonList(name())))
+            .then(context.voidMono());
         return this;
     }
 
@@ -540,8 +533,7 @@ public class SpringAppDeploymentImpl
         Map<String, Map<String, Object>> addonConfigs = innerModel().properties().deploymentSettings().addonConfigs();
         addonConfigs.computeIfAbsent(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY, s -> {
             Map<String, Object> config = new HashMap<>();
-            config.put(
-                Constants.CONFIG_FILE_PATTERNS_KEY,
+            config.put(Constants.CONFIG_FILE_PATTERNS_KEY,
                 CoreUtils.isNullOrEmpty(configFilePatterns) ? "" : String.join(",", configFilePatterns));
             return config;
         });
@@ -563,10 +555,10 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<SpringAppDeployment> createResourceAsync() {
-        return manager().serviceClient().getDeployments().createOrUpdateAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(),
-            parent().name(), name(), innerModel()
-        )
+        return manager().serviceClient()
+            .getDeployments()
+            .createOrUpdateAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(),
+                name(), innerModel())
             .map(inner -> {
                 setInner(inner);
                 return this;
@@ -575,10 +567,10 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<SpringAppDeployment> updateResourceAsync() {
-        return manager().serviceClient().getDeployments().updateAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(),
-            parent().name(), name(), innerModel()
-        )
+        return manager().serviceClient()
+            .getDeployments()
+            .updateAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name(),
+                innerModel())
             .map(inner -> {
                 setInner(inner);
                 return this;
@@ -587,16 +579,16 @@ public class SpringAppDeploymentImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return manager().serviceClient().getDeployments().deleteAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
-        );
+        return manager().serviceClient()
+            .getDeployments()
+            .deleteAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name());
     }
 
     @Override
     protected Mono<DeploymentResourceInner> getInnerAsync() {
-        return manager().serviceClient().getDeployments().getAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name()
-        );
+        return manager().serviceClient()
+            .getDeployments()
+            .getAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name());
     }
 
     @Override
@@ -646,26 +638,25 @@ public class SpringAppDeploymentImpl
         @Override
         public Mono<Indexable> apply(Context context) {
             return app().getResourceUploadUrlAsync()
-                .flatMap(option ->
-                    uploadAndBuildAsync(file, option)
-                        .flatMap(buildId -> {
-                            BuildResultUserSourceInfo userSourceInfo = (BuildResultUserSourceInfo) innerModel().properties().source();
-                            userSourceInfo.withBuildResultId(buildId);
-                            withConfigFilePatterns(this.configFilePatterns);
-                            return Mono.empty();
-                        }).then(context.voidMono()));
+                .flatMap(option -> uploadAndBuildAsync(file, option).flatMap(buildId -> {
+                    BuildResultUserSourceInfo userSourceInfo
+                        = (BuildResultUserSourceInfo) innerModel().properties().source();
+                    userSourceInfo.withBuildResultId(buildId);
+                    withConfigFilePatterns(this.configFilePatterns);
+                    return Mono.empty();
+                }).then(context.voidMono()));
         }
 
         private Mono<String> uploadAndBuildAsync(File source, ResourceUploadDefinition option) {
-            return uploadToStorageAsync(source, option)
-                .then(enqueueBuildAsync(option))
-                .flatMap(waitForBuildAsync());
+            return uploadToStorageAsync(source, option).then(enqueueBuildAsync(option)).flatMap(waitForBuildAsync());
         }
 
         private Mono<String> enqueueBuildAsync(ResourceUploadDefinition option) {
             BuildProperties buildProperties = new BuildProperties()
-                .withBuilder(String.format("%s/buildservices/%s/builders/%s", service().id(), Constants.DEFAULT_TANZU_COMPONENT_NAME, Constants.DEFAULT_TANZU_COMPONENT_NAME))
-                .withAgentPool(String.format("%s/buildservices/%s/agentPools/%s", service().id(), Constants.DEFAULT_TANZU_COMPONENT_NAME, Constants.DEFAULT_TANZU_COMPONENT_NAME))
+                .withBuilder(String.format("%s/buildservices/%s/builders/%s", service().id(),
+                    Constants.DEFAULT_TANZU_COMPONENT_NAME, Constants.DEFAULT_TANZU_COMPONENT_NAME))
+                .withAgentPool(String.format("%s/buildservices/%s/agentPools/%s", service().id(),
+                    Constants.DEFAULT_TANZU_COMPONENT_NAME, Constants.DEFAULT_TANZU_COMPONENT_NAME))
                 .withRelativePath(option.relativePath());
             // source code
             if (this.sourceCodeTarGz) {
@@ -676,14 +667,12 @@ public class SpringAppDeploymentImpl
                     buildEnv.put("BP_MAVEN_BUILT_MODULE", module);
                 }
             }
-            return manager().serviceClient().getBuildServices()
+            return manager().serviceClient()
+                .getBuildServices()
                 // This method enqueues the build request, response with provision state "Succeeded" only means the build is enqueued.
                 // Attempting to continue deploying without waiting for the build to complete will result in failure.
-                .createOrUpdateBuildAsync(
-                    service().resourceGroupName(),
-                    service().name(),
-                    Constants.DEFAULT_TANZU_COMPONENT_NAME,
-                    app().name(),
+                .createOrUpdateBuildAsync(service().resourceGroupName(), service().name(),
+                    Constants.DEFAULT_TANZU_COMPONENT_NAME, app().name(),
                     new BuildInner().withProperties(buildProperties))
                 .map(inner -> inner.properties().triggeredBuildResult().id());
         }
@@ -691,38 +680,34 @@ public class SpringAppDeploymentImpl
         private Function<String, Mono<? extends String>> waitForBuildAsync() {
             AtomicLong pollCount = new AtomicLong();
             Duration pollDuration = manager().serviceClient().getDefaultPollInterval();
-            return buildId ->
-                manager().serviceClient().getBuildServices()
-                    .getBuildResultWithResponseAsync(
-                        service().resourceGroupName(),
-                        service().name(),
-                        Constants.DEFAULT_TANZU_COMPONENT_NAME,
-                        parent().name(),
-                        ResourceUtils.nameFromResourceId(buildId))
-                    .flatMap(response -> {
-                        if (pollDuration.multipliedBy(pollCount.get()).compareTo(MAX_BUILD_TIMEOUT) < 0) {
-                            BuildResultProvisioningState state = response.getValue().properties().provisioningState();
-                            if (state == BuildResultProvisioningState.SUCCEEDED) {
-                                return Mono.just(buildId);
-                            } else if (state == BuildResultProvisioningState.QUEUING || state == BuildResultProvisioningState.BUILDING) {
-                                return Mono.empty();
-                            } else {
-                                AppPlatformManagementClientImpl client = (AppPlatformManagementClientImpl) manager().serviceClient();
-                                return Mono.error(new ManagementException(String.format("Build failed for file: %s, buildId: %s",
-                                    file.getName(), buildId),
-                                    new HttpResponseImpl<>(response, client.getSerializerAdapter())));
-                            }
+            return buildId -> manager().serviceClient()
+                .getBuildServices()
+                .getBuildResultWithResponseAsync(service().resourceGroupName(), service().name(),
+                    Constants.DEFAULT_TANZU_COMPONENT_NAME, parent().name(), ResourceUtils.nameFromResourceId(buildId))
+                .flatMap(response -> {
+                    if (pollDuration.multipliedBy(pollCount.get()).compareTo(MAX_BUILD_TIMEOUT) < 0) {
+                        BuildResultProvisioningState state = response.getValue().properties().provisioningState();
+                        if (state == BuildResultProvisioningState.SUCCEEDED) {
+                            return Mono.just(buildId);
+                        } else if (state == BuildResultProvisioningState.QUEUING
+                            || state == BuildResultProvisioningState.BUILDING) {
+                            return Mono.empty();
                         } else {
-                            return Mono.error(new ManagementException(String.format("Build timeout for file: %s, buildId: %s",
-                                file.getName(), buildId), null));
+                            AppPlatformManagementClientImpl client
+                                = (AppPlatformManagementClientImpl) manager().serviceClient();
+                            return Mono.error(new ManagementException(
+                                String.format("Build failed for file: %s, buildId: %s", file.getName(), buildId),
+                                new HttpResponseImpl<>(response, client.getSerializerAdapter())));
                         }
-                    }).repeatWhenEmpty(longFlux ->
-                    longFlux
-                        .flatMap(
-                            index -> {
-                                pollCount.set(index);
-                                return Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollDuration));
-                            }));
+                    } else {
+                        return Mono.error(new ManagementException(
+                            String.format("Build timeout for file: %s, buildId: %s", file.getName(), buildId), null));
+                    }
+                })
+                .repeatWhenEmpty(longFlux -> longFlux.flatMap(index -> {
+                    pollCount.set(index);
+                    return Mono.delay(ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(pollDuration));
+                }));
         }
 
         @SuppressWarnings("BlockingMethodInNonBlockingContext")
@@ -754,7 +739,8 @@ public class SpringAppDeploymentImpl
             @Override
             public Flux<ByteBuffer> getBody() {
                 try {
-                    return Flux.just(ByteBuffer.wrap(serializerAdapter.serializeToBytes(response.getValue(), SerializerEncoding.JSON)));
+                    return Flux.just(ByteBuffer
+                        .wrap(serializerAdapter.serializeToBytes(response.getValue(), SerializerEncoding.JSON)));
                 } catch (IOException e) {
                     return Flux.empty();
                 }

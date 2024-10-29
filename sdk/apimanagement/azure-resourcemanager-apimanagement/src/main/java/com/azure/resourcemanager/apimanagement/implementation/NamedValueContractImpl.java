@@ -92,21 +92,17 @@ public final class NamedValueContractImpl
     }
 
     public NamedValueContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamedValues()
-                .createOrUpdate(
-                    resourceGroupName, serviceName, namedValueId, createParameters, createIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNamedValues()
+            .createOrUpdate(resourceGroupName, serviceName, namedValueId, createParameters, createIfMatch,
+                Context.NONE);
         return this;
     }
 
     public NamedValueContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamedValues()
-                .createOrUpdate(resourceGroupName, serviceName, namedValueId, createParameters, createIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNamedValues()
+            .createOrUpdate(resourceGroupName, serviceName, namedValueId, createParameters, createIfMatch, context);
         return this;
     }
 
@@ -125,25 +121,20 @@ public final class NamedValueContractImpl
     }
 
     public NamedValueContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamedValues()
-                .update(resourceGroupName, serviceName, namedValueId, updateIfMatch, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNamedValues()
+            .update(resourceGroupName, serviceName, namedValueId, updateIfMatch, updateParameters, Context.NONE);
         return this;
     }
 
     public NamedValueContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamedValues()
-                .update(resourceGroupName, serviceName, namedValueId, updateIfMatch, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNamedValues()
+            .update(resourceGroupName, serviceName, namedValueId, updateIfMatch, updateParameters, context);
         return this;
     }
 
-    NamedValueContractImpl(
-        NamedValueContractInner innerObject,
+    NamedValueContractImpl(NamedValueContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -153,28 +144,23 @@ public final class NamedValueContractImpl
     }
 
     public NamedValueContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamedValues()
-                .getWithResponse(resourceGroupName, serviceName, namedValueId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNamedValues()
+            .getWithResponse(resourceGroupName, serviceName, namedValueId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NamedValueContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamedValues()
-                .getWithResponse(resourceGroupName, serviceName, namedValueId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNamedValues()
+            .getWithResponse(resourceGroupName, serviceName, namedValueId, context)
+            .getValue();
         return this;
     }
 
     public Response<NamedValueSecretContract> listValueWithResponse(Context context) {
-        return serviceManager
-            .namedValues()
+        return serviceManager.namedValues()
             .listValueWithResponse(resourceGroupName, serviceName, namedValueId, context);
     }
 

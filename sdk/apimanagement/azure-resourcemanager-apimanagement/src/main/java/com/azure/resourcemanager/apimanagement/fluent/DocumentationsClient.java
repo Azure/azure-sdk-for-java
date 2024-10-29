@@ -48,8 +48,8 @@ public interface DocumentationsClient {
      * @return paged Documentation list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DocumentationContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<DocumentationContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Documentation by its identifier.
@@ -64,8 +64,8 @@ public interface DocumentationsClient {
      * @return the entity state (Etag) version of the Documentation by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DocumentationsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String documentationId, Context context);
+    DocumentationsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String documentationId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Documentation by its identifier.
@@ -93,8 +93,8 @@ public interface DocumentationsClient {
      * @return the details of the Documentation specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DocumentationsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String documentationId, Context context);
+    DocumentationsGetResponse getWithResponse(String resourceGroupName, String serviceName, String documentationId,
+        Context context);
 
     /**
      * Gets the details of the Documentation specified by its identifier.
@@ -125,13 +125,8 @@ public interface DocumentationsClient {
      * @return markdown documentation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DocumentationsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String documentationId,
-        DocumentationContractInner parameters,
-        String ifMatch,
-        Context context);
+    DocumentationsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String documentationId, DocumentationContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates a new Documentation or updates an existing one.
@@ -146,8 +141,8 @@ public interface DocumentationsClient {
      * @return markdown documentation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DocumentationContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String documentationId, DocumentationContractInner parameters);
+    DocumentationContractInner createOrUpdate(String resourceGroupName, String serviceName, String documentationId,
+        DocumentationContractInner parameters);
 
     /**
      * Updates the details of the Documentation for an API specified by its identifier.
@@ -165,13 +160,8 @@ public interface DocumentationsClient {
      * @return markdown documentation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DocumentationsUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String documentationId,
-        String ifMatch,
-        DocumentationUpdateContract parameters,
-        Context context);
+    DocumentationsUpdateResponse updateWithResponse(String resourceGroupName, String serviceName,
+        String documentationId, String ifMatch, DocumentationUpdateContract parameters, Context context);
 
     /**
      * Updates the details of the Documentation for an API specified by its identifier.
@@ -188,12 +178,8 @@ public interface DocumentationsClient {
      * @return markdown documentation details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DocumentationContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String documentationId,
-        String ifMatch,
-        DocumentationUpdateContract parameters);
+    DocumentationContractInner update(String resourceGroupName, String serviceName, String documentationId,
+        String ifMatch, DocumentationUpdateContract parameters);
 
     /**
      * Deletes the specified Documentation from an API.
@@ -210,8 +196,8 @@ public interface DocumentationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String documentationId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String documentationId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified Documentation from an API.

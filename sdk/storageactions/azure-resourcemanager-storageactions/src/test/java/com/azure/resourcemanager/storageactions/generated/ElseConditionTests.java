@@ -29,9 +29,11 @@ public final class ElseConditionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElseCondition model = new ElseCondition().withOperations(Arrays.asList(new StorageTaskOperation()
-            .withName(StorageTaskOperationName.SET_BLOB_TIER).withParameters(mapOf("glu", "xscpaierhhbc"))
-            .withOnSuccess(OnSuccess.CONTINUE).withOnFailure(OnFailure.BREAK)));
+        ElseCondition model = new ElseCondition()
+            .withOperations(Arrays.asList(new StorageTaskOperation().withName(StorageTaskOperationName.SET_BLOB_TIER)
+                .withParameters(mapOf("glu", "xscpaierhhbc"))
+                .withOnSuccess(OnSuccess.CONTINUE)
+                .withOnFailure(OnFailure.BREAK)));
         model = BinaryData.fromObject(model).toObject(ElseCondition.class);
         Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_TIER, model.operations().get(0).name());
         Assertions.assertEquals("xscpaierhhbc", model.operations().get(0).parameters().get("glu"));

@@ -39,9 +39,8 @@ public final class FabricOperationsStatusClientImpl implements FabricOperationsS
      * @param client the instance of the service client containing this operation class.
      */
     FabricOperationsStatusClientImpl(DataReplicationMgmtClientImpl client) {
-        this.service =
-            RestProxy
-                .create(FabricOperationsStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(FabricOperationsStatusService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,20 +51,15 @@ public final class FabricOperationsStatusClientImpl implements FabricOperationsS
     @Host("{$host}")
     @ServiceInterface(name = "DataReplicationMgmtC")
     public interface FabricOperationsStatusService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/operations/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/operations/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationStatusInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<OperationStatusInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("fabricName") String fabricName,
+            @PathParam("operationId") String operationId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -82,19 +76,15 @@ public final class FabricOperationsStatusClientImpl implements FabricOperationsS
      * @return defines the operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusInner>> getWithResponseAsync(
-        String resourceGroupName, String fabricName, String operationId) {
+    private Mono<Response<OperationStatusInner>> getWithResponseAsync(String resourceGroupName, String fabricName,
+        String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -108,18 +98,8 @@ public final class FabricOperationsStatusClientImpl implements FabricOperationsS
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            fabricName,
-                            operationId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, fabricName, operationId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -138,19 +118,15 @@ public final class FabricOperationsStatusClientImpl implements FabricOperationsS
      * @return defines the operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusInner>> getWithResponseAsync(
-        String resourceGroupName, String fabricName, String operationId, Context context) {
+    private Mono<Response<OperationStatusInner>> getWithResponseAsync(String resourceGroupName, String fabricName,
+        String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -164,16 +140,8 @@ public final class FabricOperationsStatusClientImpl implements FabricOperationsS
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                fabricName,
-                operationId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, fabricName,
+            operationId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -210,8 +178,8 @@ public final class FabricOperationsStatusClientImpl implements FabricOperationsS
      * @return defines the operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationStatusInner> getWithResponse(
-        String resourceGroupName, String fabricName, String operationId, Context context) {
+    public Response<OperationStatusInner> getWithResponse(String resourceGroupName, String fabricName,
+        String operationId, Context context) {
         return getWithResponseAsync(resourceGroupName, fabricName, operationId, context).block();
     }
 

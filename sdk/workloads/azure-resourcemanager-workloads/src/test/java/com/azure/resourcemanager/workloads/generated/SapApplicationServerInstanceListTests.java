@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SapApplicationServerInstanceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapApplicationServerInstanceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"instanceNo\":\"ojgjrwjueiotwmc\",\"subnet\":\"tdx\",\"hostname\":\"txnrjaw\",\"kernelVersion\":\"wgxhn\",\"kernelPatch\":\"kxfbkpycgklwndn\",\"ipAddress\":\"dauwhvylwzbtd\",\"gatewayPort\":4861537181982868149,\"icmHttpPort\":3747533921605268466,\"icmHttpsPort\":3229287439431688526,\"vmDetails\":[],\"status\":\"Offline\",\"health\":\"Degraded\",\"provisioningState\":\"Failed\"},\"location\":\"ualupjmkh\",\"tags\":{\"lrbpbewtghfgbl\":\"bbcswsrtjri\"},\"id\":\"gw\",\"name\":\"zvlvqhjkbegib\",\"type\":\"nmxiebwwaloayqc\"}],\"nextLink\":\"rtzju\"}")
-                .toObject(SapApplicationServerInstanceList.class);
+        SapApplicationServerInstanceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"instanceNo\":\"ojgjrwjueiotwmc\",\"subnet\":\"tdx\",\"hostname\":\"txnrjaw\",\"kernelVersion\":\"wgxhn\",\"kernelPatch\":\"kxfbkpycgklwndn\",\"ipAddress\":\"dauwhvylwzbtd\",\"gatewayPort\":4861537181982868149,\"icmHttpPort\":3747533921605268466,\"icmHttpsPort\":3229287439431688526,\"vmDetails\":[],\"status\":\"Offline\",\"health\":\"Degraded\",\"provisioningState\":\"Failed\"},\"location\":\"ualupjmkh\",\"tags\":{\"lrbpbewtghfgbl\":\"bbcswsrtjri\"},\"id\":\"gw\",\"name\":\"zvlvqhjkbegib\",\"type\":\"nmxiebwwaloayqc\"}],\"nextLink\":\"rtzju\"}")
+            .toObject(SapApplicationServerInstanceList.class);
         Assertions.assertEquals("ualupjmkh", model.value().get(0).location());
         Assertions.assertEquals("bbcswsrtjri", model.value().get(0).tags().get("lrbpbewtghfgbl"));
         Assertions.assertEquals("rtzju", model.nextLink());
@@ -27,15 +25,10 @@ public final class SapApplicationServerInstanceListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapApplicationServerInstanceList model =
-            new SapApplicationServerInstanceList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SapApplicationServerInstanceInner()
-                                .withLocation("ualupjmkh")
-                                .withTags(mapOf("lrbpbewtghfgbl", "bbcswsrtjri"))))
-                .withNextLink("rtzju");
+        SapApplicationServerInstanceList model = new SapApplicationServerInstanceList()
+            .withValue(Arrays.asList(new SapApplicationServerInstanceInner().withLocation("ualupjmkh")
+                .withTags(mapOf("lrbpbewtghfgbl", "bbcswsrtjri"))))
+            .withNextLink("rtzju");
         model = BinaryData.fromObject(model).toObject(SapApplicationServerInstanceList.class);
         Assertions.assertEquals("ualupjmkh", model.value().get(0).location());
         Assertions.assertEquals("bbcswsrtjri", model.value().get(0).tags().get("lrbpbewtghfgbl"));

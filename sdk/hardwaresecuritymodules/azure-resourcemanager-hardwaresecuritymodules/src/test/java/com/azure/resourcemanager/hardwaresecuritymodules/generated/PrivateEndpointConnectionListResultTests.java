@@ -32,20 +32,28 @@ public final class PrivateEndpointConnectionListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointConnectionListResult model = new PrivateEndpointConnectionListResult().withValue(Arrays.asList(
-            new PrivateEndpointConnectionInner()
-                .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
-                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED).withDescription("hl")
-                        .withActionsRequired("jbhckfrlhr")))
-                .withEtag("slhs"),
-            new PrivateEndpointConnectionInner()
-                .withProperties(new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
-                    .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED).withDescription("duala")
-                        .withActionsRequired("qpv")))
-                .withEtag("gvxp")))
-            .withNextLink("ldawkzbaliourqha");
+        PrivateEndpointConnectionListResult model
+            = new PrivateEndpointConnectionListResult()
+                .withValue(
+                    Arrays
+                        .asList(
+                            new PrivateEndpointConnectionInner()
+                                .withProperties(
+                                    new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
+                                        .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                                            .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+                                            .withDescription("hl")
+                                            .withActionsRequired("jbhckfrlhr")))
+                                .withEtag("slhs"),
+                            new PrivateEndpointConnectionInner()
+                                .withProperties(
+                                    new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
+                                        .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                                            .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                                            .withDescription("duala")
+                                            .withActionsRequired("qpv")))
+                                .withEtag("gvxp")))
+                .withNextLink("ldawkzbaliourqha");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionListResult.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             model.value().get(0).properties().privateLinkServiceConnectionState().status());

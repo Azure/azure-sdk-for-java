@@ -533,18 +533,14 @@ public final class BareMetalMachineInner extends Resource {
      */
     public void validate() {
         if (extendedLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property extendedLocation in model BareMetalMachineInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property extendedLocation in model BareMetalMachineInner"));
         } else {
             extendedLocation().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model BareMetalMachineInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model BareMetalMachineInner"));
         } else {
             innerProperties().validate();
         }

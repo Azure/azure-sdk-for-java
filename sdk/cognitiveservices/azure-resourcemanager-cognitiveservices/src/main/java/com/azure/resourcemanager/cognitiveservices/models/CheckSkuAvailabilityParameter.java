@@ -101,22 +101,16 @@ public final class CheckSkuAvailabilityParameter {
      */
     public void validate() {
         if (skus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property skus in model CheckSkuAvailabilityParameter"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property skus in model CheckSkuAvailabilityParameter"));
         }
         if (kind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property kind in model CheckSkuAvailabilityParameter"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property kind in model CheckSkuAvailabilityParameter"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model CheckSkuAvailabilityParameter"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model CheckSkuAvailabilityParameter"));
         }
     }
 

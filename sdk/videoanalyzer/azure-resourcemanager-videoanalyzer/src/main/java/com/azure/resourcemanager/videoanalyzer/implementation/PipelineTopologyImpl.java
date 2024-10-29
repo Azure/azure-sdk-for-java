@@ -115,24 +115,20 @@ public final class PipelineTopologyImpl
     }
 
     public PipelineTopology create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPipelineTopologies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, pipelineTopologyName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelineTopologies()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, pipelineTopologyName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public PipelineTopology create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPipelineTopologies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, pipelineTopologyName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelineTopologies()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, pipelineTopologyName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -148,28 +144,22 @@ public final class PipelineTopologyImpl
     }
 
     public PipelineTopology apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPipelineTopologies()
-                .updateWithResponse(
-                    resourceGroupName, accountName, pipelineTopologyName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelineTopologies()
+            .updateWithResponse(resourceGroupName, accountName, pipelineTopologyName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PipelineTopology apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPipelineTopologies()
-                .updateWithResponse(resourceGroupName, accountName, pipelineTopologyName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelineTopologies()
+            .updateWithResponse(resourceGroupName, accountName, pipelineTopologyName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    PipelineTopologyImpl(
-        PipelineTopologyInner innerObject,
+    PipelineTopologyImpl(PipelineTopologyInner innerObject,
         com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -179,22 +169,18 @@ public final class PipelineTopologyImpl
     }
 
     public PipelineTopology refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPipelineTopologies()
-                .getWithResponse(resourceGroupName, accountName, pipelineTopologyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelineTopologies()
+            .getWithResponse(resourceGroupName, accountName, pipelineTopologyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PipelineTopology refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPipelineTopologies()
-                .getWithResponse(resourceGroupName, accountName, pipelineTopologyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPipelineTopologies()
+            .getWithResponse(resourceGroupName, accountName, pipelineTopologyName, context)
+            .getValue();
         return this;
     }
 

@@ -32,22 +32,18 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        return Mono.using(
-            () -> createEventHubClientBuilder().buildAsyncProducerClient(),
-            client -> sendMessages(client, options.getPartitionId(), options.getCount()),
-            client -> client.close());
+        return Mono.using(() -> createEventHubClientBuilder().buildAsyncProducerClient(),
+            client -> sendMessages(client, options.getPartitionId(), options.getCount()), client -> client.close());
     }
 
     @Override
     public Mono<Void> setupAsync() {
         if (options.isSync()) {
-            receiver = createEventHubClientBuilder()
-                .prefetchCount(options.getPrefetch())
+            receiver = createEventHubClientBuilder().prefetchCount(options.getPrefetch())
                 .consumerGroup(options.getConsumerGroup())
                 .buildConsumerClient();
         } else {
-            receiverAsync = createEventHubClientBuilder()
-                .prefetchCount(options.getPrefetch())
+            receiverAsync = createEventHubClientBuilder().prefetchCount(options.getPrefetch())
                 .consumerGroup(options.getConsumerGroup())
                 .buildAsyncConsumerClient();
         }
@@ -57,8 +53,8 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
 
     @Override
     public void run() {
-        final IterableStream<PartitionEvent> partitionEvents = receiver.receiveFromPartition(
-            options.getPartitionId(), options.getCount(), EventPosition.earliest());
+        final IterableStream<PartitionEvent> partitionEvents
+            = receiver.receiveFromPartition(options.getPartitionId(), options.getCount(), EventPosition.earliest());
 
         // Force the evaluation of the iterable stream.
         final List<PartitionEvent> results = partitionEvents.stream().collect(Collectors.toList());
@@ -66,9 +62,9 @@ public class ReceiveEventsTest extends ServiceTest<EventHubsReceiveOptions> {
         if (results.isEmpty()) {
             throw new RuntimeException("Did not receive any events.");
         } else if (results.size() != options.getCount()) {
-            throw new RuntimeException(String.format(
-                "Did not receive correct number of events. Expected: %d. Actual: %d.", options.getCount(),
-                results.size()));
+            throw new RuntimeException(
+                String.format("Did not receive correct number of events. Expected: %d. Actual: %d.", options.getCount(),
+                    results.size()));
         }
     }
 
