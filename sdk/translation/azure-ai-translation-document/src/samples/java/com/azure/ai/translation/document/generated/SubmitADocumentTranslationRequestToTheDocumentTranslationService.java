@@ -20,46 +20,33 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.Arrays;
 
 public class SubmitADocumentTranslationRequestToTheDocumentTranslationService {
-    public static void main(String[]args) {
-        DocumentTranslationClient documentTranslationClient = new DocumentTranslationClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("{endpoint}")
-            .buildClient();
+    public static void main(String[] args) {
+        DocumentTranslationClient documentTranslationClient
+            = new DocumentTranslationClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{endpoint}")
+                .buildClient();
         // BEGIN:com.azure.ai.translation.document.generated.translation.submitadocumenttranslationrequesttothedocumenttranslationservice
-        SyncPoller < TranslationStatusResult,
-        TranslationStatusResult > response = documentTranslationClient
-            .beginTranslation(
-                new TranslationBatch(
-                    Arrays
-                    .asList(new DocumentTranslationInput(
-                            new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")
-                            .setFilter(
-                                new DocumentFilter()
-                                .setPrefix("pre")
-                                .setSuffix(".txt"))
-                            .setLanguage("en")
-                            .setStorageSource(
-                                TranslationStorageSource.AZURE_BLOB),
-                            Arrays.asList(
-                                new TargetInput(
-                                    "https://myblob.blob.core.windows.net/destinationContainer1",
-                                    "fr")
-                                .setCategory("general")
-                                .setGlossaries(Arrays
-                                    .asList(new Glossary(
+        SyncPoller<TranslationStatusResult, TranslationStatusResult> response
+            = documentTranslationClient
+                .beginTranslation(
+                    new TranslationBatch(
+                        Arrays
+                            .asList(new DocumentTranslationInput(
+                                new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")
+                                    .setFilter(new DocumentFilter().setPrefix("pre").setSuffix(".txt"))
+                                    .setLanguage("en")
+                                    .setStorageSource(TranslationStorageSource.AZURE_BLOB),
+                                Arrays.asList(
+                                    new TargetInput("https://myblob.blob.core.windows.net/destinationContainer1", "fr")
+                                        .setCategory("general")
+                                        .setGlossaries(Arrays.asList(new Glossary(
                                             "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
-                                            "XLIFF")
-                                        .setStorageSource(
-                                            TranslationStorageSource.AZURE_BLOB)))
-                                .setStorageSource(
-                                    TranslationStorageSource.AZURE_BLOB),
-                                new TargetInput(
-                                    "https://myblob.blob.core.windows.net/destinationContainer2",
-                                    "es")
-                                .setCategory("general")
-                                .setStorageSource(
-                                    TranslationStorageSource.AZURE_BLOB)))
-                        .setStorageType(StorageInputType.FOLDER))));
+                                            "XLIFF").setStorageSource(TranslationStorageSource.AZURE_BLOB)))
+                                        .setStorageSource(TranslationStorageSource.AZURE_BLOB),
+                                    new TargetInput("https://myblob.blob.core.windows.net/destinationContainer2", "es")
+                                        .setCategory("general")
+                                        .setStorageSource(TranslationStorageSource.AZURE_BLOB)))
+                                            .setStorageType(StorageInputType.FOLDER))));
         // END:com.azure.ai.translation.document.generated.translation.submitadocumenttranslationrequesttothedocumenttranslationservice
     }
 }
