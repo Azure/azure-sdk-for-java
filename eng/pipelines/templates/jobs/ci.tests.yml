@@ -50,7 +50,7 @@ parameters:
     default: {}
   - name: VersionOverride
     type: string
-    default: ''
+    default: $(VersionOverride)
 
 jobs:
   - job:
