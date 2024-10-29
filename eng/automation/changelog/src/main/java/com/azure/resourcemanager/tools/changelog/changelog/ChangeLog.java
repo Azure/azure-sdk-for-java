@@ -108,7 +108,7 @@ public class ChangeLog {
         Iterator<String> iterator = changeList.iterator();
         while (iterator.hasNext()) {
             String change = iterator.next();
-            if (changeSet.contains(change) || change.trim().isEmpty()) {
+            if (changeSet.contains(change)) {
                 iterator.remove();
             } else {
                 changeSet.add(change);
