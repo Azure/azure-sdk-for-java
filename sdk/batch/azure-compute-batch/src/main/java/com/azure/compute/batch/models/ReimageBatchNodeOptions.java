@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.compute.batch.models;
 
+/**
+ * Optional parameters for reimaging a Compute Node.
+ */
 public class ReimageBatchNodeOptions extends BatchBaseOptions {
 
 }
