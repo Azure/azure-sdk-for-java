@@ -19,7 +19,7 @@ public class BreakingChange {
     private BreakingChange(String className) {
         Objects.requireNonNull(className);
         this.className = className;
-        setClassLevelChangeType(Type.MODIFIED);
+        setClassLevelChangeType(Type.NOT_CHANGED);
     }
 
     public static BreakingChange fromClass(String className) {
@@ -49,7 +49,9 @@ public class BreakingChange {
     }
 
     public Collection<String> getItems() {
-        if (methodChanges.isEmpty()) {
+        if (type == Type.NOT_CHANGED) {
+            return Collections.emptyList();
+        } else if (methodChanges.isEmpty()) {
             return Collections.singleton(String.format("Class `%s` was %s.", className, type.getDisplayName()));
         } else {
             return methodChanges.stream().map(methodChange -> String.format("Method %s in class `%s`.", methodChange, className)).collect(Collectors.toList());
@@ -57,6 +59,7 @@ public class BreakingChange {
     }
 
     public enum Type {
+        NOT_CHANGED("not changed"),
         MODIFIED("modified"),
         REMOVED("removed"),
         ;
