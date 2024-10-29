@@ -37,7 +37,6 @@
     <!--  TODO: Update the branch coverage to 0.29, once this Github issue is resolved: https://github.com/Azure/azure-sdk-for-java/issues/41343-->
     <jacoco.min.branchcoverage>0.27</jacoco.min.branchcoverage>
     <doclintMissingInclusion>-</doclintMissingInclusion>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

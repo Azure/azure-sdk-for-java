@@ -22,7 +22,6 @@
       --add-exports com.azure.core/com.azure.core.implementation=com.azure.identity.broker
     </javaModulesSurefireArgLine>
     <doclintMissingInclusion>-</doclintMissingInclusion>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <parent>

@@ -50,7 +50,6 @@
     </javaModulesSurefireArgLine>
     <revapi.skip>true</revapi.skip>
     <doclintMissingInclusion>-</doclintMissingInclusion>
-    <spotless.skip>false</spotless.skip>
   </properties>
   <dependencies>
     <dependency>

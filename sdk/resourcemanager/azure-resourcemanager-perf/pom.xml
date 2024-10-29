@@ -19,7 +19,6 @@
 
   <properties>
     <perf.test.mainClass>com.azure.resourcemanager.perf.App</perf.test.mainClass>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

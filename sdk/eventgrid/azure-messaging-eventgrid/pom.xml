@@ -58,7 +58,6 @@
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <developers>

@@ -20,7 +20,6 @@
 
   <properties>
     <perf.test.mainClass>com.azure.monitor.query.perf.App</perf.test.mainClass>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

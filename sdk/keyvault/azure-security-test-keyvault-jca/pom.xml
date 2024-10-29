@@ -20,7 +20,6 @@
   <properties>
     <spotbugs.skip>true</spotbugs.skip>
     <doclintMissingInclusion>-</doclintMissingInclusion>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>
