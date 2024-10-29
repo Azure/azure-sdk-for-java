@@ -3,7 +3,6 @@
 
 package io.clientcore.http.stress.util;
 
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.http.stress.StressOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
@@ -100,7 +99,7 @@ public class TelemetryHelper {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
         String applicationInsightsConnectionString = System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING");
         if (applicationInsightsConnectionString != null) {
-            new AzureMonitorExporterBuilder().connectionString(applicationInsightsConnectionString).install(sdkBuilder);
+//            new AzureMonitorExporterBuilder().connectionString(applicationInsightsConnectionString).install(sdkBuilder);
         } else {
             System.setProperty("otel.traces.exporter", "none");
             System.setProperty("otel.logs.exporter", "none");
