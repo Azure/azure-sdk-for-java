@@ -126,7 +126,7 @@ If you have network issues, please take a look at [troubleshooting network issue
 
 ### Configure RetryPolicy
 
-When receiving error code 423 `TooManyRequest`, the Azure OpenAI service will return a 24Hrs time window for the next request. 
+When receiving error code 429 `TooManyRequest`, the Azure OpenAI service will return a 24Hrs time window for the next request. 
 You can configure the `RetryPolicy` to handle this error. Here is an example of how to configure the `RetryPolicy`:
 
 ```java 
