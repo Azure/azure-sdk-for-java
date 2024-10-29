@@ -23,7 +23,7 @@ public class GetSupportedFormats {
             .buildClient();
 
         // BEGIN: getSupportedFormats
-        List < FileFormat > documentFileFormats = documentTranslationClient.getSupportedFormats(FileFormatType.DOCUMENT);
+        List<FileFormat> documentFileFormats = documentTranslationClient.getSupportedFormats(FileFormatType.DOCUMENT);
         for (FileFormat fileFormat: documentFileFormats) {
             System.out.println("FileFormat:" + fileFormat.getFormat());
             System.out.println("FileExtensions:" + fileFormat.getFileExtensions());
@@ -31,7 +31,7 @@ public class GetSupportedFormats {
             System.out.println("Type:" + fileFormat.getType());
         }
 
-        List < FileFormat > glossaryFileFormats = documentTranslationClient.getSupportedFormats(FileFormatType.GLOSSARY);
+        List<FileFormat> glossaryFileFormats = documentTranslationClient.getSupportedFormats(FileFormatType.GLOSSARY);
         for (FileFormat fileFormat: glossaryFileFormats) {
             System.out.println("FileFormat:" + fileFormat.getFormat());
             System.out.println("FileExtensions:" + fileFormat.getFileExtensions());
