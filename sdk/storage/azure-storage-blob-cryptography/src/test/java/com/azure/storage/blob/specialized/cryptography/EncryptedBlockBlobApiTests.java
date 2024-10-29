@@ -251,7 +251,7 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ValueSource(ints = {3000, 5 * 1024 * 1024 - 10, 20 * 1024 * 1024 - 10})
     public void encryptionV2ManualDecryption(int dataSize) throws IOException, GeneralSecurityException {
         bec = getEncryptionClient(EncryptionVersion.V2);
-        byte[] data = getRandomByteArray(dataSize);
+        byte[] data = getRandomByteArray(dataSize); 
 
         bec.upload(BinaryData.fromBytes(data));
 
