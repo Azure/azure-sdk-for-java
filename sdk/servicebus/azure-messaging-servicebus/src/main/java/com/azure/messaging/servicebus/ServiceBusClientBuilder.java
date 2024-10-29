@@ -1355,33 +1355,6 @@ public final class ServiceBusClientBuilder
             return choiceFlag.get();
         }
 
-        private boolean isOptedIn(Configuration configuration, ConfigurationProperty<Boolean> configProperty,
-            AtomicReference<Boolean> choiceFlag) {
-            final Boolean flag = choiceFlag.get();
-            if (flag != null) {
-                return flag;
-            }
-
-            final String propName = configProperty.getName();
-            final boolean isOptedIn;
-            if (configuration != null) {
-                isOptedIn = configuration.get(configProperty);
-            } else {
-                assert !CoreUtils.isNullOrEmpty(propName);
-                if (!CoreUtils.isNullOrEmpty(System.getenv(propName))) {
-                    isOptedIn = "true".equalsIgnoreCase(System.getenv(propName));
-                } else if (!CoreUtils.isNullOrEmpty(System.getProperty(propName))) {
-                    isOptedIn = "true".equalsIgnoreCase(System.getProperty(propName));
-                } else {
-                    isOptedIn = false;
-                }
-            }
-            if (choiceFlag.compareAndSet(null, isOptedIn)) {
-                ServiceBusClientBuilder.LOGGER.verbose("Selected configuration {}={}", propName, isOptedIn);
-            }
-            return choiceFlag.get();
-        }
-
         // Creates connection-cache for V2-Stack.
         private static ReactorConnectionCache<ServiceBusReactorAmqpConnection> createConnectionCache(
             ConnectionOptions connectionOptions, MessageSerializer serializer, boolean crossEntityTransactions,
