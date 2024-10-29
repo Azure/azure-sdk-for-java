@@ -96,38 +96,28 @@
         </configuration>
       </plugin>
       <plugin>
-        <!-- we need shade plugin to merge MANIFEST-INF properly into the uber jar-->
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
-        <!-- we need shade plugin to merge MANIFEST-INF properly into the uber jar-->
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.7.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-assembly-plugin;external_dependency} -->
         <executions>
-        <execution>
-        <phase>package</phase>
-        <goals>
-          <goal>shade</goal>
-        </goals>
-        <configuration>
-          <transformers>
-            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-              <mainClass>io.clientcore.http.stress.App</mainClass>
-            </transformer>
-            <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
-          </transformers>
-          <finalName>${project.artifactId}-${project.version}-jar-with-dependencies</finalName>
-          <filters>
-            <filter>
-              <artifact>*:*</artifact>
-              <excludes>
-                <exclude>META-INF/maven/**</exclude>
-                <exclude>META-INF/*.SF</exclude>
-                <exclude>META-INF/*.DSA</exclude>
-                <exclude>META-INF/*.RSA</exclude>
-              </excludes>
-            </filter>
-          </filters>
-        </configuration>
-        </execution>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <archive>
+                <manifest>
+                  <mainClass>
+                    io.clientcore.http.stress.App
+                  </mainClass>
+                </manifest>
+              </archive>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
