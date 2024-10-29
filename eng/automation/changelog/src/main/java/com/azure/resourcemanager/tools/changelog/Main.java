@@ -67,13 +67,13 @@ public class Main {
         changeLogs.forEach(x -> {
             if (x.isClassLevelChanged()) {
                 breakingChange.append(x.getBreakingChange());
-                addBreakingChangeForSdkAutomation(breakingChangeItems, x.getBreakingChange());
+                breakingChangeItems.add(x.getBreakingChangeForSdkAutomation());
             }
         });
         changeLogs.forEach(x -> {
             if (!x.isClassLevelChanged()) {
                 breakingChange.append(x.getBreakingChange());
-                addBreakingChangeForSdkAutomation(breakingChangeItems, x.getBreakingChange());
+                breakingChangeItems.add(x.getBreakingChangeForSdkAutomation());
             }
         });
         changeLogs.forEach(x -> {
@@ -95,12 +95,5 @@ public class Main {
         json.put("changelog", changelog);
 
         System.out.println(json.toString());
-    }
-
-    private static void addBreakingChangeForSdkAutomation(List<String> breakingChangeItems, String breakingChange) {
-        if (breakingChange == null || breakingChange.trim().isEmpty()) {
-            return;
-        }
-        breakingChangeItems.add(breakingChange.replace("\n", " "));
     }
 }

@@ -11,6 +11,7 @@ import japicmp.model.JApiClass;
 import japicmp.model.JApiMethod;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -94,6 +95,33 @@ public class ChangeLog {
         return builder.toString();
     }
 
+    public String getBreakingChangeForSdkAutomation() {
+        if (this.breakingChange.isEmpty()) {
+            return "";
+        }
+        // first item is always class level
+        String classLevel = this.breakingChange.get(0);
+        // remove "#### " prefix
+        StringBuilder result = new StringBuilder(classLevel.substring(5));
+        if (this.breakingChange.size() == 1) {
+            return result.append(".").toString();
+        }
+        // append method-level breaking changes
+        result.append(": ");
+        for (int i = 1; i < this.breakingChange.size(); i++) {
+            String methodLevelChange = this.breakingChange.get(i);
+            if (i == 1) {
+                // remove "* " prefix
+                result.append(methodLevelChange.substring(2));
+            } else {
+                // replace "*" with ","
+                result.append(",")
+                    .append(methodLevelChange.substring(1));
+            }
+        }
+        return result.append(".").toString();
+    }
+
     public boolean isClassLevelChanged() {
         return getJApiClass().getChangeStatus() == JApiChangeStatus.NEW || getJApiClass().getChangeStatus() == JApiChangeStatus.REMOVED;
     }
@@ -114,7 +142,7 @@ public class ChangeLog {
         Iterator<String> iterator = changeList.iterator();
         while (iterator.hasNext()) {
             String change = iterator.next();
-            if (changeSet.contains(change)) {
+            if (changeSet.contains(change) || change.trim().isEmpty()) {
                 iterator.remove();
             } else {
                 changeSet.add(change);
