@@ -3,18 +3,20 @@
 
 package com.azure.resourcemanager.digitaltwins;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.digitaltwins.models.CheckNameRequest;
 import com.azure.resourcemanager.digitaltwins.models.CheckNameResult;
 import com.azure.resourcemanager.digitaltwins.models.DigitalTwinsDescription;
 import com.azure.resourcemanager.digitaltwins.models.Operation;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -33,14 +35,18 @@ public class DigitalTwinsLifecycleTests extends TestProxyTestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void lifecycleTest() {
+        TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+
         String rgName = DEFAULT_RESOURCE_GROUP_NAME;
 
         ResourceManager resourceManager = ResourceManager
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE))
+            .authenticate(credential, profile)
             .withDefaultSubscription();
 
         AzureDigitalTwinsManager digitalTwinsManager = AzureDigitalTwinsManager
-            .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
+            .configure().withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .authenticate(credential, profile);
 
         ResourceGroup group = resourceManager.resourceGroups().define(rgName).withRegion(DEFAULT_REGION).create();
 
