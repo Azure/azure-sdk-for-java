@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resourcehealth;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
@@ -21,6 +22,8 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStateValues;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatus;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -29,7 +32,7 @@ import java.util.Random;
 public class ResourceHealthTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
 
-    private static final Region REGION = Region.US_WEST3;
+    private static final Region REGION = Region.US_WEST2;
     private static final String VM_NAME = "vm" + randomPadding();
 
     private String resourceGroup = "rg" + randomPadding();
@@ -41,12 +44,22 @@ public class ResourceHealthTests extends TestProxyTestBase {
     @Test
     @LiveOnly
     public void resourceHealthTest() {
+        TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+
+        ResourceManager resourceManager = ResourceManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
+
         ComputeManager computeManager = ComputeManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         ResourceHealthManager resourceHealthManager = ResourceHealthManager.configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -54,7 +67,7 @@ public class ResourceHealthTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroup = testResourceGroup;
         } else {
-            computeManager.resourceManager().resourceGroups().define(resourceGroup).withRegion(REGION).create();
+            resourceManager.resourceGroups().define(resourceGroup).withRegion(REGION).create();
         }
 
         try {
@@ -66,7 +79,7 @@ public class ResourceHealthTests extends TestProxyTestBase {
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
-                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
                 .withRootUsername("azuser")
                 .withRootPassword("Pa5$123456")
                 .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
@@ -115,7 +128,7 @@ public class ResourceHealthTests extends TestProxyTestBase {
             //                            && AvailabilityStateValues.AVAILABLE.equals(status.properties().availabilityState())));
         } finally {
             if (!testEnv) {
-                computeManager.resourceManager().resourceGroups().beginDeleteByName(resourceGroup);
+                resourceManager.resourceGroups().beginDeleteByName(resourceGroup);
             }
         }
     }
