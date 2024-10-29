@@ -103,7 +103,7 @@ public class ChangeLog {
         deduplicate(this.newFeature);
     }
 
-    private static void deduplicate(List<String> changeList) {
+    private void deduplicate(List<String> changeList) {
         Set<String> changeSet = new HashSet<>();
         Iterator<String> iterator = changeList.iterator();
         while (iterator.hasNext()) {
