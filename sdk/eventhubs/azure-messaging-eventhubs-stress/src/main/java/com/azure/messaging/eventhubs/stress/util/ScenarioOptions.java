@@ -17,19 +17,19 @@ public class ScenarioOptions {
     @Value("${TEST_CLASS:#{null}}")
     private String testClass;
 
-    @Value("${EVENTHUBS_CONNECTION_STRING:#{null}}")
-    private String eventhubsConnectionString;
+    @Value("${EVENT_HUBS_FULLY_QUALIFIED_NAMESPACE}")
+    private String eventHubsFullyQualifiedNamespace;
 
-    @Value("${EVENTHUBS_EVENT_HUB_NAME:#{null}}")
+    @Value("${EVENT_HUBS_EVENT_HUB_NAME:#{null}}")
     private String eventHubsEventHubName;
 
-    @Value("${EVENTHUBS_CONSUMER_GROUP:$Default}")
+    @Value("${EVENT_HUBS_CONSUMER_GROUP:$Default}")
     private String eventHubsConsumerGroup;
 
-    @Value("${STORAGE_CONNECTION_STRING:#{null}}")
-    private String storageConnectionString;
+    @Value("${STORAGE_BLOB_ENDPOINT_URI}")
+    private String storageBlobEndpointUri;
 
-    @Value("${STORAGE_CONTAINER_NAME:#{null}}")
+    @Value("${STORAGE_CONTAINER_NAME}")
     private String storageContainerName;
 
     @Value("${DURATION_MINUTES:15}")
@@ -54,13 +54,12 @@ public class ScenarioOptions {
         return testClass;
     }
 
-    /**
-     * Gets the Event Hubs namespace connection string.
-     *
-     * @return The Event Hubs namespace connection string.
-     */
-    public String getEventHubsConnectionString() {
-        return eventhubsConnectionString;
+    public String getEventHubsFullyQualifiedNamespace() {
+        return eventHubsFullyQualifiedNamespace;
+    }
+
+    public void setEventHubsFullyQualifiedNamespace(String eventHubsFullyQualifiedNamespace) {
+        this.eventHubsFullyQualifiedNamespace = eventHubsFullyQualifiedNamespace;
     }
 
     /**
@@ -76,8 +75,12 @@ public class ScenarioOptions {
         return eventHubsConsumerGroup;
     }
 
-    public String getStorageConnectionString() {
-        return storageConnectionString;
+    public String getStorageBlobEndpointUri() {
+        return storageBlobEndpointUri;
+    }
+
+    public void setStorageBlobEndpointUri(String storageBlobEndpointUri) {
+        this.storageBlobEndpointUri = storageBlobEndpointUri;
     }
 
     public String getStorageContainerName() {
