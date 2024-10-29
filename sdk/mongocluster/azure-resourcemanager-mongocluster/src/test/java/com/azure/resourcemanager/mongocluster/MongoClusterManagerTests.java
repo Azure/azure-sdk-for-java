@@ -46,7 +46,8 @@ public class MongoClusterManagerTests extends TestProxyTestBase {
 
         resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile).withDefaultSubscription();
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
 
         mongoClusterManager = MongoClusterManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
