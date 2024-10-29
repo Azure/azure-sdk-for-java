@@ -48,13 +48,6 @@ public class AzureAppConfigDataLocationResolver
         Boolean hasConnectionString = StringUtils.hasText(context.getBinder()
             .bind(AppConfigurationProperties.CONFIG_PREFIX + ".stores[0].connection-string", String.class)
             .orElse(""));
-        Boolean hasClientConfigs = StringUtils
-            .hasText(context.getBinder().bind("spring.cloud.appconfiguration.version", String.class)
-                .orElse(""));
-        
-        if (!hasClientConfigs) {
-            return false;
-        }
 
         return (hasEndpoint || hasConnectionString);
     }
