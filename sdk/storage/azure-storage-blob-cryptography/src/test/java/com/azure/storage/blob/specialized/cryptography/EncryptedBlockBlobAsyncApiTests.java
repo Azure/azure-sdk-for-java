@@ -153,8 +153,8 @@ public class EncryptedBlockBlobAsyncApiTests extends BlobCryptographyTestBase {
 
 
         StepVerifier.create(bec.uploadWithResponse(new BlobParallelUploadOptions(Flux.just(data.duplicate())))
-                .then(bec.downloadContentWithResponse(null, null)))
-            .assertNext(r -> assertArraysEqual(data.array(), r.getValue().toBytes()))
+                .then(FluxUtil.collectBytesInByteBufferStream(bec.downloadStream())))
+            .assertNext(r -> assertArraysEqual(data.array(), r))
             .verifyComplete();
     }
 
@@ -939,7 +939,22 @@ public class EncryptedBlockBlobAsyncApiTests extends BlobCryptographyTestBase {
     }
 
     @Test
-    @Disabled
+    public void downloadStream() {
+        StepVerifier.create(bec.upload(DATA.getDefaultBinaryData())
+                .then(FluxUtil.collectBytesInByteBufferStream(bec.downloadStream())))
+            .assertNext(r -> assertArraysEqual(DATA.getDefaultBytes(), r))
+            .verifyComplete();
+    }
+
+    @Test
+    public void downloadContent() {
+        StepVerifier.create(bec.upload(DATA.getDefaultBinaryData())
+                .then(bec.downloadContent()))
+            .assertNext(r -> assertArraysEqual(DATA.getDefaultBytes(), r.toBytes()))
+            .verifyComplete();
+    }
+
+    @Test
     public void downloadSnapshot() {
         Mono<byte[]> response = bec.upload(DATA.getDefaultBinaryData()).thenMany(bec.download()).then(bec.createSnapshot())
             .flatMap(bc2 -> bec.uploadWithResponse(new BlobParallelUploadOptions(new ByteArrayInputStream("ABC".getBytes()), "ABC".getBytes().length))
@@ -1756,8 +1771,8 @@ public class EncryptedBlockBlobAsyncApiTests extends BlobCryptographyTestBase {
             .buildEncryptedBlobAsyncClient());
 
         StepVerifier.create(bec.uploadWithResponse(new BlobParallelUploadOptions(BinaryData.fromByteBuffer(data.duplicate())))
-                .then(bec2.downloadContent()))
-            .assertNext(r -> assertArrayEquals(data.array(), r.toBytes()))
+                .then(FluxUtil.collectBytesInByteBufferStream(bec2.downloadStream())))
+            .assertNext(r -> assertArrayEquals(data.array(), r))
             .verifyComplete();
     }
 

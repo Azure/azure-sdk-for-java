@@ -66,6 +66,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
@@ -1341,21 +1342,19 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
          */
         Hooks.onErrorDropped(ignored -> { /* do nothing with it */ });
 
-        assertThrows(BlobStorageException.class, () -> {
-            try {
-                bcDownloading.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null,
-                    null, false, null, null);
-            } catch (Exception e) {
-                Throwable cause = e;
-                while (cause != null) {
-                    if (cause instanceof BlobStorageException && ((BlobStorageException) cause).getStatusCode() == 412) {
-                        throw cause;
-                    }
-                    cause = cause.getCause();
+        try {
+            bcDownloading.downloadToFileWithResponse(outFile.toPath().toString(), null, options, null,
+                null, false, null, null);
+        } catch (Exception exception) {
+            assertTrue(Exceptions.unwrapMultiple(exception).stream().anyMatch(e -> {
+                Throwable e2 = Exceptions.unwrap(e);
+                if (exception instanceof BlobStorageException) {
+                    assertEquals(412, ((BlobStorageException) e2).getStatusCode());
+                    return true;
                 }
-                throw e;
-            }
-        });
+                return false;
+            }));
+        }
 
         // Give the file a chance to be deleted by the download operation before verifying its deletion
         sleepIfRunningAgainstService(500);
