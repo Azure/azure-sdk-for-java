@@ -36,7 +36,7 @@ $templateFileParameters['sshPubKey'] = $sshKey
 
 # Get the max version that is not preview and then get the name of the patch version with the max value
 az cloud set --name $Environment
-az login --service-principal -u $env:TestApplicationId --tenant $env:TenantId --allow-no-subscriptions --federated-token $env:ARM_OIDC_TOKEN
+az login --service-principal -u $TestApplicationId --tenant $TenantId --allow-no-subscriptions --federated-token $env:ARM_OIDC_TOKEN
 az account set --subscription $SubscriptionId
 $versions = az aks get-versions -l westus -o json | ConvertFrom-Json
 Write-Host "AKS versions: $($versions | ConvertTo-Json -Depth 100)"
