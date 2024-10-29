@@ -310,4 +310,156 @@ public class PoolTests extends BatchClientTestBase {
             throw new RuntimeException(e);
         }
     }
+
+    @Test
+    public void canCreatePoolWithConfidentialVM() throws Exception {
+        String poolId = getStringIdWithUserNamePrefix("ConfidentialVMPool");
+
+        if (!poolExists(batchClient, poolId)) {
+            // Define the image reference
+            ImageReference imageReference = new ImageReference()
+                .setPublisher("Canonical")
+                .setOffer("0001-com-ubuntu-server-jammy")
+                .setSku("22_04-lts");
+
+            // Set the security profile for the Confidential VM
+            SecurityProfile securityProfile = new SecurityProfile(true, SecurityTypes.CONFIDENTIAL_VM,
+                new UefiSettings().setSecureBootEnabled(true).setVTpmEnabled(true));
+
+            // Set the VM disk security profile
+            VMDiskSecurityProfile diskSecurityProfile = new VMDiskSecurityProfile()
+                .setSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY);
+
+            ManagedDisk managedDisk = new ManagedDisk().setSecurityProfile(diskSecurityProfile);
+
+            // Set the OS disk configuration
+            OSDisk osDisk = new OSDisk().setManagedDisk(managedDisk);
+
+            // Define the virtual machine configuration
+            VirtualMachineConfiguration vmConfiguration = new VirtualMachineConfiguration(imageReference, "batch.node.ubuntu 22.04")
+                .setSecurityProfile(securityProfile)
+                .setOsDisk(osDisk);
+
+            // Create the pool
+            BatchPoolCreateContent poolCreateContent = new BatchPoolCreateContent(poolId, "STANDARD_D2S_V3")
+                .setVirtualMachineConfiguration(vmConfiguration)
+                .setTargetDedicatedNodes(0);
+
+            batchClient.createPool(poolCreateContent);
+        }
+
+        try {
+            BatchPool pool = batchClient.getPool(poolId);
+            Assertions.assertNotNull(pool);
+
+            SecurityProfile sp = pool.getVirtualMachineConfiguration().getSecurityProfile();
+            Assertions.assertTrue(SecurityTypes.CONFIDENTIAL_VM.toString().equalsIgnoreCase(sp.getSecurityType().toString()));
+            Assertions.assertTrue(sp.isEncryptionAtHost());
+            Assertions.assertTrue(sp.getUefiSettings().isSecureBootEnabled());
+            Assertions.assertTrue(sp.getUefiSettings().isVTpmEnabled());
+
+            OSDisk disk = pool.getVirtualMachineConfiguration().getOsDisk();
+            Assertions.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY,
+                disk.getManagedDisk().getSecurityProfile().getSecurityEncryptionType());
+        } finally {
+            // Clean up by deleting the pool
+            try {
+                if (poolExists(batchClient, poolId)) {
+                    batchClient.deletePool(poolId);
+                }
+            } catch (Exception e) {
+                // Ignore exception
+            }
+        }
+    }
+
+    @Test
+    public void canDeallocateAndStartComputeNode() throws Exception {
+        String poolId = getStringIdWithUserNamePrefix("-deallocateStartNodePool");
+
+        // Define the VM size and node count
+        String poolVmSize = "STANDARD_D1_V2";
+        int poolVmCount = 1;
+
+        // Check if the pool exists, if not, create it
+        if (!poolExists(batchClient, poolId)) {
+            ImageReference imgRef = new ImageReference()
+                .setPublisher("Canonical")
+                .setOffer("UbuntuServer")
+                .setSku("18.04-LTS")
+                .setVersion("latest");
+
+            VirtualMachineConfiguration vmConfiguration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
+
+            BatchPoolCreateContent poolCreateContent = new BatchPoolCreateContent(poolId, poolVmSize)
+                .setTargetDedicatedNodes(poolVmCount)
+                .setVirtualMachineConfiguration(vmConfiguration);
+
+            batchClient.createPool(poolCreateContent);
+        }
+
+        try {
+            // Wait for the pool to become steady and nodes to become idle
+            BatchPool pool = waitForPoolState(poolId, AllocationState.STEADY, 15 * 60 * 1000);
+            Assertions.assertNotNull(pool);
+            Assertions.assertEquals(AllocationState.STEADY, pool.getAllocationState());
+
+            // Retrieve the nodes using PagedIterable
+            PagedIterable<BatchNode> nodesPaged = batchClient.listNodes(poolId);
+            BatchNode firstNode = null;
+            for (BatchNode node : nodesPaged) {
+                firstNode = node;  // Get the first node
+                break;
+            }
+
+            Assertions.assertNotNull(firstNode); // Assert there is at least one compute node
+            String nodeId = firstNode.getId();
+            BatchNode computeNode = batchClient.getNode(poolId, nodeId);
+
+            // Deallocate the node using the compute node operations
+            BatchNodeDeallocateContent deallocateContent = new BatchNodeDeallocateContent()
+                .setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
+            DeallocateBatchNodeOptions options = new DeallocateBatchNodeOptions();
+            options.setTimeOutInSeconds(30);
+            batchClient.deallocateNode(poolId, nodeId, options, deallocateContent);
+
+            // Wait for the node to be deallocated
+            boolean isDeallocated = false;
+            while (!isDeallocated) {
+                computeNode = batchClient.getNode(poolId, nodeId);
+                if (computeNode.getState().equals(BatchNodeState.DEALLOCATED)) {
+                    isDeallocated = true;
+                } else {
+                    sleepIfRunningAgainstService(15 * 1000);
+                }
+            }
+            Assertions.assertEquals(BatchNodeState.DEALLOCATED, computeNode.getState());
+
+            // Start the node again
+            batchClient.startNode(poolId, nodeId);
+
+            // Wait for the node to become idle again
+            boolean isIdle = false;
+            while (!isIdle) {
+                computeNode = batchClient.getNode(poolId, nodeId);
+                if (computeNode.getState().equals(BatchNodeState.IDLE)) {
+                    isIdle = true;
+                } else {
+                    sleepIfRunningAgainstService(15 * 1000);
+                }
+            }
+            Assertions.assertEquals(BatchNodeState.IDLE, computeNode.getState());
+
+        } finally {
+            // Clean up by deleting the pool
+            try {
+                if (poolExists(batchClient, poolId)) {
+                    batchClient.deletePool(poolId);
+                }
+            } catch (Exception e) {
+                // Ignore exception
+            }
+        }
+    }
+
 }
