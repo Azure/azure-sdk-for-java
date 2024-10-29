@@ -4,11 +4,14 @@
 package com.azure.messaging.eventhubs.stress.util;
 
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
@@ -30,15 +33,18 @@ public final class TestUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
 
     public static EventProcessorClientBuilder getProcessorBuilder(ScenarioOptions options, int prefetchCount) {
-        final EventProcessorClientBuilder builder
-            = new EventProcessorClientBuilder().prefetchCount(prefetchCount == 0 ? 1 : prefetchCount)
-                .consumerGroup(options.getEventHubsConsumerGroup())
-                .connectionString(options.getEventHubsConnectionString(), options.getEventHubsEventHubName())
-                .checkpointStore(new BlobCheckpointStore(getContainerClient(options)));
+        final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        final EventProcessorClientBuilder builder = new EventProcessorClientBuilder()
+            .credential(options.getEventHubsFullyQualifiedNamespace(), options.getEventHubsEventHubName(),
+                tokenCredential)
+            .prefetchCount(prefetchCount == 0 ? 1 : prefetchCount)
+            .consumerGroup(options.getEventHubsConsumerGroup())
+            .checkpointStore(new BlobCheckpointStore(getContainerClient(options)));
 
         if (options.useV2Stack()) {
-            Configuration configuration
-                = new ConfigurationBuilder().putProperty("com.azure.messaging.eventhubs.v2", "true").build();
+            Configuration configuration = new ConfigurationBuilder()
+                .putProperty("com.azure.messaging.eventhubs.v2", "true")
+                .build();
 
             builder.configuration(configuration);
         }
@@ -54,16 +60,19 @@ public final class TestUtils {
     }
 
     public static EventHubClientBuilder getBuilder(ScenarioOptions options) {
+        final TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         final EventHubClientBuilder builder = new EventHubClientBuilder()
-            .connectionString(options.getEventHubsConnectionString())
+            .credential(options.getEventHubsFullyQualifiedNamespace(), options.getEventHubsEventHubName(),
+                tokenCredential)
             .retryOptions(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(5)))
             .eventHubName(options.getEventHubsEventHubName())
             .transportType(options.getAmqpTransportType())
             .consumerGroup(options.getEventHubsConsumerGroup());
 
         if (options.useV2Stack()) {
-            Configuration configuration
-                = new ConfigurationBuilder().putProperty("com.azure.messaging.eventhubs.v2", "true").build();
+            Configuration configuration = new ConfigurationBuilder()
+                .putProperty("com.azure.messaging.eventhubs.v2", "true")
+                .build();
 
             builder.configuration(configuration);
         }
@@ -72,8 +81,12 @@ public final class TestUtils {
     }
 
     private static BlobContainerAsyncClient getContainerClient(ScenarioOptions options) {
-        return new BlobContainerClientBuilder().connectionString(options.getStorageConnectionString())
+        final DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        return new BlobContainerClientBuilder()
+            .endpoint(options.getStorageBlobEndpointUri())
             .containerName(options.getStorageContainerName())
+            .credential(credential)
             .buildAsyncClient();
     }
 
@@ -88,19 +101,20 @@ public final class TestUtils {
     }
 
     private static void resetCheckpoint(ScenarioOptions options) {
-        String storageConnStr = options.getStorageConnectionString();
         String containerName = options.getStorageContainerName();
-        String eventHubConnStr = options.getEventHubsConnectionString();
         String eventHub = options.getEventHubsEventHubName();
         String consumerGroup = options.getEventHubsConsumerGroup();
-        BlobContainerClient containerClient = new BlobContainerClientBuilder().connectionString(storageConnStr)
-            .containerName(containerName)
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        BlobContainerClient containerClient = new BlobContainerClientBuilder()
+            .endpoint(options.getStorageBlobEndpointUri())
+            .containerName(options.getStorageContainerName())
+            .credential(credential)
             .buildClient();
 
         PagedIterable<BlobItem> blobs = containerClient.listBlobs();
         try {
             for (BlobItem blob : blobs) {
-                String namespace = eventHubConnStr.substring(0, eventHubConnStr.indexOf("/"));
+                String namespace = options.getEventHubsFullyQualifiedNamespace();
                 if (blob.getName().contains(String.format("%s/%s/%s", namespace, eventHub, consumerGroup))) {
                     BlobClient blobClient = containerClient.getBlobClient(blob.getName());
                     blobClient.delete();
