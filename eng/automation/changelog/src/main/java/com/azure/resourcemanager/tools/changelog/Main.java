@@ -67,13 +67,13 @@ public class Main {
         changeLogs.forEach(x -> {
             if (x.isClassLevelChanged()) {
                 breakingChange.append(x.getBreakingChange());
-                breakingChangeItems.add(x.getBreakingChangeForSdkAutomation());
+                breakingChangeItems.addAll(x.getBreakingChangeItems());
             }
         });
         changeLogs.forEach(x -> {
             if (!x.isClassLevelChanged()) {
                 breakingChange.append(x.getBreakingChange());
-                breakingChangeItems.add(x.getBreakingChangeForSdkAutomation());
+                breakingChangeItems.addAll(x.getBreakingChangeItems());
             }
         });
         changeLogs.forEach(x -> {

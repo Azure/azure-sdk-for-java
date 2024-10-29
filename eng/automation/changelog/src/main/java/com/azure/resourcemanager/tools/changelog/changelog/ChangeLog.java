@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.tools.changelog.changelog;
 
 import com.azure.resourcemanager.tools.changelog.utils.AllMethods;
+import com.azure.resourcemanager.tools.changelog.utils.BreakingChange;
 import com.azure.resourcemanager.tools.changelog.utils.ClassName;
 import com.azure.resourcemanager.tools.changelog.utils.MethodName;
 import japicmp.model.JApiChangeStatus;
@@ -11,7 +12,7 @@ import japicmp.model.JApiClass;
 import japicmp.model.JApiMethod;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -25,17 +26,17 @@ import java.util.stream.Stream;
 public class ChangeLog {
     private AllMethods allMethods;
     protected List<String> newFeature;
-    protected List<String> breakingChange;
+    protected BreakingChange breakingChange;
 
     ChangeLog() {
         this.newFeature = new ArrayList<>();
-        this.breakingChange = new ArrayList<>();
+        this.breakingChange = BreakingChange.fromClass(getClassName());
     }
 
     ChangeLog(AllMethods allMethods) {
         this.allMethods = allMethods;
         this.newFeature = new ArrayList<>();
-        this.breakingChange = new ArrayList<>();
+        this.breakingChange = BreakingChange.fromClass(getClassName());
         calcChangeLog();
     }
 
@@ -85,41 +86,7 @@ public class ChangeLog {
     }
 
     public String getBreakingChange() {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < this.breakingChange.size(); ++i) {
-            builder.append(this.breakingChange.get(i)).append("\n");
-            if (i + 1 == this.breakingChange.size()) {
-                builder.append("\n");
-            }
-        }
-        return builder.toString();
-    }
-
-    public String getBreakingChangeForSdkAutomation() {
-        if (this.breakingChange.isEmpty()) {
-            return "";
-        }
-        // first item is always class level
-        String classLevel = this.breakingChange.get(0);
-        // remove "#### " prefix
-        StringBuilder result = new StringBuilder(classLevel.substring(5));
-        if (this.breakingChange.size() == 1) {
-            return result.append(".").toString();
-        }
-        // append method-level breaking changes
-        result.append(": ");
-        for (int i = 1; i < this.breakingChange.size(); i++) {
-            String methodLevelChange = this.breakingChange.get(i);
-            if (i == 1) {
-                // remove "* " prefix
-                result.append(methodLevelChange.substring(2));
-            } else {
-                // replace "*" with ","
-                result.append(",")
-                    .append(methodLevelChange.substring(1));
-            }
-        }
-        return result.append(".").toString();
+        return this.breakingChange.getForChangelog();
     }
 
     public boolean isClassLevelChanged() {
@@ -133,11 +100,10 @@ public class ChangeLog {
     }
 
     private void deduplicateChangeLog() {
-        deduplicate(this.breakingChange);
         deduplicate(this.newFeature);
     }
 
-    private void deduplicate(List<String> changeList) {
+    private static void deduplicate(List<String> changeList) {
         Set<String> changeSet = new HashSet<>();
         Iterator<String> iterator = changeList.iterator();
         while (iterator.hasNext()) {
@@ -153,7 +119,7 @@ public class ChangeLog {
     private void calcChangeLogForClass() {
         switch (getJApiClass().getChangeStatus()) {
             case NEW: newFeature.add(String.format("* `%s` was added", getJApiClass().getFullyQualifiedName())); break;
-            case REMOVED: breakingChange.add(String.format("* `%s` was removed", getJApiClass().getFullyQualifiedName())); break;
+            case REMOVED: breakingChange.setClassLevelChangeType(BreakingChange.Type.REMOVED); break;
             default:
                 boolean checkReturnType = !ClassName.name(getJApiClass()).equals("Definition");
                 allMethods.getMethods().forEach(method -> this.calcChangelogForMethod(method, checkReturnType));
@@ -161,7 +127,11 @@ public class ChangeLog {
         }
     }
 
-    protected void addClassTitle(List<String> list) {
+    protected String getClassName() {
+        return getJApiClass().getFullyQualifiedName();
+    }
+
+    private void addClassTitle(List<String> list) {
         if (list.isEmpty()) {
             list.add(String.format("#### `%s` was modified", getJApiClass().getFullyQualifiedName()));
             list.add("");
@@ -175,20 +145,21 @@ public class ChangeLog {
                 newFeature.add(String.format("* `%s` was added", MethodName.name(method.getNewMethod().get())));
                 break;
             case REMOVED:
-                addClassTitle(breakingChange);
-                breakingChange.add(String.format("* `%s` was removed", MethodName.name(method.getOldMethod().get())));
+                breakingChange.addMethodLevelChange(String.format("`%s` was removed", MethodName.name(method.getOldMethod().get())));
                 break;
             case MODIFIED:
                 if (!checkReturnType){
                     if (!method.getOldMethod().get().getLongName().equals(method.getNewMethod().get().getLongName())) {
-                        addClassTitle(breakingChange);
-                        breakingChange.add(String.format("* `%s` -> `%s`", MethodName.name(method.getOldMethod().get()), MethodName.name(method.getNewMethod().get())));
+                        breakingChange.addMethodLevelChange(String.format("`%s` -> `%s`", MethodName.name(method.getOldMethod().get()), MethodName.name(method.getNewMethod().get())));
                     }
                 } else {
-                    addClassTitle(breakingChange);
-                    breakingChange.add(String.format("* `%s %s` -> `%s %s`", method.getReturnType().getOldReturnType(), MethodName.name(method.getOldMethod().get()), method.getReturnType().getNewReturnType(), MethodName.name(method.getNewMethod().get())));
+                    breakingChange.addMethodLevelChange(String.format("`%s %s` -> `%s %s`", method.getReturnType().getOldReturnType(), MethodName.name(method.getOldMethod().get()), method.getReturnType().getNewReturnType(), MethodName.name(method.getNewMethod().get())));
                 }
                 break;
         }
+    }
+
+    public Collection<String> getBreakingChangeItems() {
+        return breakingChange.getItems();
     }
 }
