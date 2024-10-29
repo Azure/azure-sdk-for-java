@@ -16,36 +16,27 @@ import org.springframework.util.StringUtils;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
+
+import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPasswordlessPropertiesUtils.enhancePasswordlessProperties;
 
 class ServiceBusJmsConnectionFactoryFactory {
     private final AzureServiceBusJmsProperties properties;
     private final List<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers;
-
     private final TokenCredentialProvider tokenCredentialProvider;
 
     ServiceBusJmsConnectionFactoryFactory(AzureServiceBusJmsProperties properties,
                                           List<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
-        this(null, properties, factoryCustomizers);
-
-    }
-
-    ServiceBusJmsConnectionFactoryFactory(TokenCredentialProvider tokenCredentialProvider,
-                                          AzureServiceBusJmsProperties properties,
-                                          List<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
-        if (properties.isPasswordlessEnabled()) {
-            if (tokenCredentialProvider == null) {
-                this.tokenCredentialProvider = TokenCredentialProvider.createDefault(
-                    new TokenCredentialProviderOptions(properties.toPasswordlessProperties()));
-            } else {
-                this.tokenCredentialProvider = tokenCredentialProvider;
-            }
-        } else {
-            this.tokenCredentialProvider = null;
-        }
-
         Assert.notNull(properties, "Properties must not be null");
         this.properties = properties;
         this.factoryCustomizers = (factoryCustomizers != null) ? factoryCustomizers : Collections.emptyList();
+        if (properties.isPasswordlessEnabled()) {
+            Properties passwordlessProperties = properties.toPasswordlessProperties();
+            enhancePasswordlessProperties(AzureServiceBusJmsProperties.PREFIX, properties, passwordlessProperties);
+            this.tokenCredentialProvider = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(passwordlessProperties));
+        } else {
+            this.tokenCredentialProvider = null;
+        }
     }
 
     <T extends ServiceBusJmsConnectionFactory> T createConnectionFactory(Class<T> factoryClass) {
