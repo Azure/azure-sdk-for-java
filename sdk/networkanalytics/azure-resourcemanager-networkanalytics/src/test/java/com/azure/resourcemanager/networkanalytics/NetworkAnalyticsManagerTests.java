@@ -11,9 +11,16 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.models.Provider;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+
 public class NetworkAnalyticsManagerTests extends TestProxyTestBase {
+    private ResourceManager resourceManager = null;
     private NetworkAnalyticsManager networkAnalyticsManager = null;
 
     @Override
@@ -21,8 +28,14 @@ public class NetworkAnalyticsManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
+        resourceManager = ResourceManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile)
+            .withDefaultSubscription();
+
         networkAnalyticsManager = NetworkAnalyticsManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
             .authenticate(credential, profile);
     }
 
