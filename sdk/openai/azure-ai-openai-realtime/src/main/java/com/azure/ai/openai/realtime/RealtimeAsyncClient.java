@@ -2,6 +2,7 @@ package com.azure.ai.openai.realtime;
 
 import com.azure.ai.openai.realtime.implementation.LoggingUtils;
 import com.azure.ai.openai.realtime.implementation.RealtimesImpl;
+import com.azure.ai.openai.realtime.implementation.websocket.AuthenticationProvider;
 import com.azure.ai.openai.realtime.implementation.websocket.ClientEndpointConfiguration;
 import com.azure.ai.openai.realtime.implementation.websocket.CloseReason;
 import com.azure.ai.openai.realtime.implementation.websocket.RealtimeClientState;
@@ -51,6 +52,8 @@ public final class RealtimeAsyncClient implements Closeable {
     private ClientLogger logger;
     private final AtomicReference<ClientLogger> loggerReference = new AtomicReference<>();
 
+    // TODO jpalvarezl: replace authentication abstraction in favour of pipeline usage
+    private final AuthenticationProvider authenticationProvider;
     // client state
     private final ClientState clientState = new ClientState();
     // state on close
@@ -69,6 +72,7 @@ public final class RealtimeAsyncClient implements Closeable {
     private final String applicationId;
 
     // retry
+    /// TODO jpalvarezl: find a way to use this
     private final Retry sendMessageRetrySpec;
 
     private static final Duration CLOSE_AFTER_SESSION_OPEN_DELAY = Duration.ofMillis(100);
@@ -81,12 +85,13 @@ public final class RealtimeAsyncClient implements Closeable {
             .onBackpressureBuffer(Queues.SMALL_BUFFER_SIZE, false);
 
     RealtimeAsyncClient(
-            WebSocketClient webSocketClient, ClientEndpointConfiguration cec, String applicationId, RetryStrategy retryStrategy) {
+            WebSocketClient webSocketClient, ClientEndpointConfiguration cec, String applicationId, RetryStrategy retryStrategy, AuthenticationProvider authenticationProvider) {
         updateLogger(applicationId, null);
 
         this.webSocketClient = webSocketClient == null ? new WebSocketClientNettyImpl() : webSocketClient;
         this.clientEndpointConfiguration = cec;
         this.applicationId = applicationId;
+        this.authenticationProvider = authenticationProvider;
 
         // The realtime service doesn't seem to provide the necessary information for reconnect/retry logic
         // We would need, from what I've been able to gather:
@@ -107,9 +112,6 @@ public final class RealtimeAsyncClient implements Closeable {
                 return ret;
             });
         });
-
-        // TODO jpalvarezl: remove this:
-        this.serviceClient = null;
     }
 
     @Override
@@ -125,25 +127,6 @@ public final class RealtimeAsyncClient implements Closeable {
         }
         // TODO jpalvarezl: should this be here?
         webSocketSession.close();
-    }
-
-// --------------- Code gen stuff --------------------------------
-
-    @Generated
-    private final RealtimesImpl serviceClient;
-
-    /**
-     * Initializes an instance of RealtimeAsyncClient class.
-     *
-     * @param serviceClient the service client implementation.
-     */
-    @Generated
-    RealtimeAsyncClient(RealtimesImpl serviceClient) {
-        this.webSocketClient = null;
-        this.clientEndpointConfiguration = null;
-        this.applicationId = null;
-        this.sendMessageRetrySpec = null;
-        this.serviceClient = serviceClient;
     }
 
     public Mono<Void> start() {
@@ -173,11 +156,10 @@ public final class RealtimeAsyncClient implements Closeable {
 
                 return Mono.empty();
             }
-        })// .then( handle TokenCredential retrieval);
-                .then(Mono.<Void>fromRunnable( () -> {
-                    this.webSocketSession = webSocketClient.connectToServer(this.clientEndpointConfiguration, loggerReference,
-                            this::handleMessage, this::handleSessionOpen, this::handleSessionClose);
-
+        }).then(authenticationProvider.authenticationToken())
+                .flatMap(authenticationHeader -> Mono.<Void>fromRunnable(() -> {
+                    this.webSocketSession = webSocketClient.connectToServer(this.clientEndpointConfiguration, () -> authenticationHeader,
+                            loggerReference, this::handleMessage, this::handleSessionOpen, this::handleSessionClose);
                 })).subscribeOn(Schedulers.boundedElastic())
                 .doOnError(error -> {
                     // stop if error, do not send StoppedEvent when it fails at start(), which would have exception thrown

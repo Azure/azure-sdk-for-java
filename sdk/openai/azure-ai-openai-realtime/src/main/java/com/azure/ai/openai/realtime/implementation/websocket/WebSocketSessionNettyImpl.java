@@ -34,6 +34,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 final class WebSocketSessionNettyImpl implements WebSocketSession {
 
@@ -79,7 +80,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
         }
     }
 
-    WebSocketSessionNettyImpl(ClientEndpointConfiguration cec,
+    WebSocketSessionNettyImpl(ClientEndpointConfiguration cec, Supplier<AuthenticationProvider.AuthenticationHeader> authenticationHeaderSupplier,
                               AtomicReference<ClientLogger> loggerReference, Consumer<Object> messageHandler,
                               Consumer<WebSocketSession> openHandler, Consumer<CloseReason> closeHandler) {
         this.uri = cec.getUri();
@@ -87,7 +88,7 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
         this.messageEncoder = cec.getMessageEncoder();
         this.messageDecoder = cec.getMessageDecoder();
         this.subProtocol = cec.getSubProtocol();
-        this.headers = cec.getHeaders();
+        this.headers = cec.getHeaders(authenticationHeaderSupplier.get());
         this.messageHandler = messageHandler;
         this.openHandler = openHandler;
         this.closeHandler = closeHandler;

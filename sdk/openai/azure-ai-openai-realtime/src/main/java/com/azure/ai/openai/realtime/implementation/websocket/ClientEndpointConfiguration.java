@@ -7,6 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import io.netty.handler.codec.http.HttpHeaders;
 
 import java.net.URI;
+import java.util.function.Supplier;
 
 public abstract class ClientEndpointConfiguration {
 
@@ -29,7 +30,7 @@ public abstract class ClientEndpointConfiguration {
         return URI.create(getURIString());
     }
 
-    public abstract HttpHeaders getHeaders();
+    public abstract HttpHeaders getHeaders(AuthenticationProvider.AuthenticationHeader authenticationHeader);
 
     public MessageEncoder getMessageEncoder() {
         return MESSAGE_ENCODER;
@@ -45,15 +46,11 @@ public abstract class ClientEndpointConfiguration {
 
     protected abstract String getURIString();
 
-    public static AzureClientEndpointConfiguration createAzureClientEndpointConfiguration(String baseUrl, String userAgent, String deployment, OpenAIServiceVersion serviceVersion, KeyCredential keyCredential) {
-        return new AzureClientEndpointConfiguration(baseUrl, userAgent, deployment, serviceVersion, keyCredential);
+    public static AzureClientEndpointConfiguration createAzureClientEndpointConfiguration(String baseUrl, String userAgent, String deployment, OpenAIServiceVersion serviceVersion) {
+        return new AzureClientEndpointConfiguration(baseUrl, userAgent, deployment, serviceVersion);
     }
 
-    public static AzureClientEndpointConfiguration createAzureClientEndpointConfiguration(String baseUrl, String userAgent, String deployment, OpenAIServiceVersion serviceVersion, TokenCredential tokenCredential) {
-        return new AzureClientEndpointConfiguration(baseUrl, userAgent, deployment, serviceVersion, tokenCredential);
-    }
-
-    public static NonAzureClientEndpointConfiguration createNonAzureClientEndpointConfiguration(String baseUrl, String userAgent, String model, KeyCredential keyCredential) {
-        return new NonAzureClientEndpointConfiguration(baseUrl, userAgent, model, keyCredential);
+    public static NonAzureClientEndpointConfiguration createNonAzureClientEndpointConfiguration(String baseUrl, String userAgent, String model) {
+        return new NonAzureClientEndpointConfiguration(baseUrl, userAgent, model);
     }
 }

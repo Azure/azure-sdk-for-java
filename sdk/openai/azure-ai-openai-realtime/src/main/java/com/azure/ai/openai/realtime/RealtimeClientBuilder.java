@@ -1,5 +1,6 @@
 package com.azure.ai.openai.realtime;
 
+import com.azure.ai.openai.realtime.implementation.websocket.AuthenticationProvider;
 import com.azure.ai.openai.realtime.implementation.websocket.ClientEndpointConfiguration;
 import com.azure.ai.openai.realtime.implementation.websocket.WebSocketClient;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -21,6 +22,8 @@ import java.util.Map;
 @ServiceClientBuilder(serviceClients = { RealtimeAsyncClient.class, RealtimeClient.class })
 public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientBuilder> {
 
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://cognitiveservices.azure.com/.default" };
+
     private static final String OPENAI_BASE_URL = "wss://api.openai.com";
 
     private static final ClientLogger LOGGER = new ClientLogger(RealtimeClientBuilder.class);
@@ -37,6 +40,7 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
     private String deploymentOrModelName;
     private TokenCredential tokenCredential;
     private KeyCredential keyCredential;
+
     private OpenAIServiceVersion serviceVersion = OpenAIServiceVersion.V2024_10_01_PREVIEW;
 
     private RetryOptions retryOptions;
@@ -85,7 +89,20 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
 
     public RealtimeAsyncClient buildAsyncClient() {
         String applicationId = CoreUtils.getApplicationId(clientOptions, null);
-        return new RealtimeAsyncClient(webSocketClient, getClientEndpointConfiguration(), applicationId, getRetryStrategy());
+        return new RealtimeAsyncClient(webSocketClient, getClientEndpointConfiguration(),
+                applicationId, getRetryStrategy(), getAuthenticationProvider());
+    }
+
+    private AuthenticationProvider getAuthenticationProvider() {
+        if(useNonAzureOpenAIService()) {
+            return new AuthenticationProvider(keyCredential, false);
+        } else if (keyCredential != null) {
+            return new AuthenticationProvider(keyCredential, true);
+        } else if (tokenCredential != null) {
+            return new AuthenticationProvider(tokenCredential, DEFAULT_SCOPES);
+        } else {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Missing credential information while building a client."));
+        }
     }
 
     private RetryStrategy getRetryStrategy() {
@@ -116,8 +133,8 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
 
         // TODO jpalvarezl: account for TokenCredential too
         return useNonAzureOpenAIService() ?
-            ClientEndpointConfiguration.createNonAzureClientEndpointConfiguration(OPENAI_BASE_URL, userAgent, deploymentOrModelName, keyCredential) :
-            ClientEndpointConfiguration.createAzureClientEndpointConfiguration(endpoint, userAgent, deploymentOrModelName, this.serviceVersion, keyCredential);
+            ClientEndpointConfiguration.createNonAzureClientEndpointConfiguration(OPENAI_BASE_URL, userAgent, deploymentOrModelName) :
+            ClientEndpointConfiguration.createAzureClientEndpointConfiguration(endpoint, userAgent, deploymentOrModelName, this.serviceVersion);
     }
 
     /**

@@ -5,14 +5,15 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public final class WebSocketClientNettyImpl implements WebSocketClient {
     @Override
-    public WebSocketSession connectToServer(ClientEndpointConfiguration cec,
+    public WebSocketSession connectToServer(ClientEndpointConfiguration cec, Supplier<AuthenticationProvider.AuthenticationHeader> authenticationHeaderSupplier,
                                             AtomicReference<ClientLogger> loggerReference, Consumer<Object> messageHandler,
                                             Consumer<WebSocketSession> openHandler, Consumer<CloseReason> closeHandler) {
         try {
-            WebSocketSessionNettyImpl session = new WebSocketSessionNettyImpl(cec, loggerReference,
+            WebSocketSessionNettyImpl session = new WebSocketSessionNettyImpl(cec, authenticationHeaderSupplier, loggerReference,
                     messageHandler, openHandler, closeHandler);
             session.connect();
             return session;

@@ -5,6 +5,8 @@ import com.azure.core.http.HttpHeaderName;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpHeaders;
 
+import java.util.function.Supplier;
+
 public class NonAzureClientEndpointConfiguration extends ClientEndpointConfiguration {
 
     // Path
@@ -14,19 +16,17 @@ public class NonAzureClientEndpointConfiguration extends ClientEndpointConfigura
     private final String model;
 
     // Headers
-    private final KeyCredential keyCredential;
     private static final String OPENAI_BETA = "realtime=v1";
 
-    public NonAzureClientEndpointConfiguration(String baseUrl, String userAgent, String model, KeyCredential keyCredential) {
+    public NonAzureClientEndpointConfiguration(String baseUrl, String userAgent, String model) {
         super(baseUrl, userAgent);
         this.model = model;
-        this.keyCredential = keyCredential;
     }
 
     @Override
-    public HttpHeaders getHeaders() {
+    public HttpHeaders getHeaders(AuthenticationProvider.AuthenticationHeader authenticationHeader) {
         HttpHeaders headers = new DefaultHttpHeaders();
-        headers.add(HttpHeaderName.AUTHORIZATION.getCaseInsensitiveName(), "Bearer " + keyCredential.getKey());
+        headers.add(authenticationHeader.getHeaderName(), authenticationHeader.getHeaderValue());
         headers.add("openai-beta", OPENAI_BETA);
         return headers;
     }

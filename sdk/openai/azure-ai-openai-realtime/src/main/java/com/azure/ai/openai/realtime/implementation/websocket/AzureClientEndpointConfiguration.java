@@ -8,6 +8,7 @@ import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpHeaders;
 
 import java.util.UUID;
+import java.util.function.Supplier;
 
 public class AzureClientEndpointConfiguration  extends ClientEndpointConfiguration {
 
@@ -20,32 +21,20 @@ public class AzureClientEndpointConfiguration  extends ClientEndpointConfigurati
 
     // Headers
     private final String requestId = UUID.randomUUID().toString();
-    private final KeyCredential keyCredential;
-    private final TokenCredential tokenCredential;
     // userAgent is already defined in the parent class
 
 
-    public AzureClientEndpointConfiguration(String baseUrl, String userAgent, String deployment, OpenAIServiceVersion serviceVersion, KeyCredential keyCredential) {
+    public AzureClientEndpointConfiguration(String baseUrl, String userAgent, String deployment, OpenAIServiceVersion serviceVersion) {
         super(baseUrl, userAgent);
         this.serviceVersion = serviceVersion;
         this.deployment = deployment;
-        this.keyCredential = keyCredential;
-        this.tokenCredential = null;
-    }
-
-    public AzureClientEndpointConfiguration(String baseUrl, String userAgent, String deployment, OpenAIServiceVersion serviceVersion, TokenCredential tokenCredential) {
-        super(baseUrl, userAgent);
-        this.serviceVersion = serviceVersion;
-        this.deployment = deployment;
-        this.tokenCredential = tokenCredential;
-        this.keyCredential = null;
     }
 
     @Override
-    public HttpHeaders getHeaders() {
+    public HttpHeaders getHeaders(AuthenticationProvider.AuthenticationHeader authenticationHeader) {
         return new DefaultHttpHeaders()
             .add("x-ms-client-request-id", requestId)
-            .add("api-key", keyCredential.getKey())
+            .add(authenticationHeader.getHeaderName(), authenticationHeader.getHeaderValue())
             .add(HttpHeaderName.USER_AGENT.getCaseInsensitiveName(), super.userAgent);
     }
 
